@@ -12,7 +12,7 @@
     import flash.geom.Matrix;
     import flash.geom.Point;
 	
-	//класс отвечает за анимацию главного меню
+	// This class is responsible for the main menu animation
 	
 	public class Displ {
 		

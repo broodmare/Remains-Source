@@ -22,19 +22,19 @@
 		public var room:Room;		//связанный шаблон
 		public var prob:Probation;	//связанное испытание
 		
-		//рамеры и положение
-		public var spaceX:int;	//размер локации в блоках
+		//Dimensions and Position
+		public var spaceX:int;	// Size of the location in blocks
 		public var spaceY:int;
-		public var limX:int;	//размер локации в пикселях
+		public var limX:int;	// Size of the location in pixels
 		public var limY:int;
 		public var landX:int=0;	//положение локации на местности
 		public var landY:int=0;
 		public var landZ:int=0;
 		public var landProb:String='';
-		public var bindLoc:Location;	//привязанная по координате z
-		public var base:Boolean=false;	//базовый лагерь
-		public var train:Boolean=false;	//полигон
-		public var black:Boolean=true;	//туман войны
+		public var bindLoc:Location;	// Bound by coordinate z ???
+		public var base:Boolean=false;	// Base camp
+		public var train:Boolean=false;	// Training ground
+		public var black:Boolean=true;	// Fog of war
 		
 		
 		//объекты
@@ -51,8 +51,8 @@
 		public var backobjs:Array;		//фоновые объекты
 		public var grenades:Array;		//активные гранаты
 		public var gg:UnitPlayer;
-		public var celObj:Obj, celDist:Number=-1;	//целевой объект и расстояние до него
-		public var unitCoord;			//объект для координации юнитов
+		public var celObj:Obj, celDist:Number=-1;	// Target object and distance to it
+		public var unitCoord;			// Object for unit coordination
 		
 		//входы и посещение
 		public var spawnPoints:Array;	//точки спавна
@@ -108,17 +108,17 @@
 		public var homeStable:Boolean=false;	
 		public var homeAtk:Boolean=false;	
 		public var visMult:Number=1;
-		public var noMap:Boolean=false;			//карта недоступна
-		public var darkness:int=0;				//затемнение заднего плана
-		public var lightOn:int=0;				//если больше 0 - свет включен, меньше - выключен
-		public var retDark:Boolean=false;		//туман войны будет восстанавливаться
-		public var levitOn:Boolean=true;		//самолевитация разрешена
-		public var portOn:Boolean=true;			//телепортация разрешена
-		public var petOn:Boolean=true;			//спутник разрешен
-		public var destroyOn:Boolean=true;		//разрушение стены разрешены
-		public var itemsTip:String;				//особый тип лута
+		public var noMap:Boolean=false;			// Map is unavailable
+		public var darkness:int=0;				// Background darkening
+		public var lightOn:int=0;				// If greater than 0 - light is on, less - off
+		public var retDark:Boolean=false;		// Fog of war will be restored
+		public var levitOn:Boolean=true;		// Levitation is allowed
+		public var portOn:Boolean=true;			// Teleportation is allowed
+		public var petOn:Boolean=true;			// Pet is allowed
+		public var destroyOn:Boolean=true;		// Wall destruction is allowed
+		public var itemsTip:String;				// Special loot type
 		public var electroDam:Number=0;
-		public var trus:Number=0;				//постоянная тряска
+		public var trus:Number=0;				// Constant shaking
 		
 		//враги
 		public var tipEnemy:int=-1;				//тип случайных врагов
@@ -142,12 +142,12 @@
 		//Уровень сложности
 		public var locDifLevel:Number=0;
 		public var biom:int=0;
-		public var locksLevel:Number=0;		//уровень замков 0-25
-		//public var locksDif:Number=0;		//сложность замков
-		public var mechLevel:Number=0;		//уровень мин и механизмов 0-7
-		public var weaponLevel:Number=0;	//уровень случайно выпадающего оружия
-		public var enemyLevel:int=0;		//левел мобов
-		public var earMult:Number=1; 		//множитель слуха мобов
+		public var locksLevel:Number=0;		// Locks level 0-25
+		//public var locksDif:Number=0;		// Locks difficulty
+		public var mechLevel:Number=0;		// Mines and mechanisms level 0-7
+		public var weaponLevel:Number=0;	// Level of randomly dropped weapons
+		public var enemyLevel:int=0;		// Enemy level
+		public var earMult:Number=1; 		// Mob hearing multiplier
 		
 		
 		
@@ -649,8 +649,8 @@
 			}
 		}
 		
-		//создать юнит, nx,ny-координаты в блоках если abs=false, и в пикселях, если abs=true
-		//emerg>0 - плавное появление в течении Х тактов
+		// Create a unit, nx, ny - coordinates in blocks if abs=false, and in pixels if abs=true
+		// emerg>0 - smooth appearance over X ticks
 		public function createUnit(tip:String,nx:int,ny:int,abs:Boolean=false,xml:XML=null,cid:String=null, emerg:int=0):Unit {
 			if (tip=='mines') {
 				createUnit('mine',nx,ny);
@@ -1895,9 +1895,9 @@
 		}
 		
 		public function step() {
-			gg.step();
+			gg.step(); 
 			if (prob) prob.step();
-			//пройтись по всей цепочке объектов
+			// Iterate through a chain of objects
 			var numb=0;
 			var obj:Pt=firstObj;
 			if (warning>0) warning--;
@@ -1905,13 +1905,13 @@
 				nextObj=obj.nobj;
 				try {
 					obj.step();
-					//определить объект под курсором
+					// Determine the object under the cursor
 					if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) celObj=(obj as Obj);
 				} catch(err) {
 					World.w.showError(err, obj.err());
 				}
 				obj=nextObj;
-				//нет ли бесконечного цикла
+				// Check for infinite loop prevention
 				numb++;
 				if (numb>10000) {
 					trace('alarma');
@@ -1926,14 +1926,14 @@
 			}
 			isRelight=false;
 			getDist();
-			//если нужно, пересчитать пространство
+			// If needed, rebuild the space
 			if (isRebuild) rebuild();
 			if (isRecalc) recalcWater();
 			if (t_gwall==1) gwalls();
 			if (t_gwall>0) t_gwall--;
-			//показать/скрыть указатели перехода
+			// Show/hide transition markers based on player position
 			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) showSign(!sign_vis);
-			//тревога
+			// Handle game alarms and enemy spawns
 			if (t_alarm>0) {
 				t_alarm--;
 			}
@@ -1941,12 +1941,12 @@
 				t_alarmsp--;
 				if (t_alarmsp==0) enemySpawn();
 			}
-			//трясучка
+			// Handle screen shaking (earthquake effect)
 			if (quake>0) quake--;
 			if (trus>0) World.w.quake(trus/2,trus);
 		}
 		
-		//убить всех врагов и открыть все контейнеры
+		// Kill all enemies and open all containers
 		public function getAll():int {
 			World.w.summxp=0;
 			World.w.pers.expa(unXp*9);
@@ -1998,7 +1998,7 @@
 			}
 		}
 		
-		//сохранить все объекты
+		// Save all objects
 		public function saveObjs(arr:Array) {
 			for each (var obj:Obj in saves) {
 				if (obj.code) arr[obj.code]=obj.save();

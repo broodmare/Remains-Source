@@ -1,6 +1,6 @@
 ﻿package  fe{
 	
-	//Базовый класс для объектов, взаимодействующих с игроком или миром
+	// Base class for objects interacting with the player or the world
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -102,7 +102,7 @@
 			}
 		}
 		
-		//принудительное движение
+		//Forced Movement
 		public function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) {
 			X=nx, Y=ny;
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;

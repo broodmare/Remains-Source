@@ -23,29 +23,29 @@
 	public class Unit extends Obj{
 		
 		public static const
-		D_BUL=0,		//пули		+
-		D_BLADE=1,		//лезвие	+
-		D_PHIS=2,		//дробящий	+
-		D_FIRE=3,		//огонь		*
-		D_EXPL=4,		//взрыв		+
-		D_LASER=5,		//лазер		*
-		D_PLASMA=6,		//плазма	*
-		D_VENOM=7,		//отравляющие вещества
-		D_EMP=8,		//ЭМП
-		D_SPARK=9,		//молния	*
-		D_ACID=10,		//кислота	*
-		D_CRIO=11,		//холод		*
-		D_POISON=12,	//отравление
-		D_BLEED=13,		//кровотечение
-		D_FANG=14,		//звери		+
-		D_BALE=15,		//пиздец
-		D_NECRO=16,		//некромантия
-		D_PSY=17,		//пси
-		D_ASTRO=18,		//звиздец
-		D_PINK=19,		//розовое облако
-		D_INSIDE=100,	//???
-		D_FRIEND=101;	//дружба
-		
+			D_BUL = 0,       // Bullets       +
+			D_BLADE = 1,     // Blade         +
+			D_PHIS = 2,      // Blunt         +
+			D_FIRE = 3,      // Fire          *
+			D_EXPL = 4,      // Explosion     +
+			D_LASER = 5,     // Laser         *
+			D_PLASMA = 6,    // Plasma        *
+			D_VENOM = 7,     // Venom
+			D_EMP = 8,       // EMP
+			D_SPARK = 9,     // Lightning     *
+			D_ACID = 10,     // Acid          *
+			D_CRIO = 11,     // Cold          *
+			D_POISON = 12,   // Poison
+			D_BLEED = 13,    // Bleeding
+			D_FANG = 14,     // Beast         +
+			D_BALE = 15,     // Doom
+			D_NECRO = 16,    // Necromancy
+			D_PSY = 17,      // Psychic
+			D_ASTRO = 18,    // Astrology
+			D_PINK = 19,     // Pink Cloud
+			D_INSIDE = 100,  // ???
+			D_FRIEND = 101;  // Friendship
+
 		public static var txtMiss:String;
 		
 		public static var arrIcos:Array;
@@ -54,189 +54,189 @@
 		var mapxml:XML;
 		var uniqName:Boolean=false;
 		
-		//координаты и размеры
-		public var sitY:Number=40, stayY:Number=40, sitX:Number=40, stayX:Number=40;	//размеры
-		public var begX:Number=-1, begY:Number=-1; 		//исходная точка
-		public var rasst:Number=0;	//расстояние до ГГ
+		// Coordinates and sizes
+		public var sitY:Number=40, stayY:Number=40, sitX:Number=40, stayX:Number=40;	// Dimensions
+		public var begX:Number=-1, begY:Number=-1; 		// Initial point
+		public var rasst:Number=0;	// Distance to the player character
 		
 		public var level:int=0;
 		public var hero:int=0;
 		public var boss:Boolean=false;
-		//хп
+		// Health points (HP)
 		public var maxhp:Number=100;
 		public var hpmult:Number=1;
 		public var hp:Number=100;
-		public var cut:Number=0;	//раны
-		public var poison:Number=0;	//яд
+		public var cut:Number=0;	// Wounds
+		public var poison:Number=0;	// Poison
 		public var critHeal:Number=0.2;
 		public var shithp:Number=0;
 		var t_hp:int;
 		public var mana:Number=1000, maxmana:Number=1000, dmana:Number=1;
-		//броня и уязвимости
+		// Armor and vulnerabilities
 		public var invulner:Boolean=false;
 		public var allVulnerMult:Number=1;
-		public var skin:Number=0, armor:Number=0, marmor:Number=0, armor_hp:Number=0, armor_maxhp:Number=0, armor_qual:Number=0;		//шкура, броня, вероятность того, что она сработает
+		public var skin:Number=0, armor:Number=0, marmor:Number=0, armor_hp:Number=0, armor_maxhp:Number=0, armor_qual:Number=0;		// Skin, armor, probability that it will work
 		public var shitArmor:Number=20;
 		public var vulner:Array;		
 		public var begvulner:Array;
 		public static var begvulners:Array=new Array();
-		public var dexter:Number=1, dexterPlus:Number=0;			//уклонение, 1 - стандартное, больше 1 - больше, 0 - всегда попадёшь		
-		public var dodge:Number=0, undodge:Number=0;			//вероятность уклониться в ближнем бою, прибавка к вероятности попасть по врагу, 1 - всегда
-		public var transp:Boolean=false;	//прозрачный для пуль, не наносящих урона
-		public var damWall:Number=0;		//урон от удара об стену
+		public var dexter:Number=1, dexterPlus:Number=0;			// Evasion, 1 - standard, greater than 1 - more, 0 - always hit	
+		public var dodge:Number=0, undodge:Number=0;			// Probability to dodge in close combat, bonus to hit probability, 1 - always
+		public var transp:Boolean=false;	// Transparent to bullets that do not cause damage
+		public var damWall:Number=0;		// Damage from hitting a wall
 		public var damWallSpeed:Number=12;
-		public var dopTestOn:Boolean=false;	//сложная проверка попадания
+		public var dopTestOn:Boolean=false;	// Complex hit check
 		public var friendlyExpl:Number=0.25;
-		// урон
-		public var dam:Number=0;			//урон самого юнита
+		// Damage
+		public var dam:Number=0;			// Character's own damage
 		public static const kolVulners=20;
-		public var tipDamage:int=D_PHIS;		//тип урона
-		public var radDamage:Number=0;		//урон радиацией
-		public var retDamage:Boolean=false; //возврат урона от юнита к врагу
-		public var relat:Number=0;			//обратный возврат урона, от врага к юниту
-		public var destroy:Number=-1;			//урон блокам при столкновении
+		public var tipDamage:int=D_PHIS;		// Damage type
+		public var radDamage:Number=0;		// Radiation damage
+		public var retDamage:Boolean=false; // Return damage from the character to the enemy
+		public var relat:Number=0;			// Reverse return damage, from the enemy to the character
+		public var destroy:Number=-1;			// Block damage on collision
 		public var collisionTip:int=1;
-		public var dieWeap:String;			//оружие, из которого юнит был убит
-		public var levitAttack:Number=1;	//насколько успешной будет атака в состоянии левитации
-		public var noAgro:Boolean=false;	//не нападает первый
+		public var dieWeap:String;			// Weapon from which the character was killed
+		public var levitAttack:Number=1;	// How successful the attack will be in levitation state
+		public var noAgro:Boolean=false;	// Does not attack first
 		
-		//движение
-		//параметры движения
-		public var fixed:Boolean=false;		//не двигаться вообще
-		public var bind:Obj;				//привязка
-		public var mater:Boolean=true;		//взаимодействовать со стенами
-		public var massaFix:Number=1;		//масса зафиксированного объекта
-		public var massaMove:Number=1;		//масса перемещаемого объекта
-		public var walk:int;				//движение по поверхности, 1 - вправо, -1 влево, 0 - нет движения
+		// Movement
+		// Movement parameters
+		public var fixed:Boolean=false;		// Do not move at all
+		public var bind:Obj;				// Binding
+		public var mater:Boolean=true;		// Interact with walls
+		public var massaFix:Number=1;		// Mass of the fixed object
+		public var massaMove:Number=1;		// Mass of the moving object
+		public var walk:int;				// Movement on the surface, 1 - right, -1 - left, 0 - no movement
 		public var maxSpeed:Number=10, walkSpeed:Number=5, runSpeed:Number=10, sitSpeed:Number=3, lazSpeed:Number=5, plavSpeed:Number=5;
 		public var accel:Number=5, brake:Number=1, levitaccel:Number=1.6, knocked:Number=1;
 		public var jumpdy:Number=15, plavdy:Number=1, levidy:Number=1, elast:Number=0, jumpBall:Number=0;
-		public var ddyPlav:Number=1; //выталкивающая сила
+		public var ddyPlav:Number=1; // Pushing force
 		public var osndx:Number=0, osndy:Number=0;
-		public var levit_max=0; //максимальное время левитации, если 0, то левитация не ограничена
-		public var levit_r:int=0;		//сколько времени объект был левитирован
+		public var levit_max=0; // Maximum levitation time, if 0, then levitation is not limited
+		public var levit_r:int=0;		// How much time the object was levitated
 		public var grav:Number=1;
-		public var slow:int=0;			//внешнее замедление
-		public var tormoz:Number=1;		//на эту величину умножается dx, если объект стоит на земле
-		public var t_throw:int=0;		//включается после броска
-		//переменные
+		public var slow:int=0;			// External slowdown
+		public var tormoz:Number=1;		// dx is multiplied by this value if the object is on the ground
+		public var t_throw:int=0;		// Enabled after throwing
+		// Variables
 		public var stayPhis:int;
 		public var stayOsn:Box=null;
 		public var stayMat:int;
 		public var tykMat:int;
-		protected var shX1:Number, shX2:Number;	//насколько не помещаешься
+		protected var shX1:Number, shX2:Number;	// How much you don't fit
 		protected var diagon:int=0;
-		public var porog:Number=10, porog_jump:Number=4; //автоподъём
+		public var porog:Number=10, porog_jump:Number=4; // Automatic lifting
 		public var isSit:Boolean=false, isFly:Boolean=false, isRun:Boolean=false, isPlav:Boolean=false, isLaz:int=0, inWater:Boolean=false, isUp:Boolean=false;
 		public var throu:Boolean=false, isJump:Boolean=false, turnX:int=0, turnY:int=0, kray:Boolean=false;
-		public var pumpObj:Interact;	//объект на который наткнулся (для открывание дверей мобами)
+		public var pumpObj:Interact;	// The object you bumped into (for opening doors by mobs)
 		private var namok_t:int=0;
 		var visDamDY:int=0;
 
 
-		//оружие
+		// Weapon
 		public var currentWeapon:Weapon;
-		public var weaponSkill:Number=1;		//владение оружием
-		public var spellPower:Number=1;		//сила заклинаний, не являющихся оружием
-		public var mazil:int=0;			//дополнительный случайный разлёт пуль
-		public var critCh:Number=0;		//дополнительный шанс крита
-		public var critInvis:Number=0;	//прибавка к шансу крита для мобов, у которых не установлена цель на владелца пули
-		public var critDamMult:Number=2;	//множитель критического урона
-		public var precMult:Number=1;	//модификатор точности для гг, для всех остальных он равен 1
-		public var precMultCont:Number=1;	//модификатор точности, уменьшающийся от критических эффектов
-		public var rapidMultCont:Number=1;	//модификатор скорости атаки холодным оружием, уменьшающийся от критических эффектов
+		public var weaponSkill:Number=1;		// Proficiency with weapons
+		public var spellPower:Number=1;		// Power of non-weapon spellsм
+		public var mazil:int=0;			// Additional random bullet spread
+		public var critCh:Number=0;		// Additional crit chance
+		public var critInvis:Number=0;	// Crit chance modifier for mobs with no target on the bullet owner
+		public var critDamMult:Number=2;	// Critical damage multiplier
+		public var precMult:Number=1;	// Accuracy modifier for the player character (for others, it's 1)
+		public var precMultCont:Number=1;	// Accuracy modifier decreasing from critical effects
+		public var rapidMultCont:Number=1;	// Attack speed modifier for melee weapons, decreasing from critical effects
 		public var weaponKrep:int=1;	
 		public var weaponX:Number, weaponY:Number, weaponR:Number=0;
 		public var magicX:Number, magicY:Number;
-		public var childObjs:Array;			//подчинённые объекты
-		public var isShoot:Boolean=false;	//устанавливается оружием в true если был выстрел
+		public var childObjs:Array;			// Subordinate objects
+		public var isShoot:Boolean=false;	// Set to true by the weapon when a shot is fired
 
-		//ии
-		var aiNapr:int=1, aiVNapr:int=0; //направление, в котором стремиться двигаться ии
+		//AI
+		var aiNapr:int=1, aiVNapr:int=0; // Direction in which AI aims to move
 		var aiTTurn:int=10, aiPlav:int=0; 
-		var aiState:int=0;	//состояние ии 
-		var aiTCh:int=Math.floor(Math.random()*10);	//таймер смены состояния ии 
-		var aiSpok:int=0, maxSpok:int=30;	//0 - спокоен, 1-9 - возбуждён, maxSpok - атакует цель
-		//координаты и вид цели
+		var aiState:int=0;	// AI state
+		var aiTCh:int=Math.floor(Math.random()*10);	// AI state change timer
+		var aiSpok:int=0, maxSpok:int=30;	// 0 - calm, 1-9 - excited, maxSpok - attacking the target
+		// Coordinates and appearance of the target
 		public var celX:Number=0, celY:Number=0, celDX:Number=0, celDY:Number=0;
-		public var acelX:Number=0, acelY:Number=0;	//антицель
-		public var celUnit:Unit;	//кто является целью
-		public var priorUnit:Unit;	//кто является врагом
-		public var eyeX:Number=-1000, eyeY:Number=-1000;	//точка зрения
+		public var acelX:Number=0, acelY:Number=0;	// Anti-target
+		public var celUnit:Unit;	// Who is the target
+		public var priorUnit:Unit;	// Who is the enemy
+		public var eyeX:Number=-1000, eyeY:Number=-1000;	// Line of sight
 		
-		//состояния
-		public var sost:int=1;  //1-живой	2-в отключке    3-сдох    4-уничтожен и больше не обрабатывается
+		// States
+		public var sost:int=1;  // 1 - alive, 2 - inoperative, 3 - deceased, 4 - destroyed and no longer processed
 		public var shok:int=0, maxShok:int=30;
 		public var stun:int=0;
 		public var neujaz:int=0, neujazMax:int=20;
 		public var disabled:Boolean=false;
-		public var noAct:Boolean=false;	//неактивен, может быть включён командой
+		public var noAct:Boolean=false;	// Inactive, can be activated by command
 		public var oduplenie:int=100;
-		public var lootIsDrop=false;	//выпадал ли уже лут
+		public var lootIsDrop=false;	// Has loot already dropped
 		public var aiTip:String;
 		public var t_emerg:int=0, max_emerg:int=0;
-		public var wave:int=0;	//враг принадлежит к волне
-		public var transT:Boolean=false;	//проходит через магическую стену
-		public var postDie:Boolean=false;	//изначально труп
+		public var wave:int=0;	// Enemy belongs to a wave
+		public var transT:Boolean=false;	// Passes through a magical wall
+		public var postDie:Boolean=false;	// Initially a corpse
 		
-		//Опции
-		public var blood:int=0; //кровь: 0-нет, 1-обычная, 2-зелёная
-		public var mat:int=0; //0-мясо, 1-металл
-		public var acidDey:Number=0;	//разъедание брони кислотой
-		public var trup:Boolean=true; //оставлять труп или уничтожить
-		public var overLook:Boolean=true; //может видеть то что сзади
-		public var plav:Boolean=true; //при true - плавает, иначе ходит по дну
-		public var showNumbs:Boolean=true;	//отображать урон
-		public var activateTrap:int=2;	//активировать ловушки и мины
-		public var isSats:Boolean=true;	//быть целью для ЗПС
-		public var msex:Boolean=true;		//пол мужской
-		public var doop:Boolean=false;	//true устанавливается для тех, кто не отслеживает цели
-		public var plaKap:Boolean=true;	//брызгается
-		public var noBox:Boolean=false;	//не получчает удары ящиками
+		// Options
+		public var blood:int=0; // Blood: 0 - none, 1 - regular, 2 - green
+		public var mat:int=0; // 0 - flesh, 1 - metal
+		public var acidDey:Number=0;	// Armor corrosion by acid
+		public var trup:Boolean=true; // Leave a corpse or destroy it
+		public var overLook:Boolean=true; // Can see what's behind
+		public var plav:Boolean=true; // If true - floats, otherwise walks on the bottom
+		public var showNumbs:Boolean=true;	// Display damage
+		public var activateTrap:int=2;	// Activate traps and mines
+		public var isSats:Boolean=true;	// Be a target for GPS
+		public var msex:Boolean=true;		// Male gender
+		public var doop:Boolean=false;	// True is set for those who do not track targets
+		public var plaKap:Boolean=true;	// Splashes
+		public var noBox:Boolean=false;	// Does not receive blows from boxes
 		public var areaTestTip:String;
-		public var mHero:Boolean=false;	//может стать героем
-		public var isRes:Boolean=false;	//восстаёт после смерти
-		public var mech:Boolean=false;	//механизм
-		public var noDestr:Boolean=false; //не уничтожать после смерти
+		public var mHero:Boolean=false;	// Can become a hero
+		public var isRes:Boolean=false;	// Resurrects after death
+		public var mech:Boolean=false;	// Mechanism
+		public var noDestr:Boolean=false; // Do not destroy after death
 		
 		public var opt:Object;
 		public static var opts:Array=new Array();
 		
-		//фракция
+		// Faction
 		public var fraction:int=0, player:Boolean=false;
 		public static const F_PLAYER=100, F_MONSTER=1, F_RAIDER=2, F_ZOMBIE=3, F_ROBOT=4;
-		public var npc:Boolean=false;	//Юнит является NPC-ом и отображается на карте
+		public var npc:Boolean=false;	// The unit is an NPC and is displayed on the map
 		
-		//видимость юнита для других (маскировка), чем выше показатель, тем с большего расстояния объект виден
-		public var visibility:int=1000, stealthMult:Number=1;	//с какого расстояния становится виден
-		public var detecting:int=80;	//расстояние безусловного обнаружения
+		// Unit visibility to others (camouflage), the higher the value, the farther the object can be seen
+		public var visibility:int=1000, stealthMult:Number=1;	// At what distance it becomes visible
+		public var detecting:int=80;	// Distance of unconditional detection
 		public var demask:Number=0;
 		public var invis:Boolean=false;
-		public var noise:int=0, noiseRun:int=200, noise_t:int=30;			//звук
-		public var isVis:Boolean=true; 		//видимый или нет для ГГ
-		public var volMinus:Number=0;	//падение громкости звуковых эффектов
-		public var light:Boolean=false;	//убрать туман войны в этой точке
+		public var noise:int=0, noiseRun:int=200, noise_t:int=30;			// Sound
+		public var isVis:Boolean=true; 		// Visible or not to the player character
+		public var volMinus:Number=0;	// Decrease in volume of sound effects
+		public var light:Boolean=false;	// Remove the fog of war at this point
 		
-		//видимость других юнитов
-		public var observ:Number=0;			//наблюдательность
-		public var vision:Number=1;			//множитель зрения
-		public var ear:Number=1;			//множитель слуха
-		public var unres:Boolean=false;		//не реагировать на звуки
-		public var vAngle:Number=0;			//конус зрения
-		public var vKonus:Number=0;			//конус зрения
+		// Visibility of other units
+		public var observ:Number=0;			// Observability
+		public var vision:Number=1;			// Vision multiplier
+		public var ear:Number=1;			// Hearing multiplier
+		public var unres:Boolean=false;		// Do not react to sounds
+		public var vAngle:Number=0;			// Field of view angle
+		public var vKonus:Number=0;			// Field of view cone
 		
-		//эффекты
+		// Effects
 		public var effects:Array;
 		
-		//случайное имя
+		// Random name
 		public var id_name:String;
-		//реплики
+		// Dialogues
 		public var t_replic:int=Math.random()*100-50;
 		public var id_replic:String='';
 		
-		//визуальная часть
-		//блиттинг
-		var blitId:String;		//id битмапа
+		// Visual part
+		// Blitting
+		var blitId:String;		// Bitmap ID
 		public var animState:String='',animState2:String='';
 		public var blitData:BitmapData;
 		var blitX:int=120, blitY:int=120;
@@ -247,17 +247,17 @@
 		var visBmp:Bitmap;
 		var anims:Array;
 		
-		var ctrans:Boolean=true;	//применять цветофильтр
-		//полоска хп
+		var ctrans:Boolean=true;	// Apply color filter
+		// Health bar
 		public var hpbar:MovieClip;
 		public static var heroTransforms=[new ColorTransform(1,0.8,0.8,1,64,0,0,0),new ColorTransform(0.8,1,1,1,0,32,64,0),new ColorTransform(1,0.8,1,1,32,0,64,0),new ColorTransform(0.8,1,0.8,1,0,64,0,0)];
-		//смертельные эффекты
-		var timerDie:int=0;	//отложенная смерть
+		// Deadly effects
+		var timerDie:int=0;	// Delayed death
 		var burn:Desintegr;
 		var bloodEmit:Emitter;
 		var numbEmit:Emitter;
 		var hitPart:Part, t_hitPart:int=0, hitSumm:Number=0, t_mess:int=0;
-		//звуки
+		// Sounds
 		public var sndMusic:String;
 		var sndMusicPrior:int=0;
 		public var sndDie:String;
@@ -266,17 +266,17 @@
 		public var sndRunOn:Boolean=false;
 		var sndVolkoef:Number=1;
 
-		//пложение
+		// Parent
 		var mother:Unit;
 		var kolChild:int=0;
 
 		public var scrDie:Script, scrAlarm:Script;
-		public var questId:String;	//id для коллекционного квеста
+		public var questId:String;	// ID for a collectible quest
 		
-		public var trig:String;		//условие появления
-		public var trigDis:Boolean=false;	//отключён по триггеру
+		public var trig:String;		// Appearance condition
+		public var trigDis:Boolean=false;	// Disabled by trigger
 		
-		public var xp:int=0;	//опыт
+		public var xp:int=0;	// Experience
 		
 		static var ppp:Point=new Point();
 		
@@ -285,11 +285,11 @@
 
 
 
-		//Параметры для создания юнита
-		//cid - идентификатор создания, на основе которого внутри конструктора класса будет определён настоящий идентификатор
-		//dif - уровень сложности для этого юнита
-		//xml - индивидуальные параметры, взятые из карты
-		//loadObj - объект для загрузки состояния юнита
+		// Parameters for creating a unit
+		// cid - creation identifier, based on which the real identifier will be determined inside the class constructor
+		// dif - difficulty level for this unit
+		// xml - individual parameters taken from the map
+		// loadObj - object for loading the unit's state
 		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			vulner=new Array();
 			inter=new Interact(this,null,xml,loadObj);
@@ -400,7 +400,7 @@
 			if (uc==null) {
 				return null;
 			}
-			var cid:String=null;						//идентификатор создания
+			var cid:String=null;						// Creation identifier
 			if (node.@cid.length()) cid=node.@cid;
 			if (ncid!=null) cid=ncid;
 			var un:Unit=new uc(cid,dif,xml,loadObj);
@@ -453,25 +453,25 @@
 			}
 			massa=massaFix;
 			if (massa>=1) destroy=0;
-			//параметры движения
+			//Movement parameters
 			if (node0.move.length()) {
 				node=node0.move[0];
 				if (node.@speed.length()) maxSpeed=node.@speed;
 				if (node.@run.length()) runSpeed=node.@run;
 				if (node.@accel.length()) accel=node.@accel;
 				if (node.@jump.length()) jumpdy=node.@jump;
-				if (node.@knocked.length()) knocked=node.@knocked;		//множитель отбрасывания оружием
-				if (node.@plav.length()) plav=(node.@plav>0);			//если =0, юнит не плавает, а ходит по дну
-				if (node.@brake.length()) brake=node.@brake;			//торможение
-				if (node.@levit.length()) levitPoss=(node.@levit>0);	//если =0, юнит нельзя поднимать телекинезом
-				if (node.@levit_max.length()) levit_max=node.@levit_max;//максимальное время левитации
-				if (node.@levitaccel.length()) levitaccel=node.@levitaccel;	//ускорение в поле левитации, определяет возможность врага вырываться из телекинетического захвата
-				if (node.@float.length()) ddyPlav=node.@float;			//значение выталкивающей силы
-				if (node.@porog.length()) porog=node.@porog;			//автоподъём при движении по горизонтали
-				if (node.@fixed.length()) fixed=(node.@fixed>0);		//если =1, юнит является прикреплённым
-				if (node.@damwall.length()) damWall=node.@damwall;		//урон от удара ап стену
+				if (node.@knocked.length()) knocked=node.@knocked;		// Knockback multiplier from weapons
+				if (node.@plav.length()) plav=(node.@plav>0);			// If = 0, the unit does not float but walks on the bottom
+				if (node.@brake.length()) brake=node.@brake;			// Braking
+				if (node.@levit.length()) levitPoss=(node.@levit>0);	// If = 0, the unit cannot be lifted by telekinesis
+				if (node.@levit_max.length()) levit_max=node.@levit_max;// Maximum levitation time
+				if (node.@levitaccel.length()) levitaccel=node.@levitaccel;	// Acceleration in the levitation field, determines the ability of an enemy to break free from telekinetic grip
+				if (node.@float.length()) ddyPlav=node.@float;			// Value of the repelling force
+				if (node.@porog.length()) porog=node.@porog;			// Automatic lift when moving horizontally
+				if (node.@fixed.length()) fixed=(node.@fixed>0);		// If = 1, the unit is attached
+				if (node.@damwall.length()) damWall=node.@damwall;		// Damage from hitting a wall
 			}
-			//боевые параметры
+			//Combat parameters
 			if (node0.comb.length()) {
 				node=node0.comb[0];
 				if (node.@hp.length()) hp=maxhp=node.@hp*hpmult;
@@ -483,22 +483,22 @@
 				if (node.@skin.length()) skin=node.@skin;
 				if (node.@armor.length()) armor=node.@armor;
 				if (node.@marmor.length()) marmor=node.@marmor;
-				if (node.@aqual.length()) armor_qual=node.@aqual;		//качество брони
+				if (node.@aqual.length()) armor_qual=node.@aqual;		// Armor quality
 				if (node.@armorhp.length()) armor_hp=armor_maxhp=node.@armorhp*hpmult;
 				else armor_hp=armor_maxhp=hp;
 				
-				if (node.@krep.length()) weaponKrep=node.@krep;			//способ держать оружие, 0 - телекинез
-				if (node.@dexter.length()) dexter=node.@dexter;			//уклонение
-				if (node.@damage.length()) dam=node.@damage;			//собственный урон
-				if (node.@tipdam.length()) tipDamage=node.@tipdam;		//тип собственного урона
-				if (node.@skill.length()) weaponSkill=node.@skill;		//владение оружием
-				if (node.@raddamage.length()) radDamage=node.@raddamage;//собственный урон радиацией
-				if (node.@vision.length()) vision=node.@vision;			//зрение
-				if (node.@observ.length()) observ+=node.@observ;		//наблюдательность
-				if (node.@ear.length()) ear=node.@ear;					//слух
-				if (node.@levitatk.length()) levitAttack=node.@levitatk;//атака при левитации
+				if (node.@krep.length()) weaponKrep=node.@krep;			// Weapon grip, 0 - telekinesis
+				if (node.@dexter.length()) dexter=node.@dexter;			// Evasion
+				if (node.@damage.length()) dam=node.@damage;			// Own damage
+				if (node.@tipdam.length()) tipDamage=node.@tipdam;		// Type of own damage
+				if (node.@skill.length()) weaponSkill=node.@skill;		// Weapon proficiency
+				if (node.@raddamage.length()) radDamage=node.@raddamage;// Radiation self-damage
+				if (node.@vision.length()) vision=node.@vision;			// Vision
+				if (node.@observ.length()) observ+=node.@observ;		// Observability
+				if (node.@ear.length()) ear=node.@ear;					// Hearing
+				if (node.@levitatk.length()) levitAttack=node.@levitatk;// Attack during levitation
 			}
-			//уязвимости
+			// Vulnerabilities
 			if (node0.vulner.length()) {
 		//public static const D_BUL=0, D_BLADE=1, D_PHIS=2, D_FIRE=3, D_EXPL=4, D_LASER=5, D_PLASMA=6, D_VENOM=7, D_EMP=8, D_SPARK=9, D_ACID=10, D_INSIDE=100;
 				node=node0.vulner[0];
@@ -519,7 +519,7 @@
 				if (node.@fang.length()) vulner[D_FANG]=node.@fang;
 				if (node.@pink.length()) vulner[D_PINK]=node.@pink;
 			}
-			//визуальные параметры
+			// Visual parameters
 			if (node0.vis.length()) {
 				node=node0.vis[0];
 				if (node.@sex=='w') msex=false;
@@ -534,7 +534,7 @@
 				if (node.@replic.length()) id_replic=node.@replic;
 				if (node.@noise.length()) noiseRun=node.@noise;
 			}
-			//звуковые параметры
+			// Sound Parameters
 			if (node0.snd.length()) {
 				node=node0.snd[0];
 				if (node.@music.length()) {
@@ -545,34 +545,34 @@
 				if (node.@die.length()) sndDie=node.@die;
 				if (node.@run.length()) sndRun=node.@run;
 			}
-			//прочие параметры
+			// Other Parameters
 			if (node0.param.length()) {
 				node=node0.param[0];
-				if (node.@invulner.length()) invulner=(node.@invulner>0);	//полная неуязвимость
-				if (node.@overlook.length()) overLook=(node.@overlook>0);	//может смотреть за спину
-				if (node.@sats.length()) isSats=(node.@sats>0);				//отображать как цель в ЗПС
-				if (node.@acttrap.length()) activateTrap=node.@acttrap;		//юнит активирует ловушки: 0 - никак, 1 - только установленные игроком
-				if (node.@npc.length()) npc=(node.@npc>0);					//отображать на карте как npc
-				if (node.@trup.length()) trup=(node.@trup>0);				//оставлять труп после смерти
-				if (node.@blood.length()) blood=node.@blood;				//кровь
-				if (node.@retdam.length()) retDamage=node.@retdam>0;		//возврат урона
+				if (node.@invulner.length()) invulner=(node.@invulner>0);	// Full invulnerability
+				if (node.@overlook.length()) overLook=(node.@overlook>0);	// Can look behind
+				if (node.@sats.length()) isSats=(node.@sats>0);				// Display as target in GPS
+				if (node.@acttrap.length()) activateTrap=node.@acttrap;		// Unit activates traps: 0 - none, 1 - only player-placed
+				if (node.@npc.length()) npc=(node.@npc>0);					// Display on the map as an NPC
+				if (node.@trup.length()) trup=(node.@trup>0);				// Leave a corpse after death
+				if (node.@blood.length()) blood=node.@blood;				// Blood
+				if (node.@retdam.length()) retDamage=node.@retdam>0;		// Damage reflection
 				if (node.@hero.length()) {
-					mHero=true;						//может быть героем
+					mHero=true;						// Can be a hero
 					id_name=node.@hero;
 				}
 				if (setOpts) {
-					if (node.@pony.length()) opt.pony=true;					//является пони
-					if (node.@zombie.length()) opt.zombie=true;					//является зомби
-					if (node.@robot.length()) opt.robot=true;					//является роботом
-					if (node.@insect.length()) opt.insect=true;					//является насекомым
-					if (node.@monster.length()) opt.monster=true;					//является насекомым
-					if (node.@alicorn.length()) opt.alicorn=true;					//является аликорном
+					if (node.@pony.length()) opt.pony=true;					// Is a pony
+					if (node.@zombie.length()) opt.zombie=true;					// Is a zombie
+					if (node.@robot.length()) opt.robot=true;					// Is a robot
+					if (node.@insect.length()) opt.insect=true;					// Is an insect
+					if (node.@monster.length()) opt.monster=true;					// Is a monster
+					if (node.@alicorn.length()) opt.alicorn=true;					// Is an alicorn
 					if (node.@mech.length()) {
-						opt.mech=true;					//является механизмом
+						opt.mech=true;					// Is a mechanism
 						mech=true;
 					}
-					if (node.@hbonus.length()) opt.hbonus=true;					//является пони
-					if (node.@izvrat.length()) opt.izvrat=true;					//является пони
+					if (node.@hbonus.length()) opt.hbonus=true;					// Is a bonus
+					if (node.@izvrat.length()) opt.izvrat=true;					// Is a pervert
 				}
 			}
 			if (blood==0) vulner[D_BLEED]=0;
@@ -740,12 +740,12 @@
 			}
 		}
 		
-		//привести в исходное состояние, если f=true, то вернуть на места
+		// Set to the initial state; if f=true, return to the original position
 		public override function setNull(f:Boolean=false) {
 			if (boss && isNoResBoss()) f=false;
 			if (sost==1) {
 				if (f) {
-					//сбросить эффекты
+					// Reset effects
 					if (effects.length>0) {
 						for each (var eff in effects) eff.unsetEff();
 						effects=new Array();
@@ -766,7 +766,7 @@
 			levit=0;
 		}
 		
-		//условие, при котором босс не восстанавливает хп
+		// Condition under which the boss does not restore HP
 		public function isNoResBoss():Boolean {
 			var res=false;
 			try {
@@ -849,10 +849,10 @@
 		
 //**************************************************************************************************************************
 //
-//				Движение
+//				Movement
 //
 //**************************************************************************************************************************
-		//перемещение в точку
+		//Move to a point
 		public function setPos(nx:Number,ny:Number) {
 			X=nx, Y=ny;
 			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
@@ -860,13 +860,13 @@
 		}
 		
 		
-		//Выход за пределы локации
+		// Exiting the location
 		public function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean {
-			//1-влево, 2-вправо, 3-вниз, 4-вверх
-			//для всех, кроме гг, должно возвращать false
+			// 1 - left, 2 - right, 3 - down, 4 - up
+			// Should return false for all characters except the main character
 			if (isFly || levit) return false;
 			if (napr==3) {
-				if (loc.bezdna || jumpdy<=0 || sost==3) {		//падение за пределы локации
+				if (loc.bezdna || jumpdy<=0 || sost==3) {		// Falling beyond the location boundaries
 					disabled=true;
 					dy=0;
 					if (sost==3) {
@@ -882,12 +882,12 @@
 			return false;
 		}
 		
-		//постепенное появление
+		// Gradual appearance
 		public function emergence(n:int=30) {
 			t_emerg=max_emerg=n;
 		}
 
-		//Действующие силы
+		// Acting forces
 		public function forces() {
 			if (levit) {
 				dy*=0.8;
@@ -957,7 +957,7 @@
 				run2(div);
 				return;
 			}
-			//движение
+			//Movement
 			var t:Tile, t2:Tile;
 			var i:int;
 			var newmy:Number=0;
@@ -978,7 +978,7 @@
 				return;
 			}			
 			diagon=0;
-			//ГОРИЗОНТАЛЬ
+			// HORIZONTAL
 			if (!isLaz) {
 				X+=(dx+osndx)/div;
 				//Y-=dx/div*diagon;
@@ -999,7 +999,7 @@
 					}
 				}
 				X1=X-scX/2, X2=X+scX/2;
-				//движение влево
+				//Move to the left
 				if (dx+osndx<0) {
 					if (!player && stay && shX1>0.5) {
 						newmy=checkDiagon(-5);
@@ -1047,7 +1047,7 @@
 						}
 					}
 				}
-				//движение вправо
+				Move to the right
 				if (dx+osndx>0) {
 					if (!player && stay && shX2>0.5) {
 						newmy=checkDiagon(-5);
@@ -1097,11 +1097,11 @@
 				}
 				Y1=Y-scY, Y2=Y;
 			}
-			//отталкивание
+			// Repulsion
 			
 			
-			//ВЕРТИКАЛЬ
-			//движение вниз
+			// VERTICAL
+			// Move down
 			newmy=0;
 			if (dy+osndy>0) {
 				if (dy>0) {
@@ -1109,8 +1109,8 @@
 					stayPhis=stayMat=0;
 				}
 				//diagon=0;
-				shX1=shX2=1; //если >0, то не полностью стоишь на полу
-				if (levit || plav && isPlav || isFly) {	//полёт, левитация или плавание 
+				shX1=shX2=1; // If >0, then you are not completely standing on the ground
+				if (levit || plav && isPlav || isFly) {	// Flight, levitation, or swimming
 					diagon=0;
 					Y+=(dy+osndy)/div;
 					if (Y>loc.limY) {
@@ -1133,7 +1133,7 @@
 							}
 						}
 					}
-				} else {						//падение
+				} else {						// Falling
 					if (mater) {
 						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
 							t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tileY)];
@@ -1156,7 +1156,7 @@
 					}
 					if (newmy==0 && !throu) newmy=checkDiagon(dy/div);
 					if (newmy==0 && !throu) newmy=checkShelf(dy/div, osndy/div);
-					if (newmy) {	//баги!!!!!
+					if (newmy) {	// Bugs!!!!!
 						Y1=newmy-scY;
 						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
 							t=loc.space[i][Math.floor((newmy-scY)/Tile.tileY)];
@@ -1193,7 +1193,7 @@
 					}
 				}
 			}
-			//движение вверх
+			// Move up
 			if (dy+osndy<0) {
 				if (dy<0) {
 					stay=false;
@@ -1307,7 +1307,7 @@
 			else return 1;
 		}
 
-		//поиск лестницы
+		// Search for stairs
 		public function checkStairs(ny:int=-1, nx:int=0):Boolean {
 			try {
 				var i=Math.floor((X+nx)/Tile.tileX);
@@ -1331,7 +1331,7 @@
 			isLaz=0;
 			return false;
 		}
-		//поиск жидкости
+		// Search for liquid
 		public function checkWater():Boolean {
 			var pla=inWater;
 			try {
@@ -1379,7 +1379,7 @@
 			return isPlav;
 		}
 
-		//поиск предмета, на котором можно стоять
+		// Search for an object to stand on
 		public function checkShelf(pdy:Number,pdy2:Number=0):Number {
 			for (var i in loc.objs) {
 				var b:Box=loc.objs[i] as Box;//
@@ -1400,7 +1400,7 @@
 			return 0;
 		}
 		
-		//поиск ступенек
+		// Search for steps
 		public function checkDiagon(dy:Number, napr:int=0):Number {
 			var ddy:Number, newmy:Number=0;
 			var t:Tile=loc.getAbsTile(X,Y+dy);
@@ -1443,7 +1443,7 @@
 			return newmy;
 		}
 		
-		//телепортация
+		// Teleportation
 		public function teleport(nx:Number,ny:Number,eff:int=0) {
 			if (eff>0) Emitter.emit('tele',loc,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
 			setPos(nx,ny);
@@ -1456,14 +1456,14 @@
 			if (eff>0) Emitter.emit('teleport',loc,X,Y-scY/2);
 		}
 		
-		//оторвать от фиксированного места
+		// Detach from a fixed position
 		public function otryv() {
 			fixed=false;
 		}
 
 //**************************************************************************************************************************
 //
-//				Визуальная часть
+//				Visual Part
 //
 //**************************************************************************************************************************
 
@@ -1645,7 +1645,7 @@
 
 //**************************************************************************************************************************
 //
-//				Действия
+//				Actions
 //
 //**************************************************************************************************************************
 
@@ -1666,17 +1666,17 @@
 			}
 			if (noise>0) noise-=20;
 			if (noise_t>0) noise_t--;
-			//шум при ходьбе
+			// Noise while walking
 			if (stay && (dx>12|| dx<-12))  makeNoise(noiseRun);
 			else if (stay && (dx>7 || dx<-7))  makeNoise(noiseRun/2);
 			else if (stay && (dx>3 || dx<-3))  makeNoise(noiseRun/4);
 			if (isFly && (dx>3 || dx<-3 || dy>3 || dy<-3))  makeNoise(noiseRun/2);
 			
-			//положение глаз
+			// Eye position
 			eyeX=X+scX*0.25*storona;
 			eyeY=Y-scY*0.75;
 			
-			//левитация
+			// Levitation
 			if (sost==1) {
 				if (levit) {
 					levit_r++;
@@ -1704,8 +1704,8 @@
 					}
 				}
 			}
-						//урон от воды
-			//периодические эффекты
+						// Damage from water
+			// Periodic effects
 			if (cut>0 || poison>0 || inWater && loc.wdam>0) {
 				if (t_hp<=0) {
 					t_hp=30;
@@ -1742,7 +1742,7 @@
 				if (!fixed && slow%10==0 && vis && vis.visible && (dx>3 || dx<-3 || dy>5 || dy<-5)) Emitter.emit('slow',loc,X,Y-scY*0.25);
 			}
 			if (t_throw>0) t_throw--;
-			//сборный показ цифр урона
+			// Accumulated display of damage numbers
 			if (World.w.showHit==2) {
 				if (t_hitPart>0) {
 					t_hitPart--;
@@ -1767,19 +1767,19 @@
 		
 		
 //--------------------------------------------------------------------------------------------------------------------
-//				Атака
+//				Attack
 
-		//Атка цели корпусом с использованием собственного урона юнита
+		// Attack the target with the unit's own damage using the body
 		public function attKorp(cel:Unit, mult:Number=1):Boolean {
 			if (sost>1 || cel==null || cel.loc!=loc || burn!=null) return false;
 			if (cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2 || cel.Y2<Y1 || cel.neujaz>0) return false;
 			return cel.udarUnit(this, mult);
 		}
-		//удар достиг цели
+		// The hit reached the target
 		public function crash(b:Bullet) {
 			if (b.weap) makeNoise(b.weap.noise, true);
 		}
-		//задать положение оружия
+		// Set weapon position
 		public function setWeaponPos(tip:int=0) {
 			weaponX=X;
 			weaponY=Y-scY*0.5;
@@ -1821,14 +1821,14 @@
 		
 		
 //--------------------------------------------------------------------------------------------------------------------
-//				Эффекты
+//				Effects
 
-		//Добавить эффект
+		// Add an effect
 		public function addEffect(id:String, val:Number=0, t:int=0, se:Boolean=true):Effect {
 			if (id==null || id=='') return null;
 			var eff:Effect = new Effect(id, this, val);
 			if (t>0) eff.t=t*World.fps;
-			//получение временного эффекта
+			// Get a temporary effect
 			for (var i in effects) {
 				if (eff.tip==3 && effects[i].tip==3) {
 					effects[i]=eff;
@@ -1886,7 +1886,7 @@
 			if (begvulner==null) return;
 			for (var i=0; i<kolVulners; i++) vulner[i]=begvulner[i];
 			if (!player && loc.biom==5) {
-				vulner[D_PINK]=0;	//неуязв. к розовому облаку
+				vulner[D_PINK]=0;	// Immune to the pink cloud
 			}
 			for each(var eff:Effect in effects) {
 				var effid=eff.id;
@@ -1894,43 +1894,43 @@
 				setSkillParam(sk, eff.vse?0:1);
 			}
 			setHeroVulners();
-				} catch (err) {trace('ошибка эффектов',nazv)}
+				} catch (err) {trace('Error in effects',nazv)}
 		}
 		
 //--------------------------------------------------------------------------------------------------------------------
-//				Получение урона
+//				Damage Types
 		
-		/*D_BUL=0,		//пули		+
-		D_BLADE=1,		//лезвие	+
-		D_PHIS=2,		//дробящий	+
-		D_FIRE=3,		//огонь		*
-		D_EXPL=4,		//взрыв		+
-		D_LASER=5,		//лазер		*
-		D_PLASMA=6,		//плазма	*
-		D_VENOM=7,		//отравляющие вещества
-		D_EMP=8,		//ЭМП
-		D_SPARK=9,		//молния	*
-		D_ACID=10,		//кислота	*
-		D_CRIO=11,		//холод		*
-		D_POISON=12,	//отравление
-		D_BLEED=13,		//кровотечение
-		D_FANG=14,		//звери		+
-		D_BALE=15,		//пиздец
-		D_NECRO=16,		//некромантия
-		D_PSY=17,		//пси
-		D_ASTRO=18,		//звиздец
-		D_INSIDE=100;	//???*/
+		/*D_BUL=0,      // Bullets      +
+		D_BLADE=1,      // Blade        +
+		D_PHIS=2,       // Blunt        +
+		D_FIRE=3,       // Fire         *
+		D_EXPL=4,       // Explosion    +
+		D_LASER=5,      // Laser        *
+		D_PLASMA=6,     // Plasma       *
+		D_VENOM=7,      // Toxins
+		D_EMP=8,        // EMP
+		D_SPARK=9,      // Lightning    *
+		D_ACID=10,      // Acid         *
+		D_CRIO=11,      // Cold         *
+		D_POISON=12,    // Poisoning
+		D_BLEED=13,     // Bleeding
+		D_FANG=14,      // Beasts       +
+		D_BALE=15,      // Balefire
+		D_NECRO=16,     // Necro
+		D_PSY=17,       // Psi
+		D_ASTRO=18,     // Cosmic
+		D_INSIDE=100;   // ???*/
 
 
-		//получить урон
+		// Get damage
 		public function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
 			if (invulner) return 0;
 			if (sost==1) dieWeap=null;
-			if (tip<kolVulners) dam*=vulner[tip];			//уязвимости
+			if (tip<kolVulners) dam*=vulner[tip];			// Vulnerabilities
 			//var damageNumb:Part;
 			var isCrit:int=0;
 			var isShow:Boolean=false;
-			if (bul) {					//критический урон
+			if (bul) {					// Critical damage
 				/*if (Math.random()<bul.critCh) {
 					dam*=bul.critDamMult;
 					isCrit=1;
@@ -1941,7 +1941,7 @@
 						isCrit+=2;
 					}
 				}*/
-				//урон определённым типам
+				// Damage specific types
 				if (bul.owner && bul.owner.player && opt) {
 					if (opt.pony) dam*=(bul.owner as UnitPlayer).pers.damPony;
 					if (opt.zombie) dam*=(bul.owner as UnitPlayer).pers.damZombie;
@@ -1953,16 +1953,16 @@
 				
 			}
 			if (dam==0) return 0;
-			//уменьшение электрического урона
+			// Reduce electrical damage
 			if (tip==D_SPARK) {
 				if (!stay && !inWater && isLaz==0) dam*=0.5;
 			}
-			//урон ядом наносится только живым
+			// Poison damage only affects living units
 			if (tip==D_VENOM && sost!=1) {
 				return 0;
 			}
 			var mess:String;
-			//урон броне
+			// Damage to armor
 			if (!player && armor_hp>0 && (shithp<=0 || dam>shitArmor) && (armor>0 || marmor>0) && (tip<=D_BALE && tip!=D_EMP && tip!=D_POISON && tip!=D_BLEED || tip==D_ASTRO)) {
 				var damarm=dam;
 				if (shithp>0) damarm-=shitArmor;
@@ -1971,7 +1971,7 @@
 				if (tip==D_ACID) damarm*=4;
 				else if (tip==D_EXPL) damarm*=2;
 				armor_hp-=damarm;
-				if (armor_hp<=0) {	//разрушение брони
+				if (armor_hp<=0) {	// Armor destruction
 					armor_hp=0;
 					armor_qual=0;
 					mess=Res.guiText('abr');
@@ -1986,7 +1986,7 @@
 				heal(-dam);
 				return 0;
 			}
-			var armor2=0;		//броня и бронебойность
+			var armor2=0;		// Armor and armor penetration
 			if (!tt) {
 				if (tip==D_BUL || tip==D_BLADE || tip==D_EXPL || tip==D_PHIS || tip==D_FANG || tip==D_ACID) {
 					armor2=skin;
@@ -2007,12 +2007,12 @@
 				}
 				if (armor2>0) {
 					dam-=armor2;
-					if (bul && bul.probiv>0) {	//если пуля пробивная, вычесть из урона величину брони
+					if (bul && bul.probiv>0) {	// If the bullet is armor-piercing, subtract armor value from damage
 						bul.damage-=armor2/bul.probiv;
 					}
 				}
 			}
-			if (bul) {					//критический урон
+			if (bul) {					// Critical damage
 				if (Math.random()<bul.critCh) {
 					dam*=bul.critDamMult;
 					isCrit=1;
@@ -2025,8 +2025,8 @@
 				}
 			}
 			if (dam>0) {
-				var sposob:int=0;		//способ сдохнуть
-				if (bul && bul.desintegr && (tip==D_LASER || tip==D_PLASMA)) {	//мгновенная дезинтеграция
+				var sposob:int=0;		// Method of dying
+				if (bul && bul.desintegr && (tip==D_LASER || tip==D_PLASMA)) {	// Instant disintegration
 					if (hp<=dam*10 && isrnd(bul.desintegr)) {
 						sposob=1;
 						dam*=12;
@@ -2055,18 +2055,18 @@
 					if (timerDie<=0) die(sposob);
 					else sost=2;
 				}
-				//электрический и эми урон оглушает роботов
+				// Electric and EMP damage stun robots
 				if ((tip==D_SPARK || tip==D_EMP) && opt && opt.robot && sost==1 && Math.random()<dam/maxhp) {
 					mess=Res.guiText('kz');
 					if (stun<robotKZ) stun=robotKZ;
 				}
-				//взрывы вызывают контузию
+				// Explosions cause concussion
 				if (tip==D_EXPL && opt && !opt.robot && !mech && !doop && sost==1 && Math.random()<dam/maxhp) {
 					mess=Res.txt('e','contusion');
 					addEffect('contusion');
 				}
-				if (!tt && demask<200) demask=200;	//При получении урона невидимый объект становится видимым
-				//дополнительные эффекты
+				if (!tt && demask<200) demask=200;	// An invisible object becomes visible when taking damage
+				// Additional effects
 				if (bul && bul.weap) {								
 					if (bul.weap.dopEffect!=null && bul.weap.dopCh>0 && (bul.weap.dopCh>=1 || Math.random()<bul.weap.dopCh)) {
 						if (bul.weap.dopEffect=='igni' && vulner[D_FIRE]>0.1) {
@@ -2111,7 +2111,7 @@
 						mess=Res.txt('e','burning');
 					}
 				}
-				//возврат урона хозяину пули
+				// Return damage to the owner of the bullet
 				if (bul && bul.owner && bul.owner.relat>0) {
 					bul.owner.damage(dam*bul.owner.relat, D_INSIDE);
 				}
@@ -2144,7 +2144,7 @@
 				if (mat==10 && bul) {
 					Emitter.emit('pole2',loc,bul.X,bul.Y);
 				}
-				if (isShow) {//Показывать урон
+				if (isShow) {// Show damage
 					var vnumb:int=1;
 					var castX:Number=X;
 					var castY:Number=Y-scY/2;
@@ -2182,7 +2182,7 @@
 			return dam;
 		}
 		
-		//удар ап стену 1-справа, 2-слева, 3-снизу, 4-сверху
+		// Hit the wall: 1 - right, 2 - left, 3 - bottom, 4 - top
 		public function damageWall(napr:int=0) {
 			t_throw=0;
 			if (damWall>0) {
@@ -2226,7 +2226,7 @@
 			return true;*/
 		}
 		
-		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
+		// Check for bullet hit, apply damage if the bullet hit, return -1 if it missed
 		public override function udarBullet(bul:Bullet, sposob:int=0):int {
 			var acc:Number=bul.accuracy();
 			if ((bul.miss<=0 || Math.random()>bul.miss) && (
@@ -2264,7 +2264,7 @@
 				return -1;
 			}
 		}
-		//удар юнита юнитом
+		// Unit-to-unit attack
 		public function udarUnit(un:Unit, mult:Number=1):Boolean {
 			if (neujaz>0) return false;
 			neujaz=neujazMax;
@@ -2306,7 +2306,7 @@
 			priorUnit=un;
 			return true;
 		}
-		//удар падающим предметом
+		// Impact by a falling object
 		public function udarBox(un:Box):int {
 			if (neujaz>0 || noBox || un.loc!=loc) return 0;
 			if (un.molnDam>0) {
@@ -2327,7 +2327,7 @@
 			priorUnit=null;
 			return 2;
 		}
-		//эффект отбрасывания пулей
+		// Bullet recoil effect
 		public function otbros(bul:Bullet) {
 			if (invulner) return;
 			var sila=Math.random()*0.4+0.8;
@@ -2340,14 +2340,14 @@
 			}
 		}
 		
-		//активация из пассивного режима
+		// Activation from passive mode
 		public function alarma(nx:Number=-1,ny:Number=-1) {
 			oduplenie=0;
 			if (nx>0 && ny>0 && celUnit==null) {
 				setCel(null,nx,ny);
 			}
 		}
-		//пробуждение всех вокруг
+		// Awaken everyone around
 		public function budilo(rad:Number=500) {
 			makeNoise(noiseRun*1.2);
 			//trace('budilo');
@@ -2364,13 +2364,13 @@
 				}
 			}
 		}
-		//отключение (для систем безопасности)
+		// Deactivation (for security systems)
 		public function hack(sposob:int=0) {
 		}
 		
 		
 //--------------------------------------------------------------------------------------------------------------------
-//				Смерть
+//				Death
 		
 		public override function die(sposob:int=0) {
 			if (hpbar) hpbar.visible=false;
@@ -2379,16 +2379,16 @@
 				if (sndMusic) Snd.combatMusic(sndMusic, sndMusicPrior, 90);
 			}
 			if (sposob==0 && sost==1 && sndDie) sound(sndDie);
-			if (noDestr) {			//не убирать после убийства
+			if (noDestr) {			// Don't remove after death
 				sost=3;
-			} else if (sposob>0) {	//убит экзотическим способом
+			} else if (sposob>0) {	// Killed by an exotic method
 				isFly=false;
 				initBurn(sposob);
 				dexter=100;
 				fraction=0;
 				throu=false;
 				sost=3;
-			} else if (trup && hp>-maxhp*2) {	//оставлять труп и он не уничтожен
+			} else if (trup && hp>-maxhp*2) {	// Leave a corpse that is not completely destroyed
 				replic('die');
 				isFly=false;
 				scX=sitX, scY=sitY;
@@ -2397,7 +2397,7 @@
 				throu=false;
 				porog=0;
 				sost=3;
-			} else if (trup && blood>0) {		//есть кровь
+			} else if (trup && blood>0) {		// There is blood
 				if (burn==null) sound('trup');
 				initBurn(4+blood);
 				isFly=false;
@@ -2405,7 +2405,7 @@
 				throu=false;
 				porog=0;
 				sost=3;
-			} else if (burn==null) {			//уничтожить
+			} else if (burn==null) {			// Destroy
 				if (trup && blood>0) sound('trup');
 				expl();
 				exterminate();
@@ -2437,7 +2437,7 @@
 			}
 		}
 		
-		//уничтожить, убрать из мира
+		// Destroy, remove from the world
 		public function exterminate() {
 			radioactiv=0;
 			levitPoss=false;
@@ -2446,7 +2446,7 @@
 			disabled=true;
 		}
 		
-		//взрыв, кишки или другой эффект после смерти
+		// Explosion, guts, or other effect after death
 		public function expl()	{
 			if (blood) {
 				if (bloodEmit==null) {
@@ -2457,11 +2457,11 @@
 				bloodEmit.cast(loc,X,Y,{kol:massa*50, rx:scX/2, ry:scY/2});
 			}
 		}
-		//вызывается в любом случае в момент любого способа смерти, только один раз!
+		// Called in any case at the moment of death, only once!
 		public function dropLoot() {
 			if (inter) inter.loot();
 			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,X,Y-scY/2,'essence');
-			//выпадение драгоценного камня
+			// Dropping a precious gem
 			if (World.w.pers && World.w.pers.dropTre>0 && xp>0) {
 				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,X,Y-scY/2,'gem'+Math.floor(Math.random()*3+1));
 			}
@@ -2486,13 +2486,13 @@
 				World.w.game.incQuests(questId);
 			}
 			if (wave && loc.prob) loc.prob.checkWave(true);
-			//действие типа уничтожить сколько-то врагов из определённого оружия
+			// Perform an action like destroying a certain number of enemies with a specific weapon
 			if (dieWeap!=null && World.w.game.triggers['look_'+dieWeap]>0 && xp>0) {
 				World.w.game.incQuests('kill_'+dieWeap);
 			}
 		}
 
-		//изменить статистику
+		// Modify statistics
 		public function incStat(sposob:int=0) {
 			if (World.w.game) {
 				if (World.w.game.triggers['frag_'+id]>0) World.w.game.triggers['frag_'+id]++;
@@ -2501,22 +2501,22 @@
 		}
 		
 //--------------------------------------------------------------------------------------------------------------------
-//				Служебные ф-и для ИИ
+//				Service functions for AI
 
-		//возможность взаимодействия с юнитом
+		// Ability to interact with a unit
 		public function isMeet(un:Unit):Boolean {
 			return un!=null && loc==un.loc && !un.disabled && !un.trigDis && un.sost!=4 && un!=this;
 		}
-		//не закрывает ли юнит туман войны, true если нет
+		// Determines if a unit doesn't obstruct line of sight, returns true if it doesn't
 		public function getTileVisi(r:Number=0.3):Boolean {
 			return (loc.getAbsTile(X,Y-scY/2).visi>r);
 		}
 		
-		//слушать другого юнита
+		// Listen to another unit
 		public function listen(ncel:Unit):Number {
-			var noi=ncel.noise*ear*loc.earMult;	//радиус слышимости издаваемого звука
+			var noi=ncel.noise*ear*loc.earMult;	// Radius of sound audibility
 			if (noi<=0) return 0;
-			var r2:Number;		//расстояние до объекта в квадрате
+			var r2:Number;		// Distance to the object squared
 			if (ncel.player) r2=rasst2;
 			else {
 				var nx=ncel.X-X;
@@ -2527,33 +2527,34 @@
 			return 0;
 		}
 
-		//взгляд на другого юнита
-		//параметры: ncel - целевой юнит
-		//over - смотреть вокруг себя на все стороны
-		//visParam - параметр для определения дальности зрения, по умолчанию берётся vision
-		//nDist - дистанция видимости объекта, по умолчанию вычисляется
-		//возвращает значение, на которое увеличивается obs героя
+		// Look at another unit
+		// Parameters: 
+		// ncel - target unit
+		// over - look around in all directions
+		// visParam - parameter for determining visibility range, defaults to vision
+		// nDist - object visibility distance, defaults to calculated value
+		// Returns the value by which the hero's obs is increased
 		public function look(ncel:Unit, over:Boolean=true, visParam:Number=0, nDist:Number=0):Number {
 			if (ncel==null || nDist<=0 && visParam<=0 && vision<=0) return 0;
 			var cx=(ncel.X-eyeX);
 			var cy=(ncel.Y-ncel.scY*0.6-eyeY);
 			if (eyeX==-1000 || eyeY==-1000) {
 				eyeX=X,eyeY=Y-30;
-				//trace('Не задана точка зрения', nazv);
+				//trace('Point of view not set', nazv);
 			}
-			//дистанция видимости
-			var distVis=nDist;		//взять из параметра
+			// Visibility distance
+			var distVis=nDist;		// take from parameter
 			if (nDist<=0) distVis=(ncel.visibility*ncel.stealthMult*loc.visMult+ncel.demask)*(visParam?visParam:vision);	//или вычислить
-			//если нет зрения за спиной, и объект выше или ниже 45 градусов, уменьшить дистанцию
+			// if there's no vision behind, and the object is above or below 45 degrees, reduce the distance
 			if (vKonus==0 && !over && cy*cy>cx*cx && cy>0) {
 				distVis*=(0.5+0.5*Math.abs(cx/cy));
 			}
-			//если расстояние больше дистанции видимости, вернуть 0
+			// if the distance is greater than the visibility distance, return 0
 			var r2:Number=cx*cx+cy*cy;
 			if (r2>distVis*distVis*16) return 0;
-			//если нет зрения за спиной, и объект сзади, вернуть 0
+			// if there's no vision behind, and the object is behind, return 0
 			if (vKonus==0 && !over && cx*storona<0 && r2>detecting*detecting) return 0;
-			//конус зрения
+			// vision cone
 			if (vKonus>0) {
 				var ug:Number=Math.atan2(cy,cx);
 				var dug:Number=vAngle-ug;
@@ -2562,7 +2563,7 @@
 				if (Math.abs(dug)>vKonus/2) return 0;
 			}
 			
-			//проверить линию взгляда
+			// Check the line of sight
 			var div=Math.floor(Math.max(Math.abs(cx),Math.abs(cy))/World.maxdelta)+1;
 			for (var i=(mater?1:4); i<div; i++) {
 				var nx=X+scX*0.25*storona+cx*i/div;
@@ -2576,7 +2577,7 @@
 			if (r2<distVis*distVis) return 4;
 			return (distVis*distVis)/r2*4;
 		}
-		//получить цель для ИИ
+		// Get a target for AI
 		public function findCel(over:Boolean=false):Boolean {
 			if (oduplenie>0) return false;
 			var ncel:Unit;
@@ -2611,7 +2612,7 @@
 			priorUnit=null;
 			return false;
 		}
-		//установить цель на юнит или на точку
+		// Set a target to a unit or a point
 		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
 			if (un && isMeet(un)) {
 				celX=un.X+un.scX/4*un.storona, celY=un.Y-un.scY/2;
@@ -2677,7 +2678,7 @@
 		}
 		
 //--------------------------------------------------------------------------------------------------------------------
-//				Разговоры
+//				Conversations
 
 		public function replic(s:String) {
 			//trace(id,s);
@@ -2705,7 +2706,7 @@
 		
 		
 //--------------------------------------------------------------------------------------------------------------------
-//				Рандом
+//				Random
 		protected function isrnd(n:Number=0.5):Boolean {
 			return Math.random()<n;
 		}

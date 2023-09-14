@@ -45,28 +45,28 @@
 			var s:String;
 			var xl;
 			try {
-				xl=d[clob[tip]].(@id==id);	//взять из основного языкового файла
+				xl=d[clob[tip]].(@id==id);	// Retrieve from the main language file
 				s=xl[clob[razd]][0];		
 			} catch (err) {}
 			if (s==null) {
 				try {
-					xl=e[clob[tip]].(@id==id);	//взять из основного языкового файла
+					xl=e[clob[tip]].(@id==id);	// Retrieve from the main language file
 					s=xl[clob[razd]][0];		
 				} catch (err) {}
 			}
 			if (s==null) {
 				if (tip=='o') return '';
-				if (razd==0) return '*'+clob[tip]+'_'+id;			//если всё равно нет, вернуть просто id
+				if (razd==0) return '*'+clob[tip]+'_'+id;			// If still not found, return just the id
 				return '';
 			}
-			//обработка
+			// Processing
 			xl=xl[0];
-			if (xl.@m=='1')	{						//присутствует мат
+			if (xl.@m=='1')	{						// Contains material
 				var spl:Array=s.split('|');
 				if (spl.length>=2) s=spl[World.w.matFilter?1:0];
 			}
 			if (razd>=1 || dop) {
-				if (xl.@s1.length()) s=addKeys(s,xl);	//клавиши управления
+				if (xl.@s1.length()) s=addKeys(s,xl);	// Control keys
 				try {
 					if (xl[clob[razd]][0].@s1.length()) s=addKeys(s,xl[clob[razd]][0]);
 				} catch (err) {}
@@ -194,7 +194,7 @@
 			}
 		}
 		
-		//добавить к строке клавиши управления
+		// Add control keys to a string
 		public static function addKeys(s:String,xml:XML):String {
 			if (s==null) return '';
 			for (var i=1; i<=5; i++) {
@@ -203,12 +203,12 @@
 			return s;
 		}
 		
-		//удалить из строки символы /r и /n
+		// Remove /r and /n characters from a string
 		public static function formatText(s:String):String {
 			return s.replace(/\r\n/g,'<br>');
 		}
 		
-		//строковое представление времени игры
+		// String representation of game time
 		public static function gameTime(n:Number):String {
 			var sec:int=Math.round(n/1000);
 			var h:int=Math.floor(sec/3600);

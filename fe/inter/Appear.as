@@ -11,7 +11,7 @@
 	import fe.*;
 	import flash.display.DisplayObject;
 	
-	//Настройки внешнего вида персонажа
+	// Character Appearance Settings
 	
 	public class Appear {
 		
@@ -137,12 +137,12 @@
 			vis.b2Hair.removeEventListener(MouseEvent.CLICK, chBut);
 		}
 		
-		//нажать кнопку ОК
+		// Press the OK button
 		public function buttonOk(event:MouseEvent) {
 			if (funOk) funOk();
 			World.w.saveConfig();
 		}
-		//нажать кнопку отмена
+		// Press the Cancel button
 		public function buttonCancel(event:MouseEvent) {
 			load(temp);
 			setTransforms();
@@ -151,7 +151,7 @@
 			vis.pers.gotoAndStop(1);
 			if (funCancel) funCancel();
 		}
-		//нажать кнопку def
+		// Press the def button
 		public function buttonDef(event:MouseEvent) {
 			load(def);
 			setTransforms();
@@ -160,12 +160,12 @@
 			vis.pers.gotoAndStop(1);
 		}
 		
-		//установить все колорпикеры в соответствие с цветами
+		// Set all color pickers to match the colors
 		function setColors() {
 			for each(var l in clist) vis['color'+l].selectedColor=this['c'+l];
 			vis.checkHair1.selected=visHair1;
 		}
-		//преобразовать все цвета в трансформы
+		// Convert all colors to transforms
 		public function setTransforms() {
 			for each(var l in clist) colorToTransform(this['c'+l],Appear['tr'+l]);
 		}
@@ -185,7 +185,7 @@
 			return obj;
 		}
 		
-		//сохранить при вызове страницы сохранения или загрузки
+		// Save when calling the save or load page
 		public function saveOst() {
 			if (saved==null) saved=save();
 		}
@@ -205,7 +205,7 @@
 			setTransforms();
 		}
 		
-		//преобразовать цвет в трансформ
+		// Convert color to transform
 		function colorToTransform(c:uint, ct:ColorTransform) {
 			var colMax:int=290, colSd:Number=(290-255)/255;
 			col.tintMultiplier=1;

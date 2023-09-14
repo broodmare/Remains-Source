@@ -72,12 +72,12 @@
 			<key id='keyFull' def={Keyboard.ENTER}/>
 		</keys>;
 		
-		var keyDowns:Vector.<Boolean>;	//нажатость
-		var keyNames:Vector.<String>;	//названия клавиш по кодам
-		var mbNames:Array;	//названия кнопок мыши
-		var keys:Array;		//объекты по кодам клавиш
-		var keyObj:Array;	//объекты по порядку
-		var keyIds:Array;	//объекты по ид действия
+		var keyDowns:Vector.<Boolean>;	// Key Press States
+		var keyNames:Vector.<String>;	// Key Names by Codes
+		var mbNames:Array;	// Mouse Button Names
+		var keys:Array;		// Objects by Key Codes
+		var keyObj:Array;	// Objects in Order
+		var keyIds:Array;	// Objects by Action ID
 
 		public var keyLeft:Boolean=false;
 		public var keyRight:Boolean=false;
@@ -257,7 +257,7 @@
 			}
 		}
 		
-		//создать ассоциации между объектами действий и клавиш
+		// Create associations between action objects and keys
 		public function updateKeys() {
 			keys=new Array();
 			for each(var obj in keyObj) {
@@ -266,7 +266,7 @@
 			}
 		}
 		
-		//настройки по умолчанию
+		// Default settings
 		public function gotoDef() {
 			keyObj=new Array();
 			keyIds=new Array();
@@ -308,7 +308,7 @@
 			}
 		}
 		
-		//Вернуть видимое название клавиши по коду действия
+		// Return the visible key name by action code
 		public function retKey(id):String {
 			if (keyIds[id]==null) return '?'
 			var key=keyIds[id].a1;
@@ -324,14 +324,14 @@
 			return true;
 		}
 		
-		//отправить запрос на смену клавиши, по завершении выполнить функцию fun
+		// Send a request to change the key, execute the fun function upon completion
 		public function requestKey(fun:Function=null) {
 			setkeyOn=true;
 			setkeyRequest=null;
 			setkeyFun=fun;
 		}
 		
-		//запрос выполнен
+		// Request completed
 		function requestOk(nkey) {
 			setkeyOn=false;
 			setkeyRequest=nkey;
@@ -369,7 +369,7 @@
 			if (keys['lmb']) this[keys['lmb'].id]=false;
 		}
 		private function onRightMouse(event:MouseEvent):void {
-            //отключение меню
+            // Disable the menu
         }
 		public function onRightMouseDown1(event:MouseEvent):void {
 			if (World.w.onConsol) return;
@@ -472,7 +472,7 @@
 			if (World.w.chitOn) {
 				if (event.keyCode==Keyboard.INSERT) keyTest2=true;
 			}
-			if (keyFull) {//работает только в обработчике события
+			if (keyFull) {// Only works in the event handler
 				if (!World.w.onConsol) World.w.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				keyFull=false;
 			}

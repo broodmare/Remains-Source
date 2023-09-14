@@ -10,17 +10,17 @@
 		
 		public var w:World;
 		public var moved:Boolean;
-		public var screenX:int=1280; //размеры экрана
+		public var screenX:int=1280; // Screen dimensions
 		public var screenY:int=800;
-		public var X:int=200; //координаты центра камеры в мире
+		public var X:int=200; // World coordinates of the camera center
 		public var Y:int=200;
-		public var vx:int;		//визуальные координаты мира по отношению к экрану
+		public var vx:int;		// Visual world coordinates relative to the screen
 		public var vy:int, ovy:int;
-		public var maxsx:int=2000;	//размеры локации
+		public var maxsx:int=2000;	// Location dimensions
 		public var maxsy:int=2000;
-		public var maxvx:int=2000;	//визуальные границы локации
+		public var maxvx:int=2000;	// Visual location boundaries
 		public var maxvy:int=2000;
-		public var celX:int;	//координаты курсора мыши относительно экрана
+		public var celX:int;	// Mouse cursor coordinates relative to the screen
 		public var celY:int;
 		public var camRun:Boolean=false;
 		public var otryv:Number=0;
@@ -31,7 +31,7 @@
 		public var scaleS=1;
 		public var dblack:Number=0;
 		
-		//режим показа
+		// Display mode
 		public var showOn:Boolean=false;
 		public var showX:Number=-1;
 		public var showY:Number=0;

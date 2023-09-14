@@ -19,21 +19,21 @@
 		public var info:String='';
 		public var help:String='';
 		
-		//опции
-		public var prizeActive:Boolean=false;	//призовые контейнеры открыты изначально
+		// Options
+		public var prizeActive:Boolean=false;	// Prize containers are initially open
 		
 		public var closed:Boolean=false;
 		public var active:Boolean=false;
 		public var isClose:Boolean=false;
 		
 		public var onWave:Boolean=false;
-		public var nwave:int=0;		//текущий номер волны
-		public var maxwave:int=0;	//максимальный номер волны
-		public var t_wave:int=0;	//таймер волны
+		public var nwave:int=0;		// Current wave number
+		public var maxwave:int=0;	// Maximum wave number
+		public var t_wave:int=0;	// Wave timer
 		
-		public var nspawn:int=0;	//номер точки спавна
-		public var kolEn:int=0;		//всего врагов в волне
-		public var killEn:int=0;	//убито врагов в волне
+		public var nspawn:int=0;	// Spawn point number
+		public var kolEn:int=0;		// Total enemies in the wave
+		public var killEn:int=0;	// Killed enemies in the wave
 
 		public var dopOver:Function;
 		public var dopOut:Function;

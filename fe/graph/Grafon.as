@@ -76,7 +76,7 @@
 		//********************************************************************************************************************************************************************************************************************
 		var m:Matrix;
 		
-		//рамки
+		//Frames
 		public var ramT:MovieClip, ramB:MovieClip;
 		public var ramL:MovieClip, ramR:MovieClip;
 		
@@ -89,25 +89,25 @@
 		var lightX:int=49, lightY:int=28;
 		var lightRect:Rectangle=new Rectangle(0,0,lightX,lightY);
 		
-		//загрузка
+		// Loading
 		//public var loadTex:Loader, loadTex1:Loader, loadSprite:Loader, loadSprite1:Loader;
 		public var resIsLoad:Boolean=false;
 		public var progressLoad:Number=0;
 		/*progressTex:Number=0, progressSprite:Number=0;
-		public static var resTex:*;		//содержимое загруженного файла
-		public static var resTex1:*;		//содержимое загруженного файла
-		public static var resSprite:*;		//содержимое загруженного файла
-		public static var resSprite1:*;		//содержимое загруженного файла
+		public static var resTex:*;		// Contents of the loaded file
+		public static var resTex1:*;		// Contents of the loaded file
+		public static var resSprite:*;		// Contents of the loaded file
+		public static var resSprite1:*;		// Contents of the loaded file
 		*/
 		public static var spriteLists:Array=new Array();
 		public static var texUrl:Array=['texture.swf','texture1.swf','sprite.swf','sprite1.swf'];
 		public var grLoaders:Array;
 		
-		public static const numbMat=0;		//материалы
-		public static const numbFon=0;		//задники
-		public static const numbBack=1;		//декорации
-		public static const numbObj=1;		//объекты
-		public static const numbSprite=2;	//номер, с которого начинаются файлы спрайтов
+		public static const numbMat=0;		// Materials
+		public static const numbFon=0;		// Backgrounds
+		public static const numbBack=1;		// Decorations
+		public static const numbObj=1;		// Objects
+		public static const numbSprite=2;	// Starting number for sprite files
 		
 		
 		public function Grafon(nvis:Sprite) {
@@ -192,7 +192,7 @@
 		
 		public function checkLoaded(n:int) {
 			if (n==0) {
-				//считывание материалов их xml
+				// Reading materials from their XML
 				arrFront=new Array();
 				arrBack=new Array();
 				for each (var p:XML in AllData.d.mat) {
@@ -262,14 +262,14 @@
         }*/
 		
 //============================================================================================		
-//							Начальная прорисовка локации
+//							Initial location rendering
 //============================================================================================		
 		
 		public function getObj(tex:String, n:int=0):* {
 			return this.grLoaders[n].res.getObj(tex);
 		}
 		
-		//показать задний фон
+		// Show the background
 		public function drawFon(vfon:MovieClip, tex:String) {
 			if (tex=='' || tex==null) tex='fonDefault';
 			if (visFon && vfon.contains(visFon)) vfon.removeChild(visFon);
@@ -309,7 +309,7 @@
 		}
 		var nn:int=0;
 		
-		//прорисовка локации
+		// Location rendering
 		public function drawLoc(nloc:Location) {
 			try {
 			//var d1:Date=new Date();
@@ -322,7 +322,7 @@
 			if (nloc.backwall=='sky') transpFon=true;
 			
 		/* ****** */World.w.gr_stage=2;
-			//рамки
+			// Borders
 			ramT.x=ramB.x=-50;
 			ramR.y=ramL.y=0;
 			ramT.y=0;
@@ -375,12 +375,12 @@
 			m=new Matrix();
 			var tile:MovieClip;
 			var t:Tile;
-			var front:Sprite=new Sprite();	//отпечаток на битмапе переднего плана
-			var back:Sprite=new Sprite();	//отпечаток на битмапе задника
-			var back2:Sprite=new Sprite();	//отпечаток на битмапе задника
-			var voda:Sprite=new Sprite();	//отпечаток на битмапе воды
+			var front:Sprite=new Sprite();	// Initialize the front bitmap
+			var back:Sprite=new Sprite();	// Initialize the background bitmap
+			var back2:Sprite=new Sprite();	// Initialize the background bitmap
+			var voda:Sprite=new Sprite();	// Initialize the water bitmap
 			
-			//отключить все материалы
+			// Disable all materials
 			var mat:Material;
 			for each (mat in arrFront) mat.used=false;
 			for each (mat in arrBack) mat.used=false;
@@ -428,11 +428,11 @@
 			
 			
 		/* ****** */World.w.gr_stage=7;
-			drawBackWall(nloc.backwall, nloc.backform);							//задняя стена
+			drawBackWall(nloc.backwall, nloc.backform);							// Back wall
 		/* ****** */World.w.gr_stage=8;
 			for each (mat in arrFront) {
 				try {
-					drawKusok(mat,true);	//передний план
+					drawKusok(mat,true);	// Front layer
 				} catch (err) {
 					World.w.showError(err,'Ошибка рисования слоя '+mat.id);
 				}
@@ -440,7 +440,7 @@
 		/* ****** */World.w.gr_stage=9;
 			for (var e in arrBack) {
 				try {
-					drawKusok(arrBack[e],false);		//задний план
+					drawKusok(arrBack[e],false);		// Background
 				} catch (err) {
 					World.w.showError(err,'Ошибка рисования слоя '+arrBack[e].id);
 				}
@@ -493,7 +493,7 @@
 			shadBmp.applyFilter(frontBmp,frontBmp.rect,new Point(0,0),dsFilter);
 		/* ****** */World.w.gr_stage=13;
 			
-			//затемнение заднего плана
+			// Darkening of the background
 			
 			if (nloc.cTransform) {
 				backBmp.colorTransform(backBmp.rect,nloc.cTransform);
@@ -705,7 +705,7 @@
 		}
 		
 //============================================================================================		
-//							Время выполнения
+//							Execution Time
 //============================================================================================		
 		
 		public function getSpriteList(id:String, n:int=0):BitmapData {
@@ -731,7 +731,7 @@
 			//for each (var ob in visObjs) ob.visible=!on;
 		}
 		
-		//рисование одного блока воды
+		// Drawing a single water block
 		public function drawWater(t:Tile, recurs:Boolean=true) {
 			m=new Matrix();
 			m.tx=t.X*Tile.tileX;
@@ -773,7 +773,7 @@
 			decal(erC,drC,nx,ny,1,0,'hardlight');
 		}
 		
-		//дырки от выстрелов
+		// Bullet holes
 		public function dyrka(nx:int,ny:int,tip:int,mat:int, soft:Boolean=false, ver:Number=1) {
 			var erC:Class, drC:Class;
 			var bl:String='normal';

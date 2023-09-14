@@ -68,7 +68,7 @@
 				onCursor=0;
 				vse=true;
 			}
-			if (explRadius>0) loc.warning=10;	//команда для ИИ следить за гранатами
+			if (explRadius>0) loc.warning=10;	// Command for AI to watch out for grenades
 			if (vse) {
 				loc.remObj(this);
 				loc.remGrenade(this);
@@ -89,7 +89,7 @@
 			return false;
 		}
 		
-		//поиск жидкости
+		// Check for liquid
 		public function checkWater():int {
 			var pla=inWater;
 			inWater=0;
@@ -108,7 +108,7 @@
 		}
 		
 		public override function popadalo(res:int=0) {
-			if (res<0) return;			//не попал
+			if (res<0) return;			// Did not hit
 			dx=dy=0;
 			if (explRadius) {
 				explosion();
@@ -151,7 +151,7 @@
 						if (lip) prilip=true;
 					}
 				}
-				//движение вправо
+				// Move right
 				if (dx>0) {
 					t=loc.getAbsTile(X,Y);
 					if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
@@ -164,8 +164,8 @@
 						if (lip) prilip=true;
 					}
 				}
-				//ВЕРТИКАЛЬ
-				//движение вверх
+				// VERTICAL
+				// Move up
 				if (dy<0) {
 					stay=false;
 					Y+=dy/div;
@@ -180,7 +180,7 @@
 						if (lip) prilip=true;
 					}
 				}
-				//движение вниз
+				// Move down
 				var newmy:Number=0;
 				if (dy>0) {
 					stay=false;

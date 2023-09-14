@@ -12,54 +12,54 @@
 		public var ist:Array;
 		public var istN:int=0;
 		
-		var help:XML=<chit>
-			<a>all - добавить всё</a>
-			<a>all weapon - добавить всё оружие</a>
-			<a>all armor - добавить всю броню</a>
-			<a>all item - 1000 каждого предмета</a>
-			<a>all ammo - 10000 каждого патрона</a>
-			<a>min - добавить необходимый минимум</a>
-			<a>god - неуязвимость вкл/выкл</a>
-			<a>jump - поменять режим прыжка</a>
-			<a>xp X - добавить X опыта</a>
-			<a>lvl X - установить уровень перса в X</a>
-			<a>sp X - добавить Х скилл-поинтов</a>
-			<a>pp X - добавить Х перк-поинтов</a>
-			<a>money X - установить количество крышек Х</a>
-			<a>weapon ID - получить оружие ID</a>
-			<a>armor ID - получить броню ID</a>
-			<a>item ID X - установить количество вещей ID в Х</a>
-			<a>ammo ID X - установить количество патронов ID в Х</a>
-			<a>skill ID n - установить скилл ID на величину n (0-20)</a>
-			<a>perk ID - получить перк ID</a>
-			<a>eff ID - получить эффект ID</a>
-			<a>res - сброс всех эффектов</a>
-			<a>testeff - все эффекты будут в 10 раз короче</a>
-			<a>testdam - отменяет разброс урона</a>
-			<a>hardinv - вкл/выкл ограниченный инвентарь</a>
-			<a>repair - отремонтировать оружие</a>
-			<a>crack X - повредить оружие на X%</a>
-			<a>break X - повредить броню на X%</a>
-			<a>lim X - установить лимит особого лута в X%</a>
-			<a>heal - полное исцеление</a>
-			<a>mana X - установить ману</a>
-			<a>die - умереть</a>
-			<a>check - вернуться на контрольную точку</a>
-			<a>goto X Y - переместиться в локацию с координатами X Y</a>
-			<a>clear - сброс некоторых переменных</a>
-			<a>map - показать всю карту</a>
-			<a>black - скрыть/показать туман войны</a>
-			<a>enemy - вкл/выкл ИИ</a>
-			<a>fly - можно включать полёт клавишей ~</a>
-			<a>port - телепорт клавишей ~</a>
-			<a>emit X - вызов частицы X клавишей ~</a>
-			<a>refill - пополнить товары у торговцев</a>
-			<a>getroom - зачистить комнату</a>
-			<a>getloc - зачистить локацию</a>
-			<a>dif X - изменить сложность (0-4)</a>
-			<a>st X Y - установить триггер X в значение Y</a>
-			<a>trigger X - получить значение триггера X</a>
-			<a>triggers - получить значение триггеров</a>
+		var help:XML = <chit>
+			<a>all - add everything</a>
+			<a>all weapon - add all weapons</a>
+			<a>all armor - add all armor</a>
+			<a>all item - 1000 of each item</a>
+			<a>all ammo - 10000 of each ammo</a>
+			<a>min - add the necessary minimum</a>
+			<a>god - toggle invincibility</a>
+			<a>jump - change jump mode</a>
+			<a>xp X - add X experience</a>
+			<a>lvl X - set character level to X</a>
+			<a>sp X - add X skill points</a>
+			<a>pp X - add X perk points</a>
+			<a>money X - set the amount of caps to X</a>
+			<a>weapon ID - get weapon ID</a>
+			<a>armor ID - get armor ID</a>
+			<a>item ID X - set the quantity of item ID to X</a>
+			<a>ammo ID X - set the quantity of ammo ID to X</a>
+			<a>skill ID n - set skill ID to n (0-20)</a>
+			<a>perk ID - get perk ID</a>
+			<a>eff ID - get effect ID</a>
+			<a>res - reset all effects</a>
+			<a>testeff - all effects will be 10 times shorter</a>
+			<a>testdam - cancel damage spread</a>
+			<a>hardinv - toggle restricted inventory</a>
+			<a>repair - repair weapons</a>
+			<a>crack X - damage weapons by X%</a>
+			<a>break X - damage armor by X%</a>
+			<a>lim X - set the special loot limit to X%</a>
+			<a>heal - full healing</a>
+			<a>mana X - set mana to X</a>
+			<a>die - die</a>
+			<a>check - return to the checkpoint</a>
+			<a>goto X Y - move to location with coordinates X Y</a>
+			<a>clear - reset some variables</a>
+			<a>map - show the entire map</a>
+			<a>black - hide/show fog of war</a>
+			<a>enemy - toggle AI</a>
+			<a>fly - can enable flight with the ~ key</a>
+			<a>port - teleport with the ~ key</a>
+			<a>emit X - summon particle X with the ~ key</a>
+			<a>refill - restock items at traders</a>
+			<a>getroom - clear the room</a>
+			<a>getloc - clear the location</a>
+			<a>dif X - change difficulty (0-4)</a>
+			<a>st X Y - set trigger X to value Y</a>
+			<a>trigger X - get the value of trigger X</a>
+			<a>triggers - get trigger values</a>
 		</chit>;
 
 		public function Consol(vcons:MovieClip, prev:String=null) {

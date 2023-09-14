@@ -8,12 +8,12 @@
 	
 	public class Bullet extends Obj{
 		
-		//типы реакции на попадание
-		//-1 - промах, пуля летит дальше
-		//0 - попал, пуля исчезла
-		//1 - попал в твёрдую поверхность (металл или камень)
-		//2 - попал в мясо
-		//3 - ?
+		// Types of reactions to hitting a target
+		// -1 - Miss, the bullet continues flying
+		//  0 - Hit, the bullet disappears
+		//  1 - Hit a solid surface (metal or stone)
+		//  2 - Hit flesh
+		//  3 - ? (Unknown)
 		
 		protected var vse:Boolean=false;
 		
@@ -37,39 +37,39 @@
 		public var otbros=0, probiv:Number=0, parr:Array;
 		
 		public var babah:Boolean=false, tilehit:Boolean=false;
-		public var off:Boolean=false;	//отключить урон по юнитам
+		public var off:Boolean=false;	//Disable damage to units
 		public var checkLine:Boolean=false;	
 		public var dist:Number=0;
 		
-		public var destroy:Number=0;	//урон блокам
-		public var crack:int=0;			//взлом контейнеров
+		public var destroy:Number=0;	// Damage to blocks
+		public var crack:int=0;			// Container hacking
 		var box:Box;
-		public var tileX:int=-1, tileY:int=-1;	//урон блокам для холодного оружия (координаты, на которые указывает курсор)
+		public var tileX:int=-1, tileY:int=-1;	// Damage to blocks for melee weapons (coordinates indicated by the cursor)
 		public var damage:Number=0;
-		public var pier:Number=0;		//бронебойность
-		public var armorMult:Number=1;	//модификатор действия брони
+		public var pier:Number=0;		// Armor penetration
+		public var armorMult:Number=1;	// Armor modifier
 		public var tipDamage:int=0;
 		public var tipDecal:int=0;
-		public var precision:Number=0;	//точность, показывает расстояние, на котором попадание будет 100%, 0 если попадание всегда
-		public var antiprec:Number=0;	//для снайперских винтовок, показывает расстояние, на котором точность начнёт снижаться
-		public var miss:Number=0;		//вероятность безусловного промаха
-		public var desintegr:Number=0;	//вероятность дезинтеграции
+		public var precision:Number=0;	// Precision, indicates the distance at which the hit will be 100%, 0 if always hit
+		public var antiprec:Number=0;	// For sniper rifles, indicates the distance at which precision will begin to decrease
+		public var miss:Number=0;		// Probability of an unconditional miss
+		public var desintegr:Number=0;	// Probability of disintegration
 		
-		public var critCh:Number=0;	//шанс крита
-		public var critInvis:Number=0;	//шанс крита для мобов, у которых не установлена цель
-		public var critDamMult:Number=1;	//множитель критического урона
-		public var critM:Number=0;	//дополнительный крит
+		public var critCh:Number=0;	// Critical chance
+		public var critInvis:Number=0;	// Critical chance for mobs without a target
+		public var critDamMult:Number=1;	// Critical damage multiplier
+		public var critM:Number=0;	// Additional critical
 		
-		public var explTip:int=1;		//тип взрыва, 1-обычный, 2-облако газа, 3-забрызгивание
-		public var explKol:int=0;		//количество взрывов, интервал 1с, 0 - мгновенный взрыв
+		public var explTip:int=1;		// Explosion type, 1-normal, 2-gas cloud, 3-splatter
+		public var explKol:int=0;		// Number of explosions, 1s interval, 0 - instant explosion
 		public var explPeriod:int=10;
-		public var damageExpl:Number=0;	//урон по площади
-		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
-		public var targetObj:Obj;		//объект назначения
+		public var damageExpl:Number=0;	// Area damage
+		public var explRadius:Number=0;	// Explosion radius, if 0, then no explosion
+		public var targetObj:Obj;		// Target object
 		public var inWall:Boolean=false;
 		var expl_t:int=0;
 		
-		public var retDam:Boolean=false;	//возврат урона
+		public var retDam:Boolean=false;	// Damage return
 
 
 		public function Bullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true) {
@@ -176,9 +176,9 @@
 			return precision/dist;
 		}
 		
-		//пуля прилетела в цель
-		//цель.udarBullet возвращает результат res
-		//-1 - промах
+		// The bullet has hit the target
+		// The target.udarBullet returns the result 'res'
+		// -1 - Miss
 		public function popadalo(res:int=0) {
 			if (res<0) return;			//не попал
 			if (explRadius) {
@@ -206,8 +206,8 @@
 			babah=true;
 		}
 		
-		//возвращает false если объект уже находится в списке объектов, с которыми пуля уже взаимодействовала
-		//если нет, то добавляет его в список и возвращает true
+		// Returns false if the object is already in the list of objects that the bullet has already interacted with
+		// If not, it adds it to the list and returns true
 		public function udar(un):Boolean {
 			if (parr==null) {
 				parr=new Array(un);

@@ -1,6 +1,6 @@
 ﻿package fe {
 	
-	//Базовый класс для всех объектов
+	// Base class for all objects.
 	
 	import flash.display.MovieClip;
 	import fe.loc.Location;
@@ -16,7 +16,7 @@
 		public var Y:Number;
 		public var sloy:int=0;
 		
-		//движение
+		//Movement
 		public var dx:Number=0, dy:Number=0;
 		public var vis:MovieClip;
 		

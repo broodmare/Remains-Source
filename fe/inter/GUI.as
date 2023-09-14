@@ -28,11 +28,11 @@
 		public var celObj:Obj, prevObj:Obj, t_show:int=0;
 		
 		public var guiPause:Boolean=false;
-		public var showDop:Boolean=false; //показывать дополнительную инфу, когда курсор в нижней части экрана
-		public var showFav:Boolean=false; //показывать дополнительную инфу, когда вызван селектор
+		public var showDop:Boolean=false; // Show additional info when the cursor is in the lower part of the screen
+		public var showFav:Boolean=false; // Show additional info when the selector is called
 		
-		var arr:Array;	//массив оружия для селектора
-		var arrfav:Array;	//массив оружия с горячими клавишами
+		var arr:Array;	// Array of weapons for the selector
+		var arrfav:Array;	// Array of weapons with hotkeys
 		var wSelN:int=0, selMode:int=0;
 		
 		var prevInfoText='';
@@ -66,48 +66,48 @@
 			
 			//styleObj.fontWeight = "bold"; 
 			styleObj.color = "#00FF99"; 
-			style.setStyle(".r", styleObj); 	//по умолчанию зелёный
+			style.setStyle(".r", styleObj); 	// Default is green
 			
 			styleObj.color = "#999999"; 
-			style.setStyle(".r0", styleObj);	//0 - серый 
+			style.setStyle(".r0", styleObj);	// 0 - gray
 			
 			styleObj.color = "#00FFFF"; 
-			style.setStyle(".r1", styleObj);	//1 - голубой 
+			style.setStyle(".r1", styleObj);	// 1 - cyan
 			
 			styleObj.color = "#FFFF00"; 
-			style.setStyle(".r2", styleObj); 	//2 - жёлтый
+			style.setStyle(".r2", styleObj); 	// 2 - yellow
 			
 			styleObj.color = "#FF9900"; 
-			style.setStyle(".r3", styleObj);	//3 - оранжевый 
+			style.setStyle(".r3", styleObj);	// 3 - orange
 			
 			styleObj.color = "#FC7FED"; 
-			style.setStyle(".r4", styleObj);	//4 - розовый 
+			style.setStyle(".r4", styleObj);	// 4 - pink
 			
 			//styleObj.fontWeight = "bold"; 
 			styleObj.color = "#FF3333"; 
-			style.setStyle(".r5", styleObj);	//5 - красный
+			style.setStyle(".r5", styleObj);	// 5 - red
 			
 			styleObj.color = "#BB99FF"; 
-			style.setStyle(".r6", styleObj);	//6 - фиолетовый
+			style.setStyle(".r6", styleObj);	// 6 - purple
 			
 			styleObj.color = "#C4926C"; 
-			style.setStyle(".r7", styleObj);	//7 - коричневый
+			style.setStyle(".r7", styleObj);	// 7 - brown
 			
 			styleObj.color = "#98BD34"; 
-			style.setStyle(".r8", styleObj);	//8 - хаки
+			style.setStyle(".r8", styleObj);	// 8 - khaki
 			
 			styleObj.color = "#7777FF"; 
-			style.setStyle(".r9", styleObj);	//9 - синий 
+			style.setStyle(".r9", styleObj);	// 9 - blue
 			
 			styleObj.color = "#FF3333"; 
-			style.setStyle(".warn", styleObj);	//warn - красный 
+			style.setStyle(".warn", styleObj);	// warn - red
 
 			styleObj.color = "#FF236A"; 
-			style.setStyle(".crim", styleObj); 	//броня аликорна
+			style.setStyle(".crim", styleObj); 	// alicorn armor
 			
 			styleObj.fontWeight = "bold"; 
 			styleObj.color = "#FFFF00"; 
-			style.setStyle(".yel", styleObj); 	//выделение важного
+			style.setStyle(".yel", styleObj); 	// highlighting important
 			
 			
 			vis.toptext.visible=false;
@@ -250,7 +250,7 @@
 			inv.getKolAmmos();
 			arr=new Array();
 			arrfav=new Array();
-			if (mode==0) {		//выбор оружия
+			if (mode==0) {		// Choosing a weapon
 				for each(var obj in inv.weapons) {
 					if (obj is Weapon) {
 						var w:Weapon=obj as Weapon;
@@ -326,7 +326,7 @@
 					setStatus();
 				}
 				gg.pers.setPonpon(vis.status.pon);
-			} else {		//выбор патронов
+			} else {		// Choosing ammunition
 				if (gg.currentWeapon==null || gg.currentWeapon.holder<=0 || gg.currentWeapon.ammoBase=='' || gg.currentWeapon.recharg>0 || gg.currentWeapon.alicorn || gg.currentWeapon.tip>=4) return;
 				for each(var obj in inv.items) {
 					if (obj && obj.base==gg.currentWeapon.ammoBase) {
@@ -720,43 +720,43 @@
 					return;
 				}
 				celobj.visible=true;
-				//название объекта
+				//Object name
 				if (celObj.warn>0)  {
 					warn='warn';
 				}
 				s="<span class = '"+warn+"'>"+celObj.nazv+"</span>";
-				//!!!!!!!!!!!! дополнительно
+				//!!!!!!!!!!!! Additionally
 				/*if (World.w.showAddInfo) {
 					if (celObj is Unit) {
 						s+=' ('+(celObj as Unit).level+'/'+Math.round((celObj as Unit).observ)+')';
 					}
 				}*/
-				//добавить статус объекта
+				//Add object status
 				if (celObj.inter && celObj.inter.stateText!='') s+=' ['+celObj.inter.stateText+']';
-				//телекинез
+				//Telekinesis
 				if (!World.w.loc.base && celObj.stay && celObj.levitPoss && World.w.loc.celDist<=World.w.pers.teleDist && celObj.massa<=World.w.pers.maxTeleMassa) {
 					if (World.w.hintTele) s+='\n'+World.w.ctr.retKey('keyTele')+' - '+txtTele;
-					//свечение
+					//Glow
 					if (World.w.shineObjs && celObj.vis) {
 						celObj.vis.transform.colorTransform=gg.shineTransform;
 					}
 					levit_poss.visible=true;
 					World.w.cam.setKoord(levit_poss,celObj.X,celObj.Y-5);
 				}
-				//добавить строку про действие
+				// Add a line about an action
 				if (celObj.inter && celObj.inter.active && celObj.inter.action && World.w.loc.celDist<=World.w.actionDist && World.w.gg.rat==0) {
 					World.w.cur('action');
 					if (!World.w.loc.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
-						//заперто и имеется ключ
+						// Locked and has a key
 						//if (World.w.showAddInfo) s+='\nзамок '+celObj.inter.lock+';'+celObj.inter.lockLevel+', мина '+celObj.inter.mine+', уровень['+celObj.inter.allDif+']';
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
 							if (World.w.hintKeys) s+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
 							s+=Res.guiText('usekey');
-						//заперто, нужен ключ, но его нет
+						 // Locked, key needed, but not available
 						} else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
 							s+="\n(<span class = 'r5'>"+Res.guiText('required')+' '+Res.txt('i',celObj.inter.lockKey)+"</span>)"; 
-						//заклинило
+						// Jammed
 						} else if (celObj.inter.lock>=100) {
 							//s+="\n(<span class = 'warn'>"+txtNoUnlock+"</span>)"; 
 						} else if (celObj.inter.mine==0 && celObj.inter.lock>0 && celObj.inter.lockTip==0) {	//невскрываемый замок
@@ -922,7 +922,7 @@
 		}
 		
 		
-		//сообщение посреди экрана
+		// Message in the middle of the screen
 		public function messText(id:String, str:String='', down:Boolean=false, push:Boolean=false, nt_mess=150) {
 			t_mess=nt_mess;
 			var s:String='';
@@ -977,8 +977,8 @@
 			event.stopPropagation();
 		}
 		
-		//вывести реплику диалога, вернуть false, если реплики нет
-		//id может быть id диалога в text.xml или готовой репликой
+		// Display dialogue line, return false if there is no line
+		// id can be either a dialogue ID in text.xml or a pre-made line
 		public function dialText(id=null, n:int=-1, down:Boolean=false, wait:Boolean=true):Boolean {
 			if (id==null) {
 				dial.visible=inform.visible=false;
@@ -1058,7 +1058,7 @@
 			return true;
 		}
 		
-		//важное сообщение, ставит игру на паузу
+		// Important message, pauses the game
 		public function impMess(ntitle:String, ntext:String, nico:String='') {
 			World.w.ctr.active=false;
 			World.w.ctr.keyPressed=false;
