@@ -1047,7 +1047,7 @@
 						}
 					}
 				}
-				Move to the right
+				//Move to the right
 				if (dx+osndx>0) {
 					if (!player && stay && shX2>0.5) {
 						newmy=checkDiagon(-5);
