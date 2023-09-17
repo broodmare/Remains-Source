@@ -19,10 +19,10 @@
 	import flash.system.Security;
 
 
-	import fe.*;
+	import src.*;
 
-	//import fe.Editor;
-	//import fe.AllData;
+	//import src.Editor;
+	//import src.AllData;
 	
 	public class MainFE extends flash.display.MovieClip{
 		

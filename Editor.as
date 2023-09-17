@@ -15,7 +15,7 @@
 	import flash.geom.Matrix;
 	import flash.net.SharedObject;
 	
-	import fe.AllData;
+	import src.AllData;
 
 	public class Editor {
 		
