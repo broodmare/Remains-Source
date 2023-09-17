@@ -20,7 +20,7 @@
 		public var owner:Unit;
 		public var weap:Weapon;
 		public var weapId:String;
-		public var tipBullet:int=0;	//тип пули. 0-обычная, 1-холодное оружие
+		public var tipBullet:int=0;	// Bullet type. 0 - regular, 1 - cold weapon
 		public var rot:Number=0, vel:Number=15, liv:int=100, begx:Number, begy:Number, knockx:Number, knocky:Number;
 		public var ddy:Number=0, ddx:Number=0, accel:Number=0, brakeR:Number=0, vRot:Boolean=false;
 		public var celX:Number=-100000, celY:Number=-100000;

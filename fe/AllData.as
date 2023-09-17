@@ -19,9 +19,9 @@
 			</unit>
 			
 		
-	<!--       *******   Юниты   *******         -->
+	<!--       *******   Units   *******         -->
 			
-			<!-- игрок и союзники -->
+			<!-- player and allies -->
 			<unit id='littlepip'>
 				<phis sX='50' sY='70' massa='50'/>
 				<move speed='7' accel='3.5'/>
@@ -69,7 +69,7 @@
 				<param invulner='1' acttrap='0' sats='0' npc='1'/>
 			</unit>
 			
-			<!-- пони -->
+			<!-- pony -->
 			<unit id='pony' cat='1'/>
 			<unit id='raider' fraction='2' cat='2'>
 				<move brake='0.3' levit_max='60' levitaccel='1.6' damwall='25'/>
@@ -78,7 +78,7 @@
 				<snd music='combat_1' die='rm'/>
 				<param overlook='0' blood='1' pony='1' hero='raider' hbonus='1' izvrat='1'/>
 				<un dist='500'/>
-				<n>Общие параметры рейдеров</n>
+				<n>general parameters of raiders</n>
 				<blit id='stay'/>
 				<blit id='trot' y='1' len='17' rf='1' rep='1'/>
 				<blit id='run' y='2' len='8' rep='1'/>

@@ -8,13 +8,13 @@
 		var land:Land;
 		public var owner:Obj;
 		
-		public var eve:String;	//событие, которое приводит к запуску скрипта
+		public var eve:String;	// Event that triggers the script
 		public var acts:Array;
 		var actObj:Object;
 		
-		public var onTimer:Boolean=false;	//есть ли команды с задержкой времени
-		public var running:Boolean=false;	//скрипт со временем выполнения запущен
-		var wait:Boolean=false;	//ожидание нажатия кнопки
+		public var onTimer:Boolean=false;	// Are there commands with time delay
+		public var running:Boolean=false;	// Script with time execution is running
+		var wait:Boolean=false;	// Waiting for button press
 		var ncom:int;
 		var tcom:int=0;
 		var dial_n:int=-1;
@@ -34,26 +34,26 @@
 		
 		function analiz(xml:XML) {
 			var act:String, targ:String, val:String, t:int=0, n:String='-1', opt1:int=0, opt2:int=0;
-			if (xml.@act.length()) {		//команда
+			if (xml.@act.length()) {		// Command
 				act=xml.@act;
 				if (act=='dial' || act=='dialog' || act=='inform' || act=='landlevel') onTimer=true;
 			}
-			if (xml.@targ.length()) targ=xml.@targ;		//цель 
-			if (xml.@val.length()) val=xml.@val;		//значение
-			if (xml.@t.length()) {						//задержка в сек.
+			if (xml.@targ.length()) targ=xml.@targ;		// Target
+			if (xml.@val.length()) val=xml.@val;		// Value
+			if (xml.@t.length()) {						// Delay in seconds
 				t=Math.round(xml.@t*World.fps);
 				if (t>0) onTimer=true;
 			}
-			if (xml.@n.length()) n=xml.@n;		//опция
-			if (xml.@opt1.length()) opt1=xml.@opt1;		//опция
-			if (xml.@opt2.length()) opt2=xml.@opt2;		//опция
+			if (xml.@n.length()) n=xml.@n;		// Option
+			if (xml.@opt1.length()) opt1=xml.@opt1;		// Option
+			if (xml.@opt2.length()) opt2=xml.@opt2;		// Option
 			if (act) acts.push({act:act, targ:targ, val:val, t:t, n:n, opt1:opt1, opt2:opt2});
 		}
 		
-		//запуск скрипта
+		// Script start
 		public function start() {
 			if (acts.length<=0) return;
-			if (!onTimer) {	//всё выполнить сразу
+			if (!onTimer) {	// Execute everything at once
 				for each(var obj:Object in acts) com(obj);
 			} else {
 				ncom=0;
@@ -99,7 +99,7 @@
 			}
 		}
 		
-		//выполнение команды
+		// Command execution
 		function com(obj:Object) {
 			if (obj==null) return;
 			//trace('SCR', obj.targ, obj.act, obj.val);

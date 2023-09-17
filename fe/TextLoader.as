@@ -1,6 +1,6 @@
 ﻿package fe {
 	
-	//Класс, производящий загрузку текстовых файлов
+	//A class that performs the loading of text files
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.events.Event;

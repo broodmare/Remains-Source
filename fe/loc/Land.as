@@ -8,54 +8,54 @@
 	
 	public class Land {
 		
-		public var act:LandAct;					//шаблон, по которому была создана местность
+		public var act:LandAct;					//template based on which the terrain was created
 		
-		public var rnd:Boolean=false;			//true если местность с рандомной генерацией
-		public var loc:Location;				//текущая локация
-		private var prevloc:Location;			//предыдущая посещённая локация
-		//private var prevCreated:Location;		//предыдущая созданная локация, для предотвращения
-		public var locs:Array;					//трёхмераня карта всех локаций
-		public var probs:Array;					//локации испытаний
-		public var listLocs:Array;				//линейный массив локаций
-		public var locX:int, locY:int, locZ:int=0;	//координаты активной локации
-		public var retLocX:int=0, retLocY:int=0, retLocZ:int=0, retX:Number=0, retY:Number=0;	//координаты возврата в основной слой
-		public var prob:String='';				//слой испытания, ''-основной слой
-		public var minLocX:int=0, minLocY:int=0, minLocZ:int=0;	//размер местности
-		public var maxLocX:int=4, maxLocY:int=6, maxLocZ:int=2;	//размер местности
+		public var rnd:Boolean=false;			//true if the terrain has random generation
+		public var loc:Location;				//current location
+		private var prevloc:Location;			//previously visited location
+		//private var prevCreated:Location;		//previously created location, for prevention
+		public var locs:Array;					//three-dimensional map of all locations
+		public var probs:Array;					//trial locations
+		public var listLocs:Array;				//linear array of locations
+		public var locX:int, locY:int, locZ:int=0;	//coordinates of the active location
+		public var retLocX:int=0, retLocY:int=0, retLocZ:int=0, retX:Number=0, retY:Number=0;	//coordinates for returning to the main layer
+		public var prob:String='';				//trial layer, ''-main layer
+		public var minLocX:int=0, minLocY:int=0, minLocZ:int=0;	//terrain size
+		public var maxLocX:int=4, maxLocY:int=6, maxLocZ:int=2;	//terrain size
 		
-		public var loc_t:int=0;					//таймер
-		static var locN:int=0;					//счётчик переходов
+		public var loc_t:int=0;					//timer
+		static var locN:int=0;					//transition counter
 		
 		public var gg:UnitPlayer;
-		public var ggX:Number=0, ggY:Number=0;	//координаты гг в местности
+		public var ggX:Number=0, ggY:Number=0;	//coordinates of the player in the terrain
 		public var currentCP:CheckPoint;
 		public var art_t:int=200;
 		
-		public var map:BitmapData;				//карта местности
+		public var map:BitmapData;				//terrain map
 		
-		public var landDifLevel:Number=0;		//общая сложность, зависит от левела гг или настроек карты
-		public var gameStage:int=0;				//этап сюжета игры, влияет на выпадение лута, если 0, то без ограничений
-		public var lootLimit:Number=0;			//лимит выпадения особых предметов
+		public var landDifLevel:Number=0;		//overall difficulty, depends on player level or map settings
+		public var gameStage:int=0;				//game story stage, affects loot drops, if 0, then no restrictions
+		public var lootLimit:Number=0;			//limit of special item drops
 		public var allXp:int=0;
 		public var summXp:int=0;
-		public var isRefill:Boolean=false;		//было восполнение товаров
+		public var isRefill:Boolean=false;		//goods have been replenished
 		
-		var allRoom:Array;		//массив всех комнат, взятый из xml
-		var rndRoom:Array;		//массив, использующийся для рандомной генерации
-		public var kolAll:Array;		//количество каждого вида объекта
+		var allRoom:Array;		//array of all rooms taken from xml
+		var rndRoom:Array;		//array used for random generation
+		public var kolAll:Array;		//number of each type of object
 		
-		public var uidObjs:Array;		//все объекты, имеющие uid
-		public var scripts:Array;		//массив скриптов, имеющих время выполнения
-		public var itemScripts:Array;	//массив скриптов, привязанных к взятию объектов
+		public var uidObjs:Array;		//all objects with uid
+		public var scripts:Array;		//array of scripts with execution time
+		public var itemScripts:Array;	//array of scripts linked to item pickups
 		
 		public var kol_phoenix:int=0;
-		public var aliAlarm:Boolean=false;	//тревога среди аликорнов
+		public var aliAlarm:Boolean=false;	//alarm among alicorns
 		
-		public var probIds:Array;		//имеющиеся комнаты испытаний
-		var impProb:int=-1;				//важная комната испытаний
+		public var probIds:Array;		//available trial rooms
+		var impProb:int=-1;				//important trial room
 
 
-		//lvl - уровень перса-1
+		//lvl - character level-1
 		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) {
 			gg=ngg;
 			act=nact;
@@ -68,20 +68,20 @@
 			probs=new Array();
 			prepareRooms();
 			if (rnd) {
-				landDifLevel=lvl;	//сложность определяется заданным параметром
-				if (landDifLevel<act.dif) landDifLevel=act.dif;	//если сложность меньше минимальной, установить минимальную
-				maxLocX=act.mLocX;	//размеры берутся из настроек act
+				landDifLevel=lvl;	//difficulty is determined by the given parameter
+				if (landDifLevel<act.dif) landDifLevel=act.dif;	//if the difficulty is less than the minimum, set it to the minimum
+				maxLocX=act.mLocX;	//dimensions are taken from the act settings
 				maxLocY=act.mLocY;
 				buildRandomLand();
 			} else {
-				landDifLevel=act.dif;	//сложность берётся из настроек act
+				landDifLevel=act.dif;	//difficulty is taken from the act settings
 				if (act.autoLevel) landDifLevel=lvl;
-				maxLocX=maxLocY=1;	//размеры определяются в соотвествии с картой
+				maxLocX=maxLocY=1;	//dimensions are determined according to the map
 				buildSpecifLand();
 			}
 			lootLimit=lvl+3;
-			gameStage=act.gameStage;	//этап сюжета берётся из настроек
-			//прикреплённые скрипты
+			gameStage=act.gameStage;	//story stage is taken from the act settings
+			//attached scripts
 			itemScripts=new Array();
 			for each(var xl in act.xmlland.scr) {
 				if (xl.@eve=='take' && xl.@item.length()) {
@@ -93,10 +93,10 @@
 		}
 		
 //==============================================================================================================================		
-//				*** Создание ***
+//				*** Creation  ***
 //==============================================================================================================================		
 		
-		//перегнать из xml в массив
+		//Convert from XML to array
 		public function prepareRooms() {
 			allRoom=new Array();
 			for each(var xml in act.allroom.room) {
@@ -122,7 +122,7 @@
 					opt.ramka=null;
 					opt.backform=0;
 					opt.transpFon=false;
-					//Затопленные комнаты
+					//Flooded rooms
 					if (act.conf==2) {
 						if (j==1) opt.water=17;
 						if (j>1) opt.water=0;
@@ -131,15 +131,15 @@
 						if (j==2) opt.water=21;
 						if (j>2) opt.water=0;
 					}
-					//здания
+					//buildings
 					if (act.conf==3) {
 						
 					}
 					locs[i][j]=new Array();
-					if (act.conf==0 && j==0 && !act.visited) { //начальные комнаты
+					if (act.conf==0 && j==0 && !act.visited) { //initial rooms
 						opt.mirror=false;
 						loc1=newTipLoc('beg'+i,i,j,opt);	
-					} else if ((act.conf==2 || act.conf==1 || act.conf==5) && j==0 && i==0 && !act.visited) { //начальные комнаты
+					} else if ((act.conf==2 || act.conf==1 || act.conf==5) && j==0 && i==0 && !act.visited) { //initial rooms
 						opt.mirror=false;
 						if (act.conf==5) {
 							opt.ramka=3;
@@ -147,7 +147,7 @@
 							opt.transpFon=true;
 						}
 						loc1=newTipLoc('beg0',i,j,opt);	
-					} else if (act.conf==3) { //мейнхеттен
+					} else if (act.conf==3) { //Manehattan
 						opt.transpFon=true;
 						if (i==2) {
 							if (j==0) {
@@ -165,7 +165,7 @@
 							loc1=newRandomLoc(act.landStage,i,j,opt);
 							if (i>2 && loc1.backwall=='tWindows') loc1.backwall='tWindows2';
 						}
-					} else if (act.conf==4) { //военная база
+					} else if (act.conf==4) { //military base
 						if (i==0) {
 							if (j==0) {
 								if (!(World.w.game.triggers['mbase_visited']>0)) {
@@ -182,7 +182,7 @@
 								loc1=newTipLoc('end',i,j,opt);
 							} else loc1=newRandomLoc(0,i,j,opt,'vert');
 						} else loc1=newRandomLoc(0,i,j,opt);
-					} else if (act.conf==7) { //бункер
+					} else if (act.conf==7) { //bunker
 						if (i==0) {
 							if (j==0) {
 								opt.mirror=false;
@@ -194,7 +194,7 @@
 								loc1=newTipLoc('end1',i,j,opt);
 							} else loc1=newRandomLoc(1,i,j,opt,'vert');
 						} else loc1=newRandomLoc(1,i,j,opt);
-					} else if (act.conf==5) { //кантерлот
+					} else if (act.conf==5) { //canterlot
 						if (j==0) {
 							opt.ramka=3;
 							opt.backform=3;
@@ -206,7 +206,7 @@
 							loc1=newRandomLoc(act.landStage,i,j,opt);
 						}
 						loc1.gas=1;
-					} else if (act.conf==10) { //стойло пи
+					} else if (act.conf==10) { //stable
 						opt.home=true;
 						if (i==act.begLocX && j==act.begLocY) {
 							opt.mirror=false;
@@ -217,7 +217,7 @@
 						} else {
 							loc1=newRandomLoc(10,i,j,opt);
 						}
-					} else if (act.conf==11) { //стойло пи атакованное
+					} else if (act.conf==11) { // attacked stable
 						opt.atk=true;
 						if (i==5 && j==0) {
 							opt.mirror=false;
@@ -228,7 +228,7 @@
 					} else {
 						loc1=newRandomLoc(act.landStage,i,j,opt);
 					}
-					//добавить комнату второго слоя
+					// add a room on the second level
 					locs[i][j][0]=loc1;
 					if (loc1.room.back!=null) {	
 						loc2=null;
@@ -244,7 +244,7 @@
 					}
 				}
 			}
-			//определяем возможные проходы
+			//determine possible passages
 			for (i=minLocX; i<maxLocX; i++) {
 				for (j=minLocY; j<maxLocY; j++) {
 					loc1=locs[i][j][0];
@@ -270,7 +270,7 @@
 					}
 				}
 			}
-			//проделываем проходы, выбирая случайный из возможных
+			//carry out passes, choosing random from the possible ones
 			for (i=minLocX; i<maxLocX; i++) {
 				for (j=minLocY; j<maxLocY; j++) {
 					loc1=locs[i][j][0];
@@ -295,35 +295,35 @@
 					loc1.mainFrame();
 				}
 			}
-			//лагерь в канализации
+			//sewer camp
 			if (act.conf==2) newRandomProb(locs[3][0][0], act.landStage, true);
-			//лагерь в мейнхеттене
+			//Manehattan camp
 			if (act.conf==3 && act.landStage>=1) newRandomProb(locs[1][4][0], act.landStage, true);
-			//расставить объекты
+			//arrange objects
 			for (j=maxLocY-1; j>=minLocY; j--) {
 				for (i=minLocX; i<maxLocX; i++) {
 					var isBonuses=true;
 					locs[i][j][0].setObjects();
-					//Создание контрольных точек
+					//Create checkpoints
 					//if ((i+j)%2==0 && !(act.conf==2 && j>=2) && !(act.conf==3 && (j==0 || i==2))) locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
-					//Создание точек выхода
-					//конфигурация завода и стойла
+					//Create exit points
+					//factory and stable configuration
 					if (act.conf==0 || act.conf==1) {	
 						if ((i+j)%2==0) {
 							if (j==maxLocY-1) {
 								if (act.conf==0 && act.landStage>=2 || act.conf==1 && act.landStage>=1) {
-									locs[i][j][0].createExit('1');						//Точки выхода на нижнем уровне
+									locs[i][j][0].createExit('1');						//Exit points on the lower level
 								} else {
-									locs[i][j][0].createExit();						//Точки выхода на нижнем уровне
+									locs[i][j][0].createExit();						//Exit points on the lower level
 								}
-							} else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);	//контрольные точки 
+							} else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);	//checkpoints  
 						} else {
 							if (j==maxLocY-1) newRandomProb(locs[i][j][0], act.landStage, true);
 							else if (Math.random()<0.3) newRandomProb(locs[i][j][0], act.landStage, false);
 						}
 					}
-					//конфигурация канализации и кантерлота
-					if (act.conf==2 || act.conf==5) {	//Точки выхода крайние справа
+					//sewer and Canterlot configuration
+					if (act.conf==2 || act.conf==5) {	//exit points on the right edge
 						if (i!=0 || j!=0) locs[i][j][0].createClouds(j);
 						if (act.conf==2 && i==maxLocX-1) locs[i][j][0].createExit();
 						if (act.conf==5 && i==maxLocX-1 && j==0) {
@@ -337,8 +337,8 @@
 							if ((i+j)%2==1) newRandomProb(locs[i][j][0], act.landStage, false);
 						}
 					}
-					//конфигурация мейнхеттена
-					if (act.conf==3 && i!=2) {	//Точки выхода на верхнем уровне
+					//Manehattan configuration
+					if (act.conf==3 && i!=2) {	//Exit points on the upper level
 						if ((i+j)%2==0) {
 							if (j==0) {
 								if (act.landStage>=1) locs[i][j][0].createExit('1');
@@ -349,21 +349,21 @@
 							else if (j!=4 && Math.random()<0.25) newRandomProb(locs[i][j][0], act.landStage, false);
 						}	
 					}
-					//конфигурация военной базы
+					// military base configuration
 					if (act.conf==4) {
 						if (i==act.begLocX && j==act.begLocY || i==3) {
 							locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
 							if (i==act.begLocX && j==act.begLocY) isBonuses=false;
 						}
 					}
-					//конфигурация бункера
+					//bunker configuration
 					if (act.conf==7) {
 						if (i==act.begLocX && j==act.begLocY) {
 							locs[i][j][0].createCheck(true);
 							isBonuses=false;
 						}
 					}
-					//конфигурация базы анклава
+					//enclave base configuration
 					if (act.conf==6) {
 						opt.transpFon=true;
 						if (j==0) {
@@ -377,7 +377,7 @@
 						} else if (Math.random()<0.25) newRandomProb(locs[i][j][0], act.landStage, false);
 					}
 					
-					//конфигурация стойла пи
+					//stable configuration
 					if (act.conf==10 || act.conf==11) {
 						if (i==act.begLocX && j==act.begLocY) {
 							locs[i][j][0].createCheck(true);
@@ -394,7 +394,7 @@
 				}
 			}
 			buildProbs();
-			//Количество объектов
+			//Number of objects
 			//trace('safe', kolAll['safe']+kolAll['wallsafe']);
 			//trace('bookcase', kolAll['bookcase']);
 			//trace('table2', kolAll['chest']);
@@ -405,25 +405,25 @@
 		public function buildSpecifLand() {
 			var i,j,e;
 			var loc1:Location, loc2:Location;
-			//определяем фактические размеры
+			// Determine the actual sizes
 			for each(var room:Room in allRoom) {
 				if (room.rx<minLocX) minLocX=room.rx;
 				if (room.ry<minLocY) minLocY=room.ry;
 				if (room.rx+1>maxLocX) maxLocX=room.rx+1;
 				if (room.ry+1>maxLocY) maxLocY=room.ry+1;
 			}
-			//создаём массив
+			//create array
 			locs=new Array();
 			for (i=minLocX; i<maxLocX; i++) {
 				locs[i]=new Array();
 				for (j=minLocY; j<maxLocY; j++) locs[i][j]=new Array();
 			}
-			//заполняем массив
+			//populate array
 			for each(room in allRoom) {
 				loc1=newLoc(room,room.rx,room.ry,room.rz);
 				locs[room.rx][room.ry][room.rz]=loc1;
 			}
-			//расставить объекты
+			//place objects
 			for (i=minLocX; i<maxLocX; i++) {
 				for (j=minLocY; j<maxLocY; j++) {
 					for (e=minLocZ; e<maxLocZ; e++) {
@@ -436,8 +436,8 @@
 			buildProbs();
 		}
 		
-		//добавить комнаты испытаний, id которых использовался в местности (были задействованы двери с prob={id})
-		//обработать все добавленные
+		//add trial rooms whose ids were used in the area (doors with prob={id} were involved)
+		//process all added
 		public function buildProbs() {
 			for each (var s in probIds)	buildProb(s);
 			for each (var loc in listLocs) {
@@ -447,10 +447,10 @@
 			}
 		}
 		
-		//создать слой испытаний, вернуть false если слой уже есть
+		//create a test layer, return false if the layer already exists
 		public function buildProb(nprob:String):Boolean {
 			if (probs[nprob]!=null) return false;
-			//создать одиночную комнату
+			//create a single room
 			var arrr:XML=World.w.game.probs['prob'].allroom;
 			for each(var xml in arrr.room) {
 				if (xml.@name==nprob) {
@@ -460,7 +460,7 @@
 					loc.noMap=true;
 					var xmll=GameData.d.land.prob.(@id==nprob);
 					if (xmll.length()) loc.prob=new Probation(xmll[0],loc);
-					//добавить дверь для выхода
+					//add an exit door
 					if (loc.spawnPoints.length) {
 						loc.createObj('doorout','box',loc.spawnPoints[0].x,loc.spawnPoints[0].y,<obj prob='' uid='begin'/>);
 					}
@@ -472,7 +472,7 @@
 			return true;
 		}
 		
-		//Создать дверь и случайную комнату испытаний за ней, вернуть false если подходящих не нашлось
+		// Create a door and a random test room behind it, return false if none were found
 		public function newRandomProb(nloc:Location, maxlevel:int=100, imp:Boolean=false):Boolean {
 			rndRoom=new Array();
 			var impProb;
@@ -497,7 +497,7 @@
 		}
 		
 		
-		//создать новую локацию нужного типа, в заданных координатах
+		// create a new location of the specified type, at the given coordinates
 		public function newTipLoc(ntip:String, nx:int, ny:int, opt:Object=null):Location {
 			rndRoom=new Array();
 			for each(var room in allRoom) {
@@ -513,13 +513,13 @@
 			return newLoc(room, nx, ny, 0, opt);
 		}
 		
-		//создать новую случайную локацию, в заданных координатах
+		//create a new random location in the given coordinates
 		public function newRandomLoc(maxlevel:int, nx:int, ny:int, opt:Object=null, ntip:String=null):Location {
 			rndRoom=new Array();
 			var r1:Room, r2:Room;
 			if (nx>minLocX) r1=locs[nx-1][ny][0].room;
 			if (ny>minLocY) r2=locs[nx][ny-1][0].room;
-			//массив всех комнат, удовлетворяющих условиям
+			//array of all rooms that meet the conditions
 			for each(var room in allRoom) {
 				if (room.lvl<=maxlevel && room.kol>0 && room!=r1 && room!=r2 && (ntip==null && room.rnd || room.tip==ntip)) {
 					var rndKol=room.kol*room.kol;
@@ -536,7 +536,7 @@
 			if (rndRoom.length>0) {
 				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			} else {
-				//массив всех комнат, подходящих для рандома
+				//array of all rooms suitable for random selection
 				for each(room in allRoom) {
 					if (room.rnd) {
 						rndRoom.push(room);
@@ -545,12 +545,12 @@
 				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			}
 			room.kol--;
-			if (act.conf==4) room.kol=0;	//на военной базе комнаты используются один раз
+			if (act.conf==4) room.kol=0;	//rooms on a military base are used only once
 			return newLoc(room, nx, ny, 0, opt);
 		}
 		
 		
-		//создать новую локацию по заданному Room-шаблону, в заданных координатах
+		//create a new location based on the given Room template, at the specified coordinates
 		public function newLoc(room:Room, nx:int, ny:int, nz:int=0, opt:Object=null):Location {
 			var loc:Location=new Location(this, room.xml, rnd, opt);
 			loc.biom=act.biom;
@@ -562,7 +562,7 @@
 			if (nz>0) loc.id+='_'+nz;
 			loc.unXp=act.xp;
 			
-			//Задать градиент сложности
+			// Set the difficulty level gradient
 			var deep:Number=0;
 			if (rnd) {
 				if (act.conf==0) deep=ny/2;	
@@ -575,43 +575,43 @@
 			return loc;
 		}
 		
-		//установка сложности локации, в зависимости от уровня персонажа и градиена сложности
+		// Setting the difficulty level of the location based on the character's level and difficulty gradient
 		function setLocDif(loc:Location, deep:Number) {
 			var ml:Number=landDifLevel+deep;
 			loc.locDifLevel=ml;
-			loc.locksLevel=ml*0.7;	//уровень замков
-			//loc.locksDif=ml*0.9;	//качество замков
-			loc.mechLevel=ml/4;		//уровень мин и механизмов
-			loc.weaponLevel=1+ml/4;	//уровень попадающегося оружия
-			loc.enemyLevel=ml;		//уровень врагов
+			loc.locksLevel=ml*0.7;	// level of locks
+			//loc.locksDif=ml*0.9;	// quality of locks
+			loc.mechLevel=ml/4;		// level of mines and mechanisms
+			loc.weaponLevel=1+ml/4;	// level of encountered weapons
+			loc.enemyLevel=ml;		// level of enemies
 			//if (ml<4) loc.earMult=ml/4;
-			//влияние настроек сложности
+			// influence of difficulty settings
 			if (World.w.game.globalDif<2) loc.earMult*=0.5;
-			if (World.w.game.globalDif>2) loc.enemyLevel+=(World.w.game.globalDif-2)*2;	//уровень врагов в зависимости от сложности
-			//тип врагов
+			if (World.w.game.globalDif>2) loc.enemyLevel+=(World.w.game.globalDif-2)*2;	// level of enemies based on difficulty
+			// type of enemies
 			if (act.biom==0 && Math.random()<0.25) loc.tipEnemy=1;
 			if (loc.tipEnemy<0) loc.tipEnemy=Math.floor(Math.random()*3);
 			if (act.biom==1) loc.tipEnemy=0;
-			if (act.biom==2 && loc.tipEnemy==1 && Math.random()<ml/20) loc.tipEnemy=3;	//работорговцы
+			if (act.biom==2 && loc.tipEnemy==1 && Math.random()<ml/20) loc.tipEnemy=3;	// slave traders
 			if (act.biom==3) {
-				loc.tipEnemy=Math.floor(Math.random()*3)+3;			//4-наёмники, 5-аликорны
+				loc.tipEnemy=Math.floor(Math.random()*3)+3;			 // 4-mercenaries, 5-unicorns
 			}
-			if (ml>12 && (act.biom==0 || act.biom==2 || act.biom==3) && Math.random()<0.1) loc.tipEnemy=6;	//зебры
+			if (ml>12 && (act.biom==0 || act.biom==2 || act.biom==3) && Math.random()<0.1) loc.tipEnemy=6;	// zebras
 			//loc.tipEnemy=6;
-			if (act.biom==4) loc.tipEnemy=7;	//стальные+роботы
+			if (act.biom==4) loc.tipEnemy=7;	// steel+robots
 			if (act.biom==5) {
 				if (Math.random()<0.3) loc.tipEnemy=5;
 				//else if (loc.landY==0 && Math.random()<0.05) loc.tipEnemy=4;
-				else loc.tipEnemy=8;	//розовые
+				else loc.tipEnemy=8;	// pink
 			}
 			if (act.biom==6) {// || act.biom==11
-				if (Math.random()>0.3) loc.tipEnemy=9;	//анклав
-				else loc.tipEnemy=10;//гончие
+				if (Math.random()>0.3) loc.tipEnemy=9;	// enclave
+				else loc.tipEnemy=10;// greyhounds
 			}
-			if (act.biom==11) loc.tipEnemy=11; //анклав и гончие
+			if (act.biom==11) loc.tipEnemy=11; // enclave and greyhounds
 			//loc.tipEnemy=4;
-			//количество врагов
-			//тип, мин, макс, случайное увеличение
+			// number of enemies
+			// type, minimum, maximum, random increase
 			if (ml<4) {
 				loc.setKolEn(1,3,5,2);
 				loc.setKolEn(2,2,4,0);
@@ -665,10 +665,10 @@
 		}
 		
 //==============================================================================================================================		
-//				*** Использование ***
+//				*** Functions ***
 //==============================================================================================================================		
 		
-		//войти в местность
+		//enter the land
 		public function enterLand(first:Boolean=false, coord:String=null) {
 			act.visited=true;
 			loc=null;
@@ -707,7 +707,7 @@
 			}
 		}
 		
-		//переместить гг в точку спавна
+		//move the character to the spawn point
 		public function setGGToSpawnPoint() {
 			var nx:int=3, ny:int=3;
 			if (loc.spawnPoints.length>0) {
@@ -721,7 +721,7 @@
 			//World.w.cam.calc(gg);
 		}
 		
-		//сделать активной локацию с текущими координатами
+		//Activate the location with the current coordinates
 		public function ativateLoc():Boolean {
 			var nloc:Location;
 			if (prob!='' && probs[prob]==null)  return false;
@@ -750,7 +750,7 @@
 			return true;
 		}
 		
-		//перейти в локацию x,y
+		//go to location x,y
 		public function gotoXY(nx:int,ny:int) {
 			if (nx<minLocX) nx=minLocX;
 			if (nx>=maxLocX) nx=maxLocX-1;
@@ -764,7 +764,7 @@
 		}
 		
 		
-		//переход между локациями
+		//transition between locations
 		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object {
 			var X:Number=gg.X, Y:Number=gg.Y, scX:Number=gg.scX, scY:Number=gg.scY;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
@@ -808,7 +808,7 @@
 			return outP;
 		}
 		
-		//перейти на слой испытаний nprob, или вернуться на основной слой, если параметр не задан
+		// Go to the test layer nprob, or return to the main layer if the parameter is not specified
 		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) {
 			if (nprob=='') {
 				prob='';
@@ -873,7 +873,7 @@
 				World.w.game.refillVendors();
 				isRefill=true;
 			} else {
-				trace('опыта получено: ',summXp,allXp);
+				trace('Experience obtained: ',summXp,allXp);
 			}
 		}
 		
@@ -904,7 +904,7 @@
 			return map;
 		}
 		
-		//убить всех врагов и открыть все контейнеры
+		//kill all enemies and open all containers
 		public function getAll():int {
 			var summ:int=0;
 			for (var i=minLocX; i<maxLocX; i++) {

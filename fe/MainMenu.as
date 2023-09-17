@@ -33,10 +33,10 @@
 		var newGameMode:int=2;
 		var newGameDif:int=2;
 		var loadCell:int=-1;
-		var loadReg:int=0;	//режим окна загрузки, 0 - загрузка, 1 - выбор слота для автосейва
+		var loadReg:int=0;	// loading mode, 0 - loading, 1 - slot selection for autosave
 		var command:int=0;
 		var com:String='';
-		var mmp:MovieClip;//для пипбака
+		var mmp:MovieClip;// for pipbuck
 		var pip:PipBuck;
 		var displ:Displ;
 		var animOn:Boolean=true;
@@ -396,7 +396,7 @@
 			trace('Error load');
        }		
 		
-		//новая игры
+		//new game
 		public function mainNewOn() {
 			mm.dialNew.visible=true;
 			mm.dialNew.butCancel.addEventListener(MouseEvent.CLICK, funNewCancel);
@@ -443,10 +443,10 @@
 		public function funNewCancel(event:MouseEvent) {
 			mainNewOff();
 		}
-		//нажать ОК в окне новой игры
+		//click OK in the new game window
 		public function funNewOk(event:MouseEvent) {
 			mainNewOff();
-			if (mm.dialNew.checkOpt2.selected) {	//показать окно выбора слота
+			if (mm.dialNew.checkOpt2.selected) {	//show slot selection window
 				loadReg=1;
 				mainLoadOn();
 			} else {
@@ -456,13 +456,13 @@
 				com='new';
 			}
 		}
-		//включить настройки внешности
+		//enable appearance settings
 		public function funNewVid(event:MouseEvent) {
 			setMenuSize();
 			mm.dialNew.visible=false;
 			world.app.attach(mm,funVidOk,funVidOk);
 		}
-		//принять настройки внешности
+		//accept appearance settings
 		public function funVidOk() {
 			mm.dialNew.visible=true;
 			world.app.detach();
@@ -520,7 +520,7 @@
 			mm.lang.visible=mm.butNewGame.visible=mm.butLoadGame.visible=mm.butContGame.visible=mm.butOpt.visible=mm.butAbout.visible=n;
 		}
 		
-		//создатели
+		//creators
 		public function funAbout(event:MouseEvent) {
 			mm.dialAbout.title.text=Res.guiText('about');
 			var s:String=Res.formatText(Res.txt('g','about',1));
@@ -589,16 +589,16 @@
 				if (command==1 && !mm.dialNew.checkOpt1.selected && com=='new') {
 					world.setLoadScreen(0);
 				}
-				//начать игру !!!!
+				//start the game!!!!
 				if (command==0) {
 					var opt:Object;
 					if (com=='new') {
-						//propusk - опция 1 - пропуск обучения
-						//hardcore - опция 2
-						//fastxp - опция 3, опыта нужно на 40% меньше
-						//rndpump - опция 4, случайная прокачка
-						//hardskills - давать по 3 sp за уровень
-						//autoSaveN - ячейка автосейва
+						//propusk - option 1 - skip training
+						//hardcore - option 2
+						//fastxp - option 3, 40% less experience needed
+						//rndpump - option 4, random pumping
+						//hardskills - give 3 sp per level
+						//autoSaveN - autosave cell
 						opt={dif:newGameDif,
 							propusk:mm.dialNew.checkOpt1.selected,
 							hardcore:mm.dialNew.checkOpt2.selected,

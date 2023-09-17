@@ -35,109 +35,109 @@
 	public class World {
 		public static var w:World;
 		
-		public var playerMode:String;	//Режим флеш-плеера
-		public var urle:String;			//адрес, с которого запущена игра
+		public var playerMode:String;	//Flash player mode
+		public var urle:String;			//URL from which the game was launched
 
-		//Визуальные составляющие
-		public var main:Sprite;			//Главный спрайт игры
+		//Visual components
+		public var main:Sprite;			//Main game sprite
 		public var swfStage:Stage;	
 		
-		public var vwait:MovieClip;		//Картинка с надписью ЗАГРУЗКА
-		public var vfon:MovieClip;		//Неподвижный задник
-		public var visual:Sprite;		//активная область
-		public var vscene:MovieClip;	//Сцена
-		public var vblack:MovieClip;	//Затемнение
-		public var vpip:MovieClip;		//Пипбак
-		public var vsats:MovieClip;		//Интерфейс ЗПС
+		public var vwait:MovieClip;		//Loading image
+		public var vfon:MovieClip;		//Static background
+		public var visual:Sprite;		//Active area
+		public var vscene:MovieClip;	//Scene
+		public var vblack:MovieClip;	//Darkness
+		public var vpip:MovieClip;		//Pipbuck
+		public var vsats:MovieClip;		//HUD interface
 		public var vgui:MovieClip;		//GUI (HUD)
-		public var vstand:MovieClip;	//Стенд
-		public var verror:MovieClip;	//окно ошибки
-		public var vconsol:MovieClip;	//Консоль
+		public var vstand:MovieClip;	//Stand
+		public var verror:MovieClip;	//Error window
+		public var vconsol:MovieClip;	//Console scroll
 	
-		//Все главные компоненты
+		//All main components
 		public var mm:MainMenu;
-		public var cam:Camera;			//камера
-		public var ctr:Ctr;				//управление
-		public var consol:Consol;		//консоль
-		public var game:Game;			//Игра
-		public var gg:UnitPlayer;		//Юнит ГГ
-		public var pers:Pers;			//Персонаж
-		public var invent:Invent;		//Инвентарь
-		public var gui:GUI;				//GUI
-		public var grafon:Grafon;		//Графика
-		public var pip:PipBuck;			//Пипбак
-		public var stand:Stand;			//Стенд
-		public var sats:Sats;			//ЗПС
-		public var app:Appear;			//настройки внешности персонажа
+		public var cam:Camera;			//Camera
+		public var ctr:Ctr;				//Controls
+		public var consol:Consol;		//Console
+		public var game:Game;			//Game
+		public var gg:UnitPlayer;		//Player unit
+		public var pers:Pers;			//Character
+		public var invent:Invent;		 //Inventory
+		public var gui:GUI;				 //GUI
+		public var grafon:Grafon;		//Graphics
+		public var pip:PipBuck;			//Pipbuck
+		public var stand:Stand;			//Stand
+		public var sats:Sats;			//SATS
+		public var app:Appear;			//Character appearance settings
 		
-		//Компоненты локаций
-		public var land:Land;		//текущая местность
-		public var loc:Location;	//текущая локация
+		//Location components
+		public var land:Land;		//Current terrain
+		public var loc:Location;	//Current location
 		public var rooms:Rooms;
 		
-		//Рабочие переменные
-		public var onConsol:Boolean=false;	//Консоль активна
-		public var onPause:Boolean=false;	//игра на тестовой паузе
-		public var allStat:int=0; 			//общий статус 0 - игра не началась
-		public var celX:Number;				//координаты курсора в системе отсчёта локации
+		//Working variables
+		public var onConsol:Boolean=false;	//Console active
+		public var onPause:Boolean=false;	//Game on pause
+		public var allStat:int=0; 			//Overall status 0 - game has not started
+		public var celX:Number;				//Cursor coordinates in location coordinate system
 		public var celY:Number;
-		public var t_battle:int=0;			//идёт бой или нет
-		public var t_die:int=0;				//гг сдох
-		public var t_exit:int=0;			//выход из местности
-		public var gr_stage:int=0;			//стадия прорисовки локации
-		public var checkLoot:Boolean=false;	//пересчитать автозабирание лута
-		public var calcMass:Boolean=false;	//пересчитать массу
-		public var calcMassW:Boolean=false;	//пересчитать массу оружия
+		public var t_battle:int=0;			//Is there a battle happening or not
+		public var t_die:int=0;				//Player character has died
+		public var t_exit:int=0;			//Exit from location
+		public var gr_stage:int=0;			//Location rendering stage
+		public var checkLoot:Boolean=false;	//Recalculate auto-loot
+		public var calcMass:Boolean=false;	//Recalculate mass
+		public var calcMassW:Boolean=false;	//Recalculate weapon mass
 		public var lastCom:String=null;
-		public var armorWork:String='';		//временное отображение брони
-		public var mmArmor:Boolean=false;	//броня в главном меню
-		public var catPause:Boolean=false;	//пауза для показа сцены
+		public var armorWork:String='';		//Temporary display of armor
+		public var mmArmor:Boolean=false;	//Armor in main menu
+		public var catPause:Boolean=false;	//Pause for scene display
 		
-		public var testLoot:Boolean=false;	//тестирование лута и опыта
+		public var testLoot:Boolean=false;	 //Loot and experience testing
 		public var summxp:int=0;
 		var ccur:String;
 		
 		public var currentMusic:String='';
 		
 		
-		//Настроечные переменные
-		public var enemyAct:int=3;	//активность врагов, должно быть 3. Если 0, враги будут не активны
-		public var roomsLoad:int=1;  			//1-загружать из файла карты локаций
-		var langLoad=1;  			//1-загружать из файла
-		public var addCheckSP:Boolean=false;			//добавлять скилл-поинты при посещении контрольной точки
-		public var weaponsLevelsOff:Boolean=true;	//запрещать ли использование оружия не соотв. уровня
-		public var drawAllMap:Boolean=false;		//отображать ли всю карту без тумана войны
-		public var black:Boolean=true;				//отображать туман войны
-		public var testMode:Boolean=false;			//Тестовый режим
+		//Settings variables
+		public var enemyAct:int=3;	//enemy activity, should be 3. If 0, enemies will not be active
+		public var roomsLoad:int=1;  			//1-load from file
+		var langLoad=1;  			//1-load from file
+		public var addCheckSP:Boolean=false;			//add skill points when visiting checkpoints
+		public var weaponsLevelsOff:Boolean=true;	//disable using weapons of incorrect level
+		public var drawAllMap:Boolean=false;		//display the whole map without fog of war
+		public var black:Boolean=true;				//display fog of war
+		public var testMode:Boolean=false;			//Test mode
 		public var chitOn:Boolean=false;
-		public var chit:String='', chitX:String=null;	//текущий чит
-		public var showArea:Boolean=false;	//показывать активные области
-		public var godMode:Boolean=false;				//неуязвимость
-		public var showAddInfo:Boolean=false;		//показывать доп. информацию
-		public var testBattle:Boolean=false;		//выносливость будет расходоваться вне боя
-		public var testEff:Boolean=false;		//эффекты будут в 10 раз короче
-		public var testDam:Boolean=false;		//отменяет разброс урона
-		public var hardInv:Boolean=false;		//ограниченный инвентарь
+		public var chit:String='', chitX:String=null;	//current cheat
+		public var showArea:Boolean=false;	//show active zones
+		public var godMode:Boolean=false;				//invincibility 
+		public var showAddInfo:Boolean=false;		//show additional information
+		public var testBattle:Boolean=false;		//stamina will be consumed outside of battle
+		public var testEff:Boolean=false;		//effects will be 10 times shorter
+		public var testDam:Boolean=false;		//cancel damage range
+		public var hardInv:Boolean=false;		//limited inventory
 		public var alicorn:Boolean=false;
-		public var maxParts:int=100;			//максимум частиц
+		public var maxParts:int=100;			//maximum particles
 		
-		public var zoom100:Boolean=false;		//масштаб 100%
-		public var dialOn:Boolean=true;		//показывать диалоги с нпс
-		public var showHit:int=2;			//показывать урон
-		public var matFilter:Boolean=true;	//мат фильтр
-		public var helpMess:Boolean=true;	//обучающие сообщения
+		public var zoom100:Boolean=false;		//zoom 100%
+		public var dialOn:Boolean=true;		//show dialogues with NPCs
+		public var showHit:int=2;			//show damage
+		public var matFilter:Boolean=true;	//material filter
+		public var helpMess:Boolean=true;	//tutorial messages
 		
-		public var shineObjs:Boolean=false;	//свечение объектов
-		public var sysCur:Boolean=false;	//системный курсор
-		public var hintKeys:Boolean=true;	//подсказка про клавиши
-		public var hintTele:Boolean=true;	//подсказка про клавиши
-		public var showFavs:Boolean=true;	//показывать доп инфу когда курсор наверху экрана
+		public var shineObjs:Boolean=false;	//objects glow
+		public var sysCur:Boolean=false;	//system cursor
+		public var hintKeys:Boolean=true;	//keyboard hints
+		public var hintTele:Boolean=true;	//teleport hints
+		public var showFavs:Boolean=true;	//show additional info when cursor is on top of the screen
 		public var errorShow:Boolean=true;
 		public var errorShowOpt:Boolean=true;
-		public var quakeCam:Boolean=true;	//тряска камеры
+		public var quakeCam:Boolean=true;	//camera shake
 		
-		public var vsWeaponNew:Boolean=true;	//автоматически брать новое оружие, если есть место
-		public var vsWeaponRep:Boolean=true;	//автоматически брать оружие для ремонта
+		public var vsWeaponNew:Boolean=true;	//automatically take new weapon if there is room
+		public var vsWeaponRep:Boolean=true;	//automatically take weapon for repair
 		public var vsAmmoAll:Boolean=true;		
 		public var vsAmmoTek:Boolean=true;		
 		public var vsExplAll:Boolean=true;		
@@ -151,7 +151,7 @@
 		public var vsComp:Boolean=true;		
 		public var vsIngr:Boolean=true;		
 		
-		//Глобальные константы
+		//Global constants
 		public var actionDist=200*200;
 		public static const tileX=40;
 		public static const tileY=40;
@@ -165,13 +165,13 @@
 		public static const oduplenie=100;
 		public static const battleNoOut=120;
 		public static const unitXPMult:Number=2;
-		public static const kolHK=12;			//количество горячих клавиш
-		public static const kolQS=4;			//количество быстрых заклинаний
+		public static const kolHK=12;			//number of hotkeys
+		public static const kolQS=4;			//number of quick spells
 			
 		
-		public static const boxDamage=0.2;		//мультипликатор силы удара ящиками
+		public static const boxDamage=0.2;		//box attack strength multiplier
 		
-		//Загрузка текстов
+		//Load texts
 		public var lang:String='en';
 		public var langDef:String='ru';
 		public var langs:Array;
@@ -185,7 +185,7 @@
 		public var langsXML:XML;
 		public var textProgressLoad:Number=0;
 		
-		//Файлы
+		//Files
 		public var soundPath:String;
 		public var musicPath:String;
 		public var textureURL:String;
@@ -198,33 +198,33 @@
 		//public var ressoundURL:String;
 		public var langURL:String;
 		
-		//загрузка, сейвы, конфиг
+		//Loading, saves, config
 		public var configObj:SharedObject;
 		var saveObj:SharedObject;
 		var saveArr:Array;
 		public var saveKol:int=10;
 		var savePath:String=null;
 		var t_save:int=0;
-		public var loaddata:Object;				//данные, загружаемые из файла
-		public var nadv:int=0, koladv:int=10;	//номер совета
+		public var loaddata:Object;				//data loaded from file
+		public var nadv:int=0, koladv:int=10;	//advice number
 		public var load_log:String='';
 		
-		//карты местностей
+		//Maps
 		public var landPath:String;
-		public var fileVersion:int=2;		//изменить это число для сброса кэша
+		public var fileVersion:int=2;		//change this number to clear cache
 		public var landData:Array;
 		public var kolLands:int=0;
 		public var kolLandsLoaded:int=0;
 		public var allLandsLoaded:Boolean=false;
 		
-		public var comLoad:int=-1;	//команда на загрузку
-		public var clickReq:int=0;	//запрос нажатия кнопки, если установить в 1, то 2 установится только после нажатия
-		public var ng_wait:int=0;	//начало новой игры, ожидание
-		public var loadScreen:int=-1;	//загрузочный экран
-		public var autoSaveN:int=0;	//номер ячейки автосейва
+		public var comLoad:int=-1;	//load command
+		public var clickReq:int=0;	//button click request, if set to 1, 2 will only be set after click
+		public var ng_wait:int=0;	//new game wait
+		public var loadScreen:int=-1;	//loading screen
+		public var autoSaveN:int=0;	//autosave slot number
 		public var log:String='';
 		
-		//счетчик fps
+		//fps counter
 		public var tfc:Timer;			
 		var fc:int=0;
 		//var date:Date,
@@ -235,8 +235,8 @@
 
 		public function World(nmain:Sprite, paramObj:Object) {
 			World.w=this;
-			//техническая часть
-			//Узнать тип плеера и адрес, с которого он запущен
+			// Technical part
+			// Determine the player type and the address from which it is launched
 			playerMode=Capabilities.playerType;
 			//if (playerMode=='PlugIn') roomsLoad=0;
 			/*if (playerMode=='PlugIn' && ExternalInterface.available) {
@@ -246,7 +246,7 @@
 			if (playerMode=='External') chitOn=true;
 			chitOn=true;*/
 			
-			//файлы
+			//files
 			soundPath='';
 			musicPath='Music/';
 			textureURL='texture.swf';
@@ -280,7 +280,7 @@
 			Tile.tileX=tileX;
 			Tile.tileY=tileY;
 			
-			//инициализация данных
+			//Data initialization
 			loader_lang = new URLLoader(); 
 			request_lang = new URLRequest(langURL); 
 			loader_lang.load(request_lang); 
@@ -293,15 +293,15 @@
 			Form.setForms();
 			Emitter.init();
 			if (roomsLoad==0) {
-				//=============================== Убрать при загрузке из фа
+				//=============================== Remove when loading from file
 				//rooms=new Rooms();
 			}
 			
-			//создание элементов графики
+			//Creating graphic elements
 			vwait=new visualWait();
 			vwait.cacheAsBitmap=true;
 			
-			//настройщик внешности
+			//Appearance configurator
 			app=new Appear();
 			
 			visual=new Sprite();
@@ -336,10 +336,10 @@
 			grafon=new Grafon(visual);
 			cam=new Camera(this);
 			load_log+='Stage 1 Ok\n';
-			//счётчик FPS
+			//FPS counter
 			d1=d2=getTimer();
 			
-			//конфиг, сразу загружает настройки звука
+			//config, immediately loads sound settings
 			configObj=SharedObject.getLocal('config',savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
 			
@@ -351,10 +351,10 @@
 		}
 
 //=============================================================================================================
-//			Техническая часть
+//			Technical Part
 //=============================================================================================================
 		
-		//успешно завершена загрузка списка языков из xml
+		// The loading of the language list from xml was completed successfully
 		function onCompleteLoadLang(event:Event):void  {
 			try {
 				langsXML = new XML(loader_lang.data);
@@ -369,7 +369,7 @@
 			load_log+='Lang file loading: '+langURL+' Ok\n';
 		}
 		
-		//ошибка загрузки списка языков из xml
+		//error loading language list from xml
 		function onErrorLoadLang(event:IOErrorEvent):void {
 			initLangs(true);
 			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
@@ -378,7 +378,7 @@
 			trace('Нельзя загрузить список языков');
         }
 		
-		//создать список языков, инициировать загрузку языков
+		//create language list, initiate language loading
 		function initLangs(err:Boolean=false) {
 			if (err) langsXML = <all>
 				<lang id='ru' file='text_ru.xml'>Русский</lang>
@@ -404,7 +404,7 @@
 			}
 		}
 		
-		//загрузка языка закончена
+		//language loading completed
 		public function textsLoadOk() {
 			if (tl.loaded) {
 				textLoaded=true;
@@ -420,7 +420,7 @@
 			}
 		}
 		
-		//выбрать новый язык
+		//select new language
 		public function defuxLang(nid:String) {
 			lang=nid;
 			textLoadErr=false;
@@ -438,7 +438,7 @@
 			if (consol) return;
 			if (configObj) lastCom=configObj.data.lastCom;
 			consol=new Consol(vconsol, lastCom);
-			//сейвы и конфиг
+			//saves and config
 			saveArr=new Array();
 			for (var i=0; i<=saveKol; i++) {
 				saveArr[i]=SharedObject.getLocal('PFEgame'+i,savePath);
@@ -495,7 +495,7 @@
 			pip=new PipBuck(vpip);
 			if (!sysCur) Mouse.cursor='arrow';
 			
-			//загрузка карт локаций
+			//loading location maps
 			landData=new Array();
 			for each(var xl in GameData.d.land) {
 				if (!testMode && xl.@test>0) continue;
@@ -522,7 +522,7 @@
 			if (kolLands==kolLandsLoaded) allLandsLoaded=true;
 		}
 
-		//Пауза и вызов пипбака если потерян фокус
+		//Pause and calling the pipbuck if focus is lost
 		public function onDeactivate(event:Event):void  {
 			if (allStat==1) {
 				pip.onoff(11);
@@ -531,7 +531,7 @@
 			if (allStat>0 && !alicorn) saveGame();
 		}
 		
-		//Пауза и вызов пипбака если изменён размер окна
+		//Pause and call pipbuck if window size is changed
 		public function resizeScreen() {
 			if (allStat>0) {
 				cam.setLoc(loc);
@@ -549,7 +549,7 @@
 			if (allStat==1 && !testMode) pip.onoff(11);
 		}
 		
-		//Вызов консоли
+		//Console call
 		public function consolOnOff() {
 			onConsol=!onConsol;
 			consol.vis.visible=onConsol;
@@ -558,7 +558,7 @@
 		
 		
 //=============================================================================================================
-//			Игра
+//			Game
 //=============================================================================================================
 		
 		var ng:Boolean;
@@ -566,9 +566,9 @@
 		var opt:Object;
 		var newName:String;
 
-		//Начать новую игру или загрузить сейв. Передаётся номер слота или -1 для новой игры
-		//Этап 0 - создать HUD, ЗПС и пипбак
-		//Инициализировать game
+		//Start a new game or load a save. Pass the slot number or -1 for a new game
+		//Stage 0 - create HUD, SATS, and pipuck
+		//Initialize game
 		public function newGame(nload:int=-1, nnewName:String='LP', nopt:Object=null) {
 			if (testMode && !chitOn) {
 				vwait.progres.text='error';
@@ -590,21 +590,21 @@
 				} else nload=0;
 				saveObj.clear();
 			}
-			//создать GUI
+			// create GUI
 			gui=new GUI(vgui);
 			gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			//перевести пипбак в игровой режим
+			// switch PipBuck to normal mode
 			pip.toNormalMode();
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			//создать интерфейс ЗПС
+			// create SATS interface
 			sats=new Sats(vsats);
 			time___metr('Интерфейс');
 			
-			//создать игру
+			// create game
 			if (nload==99) {
-				data=loaddata;	//была загрузка из файла
+				data=loaddata;	// loaded from file
 			} else {
-				data=saveArr[nload].data; //была загрузка из слота
+				data=saveArr[nload].data; // loaded from slot
 			}
 			if (ng)	game.init(null,opt); else game.init(data.game);
 			ng_wait=1;
@@ -613,48 +613,48 @@
 		} catch (err) {showError(err);}
 		}
 		
-		//этап 1 - создать персонажа и инвентарь
+		// stage 1 - create character and inventory
 		public function newGame1() {
 		try {
 			if (!ng) app.load(data.app);
 			if (data.hardInv==true) hardInv=true; else hardInv=false;
 			if (opt && opt.hardinv) hardInv=true;
-			//создать персонажа
+			// create character
 			pers=new Pers(data.pers, opt);
 			if (ng) pers.persName=newName;
-			//создать юнит ГГ
+			// create player character
 			gg=new UnitPlayer();
 			gg.ctr=ctr;
 			gg.sats=sats;
 			sats.gg=gg;
 			gui.gg=gg;
-			//создат инвентарь
+			// create inventory
 			invent=new Invent(gg, data.invent, opt);
 			stand=new Stand(vstand,invent);
 			gg.attach();
-			time___metr('Персонаж');
-			//номер ячейки автосейва
+			time___metr('Персонаж'); //'Character'
+			// auto save slot number
 			if (!ng) if (data.n!=null) autoSaveN=data.n;
 			Unit.txtMiss=Res.guiText('miss');
 			
 			waitLoadClick();
 			ng_wait=2;
-			time___metr('Местность');
+			time___metr('Местность'); //'Terrain'
 		} catch (err) {showError(err);}
 		}
 		
-		//этап 2 - создать местность и войти в неё
+		// Stage 2 - create a terrain and enter it
 		public function newGame2() {
 		try {
 			
-			//визуальная часть
+			//visual part
 			resizeScreen();
 			offLoadScreen();
 			vgui.visible=vfon.visible=visual.visible=true;
 			vblack.alpha=1;
 			cam.dblack=-10;
 			pip.onoff(-1);
-			//войти в текущую местность
+			//enter the current location
 			game.enterToCurLand();//!!!!
 			game.beginGame();
 			
@@ -674,34 +674,34 @@
 			land=null;
 			loc=null;
 			try {cur('arrow');} catch(err){}
-			//объект загрузки
+			//loading object
 			var data:Object;
 			if (nload==99) {
 				data=loaddata;
 			} else {
 				data=saveArr[nload].data;
 			}
-			//создать игру
+			//create game
 			Snd.off=true;
 			cam.showOn=false;
 			if (data.hardInv==true) hardInv=true; else hardInv=false;
 			game=new Game();
 			game.init(data.game);
 			app.load(data.app);
-			//создать персонажа
+			//create character
 			pers=new Pers(data.pers);
-			//создать юнит ГГ
+			//create player unit
 			gg=new UnitPlayer();
 			gg.ctr=ctr;
 			gg.sats=sats;
 			sats.gg=gg;
 			gui.gg=gg;
-			//создат инвентарь
+			// create an inventory
 			invent=new Invent(gg, data.invent);
 			if (stand) stand.inv=invent;
 			else stand=new Stand(vstand,invent);
 			gg.attach();
-			//номер ячейки автосейва
+			// auto-save cell number
 			if (data.n!=null) autoSaveN=data.n;
 			
 			offLoadScreen();
@@ -712,8 +712,8 @@
 			gui.allOn();
 			t_die=0;
 			t_battle=0;
-			time___metr('Персонаж');
-			//войти в текущую местность
+			time___metr('Персонаж'); //'Character'
+			//enter the current location
 			game.enterToCurLand();//!!!!
 			game.beginGame();
 			log='';
@@ -724,7 +724,7 @@
 		} catch (err) {showError(err);}
 		}
 		
-		//вызов при входе в конкретную местность
+		// Call when entering a specific location
 		public function ativateLand(nland:Land) {
 		try {
 			land=nland;
@@ -735,8 +735,8 @@
 		} catch (err) {showError(err);}
 		}
 		
-		//вызов при входе в конкретную локацию
-		//тут графический баг
+		// Call when entering a specific area
+		// There is a graphical bug here
 		public function ativateLoc(nloc:Location) {
 		try {
 			if (loc) loc.out();
@@ -806,7 +806,7 @@
 		} catch (err) {showError(err);}
 		}
 		
-		//смерть ГГ
+		// Player death
 		/*public function ggDie() {
 			gg.controlOff();
 			gui.unshowSelector();
@@ -850,11 +850,11 @@
 			//vgui.vfc.text=swfStage.focus;
 		}*/
 		
-		//главный цикл
+		// Main loop
 		public function step() {
 		try {
 			if (verror.visible) return;
-			//Управление
+			//Controls
 			ctr.step();				
 			Snd.step();
 			if (ng_wait>0) {
@@ -867,24 +867,24 @@
 			}
 			if (!onConsol && !pip.active) swfStage.focus=swfStage;
 			
-			//Только если игра началась и не на паузе, игровые циклы
+			//Only if the game has started and not paused, game loops
 			if (allStat==1 && !onPause) {
-				//цикл выхода из местности
+				//exit loop
 				if (t_exit>0) {
 					if (!(t_exit==17 && clickReq==1)) exitStep();
 				}
-				//счёт частиц
+				//particle count
 				Emitter.kol2=Emitter.kol1;
 				Emitter.kol1=0;
 				//trace(Emitter.kol2);
-				//основной цикл !!!!
+				//main loop !!!!
 				if (t_exit!=17) land.step();
-				//цикл смерти
+				//death loop
 				if (t_die>0) ggDieStep();
-				//таймер боя
+				//battle timer
 				if (t_battle>0) t_battle--;
 				sats.step2();
-				//если нужен перерасчёт массы
+				//if mass recalculation is needed
 				if (calcMass) {
 					invent.calcMass();
 					calcMass=false;
@@ -893,7 +893,7 @@
 					invent.calcWeaponMass();
 					calcMassW=false;
 				}
-				//сохранение
+				//save
 				t_save++;
 				if (t_save>5000 && !testMode && !alicorn) {
 					saveGame();
@@ -913,7 +913,7 @@
 				}
 			}
 			
-			//Если игра началась, и на паузе тоже
+			//If the game has started, and is also on pause
 			if (allStat>=1) {
 				cam.calc(gg);
 				gui.step();
@@ -969,7 +969,7 @@
 		}
 
 //=============================================================================================================
-//			Функции глобального взаимодействия
+//			Global interaction functions
 //=============================================================================================================
 		public function cur(ncur:String='arrow') {
 			if (sysCur) return;
@@ -1015,7 +1015,7 @@
 			verror.visible=true;
 		}
 		
-		//измерение времени действий
+		//measurement of action time
 		public function time___metr(s=null) {
 			d2=getTimer();
 			if (s!=null) trace(d2-d1,s);
@@ -1027,9 +1027,9 @@
 		}
 		
 //=============================================================================================================
-//			Экран загрузки
+//			Loading Screen
 //=============================================================================================================
-		//установить экран загрузки
+		//set loading screen
 		public function setLoadScreen(n:int=-1) {
 			loadScreen=n;
 			vwait.story.lmb.stop();
@@ -1060,7 +1060,7 @@
 			vwait.cacheAsBitmap=true;
 		}
 		
-		//определить, какой загрузочный экран показывать
+		// Determine which loading screen to display
 		function getLoadScreen():int {
 			return -1;
 			try {
@@ -1073,13 +1073,13 @@
 			return -1;
 		}
 		
-		//включить ожидание клика
+		// Enable waiting for a click
 		function waitLoadClick() {
 			vwait.story.lmb.play();
 			vwait.story.lmb.visible=true;
 		}
 		
-		//убрать экран загрузки
+		// Remove the loading screen
 		function offLoadScreen() {
 			vwait.visible=false;
 			vwait.story.visible=false;
@@ -1088,7 +1088,7 @@
 			vwait.story.lmb.visible=false;
 			clickReq=0;
 		}
-		//показать сцену
+		// Show the scene
 		public function showScene(sc:String, n:int=0) {
 			catPause=true;
 			visual.visible=false;
@@ -1109,7 +1109,7 @@
 			vscene.visible=true;
 		}
 		
-		//убрать сцену
+		// Remove the scene
 		public function unshowScene() {
 			catPause=false;
 			visual.visible=true;
@@ -1118,7 +1118,7 @@
 			vscene.visible=false;
 		}
 		
-		//финальная заставка или gameover
+		// Final credits or game over
 		public function endgame(n:int=0) {
 			vwait.visible=vfon.visible=false;
 			var s:String;
@@ -1139,7 +1139,7 @@
 			} catch(err){}
 		}
 //=============================================================================================================
-//			Сейвы и конфиг
+//			Saves and configuration
 //=============================================================================================================
 		public function saveToObj(data:Object) {
 			var now:Date = new Date();

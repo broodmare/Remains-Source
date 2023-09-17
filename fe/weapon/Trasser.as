@@ -12,7 +12,7 @@
 		public var is_skok:Boolean=false, vse:Boolean=false, stay:Boolean=false;
 		public var liv:int=100;
 		public var sled:Array;
-		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
+		public var explRadius:Number=0;	// Explosion radius, if 0, then there is no explosion
 		
 		var brake=2, skok:Number=0.5, tormoz:Number=0.7;
 
@@ -68,7 +68,7 @@
 					}
 				}
 			}
-			//движение вправо
+			//movement to the right
 			if (dx>0) {
 				t=loc.getAbsTile(X,Y);
 				if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
@@ -83,8 +83,8 @@
 				Y+=dy/div;
 				return;
 			}
-			//ВЕРТИКАЛЬ
-			//движение вверх
+			//VERTICAL
+			//upward movement
 			if (dy<0) {
 				Y+=dy/div;
 				t=loc.getAbsTile(X,Y);
@@ -96,7 +96,7 @@
 					}
 				}
 			}
-			//движение вниз
+			//movement down-up
 			var newmy:Number=0;
 			if (dy>0) {
 				Y+=dy/div;

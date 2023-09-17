@@ -21,137 +21,137 @@
 		public var rot:Number;
 		public var bulX:Number=0, bulY:Number=0;
 		
-		//визуал
-		public var svis:String, svisv:String;	//само оружие
+		//visual
+		public var svis:String, svisv:String;	//weapon itself
 		public var vWeapon:Class;			
-		public var visbul:String;				//снаряды
+		public var visbul:String;				//projectiles
 		public var vBullet:Class;
-		public var flare:String;				//вспышка
-		public var visexpl:String;				//взрыв
+		public var flare:String;				//flash
+		public var visexpl:String;				//explosion
 		
-		var is_attack:Boolean=false, is_pattack:Boolean=false;	//	нажата ли клавиша атаки
+		var is_attack:Boolean=false, is_pattack:Boolean=false;	//	is the attack key pressed
 		public var t_attack:int=0;
 		public var t_prep:int=0;
 		public var t_reload:int=0;
 		public var t_rech:int=0;
-		public var t_rel:int=0;			//время перезарядки для оружия, не имеющего магазина
-		public var t_shoot:int=0;		//время после выстрела
+		public var t_rel:int=0;			//recharge time for a weapon without a magazine
+		public var t_shoot:int=0;		//time after shooting
 		public var t_auto:int=0;
-		public var pow:int=0;			//усиление атаки
-		public var skillConf:Number=1;			//модификатор, зависит от соответствия уровня скилла, 1 - норм, 0.8 - скилл на 1 уровень ниже, 0.6 - скилл на 2 уровня ниже
-		public var skillPlusDam:Number=1;		//усиление оружия низких уровней;
-		public var weaponSkill:Number=1;	//умение для гг
+		public var pow:int=0;			//attack power
+		public var skillConf:Number=1;			//modifier depends on the skill level, 1 - normal, 0.8 - skill level 1 below, 0.6 - skill level 2 below
+		public var skillPlusDam:Number=1;		// weapon reinforcement for low-level weapons
+		public var weaponSkill:Number=1;	 // skill for character
 		var t_ret:int=0;
 		var rotUp:Number=0;
-		public var jammed:Boolean=false;	//заклинило
-		public var kol_shoot:int=0;	//	количество сделанных выстрелов
-		public var ready:Boolean=false; //оружие наведено на цель
-		public var is_shoot:Boolean=false; //выстрел произведён
+		public var jammed:Boolean=false;	 // weapon jammed
+		public var kol_shoot:int=0;	// number of shots made
+		public var ready:Boolean=false;  // weapon aimed at target
+		public var is_shoot:Boolean=false; // shot fired
 		protected var animated:Boolean=false;
-		//тип крепления
+		// mounting type
 		public var krep:int=0;
-		//осталось в обойме
+		// remaining in the magazine
 		public var hold:int=0;
 
-		public var findCel:Boolean=true;	//поворачиваться за целью
+		public var findCel:Boolean=true;	// rotate towards target
 		public var forceRot:Number=0;
 		public var fixRot:int=0;	
 		public var checkLine:Boolean=false;	
 
 		public var id:String;
-		public var uniq:Number=-1;			//вероятность появления уникального варианта
-		public var variant:int=0;			//уникальное оружие
+		public var uniq:Number=-1;			// chance of appearing a unique variant
+		public var variant:int=0;			// unique weapon
 		
-		//характеристики
-		//тип оружия
-		//0 - внутреннее
-		//1 - холодное
-		//2 - лёгкое огнестрельное
-		//3 - тяжёлое
-		//4 - взрывчатка
+		//Characteristics
+		//Weapon type
+		//0 - internal
+		//1 - cold
+		//2 - light firearms
+		//3 - heavy
+		//4 - explosive
 		public var tip:int=0;
-		//категория 
+		//Category
 		public var cat:int=0;
-		//инвентарь
+		//Inventory
 		//public var fav:int=0;
-		public var respect:int=0;		//отношение 0-новое, 1-скрытое, 2-используемое, 3-схема
-		//необходимый скилл
+		public var respect:int=0;		//relation 0-new, 1-hidden, 2-used, 3-schema
+		//Required skill
 		public var skill:int=0;
-		//уровень скилла
+		//Skill level
 		public var lvl:int=0;
-		public var lvlNoUse:Boolean=false;	//запретить использовать если навык не достаточен
+		public var lvlNoUse:Boolean=false;	//prevent use if skill level is not enough
 		public var perslvl:int=0;
-		public var spell:Boolean=false;		//является защитным заклинанием
-		public var alicorn:Boolean=false;	//доступно в режиме аликорна
-		public var rep_eff:Number=1;	//эффективность ремонта набором оружейника
+		public var spell:Boolean=false;		//is a defensive spell
+		public var alicorn:Boolean=false;	//available in alicorn mode
+		public var rep_eff:Number=1;	//repair efficiency by gunsmithing
 		
-		public var auto:Boolean=false;	//автоматическая атака
-		public var rapid:int=5;			//тактов на выстрел, 30=1с
-		public var speed:Number=100;	//скорость пули
-		public var volna:Boolean=false;	//если true, то скорость пули не будет рандомной
-		public var deviation:Number=0; 	//угол разлёта
-		public var precision:Number=0;	//точность, показывает расстояние, на котором попадание будет 100%
-		public var antiprec:Number=0;	//для снайперских винтовок, показывает расстояние, на котором точность начнёт снижаться
-		public var dlina:int=50, mindlina:int=50;			//длина холодного оружия
-		public var mass:int=1;			//занимает место
-		public var drot:Number=0;		//скорость поворота оружия, 0 -мгновенно
-		public var drot2:Number=0;		//скорость поворота оружия при атаке
-		public var prep:int=0;			//тактов на раскрутку
+		public var auto:Boolean=false;	//automatic attack
+		public var rapid:int=5;			//ticks per shot, 30=1s
+		public var speed:Number=100;	// bullet speed
+		public var volna:Boolean=false;	// if true, bullet speed will not be random
+		public var deviation:Number=0; 	// spread angle
+		public var precision:Number=0;	// accuracy, indicates the distance at which the hit will be 100%
+		public var antiprec:Number=0;	// for sniper rifles, indicates the distance at which accuracy will start to decrease
+		public var dlina:int=50, mindlina:int=50;			// length of melee weapon
+		public var mass:int=1;			// occupies space
+		public var drot:Number=0;		// weapon rotation speed, 0 - instant
+		public var drot2:Number=0;		// weapon rotation speed during attack
+		public var prep:int=0;			// ticks for spinning up
 		
-		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
-		public var explTip:int=1;		//тип взрыва, 1-обычный, 2-облако газа
-		public var explKol:int=0;		//количество взрывов, интервал 1с, 0 - мгновенный взрыв
-		public var destroy:Number=10;	//урон блокам
-		public var damage:Number=0;		//урон юнитам
-		public var damageExpl:Number=0;	//урон по площади
-		public var tipDamage:int=0;		//тип урона
-		public var pier:Number=0;		//бронебойность
-		public var critCh:Number=0.1;	//вероятность крита
-		public var critM:Number=0;		//дополнительный крит
-		public var critDamPlus:Number=0;//прибавка к модификатору критического урона
-		public var distExpl:Boolean=false;	//пули взрываются по прошествии времени
-		public var navod:Number=0;		//самонаведение
+		public var explRadius:Number=0;	// explosion radius, if 0, there is no explosion
+		public var explTip:int=1;		// explosion type, 1-normal, 2-gas cloud
+		public var explKol:int=0;		// number of explosions, interval 1s, 0 - instant explosion
+		public var destroy:Number=10;	// damage to blocks
+		public var damage:Number=0;		// damage to units
+		public var damageExpl:Number=0;	// area damage
+		public var tipDamage:int=0;		// type of damage
+		public var pier:Number=0;		// armor penetration
+		public var critCh:Number=0.1;	// critical chance
+		public var critM:Number=0;		// additional critical
+		public var critDamPlus:Number=0;// addition to critical damage modifier
+		public var distExpl:Boolean=false;	// bullets explode after a certain time
+		public var navod:Number=0;		// homing
 
-		public var otbros:Number=0;		//отброс
-		public var kol:Number=1;		//количество пуль за 1 выстрел
-		public var dkol:Number=0;		//стрельба очередями
-		public var rashod:Number=1;		//зарядов за 1 выстрел
-		public var opt:Object;		//опции
-		public var recoil:int=0;		//отдача назад
-		public var recoilUp:int=0;		//отдача вверх
-		public var recoilMult:int=1;	//множитель отдачи
-		public var desintegr:Number=0;	//вероятность дезинтеграции
+		public var otbros:Number=0;		//recoil
+		public var kol:Number=1;		//number of bullets per shot
+		public var dkol:Number=0;		//burst fire
+		public var rashod:Number=1;		//ammo consumption per shot
+		public var opt:Object;		//options
+		public var recoil:int=0;		//recoil backwards
+		public var recoilUp:int=0;		//recoil upwards
+		public var recoilMult:int=1;	//recoil multiplier
+		public var desintegr:Number=0;	//disintegration probability
 		
-		public var holder:int=0;		//обойма
-		public var ammoBase:String='';	//базовый тип боеприпасов
-		public var ammo:String='';		//текущий тип боеприпасов
-		public var ammoTarg:String='';	//тип боеприпасов на замену
-		public var reload:int=0;		//тактов на перезарядку, 30=1с
-		public var recharg:int=0;		//тактов на подзарядку, если она имеется, 0 если нет
-		public var magic:Number=100, dmagic:Number=100;	//расход магии
-		public var mana:Number=100, dmana:Number=100;	//расход маны
+		public var holder:int=0;		//magazine
+		public var ammoBase:String='';	//base ammo type
+		public var ammo:String='';		//current ammo type
+		public var ammoTarg:String='';	//ammo type to replace
+		public var reload:int=0;		//ticks for reload, 30=1s
+		public var recharg:int=0;		//ticks for recharge, if applicable, 0 if not
+		public var magic:Number=100, dmagic:Number=100;	//magic consumption
+		public var mana:Number=100, dmana:Number=100;	//mana consumption
 
-		public var noise:int=0;			//звук выстрела
-		public var shine:int=500;			//вспышка от выстрела
-		public var tipDecal:int=0;		//тип оставляемых следов		
-		public var bulAnim:Boolean=false;	//анимировать снаряд
-		public var spring:int=1;		//растягивание
-		public var flame:int=0;	//снаряд ведёт себя как огонь
-		public var grav:Number=0;	//снаряд движется по параболе
-		public var accel:Number=0;	//снаряд движется с ускорением
-		public var shell:Boolean=false;	//выбрасывает гильзу
-		public var fromWall:Boolean=false;	//стрелять из стены
+		public var noise:int=0;			//shot sound
+		public var shine:int=500;			//flash from shot
+		public var tipDecal:int=0;		//type of traces left	
+		public var bulAnim:Boolean=false;	//animate projectile
+		public var spring:int=1;		//stretching
+		public var flame:int=0;	//projectile behaves like fire
+		public var grav:Number=0;	//projectile moves in a parabolic arc
+		public var accel:Number=0;	//projectile moves with acceleration
+		public var shell:Boolean=false;	//ejects casing
+		public var fromWall:Boolean=false;	//shoot from wall
 		public var bulBlend:String='screen';
 		var emitShell:Emitter=Emitter.arr['gilza'];
 		
-		//дополнительные эффекты
-		public var dopEffect:String;		//эффект
-		public var dopDamage:Number=0;		//урон
-		public var dopCh:Number=1;			//шанс
+		//Additional effects
+		public var dopEffect:String;		//effect
+		public var dopDamage:Number=0;		//damage
+		public var dopCh:Number=1;			//chance
 		public var probiv:Number=0;
-		public var visionMult:Number=1;		//множитель видимости для пользователя
+		public var visionMult:Number=1;		//visibility multiplier for the user
 		
-		//модификаторы
+		//Modifiers
 		public var drotMult:Number=1;
 		public var reloadMult:Number=1;
 		
@@ -168,27 +168,27 @@
 		
 		public var absPierRnd:Number=0;
 		
-		//модификаторы патрона
-		public var ammoPier:Number=0;	//бронебойность
-		public var ammoArmor:Number=1;	//модификатор брони цели
-		public var ammoDamage:Number=1;	//урон
-		public var ammoProbiv:Number=0;	//пробивание цели насквозь
-		public var ammoOtbros:Number=1;	//отбрасывание
-		public var ammoPrec:Number=1;	//точность
-		public var ammoHP:int=0;		//прибавка к износу
-		public var ammoFire:Number=0;	//зажигательный
-		public var ammoMod:int=-1;		//изменение типа урона
+		//Ammo Modifiers
+		public var ammoPier:Number=0;	//armor piercing
+		public var ammoArmor:Number=1;	//target armor modifier
+		public var ammoDamage:Number=1;	//damage
+		public var ammoProbiv:Number=0;	//target penetration
+		public var ammoOtbros:Number=1;	//recoil
+		public var ammoPrec:Number=1;	//accuracy
+		public var ammoHP:int=0;		//durability modifier
+		public var ammoFire:Number=0;	 //incendiary
+		public var ammoMod:int=-1;		//damage type modification
 		
 		
-		//ЗПС
+		//SATS
 		public var satsQue:int=1;
 		public var satsCons:Number=10;
-		public var noSats:Boolean=false;	//не поддерживает
-		public var noPerc:Boolean=false;	//не рассчитывать точность
-		public var noTrass:Boolean=false;	//не трассировать
+		public var noSats:Boolean=false;	//not supported
+		public var noPerc:Boolean=false;	//do not calculate accuracy
+		public var noTrass:Boolean=false;	//do not trace
 		public var satsMelee:Boolean=false;
 		
-		//звуки
+		//sounds
 		public var sndShoot:String='';
 		public var sndShoot_n:int=1;
 		public var sndReload:String='';
@@ -248,7 +248,7 @@
 		}
 		
 		public function getXmlParam() {
-			//общие характеристики
+			// Common characteristics
 			var node:XML=AllData.d.weapon.(@id==id)[0];
 			
 			if (node.@tip.length()) tip=node.@tip;
@@ -307,34 +307,34 @@
 				vBullet=visualBullet;
 			}
 			
-			//звуки
+			//Sounds
 			if (node.snd.length()) {
 				getSndParam(node.snd[0])
 				if (variant>0) getSndParam(node.snd[variant]);
 			}
-			//Физические параметры
+			//Physical parameters
 			if (node.phis.length()) {
 				getPhisParam(node.phis[0])
 				if (variant>0) getPhisParam(node.phis[variant]);
 			}
-			//боеприпасы
+			//Ammunition
 			if (node.ammo.length()) {
 				getAmmoParam(node.ammo[0])
 				if (variant>0) getAmmoParam(node.ammo[variant]);
 			}
-			//Дополнительные эффекты
+			//Additional effects
 			if (node.dop.length()) {
 				getDopParam(node.dop[0])
 				if (variant>0) getDopParam(node.dop[variant]);
 			}
-			//боеприпасы
+			//Ammunition
 			if (node.a.length()) {
 				ammo=ammoBase=node.a[0];
 				var ammoNode=AllData.d.item.(@id==ammo)[0];
 				setAmmo(ammo,ammoNode);
 			}
 			
-			//боевые характеристики
+			//Combat characteristics
 			getCharParam(node.char[0]);
 			if (variant>0) getCharParam(node.char[variant]);
 			
@@ -454,9 +454,9 @@
 		}
 		
 		public override function step() {
-			actions();		//различные действия
+			actions();		//various actions
 			if (owner) owner.setWeaponPos(tip);
-			if (vis) animate();		//анимация
+			if (vis) animate();		//animation
 		}
 		public override function addVisual() {
 			if (owner) {

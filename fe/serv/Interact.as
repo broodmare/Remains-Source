@@ -18,51 +18,51 @@
 		public var loc:Location;
 		public var X:Number, Y:Number;
 		
-		public var active:Boolean=true;	//объект активен
-		//действие, отображаемое в GUI
-		public var action:int=0;		//можно выполнить по отношению к нему действие //1 - открыть	2 - использовать	3 - разминировать
-		public var userAction:String;	//заданное действие (id)
+		public var active:Boolean=true;	// object is active
+		// action displayed in GUI
+		public var action:int=0;		// action that can be performed on it //1 - open  2 - use  3 - disarm
+		public var userAction:String;	// specified action (id)
 		
-		public var xml:XML;				//индивидуальный параметр, взятый из карты
+		public var xml:XML;				// individual parameter taken from the map
 			
-		public var cont:String;			//Контейнер для лута
-		public var door:int=0;			//дверь
-		public var knop:int=0;			//кнопка
-		public var expl:int=0;			//бомба
+		public var cont:String;			// loot container
+		public var door:int=0;			// door
+		public var knop:int=0;			// button
+		public var expl:int=0;			// bomb
 		
-		public var lock:int=0;			//заперто (сложность замка)
-		public var lockTip:int=1;		//тип замка 1 - обычный (взлом), 2 - электронный (хакер), 3 - заминировано, 4 - отключить (ремонт), 5 - починить (ремонт), 0 - нельзя взломать
-		public var lockLevel:int=0;		//уровень замка (требования к уровню скилла)
-		public var lockAtt:int=-100;	//попытки
-		public var lockHP:Number=10;	//ХП замка
-		public var noRuna:Boolean=false;//нельзя использовать руну или отмычку
-		public var low:Number=0;		//вероятность понижения сложности замка в 2 раза
-		public var mine:int=0;			//заминировано
-		public var mineTip:int=3;		//3 - бомба, 6 - сигнализация
-		public var damage:Number=0;		//урон от взрыва
-		public var destroy:Number=0;	//разрушение от взрыва
-		public var explRadius:Number=260;	//радиус от взрыва
-		public var damdis:Number=50;		//удар током
-		public var at_once:int=0;		//1-применить основное действие сразу же после взлома или разминирования, 2-после этого сделать неактивным
-		public var lockKey:String;		//ключ к замку
-		public var cons:String;			//уменьшить количество ключей после успешного применения: 0 - не уменьшать, 1 - использовать ключ сразу, 2 - использовать только если замок нельзя открыть другим способом
-		public var allDif:Number=-1;		//общая сложность замка и бомбы
-		public var xp:int=0;			//опыт за вскрытие
+		public var lock:int=0;			// locked (lock difficulty)
+		public var lockTip:int=1;		// lock type 1 - normal (lockpick), 2 - electronic (hacker), 3 - booby-trapped, 4 - disable (repair), 5 - fix (repair), 0 - cannot be lockpicked
+		public var lockLevel:int=0;		// lock level (skill level requirements)
+		public var lockAtt:int=-100;	// attempts
+		public var lockHP:Number=10;	// lock's HP
+		public var noRuna:Boolean=false;// cannot use rune or lockpick
+		public var low:Number=0;		// probability of halving lock difficulty
+		public var mine:int=0;			// booby-trapped
+		public var mineTip:int=3;		// 3 - bomb, 6 - alarm
+		public var damage:Number=0;		// explosion damage
+		public var destroy:Number=0;	// destruction from explosion
+		public var explRadius:Number=260;	// explosion radius
+		public var damdis:Number=50;		// shock damage
+		public var at_once:int=0;		// 1 - apply the main action immediately after lockpicking or disarming, 2 - make it inactive after that
+		public var lockKey:String;		// lock key
+		public var cons:String;			// decrease the number of keys after successful use: 0 - do not decrease, 1 - use the key immediately, 2 - use only if the lock cannot be opened by other means
+		public var allDif:Number=-1;		// overall lock and bomb difficulty
+		public var xp:int=0;			// experience for unlocking
 		
-		public var allact:String;		//заданное действие на всю комнату
-		public var allid:String;		//ид для заданного действия
+		public var allact:String;		// specified action for the entire room
+		public var allid:String;		// ID for the specified action
 		public var needSkill:String;
 		public var needSkillLvl:int=0;
-		public var is_hack:Boolean=false;	//управляется терминалом доступа
-		public var open:Boolean=false;	//открыто
-		public var prob:String=null;		//переход к испытанию
-		public var noBase:Boolean=false;	//правила базы здесь не работают
-		public var prize:Boolean=false;	//призовой контейнер испытания
+		public var is_hack:Boolean=false;	// controlled by access terminal
+		public var open:Boolean=false;	// opened
+		public var prob:String=null;		// transition to a trial
+		public var noBase:Boolean=false;	// base rules do not apply here
+		public var prize:Boolean=false;	// trial prize container
 		
 		public var is_act:Boolean=false, is_ready:Boolean=true
 		public var t_action:int=0;
-		public var unlock:int=0;		//способность к взлому
-		public var master:int=0;		//мастерство взлома
+		public var unlock:int=0;		// lockpicking ability
+		public var master:int=0;		// lockpicking mastery
 		
 		public var stateText='';
 		public var actionText='';
@@ -72,17 +72,17 @@
 		public var successRemine:Function, fiascoRemine:Function;
 		public var actFun:Function;
 		
-		public var area:Area;	//прикреплённая область
+		public var area:Area;	// Attached area
 		
-		public var sign:int=0;	//указатель
+		public var sign:int=0;	// Pointer
 		var t_sign:int=0;
 		
-		public var isMove:Boolean=false;		//есть движение
-		var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	//координаты начальной и конечной точки
-		var t_move:Number=0, dt_move:Number=1;		//таймер
-		public var tStay:int=10, tMove:int=100;		//время стоять и время двигаться
-		public var moveSt:int=0;					//режим движения 0-стоять, 1-из начала в конец, 2-из конца в начало, 3-из одного конца в другой, 4-непрерывно
-		var moveP:Boolean=false;					//если true, то в этот момент есть движение, если false, то стои
+		public var isMove:Boolean=false;		// There is movement
+		var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	// Coordinates of the starting and ending points
+		var t_move:Number=0, dt_move:Number=1;		// Timer
+		public var tStay:int=10, tMove:int=100;		// Time to stay and time to move
+		public var moveSt:int=0;					// Movement mode 0 - stand, 1 - from start to end, 2 - from end to start, 3 - from one end to the other, 4 - continuous
+		var moveP:Boolean=false;					// If true, there is movement at this moment, if false, it stands
 		public var moveCh:SoundChannel;
 		
 		var lootBroken:Boolean=false;
@@ -93,13 +93,13 @@
 		
 		public var scrAct:Script, scrOpen:Script, scrClose:Script, scrTouch:Script;
 		
-		//изменения состояний, которые сохраняются
-		var saveMine:int=0;		//101 - мина обезврежена или бахнула
-		var saveLock:int=0;		//101 - открыто, 102 - заклинило
-		public var saveLoot:int=0;		//1 - лут получен, 2 - лут получен, есть критичный лут
-		var saveOpen:int=0;		//1 - открыто
+		// Changes to states that are saved
+		var saveMine:int=0;		// 101 - mine disarmed or exploded
+		var saveLock:int=0;		// 101 - unlocked, 102 - jammed
+		public var saveLoot:int=0;		// 1 - loot obtained, 2 - loot obtained, critical loot exists
+		var saveOpen:int=0;		// 1 - opened
 		var saveExpl:int=0;
-		//var saveTerm:int=0;		//1 - активировано
+		//var saveTerm:int=0;		// 1 - activated
 		
 		public const maxLockLvl=24;
 		public const maxMechLvl=7;
@@ -107,7 +107,7 @@
 		public static var chanceUnlock:Array=[0.9, 0.75, 0.5, 0.3, 0.15, 0.05, 0.01];
 		public static var chanceUnlock2:Array=[0.95, 0.8, 0.55, 0.35, 0.2, 0.08, 0.03];
 		
-		//node - шаблон, xml - индивидуальный параметр, взятый из карты
+		// node - template, xml - individual parameter taken from the map
 		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) {
 			owner=own;
 			loc=owner.loc;
@@ -116,17 +116,17 @@
 			//var rnd:Boolean=false;
 			//if (loc && loc.land.rnd) 
 			var rnd=true;
-			if (xml && xml.@set.length()) rnd=false;	//если задано свойство set='1', не будет случайных параметров
-			//тип замка
+			if (xml && xml.@set.length()) rnd=false;	// if the set property is specified as '1', there won't be random parameters
+			// lock type
 			if (node && node.@locktip.length()) lockTip=node.@locktip;
 			if (xml && xml.@locktip.length()) lockTip=xml.@locktip;
 			if (node) {
-				//содержимое
+				// content
 				if (node.@cont.length()) cont=node.@cont;
-				//замок
+				// lock
 				if (node.@lock.length()) {
 					var lk:Number=Number(node.@lock);
-					if (rnd) {		//случайный замок
+					if (rnd) {		// random lock
 						if (node.@lockch.length()==0 || Math.random()<Number(node.@lockch)) {
 							if (lockTip==1 || lockTip==2) {
 								lock=Math.floor(lk+(0.3+Math.random())*loc.locksLevel);
@@ -135,15 +135,15 @@
 							}
 						}
 						if (Math.random()<lk-Math.floor(lk)) lock+=1;
-					} else {		//заданный замок
+					} else {		// specified lock
 						lock=Math.floor(lk);
 					}
 				}
 				if (node.@low.length()) low=node.@low;
 				saveLock=lock;
-				//hp замка
+				// lock HP
 				if (node.@lockhp.length()) lockHP=node.@lockhp;
-				//заминировано
+				// mined
 				if (node.@mine.length()) {
 					if (rnd) {
 						if (node.@minech.length()) {
@@ -157,11 +157,11 @@
 					else if (node.@inter!='3' && Math.random()<0.4) mineTip=6;
 				}
 				saveMine=mine;
-				//можно хакнуть
+				// can be hacked
 				if (node.@hack>0) is_hack=true;
-				//общее действие
+				// common action
 				if (node.@allact.length()) allact=node.@allact;
-				//действие
+				// action
 				action=node.@inter;
 				if (node.@xp.length()) xp=node.@xp;
 				if (node.@once.length()) at_once=node.@once;
@@ -394,7 +394,7 @@
 			}
 		}
 		
-		//установить состояние
+		// Set the state
 		public function setAct(a:String, n:int=0) {
 			if (a=='mine') {
 				if (n<100) {
@@ -459,7 +459,7 @@
 			}
 		}
 		
-		//произвести действие
+		// Perform an action
 		public function act() {
 			var verZhopa=0, verFail=0;
 			if (action==0) return;
@@ -469,29 +469,29 @@
 				return;
 			}
 			if (needSkill && needSkillLvl>unlock) {
-				World.w.gui.infoText('needSkill', Res.txt('e',needSkill), needSkillLvl,false);	//требуется навык
+				World.w.gui.infoText('needSkill', Res.txt('e',needSkill), needSkillLvl,false);	// Skill required
 			} else if (mine>0) {
 					verZhopa=0, verFail=0;
 					if (mine>unlock) verZhopa=(mine-unlock+1)*0.15;
 					verFail=(mine-unlock+2)*0.2;
-					if (Math.random()<verZhopa) {	//критическая неудача
+					if (Math.random()<verZhopa) {	// Critical failure
 						setAct('mine',101);
-						if (mineTip==6) World.w.gui.infoText('signalZhopa');	//сигнализация сработала
-						else World.w.gui.infoText('remineZhopa');	//бомба сработала
+						if (mineTip==6) World.w.gui.infoText('signalZhopa');	// Alarm triggered
+						else World.w.gui.infoText('remineZhopa');	// Bomb triggered
 						if (fiascoRemine!=null) fiascoRemine();
 						if (at_once>0) {
 							actOsn();
 						}
 						replic('zhopa');
 						update();
-					} else if (Math.random()<verFail) { //неудача	
-						if (mineTip==6) World.w.gui.infoText('signalFail',null,null,false);	//сигнализация не обезврежена
-						else World.w.gui.infoText('remineFail',null,null,false);	//бомба не обезврежена
+					} else if (Math.random()<verFail) { // Failure	
+						if (mineTip==6) World.w.gui.infoText('signalFail',null,null,false);	// Alarm not disarmed
+						else World.w.gui.infoText('remineFail',null,null,false);	// Bomb not disarmed
 						replic('fail');
-					} else {						//успех	
+					} else {						// Success
 						setAct('mine',101);
-						if (mineTip==6) World.w.gui.infoText('signalOff');	//сигнализация обезврежена
-						else  World.w.gui.infoText('remine');	//бомба обезврежена
+						if (mineTip==6) World.w.gui.infoText('signalOff');	// Alarm disarmed
+						else  World.w.gui.infoText('remine');	// Bomb disarmed
 						if (successRemine!=null) successRemine();
 						if (at_once>0) {
 							actOsn();
@@ -500,7 +500,7 @@
 						update();
 					}
 					World.w.gui.bulb(X,Y);
-					//trace('разминировать',unlock,' неудача',verFail,'жопа',verZhopa);
+					// trace('disarm', unlock, 'failure', verFail,'жопа',verZhopa);
 				unlock=0;
 				is_ready=false;
 			} else if (lock>0 && lockKey && World.w.invent.items[lockKey].kol>0) {
@@ -668,7 +668,7 @@
 			return chanceUnlock[dif+2]
 		}
 		
-		//произвести основное действие
+		// Perform the main action
 		public function actOsn() {
 			if (cons) {
 				if (World.w.invent.items[cons] && World.w.invent.items[cons].kol>0)	{
@@ -705,7 +705,7 @@
 			update();
 		}
 		
-		//сломать контейнер
+		// Break the container
 		public function dieCont() {
 			lootBroken=true;
 			if (cont!=null) {
@@ -713,7 +713,7 @@
 			}
 			if (mine) {
 				setAct('mine',101);
-				World.w.gui.infoText('remineZhopa');	//бомба сработала
+				World.w.gui.infoText('remineZhopa');	// The bomb has triggered
 				if (fiascoRemine!=null) fiascoRemine();
 			}
 			open=true;
@@ -738,7 +738,7 @@
 			}
 			if (obj.loot!=null) {
 				if (obj.loot==2) {
-					loot(true);	//если состояние 2, сгенерировать критичный лут
+					loot(true);	// Generate critical loot if the state is 2
 				}
 				setAct('loot',obj.loot);
 			}
@@ -762,7 +762,7 @@
 			(owner as Box).setDoor(open);
 		}
 		
-		//неудачная попытка разминирования - взрыв
+		// Unsuccessful attempt at defusing - explosion
 		public function explosion() {
 			if (saveExpl) return;
 			var un:Unit=new Unit();
@@ -775,7 +775,7 @@
 			}
 		}
 		
-		//неудачная попытка взлома силового поля - удар током
+		// Unsuccessful attempt at hacking a force field - electric shock
 		public function discharge() {
 			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
 			//damage(,Unit.D_SPARK);
@@ -785,7 +785,7 @@
 			if (damdis>500) damdis=500;
 		}
 		
-		//неудачная отключить сигнализацию - тревога
+		// Unsuccessful attempt to disable the alarm - alarm
 		public function alarm() {
 			if (saveExpl) return;
 			t_budilo=240;
@@ -794,7 +794,7 @@
 			loc.robocellActivate();
 		}
 		
-		//неудачная попытка отключить кнопку тревоги
+		// Unsuccessful attempt to disable the alarm button
 		public function alarm2() {
 			if (allact!='alarm') return;
 			t_budilo=240;
@@ -806,12 +806,12 @@
 			owner.setVisState('active');
 		}
 		
-		//неудачная попытка взлома ячейки робота - тревога
+		// Unsuccessful attempt to hack the robot cell - alarm
 		public function robocellFail() {
 			loc.robocellActivate();
 		}
 		
-		//создать робота
+		// Create a robot
 		public function genRobot() {
 			if (allact!='robocell') return;
 			loc.createUnit('robot',X,Y,true,null,null,30);
@@ -925,7 +925,7 @@
 			}*/
 		}
 		
-		//начало продолжительного действия над объектом
+		// Start of prolonged action on the object
 		public function beginAct() {
 			if (allact=='comein') {
 				owner.setVisState('comein');
@@ -997,13 +997,13 @@
 					if (moveSt==0) moveSt=4;
 					else moveSt=0;
 				}
-				if (com=='move1') {	//ехать из начала в конец
+				if (com=='move1') {	// Move from the beginning to the end
 					moveTo(1);
 				}
-				if (com=='move2') {	//ехать из конца в начало
+				if (com=='move2') {	// Move from the end to the beginning
 					moveTo(2);
 				}
-				if (com=='move3') {	//ехать из одного конца в другой
+				if (com=='move3') {	// Move from one end to the other
 					moveTo(3);
 				}
 			}
@@ -1020,18 +1020,18 @@
 				var f:Number=0;
 				var pp=moveP;
 				if (dt_move<1) dt_move+=0.1;
-				if (t_move>=0 && t_move<tStay) {	//стоим в начале
+				if (t_move>=0 && t_move<tStay) {	// standing at the beginning
 					moveP=false;
 					f=0;
 					if (moveSt==2 || moveSt==3) moveSt=0;
-				} if (t_move>=tStay && t_move<tStay+tMove) { //движемся от начала к концу
+				} if (t_move>=tStay && t_move<tStay+tMove) { // moving from the beginning to the end
 					moveP=true;
 					f=(t_move-tStay)/tMove;
-				} else if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { //стоим в конце
+				} else if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
 					moveP=false;
 					f=1;
 					if (moveSt==1 || moveSt==3) moveSt=0;
-				} else if (t_move>=tStay+tMove+tStay && t_move<(tStay+tMove)*2) { //движемся от конца к началу
+				} else if (t_move>=tStay+tMove+tStay && t_move<(tStay+tMove)*2) { // moving from the end to the beginning
 					moveP=true;
 					f=((tStay+tMove)*2-t_move)/tMove;
 				} else {
@@ -1054,26 +1054,26 @@
 		public function moveTo(n:int) {
 			moveSt=n;
 			if (n==1) {
-				if (t_move>=0 && t_move<tStay) { //стоим в начале
+				if (t_move>=0 && t_move<tStay) { // standing at the beginning
 					t_move=tStay;
 				}
-				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { //стоим в конце
+				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
 					moveSt=0;
 				}
 			}
 			if (n==2) {
-				if (t_move>=0 && t_move<tStay) { //стоим в начале
+				if (t_move>=0 && t_move<tStay) { // standing at the beginning
 					moveSt=0;
 				}
-				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { //стоим в конце
+				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
 					t_move=tStay+tMove+tStay;
 				}
 			}
 			if (n==3) {
-				if (t_move>=0 && t_move<tStay) { //стоим в начале
+				if (t_move>=0 && t_move<tStay) { // standing at the beginning
 					t_move=tStay;
 				}
-				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { //стоим в конце
+				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
 					t_move=tStay+tMove+tStay;
 				}
 			}
@@ -1093,7 +1093,7 @@
 			if (Math.random()<0.25) World.w.gg.replic(s);
 		}	
 		
-		//подтвердить получение критичного предмета
+		// Confirm the receipt of a critical item
 		public function receipt() {
 			saveLoot=1;
 		}
@@ -1123,7 +1123,7 @@
 					is_loot=LootGen.lootDrop(loc,X,Y,cont,(owner as Unit).hero) || is_loot;
 				} else {
 					is_loot=LootGen.lootCont(loc,X,Y,cont,lootBroken,prize?allDif:50) || is_loot;
-					//дать опыт
+					// Give experience points
 					if (!lootBroken && allDif>0 && xp>0) {
 						loc.takeXP(Math.round(xp*(allDif+1)),X,Y);
 					}

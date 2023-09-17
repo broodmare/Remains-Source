@@ -6,7 +6,7 @@
 
 		public static var d:XML=<game>
 		
-<!-- ============================================== ЛОКАЦИИ ============================================== -->
+<!-- ============================================== LOCATIONS ============================================== -->
 			<land1 id='test' autolevel='1' file='rooms' locx='0' locy='0' stage='4' limit='1' test='1' list='-11' tip='test'>
 				<options  music='music_cat_1' fon='fonRuins'/>
 				<scr eve='take' item='captive'>

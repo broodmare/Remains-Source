@@ -15,28 +15,28 @@
 	import fe.inter.Appear;
 	
 	public class Obj extends Pt{
-		public var code:String;		//идивидуальный код
-		public var uid:String;		//уникальный идентификатор, служащий для доступа скрипта к объекту
+		public var code:String;		//individual code
+		public var uid:String;		//unique identifier used for script access to the object
 		
 		public var prior:Number=1;
-		public var scX:Number=10, scY:Number=10, storona:int=1;	//размеры
-		public var rasst2:Number=0;	//расстояние до ГГ в квадрате
+		public var scX:Number=10, scY:Number=10, storona:int=1;	//dimensions
+		public var rasst2:Number=0;	//distance to the player square
 		public var massa:Number=1;
 		public var levit:int=0;
-		public var levitPoss:Boolean=true;	//возможность перемещать с помощью левитации
-		public var fracLevit:int=0; //был левитирован
-		public var radioactiv:Number=0;	//радиоактивность
-		public var radrad:Number=250;	//радиус радиоактивности
-		public var radtip:int=0;		//0 - радиация, 1 - яд, 2 - розовое облако, 3 - смерть
-		public var warn:int=0;			//цвет вспл. подсказки
+		public var levitPoss:Boolean=true;	//ability to move using levitation
+		public var fracLevit:int=0; //was levitated
+		public var radioactiv:Number=0;	//radioactivity
+		public var radrad:Number=250;	//radioactivity radius
+		public var radtip:int=0;		//0 - radiation, 1 - poison, 2 - pink cloud, 3 - death
+		public var warn:int=0;			//tooltip color
 		public var nazv:String='';
 		
 		public var inter:Interact;
-		public var dist2:Number=0;	//расстояние до ГГ в квадрате
+		public var dist2:Number=0;	//distance to the player square
 		public var X1:Number, X2:Number, Y1:Number, Y2:Number;
 		
 		public var onCursor:Number=0;
-		//цветовой фильтр
+		//color filter
 		
 		public static var nullTransfom:ColorTransform=new ColorTransform();
 		public var cTransform:ColorTransform=nullTransfom;
@@ -72,7 +72,7 @@
 			return null;
 		}
 		
-		//команда скрипта
+		//script command
 		public function command(com:String, val:String=null) {
 			if (com=='show') {
 				World.w.cam.showOn=true;
@@ -81,7 +81,7 @@
 			}
 		}
 		
-		//воздействие на гг
+		//affecting the main character
 		public function ggModum() {
 			if (loc==World.w.gg.loc && radioactiv && rasst2>=0 && rasst2<radrad*radrad) {
 				World.w.gg.raddamage((radrad-Math.sqrt(rasst2))/radrad,radioactiv,radtip);
@@ -108,19 +108,19 @@
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
 		}
 		
-		//копирование состояния в другой объект
+		//copying the state into another object
 		public function copy(un:Obj) {
 			un.X=X, un.Y=Y, un.scX=scX, un.scY=scY;
 			un.Y1=Y1, un.Y2=Y2, un.X1=X1, un.X2=X2;
 			un.storona=storona;
 		}
 		
-		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
+		//checking if the bullet hit, applying damage if it did, returns -1 if it missed
 		public function udarBullet(bul:Bullet, sposob:int=0):int {
 			return -1;
 		}
 		
-		//проверка пересечения с другим объектом
+		//checking intersection with another object
 		public function areaTest(obj:Obj):Boolean {
 			if (obj==null || obj.X1>=X2 || obj.X2<=X1 || obj.Y1>=Y2 || obj.Y2<=Y1) return false;
 			else return true;

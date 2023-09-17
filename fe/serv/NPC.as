@@ -5,22 +5,22 @@
 
 	public class NPC {
 
-		public var xml:XML;			//XML из GameData
-		public var id:String='';			//id npc-а
-		public var vid:String;			//id привязанного торговца
-		public var owner:Obj;				//владелец, физический объект, например юнит
-		public var vendor:Vendor;			//привязанный объект торговца
-		public var inter:Interact;			//интерактив владельца
+		public var xml:XML;			// XML from GameData
+		public var id:String='';			// NPC id
+		public var vid:String;			// id of the linked vendor
+		public var owner:Obj;				// owner, a physical object, for example, a unit
+		public var vendor:Vendor;			// linked vendor object
+		public var inter:Interact;			// owner's interaction
 
-		public var hidden:Boolean=false;	//юнит, связанный с npc-ом, будет скрытым
-		//сохраняемые состояния
+		public var hidden:Boolean=false;	// the unit linked to the NPC will be hidden
+		// savable states
 		public var rep:int=0;
 		public var zzzGen:Boolean=false;
 		
-		public var npcInter:String='';		//тип взаимодействия
-		//отображаемые около курсора варианты взаимодействия. например, "поговорить". когда диалог есть и когда нет
+		public var npcInter:String='';		// type of interaction
+		// interaction options displayed near the cursor, for example, "talk," when there is dialogue and when there isn't
 		public var userAction1:String, userAction2:String;
-		public var ndial:String;	//диалог, когда нечего больше сказать
+		public var ndial:String;	// dialogue when there's nothing more to say
 		
 		
 		public function NPC(nxml:XML, loadObj:Object=null, nvid:String=null, ndif:int=100) {
@@ -37,7 +37,7 @@
 				if (loadObj.rep!=null) rep=loadObj.rep;
 			}
 			if (nvid!=null) vid=nvid;
-			//создать объект торговца
+			// Create a vendor object
 			if (vid!=null && vid!='') {
 				if (World.w.game.vendors[vid]){
 					vendor = World.w.game.vendors[vid];
@@ -58,12 +58,12 @@
 			return obj;
 		}
 		
-		//настройка интеракта, вызывается при подключении к юниту
+		// Setting up interaction, called when connecting to the unit
 		public function setInter() {
 			if (id=='adoc' && rep<=1) inter.t_action=45;
 		}
 		
-		//функция вызывается при создании юнита
+		// This function is called when the unit is created
 		public function init() {
 			if (id=='calam') {
 				if (rep==0 || trig('rbl_visited')>0) {
@@ -78,7 +78,7 @@
 			return World.w.game.triggers[s];
 		}
 		
-		//функция вызывается при генерации карты с юнитом
+		// This function is called when generating a map with the unit
 		public function refresh() {
 			if (id=='calam') {
 				if (rep==0 && owner) owner.command('ai','');
@@ -98,14 +98,14 @@
 			if (id=='mentor') hidden=(trig('theend')>0);
 		}
 		
-		//функция вызывается при приземелении летающего
+		// This function is called when a flying unit lands
 		public function landing() {
 			if (id=='calam') {
 				rep=1;
 			}
 		}
 		
-		//активировать взаимодействие с npc
+		// Activate interaction with NPC
 		public function activate() {
 			if (check(true) && npcInter!='patient') return;
 			if (npcInter=='travel') {
@@ -139,7 +139,7 @@
 		}
 		
 		
-		//проверить на квестовые действия, если us, то произвести действия, если нет, то только установить статус
+		// Check for quest actions, if 'us', perform actions; if not, only set the status
 		public function check(us:Boolean=false):Boolean {
 			if (xml && xml.dial.length()) {
 				for each (var dial in xml.dial) {
@@ -157,10 +157,10 @@
 					if (dial.@land.length() && !World.w.game.lands[dial.@land].access) continue; 
 					if (dial.@armor.length() && (World.w.gg.currentArmor==null || World.w.gg.currentArmor.id!=dial.@armor)) continue; 
 					if (dial.@pet.length() && World.w.gg.currentPet!=dial.@pet) continue; 
-					if (dial.@quest.length()) {						//если активен квест
+					if (dial.@quest.length()) {						 // If a quest is active
 						var quest=World.w.game.quests[dial.@quest];
 						if (quest==null || quest.state!=1) continue; 
-						if (dial.@sub.length()) {					//если видимый подквест
+						if (dial.@sub.length()) {					// If there is a visible sub-quest
 							if (quest.subsId[dial.@sub]==null || quest.subsId[dial.@sub].invis) continue; 
 						}
 					}
@@ -216,7 +216,7 @@
 				else if (npcInter=='doc' || npcInter=='vdoc') {
 					inter.userAction='therapy';
 				} else if (npcInter=='patient') {
-					if (trig('patient_tr2')=='1') {//вылечили
+					if (trig('patient_tr2')=='1') {//cured
 						inter.t_action=0;
 						inter.userAction='dial';
 					} else {
@@ -236,7 +236,7 @@
 			inter.update();
 		}
 		
-		//установить верхнюю иконку
+		// Set the top icon
 		function setIco(n:String=null) {
 			try {
 				if (n==null) owner['ico'].gotoAndStop(owner['icoFrame']);
@@ -295,24 +295,24 @@
 		public function patient() {
 			if (World.w.pers.skills[xml.@needskill]==null) return;
 			var sk:int=World.w.pers.getSkLevel(World.w.pers.skills[xml.@needskill]);
-			if (rep==2) {	//вылечил
-				if (trig('patient_tr2')=='1') {//вылечили
+			if (rep==2) {	// Cured
+				if (trig('patient_tr2')=='1') {// Cured
 					if (owner) owner.command('openEyes');
 				} else {
 					World.w.gui.dialog('dialPatient7');
 				}
-			} else if (rep==1) {	//после осмотра
-				if (World.w.invent.items[xml.@needitem] && World.w.invent.items[xml.@needitem].kol>0) {	//есть лекарство
+			} else if (rep==1) {	// After examination
+				if (World.w.invent.items[xml.@needitem] && World.w.invent.items[xml.@needitem].kol>0) {	// There's medicine
 					World.w.invent.minusItem(xml.@needitem, 1);
 					rep=2;
 					World.w.gui.dialog('dialPatient5');
 					World.w.game.triggers['patient_tr2']='wait';
 					World.w.game.closeQuest('patientHeal', '3');
 					World.w.game.showQuest('patientHeal', '4');
-				} else {	//нет лекарства
+				} else {	// No medicine
 					World.w.gui.dialog('dialPatient8');
 				}
-			} else if (sk<4) {	//уровень медицины не достаточный
+			} else if (sk<4) {	// Insufficient medical skill
 				World.w.gui.dialog('dialPatient2');
 			} else {
 				World.w.gui.dialog('dialPatient3');
