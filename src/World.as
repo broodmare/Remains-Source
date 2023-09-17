@@ -62,8 +62,8 @@
 		public var game:Game;			//Game
 		public var gg:UnitPlayer;		//Player unit
 		public var pers:Pers;			//Character
-		public var invent:Invent;		 //Inventory
-		public var gui:GUI;				 //GUI
+		public var invent:Invent;		//Inventory
+		public var gui:GUI;				//GUI
 		public var grafon:Grafon;		//Graphics
 		public var pip:PipBuck;			//Pipbuck
 		public var stand:Stand;			//Stand
@@ -101,20 +101,20 @@
 		
 		
 		//Settings variables
-		public var enemyAct:int=3;	//enemy activity, should be 3. If 0, enemies will not be active
-		public var roomsLoad:int=1;  			//1-load from file
-		var langLoad=1;  			//1-load from file
-		public var addCheckSP:Boolean=false;			//add skill points when visiting checkpoints
+		public var enemyAct:int=3;					//enemy activity, should be 3. If 0, enemies will not be active
+		public var roomsLoad:int=1;  				//1-load from file
+		var langLoad=1;  							//1-load from file
+		public var addCheckSP:Boolean=false;		//add skill points when visiting checkpoints
 		public var weaponsLevelsOff:Boolean=true;	//disable using weapons of incorrect level
 		public var drawAllMap:Boolean=false;		//display the whole map without fog of war
 		public var black:Boolean=true;				//display fog of war
 		public var testMode:Boolean=false;			//Test mode
 		public var chitOn:Boolean=false;
 		public var chit:String='', chitX:String=null;	//current cheat
-		public var showArea:Boolean=false;	//show active zones
-		public var godMode:Boolean=false;				//invincibility 
-		public var showAddInfo:Boolean=false;		//show additional information
-		public var testBattle:Boolean=false;		//stamina will be consumed outside of battle
+		public var showArea:Boolean=false;		//show active zones
+		public var godMode:Boolean=false;		//invincibility 
+		public var showAddInfo:Boolean=false;	//show additional information
+		public var testBattle:Boolean=false;	//stamina will be consumed outside of battle
 		public var testEff:Boolean=false;		//effects will be 10 times shorter
 		public var testDam:Boolean=false;		//cancel damage range
 		public var hardInv:Boolean=false;		//limited inventory
@@ -122,19 +122,19 @@
 		public var maxParts:int=100;			//maximum particles
 		
 		public var zoom100:Boolean=false;		//zoom 100%
-		public var dialOn:Boolean=true;		//show dialogues with NPCs
-		public var showHit:int=2;			//show damage
-		public var matFilter:Boolean=true;	//material filter
-		public var helpMess:Boolean=true;	//tutorial messages
+		public var dialOn:Boolean=true;			//show dialogues with NPCs
+		public var showHit:int=2;				//show damage
+		public var matFilter:Boolean=true;		//material filter
+		public var helpMess:Boolean=true;		//tutorial messages
 		
-		public var shineObjs:Boolean=false;	//objects glow
-		public var sysCur:Boolean=false;	//system cursor
-		public var hintKeys:Boolean=true;	//keyboard hints
-		public var hintTele:Boolean=true;	//teleport hints
-		public var showFavs:Boolean=true;	//show additional info when cursor is on top of the screen
+		public var shineObjs:Boolean=false;		//objects glow
+		public var sysCur:Boolean=false;		//system cursor
+		public var hintKeys:Boolean=true;		//keyboard hints
+		public var hintTele:Boolean=true;		//teleport hints
+		public var showFavs:Boolean=true;		//show additional info when cursor is on top of the screen
 		public var errorShow:Boolean=true;
 		public var errorShowOpt:Boolean=true;
-		public var quakeCam:Boolean=true;	//camera shake
+		public var quakeCam:Boolean=true;		//camera shake
 		
 		public var vsWeaponNew:Boolean=true;	//automatically take new weapon if there is room
 		public var vsWeaponRep:Boolean=true;	//automatically take weapon for repair
@@ -217,11 +217,11 @@
 		public var kolLandsLoaded:int=0;
 		public var allLandsLoaded:Boolean=false;
 		
-		public var comLoad:int=-1;	//load command
-		public var clickReq:int=0;	//button click request, if set to 1, 2 will only be set after click
-		public var ng_wait:int=0;	//new game wait
+		public var comLoad:int=-1;		//load command
+		public var clickReq:int=0;		//button click request, if set to 1, 2 will only be set after click
+		public var ng_wait:int=0;		//new game wait
 		public var loadScreen:int=-1;	//loading screen
-		public var autoSaveN:int=0;	//autosave slot number
+		public var autoSaveN:int=0;		//autosave slot number
 		public var log:String='';
 		
 		//fps counter
