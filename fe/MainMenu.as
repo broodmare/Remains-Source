@@ -24,7 +24,7 @@
 	
 	public class MainMenu {
 
-		var version:String='1.0.2';
+		var version:String='1.0.3';
 		var mm:MovieClip;
 		public var main:Sprite;
 		var world:World;
