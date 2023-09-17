@@ -1,4 +1,4 @@
-﻿package fe {
+﻿package src {
 	
 	//A class that performs the loading of text files
 	import flash.net.URLLoader; 

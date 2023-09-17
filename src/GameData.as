@@ -1,4 +1,4 @@
-﻿package fe {
+﻿package src {
 	
 	public class GameData {
 

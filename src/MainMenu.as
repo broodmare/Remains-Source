@@ -1,4 +1,4 @@
-﻿package fe {
+﻿package src {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;

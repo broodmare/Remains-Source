@@ -22,7 +22,7 @@
 	import src.*;
 
 	//import src.Editor;
-	//import src.AllData;
+	import src.AllData;
 	
 	public class MainFE extends flash.display.MovieClip{
 		
