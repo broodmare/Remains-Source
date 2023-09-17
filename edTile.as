@@ -5,14 +5,14 @@
 	
 	public class edTile extends MovieClip {
 		
-		//для блоков-образцов
-		public var tip:int=0;	//слой, он же индекс ids. 1-фронт, 2-зад, 3-лестница, 4-балка или ступеньки, 5-вода
+		//for sample blocks
+		public var tip:int=0;	 //layer, also known as ids index. 1-front, 2-back, 3-stairs, 4-beam or steps, 5-water
 		public var id:String;
 		
-		//для блоков рабочей области
+		// for workspace blocks
 		public var ids:Array=['','','','','',''];
 		public var frames:Array=[0,0,0,0,0,0];
-		public var zForm:int=0; //0-полный, 1-3/4, 2-1/3, 3-1/4
+		public var zForm:int=0; //0-full, 1-3/4, 2-1/3, 3-1/4
 		
 		public var vis2:MovieClip;
 		
@@ -55,7 +55,7 @@
 			return false
 		}
 		
-		//для определения проходов
+		//to determine passages
 		public function isPhis():Boolean {
 			if (ids[1]=='') return false;
 			else return true;
@@ -79,9 +79,9 @@
 					} else if (fr==':') {
 						zForm=3;
 					} else {
-						var obj:Object=backs[fr];	//достаём нужный объект из массива
-						ids[obj.tip]=fr;			//назначаем нужный id
-						frames[obj.tip]=obj.frame;	//назначаем нужный кадр
+						var obj:Object=backs[fr];	// retrieve the necessary object from the array
+						ids[obj.tip]=fr;			// assign the necessary id
+						frames[obj.tip]=obj.frame;	// assign the necessary frame
 					}
 				}
 			}

@@ -17,7 +17,7 @@
 		public var blend:String='normal';
 		public var alpha:Number=1;
 		public var sloy:int=0;
-		public var er:Boolean=false;	//стирание
+		public var er:Boolean=false;	// erasure
 
 		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null) {
 			id=nid;

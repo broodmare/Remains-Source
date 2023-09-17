@@ -70,7 +70,7 @@ function loadComplete(event:Event):void
 			myMenu.hideBuiltInItems();
 			myMenu.builtInItems.quality=true;
 			contextMenu=myMenu;
-			myMenu.customItems.push(new ContextMenuItem("Привет!",false,true,false));
+			myMenu.customItems.push(new ContextMenuItem("Hello!",false,true,false));
 			stop();
 			addEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 

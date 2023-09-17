@@ -528,7 +528,7 @@
 			}
 			
 		/* ****** */World.w.gr_stage=17;
-			for each (mat in arrFront) drawKusok(mat,false,true);	//добавление на задний план текстур переднего плана, таких как балки
+			for each (mat in arrFront) drawKusok(mat,false,true);	//adding textures from the front to the background, such as beams
 			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
 			
 			
@@ -545,14 +545,14 @@
 			}
 		} catch (err) {World.w.showError(err)}
 		/* ****** */World.w.gr_stage=19;
-			//активные объекты
+			//active objects
 			drawAllObjs();
 			//var d2:Date=new Date();
 			//trace('***',d2.getTime()-d1.getTime(),'ms')
 		/* ****** */World.w.gr_stage=0;
 		}
 		
-		//прорисовка всей карты затемнения
+		//drawing the entire shadow map
 		public function setLight() {
 			lightBmp.lock();
 			for (var i=1; i<loc.spaceX; i++) {
@@ -563,7 +563,7 @@
 			lightBmp.unlock();
 		}
 		
-		//добавление всех видимых объектов
+		// adding all visible objects
 		public function drawAllObjs() {
 			for (var i=0; i<kolObjs; i++) {
 				var n=visual.getChildIndex(visObjs[i]);
@@ -580,7 +580,7 @@
 			for (i in loc.signposts) visObjs[3].addChild(loc.signposts[i]);
 		}
 		
-		//заполнение заднего плана текстурой
+		//filling the back wall with texture
 		public function drawBackWall(tex:String, sposob:int=0) {
 			if (tex=='sky') return;
 			m=new Matrix();
@@ -618,7 +618,7 @@
 			}
 		}
 		
-		//рисование текстурных материалов
+		//drawing textured materials
 		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean=false) {
 			if (!material.used) return;
 			if (material.rear==toFront) return;

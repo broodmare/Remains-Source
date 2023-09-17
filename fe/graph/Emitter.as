@@ -21,7 +21,7 @@
 			}
 		}
 		
-		//заданный эмиттер создаёт частицу
+		// The specified emitter creates a particle
 		public static function emit(nid:String, loc:Location, nx:Number, ny:Number, param:Object=null) {
 			var em:Emitter=arr[nid];
 			if (em) em.cast(loc,nx,ny,param);
@@ -29,19 +29,19 @@
 		}
 		
 		/*
-				Частицы
-				vis - визуальный класс
-				ctrans='1' - применяются цветовые настройки локации
-				move='1' - частица движется
-				alph='1' - частица становится прозрачной под конец жизни
+				Particles
+				vis - visual class
+				ctrans='1' - location's color settings are applied
+				move='1' - particle moves
+				alph='1' - particle becomes transparent towards the end of its life
 				
-				minliv, rliv - время жизни
-				minv, rv - начальная скорость в случайном направлении
-				rdx, rdy - случайная скорость по направлению x,y
-				dx, dy - заданная скорость по направлению x,y
-				rr - случайная скорость вращения
-				rot='1' - случайный начальный угол поворота
-				grav - степень подверженности гравитации
+				minliv, rliv - lifetime
+				minv, rv - initial speed in a random direction
+				rdx, rdy - random speed in the x, y direction
+				dx, dy - specified speed in the x, y direction
+				rr - random rotational speed
+				rot='1' - random initial rotation angle
+				grav - gravity susceptibility
 		*/
 		public var id:String;
 		
@@ -49,7 +49,7 @@
 		public var visClass:Class;
 		public var sloy=3;
 		
-		public var imp:int=0;	//1 - является важной
+		public var imp:int=0;	//1 - is important
 		
 		public var blit:String;
 		public var blitx:int=0;
@@ -99,15 +99,15 @@
 			if (vis) visClass=Res.getClass(vis);
 		}
 		
-		//эмиттер создаёт частицу
-		//param может содержать свойства:
-		//kol - количество
-		//rx,ry - случайное отклонение от nx,ny
+		// The emitter creates a particle
+		// The param can contain properties:
+		//kol - number of particles
+		//rx,ry - random deviation from nx, ny
 		//alpha, scale
-		//dx,dy,dr - начальная скорость
-		//frame - заданный кадр
-		//txt - текст, используемый в текстовых частицах
-		//celx+cely - ориентация
+		//dx,dy,dr - initial velocity
+		//frame - specified frame
+		//txt - text used in text particles
+		//celx+cely - orientation
 		
 		public function cast(loc:Location, nx:Number, ny:Number, param:Object=null):Part {
 			if (loc==null || !loc.active) return null;
