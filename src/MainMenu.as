@@ -24,7 +24,7 @@
 	
 	public class MainMenu {
 
-		var version:String='1.0.3';
+		var version:String='1.0.3 (woons)';
 		var mm:MovieClip; // Create MovieClip object for MainMenu
 		public var main:Sprite;
 		var world:World;
