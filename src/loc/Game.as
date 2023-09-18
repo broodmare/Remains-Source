@@ -22,16 +22,16 @@
 		public var quests:Array;
 		public var names:Array;
 		
-		//время игры
-		public var dBeg:Date;			//время начала игры
-		public var t_proshlo:Number;	//время текущей сессии
-		public var t_save:Number=0;		//сохранённое время
+		// Game Time
+		public var dBeg:Date;			// Start time of the game
+		public var t_proshlo:Number;	// Current session time
+		public var t_save:Number=0;		// Saved time
 		
-		public var globalDif:int=2;	//глобальный уровень сложности
-		public var baseId:String='';	//местность, в которую происходит возврат
+		public var globalDif:int=2;	// Global difficulty level
+		public var baseId:String='';	// Area to which the return occurs
 		public var missionId:String='';
 		public var crea:Boolean=false;
-		public var mReturn:Boolean=true;	//можно возвратиться в базовый лагерь
+		public var mReturn:Boolean=true;	// Can return to the base camp
 		
 		var objs:Array;
 		
@@ -63,7 +63,7 @@
 			var obj:Object=new Object;
 			obj.dif=globalDif;
 			obj.land=curLandId;
-			World.w.land.saveObjs(objs);	//сохранить массив объектов с id
+			World.w.land.saveObjs(objs);	//Save an array of objects with IDs
 			obj.objs=new Array();
 			for (var uid in objs) {
 				var obj1=objs[uid];
@@ -161,9 +161,9 @@
 			if (loadObj) {
 				curLandId=loadObj.land;
 				if (curLandId!='rbl') missionId=loadObj.land;
-			} else if (opt && opt.propusk==true) {		//пропустить обучение
+			} else if (opt && opt.propusk==true) {		// Skip training
 				triggers['dial_dialCalam2']=1;
-			} else {									//не пропускать обучение
+			} else {									// Do not skip training
 				curLandId='begin';
 			}
 			for each(var q in quests) {
@@ -178,7 +178,7 @@
 			addNote('helpGl2');
 			dBeg=new Date();
 			if (loadObj==null) triggers['nomed']=1;
-			//trace('Глобальная сложность ',globalDif)
+			//trace('Global Difficulty ',globalDif)
 		}
 		
 		public function changeDif(ndif):Boolean {
@@ -195,7 +195,7 @@
 			Land.locN+=5;
 			World.w.time___metr();
 			if (World.w.land && objs) World.w.land.saveObjs(objs);
-			//переход на случайную встречу
+			///Transition to a random encounter
 			Encounter();
 			curLand=lands[curLandId];
 			if (curLand==null) curLand=lands['rbl'];
@@ -209,7 +209,7 @@
 				}
 				curLand.land=new Land(World.w.gg, curLand, n);
 			}
-			World.w.time___metr('Создание местности');
+			World.w.time___metr('Creating Area');
 			if (!first) triggers['firstroom']=1;
 			crea=false;
 			World.w.ativateLand(curLand.land);
@@ -232,12 +232,12 @@
 			if (curLand.upStage) {
 				curLand.upStage=false;
 			}
-			World.w.time___metr('Вход в местность');
-			//trace('Этап сюжета ', curLand.land.gameStage);
-			//trace('Общая сложность ', curLand.land.landDifLevel);
+			World.w.time___metr('Entering the location');
+			//trace('Current Game Stage ', curLand.land.gameStage);
+			//trace('Overall Difficulty ', curLand.land.landDifLevel);
 		}
 		
-		//Перенаправление на другую локацию
+		// Redirect to another location
 		function Encounter() {
 			if (curLandId=='random_canter' && !(triggers['encounter_way']>0)) curLandId='way';
 			if (curLandId=='random_encl' && !(triggers['encounter_post']>0)) curLandId='post';
@@ -245,7 +245,7 @@
 			if (curLandId=='stable_pi' && triggers['storm']==5) curLandId='stable_pi_surf';
 		}
 		
-		/*переход в новую местность
+		/*Transition to a new location
 			gotoLand(nland:String)
 			World.w.exitLand();
 			enterToCurLand();
@@ -296,7 +296,7 @@
 			//trace('landStage',curLand.landStage);
 		}
 		
-		//проверить возможность путешествия через карту
+		// Check the possibility of traveling through the map
 		public function checkTravel(lid):Boolean {
 			if (this.curLandId=='grave') return false;
 			if (!triggers['fin']>0) return true;
@@ -316,14 +316,14 @@
 		}
 		
 		public function addQuest(id:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest {
-			//Если квест уже есть
+			// Check if the quest exists, if so...
 			if (quests[id]) {
-				//Если есть, но не активен, сделать активным
+				// If it is not active, make it active
 				if (quests[id].state==0) {
 					quests[id].state=1;
 					World.w.gui.infoText('addTask',quests[id].nazv);
 					Snd.ps('quest');
-					//проверить этапы, если все выполнены, то сразу и закрыть
+					// Check stages, if all are completed, close it immediately
 					quests[id].isClosed();
 					quests[id].deposit();
 					if (quests[id].state==2) World.w.gui.infoText('doneTask',quests[id].nazv);
@@ -332,7 +332,7 @@
 			}
 			var xlq:XMLList=GameData.d.quest.(@id==id);
 			if (xlq.length()==0) {
-				trace ('не найден квест',id);
+				trace ('Quest not found',id);
 				return null;
 			}
 			var xq:XML=xlq[0];
@@ -374,7 +374,7 @@
 		
 		public function closeQuest(id:String, sid:String=null) {
 			var q:Quest=quests[id];
-			//Если этап квеста выполнен, а квест не взят, добавить его как неактивный
+			// If the quest stage is completed, but the quest is not taken, add it as inactive
 			if (q==null) {
 				q=addQuest(id,null,true);
 			}
@@ -417,7 +417,7 @@
 			triggers[id]=n;
 		}
 		
-		//определить, сколько предметов было сгенерировано
+		// Determine how many items were generated
 		public function getLimit(id:String):int {
 			if (limits[id]) return limits[id];
 			if (triggers[id]) {
@@ -428,7 +428,7 @@
 			return 0;
 		}
 		
-		//увеличить лимит на 1, etap=1 - при генерации, etap=2 - при взятии
+		// Increase the limit by 1, stage=1 - during generation, stage=2 - when taken
 		public function addLimit(id:String, etap:int) {
 			if (etap==1) {
 				if (limits[id]) limits[id]++;
@@ -440,7 +440,7 @@
 			}
 		}
 		
-		//Запустить скрипт из gamedata
+		// Run a script from gamedata
 		public function runScript(scr:String, own:Obj=null):Boolean {
 			var xml1=GameData.d.scr.(@id==scr);
 			if (xml1.length()) {
@@ -452,7 +452,7 @@
 			return false;
 		}
 		
-		//создать скрипт из gamedata
+		// Create a script from gamedata
 		public function getScript(scr:String, own:Obj=null):Script {
 				//trace(scr,own);
 			var xml1=GameData.d.scr.(@id==scr);
@@ -463,7 +463,7 @@
 			return null;
 		}
 		
-		//строковое представление времени игры
+		// String representation of game time
 		public function gameTime(n:Number=0):String {
 			if (n==0) {
 				var dNow:Date=new Date();

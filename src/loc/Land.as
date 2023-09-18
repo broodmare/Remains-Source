@@ -707,7 +707,7 @@
 			}
 		}
 		
-		//move the character to the spawn point
+		//Move the character to the spawn point
 		public function setGGToSpawnPoint() {
 			var nx:int=3, ny:int=3;
 			if (loc.spawnPoints.length>0) {
@@ -729,7 +729,7 @@
 				if (prob!='') nloc=probs[prob][locX][locY][locZ];	
 				else nloc=locs[locX][locY][locZ];
 			} catch (err) {
-				trace('локация не найдена',act.id,locX,locY,locZ)
+				trace('Location not found',act.id,locX,locY,locZ)
 				nloc=locs[0][0][0];
 			}
 			
@@ -750,7 +750,7 @@
 			return true;
 		}
 		
-		//go to location x,y
+		//Go to location x,y
 		public function gotoXY(nx:int,ny:int) {
 			if (nx<minLocX) nx=minLocX;
 			if (nx>=maxLocX) nx=maxLocX-1;
@@ -764,7 +764,7 @@
 		}
 		
 		
-		//transition between locations
+		//Transition between locations
 		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object {
 			var X:Number=gg.X, Y:Number=gg.Y, scX:Number=gg.scX, scY:Number=gg.scY;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
@@ -904,7 +904,7 @@
 			return map;
 		}
 		
-		//kill all enemies and open all containers
+		//Kill all enemies and open all containers
 		public function getAll():int {
 			var summ:int=0;
 			for (var i=minLocX; i<maxLocX; i++) {

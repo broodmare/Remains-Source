@@ -19,15 +19,15 @@
 		public var land:Land;
 		
 		public var id:String;
-		public var room:Room;		//связанный шаблон
-		public var prob:Probation;	//связанное испытание
+		public var room:Room;		 // Linked template
+		public var prob:Probation;	// Linked trial
 		
 		//Dimensions and Position
 		public var spaceX:int;	// Size of the location in blocks
 		public var spaceY:int;
 		public var limX:int;	// Size of the location in pixels
 		public var limY:int;
-		public var landX:int=0;	//положение локации на местности
+		public var landX:int=0;	// Location position on the terrain
 		public var landY:int=0;
 		public var landZ:int=0;
 		public var landProb:String='';
@@ -37,74 +37,74 @@
 		public var black:Boolean=true;	// Fog of war
 		
 		
-		//объекты
+		// Objects
 		public var grafon:Grafon;
-		public var space:Array;			//пространство блоков
-		public var otstoy:Tile;			//пустой блок
-		public var units:Array;			//юниты
-		public var ups:Array;			//спавн случайных юнитов
-		public var objs:Array;			//боксы
-		public var bonuses:Array;		//бонусы
-		public var areas:Array;			//области
-		public var acts:Array;			//активные объекты (отображаемые на карте)
-		public var saves:Array;			//объекты, подлежащие сохранению
-		public var backobjs:Array;		//фоновые объекты
-		public var grenades:Array;		//активные гранаты
+		public var space:Array;			 // Screen tile array
+		public var otstoy:Tile;			// Empty tile
+		public var units:Array;			// Units
+		public var ups:Array;			// Spawn random units
+		public var objs:Array;			// Boxes
+		public var bonuses:Array;		// Bonuses
+		public var areas:Array;			// Areas
+		public var acts:Array;			// Active objects (displayed on the map)
+		public var saves:Array;			// Objects subject to saving
+		public var backobjs:Array;		// Background objects
+		public var grenades:Array;		 // Active grenades
 		public var gg:UnitPlayer;
 		public var celObj:Obj, celDist:Number=-1;	// Target object and distance to it
 		public var unitCoord;			// Object for unit coordination
 		
-		//входы и посещение
-		public var spawnPoints:Array;	//точки спавна
-		public var enspawn:Array;		//точки спавна врагов
-		public var doors:Array;			//проходы в другие локации
-		public var signposts:Array, sign_vis:Boolean=true;		//указатели выхода
-		public var nAct:int=0;			//последнее посещение
-		public var active:Boolean=false;		//активна в данный момент
-		public var visited:Boolean=false;		//посещена
+		// Entrances and Visits
+		public var spawnPoints:Array;	// Spawn points
+		public var enspawn:Array;		// Enemy spawn points
+		public var doors:Array;			// Passages to other locations
+		public var signposts:Array, sign_vis:Boolean=true;		// Exit indicators
+		public var nAct:int=0;			// Last visit
+		public var active:Boolean=false;		// Currently active
+		public var visited:Boolean=false;		// Visited
 		
-		//служебные
+		// Service
 		public var cp:CheckPoint;
-		public var pass_r:Array, pass_d:Array;		//проходы в другие локации
-		//public var unitsT:Array;			//юниты
-		public var objsT:Array;				//активные объекты
-		public var recalcTiles:Array;		//пересчитать воду
-		public var firstObj:Pt, nextObj:Pt, lastObj:Pt;	//цепочка выполнения
+		public var pass_r:Array, pass_d:Array;		// Passages to other locations
+		//public var unitsT:Array;			// Units
+		public var objsT:Array;				// Active objects
+		public var recalcTiles:Array;		// Recalculate water
+		public var firstObj:Pt, nextObj:Pt, lastObj:Pt;	// Execution chain
 		public var isRebuild:Boolean=false, isRecalc:Boolean=false, isRelight:Boolean=false, relight_t:int;
-		public var warning:int=0;			//имеются опасности типа брошенных гранат
-		public var t_gwall:int=0;	//имеются призрачные стены
-		public var lDist1:int=300, lDist2:int=1000;	//дистанция открывания тумана войны
+		public var warning:int=0;			// Dangers like thrown grenades exist
+		public var t_gwall:int=0;	// Transparent walls exist
+		public var lDist1:int=300, lDist2:int=1000;	// Fog of war reveal distance
 		public var quake:int=0;
-		public var broom:Boolean=false;		//весь лут поднимется автоматически
-		public var isCheck:Boolean=false;	//была создана контрольная точка, точка выхода или дверь испытаний
+		public var broom:Boolean=false;		// All loot will be automatically picked up
+		public var isCheck:Boolean=false;	// Checkpoint, exit point, or trial door was created
 		
-		//опции
-		public var noHolesPlace:Boolean=true;	//убирать контейнеры около проходов
-		public var ramka:int=0;					//рамка из блоков по периметру 1-весь периметр, 2-только бока, 3-только низ, 4-низ и бока
-		public var bezdna:Boolean=false;		//выход вниз при падении
-		public var mirror:Boolean=false;		//зеркальная комната
-		public var endLand:Boolean=false;		//комната на последнем уровне локации
+		// Options
+		public var noHolesPlace:Boolean=true;	// Remove containers near passages
+		public var ramka:int=0;					// Frame made of blocks around the perimeter: 1 - entire perimeter, 2 - sides only, 3 - bottom only, 4 - bottom and sides
+		public var bezdna:Boolean=false;		// Falling leads downward
+		public var mirror:Boolean=false;		// Mirror room
+		public var endLand:Boolean=false;		// Room on the last level of the location
 		public var sky:Boolean=false;
 		public var zoom:Number=1;
 		
-		//настройки
-		public var gas:int=0;					//особая текстура
+		// Settings
+		public var gas:int=0;					// Special texture
 		public var maxdy:Number=20;
-		public var rad:Number=0, wrad:Number=1;	//радиоактивность воздуха и воды
-		public var wdam:Number=0, wtipdam:int=7;	//урон от воды
-		public var tipWater:int=0;				//внешний вид воды
-		public var opacWater:Number=0;			//непрозрачность воды
-		public var waterLevel:int=100;			//уровень воды
-		public var backwall:String='';			//фон задней стены
-		public var backform:int=0;				//форма фона задней стены 0-закрашено всё, 1-боковые части, 2-нижняя часть
-		public var transpFon:Boolean=false;		//задний фон имеет прозрачность
+		public var rad:Number=0, wrad:Number=1;	// Air and water radioactivity
+		public var wdam:Number=0, wtipdam:int=7;	// Water damage
+		public var tipWater:int=0;				// Water appearance
+		public var opacWater:Number=0;			// Water opacity
+		public var waterLevel:int=100;			// Water level
+		public var backwall:String='';			// Background wall
+		public var backform:int=0;				// Background wall shape: 0 - filled, 1 - side parts, 2 - bottom part
+		public var transpFon:Boolean=false;		// Transparent background
 		public var cTransform:ColorTransform;
 		public var cTransformFon:ColorTransform;
 		//public var fonTransform:Boolean=false;
 		public var color:String;
 		public var colorfon:String;
 		public var sndMusic:String='music_0';
-		public var postMusic:Boolean=false;		//музыка не пеключается на боевую
+		public var postMusic:Boolean=false;		// Music does not switch to combat
 		public var homeStable:Boolean=false;	
 		public var homeAtk:Boolean=false;	
 		public var visMult:Number=1;
@@ -120,26 +120,26 @@
 		public var electroDam:Number=0;
 		public var trus:Number=0;				// Constant shaking
 		
-		//враги
-		public var tipEnemy:int=-1;				//тип случайных врагов
-		public var kolEn:Array=[0,6,4,6,4,6]; //количество случайных мелких врагов: 0, мелкий ползучий, обычный, летучий, потолочный, ловушка
+		// Enemies
+		public var tipEnemy:int=-1;				// Type of random enemies
+		public var kolEn:Array=[0,6,4,6,4,6]; // Number of random small enemies: 0, small crawling, normal, flying, ceiling, trap
 		var tipEn:Array=['','enl1','enl2','enf1','enc1','lov'];
 		public var tipSpawn:String='enl2';
-		public var kolEnSpawn:int=0;		//может заспавнится обычных врагов
-		public var tileSpawn:Number=0;		//спавн при разрушении блоков
-		public var kolEnHid:int=3;			//скрытых обычных врагов
+		public var kolEnSpawn:int=0;		// Normal enemies may spawn
+		public var tileSpawn:Number=0;		// Spawn when breaking blocks
+		public var kolEnHid:int=3;			// Hidden normal enemies
 		public var kol_phoenix:int=0;
 		
 		public var detecting:Boolean=false;
-		public var t_alarm:int=0;			//счётчик сигнализации
-		public var t_alarmsp:int=0;			//счётчик спавна врагов
+		public var t_alarm:int=0;			// Alarm counter
+		public var t_alarmsp:int=0;			// Enemy spawn counter
 		
-		//бонусы и опыт
+		// Bonuses and Experience
 		public var kolXp:int=0, maxXp:int=0;
 		public var unXp:int=100;
 		public var summXp:int=0;
 		
-		//Уровень сложности
+		// Difficulty Level
 		public var locDifLevel:Number=0;
 		public var biom:int=0;
 		public var locksLevel:Number=0;		// Locks level 0-25
@@ -158,13 +158,13 @@
 		
 //**************************************************************************************************************************
 //
-//				Создание
+//				Creation
 //
 //**************************************************************************************************************************
 
 
 // ------------------------------------------------------------------------------------------------
-// первый этап - создать и построить по карте из xml
+// First stage - create and build according to the map from xml
 
 		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null) {
 			land=nland;
@@ -208,7 +208,7 @@
 			buildLoc(nroom);
 		}
 
-		// добавить гг в массив юнитов
+		// Add the player character to the units array
 		public function addPlayer(un:UnitPlayer) {
 			gg=un;
 			//units.shift(null)
@@ -219,16 +219,16 @@
 			units.push(un.defpet);
 		}
 		
-		//построить по карте xml
+		// Build according to the xml map
 		public function buildLoc(nroom:XML) {
-			//создать массив блоков
+			// Create an array of tiles
 			for (var i=0; i<spaceX; i++) {
 				space[i]=new Array();
 				for (var j=0; j<spaceY; j++) {
 					space[i][j]=new Tile(i,j);
 				}
 			}
-			//опции
+			// Options
 			backwall=land.act.backwall;
 			sndMusic=land.act.sndMusic;
 			postMusic=land.act.postMusic;
@@ -311,15 +311,15 @@
 					}
 					if (jis==null) jis='';
 					space[i][j].dec(jis,mirror);
-					if (space[i][j].stair!=0) {  //полочка наверху лестницы
+					if (space[i][j].stair!=0) {  // Shelf on top of the ladder
 						if (j>0 && space[i][j].phis==0 && !space[i][j].shelf && space[i][j].stair!=space[i][j-1].stair) {
 							space[i][j].shelf=true;
 							space[i][j].vid++;
 						}
 					}
-					//линия воды
+					// Water line
 					if (j>=waterLevel) space[i][j].water=1;
-					//рамка
+					// Frame
 					if (i==0 || i==spaceX-1 || j==0 || j==spaceY-1) {
 						if (ramka==1
 							|| (ramka==2 || ramka==4) && (i==0 || i==spaceX-1)
@@ -334,7 +334,7 @@
 				}
 			}
 			
-			//возможные проходы в другие локации
+			// Possible passages to other locations
 			if (nroom.doors.length()>0) {
 				var s:String=nroom.doors[0];
 				doors=s.split('.');
@@ -363,18 +363,18 @@
 				for (i=0; i<22; i++) doors[i]=2;
 			}
 			
-			//видимость
+			// Visibility
 			lDist1*=visMult;
 			lDist2*=visMult;
 			if (isNaN(lDist1)) {
 				lDist1=300, lDist2=1000;
 			}
-			//цветофильтр
+			// Color filter
 			cTransform=colorFilter(color);
 			if (colorfon) cTransformFon=colorFilter(colorfon);
 			
 			
-			//точки появления активных объектов
+			// Object spawnpoints
 			objsT=new Array();
 			for each(var obj:XML in nroom.obj) {
 				var xmll:XML=AllData.d.obj.(@id==obj.@id)[0];
@@ -391,7 +391,7 @@
 				} else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
 			}
 			
-			//фоновые объекты
+			// Background objects
 			for each(obj in nroom.back) {
 				backobjs.push(new BackObj(this, obj.@id,obj.@x*Tile.tileX,obj.@y*Tile.tileY, obj));
 			}
@@ -401,7 +401,7 @@
 			}
 		}
 		
-		//цветофильтр
+		// Color filter
 		public function colorFilter(f:String=''):ColorTransform {
 			var cT = new ColorTransform();
 			if (f=='green') {
@@ -463,9 +463,9 @@
 		}
 		
 // ------------------------------------------------------------------------------------------------
-// второй этап - определить проходы, сделать рамку, создать объекты в зависимости от сложности и проходов
+// Second stage - determine passages, create a frame, and create objects based on difficulty and passages
 
-		//добавить переход с номером n
+		// Add a transition with number n
 		public function setDoor(n:int, fak:int=2) {
 			var q:int;
 			if (fak<2) return;
@@ -536,7 +536,7 @@
 			} else return;
 		}
 		
-		//добавить указатели перехода в соседние локации
+		// Add transition indicators to neighboring locations
 		private function addSignPost(nx:int,ny:int,r:int) {
 			var sign:MovieClip;
 			sign=new signPost();
@@ -544,7 +544,7 @@
 			signposts.push(sign);
 		}
 		
-		//добавить точки спавна врагов 
+		// Add enemy spawn points
 		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null) {
 			var obj:Object=new Object();
 			if (xmll) {
@@ -558,7 +558,7 @@
 			enspawn.push(obj);
 		}
 		
-		//добавить места, в которых не должно быть контейнеров (около переходов)
+		// Add places where there should be no containers (near passages)
 		private function setNoObj(nx:int, ny:int, dx:int, dy:int) {
 			var i:int;
 			if (dx>0) for (i=nx; i<=nx+dx; i++) space[i][ny].place=false;
@@ -568,7 +568,7 @@
 		}
 		
 		
-		//главная рамка, вызывать после проделывания проходов
+		// Main frame, call after creating passages
 		public function mainFrame() {
 			var border:String='A';
 			if (land && land.act) border=land.act.border;
@@ -582,10 +582,10 @@
 			}
 		}
 		
-		//создать активные объекты в местах их появления, кроме мест около переходов, вызывать после проделывания проходов
+		// Create active objects in their spawn locations, except for places near passages, call after creating passages
 		public function setObjects() {
 			for each (var obj in objsT) {
-				if (noHolesPlace && obj.rem>0 && !space[obj.x][obj.y].place) continue;	//не ставить ящики около прохода
+				if (noHolesPlace && obj.rem>0 && !space[obj.x][obj.y].place) continue;	/// Do not place boxes near passages
 				if (obj.tip=='unit') createUnit(obj.id,obj.x,obj.y, false, obj.xml);
 				else createObj(obj.id, obj.tip, obj.x,obj.y, obj.xml);
 			}
@@ -594,7 +594,7 @@
 			if (land.rnd && World.w.pers.modMetal>0 && Math.random()<World.w.pers.modMetal) putRandomLoot();
 		}
 		
-		//задать количество случайных врагов
+		// Set the number of random enemies
 		public function setKolEn(en:int, min:int, max:int, spl:int=0) {
 			if (en==-1) {
 				kolEnSpawn=min+Math.floor(Math.random()*(max-min+1));
@@ -604,11 +604,11 @@
 			}
 		}
 		
-		//создать случайных врагов в точках их появления
+		// Create random enemies in their spawn points
 		public function setRandomUnits() {
 			for (var i=1; i<kolEn.length; i++) {
 				if (kolEn[i]>0 && ups[i].length) {
-					//убрать точки от проходов
+					// Remove points near passages
 					if (noHolesPlace) {
 						for (var j=0; j<ups[i].length; j++) {
 							if (!space[ups[i][j].x][ups[i][j].y].place) {
@@ -629,7 +629,7 @@
 					}
 				}
 			}
-			//добавить скрытых врагов
+			// Add hidden enemies
 			if (kolEnHid>0 && ups[2].length>0) {
 				for (j=0; j<kolEnHid; j++) {
 					n=Math.floor(Math.random()*ups[2].length);
@@ -640,7 +640,7 @@
 			}
 		}
 		
-		//создать рандомный лут
+		// Create random loot
 		public function putRandomLoot() {
 			var nx:int=Math.floor(Math.random()*(spaceX-2)+1);
 			var ny:int=Math.floor(Math.random()*(spaceY-2)+1);
@@ -1182,11 +1182,11 @@
 		
 //**************************************************************************************************************************
 //
-//				Активация
+//				Activation
 //
 //**************************************************************************************************************************
 		
-		//активировать при входе гг в локацию
+		// Activate when the player character enters the location
 		public function reactivate(n:int=0) {
 			var obj:Pt=firstObj;
 			while (obj) {
@@ -1198,7 +1198,7 @@
 				for (var j=0; j<spaceY; j++) {
 				}
 			}*/
-			//отвильтровать уничтоженные юниты
+			// Filter out destroyed units
 			//if (prob==null || prob.closed)
 			resetUnits();
 			if (n>0) nAct=n;
@@ -1212,7 +1212,7 @@
 		
 		public function resetUnits() {
 			units=units.filter(isAct);
-			//trace('Юнитов:',units.length);
+			//trace('Units:',units.length);
 		}
 		
 		private function isAct(element:*, index:int, arr:Array):Boolean {
@@ -1222,7 +1222,7 @@
             return (element.sost < 4);
         }
 		
-		//деактивировать локацию
+		// Deactivate the location
 		public function out() {
 			active=false;
 			for each (var un:Unit in units) {
@@ -1233,10 +1233,10 @@
 		
 //**************************************************************************************************************************
 //
-//				Цепочка обработки
+//				Processing Chain
 //
 //**************************************************************************************************************************
-		//добавить любой объект в цепочку обработки
+		// Add any object to the processing chain
 		public function addObj(obj:Pt) {
 			if (obj.in_chain) return;
 			if (!firstObj) firstObj=obj;
@@ -1250,7 +1250,7 @@
 			if (active) obj.addVisual();
 		}
 		
-		//удалить объект из цепочки обработки
+		// Remove an object from the processing chain
 		public function remObj(obj:Pt) {
 			if (!obj.in_chain) return;
 			if (obj.nobj) {
@@ -1270,10 +1270,11 @@
 		
 //**************************************************************************************************************************
 //
-//				Работа с пространством блоков
+//				Working with Tile Space
 //
 //**************************************************************************************************************************
-		//получить блок
+
+		// Get a tile
 		public function getTile(nx:int,ny:int):Tile {
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return otstoy;
 			else return space[nx][ny] as Tile;
@@ -1294,7 +1295,7 @@
 			}
 			return false;
 		}
-		//попробовать проложить линию. obj - дверь, которую нужно игнорировать
+		// Try to create a line. obj - the door to ignore
 		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean {
 			var ndx=cx-nx;
 			var ndy=cy-ny;
@@ -1310,7 +1311,7 @@
 			return true;
 		}
 	
-		//контуры блоков
+		// Tile contours
 		public function tileKontur(tx:int, ty:int, t:Tile) {
 			var a0:Boolean,a1:Boolean,a2:Boolean,a3:Boolean,a4:Boolean,a5:Boolean,a6:Boolean,a7:Boolean;
 			if (t.phis==1) {
@@ -1362,46 +1363,46 @@
 			else return 4;
 		}
 		
-		//контуры переднего плана
+		// Front contours
 		private function uslKontur(nx:int,ny:int):Boolean {
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].phis==1 || space[nx][ny].door!=null);
 			//else return space[nx][ny].back==b;
 		}
-		//контуры заднего плана если есть стенка
+		// Back contours with a wall
 		private function uslPontur(nx:int,ny:int):Boolean {
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].back!='' || space[nx][ny].shelf>0);
 		}
-		//контуры заднего плана если нет стенки
+		// Back contours without a wall
 		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean {
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].back==b || vse && space[nx][ny].back!='' || space[nx][ny].phis==1 || space[nx][ny].shelf>0);
 		}
 		
-		//урон блоку
+		// Tile damage
 		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9) {
-			//урон от падения
+			// Damage from falling
 			if (tip==100 && hit<=50 && (t.thre>0 || t.indestruct)) return;
 			if (tip==100) tip=4;
-			//стены в локации не разрушаются
+			// Location walls are not destructible
 			if (!destroyOn && t.hp>500) {
 				if (active && t.phis==1) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
 				return;
 			}
-			//был ли нанесён урон блоку
-			if (t.udar(hit)) {	//удар по блоку, проходит если был нанесён урон
-				if (t.hp<=0) {	//если блок уничтожен
+			// Has damage been dealt to the tile?
+			if (t.udar(hit)) {	// Hit the tile, passes if damage was dealt
+				if (t.hp<=0) {	// If the tile is destroyed
 					if (t.phis>=1) {
-						isRebuild=true;				//изменить конфигурацию локации				
-						if (t.Y<waterLevel) {		//пересчитать воду
+						isRebuild=true;				 // Change the location configuration
+						if (t.Y<waterLevel) {		// Recalculate water
 							recalcTiles.push(t);
 							isRecalc=true;
 						}
 					}
-					if (t.door) {				//если это дверь
+					if (t.door) {				// If it's a door
 						t.door.die(tip);
-					} else if (t.phis>=1) {		//если обычный твёрдый блок
+					} else if (t.phis>=1) {		// If it's a regular solid block
 					//} else if (t.phis>=1 || t.diagon!=0 || t.stair!=0 || t.floor!=0) {		//если обычный твёрдый блок
 						t.die();
 						try {
@@ -1409,23 +1410,23 @@
 						} catch(err) {}
 						if (active) grafon.tileDie(t,tip);
 					}
-				} else if (t.phis>=1) {	//если не уничтожен, но был нанесён урон
+				} else if (t.phis>=1) {	// If it's not destroyed but damage was dealt
 					if (active) grafon.dyrka(nx,ny,tip,t.mat,false,hit/t.hp);
 				}
-			} else if (t.phis>=1) {		//если не было урона
+			} else if (t.phis>=1) {		// If there was no damage
 				if (active) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
 			}
 		}
 		
-		//уничтожить блок
+		// Destroy a tile
 		public function dieTile(t:Tile) {
 			if (t.indestruct) return;
 			if (t.phis==1) {
-				if (t.door) {				//если это дверь
+				if (t.door) {				// If it's a door
 					t.door.die(4);
 				} 				
-				isRebuild=true;				//изменить конфигурацию локации				
-				if (t.Y<waterLevel) {		//пересчитать воду
+				isRebuild=true;				// Change the location configuration
+				if (t.Y<waterLevel) {		// Recalculate water
 					recalcTiles.push(t);
 					isRecalc=true;
 				}
@@ -1437,13 +1438,13 @@
 		}
 		
 		
-		//вызывается при любом изменении конфигурации пространства блоков
+		// Called on any change in the block space configuration
 		private function rebuild() {
 			recalcWater();
 			isRebuild=false;
 		}
 		
-		//физика воды		
+		// Water physics   
 		private function recalcWater() {
 			//trace(recalcTiles.length);
 			var rec:Array=recalcTiles;
@@ -1493,7 +1494,7 @@
 			//for each(var box in objs) if (box is Box) box.checkStay();
 		}
 		
-		//проверка на возможность установки призрачной стены, возвращает true если ничего не мешает
+		// Check for the possibility of placing a ghost wall, returns true if nothing obstructs
 		public function testTile(t:Tile):Boolean {
 			if (t.phis>0 || t.stair!=0 || t.water!=0 || t.door) return false;
 			for each (var cel in units) {
@@ -1512,7 +1513,7 @@
 			return true;
 		}
 		
-		//прорисовка карты
+		// Draw the map
 		public function drawMap(m:BitmapData) {
 			//m.fillRect(m.rect,0xFF000000);
 			var vid:Number=1;
@@ -1577,10 +1578,10 @@
 		
 //**************************************************************************************************************************
 //
-//				Использование
+//				Usage
 //
 //**************************************************************************************************************************
-		//команда всем объектам
+		// Command to all objects
 		public function allAct(emit:Obj, allact:String, allid:String='') {
 			var obj:Obj;
 			for each (obj in objs) {
@@ -1594,7 +1595,7 @@
 			}
 		}
 		
-		//пробуждение всех вокруг
+		// Wake up everyone around
 		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null) {
 			var r2:Number=rad*rad*earMult*earMult;
 			for each(var un in units) {
@@ -1615,20 +1616,20 @@
 			}
 		}
 		
-		//активировать все ячейки роботов
+		// Activate all robot cells
 		public function robocellActivate() {
 			for each(var un in objs) {
 				if (un.inter && un.inter.allact=='robocell') un.inter.genRobot();
 			}
 		}
 		
-		//включить сигнализацию
+		// Activate the alarm
 		public function signal(n:int=300) {
 			t_alarm=n;
 			t_alarmsp=Math.floor(n*Math.random()*0.25+0.25);
 			if (prob && prob.alarmScript) prob.alarmScript.start(); 
 		}
-		//включить всё
+		// Turn on everything
 		public function allon() {
 			color='yellow';
 			cTransform=colorFilter(color);
@@ -1651,7 +1652,7 @@
 			}
 			World.w.redrawLoc();
 		}
-		//выключить всё
+		// Turn off everything
 		public function alloff() {
 			color='black';
 			cTransform=colorFilter(color);
@@ -1670,7 +1671,7 @@
 			World.w.redrawLoc();
 		}
 		
-		//спавн врага в точке спавна
+		// Spawn an enemy at the spawn point
 		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null) {
 			if (kolEnSpawn<=0 || enspawn==null || enspawn.length==0) return;
 			kolEnSpawn--;
@@ -1684,7 +1685,7 @@
 			}
 		}
 		
-		//спавн врага из волны
+		// Spawn an enemy from a wave
 		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit {
 			if (w==null) return null;
 			if (enspawn.length==0) return null;
@@ -1703,7 +1704,7 @@
 			return null;
 		}
 		
-		//устроить трясучку
+		// Cause an earthquake
 		public function earthQuake(n:int) {
 			if (quake<n) {
 				quake=n;
@@ -1721,7 +1722,7 @@
 			addObj(obj);
 		}
 		
-		//обработать призрачные стены
+		// Process ghost walls
 		function gwalls() {
 			var est=false;
 			var t:Tile

@@ -4,18 +4,18 @@
 	import src.graph.Emitter;
 	import src.unit.Unit;
 	
-	//Активная область
+	// Active Area
 	
 	public class Area extends Obj{
 		
 		public var enabled:Boolean=true;
-		public var tip:String='gg';	//1 - активируется ГГ
+		public var tip:String='gg';	//1 - GG is activated
 		
-		//зазмеры в блоках
+		// Sizes in blocks
 		var bx:int=0, by:int=0, rx:int=2, ry:int=2;
 		
-		var active:Boolean=false;		//область активна (активатор находится в ней)
-		var preactive:Boolean=false;	//область была активна в предыдущем такте
+		var active:Boolean=false;		// Area is active (activator is in it)
+		var preactive:Boolean=false;	// Area was active in the previous cycle
 		
 		public var over:Function;
 		public var out:Function;
@@ -24,21 +24,21 @@
 		public var scrOver:Script;
 		public var scrOut:Script;
 		
-		public var mess:String;			//сообщение
-		public var messDown:Boolean;	//показать сообщение внизу
+		public var mess:String;			// Message
+		public var messDown:Boolean;	// Show message below
 		
 		public var activator:Unit;
-		public var allact:String;		//заданное действие на всю комнату
-		public var allid:String;		//ид для заданного действия
-		public var lift:Number=1;		//изменение гравитации
-		public var onPort:Boolean=false;//телепортация
+		public var allact:String;		// Action for the entire room
+		public var allid:String;		// ID for the specified action
+		public var lift:Number=1;		// Gravity change
+		public var onPort:Boolean=false;// Teleportation
 		public var portX:int=-1, portY:int=-1;
 		public var noRad:Boolean=false;
 		
 		public var emit:Emitter;
 		public var dens:Number=1;
 		public var frec:Number=1, t_frec:Number=0;
-		public var trig:Boolean;	//при первой активации отключить и установить триггер
+		public var trig:Boolean;	// Disable and set trigger on first activation
 
 		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) {
 			loc=nloc;
@@ -56,7 +56,7 @@
 				if (xml.@h.length()) ry=xml.@h;
 				scY=ry*World.tileY;
 				Y1=Y2-scY;
-				//визуал
+				// Visual
 				if (xml.@vis.length()) {
 					vis=Res.getVis('vis'+xml.@vis,visArea);
 				} if (World.w.showArea) {
@@ -69,7 +69,7 @@
 				if (xml.@allact.length()) allact=xml.@allact;
 				if (xml.@allid.length()) allid=xml.@allid;
 				if (xml.@trig.length()) trig=true;
-				//прикреплённые скрипты
+				// Attached Scripts
 				if (xml.scr.length()) {
 					for each (var xscr in xml.scr) {
 						var scr:Script=new Script(xscr,loc.land,this);
@@ -79,7 +79,7 @@
 				}
 				if (xml.@scr.length()) scrOver=World.w.game.getScript(xml.@scr,this);
 				if (xml.@scrout.length()) scrOut=World.w.game.getScript(xml.@scrout,this);
-				//изменить стенки
+				// Change Walls
 				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@tilethre.length()) {
 					for (var i=bx; i<bx+rx; i++) {
 						for (var j=by-ry+1; j<=by; j++) {
@@ -102,11 +102,11 @@
 				}
 				if (xml.@grav.length()) lift=xml.@grav;
 				if (xml.@norad.length()) noRad=true;
-				//эмиттер частиц
+				// Particle Emitter
 				if (xml.@emit.length()) emit=Emitter.arr[xml.@emit];
 				if (xml.@dens.length()) dens=xml.@dens;
 				frec=dens*rx*ry/100;
-				//телепорт
+				// Teleport
 				if (xml.@port.length()) {
 					var s:String=xml.@port;
 					var arr:Array=s.split(':');

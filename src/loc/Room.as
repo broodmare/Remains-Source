@@ -1,6 +1,6 @@
 ﻿package src.loc {
 	
-	//класс шаблона комнаты
+	// Room template class
 	
 	public class Room {
 		
@@ -16,7 +16,7 @@
 		public var back:String;
 		
 		public var kol=2;
-		public var rnd:Boolean=true;	//возможно использовать в качестве рандомной
+		public var rnd:Boolean=true;	// Can be used as a random one
 		
 		public static var nornd:Array = ["beg0","back","roof","pass","passroof","roofpass","vert","surf"];
 

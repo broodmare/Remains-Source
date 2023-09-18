@@ -76,14 +76,14 @@
 		//********************************************************************************************************************************************************************************************************************
 		var m:Matrix;
 		
-		//рамки
+		//Frames
 		public var ramT:MovieClip, ramB:MovieClip;
 		public var ramL:MovieClip, ramR:MovieClip;
 		
 		var arrFront:Array;
 		var arrBack:Array;
 		
-		//загрузка
+		// Loading
 		//public var loadTex:Loader, loadTex1:Loader, loadSprite:Loader, loadSprite1:Loader;
 		public var resIsLoad:Boolean=false;
 		public var progressLoad:Number=0;
@@ -101,7 +101,7 @@
 		public static const numbFon = 0; // Backgrounds
 		public static const numbBack = 1; // Decorations
 		public static const numbObj = 1; // Objects
-		public static const numbSprite = 2; // The number from which sprite files start
+		public static const numbSprite = 2; // Starting number for sprite files
 		
 		
 		public function Grafon(nvis:Sprite) {
@@ -232,11 +232,12 @@
 //							Initial Location Drawing
 //============================================================================================		
 		
+		//Grab a list of all objects in the room.
 		public function getObj(tex:String, n:int=0):* {
 			return this.grLoaders[n].res.getObj(tex);
 		}
 		
-		//показать задний фон
+		// Draw the background
 		public function drawFon(vfon:MovieClip, tex:String) {
 			if (tex=='' || tex==null) tex='fonDefault';
 			if (visFon && vfon.contains(visFon)) vfon.removeChild(visFon);
@@ -278,7 +279,7 @@
 			loc.grafon=this;
 			resX=loc.spaceX*Tile.tileX, resY=loc.spaceY*Tile.tileY;
 			
-			var transpFon:Boolean=nloc.transpFon;;
+			var transpFon:Boolean=nloc.transpFon;
 			if (nloc.backwall=='sky') transpFon=true;
 			
 		/* ****** */World.w.gr_stage=2;
@@ -352,18 +353,20 @@
 			m=new Matrix();
 			var tile:MovieClip;
 			var t:Tile;
-			var front:Sprite=new Sprite();	//отпечаток на битмапе переднего плана
-			var back:Sprite=new Sprite();	//отпечаток на битмапе задника
-			var back2:Sprite=new Sprite();	//отпечаток на битмапе задника
-			var voda:Sprite=new Sprite();	//отпечаток на битмапе воды
+			var front:Sprite=new Sprite();	// Initialize the front bitmap
+			var back:Sprite=new Sprite();	// Initialize background 1 bitmap
+			var back2:Sprite=new Sprite();	// Initialize background 2 bitmap
+			var voda:Sprite=new Sprite();	// Initialize the water bitmap
 			
-			//отключить все материалы
+			// Disable all materials
 			var mat:Material;
 			for each (mat in arrFront) mat.used=false;
 			for each (mat in arrBack) mat.used=false;
 			
 			var gret:int=0;
-		/* ****** */World.w.gr_stage=5;
+
+
+		/* ****** */World.w.gr_stage=5; // Creates a 2D grid, and iterates through it to draw the tiles(?)
 			for (var i=0; i<loc.spaceX; i++) {
 				for (var j=0; j<loc.spaceY; j++) {
 					t=loc.getTile(i,j);
@@ -373,7 +376,7 @@
 					loc.tileKontur(i,j,t);
 					if (arrFront[t.front]) arrFront[t.front].used=true;
 					if (arrBack[t.back]) arrBack[t.back].used=true;
-					if (t.vid>0) {				//объекты, имеющие vid
+					if (t.vid>0) {				//Objects with video 1
 						tile=new tileFront();
 						tile.gotoAndStop(t.vid);
 						if (t.vRear) back2.addChild(tile);
@@ -381,7 +384,7 @@
 						tile.x=i*Tile.tileX;
 						tile.y=j*Tile.tileY;
 					}
-					if (t.vid2>0) {				//объекты, имеющие vid2
+					if (t.vid2>0) {				//Objects with video 2
 						tile=new tileFront();
 						tile.gotoAndStop(t.vid2);
 						if (t.v2Rear) back2.addChild(tile);
@@ -389,7 +392,7 @@
 						tile.x=i*Tile.tileX;
 						tile.y=j*Tile.tileY;
 					}
-					if (t.water) {				//вода
+					if (t.water) {				//Water
 						tile=new tileVoda();
 						tile.gotoAndStop(loc.tipWater+1);
 						if (loc.getTile(i,j-1).water==0 && loc.getTile(i,j-1).phis==0) tile.voda.gotoAndStop(2);
@@ -409,20 +412,30 @@
 		/* ****** */World.w.gr_stage=8;
 			for each (mat in arrFront) {
 				try {
-					drawKusok(mat,true);	//передний план
+					drawKusok(mat,true);	// Front layer
 				} catch (err) {
-					World.w.showError(err,'Ошибка рисования слоя '+mat.id);
+					World.w.showError(err,'Layer drawing error '+mat.id);
 				}
 			}
 		/* ****** */World.w.gr_stage=9;
 			for (var e in arrBack) {
 				try {
-					drawKusok(arrBack[e],false);		//задний план
+					drawKusok(arrBack[e],false);		// Background
 				} catch (err) {
-					World.w.showError(err,'Ошибка рисования слоя '+arrBack[e].id);
+					World.w.showError(err,'Layer drawing error '+arrBack[e].id);
 				}
 			}
 							//if (nloc.landX>0) {var d; d.d=0;}
+
+
+// ##########################################################
+//                  END OF BACKGROUND RENDERING
+// ##########################################################
+
+// ##########################################################
+//                  SATS RENDERING
+// ##########################################################
+
 		/* ****** */World.w.gr_stage=10;
 			satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 			var darkness2=1-(255-darkness)/150;
@@ -468,9 +481,20 @@
 				vodaBmp.colorTransform(vodaBmp.rect,nloc.cTransform);
 			}
 			shadBmp.applyFilter(frontBmp,frontBmp.rect,new Point(0,0),dsFilter);
+
+
+// ##########################################################
+//                  END OF SATS RENDERING
+// ##########################################################
+
+
+// ##########################################################
+//                  LIGHTING
+// ##########################################################
+
 		/* ****** */World.w.gr_stage=13;
 			
-			//затемнение заднего плана
+			// Darkening the background
 			
 			if (nloc.cTransform) {
 				backBmp.colorTransform(backBmp.rect,nloc.cTransform);
@@ -488,6 +512,11 @@
 			backBmp2.draw(back, new Matrix, nloc.cTransform, null, null, false);
 			//backBmp2.colorTransform(backBmp2.rect,ct);
 			
+// ##########################################################
+//                  END OF LIGHTING
+// ##########################################################
+
+
 		/* ****** */World.w.gr_stage=15;
 			if (transpFon) satsBmp.copyChannel(backBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 			backBmp.draw(colorBmp,null,null,'hardlight');
@@ -495,8 +524,8 @@
 			if (transpFon) backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 			//backBmp.copyChannel(satsBmp,backBmp.rect,new Point(0,0),BitmapDataChannel.ALPHA,BitmapDataChannel.ALPHA);
 			
-			//розовое облако
-		/* ****** */World.w.gr_stage=16;
+
+		/* ****** */World.w.gr_stage=16; //Render Pink Cloud if applicable
 			if (loc.gas>0) {
 				m=new Matrix();
 				m.ty=520;
@@ -504,12 +533,12 @@
 				//vodaBmp
 			}
 			
-		/* ****** */World.w.gr_stage=17;
-			for each (mat in arrFront) drawKusok(mat,false,true);	//добавление на задний план текстур переднего плана, таких как балки
+		/* ****** */World.w.gr_stage=17;   //Draw foreground objects such as beams, stairs, etc. 
+			for each (mat in arrFront) drawKusok(mat,false,true);	//adding textures from the front to the background, such as beams
 			backBmp2.draw(back2, new Matrix, nloc.cTransform, null, null, false);
 			
 			
-		/* ****** */World.w.gr_stage=18;
+		/* ****** */World.w.gr_stage=18;   //Unlock all bitmaps, as the background is now rendered.
 			frontBmp.unlock();
 			backBmp.unlock();
 			backBmp2.unlock();
@@ -521,15 +550,15 @@
 				visFon.transform.colorTransform=defTransform;
 			}
 		} catch (err) {World.w.showError(err)}
-		/* ****** */World.w.gr_stage=19;
-			//активные объекты
+		/* ****** */World.w.gr_stage=19;   //Render all game objects.
+			//active objects
 			drawAllObjs();
 			var d2:Date=new Date();
 			trace('***',d2.getTime()-d1.getTime(),'ms')
 		/* ****** */World.w.gr_stage=0;
 		}
 		
-		//прорисовка всей карты затемнения
+		// Drawing the shadow map
 		public function setLight() {
 			lightBmp.lock();
 			for (var i=1; i<loc.spaceX; i++) {
@@ -540,7 +569,7 @@
 			lightBmp.unlock();
 		}
 		
-		//добавление всех видимых объектов
+		// Drawing all visible (physical?) objects
 		public function drawAllObjs() {
 			for (var i=0; i<kolObjs; i++) {
 				var n=visual.getChildIndex(visObjs[i]);
@@ -557,7 +586,7 @@
 			for (i in loc.signposts) visObjs[3].addChild(loc.signposts[i]);
 		}
 		
-		//заполнение заднего плана текстурой
+		// Filling the back wall with texture
 		public function drawBackWall(tex:String, sposob:int=0) {
 			if (tex=='sky') return;
 			m=new Matrix();
@@ -595,7 +624,7 @@
 			}
 		}
 		
-		//рисование текстурных материалов
+		//drawing textured materials  (((TEXTURE BUG COULD BE HERE)))
 		public function drawKusok(material:Material, toFront:Boolean, dop:Boolean=false) {
 			if (!material.used) return;
 			if (material.rear==toFront) return;
@@ -682,7 +711,7 @@
 		}
 		
 //============================================================================================		
-//							Время выполнения
+//							Execution Time
 //============================================================================================		
 		
 		public function getSpriteList(id:String, n:int=0):BitmapData {
@@ -708,7 +737,7 @@
 			//for each (var ob in visObjs) ob.visible=!on;
 		}
 		
-		//рисование одного блока воды
+		// Drawing water
 		public function drawWater(t:Tile, recurs:Boolean=true) {
 			m=new Matrix();
 			m.tx=t.X*Tile.tileX;
@@ -750,7 +779,7 @@
 			decal(erC,drC,nx,ny,1,0,'hardlight');
 		}
 		
-		//дырки от выстрелов
+		// Bullet holes
 		public function dyrka(nx:int,ny:int,tip:int,mat:int, soft:Boolean=false, ver:Number=1) {
 			var erC:Class, drC:Class;
 			var bl:String='normal';

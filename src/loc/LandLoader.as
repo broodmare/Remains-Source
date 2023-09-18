@@ -1,7 +1,7 @@
 ﻿package src.loc {
 	
-	//Класс, производящий загрузку карт местности из файла, или берущий их из переменных
-	//Содержится в объекте world
+	// Class for loading terrain maps from a file or retrieving them from variables
+	// Contained within the 'world' object
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.events.Event;
@@ -26,7 +26,7 @@
 			id=nid;
 			roomsFile=GameData.d.land.(@id==id).@file;
 			test=GameData.d.land.(@id==id).@test>0;
-			//источник шаблонов локаций
+			// Source of location templates
 			if (World.w.roomsLoad) {
 				loader_rooms = new URLLoader();
 				var roomsURL=World.w.landPath+roomsFile+".xml";

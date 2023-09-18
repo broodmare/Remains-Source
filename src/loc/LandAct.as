@@ -1,7 +1,7 @@
 ﻿package src.loc {
 	
-	//Класс, описывающий местность и активность игрока по отношению к местности
-	//Содержится в объекте game
+	// Class describing the terrain and player activity related to it
+	// Contained within the game object
 	import src.*;
 	import src.serv.Script;
 	
@@ -14,17 +14,17 @@
 		
 		public var xmlland:XML;
 		public var allroom:XML;
-		public var begLocX:int=0;	//начальная локация
+		public var begLocX:int=0;	// Initial location
 		public var begLocY:int=0;
-		public var mLocX:int=1;		//размер местности
+		public var mLocX:int=1;		// Terrain size
 		public var mLocY:int=1;
 		
-		public var dif:Number=0;	//уровень сложности
-		public var biom:int=0;		//встречающиеся типы врагов и других вещей
-		public var conf:int=0;		//конфигурация комнат
-		public var gameStage:int=0;	//этап сюжета игры, влияет на выпадение лута
-		public var lootLimit:Number=0;				//лимит выпадения особых предметов
-		public var list:int=0;		//номер в списке
+		public var dif:Number=0;	// Difficulty level
+		public var biom:int=0;		// Types of enemies and other things encountered
+		public var conf:int=0;		// Room configuration
+		public var gameStage:int=0;	// Game story stage, affects loot drops
+		public var lootLimit:Number=0;				// Limit of special item drops
+		public var list:int=0;		// Number in the list
 		public var rnd:Boolean=false;
 		public var autoLevel:Boolean=false;
 		public var test:Boolean=false;
@@ -36,27 +36,27 @@
 		public var 	kolAllProb:int=0;
 		public var 	kolClosedProb:int=0;
 		
-		//настройки
-		public var xp:int=100;		//опыт за сбор вещей
-		public var rad:Number=0, wrad:Number=1;	//радиоактивность воздуха и воды
-		public var wdam:Number=0, wtipdam:int=7;	//урон от воды
-		public var tipWater:int=0;				//внешний вид воды
+		// Settings
+		public var xp:int=100;		// Experience for collecting items
+		public var rad:Number=0, wrad:Number=1;	// Air and water radioactivity
+		public var wdam:Number=0, wtipdam:int=7;	// Water damage
+		public var tipWater:int=0;				// Water appearance
 		public var color:String;
 		public var sndMusic:String;
-		public var postMusic:Boolean=false;		//музыка не пеключается на боевую
-		public var fon:String;				//фон неподвижного задника
-		public var backwall:String;			//фон задней стены
-		public var border:String='A';			//материал бордюра
-		public var visMult:Number=1;		//видимость
-		public var opacWater:Number=0;		//непрозрачность воды
-		public var darkness:int=0;			//затемнение
+		public var postMusic:Boolean=false;		 // Music doesn't switch to combat
+		public var fon:String;				// Static background
+		public var backwall:String;			// Back wall background
+		public var border:String='A';			// Border material
+		public var visMult:Number=1;		// Visibility
+		public var opacWater:Number=0;		// Water opacity
+		public var darkness:int=0;			// Darkening
 		
-		public var artFire:String;			//триггер арт обстрела
+		public var artFire:String;			// Artillery barrage trigger
 		
-		//переменные, подлежащие сохранению
+		// Variables subject to saving
 		public var lastCpCode:String;
-		public var upStage:Boolean=false;		//увеличить уровень
-		public var landStage:int=0;				//максимальный достигнутый уровень местности
+		public var upStage:Boolean=false;		// Increase level
+		public var landStage:int=0;				// Maximum terrain level reached
 		public var access:Boolean=false;
 		public var visited:Boolean=false;
 		public var passed:Boolean=false;

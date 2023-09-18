@@ -31,18 +31,18 @@
 		public var fRear:Boolean=false, vRear:Boolean=false, v2Rear:Boolean=false;
 		
 		public var visi:Number=0, t_visi:Number=0;
-		public var opac:Number=0;	//непрозрачность блока
+		public var opac:Number=0;	// Opacity of the block
 		
-		//материал
-		//0 - хз что
-		//1 - металл
-		//2 - камень
-		//3 - дерево
-		//4 - кирпич
-		//5 - стекло
-		//6 - земля
-		//7 - силовое поле
-		//10 - мясо
+		// Material
+		// 0 - Unknown
+		// 1 - Metal
+		// 2 - Stone
+		// 3 - Wood
+		// 4 - Brick
+		// 5 - Glass
+		// 6 - Earth
+		// 7 - Force Field
+		// 10 - Flesh
 		public var mat:int=0;
 		
 		public var grav:Number=1;
@@ -50,7 +50,7 @@
 		public var kontur:int=0;
 		public var konturRot:int=0;
 		public var floor:int=0;
-		public var place:Boolean=true;	//место под объекты
+		public var place:Boolean=true;	// is there space for objects here?
 		
 		public var kont1:int=0, kont2:int=0, kont3:int=0, kont4:int=0;
 		public var pont1:int=0, pont2:int=0, pont3:int=0, pont4:int=0;
@@ -179,14 +179,14 @@
 			}
 		}
 		
-		//нанести урон блоку, вернуть true если урон был
+		// Deal damage to the block, return true if damage was dealt
 		public function udar(hit:int):Boolean {
 			if (indestruct || thre>hit) return false;
 			hp-=hit;
 			return true;
 		}
 		
-		//уничтожить блок
+		// Destroy the block
 		public function die() {
 			//phis=diagon=floor=stair=0;
 			if (phis!=3) front='';
@@ -195,7 +195,7 @@
 			vid=vid2=0;
 			
 			t_ghost=0;
-			if (trap) trap.die();	//уничтожить привязки
+			if (trap) trap.die();	// Destroy associated traps
 		}
 		
 
