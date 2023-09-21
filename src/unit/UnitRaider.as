@@ -831,7 +831,7 @@
 			}
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (Y>loc.spaceY*Tile.tilePixelHeight-80) throu=false;
 			
 			if (aiState==3 || aiState==4 || aiState==6 || aiState==8) aiAttack=1;
 			else aiAttack=0;

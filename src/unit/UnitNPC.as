@@ -257,8 +257,8 @@
 			//лететь в точку
 			} else if (q.com=='fly') {
 				var celF:Array=q.val.split(":");
-				cx=(int(celF[0])+1)*World.tileX;
-				cy=(int(celF[1]))*World.tileY;
+				cx=(int(celF[0])+1)*World.tilePixelWidth;
+				cy=(int(celF[1]))*World.tilePixelHeight;
 				trace(cx,cy);
 				dey='fly';
 				wait=1000;

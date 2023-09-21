@@ -44,7 +44,7 @@
 		public var destroy:Number=0;	// Damage to blocks
 		public var crack:int=0;			// Container hacking
 		var box:Box;
-		public var tileX:int=-1, tileY:int=-1;	// Damage to blocks for melee weapons (coordinates indicated by the cursor)
+		public var tilePixelWidth:int=-1, tilePixelHeight:int=-1;	// Damage to blocks for melee weapons (coordinates indicated by the cursor)
 		public var damage:Number=0;
 		public var pier:Number=0;		// Armor penetration
 		public var armorMult:Number=1;	// Armor modifier
@@ -228,7 +228,7 @@
 			if (loc.sky) {
 				if (X<0 || X>=loc.limX || Y<0 || Y>=loc.limY) popadalo(0);
 			} else {
-				if (!outspace && X<0 || X>=loc.spaceX*Tile.tileX || Y<0 || Y>=loc.spaceY*Tile.tileY) popadalo(0);
+				if (!outspace && X<0 || X>=loc.spaceX*Tile.tilePixelWidth || Y<0 || Y>=loc.spaceY*Tile.tilePixelHeight) popadalo(0);
 				var t:Tile=loc.getAbsTile(X,Y);
 				if (t.water>0) {
 					if (inWater==0) {
@@ -256,7 +256,7 @@
 					}
 					inWater=0;
 				}
-				if (!tilehit && (tileX<0 || Math.floor(X/World.tileX)==tileX && Math.floor(Y/World.tileY)==tileY) && (t.phis==1 || t.phis==2 && Math.floor(X/World.tileX)==tileX && Math.floor(Y/World.tileY)==tileY) && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
+				if (!tilehit && (tilePixelWidth<0 || Math.floor(X/World.tilePixelWidth)==tilePixelWidth && Math.floor(Y/World.tilePixelHeight)==tilePixelHeight) && (t.phis==1 || t.phis==2 && Math.floor(X/World.tilePixelWidth)==tilePixelWidth && Math.floor(Y/World.tilePixelHeight)==tilePixelHeight) && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
 					if (!inWall) {
 						popadalo(t.mat);
 						sound(t.mat);
@@ -411,12 +411,12 @@
 		
 		//поражение всех стен в радиусе
 		function explDestroy() {
-			for (var i=Math.floor((X-explRadius)/Tile.tileX); i<=Math.floor((X+explRadius)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y-explRadius)/Tile.tileY); j<=Math.floor((Y+explRadius)/Tile.tileY); j++) {
-					var tx=X-(i+0.5)*Tile.tileX;
-					var ty=Y-(j+0.5)*Tile.tileY;
+			for (var i=Math.floor((X-explRadius)/Tile.tilePixelWidth); i<=Math.floor((X+explRadius)/Tile.tilePixelWidth); i++) {
+				for (var j=Math.floor((Y-explRadius)/Tile.tilePixelHeight); j<=Math.floor((Y+explRadius)/Tile.tilePixelHeight); j++) {
+					var tx=X-(i+0.5)*Tile.tilePixelWidth;
+					var ty=Y-(j+0.5)*Tile.tilePixelHeight;
 					var ter=tx*tx+ty*ty;
-					if (ter<explRadius*explRadius) loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tileX,(j+0.5)*Tile.tileY,tipDecal);
+					if (ter<explRadius*explRadius) loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tilePixelWidth,(j+0.5)*Tile.tilePixelHeight,tipDecal);
 				}
 			}
 		}
@@ -586,14 +586,14 @@
 
 		function explLiquid(liq:String, ndy:int=0) {
 			//Emitter.emit('acid',loc,X,Y);
-			for (var i=Math.floor((X-explRadius)/Tile.tileX); i<=Math.floor((X+explRadius)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y-explRadius)/Tile.tileY); j<=Math.floor((Y+explRadius)/Tile.tileY); j++) {
-					var tx=X-(i+0.5)*Tile.tileX;
-					var ty=Y-(j+0.5)*Tile.tileY;
+			for (var i=Math.floor((X-explRadius)/Tile.tilePixelWidth); i<=Math.floor((X+explRadius)/Tile.tilePixelWidth); i++) {
+				for (var j=Math.floor((Y-explRadius)/Tile.tilePixelHeight); j<=Math.floor((Y+explRadius)/Tile.tilePixelHeight); j++) {
+					var tx=X-(i+0.5)*Tile.tilePixelWidth;
+					var ty=Y-(j+0.5)*Tile.tilePixelHeight;
 					var ter=tx*tx+ty*ty;
 					if (ter<explRadius*explRadius) {
 						var t:Tile=loc.getTile(i,j);
-						if (j>1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i,j-1).phis==0)) Emitter.emit(liq,loc,(i+0.5)*Tile.tileX+Math.random()*4-2,t.phY1+ndy);
+						if (j>1 && (t.phis || t.shelf) && (t.zForm || loc.getTile(i,j-1).phis==0)) Emitter.emit(liq,loc,(i+0.5)*Tile.tilePixelWidth+Math.random()*4-2,t.phY1+ndy);
 					}
 				}
 			}

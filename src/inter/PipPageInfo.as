@@ -493,8 +493,8 @@
 			var ty=(visMap.vmap.y-cy)*mapScale/ms;
 			visMap.vmap.x=tx+cx;
 			visMap.vmap.y=ty+cy;
-			plTag.x=World.w.land.ggX/World.tileX*mapScale;
-			plTag.y=World.w.land.ggY/World.tileY*mapScale;
+			plTag.x=World.w.land.ggX/World.tilePixelWidth*mapScale;
+			plTag.y=World.w.land.ggY/World.tilePixelHeight*mapScale;
 			ms=mapScale;
 		}
 		

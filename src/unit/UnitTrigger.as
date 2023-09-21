@@ -104,41 +104,41 @@
 			var nxml=<obj/>;
 			var ok:Boolean=false;
 			if (res=='damgren' && isrnd(0.25) && Y<loc.limY-100 && loc.getAbsTile(X,Y+60).phis==0) {
-				ny=Y+2*World.tileY;
+				ny=Y+2*World.tilePixelHeight;
 				res='expl1';
 				ok=true;
 			} else for (var i=1; i<=10; i++) {
 				if (res=='damgren' || res=='hturret2') {
-					if (loc.getAbsTile(X,Y-10-i*World.tileY).phis) {
+					if (loc.getAbsTile(X,Y-10-i*World.tilePixelHeight).phis) {
 						if (i==1) break;
-						ny=Y-(i-1)*World.tileY;
+						ny=Y-(i-1)*World.tilePixelHeight;
 						ok=true;
 						break;
 					}
 					if (res=='hturret2') {
-						if (loc.getAbsTile(X-World.tileX,Y-10-i*World.tileY).phis) {
-							ny=Y-(i-1)*World.tileY;
-							nx=X-World.tileX;
+						if (loc.getAbsTile(X-World.tilePixelWidth,Y-10-i*World.tilePixelHeight).phis) {
+							ny=Y-(i-1)*World.tilePixelHeight;
+							nx=X-World.tilePixelWidth;
 							ok=true;
 							break;
 						}
-						if (loc.getAbsTile(X+World.tileX,Y-10-i*World.tileY).phis) {
-							ny=Y-(i-1)*World.tileY;
-							nx=X+World.tileX;
+						if (loc.getAbsTile(X+World.tilePixelWidth,Y-10-i*World.tilePixelHeight).phis) {
+							ny=Y-(i-1)*World.tilePixelHeight;
+							nx=X+World.tilePixelWidth;
 							ok=true;
 							break;
 						}
 					}
 				}
 				if (res=='damshot') {
-					if (i>1 && loc.getAbsTile(X-i*World.tileX,Y).phis) {
-						nx=X-(i-1)*World.tileX;
+					if (i>1 && loc.getAbsTile(X-i*World.tilePixelWidth,Y).phis) {
+						nx=X-(i-1)*World.tilePixelWidth;
 						nxml=<obj turn="1"/>;
 						ok=true;
 						break;
 					}
-					if (i>1 && loc.getAbsTile(X+i*World.tileX,Y).phis) {
-						nx=X+(i-1)*World.tileX;
+					if (i>1 && loc.getAbsTile(X+i*World.tilePixelWidth,Y).phis) {
+						nx=X+(i-1)*World.tilePixelWidth;
 						nxml=<obj turn="-1"/>;
 						ok=true;
 						break;
@@ -156,10 +156,10 @@
 			} else {
 				res='damshot';
 				if (isrnd()) {
-					nx=X+(3+Math.floor(Math.random()*8))*World.tileX;
+					nx=X+(3+Math.floor(Math.random()*8))*World.tilePixelWidth;
 					nxml=<obj turn="-1"/>;
 				} else {
-					nx=X-(3+Math.floor(Math.random()*8))*World.tileX;
+					nx=X-(3+Math.floor(Math.random()*8))*World.tilePixelWidth;
 					nxml=<obj turn="1"/>;
 				}
 				damager=loc.createUnit(res,nx,ny,true, nxml);

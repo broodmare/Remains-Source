@@ -4,9 +4,10 @@
 	
 	import src.*;
 	
-	public class Tile {
-		public static var tileX=40;
-		public static var tileY=40;
+	public class Tile 
+	{
+		public static var tilePixelWidth=40;
+		public static var tilePixelHeight=40;
 		
 		public var X:int, Y:int;
 		
@@ -58,34 +59,49 @@
 		public var door:Box;
 		public var trap:Obj;
 		
-		public function Tile(nx:int,ny:int) {
+		public function Tile(nx:int,ny:int) { //Initialization
 			X=nx, Y=ny;
-			phX1=X*Tile.tileX;
-			phX2=(X+1)*Tile.tileX;
-			phY1=Y*Tile.tileY;
-			phY2=(Y+1)*Tile.tileY;
+			phX1=X*Tile.tilePixelWidth;
+			phX2=(X+1)*Tile.tilePixelWidth;
+			phY1=Y*Tile.tilePixelHeight;
+			phY2=(Y+1)*Tile.tilePixelHeight;
 		}
 		
-		function inForm(f:Form) {
-			if (f==null) return;
-			if (f.tip==2) {
-				if (f.front) back=f.front;
-			} else {
-				if (f.front) {
+
+		//Block type
+		function inForm(f:Form) 
+		{
+
+			if (f == null) return; //If it has no type, exit.
+			if (f.tip == 2) 
+			{
+				if (f.front) back = f.front;
+				
+			} 
+			else 
+			{
+				if (f.front) 
+				{
 					front=f.front;
 					if (f.rear) fRear=true;
 				}
 				if (f.back) zad=f.back;
 			}
-			if (f.vid>0) {
-				if (vid==0)	{
+
+			if (f.vid>0) 
+			{
+				if (vid==0)	
+				{
 					vid=f.vid;
 					if (f.rear) vRear=true;
-				} else {
+				} 
+				else 
+				{
 					vid2=f.vid;
 					if (f.rear) v2Rear=true;
 				}
 			}
+
 			if (f.mat) mat=f.mat;
 			
 			if (f.hp) hp=f.hp;
@@ -94,69 +110,93 @@
 			
 			if (f.lurk) lurk=f.lurk; 
 			if (f.phis) phis=f.phis;
-			if (f.shelf) shelf=true;
-			if (f.diagon) diagon=f.diagon;
-			if (f.stair) stair=f.stair;
-			if (phis>0) opac=1;
+			if (f.shelf) shelf=true; 
+			if (f.diagon) diagon = f.diagon;
+			if (f.stair) stair = f.stair;
+			if (phis >0 ) opac = 1; //If it has physics, it is opaque.
 		}
 		
-		public function dec(s:String, mirror:Boolean=false) {
+		public function dec(s:String, mirror:Boolean=false) 
+		{
 			phis=vid=vid2=diagon=stair=water=0;
 			front=back=zad='';
 			shelf=indestruct=false;
 			setZForm(0);
 			var fr:int=s.charCodeAt(0);
-			if (fr>64 && fr!=95) {
+			if (fr > 64 && fr != 95) 
+			{
 				inForm(Form.fForms[s.charAt(0)]);
 				//phis=1;
 			}
-			if (s.length>1) {
-				for (var i=1; i<s.length; i++) {
+			if (s.length>1) 
+			{
+				for (var i=1; i<s.length; i++) 
+				{
 					fr = s.charCodeAt(i);
 					var sym:String=s.charAt(i);
-					if (sym=='*') {
+					if (sym=='*') 
+					{
 						water=1;
 						//opac=0.2;
-					} else if (sym==',') {
+					} 
+					else if (sym==',') 
+					{
 						setZForm(1);
-					} else if (sym==';') {
+					} 
+					else if (sym==';') 
+					{
 						setZForm(2);
-					} else if (sym==':') {
+					} 
+					else if (sym==':') 
+					{
 						setZForm(3);
-					} else {
+					} else 
+					{
 						if (mirror && Form.oForms[sym].idMirror) inForm(Form.oForms[Form.oForms[sym].idMirror]);
 						else inForm(Form.oForms[sym]);
 					}
 				}
 			}
-			if (zForm==0) {
+
+			if (zForm==0) 
+			{
 				if (zad!='') back=zad;
-			} else {
+			} 
+			else 
+			{
+
 			}
 		}
 		
+		//If it has physics, turn them off.
 		public function hole():Boolean {
-			if (phis>0) {
-				phis=0;
+			if (phis > 0) 
+			{
+				phis = 0;
 				return true;
 			}
 			phis=0;
 			return false;
 		}
 		
-		public function updVisi():Number {
+		public function updVisi():Number 
+		{
 			visi+=0.1;
 			if (visi>t_visi) visi=t_visi;
 			return visi;
 		}
-		public function setZForm(n:int) {
+
+		public function setZForm(n:int) 
+		{
 			if (n<0) n=0;
 			if (n>3) n=3;
 			zForm=n;
-			phY1=(Y+zForm/4)*Tile.tileY;
+			phY1=(Y+zForm/4)*Tile.tilePixelHeight;
 			if (n>0) opac=0;
 		}
-		public function mainFrame(nfront:String='A') {
+
+		public function mainFrame(nfront:String='A') 
+		{
 			phis=1;
 			vid=vid2=diagon=stair=0;
 			mat=Form.fForms[nfront].mat;
@@ -166,13 +206,17 @@
 			hp=10000;
 			opac=1;
 		}
-		public function getMaxY(rx:Number):Number {
+
+		public function getMaxY(rx:Number):Number 
+		{
 			if (diagon==0) return phY1;
-			else if (diagon>0) {
+			else if (diagon>0) 
+			{
 				if (rx<phX1) return phY2;
 				else if (rx>phX2) return phY1;
 				else return phY2-(phY2-phY1)*((rx-phX1)/(phX2-phX1));
-			} else {
+			} else 
+			{
 				if (rx<phX1) return phY1;
 				else if (rx>phX2) return phY2;
 				else return phY2-(phY2-phY1)*((phX2-rx)/(phX2-phX1));
@@ -180,14 +224,16 @@
 		}
 		
 		// Deal damage to the block, return true if damage was dealt
-		public function udar(hit:int):Boolean {
+		public function udar(hit:int):Boolean 
+		{
 			if (indestruct || thre>hit) return false;
 			hp-=hit;
 			return true;
 		}
 		
 		// Destroy the block
-		public function die() {
+		public function die() 
+		{
 			//phis=diagon=floor=stair=0;
 			if (phis!=3) front='';
 			phis=0;

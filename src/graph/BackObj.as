@@ -26,9 +26,9 @@
 			/*if (node.@light>0) {
 				light=Grafon.resTex.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_l');
 			}*/
-			var wid=node.@x2*World.tileX;
-			if (xml && xml.@w.length()) wid=xml.@w*World.tileX
-			if (!(wid>0)) wid=World.tileX;
+			var wid=node.@x2*World.tilePixelWidth;
+			if (xml && xml.@w.length()) wid=xml.@w*World.tilePixelWidth
+			if (!(wid>0)) wid=World.tilePixelWidth;
 			if (nloc && nloc.mirror) {
 				if (node.@mirr=='2' && Math.random()<0.5) {
 					X=nloc.limX-X;

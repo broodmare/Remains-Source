@@ -415,7 +415,8 @@
 			return obj;
 		}
 		
-		public function getXmlParam(mid:String=null) {
+		public function getXmlParam(mid:String=null) 
+		{
 			var setOpts:Boolean=false;
 			if (opts[id]) {
 				opt=opts[id];
@@ -634,11 +635,11 @@
 			}
 			setPos(nx,ny);
 			if (collisionAll()) {
-				if (!collisionAll(-Tile.tileX)) {
-					setPos(nx-Tile.tileX,ny);
+				if (!collisionAll(-Tile.tilePixelWidth)) {
+					setPos(nx-Tile.tilePixelWidth,ny);
 				}
 			}
-			if (inter) inter.loc=nloc;
+			if (inter) inter.location=nloc;
 			if (inter && inter.saveLoot==2) {
 				inter.loot(true);	//если состояние 2, сгенерировать критичный лут
 			}
@@ -1016,8 +1017,8 @@
 						}
 					}
 					if (player && isUp && stay && !isSit) {
-						t=loc.space[Math.floor(X1/Tile.tileX)][Math.floor(Y1/Tile.tileY)];
-						t2=loc.space[Math.floor(X1/Tile.tileX)][Math.floor(Y1/Tile.tileY)+1];
+						t=loc.space[Math.floor(X1/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)];
+						t2=loc.space[Math.floor(X1/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)+1];
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
 							Y=Y2=t2.phY1;
 							sit(true);
@@ -1025,8 +1026,8 @@
 						}
 					}
 					if (mater) {
-						for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-							t=loc.space[Math.floor(X1/Tile.tileX)][i];
+						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) {
+							t=loc.space[Math.floor(X1/Tile.tilePixelWidth)][i];
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
 								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-Y2)) {
@@ -1064,8 +1065,8 @@
 						}
 					}
 					if (player && isUp && stay && !isSit) {
-						t=loc.space[Math.floor(X2/Tile.tileX)][Math.floor(Y1/Tile.tileY)];
-						t2=loc.space[Math.floor(X2/Tile.tileX)][Math.floor(Y1/Tile.tileY)+1];
+						t=loc.space[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)];
+						t2=loc.space[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)+1];
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
 							Y=Y2=t2.phY1;
 							sit(true);
@@ -1073,8 +1074,8 @@
 						}
 					} 
 					if (mater) {
-						for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-							t=loc.space[Math.floor(X2/Tile.tileX)][i];
+						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) {
+							t=loc.space[Math.floor(X2/Tile.tilePixelWidth)][i];
 							if (collisionTile(t)) {
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
 								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-Y2)) {
@@ -1122,8 +1123,8 @@
 					}
 					Y1=Y-scY, Y2=Y;
 					if (mater) {
-						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-							t=loc.space[i][Math.floor(Y2/Tile.tileY)];
+						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+							t=loc.space[i][Math.floor(Y2/Tile.tilePixelHeight)];
 							if (collisionTile(t)) {
 								Y=t.phY1;
 								Y1=Y-scY, Y2=Y;
@@ -1135,8 +1136,8 @@
 					}
 				} else {						// Falling
 					if (mater) {
-						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-							t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tileY)];
+						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+							t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tilePixelHeight)];
 							if (collisionTile(t,0,dy/div)) {
 								if (-(X1-t.phX1)/scX<shX1) shX1=-(X1-t.phX1)/scX;
 								if ((X2-t.phX2)/scX<shX2) shX2=(X2-t.phX2)/scX;
@@ -1158,8 +1159,8 @@
 					if (newmy==0 && !throu) newmy=checkShelf(dy/div, osndy/div);
 					if (newmy) {	// Bugs!!!!!
 						Y1=newmy-scY;
-						for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-							t=loc.space[i][Math.floor((newmy-scY)/Tile.tileY)];
+						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+							t=loc.space[i][Math.floor((newmy-scY)/Tile.tilePixelHeight)];
 							if (collisionTile(t)) newmy=0;
 						}
 					}
@@ -1219,8 +1220,8 @@
 					Y1=Y-scY, Y2=Y;
 				}
 				if (mater) {
-					for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-						t=loc.space[i][Math.floor(Y1/Tile.tileY)];
+					for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+						t=loc.space[i][Math.floor(Y1/Tile.tilePixelHeight)];
 						if (collisionTile(t)) {
 							if (t_throw>0 && dy<-damWallSpeed && damWall) damageWall(4);
 							if (destroy>0) destroyWall(t,4);
@@ -1287,8 +1288,8 @@
 		
 		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
 			if (loc.sky) return false;
-			for (var i=Math.floor((X1+gx)/Tile.tileX); i<=Math.floor((X2+gx)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y1+gy)/Tile.tileY); j<=Math.floor((Y2+gy)/Tile.tileY); j++) {
+			for (var i=Math.floor((X1+gx)/Tile.tilePixelWidth); i<=Math.floor((X2+gx)/Tile.tilePixelWidth); i++) {
+				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					if (collisionTile(loc.space[i][j],gx,gy)) return true;
 				}
@@ -1310,8 +1311,8 @@
 		// Search for stairs
 		public function checkStairs(ny:int=-1, nx:int=0):Boolean {
 			try {
-				var i=Math.floor((X+nx)/Tile.tileX);
-				var j=Math.floor((Y+ny)/Tile.tileY);
+				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
+				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
 				if (loc.space[i][j].phis>=1 && !(transT&&loc.space[i][j].phis==3)) {
 					isLaz=0;
@@ -1335,7 +1336,7 @@
 		public function checkWater():Boolean {
 			var pla=inWater;
 			try {
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.75)/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.75)/Tile.tilePixelHeight)] as Tile).water>0) {
 					isPlav=true;
 					inWater=true;
 					if (plav) {
@@ -1344,9 +1345,9 @@
 					}
 				} else {
 					isPlav=false;
-					if (scY<=Tile.tileY) {
+					if (scY<=Tile.tilePixelHeight) {
 						inWater=false;
-					} else if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.25)/Tile.tileY)] as Tile).water>0) {
+					} else if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.25)/Tile.tilePixelHeight)] as Tile).water>0) {
 						inWater=true;
 					} else inWater=false;
 				}
@@ -1366,7 +1367,7 @@
 			if (pla!=inWater && dy<-5 && massa>0.4) sound('fall_water2', 0, -dy/10);
 			//newPart('kap',0,X+(Math.random()-0.5)*scX,Y-scY*0.25,0,-Math.abs(dy)*(Math.random()*0.3+0.3),Math.min(30,Math.floor(Math.abs(dy*massa*3)-5)));
 			if (inWater && !isPlav && (dx>3 || dx<-3)) Emitter.emit('kap',loc,X,Y-scY*0.25,{rx:scX});
-			//newPart('kap',0,X+(Math.random()-0.5)*scX,Y-Tile.tileY,0,-Math.abs(dy)*(Math.random()*0.3+0.3));
+			//newPart('kap',0,X+(Math.random()-0.5)*scX,Y-Tile.tilePixelHeight,0,-Math.abs(dy)*(Math.random()*0.3+0.3));
 			if (isPlav) {
 				namok_t++;
 				if (namok_t>=100) {
@@ -1795,10 +1796,10 @@
 		public function destroyWall(t:Tile, napr:int=0):Boolean {
 			if (isPlav || levit || sost!=1) return false;
 			if (napr==3 && dy>15 && destroy<50 && massa>=1) {
-				loc.hitTile(t,50,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY,100);
+				loc.hitTile(t,50,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight,100);
 				if (t.phis==0) return true;
 			}
-			if (destroy>0 && (dx>10 && napr==2 || dx<-10 && napr==1 || dy<-10 && napr==4  || dy>10 && napr==3)) loc.hitTile(t,destroy,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY,(napr==3?100:9));
+			if (destroy>0 && (dx>10 && napr==2 || dx<-10 && napr==1 || dy<-10 && napr==4  || dy>10 && napr==3)) loc.hitTile(t,destroy,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight,(napr==3?100:9));
 			if (t.phis==0) return true;
 			return false;
 		}
@@ -2568,7 +2569,7 @@
 			for (var i=(mater?1:4); i<div; i++) {
 				var nx=X+scX*0.25*storona+cx*i/div;
 				var ny=Y-scY*0.75+cy*i/div;
-				var t:Tile=World.w.loc.getTile(Math.floor(nx/Tile.tileX),Math.floor(ny/Tile.tileY));
+				var t:Tile=World.w.loc.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					return 0;
 				}

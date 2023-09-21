@@ -170,8 +170,8 @@
 			land=nland;
 			spaceX=World.cellsX;
 			spaceY=World.cellsY;
-			limX=spaceX*World.tileX;
-			limY=spaceY*World.tileY;
+			limX=spaceX*World.tilePixelWidth;
+			limY=spaceY*World.tilePixelHeight;
 			otstoy=new Tile(-1,-1);
 			units=new Array();
 			ups=new Array();
@@ -298,10 +298,11 @@
 				lightOn=1;
 			}
 
-			for (j=0; j<spaceY; j++) {
-				var js:String='';
+			// Create a room. (I think this part works correctly.)
+			for (j=0; j<spaceY; j++) { //Build the room from XML Data.
+				var js:String=''; //XML data as string
 				js=nroom.a[j];
-				var arri:Array=js.split('.');
+				var arri:Array=js.split('.'); //Demarcates the room into tiles.
 				for (i=0; i<spaceX; i++) {
 					var jis:String;
 					if (mirror) {
@@ -373,7 +374,6 @@
 			cTransform=colorFilter(color);
 			if (colorfon) cTransformFon=colorFilter(colorfon);
 			
-			
 			// Object spawnpoints
 			objsT=new Array();
 			for each(var obj:XML in nroom.obj) {
@@ -393,7 +393,7 @@
 			
 			// Background objects
 			for each(obj in nroom.back) {
-				backobjs.push(new BackObj(this, obj.@id,obj.@x*Tile.tileX,obj.@y*Tile.tileY, obj));
+				backobjs.push(new BackObj(this, obj.@id,obj.@x*Tile.tilePixelWidth,obj.@y*Tile.tilePixelHeight, obj));
 			}
 			if (zoom>1) {
 				limX*=zoom;
@@ -501,7 +501,7 @@
 					space[1][q-2].hole();
 				} 
 				if (dyr) addSignPost(0,q,180);
-				addEnSpawn(Tile.tileX, (q+1)*Tile.tileY-1);
+				addEnSpawn(Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
 			} else if (n>=6) {
 				q=(n-6)*9+4;
 				dyr=space[q+1][spaceY-1].hole() || dyr;
@@ -532,7 +532,7 @@
 					space[spaceX-2][q-2].hole();
 				} 
 				if (dyr) addSignPost(spaceX,q,0);
-				addEnSpawn((spaceX-1)*Tile.tileX, (q+1)*Tile.tileY-1);
+				addEnSpawn((spaceX-1)*Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
 			} else return;
 		}
 		
@@ -540,7 +540,7 @@
 		private function addSignPost(nx:int,ny:int,r:int) {
 			var sign:MovieClip;
 			sign=new signPost();
-			sign.x=nx*Tile.tileX, sign.y=ny*Tile.tileY, sign.rotation=r;
+			sign.x=nx*Tile.tilePixelWidth, sign.y=ny*Tile.tilePixelHeight, sign.rotation=r;
 			signposts.push(sign);
 		}
 		
@@ -550,8 +550,8 @@
 			if (xmll) {
 				var size:int=xmll.@size;
 				if (size<=0) size=1;
-				obj.x=(nx+0.5*size)*Tile.tileX;
-				obj.y=(ny+1)*Tile.tileY-1;
+				obj.x=(nx+0.5*size)*Tile.tilePixelWidth;
+				obj.y=(ny+1)*Tile.tilePixelHeight-1;
 			} else {
 				obj.x=nx, obj.y=ny;
 			}
@@ -645,7 +645,7 @@
 			var nx:int=Math.floor(Math.random()*(spaceX-2)+1);
 			var ny:int=Math.floor(Math.random()*(spaceY-2)+1);
 			if (space[nx][ny].phis==0) {
-				LootGen.lootCont(this,(nx+0.5)*Tile.tileX,(ny+0.8)*Tile.tileY,'metal');
+				LootGen.lootCont(this,(nx+0.5)*Tile.tilePixelWidth,(ny+0.8)*Tile.tilePixelHeight,'metal');
 			}
 		}
 		
@@ -702,7 +702,7 @@
 					un.putLoc(this,nx,ny);
 				} else {
 					var size=Math.floor((un.scX-1)/40)+1;
-					un.putLoc(this,(nx+0.5*size)*Tile.tileX,(ny+1)*Tile.tileY-1);
+					un.putLoc(this,(nx+0.5*size)*Tile.tilePixelWidth,(ny+1)*Tile.tilePixelHeight-1);
 				}
 				if (active) {
 					un.xp=0;
@@ -717,7 +717,7 @@
 				}
 				if (homeAtk) {
 					if (un is UnitTurret) (un as UnitTurret).hack(2);
-					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*Tile.tileX,(ny-Math.random()*4)*Tile.tileY));
+					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*Tile.tilePixelWidth,(ny-Math.random()*4)*Tile.tilePixelHeight));
 					//if (un is UnitSentinel) un.fraction=Unit.F_PLAYER;
 					
 				}
@@ -807,8 +807,8 @@
 					var nx:int=Math.floor(Math.random()*(spaceX-4)+2);
 					var ny:int=Math.floor(Math.random()*(spaceY-4)+2);
 					if (cp) {
-						var dnx=cp.X-(nx*World.tileX+20);
-						var dny=cp.Y-(ny*World.tileY+40);
+						var dnx=cp.X-(nx*World.tilePixelWidth+20);
+						var dny=cp.Y-(ny*World.tilePixelHeight+40);
 						if (dnx*dnx+dny*dny<80*80) continue;
 					}
 					if (biom==1 && lvl==1 && ny>15) ny=15;
@@ -1055,7 +1055,7 @@
 			var loadObj:Object=null;
 			if (xml && xml.@code.length() && World.w.game.objs.hasOwnProperty(xml.@code)) loadObj=World.w.game.objs[xml.@code];
 			if (tip=='box' || tip=='door') {
-				obj=new Box(this, id, (nx+0.5*size)*Tile.tileX, (ny+1)*Tile.tileY-1, xml, loadObj);
+				obj=new Box(this, id, (nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
 				objs.push(obj);
 				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
 				//создать феникса
@@ -1068,9 +1068,9 @@
 				if (!land.rnd && xml && xml.@sur.length()) createSur(obj as Box, xml.@sur);
 				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
 			} else if (tip=='trap') {
-				obj=new Trap(this, id,(nx+0.5*size)*Tile.tileX, (ny+1)*Tile.tileY-1);
+				obj=new Trap(this, id,(nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1);
 			} else if (tip=='checkpoint') {
-				obj=new CheckPoint(this, id,(nx+0.5*size)*Tile.tileX, (ny+1)*Tile.tileY-1, xml, loadObj);
+				obj=new CheckPoint(this, id,(nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
 				//установить на контрольных точках телепорты на базу
 				if (World.w.game.globalDif<=1 || land.rnd && World.w.game.globalDif==2 && Math.random()<0.33) (obj as CheckPoint).teleOn=true;
 				acts.push(obj);
@@ -1078,10 +1078,10 @@
 				obj=new Area(this, xml, loadObj, mirror);
 				areas.push(obj);
 			} else if (tip=='bonus') {
-				obj=new Bonus(this, id,(nx+0.5)*Tile.tileX, (ny+0.5)*Tile.tileY, xml, loadObj);
+				obj=new Bonus(this, id,(nx+0.5)*Tile.tilePixelWidth, (ny+0.5)*Tile.tilePixelHeight, xml, loadObj);
 				bonuses.push(obj);
 			}
-			if (xml && xml.@code.length()) {
+			if (xml && xml.@code.length()) { // Assignment of checkpoint objects to the currentCP property of the land.Act when specific conditions are met.
 				saves.push(obj);
 				obj.code=xml.@code;
 				if (tip=='checkpoint' && !land.rnd) {	//сохранённая контрольная точка
@@ -1137,7 +1137,7 @@
 			return false;
 		}
 		
-		
+		// Creates the golden horseshoes I think...
 		public function createXpBonuses(kol:int=5) {
 			if (homeStable || homeAtk) return;
 			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
@@ -1274,20 +1274,23 @@
 //
 //**************************************************************************************************************************
 
-		// Get a tile
-		public function getTile(nx:int,ny:int):Tile {
+		// Checks if a tile is in bounds of Space, if so returns otstoy (an empty tile).
+		// Otherwise, it attempts to retrieve the tile from the space array using the provided coordinates and returns it.
+		public function getTile(nx:int,ny:int):Tile {    //RELATED TO THE BUG!!!
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return otstoy;
 			else return space[nx][ny] as Tile;
 		}
+
+		//What does this do?
 		public function getAbsTile(nx:int,ny:int):Tile {
-			if (nx<0 || nx>=spaceX*Tile.tileX || ny<0 || ny>=spaceY*Tile.tileY) return otstoy;
-			else return space[Math.floor(nx/Tile.tileX)][Math.floor(ny/Tile.tileY)] as Tile;
+			if (nx<0 || nx>=spaceX*Tile.tilePixelWidth || ny<0 || ny>=spaceY*Tile.tilePixelHeight) return otstoy;
+			else return space[Math.floor(nx/Tile.tilePixelWidth)][Math.floor(ny/Tile.tilePixelHeight)] as Tile;
 		}
 		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean {
 			var X1=X-scX/2, X2=X+scX/2, Y1=Y-scY;
 			//trace(X1,X2,Y1,Y);
-			for (var i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-				for (var j=Math.floor(Y1/Tile.tileY); j<=Math.floor(Y/Tile.tileY); j++) {
+			for (var i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+				for (var j=Math.floor(Y1/Tile.tilePixelHeight); j<=Math.floor(Y/Tile.tilePixelHeight); j++) {
 					//trace(i,j);
 					if (i<0 || i>=spaceX || j<0 || j>=spaceY) continue;
 					if (space[i][j].phis>0) return true;
@@ -1369,11 +1372,13 @@
 			return (space[nx][ny].phis==1 || space[nx][ny].door!=null);
 			//else return space[nx][ny].back==b;
 		}
+
 		// Back contours with a wall
 		private function uslPontur(nx:int,ny:int):Boolean {
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].back!='' || space[nx][ny].shelf>0);
 		}
+
 		// Back contours without a wall
 		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean {
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
@@ -1500,7 +1505,7 @@
 			for each (var cel in units) {
 				if (cel==null || (cel as Unit).sost==4) continue;
 				if (cel.transT) continue;
-				if (!(cel.X1>=(t.X+1)*Tile.tileX || cel.X2<=t.X*Tile.tileX || cel.Y1>=(t.Y+1)*Tile.tileY || cel.Y2<=t.Y*Tile.tileY)) {
+				if (!(cel.X1>=(t.X+1)*Tile.tilePixelWidth || cel.X2<=t.X*Tile.tilePixelWidth || cel.Y1>=(t.Y+1)*Tile.tilePixelHeight || cel.Y2<=t.Y*Tile.tilePixelHeight)) {
 					return false;
 				}
 			}
@@ -1513,7 +1518,7 @@
 			return true;
 		}
 		
-		// Draw the map
+		// Draw the map on the PipBuck
 		public function drawMap(m:BitmapData) {
 			//m.fillRect(m.rect,0xFF000000);
 			var vid:Number=1;
@@ -1550,7 +1555,7 @@
 			for each (var obj:Obj in objs) {
 				if (obj.inter && obj.inter.cont!='' && obj.inter.active) {
 					drawMapObj(m, obj, 0xFFCC00);
-					//m.setPixel(landX*World.cellsX+Math.floor(obj.X/World.tileX),landY*World.cellsY+Math.floor((obj.Y-obj.scY/2)/World.tileY),color);
+					//m.setPixel(landX*World.cellsX+Math.floor(obj.X/World.tilePixelWidth),landY*World.cellsY+Math.floor((obj.Y-obj.scY/2)/World.tilePixelHeight),color);
 				}
 				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) {
 					drawMapObj(m, obj, 0xFF0077);
@@ -1569,8 +1574,8 @@
 		}
 		
 		function drawMapObj(m, obj:Obj, color:uint) {
-			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tileX+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tileX-0.5); i++) {
-				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tileY+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tileY-0.5); j++) {
+			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tilePixelWidth+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tilePixelWidth-0.5); i++) {
+				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tilePixelHeight+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tilePixelHeight-0.5); j++) {
 					m.setPixel(i,j,color);
 				}
 			}
@@ -1776,8 +1781,8 @@
 				for (var j=1; j<spaceY; j++) {
 					n1=space[i][j].visi;
 					if (!retDark && n1>=1) continue;
-					var dx:int=i*Tile.tileX-nx;
-					var dy:int=j*Tile.tileY-ny;
+					var dx:int=i*Tile.tilePixelWidth-nx;
+					var dy:int=j*Tile.tilePixelHeight-ny;
 					var rasst=dx*dx+dy*dy;
 					if (rasst>=dist2*dist2) {
 						if (retDark && space[i][j].t_visi>0) {
@@ -1796,20 +1801,20 @@
 						if (Math.abs(dx)==Math.abs(dy)) dy++;
 						if (Math.abs(dx)>=Math.abs(dy)) {//двигаемся по х
 							if (dx>0) {
-								dex=Tile.tileX;
-								dey=dy/dx*Tile.tileY;
+								dex=Tile.tilePixelWidth;
+								dey=dy/dx*Tile.tilePixelHeight;
 							} else {
-								dex=-Tile.tileX;
-								dey=-dy/dx*Tile.tileY;
+								dex=-Tile.tilePixelWidth;
+								dey=-dy/dx*Tile.tilePixelHeight;
 							}
 							maxe=dx/dex;
 						} else {
 							if (dy>0) {
-								dey=Tile.tileY;
-								dex=dx/dy*Tile.tileX;
+								dey=Tile.tilePixelHeight;
+								dex=dx/dy*Tile.tilePixelWidth;
 							} else {
-								dey=-Tile.tileY;
-								dex=-dx/dy*Tile.tileX;
+								dey=-Tile.tilePixelHeight;
+								dex=-dx/dy*Tile.tilePixelWidth;
 							}
 							maxe=dy/dey;
 						}
@@ -1969,7 +1974,7 @@
 		
 		//дистанция между гг и активным объектом
 		private function getDist() {
-			if (getTile(Math.round(World.w.celX/Tile.tileX),Math.round(World.w.celY/Tile.tileY)).visi<0.1) celObj=null;
+			if (getTile(Math.round(World.w.celX/Tile.tilePixelWidth),Math.round(World.w.celY/Tile.tilePixelHeight)).visi<0.1) celObj=null;
 			if (celObj) {
 				celDist=(gg.X-celObj.X)*(gg.X-celObj.X)+(gg.Y-celObj.Y)*(gg.Y-celObj.Y);
 			} else celDist=-1;

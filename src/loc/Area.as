@@ -49,12 +49,12 @@
 				if (mirror) {
 					bx=loc.spaceX-bx-rx;
 				}
-				scX=rx*World.tileX;
-				X=X1=bx*World.tileX;
-				Y=Y2=by*World.tileY+World.tileY;
+				scX=rx*World.tilePixelWidth;
+				X=X1=bx*World.tilePixelWidth;
+				Y=Y2=by*World.tilePixelHeight+World.tilePixelHeight;
 				X2=X1+scX;
 				if (xml.@h.length()) ry=xml.@h;
-				scY=ry*World.tileY;
+				scY=ry*World.tilePixelHeight;
 				Y1=Y2-scY;
 				// Visual
 				if (xml.@vis.length()) {
@@ -209,15 +209,15 @@
 		public function damTiles(destroy:int,tipDam:int=11) {
 			for (var i=bx; i<bx+rx; i++) {
 				for (var j=by-ry+1; j<=by; j++) {
-					loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tileX,(j+0.5)*Tile.tileY,tipDam);
+					loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tilePixelWidth,(j+0.5)*Tile.tilePixelHeight,tipDam);
 				}
 			}
 		}
 		
 		public function teleport(un:Unit) {
 			if (un==null) return;
-			if (!loc.collisionUnit((portX+1)*World.tileX, (portY+1)*World.tileY-1,un.scX, un.scY)) {
-				un.teleport((portX+1)*World.tileX, (portY+1)*World.tileY-1);
+			if (!loc.collisionUnit((portX+1)*World.tilePixelWidth, (portY+1)*World.tilePixelHeight-1,un.scX, un.scY)) {
+				un.teleport((portX+1)*World.tilePixelWidth, (portY+1)*World.tilePixelHeight-1);
 			}
 		}
 	}

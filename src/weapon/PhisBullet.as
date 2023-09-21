@@ -94,7 +94,7 @@
 			var pla=inWater;
 			inWater=0;
 			try {
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor(Y/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) {
 					inWater=1;
 				}
 			} catch (err) {
@@ -135,7 +135,7 @@
 					return;
 				}
 			} else {
-				if (X<0 || X>=loc.spaceX*Tile.tileX) {
+				if (X<0 || X>=loc.spaceX*Tile.tilePixelWidth) {
 					vse=true;
 					return;
 				}
@@ -185,7 +185,7 @@
 				if (dy>0) {
 					stay=false;
 					Y+=dy/div;
-					if (Y>=loc.spaceY*Tile.tileY) {
+					if (Y>=loc.spaceY*Tile.tilePixelHeight) {
 						vse=true;
 						return;
 					}

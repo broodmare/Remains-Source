@@ -37,9 +37,9 @@
 			sloy=2, prior=3;
 			X=nx, Y=ny;
 			krit=nkrit;
-			if (nx<Tile.tileX) nx=Tile.tileX;
-			if (nx>(loc.spaceX-1)*Tile.tileX) nx=(loc.spaceX-1)*Tile.tileX;
-			if (ny>(loc.spaceY-1)*Tile.tileY) ny=(loc.spaceY-1)*Tile.tileY;
+			if (nx<Tile.tilePixelWidth) nx=Tile.tilePixelWidth;
+			if (nx>(loc.spaceX-1)*Tile.tilePixelWidth) nx=(loc.spaceX-1)*Tile.tilePixelWidth;
+			if (ny>(loc.spaceY-1)*Tile.tilePixelHeight) ny=(loc.spaceY-1)*Tile.tilePixelHeight;
 			massa=0.1;
 			nazv=item.nazv;
 			scX=30, scY=20;
@@ -239,8 +239,8 @@
 					X=scX/2;
 					dx=Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*Tile.tileX) {
-					X=loc.spaceX*Tile.tileX-1-scX/2;
+				if (X+scX/2>=loc.spaceX*Tile.tilePixelWidth) {
+					X=loc.spaceX*Tile.tilePixelWidth-1-scX/2;
 					dx=-Math.abs(dx);
 				}
 				//движение влево
@@ -277,7 +277,7 @@
 			var newmy:Number=0;
 			if (dy>0) {
 				stay=false;
-				if (Y+dy/div>=loc.spaceY*Tile.tileY) {
+				if (Y+dy/div>=loc.spaceY*Tile.tilePixelHeight) {
 					if (auto2) take(true);
 					dx=0;
 					return;
@@ -287,7 +287,7 @@
 					newmy=t.phY1;
 				}
 				if (newmy==0 && !levit && !vsos) newmy=checkShelf(dy/div);
-				if (!loc.active && Y>=(loc.spaceY-1)*Tile.tileY) newmy=(loc.spaceY-1)*Tile.tileY;
+				if (!loc.active && Y>=(loc.spaceY-1)*Tile.tilePixelHeight) newmy=(loc.spaceY-1)*Tile.tilePixelHeight;
 				if (newmy) {
 					Y=newmy-1;
 					if (!levit) {
@@ -325,7 +325,7 @@
 			var pla=isPlav;
 			isPlav=false;
 			try {
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor(Y/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) {
 					isPlav=true;
 				}
 			} catch (err) {

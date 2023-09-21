@@ -260,7 +260,7 @@
 				walk=0;
 			}
 			
-			if (Y>loc.spaceY*World.tileY-80) throu=false;
+			if (Y>loc.spaceY*World.tilePixelHeight-80) throu=false;
 			
 			//if ((aiState==3 || aiState==4) && World.w.enemyAct>=3) attack();
 

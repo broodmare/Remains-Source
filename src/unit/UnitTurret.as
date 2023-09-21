@@ -276,8 +276,8 @@
 			if (com=='hack') hack();
 			if (com=='port') {
 				var arr:Array=val.split(':');
-				var nx=(int(arr[0])+0.5)*World.tileX;
-				var ny=(int(arr[1])+1)*World.tileY;
+				var nx=(int(arr[0])+0.5)*World.tilePixelWidth;
+				var ny=(int(arr[1])+1)*World.tilePixelHeight;
 				teleport(nx,ny,1);
 				aiState=2;
 				aiTCh=60;

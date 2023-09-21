@@ -854,8 +854,8 @@
 		
 		function showPortCel() {
 			vis.portCel.visible=true;
-			var nx=Math.round(World.w.celX/World.tileX)*World.tileX;
-			var ny=Math.round(World.w.celY/World.tileY)*World.tileY;
+			var nx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth;
+			var ny=Math.round(World.w.celY/World.tilePixelHeight)*World.tilePixelHeight;
 			World.w.cam.setKoord(vis.portCel,nx,ny);
 			if (gg.checkPort()) {
 				if (gg.t_port<gg.pers.portTime) vis.portCel.gotoAndStop(1);

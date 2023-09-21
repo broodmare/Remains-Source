@@ -119,7 +119,7 @@
 		
 		//настройка силы спутника
 		public override function setLevel(nlevel:int=1) {
-			level=nlevel-1;
+			level = nlevel-1;
 			var koef=hp/maxhp;
 			if (id=='phoenix') {
 				maxhp=gg.pers.petHP*(1+level*0.12);

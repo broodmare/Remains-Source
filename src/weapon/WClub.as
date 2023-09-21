@@ -370,8 +370,8 @@
 			b.inWater=0;
 			if (loc.getAbsTile(b.X, b.Y).water>0) b.inWater=1;
 			if (mtip==0) {
-				b.tileX=Math.floor(owner.celX/World.tileX);
-				b.tileY=Math.floor(owner.celY/World.tileY);
+				b.tilePixelWidth=Math.floor(owner.celX/World.tilePixelWidth);
+				b.tilePixelHeight=Math.floor(owner.celY/World.tilePixelHeight);
 			}
 			if (mtip==2) {
 				quakeX=Math.random()*otbros;

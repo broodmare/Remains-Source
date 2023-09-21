@@ -254,6 +254,7 @@
 			ativateLoc();
 		*/
 		
+		//THIS MIGHT HAVE TO DO WITH THE BUG AS WELL!
 		public function gotoLand(nland:String, coord:String=null, fast:Boolean=false) {
 			if (nland!=baseId && !World.w.pers.dopusk()) {
 				World.w.gui.messText('nocont');

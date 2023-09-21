@@ -1,7 +1,9 @@
 ﻿package src.loc {
 	
 	import src.*;
-	public class Form {
+	
+	public class Form 
+	{
 		
 		public var id:String;
 		public var idMirror:String;

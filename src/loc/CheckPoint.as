@@ -31,8 +31,8 @@
 			var node:XML=AllData.d.obj.(@id==id)[0];
 			
 			X=nx, Y=ny;
-			scX=node.@size*World.tileX;
-			scY=node.@wid*World.tileY;
+			scX=node.@size*World.tilePixelWidth;
+			scY=node.@wid*World.tilePixelHeight;
 			nazv=Res.txt('o','checkpoint');
 			
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;

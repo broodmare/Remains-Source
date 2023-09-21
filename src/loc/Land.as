@@ -715,7 +715,7 @@
 				nx=loc.spawnPoints[n].x;
 				ny=loc.spawnPoints[n].y;
 			}
-			gg.setLocPos((nx+1)*Tile.tileX, (ny+1)*Tile.tileY-1);
+			gg.setLocPos((nx+1)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1);
 			gg.dx=3;
 			loc.lighting(gg.X, gg.Y-75);
 			//World.w.cam.calc(gg);
@@ -899,8 +899,8 @@
 					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
 				}
 			}
-			ggX=(loc.landX-minLocX)*World.cellsX*World.tileX+gg.X;
-			ggY=(loc.landY-minLocY)*World.cellsY*World.tileY+gg.Y-gg.scY/2;
+			ggX=(loc.landX-minLocX)*World.cellsX*World.tilePixelWidth+gg.X;
+			ggY=(loc.landY-minLocY)*World.cellsY*World.tilePixelHeight+gg.Y-gg.scY/2;
 			return map;
 		}
 		

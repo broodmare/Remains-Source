@@ -30,18 +30,21 @@
 		public var water:int=0;
 		public var maxkol:int=0;
 		
-		public function Part() {
+		public function Part() 
+		{
 			
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false) 
+		{
 			if (visData) visData.dispose();
 			loc.remObj(this);
 			if (maxkol>0) Emitter.kols[maxkol]--;
 			delete this;
 		}
 		
-		public function initBlit(blitId:String) {
+		public function initBlit(blitId:String) 
+		{
 			blitData=World.w.grafon.getSpriteList(blitId,1);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
 			blitPoint = new Point(0,0);
@@ -54,18 +57,22 @@
 			vis.x=X;
 			vis.y=Y;
 			vis.rotation=r;
-			if (isAnim==0) {
+
+			if (isAnim==0) 
+			{
 				var n:int=Math.floor(Math.random()*blitData.width/blitX);
 				blit(n);
 			}
 		}
 		
-		public function blit(blframe:int) {
+		public function blit(blframe:int) 
+		{
 			blitRect.x=blframe*blitX, blitRect.y=0;
 			visData.copyPixels(blitData,blitRect,blitPoint);
 		}
 		
-		public function initVis(frame:int=0) {
+		public function initVis(frame:int=0) 
+		{
 			if (vClass) vis=new vClass();
 			else return;
 			if (frame==0) vis.gotoAndStop(Math.floor(Math.random()*vis.totalFrames+1));
@@ -78,17 +85,25 @@
 			vis.rotation=r;
 		}
 		
-		public override function step() {
-			if (otklad>0) {
+		public override function step() 
+		{
+
+			if (otklad>0) 
+			{
 				vis.visible=false;
 				vis.stop();
 				otklad--;
 				return;
-			} else if (vis.visible==false) {
+			} 
+
+			else if (vis.visible==false) 
+			{
 				vis.visible=true;
 				if (isAnim>0) vis.play();
 			}
-			if (isMove) {
+
+			if (isMove) 
+			{
 				X+=dx;
 				Y+=dy;
 				dy+=ddy;
@@ -99,22 +114,33 @@
 				dx*=brake;
 				dy*=brake;
 			}
+			
 			if (isAlph && liv<9) vis.alpha=liv/10;
+
 			else if (isPreAlph && (mliv-liv<9)) vis.alpha=(mliv-liv)/10;
+
 			else if (isAlph || isPreAlph) vis.alpha=1;
-			if (isAnim && blitData && blitFrame*blitX<blitData.width) {
+
+			if (isAnim && blitData && blitFrame*blitX<blitData.width) 
+			{
 				blit(Math.floor(blitFrame));
 				blitFrame+=blitDelta;
 				if (blitMFrame>0 && blitFrame>=blitMFrame) blitFrame=0;
 			}
-			if (water>0) {
+
+			if (water>0) 
+			{
 				var voda=loc.getAbsTile(X,Y).water;
 				if (water==2 && voda==0 || water==1 && voda>0) liv=1;
 			}
+
 			liv--;
-			if (liv<=0) {
+
+			if (liv<=0) 
+			{
 				setNull();
 			}
+
 			Emitter.kol1++;
 		}
 

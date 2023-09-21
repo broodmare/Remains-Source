@@ -395,7 +395,7 @@
 		public function setArmor(aid:String) {
 			ArmorId=aid;
 			try {
-				hideMane=AllData.d.armor.(@id==aid).@hide;
+				hideMane = AllData.d.armor.(@id==aid).@hide;
 			} catch (err) {
 				hideMane=0;
 			}

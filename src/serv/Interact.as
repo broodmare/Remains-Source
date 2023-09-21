@@ -15,7 +15,7 @@
 		
 		var inited:Boolean=false;
 		public var owner:Obj;
-		public var loc:Location;
+		public var location:Location;
 		public var X:Number, Y:Number;
 		
 		public var active:Boolean=true;	// object is active
@@ -110,11 +110,11 @@
 		// node - template, xml - individual parameter taken from the map
 		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) {
 			owner=own;
-			loc=owner.loc;
+			location=owner.loc;
 			X=own.X, Y=own.Y;
 			xml=nxml;
 			//var rnd:Boolean=false;
-			//if (loc && loc.land.rnd) 
+			//if (location && location.land.rnd) 
 			var rnd=true;
 			if (xml && xml.@set.length()) rnd=false;	// if the set property is specified as '1', there won't be random parameters
 			// lock type
@@ -129,9 +129,9 @@
 					if (rnd) {		// random lock
 						if (node.@lockch.length()==0 || Math.random()<Number(node.@lockch)) {
 							if (lockTip==1 || lockTip==2) {
-								lock=Math.floor(lk+(0.3+Math.random())*loc.locksLevel);
+								lock=Math.floor(lk+(0.3+Math.random())*location.locksLevel);
 							} else {
-								lock=Math.floor(lk+Math.random()*loc.mechLevel);
+								lock=Math.floor(lk+Math.random()*location.mechLevel);
 							}
 						}
 						if (Math.random()<lk-Math.floor(lk)) lock+=1;
@@ -147,8 +147,8 @@
 				if (node.@mine.length()) {
 					if (rnd) {
 						if (node.@minech.length()) {
-							if (Math.random()<Number(node.@minech))	mine=Math.floor(Math.random()*(Number(node.@mine)+Math.random()*loc.mechLevel+1));
-						} else mine=Math.floor(Number(node.@mine)+Math.random()*loc.mechLevel);
+							if (Math.random()<Number(node.@minech))	mine=Math.floor(Math.random()*(Number(node.@mine)+Math.random()*location.mechLevel+1));
+						} else mine=Math.floor(Number(node.@mine)+Math.random()*location.mechLevel);
 						if (mine>=2 && Math.random()<0.25) mine--;
 					} else {
 						mine=node.@mine;
@@ -212,26 +212,26 @@
 					isMove=true;
 					begX=X, begY=Y;
 					if (xml.move.@dx.length()) {
-						if (loc && loc.mirror) endX=X-xml.move.@dx*World.tileX;
-						else endX=X+xml.move.@dx*World.tileX;
+						if (location && location.mirror) endX=X-xml.move.@dx*World.tilePixelWidth;
+						else endX=X+xml.move.@dx*World.tilePixelWidth;
 					} else endX=endX2=X;
-					if (xml.move.@dy.length()) endY=Y+xml.move.@dy*World.tileY;
+					if (xml.move.@dy.length()) endY=Y+xml.move.@dy*World.tilePixelHeight;
 					else endY=Y;
 					if (xml.move.@tstay.length()) tStay=xml.move.@tstay;
 					if (xml.move.@tmove.length()) tMove=xml.move.@tmove;
 					if (xml.move.@on.length()) moveSt=4;
 				}
 			}
-			if (loc && loc.base && cont!=null && !noBase) {
+			if (location && location.base && cont!=null && !noBase) {
 				cont=null;
 				lock=mine=saveMine=saveLock=0;
 				action=0;
 				active=false;
 			}
-			if (loc && (loc.homeStable) && !noBase) {
+			if (location && (location.homeStable) && !noBase) {
 				lock=mine=saveMine=saveLock=0;
 			}
-			if (loc && (loc.homeAtk) && !noBase) {
+			if (location && (location.homeAtk) && !noBase) {
 				lock=mine=saveMine=saveLock=0;
 				if (cont && own is Box) {
 					setAct('loot',1);
@@ -260,13 +260,13 @@
 				if (mineTip==6) {
 					fiascoRemine=alarm;
 				} else {
-					damage=mine*50*(0.8+Math.random()*0.4)*(1+loc.locDifLevel*0.1);
+					damage=mine*50*(0.8+Math.random()*0.4)*(1+location.locDifLevel*0.1);
 					fiascoRemine=explosion;
 				}
 				if (!difSet) allDif+=mine*2;
 			}
-			if (loc) {
-				damdis=30+loc.mechLevel*20;
+			if (location) {
+				damdis=30+location.mechLevel*20;
 			}
 			if (expl>0) {
 				if (node.@damage.length()) damage=node.@damage;
@@ -279,7 +279,7 @@
 			if (allact=='alarm') {
 				fiascoRemine=alarm2;
 				if (owner) {
-					area=new Area(loc);
+					area=new Area(location);
 					owner.copy(area);
 					area.tip='raider';
 					area.over=alarm2;
@@ -319,8 +319,8 @@
 			}
 			if (t_budilo>0) {
 				if (t_budilo%30==0) {
-					loc.budilo(owner.X,owner.Y,1500);
-					Emitter.emit('laser2',loc,owner.X,owner.Y-owner.scY+20);
+					location.budilo(owner.X,owner.Y,1500);
+					Emitter.emit('laser2',location,owner.X,owner.Y-owner.scY+20);
 					Snd.ps('alarm',X,Y);
 				}
 				t_budilo--;
@@ -328,7 +328,7 @@
 			if (sign>0) {
 				if (t_sign<=0) {
 					t_sign=30;
-					if (World.w.helpMess) Emitter.emit('sign'+sign,loc,owner.X,owner.Y-owner.scY/2);
+					if (World.w.helpMess) Emitter.emit('sign'+sign,location,owner.X,owner.Y-owner.scY/2);
 				}
 				t_sign--;
 			}
@@ -452,7 +452,7 @@
 					active=false;
 					owner.setVisState('open');
 				}
-				if (loc && loc.prob && loc.active) loc.prob.check();
+				if (location && location.prob && location.active) location.prob.check();
 			}
 			if (a=='expl') {
 				saveExpl=n;
@@ -674,7 +674,7 @@
 				if (World.w.invent.items[cons] && World.w.invent.items[cons].kol>0)	{
 					World.w.invent.minusItem(cons);
 					World.w.gui.infoText('usedCons', Res.txt('i',cons));
-					if (cons=='empbomb') Emitter.emit('impexpl',loc,owner.X, owner.Y-owner.scY/2);
+					if (cons=='empbomb') Emitter.emit('impexpl',location,owner.X, owner.Y-owner.scY/2);
 				} else {
 					World.w.gui.infoText('needCons', Res.txt('i',cons),null,false);
 					return;
@@ -700,7 +700,7 @@
 				allAct();
 			}
 			
-			if (loc && loc.prob) loc.prob.check();
+			if (location && location.prob) location.prob.check();
 			if (scrAct) scrAct.start();
 			update();
 		}
@@ -766,7 +766,7 @@
 		public function explosion() {
 			if (saveExpl) return;
 			var un:Unit=new Unit();
-			un.loc=loc;
+			un.loc=location;
 			var bul:Bullet=new Bullet(un,owner.X,owner.Y,null,false);
 			bul.iExpl(damage,destroy,explRadius);
 			setAct('expl',1);
@@ -779,7 +779,7 @@
 		public function discharge() {
 			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
 			//damage(,Unit.D_SPARK);
-			//Emitter.emit('moln',loc,owner.X,owner.Y-owner.scY/2,{celx:World.w.gg.X, cely:(World.w.gg.Y-World.w.gg.scY/2)});
+			//Emitter.emit('moln',location,owner.X,owner.Y-owner.scY/2,{celx:World.w.gg.X, cely:(World.w.gg.Y-World.w.gg.scY/2)});
 			//Snd.ps('electro',X,Y);
 			damdis+=50;
 			if (damdis>500) damdis=500;
@@ -790,15 +790,15 @@
 			if (saveExpl) return;
 			t_budilo=240;
 			setAct('expl',1);
-			loc.signal();
-			loc.robocellActivate();
+			location.signal();
+			location.robocellActivate();
 		}
 		
 		// Unsuccessful attempt to disable the alarm button
 		public function alarm2() {
 			if (allact!='alarm') return;
 			t_budilo=240;
-			loc.signal();
+			location.signal();
 			area=null;
 			active=false;
 			allact='';
@@ -808,13 +808,13 @@
 		
 		// Unsuccessful attempt to hack the robot cell - alarm
 		public function robocellFail() {
-			loc.robocellActivate();
+			location.robocellActivate();
 		}
 		
 		// Create a robot
 		public function genRobot() {
 			if (allact!='robocell') return;
-			loc.createUnit('robot',X,Y,true,null,null,30);
+			location.createUnit('robot',X,Y,true,null,null,30);
 			allact='';
 			update();
 			owner.setVisState('active');
@@ -867,14 +867,14 @@
 					World.w.gui.infoText('noOutLoc',null,null,false);
 					return;
 				}
-				loc.land.gotoProb(prob, owner.X, owner.Y);
+				location.land.gotoProb(prob, owner.X, owner.Y);
 			} else if (allact=='probreturn') {
-				if (loc.landProb!='') {
+				if (location.landProb!='') {
 					if (World.w.possiblyOut()==2) {
 						World.w.gui.infoText('noOutLoc',null,null,false);
 						return;
 					}
-					loc.land.gotoProb('', owner.X, owner.Y);
+					location.land.gotoProb('', owner.X, owner.Y);
 				}
 			} else if (allact=='hack_robot') {
 				World.w.gui.infoText('term1Act');
@@ -887,10 +887,10 @@
 					if (obj.inter) obj.inter.command('hack');
 				}
 			} else if (allact=='prob_help') {
-				if (loc.prob) loc.prob.showHelp();
+				if (location.prob) location.prob.showHelp();
 			} else if (allact=='electro_check') {
-				loc.electroCheck();
-				if (loc.electroDam<=0) World.w.gui.infoText('electroOff',null,null,true);
+				location.electroCheck();
+				if (location.electroDam<=0) World.w.gui.infoText('electroOff',null,null,true);
 				else World.w.gui.infoText('electroOn',null,null,true);
 			} else if (allact=='comein') {
 				World.w.gg.outLoc(5,X,Y);
@@ -933,11 +933,11 @@
 		}
 		
 		public function shine() {
-			Emitter.emit('unlock',loc,owner.X,owner.Y-owner.scY/2,{kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
+			Emitter.emit('unlock',location,owner.X,owner.Y-owner.scY/2,{kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
 		}
 		
 		public function signal(n:String) {
-			Emitter.emit(n,loc,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
+			Emitter.emit(n,location,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
 		}
 		
 		
@@ -973,7 +973,7 @@
 				if (expl) explosion();
 				else if (knop && action==0) {
 					setAct('open',1);
-					if (loc.prob) loc.prob.check();
+					if (location.prob) location.prob.check();
 				} else actOsn();
 			}
 			if (com=='swap') {
@@ -1099,7 +1099,7 @@
 		}
 		
 		public function loot(impOnly:Boolean=false) {
-			if (loc==null || cont=='empty') return;
+			if (location==null || cont=='empty') return;
 			X=owner.X, Y=owner.Y-owner.scY/2;
 			var kol:int, imp:int;
 			var is_loot=false;
@@ -1113,19 +1113,19 @@
 						imp=2;
 						imp_loot=2;
 					} else imp=1;
-					LootGen.lootId(loc,X,Y,item.@id,kol,imp,this,lootBroken);
+					LootGen.lootId(location,X,Y,item.@id,kol,imp,this,lootBroken);
 					is_loot=true;
 				}
 			}
 			if (impOnly) return;
 			if (cont!='' && cont!='empty') {
 				if (owner is Unit) {
-					is_loot=LootGen.lootDrop(loc,X,Y,cont,(owner as Unit).hero) || is_loot;
+					is_loot=LootGen.lootDrop(location,X,Y,cont,(owner as Unit).hero) || is_loot;
 				} else {
-					is_loot=LootGen.lootCont(loc,X,Y,cont,lootBroken,prize?allDif:50) || is_loot;
+					is_loot=LootGen.lootCont(location,X,Y,cont,lootBroken,prize?allDif:50) || is_loot;
 					// Give experience points
 					if (!lootBroken && allDif>0 && xp>0) {
-						loc.takeXP(Math.round(xp*(allDif+1)),X,Y);
+						location.takeXP(Math.round(xp*(allDif+1)),X,Y);
 					}
 				}
 			}

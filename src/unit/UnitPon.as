@@ -26,7 +26,7 @@
 					if (storona>0 && celX>X2 || storona<0 && celX<X1) weaponX=X+scX*1*storona;
 					else weaponX=X;
 					if (isLaz) weaponX=X;
-					if (loc.getTile(Math.floor((weaponX+storona*15)/World.tileX),Math.floor(weaponY/World.tileY)).phis==1) weaponX=X;
+					if (loc.getTile(Math.floor((weaponX+storona*15)/World.tilePixelWidth),Math.floor(weaponY/World.tilePixelHeight)).phis==1) weaponX=X;
 					if (tip==1) weaponY=Y-scY*0.4;
 					else weaponY=Y-scY*0.7;
 				} else if (tip==1 || tip==2 || tip==4) {	 //в зубах	

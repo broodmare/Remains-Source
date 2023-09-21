@@ -258,7 +258,7 @@
 				World.w.grafon.gwall(t.X,t.Y);
 				est=1;
 			}
-			Emitter.emit('gwall',loc,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY);
+			Emitter.emit('gwall',loc,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight);
 		}
 		
 		function cast_gwall() {

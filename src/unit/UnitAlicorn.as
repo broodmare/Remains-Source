@@ -651,7 +651,7 @@
 
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (Y>loc.spaceY*Tile.tilePixelHeight-80) throu=false;
 			
 			if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80 && aiState!=5 && aiState!=6) {
 				if (attKorp(celUnit,(shok<=0?1:0.5)) || isrnd(0.2)) {
@@ -822,8 +822,8 @@
 					nx=Math.random()*loc.limX;
 					ny=Math.random()*loc.limY;
 				}
-				nx=Math.round(nx/World.tileX)*World.tileX
-				ny=Math.ceil(ny/World.tileY)*World.tileY-1;
+				nx=Math.round(nx/World.tilePixelWidth)*World.tilePixelWidth
+				ny=Math.ceil(ny/World.tilePixelHeight)*World.tilePixelHeight-1;
 				if (nx<scX) nx=scX;
 				if (ny<scY+40) ny=scY+40;
 				if (nx>loc.limX-scX) nx=loc.limX-scX;

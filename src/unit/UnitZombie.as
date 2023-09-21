@@ -335,8 +335,8 @@
 			tZlo=120;
 			aiTCh=30;
 			transT=false;
-			for (var i=Math.floor((X1)/Tile.tileX); i<=Math.floor((X2)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y1)/Tile.tileY); j<=Math.floor((Y2)/Tile.tileY); j++) {
+			for (var i=Math.floor((X1)/Tile.tilePixelWidth); i<=Math.floor((X2)/Tile.tilePixelWidth); i++) {
+				for (var j=Math.floor((Y1)/Tile.tilePixelHeight); j<=Math.floor((Y2)/Tile.tilePixelHeight); j++) {
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					if (collisionTile(loc.space[i][j])) loc.dieTile(loc.space[i][j]);
 				}
@@ -591,7 +591,7 @@
 			}
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (Y>loc.spaceY*Tile.tilePixelHeight-80) throu=false;
 			
 			if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80 && aiState!=5 && aiState!=6) {
 				if (attKorp(celUnit,(shok<=0?1:0.5)) || isrnd(0.2)) {
@@ -675,26 +675,26 @@
 		
 		function findSuper() {
 			superX=-1;
-			var nx:int=Math.floor(celX/World.tileX);
-			var ny:int=Math.floor((celY+40)/World.tileY);
+			var nx:int=Math.floor(celX/World.tilePixelWidth);
+			var ny:int=Math.floor((celY+40)/World.tilePixelHeight);
 			//Emitter.emit('laser',loc,nx*40+20,ny*40+20);
-			if (superSilaTip==1) superY=ny*World.tileY+World.tileY+scY;
+			if (superSilaTip==1) superY=ny*World.tilePixelHeight+World.tilePixelHeight+scY;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 			if (Y-celY>120) {
 				if (loc.getTile(nx,ny).phis==0) {
 					if (loc.getTile(nx-1,ny).phis==0) {
-						superX=nx*World.tileX;
+						superX=nx*World.tilePixelWidth;
 					} else if (loc.getTile(nx+1,ny).phis==0) {
-						superX=(nx+1)*World.tileX;
+						superX=(nx+1)*World.tilePixelWidth;
 					}
 				}
 				if (superX<0 && loc.getTile(nx-2,ny).phis==0) {
-					if (loc.getTile(nx-1,ny).phis==0) superX=(nx-1)*World.tileX;
-					else if (loc.getTile(nx-3,ny).phis==0) superX=(nx-2)*World.tileX;
+					if (loc.getTile(nx-1,ny).phis==0) superX=(nx-1)*World.tilePixelWidth;
+					else if (loc.getTile(nx-3,ny).phis==0) superX=(nx-2)*World.tilePixelWidth;
 				}
 				if (superX<0 && loc.getTile(nx+2,ny).phis==0) {
-					if (loc.getTile(nx+1,ny).phis==0) superX=(nx+2)*World.tileX;
-					else if (loc.getTile(nx+3,ny).phis==0) superX=(nx+3)*World.tileX;
+					if (loc.getTile(nx+1,ny).phis==0) superX=(nx+2)*World.tilePixelWidth;
+					else if (loc.getTile(nx+3,ny).phis==0) superX=(nx+3)*World.tilePixelWidth;
 				}
 			} else {
 				if (superSilaTip==1) {

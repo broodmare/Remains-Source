@@ -238,7 +238,7 @@
 		}
 		
 		public function attach() {
-			invent=World.w.invent;
+			invent = World.w.invent;
 			invent.gg=this;
 			invent.owner=this;
 			invent.addAllSpells();
@@ -255,19 +255,21 @@
 			punchWeapon=new WKick(this,'punch');
 			paintWeapon=new WPaint(this,'paint');
 			childObjs=new Array(currentWeapon,punchWeapon);
-			if (invent.fav[29]) {
+			if (invent.fav[29]) 
+			{
 				throwWeapon=invent.weapons[invent.fav[29]];
 				throwWeapon.setNull();
 				throwWeapon.setPers(this,pers);
 			}
-			if (invent.fav[30]) {
+			if (invent.fav[30]) 
+			{
 				magicWeapon=invent.weapons[invent.fav[30]];
 				magicWeapon.setNull();
 				magicWeapon.setPers(this,pers);
 			}
 			
 			//спутники
-			pets=new Array();
+			pets = new Array();
 			pet=new UnitPet('phoenix');
 			pet.gg=this;
 			pet.setLevel(pers.level);
@@ -293,7 +295,9 @@
 				hp=0;
 				controlOff();
 				anim('die',true);
-			} else {
+			} 
+			else 
+			{
 				currentPet=pers.currentPet;
 				if (currentPet!='' && currentPet!=null && currentPet!='moon') {
 					pet=pets[currentPet];
@@ -371,8 +375,8 @@
 				if (napr==3 || napr==4) {
 					if (laz!=0) {
 						checkStairs();
-						if (!isLaz) checkStairs(1,-Tile.tileX*laz);
-						if (!isLaz) checkStairs(1,Tile.tileX*laz);
+						if (!isLaz) checkStairs(1,-Tile.tilePixelWidth*laz);
+						if (!isLaz) checkStairs(1,Tile.tilePixelWidth*laz);
 					}
 				} 
 				if (napr==4) {
@@ -988,8 +992,8 @@
 				World.w.gui.infoText('overMana',null,null,false);
 				World.w.gui.bulb(X,Y-20);
 			} else {
-				var nx=Math.round(World.w.celX/World.tileX)*World.tileX
-				var ny=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
+				var nx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
+				var ny=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
 				if (checkPort()) {
 					teleport(nx, ny, 1);
 					sound('teleport');
@@ -1015,8 +1019,8 @@
 				var t:Tile=loc.getAbsTile(World.w.celX,World.w.celY);
 				if (t.visi<0.8) return;
 			}
-			var tx=Math.round(World.w.celX/World.tileX)*World.tileX
-			var ty=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
+			var tx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
+			var ty=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
 			if (loc.sky || !loc.collisionUnit(tx,ty,stayX,stayY))	{
 				teleport(tx, ty, 1);
 				if (teleObj) dropTeleObj();
@@ -1029,8 +1033,8 @@
 		public function checkPort():Boolean {
 			if (mana<pers.portMana*pers.allDManaMult) return false;
 			if (loc.sky) return true;
-			var nx=Math.round(World.w.celX/World.tileX)*World.tileX
-			var ny=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
+			var nx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
+			var ny=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
 			var t:Tile=loc.getAbsTile(World.w.celX,World.w.celY);
 			//if (!loc.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			if (t.visi>=0.8 && !loc.collisionUnit(nx, ny,stayX,stayY)) return true;
@@ -1243,8 +1247,8 @@
 		function chit() {
 			if (World.w.chit=='fly') isFly=!isFly;
 			if (World.w.chit=='port') {
-				var tx=Math.round(World.w.celX/World.tileX)*World.tileX
-				var ty=Math.round(World.w.celY/World.tileY+1)*World.tileY-1;
+				var tx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
+				var ty=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
 				if (!loc.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			}
 			if (World.w.chit=='emit') {
@@ -1856,7 +1860,7 @@
 					}
 				} else if (loc.getAbsTile(X-20,Y-10).lurk && loc.getAbsTile(X+20,Y-10).lurk) {
 					lurkTip=1;
-					lurkX=Math.round(X/Tile.tileX)*Tile.tileX;
+					lurkX=Math.round(X/Tile.tilePixelWidth)*Tile.tilePixelWidth;
 					dx=0;
 					t_work=20;
 					work='lurk';
@@ -1878,7 +1882,7 @@
 		
 		/*public override function destroyWall(t:Tile, napr:int=0):Boolean {
 			if (isPlav || levit) return false;
-			if (napr==3 && dy>10) loc.hitTile(t,50,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY,4);
+			if (napr==3 && dy>10) loc.hitTile(t,50,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight,4);
 			if (t.phis>0) return false;
 			return true;
 		}*/
@@ -2171,7 +2175,7 @@
 				if (tip==1) weaponY=Y-scY*0.4;
 				else weaponY=Y-scY*0.7;
 				if (stay && weapUp) {
-					if (loc.getTile(Math.floor(weaponX/Tile.tileX),Math.floor((weaponY-40)/Tile.tileY)).phis!=1) weaponY-=40;
+					if (loc.getTile(Math.floor(weaponX/Tile.tilePixelWidth),Math.floor((weaponY-40)/Tile.tilePixelHeight)).phis!=1) weaponY-=40;
 				}
 			} else super.setWeaponPos(tip);
 			
@@ -3076,7 +3080,7 @@
 		
 		public function showElectroBlock() {
 			var t:Tile=loc.getAbsTile(X+Math.random()*320-160, Y-scY/2+Math.random()*320-160);
-			if (t && t.mat==1 && t.hp>0) Emitter.emit('electro', loc, (t.X+0.5)*Tile.tileX, (t.Y+0.5)*Tile.tileY);
+			if (t && t.mat==1 && t.hp>0) Emitter.emit('electro', loc, (t.X+0.5)*Tile.tilePixelWidth, (t.Y+0.5)*Tile.tilePixelHeight);
 		}
 		
 		public override function replic(s:String) {

@@ -20,10 +20,7 @@
 
 
 	import src.*;
-
-	//import src.Editor;
 	import src.AllData;
-	
 	public class MainFE extends flash.display.MovieClip{
 		
 		var mainMenu:MainMenu;
@@ -92,7 +89,7 @@ this.addChild(loader);
 		{
 			var bLoaded:uint = loaderInfo.bytesLoaded;
 			var bTotal:uint = loaderInfo.bytesTotal;
-			if (zastavka.alpha<1) zastavka.alpha+=0.05;
+			zastavka.alpha = 1;
 			zastavka.progres.text = 'Loading '+Math.round(bLoaded / bTotal*100)+'%';
 			if (bLoaded >= bTotal)
 			{

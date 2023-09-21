@@ -324,7 +324,7 @@
 			}
 			pumpObj=null;
 			
-			if (Y>loc.spaceY*Tile.tileY-80) throu=false;
+			if (Y>loc.spaceY*Tile.tilePixelHeight-80) throu=false;
 			
 			if (celUnit && celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && aiState>1) {
 				attKorp(celUnit,(shok<=0?1:0.5));
@@ -334,8 +334,8 @@
 		//поиск лестницы
 		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
 			try {
-				var i=Math.floor((X+nx)/Tile.tileX);
-				var j=Math.floor((Y+ny)/Tile.tileY);
+				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
+				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
 				if (loc.space[i][j].phis>=1) {
 					isLaz=0;

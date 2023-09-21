@@ -397,15 +397,15 @@
 				currentWeapon.attack();
 			}
 			
-			if (Y>loc.spaceY*World.tileY-80) throu=false;
+			if (Y>loc.spaceY*World.tilePixelHeight-80) throu=false;
 			//World.w.gui.vis.sist.text=aiNeedLaz+':'+isLaz;
 		}
 		
 		//поиск лестницы
 		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
 			try {
-				var i=Math.floor((X+nx)/Tile.tileX);
-				var j=Math.floor((Y+ny)/Tile.tileY);
+				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
+				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
 				if (loc.space[i][j].phis>=1) {
 					isLaz=0;

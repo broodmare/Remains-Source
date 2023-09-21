@@ -51,7 +51,7 @@
 		
 		public override function destroyWall(t:Tile, napr:int=0):Boolean {
 			if (sost!=1) return false;
-			if (destroy>0 && napr==2 || napr==1) loc.hitTile(t,destroy,(t.X+0.5)*Tile.tileX,(t.Y+0.5)*Tile.tileY,4);
+			if (destroy>0 && napr==2 || napr==1) loc.hitTile(t,destroy,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight,4);
 			if (t.phis==0) return true;
 			return false;
 		}

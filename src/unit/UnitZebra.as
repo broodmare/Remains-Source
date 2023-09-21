@@ -77,7 +77,7 @@
 			for (var i=1; i<div; i++) {
 				var nx=X+cx*i/div;
 				var ny=Y-scY*0.6+cy*i/div;
-				var t:Tile=World.w.loc.getTile(Math.floor(nx/Tile.tileX),Math.floor(ny/Tile.tileY));
+				var t:Tile=World.w.loc.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
 				//Emitter.emit('marker',loc,nx,ny);
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					return false;

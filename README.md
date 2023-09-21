@@ -26,4 +26,24 @@ Script time limit changed from 40 seconds to 9999 seconds. (I'm not sure what if
 
 JPEG Quality increased 80% -> 100%
 
+
+
+1.0.3a Changelog:
+
+Variable renaming:
+
+loc -> location
+nloc -> newLocation
+tileX -> tilePixelWidth
+tileY -> tilePixelHeight
+
+
+fils -> filterArray
+f -> filter
+
+Draw rear tiles before front tiles.
+
+
+
+
 ---

@@ -181,7 +181,7 @@
 				}
 			} 
 			
-			if (Y>loc.spaceY*World.tileY-80) throu=false;
+			if (Y>loc.spaceY*World.tilePixelHeight-80) throu=false;
 		}
 		
 		public function attack() {

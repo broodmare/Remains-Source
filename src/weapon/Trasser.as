@@ -54,7 +54,7 @@
 			if (vse) return;
 			var t:Tile;
 			X+=dx/div;
-			if (X<0 || X>=loc.spaceX*Tile.tileX) {
+			if (X<0 || X>=loc.spaceX*Tile.tilePixelWidth) {
 				vse=true;
 				return;
 			}
@@ -100,7 +100,7 @@
 			var newmy:Number=0;
 			if (dy>0) {
 				Y+=dy/div;
-				if (Y>=loc.spaceY*Tile.tileY) {
+				if (Y>=loc.spaceY*Tile.tilePixelHeight) {
 					vse=true;
 					return;
 				}

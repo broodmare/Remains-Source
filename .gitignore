@@ -362,3 +362,12 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 RECOVER_pfe.fla
+.vscode/launch.json
+.vscode/settings.json
+AppIconsForPublish/icon.png
+AppIconsForPublish/icon2.png
+AppIconsForPublish/icon3.png
+AppIconsForPublish/icon4.png
+compiled/*.*
+Remains.swf
+Compiled/Remains.swf

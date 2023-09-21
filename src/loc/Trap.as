@@ -45,7 +45,7 @@
 			if (floor) {
 				Y1=Y-scY, Y2=Y;
 			} else {
-				Y1=Y-World.tileY, Y2=Y1+scY;
+				Y1=Y-World.tilePixelHeight, Y2=Y1+scY;
 			}
 			vis.x=X, vis.y=Y;
 			vis2.x=X, vis2.y=Y;
@@ -56,8 +56,8 @@
 		public function getXmlParam() {
 			var node:XML=AllData.d.obj.(@id==id)[0];
 			nazv=Res.txt('u',id);
-			if (node.@sX>0) scX=node.@sX; else scX=node.@size*World.tileX;
-			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*World.tileY;
+			if (node.@sX>0) scX=node.@sX; else scX=node.@size*World.tilePixelWidth;
+			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*World.tilePixelHeight;
 			//armor=node.@armor;
 			//if (node.@hp>0) hp=maxhp=node.@hp;
 			dam=node.@damage;

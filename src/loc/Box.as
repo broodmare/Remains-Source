@@ -332,8 +332,8 @@
 		
 		public function initDoor() {
 			tiles=new Array();
-			for (var i=Math.floor(X1/Tile.tileX+0.5); i<=Math.floor(X2/Tile.tileX-0.5); i++) {
-				for (var j=Math.floor(Y1/Tile.tileY+0.5); j<=Math.floor(Y2/Tile.tileY-0.5); j++) {
+			for (var i=Math.floor(X1/Tile.tilePixelWidth+0.5); i<=Math.floor(X2/Tile.tilePixelWidth-0.5); i++) {
+				for (var j=Math.floor(Y1/Tile.tilePixelHeight+0.5); j<=Math.floor(Y2/Tile.tilePixelHeight-0.5); j++) {
 					 var t:Tile=loc.getTile(i,j);
 					 t.front='';
 					 t.phis=phis;
@@ -501,8 +501,8 @@
 			if (isPlav&&!isPlav2 && dy<2 && dy>-2) {
 				fixPlav=true;
 			}
-			for (var i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-				var t=loc.space[i][Math.floor((Y2+1)/Tile.tileY)];
+			for (var i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+				var t=loc.space[i][Math.floor((Y2+1)/Tile.tilePixelHeight)];
 				if (collisionTile(t,0,1)) {
 					return true;
 				}
@@ -522,15 +522,15 @@
 					X=scX/2;
 					dx=Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*Tile.tileX) {
-					X=loc.spaceX*Tile.tileX-1-scX/2;
+				if (X+scX/2>=loc.spaceX*Tile.tilePixelWidth) {
+					X=loc.spaceX*Tile.tilePixelWidth-1-scX/2;
 					dx=-Math.abs(dx);
 				}
 				X1=X-scX/2, X2=X+scX/2;
 				//движение влево
 				if (dx<0) {
-					for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-						t=loc.space[Math.floor(X1/Tile.tileX)][i];
+					for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) {
+						t=loc.space[Math.floor(X1/Tile.tilePixelWidth)][i];
 						if (collisionTile(t)) {
 								X=t.phX2+scX/2;
 								if (dx<-10) dx=-dx*0.2;
@@ -542,8 +542,8 @@
 				}
 				//движение вправо
 				if (dx>0) {
-					for (i=Math.floor(Y1/Tile.tileY); i<=Math.floor(Y2/Tile.tileY); i++) {
-						t=loc.space[Math.floor(X2/Tile.tileX)][i];
+					for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) {
+						t=loc.space[Math.floor(X2/Tile.tilePixelWidth)][i];
 						if (collisionTile(t)) {
 								X=t.phX1-scX/2;
 								if (dx>10) dx=-dx*0.2;
@@ -560,16 +560,16 @@
 			var newmy:Number=0;
 			if (dy>0) {
 				stay=false;
-				for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-					t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tileY)];
+				for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+					t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tilePixelHeight)];
 					if (collisionTile(t,0,dy/div)) {
 						newmy=t.phY1;
 						break;
 					}
 				}
 				if (newmy==0 && !levit && !isThrow) newmy=checkShelf(dy/div);
-				if (Y>=(loc.spaceY-1)*Tile.tileY && !loc.bezdna) newmy=(loc.spaceY-1)*Tile.tileY;
-				if (Y>=loc.spaceY*Tile.tileY-1 && loc.bezdna) {
+				if (Y>=(loc.spaceY-1)*Tile.tilePixelHeight && !loc.bezdna) newmy=(loc.spaceY-1)*Tile.tilePixelHeight;
+				if (Y>=loc.spaceY*Tile.tilePixelHeight-1 && loc.bezdna) {
 					invis=true;
 					if (vis) remVisual();
 				}
@@ -606,8 +606,8 @@
 				Y+=dy/div;
 				Y1=Y-scY, Y2=Y;
 				if (Y-scY<0) Y=scY;
-				for (i=Math.floor(X1/Tile.tileX); i<=Math.floor(X2/Tile.tileX); i++) {
-					t=loc.space[i][Math.floor(Y1/Tile.tileY)];
+				for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+					t=loc.space[i][Math.floor(Y1/Tile.tilePixelHeight)];
 					if (collisionTile(t)) {
 						Y=t.phY2+scY;
 						Y1=Y-scY, Y2=Y;
@@ -622,10 +622,10 @@
 			var pla=isPlav;
 			isPlav=isPlav2=false;
 			try {
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.45)/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.45)/Tile.tilePixelHeight)] as Tile).water>0) {
 					isPlav=true;
 				}
-				if ((loc.space[Math.floor(X/Tile.tileX)][Math.floor((Y-scY*0.55)/Tile.tileY)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.55)/Tile.tilePixelHeight)] as Tile).water>0) {
 					isPlav2=true;
 				}
 			} catch (err) {
@@ -651,8 +651,8 @@
 			return 0;
 		}
 		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
-			for (var i=Math.floor((X1+gx)/Tile.tileX); i<=Math.floor((X2+gx)/Tile.tileX); i++) {
-				for (var j=Math.floor((Y1+gy)/Tile.tileY); j<=Math.floor((Y2+gy)/Tile.tileY); j++) {
+			for (var i=Math.floor((X1+gx)/Tile.tilePixelWidth); i<=Math.floor((X2+gx)/Tile.tilePixelWidth); i++) {
+				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) {
 					if (collisionTile(loc.space[i][j],gx,gy)) return true;
 				}
 			}
