@@ -58,7 +58,7 @@
 		public var vconsol:MovieClip;	//Console scroll
 	
 		//All main components
-		public var mm:MainMenu;
+		public var mainMenu:MainMenu;
 		public var cam:Camera;			//Camera
 		public var ctr:Ctr;				//Controls
 		public var consol:Consol;		//Console
@@ -237,13 +237,13 @@
 		public var landError:Boolean=false;
 
 
-		public function World(nmain:Sprite, paramObj:Object) 
+		public function World(nmain:Sprite) 
 		{
 			World.w=this;
 
 			// Technical part
 			// Determine the player type and the address from which it is launched
-			playerMode=Capabilities.playerType;
+			playerMode = Capabilities.playerType;
 			
 			//if (playerMode=='PlugIn') roomsLoad=0;
 			/*if (playerMode=='PlugIn' && ExternalInterface.available) {
@@ -254,16 +254,19 @@
 			chitOn=true;*/
 			
 			//files
-			soundPath='';
-			musicPath='Music/';
-			textureURL='texture.swf';
+			soundPath = '';
+			musicPath = 'Music/';
+			textureURL = 'texture.swf';
 			spriteURL='sprite.swf';
 			sprite1URL='sprite1.swf';
 			//ressoundURL='sound.swf';
 			//textURL='D:/Dropbox/foe/text.xml';
 			langURL='lang.xml';
 			landPath='Rooms/';
+
+
 			if (testMode) fileVersion=Math.random()*100000;
+
 			if (playerMode=='PlugIn') 
 			{
 				musicPath='http://foe.ucoz.org/Sound/music/';
@@ -282,9 +285,11 @@
 			}
 			
 			main = nmain;
+
 			swfStage = main.stage;
 			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
+
 			Tile.tilePixelWidth = tilePixelWidth;
 			Tile.tilePixelHeight = tilePixelHeight;
 			
@@ -316,7 +321,7 @@
 			//Appearance configurator
 			app=new Appear();
 			
-			visual=new Sprite();
+			visual = new Sprite();
 			vgui=new visualGUI();
 			vfon=new MovieClip();
 			vpip=new visPipBuck();
@@ -327,9 +332,11 @@
 			vblack.cacheAsBitmap=true;
 			vconsol=new visConsol();
 			verror=new visError();
+
 			setLoadScreen();
 			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
 			vscene.stop();
+
 			main.addChild(vwait);
 			main.addChild(vfon);
 			main.addChild(visual);
@@ -341,10 +348,12 @@
 			main.addChild(vstand);
 			main.addChild(verror);
 			main.addChild(vconsol);
+
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function () {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
 			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible=false;});
 			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {errorShow=false; verror.visible=false;});
 			vstand.visible=false;
+
 			grafon=new Grafon(visual);
 			cam=new Camera(this);
 			load_log+='Stage 1 Ok\n';
@@ -555,7 +564,7 @@
 			
 			//for (var i=0; i<100; i++) trace(Res.repText('raider', 'neutral'));
 			//weaponWrite();
-			//mm.main.stage.quality='low';
+			//mainMenu.main.stage.quality='low';
 		}
 
 		public function roomsLoadOk() 
@@ -1318,7 +1327,7 @@
 			data.date=now.time;
 			data.n=autoSaveN;
 			data.hardInv=hardInv;
-			data.ver=mm.version;
+			data.ver = mainMenu.version;
 			data.est=1;
 		}
 		

@@ -14,8 +14,13 @@
 		public var id:String;
 		public var used:Boolean=false;
 		//public var cM:Class, cT:Class, cMB:Class, cTB:Class, cMF:Class, cTF:Class,
-		public var texture:BitmapData, alttexture:BitmapData, border:BitmapData, floor:BitmapData;
-		public var textureMask:Class, borderMask:Class, floorMask:Class;
+		public var texture:BitmapData;
+		public var alttexture:BitmapData;
+		public var border:BitmapData;
+		public var floor:BitmapData;
+		public var textureMask:Class;
+		public var borderMask:Class;
+		public var floorMask:Class;
 
 		public var appliedFilters:Array; //What goes in here?
 
