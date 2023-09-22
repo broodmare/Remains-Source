@@ -895,8 +895,9 @@ public class Grafon {
 
 		if (!material.used) return;  //If the material is not used, return.
 
-		
-		if (material.rear == toFront) return; //If the material is not drawn in front, return. 
+
+		// If the material should be at the rear and we're drawing to the front, then return, and vice versa
+		if (material.rear == toFront) return;
 
 
 		var tile:Tile;
@@ -938,62 +939,48 @@ public class Grafon {
 		}
 		
 
-
-
-
 		
 		var isDraw:Boolean = false;
 		
 		//Loop for drawing tiles
-		for (var i = 0; i < location.spaceX; i++)
+		for (var i = 0; i < location.spaceX; i++) 
 		{
-			for (var j = 0; j < location.spaceY; j++)
+			for (var j = 0; j < location.spaceY; j++) 
 			{
-				tile = location.getTile(i, j);
-				if (tile.front == material.id && (toFront || veryFront) || tile.back == material.id && !toFront)
+				var tile = location.getTile(i, j);
+				if (tile.front == material.id && (toFront || veryFront) || tile.back == material.id && !toFront) 
 				{
 					isDraw = true;
-					mc = new material.textureMask();
-
-
-					setMCT(mc, tile, toFront);   
-					mc.x = (i + 0.5)*Tile.tilePixelWidth;
-					mc.y = (j + 0.5)*Tile.tilePixelHeight;
-					maska.addChild(mc);
-					
-					if (tile.zForm && toFront)
+					if (material.textureMask) 
 					{
-						mc.scaleY = (tile.phY2 - tile.phY1) / Tile.tilePixelHeight;
-						mc.y = (tile.phY2 + tile.phY1) / 2;
-					}							
-					if (material.borderMask)
-					{
-						mc = new material.borderMask();
-						setMCT(mc, tile, toFront);
-						mc.x = (i+0.5)*Tile.tilePixelWidth;
-						mc.y = (j+0.5)*Tile.tilePixelHeight;
-						bmaska.addChild(mc);
-						if (tile.zForm && toFront)
-						{
-							mc.scaleY = (tile.phY2-tile.phY1)/Tile.tilePixelHeight;
-							mc.y = (tile.phY2+tile.phY1)/2;
-						}							
+						setMask(mc, material.textureMask, tile, i, j, toFront, maska);
 					}
-					if (material.floorMask) // && !tile.zForm
+					if (material.borderMask) 
 					{
+						setMask(mc, material.borderMask, tile, i, j, toFront, bmaska);
+					}
+					if (material.floorMask) { // && !tile.zForm
 						mc = new material.floorMask();
-						if (mc.c1)
+						if (mc.c1) 
 						{
-							mc.c1.gotoAndStop(tile.kont1+1);
-							mc.c2.gotoAndStop(tile.kont2+1);
+							mc.c1.gotoAndStop(tile.kont1 + 1);
+							mc.c2.gotoAndStop(tile.kont2 + 1);
 						}
 						fmaska.addChild(mc);
-						mc.x = (i+0.5)*Tile.tilePixelWidth;
-						mc.y = (j+0.5+tile.zForm/4)*Tile.tilePixelHeight;
+						mc.x = (i + 0.5) * Tile.tilePixelWidth;
+						mc.y = (j + 0.5 + tile.zForm / 4) * Tile.tilePixelHeight;
 					}
 				}
 			}
+
+
 		}
+
+
+
+
+
+
 
 
 		if (!isDraw) return;
@@ -1027,12 +1014,21 @@ public class Grafon {
 		{
 			backBmp.draw(tileSprite, null, null, null, null, false);
 		}
-
-		//####
-		// BUG IS HERE ^^^
-		//####
 	}
 	
+	public function setMask(mc, materialMask, tile, i, j, toFront, parent) 
+	{
+		mc = new materialMask();
+		setMCT(mc, tile, toFront);
+		mc.x = (i + 0.5) * Tile.tilePixelWidth;
+		mc.y = (j + 0.5) * Tile.tilePixelHeight;
+		parent.addChild(mc);
+		if (tile.zForm && toFront) 
+		{
+			mc.scaleY = (tile.phY2 - tile.phY1) / Tile.tilePixelHeight;
+			mc.y = (tile.phY2 + tile.phY1) / 2;
+		}
+	}
 	//================================================================================================		
 	//							Execution Time
 	//================================================================================================		
