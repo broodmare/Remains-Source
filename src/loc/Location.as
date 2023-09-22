@@ -14,7 +14,8 @@
 	import src.serv.Item;
 	import src.unit.UnitTurret;
 	
-	public class Location {
+	public class Location 
+	{
 		
 		public var land:Land;
 		
@@ -166,7 +167,8 @@
 // ------------------------------------------------------------------------------------------------
 // First stage - create and build according to the map from xml
 
-		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null) {
+		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null) 
+		{
 			land = nland;
 			spaceX = World.cellsX;
 			spaceY = World.cellsY;
@@ -191,7 +193,8 @@
 			maxdy=World.maxdy;
 
 			if (rnd) ramka=1;
-			if (opt) {
+			if (opt) 
+			{
 				if (opt.prob) ramka=0;
 				if (opt.mirror) mirror=true;
 				if (opt.water!=null) waterLevel=opt.water;
@@ -211,7 +214,8 @@
 		}
 
 		// Add the player character to the units array
-		public function addPlayer(un:UnitPlayer) {
+		public function addPlayer(un:UnitPlayer) 
+		{
 			gg=un;
 			//units.shift(null)
 			//units.shift(un);
@@ -225,9 +229,11 @@
 		public function buildLoc(nroom:XML) 
 		{
 			// Create an array of tiles
-			for (var i=0; i<spaceX; i++) {
+			for (var i=0; i<spaceX; i++) 
+			{
 				space[i]=new Array();
-				for (var j=0; j<spaceY; j++) {
+				for (var j=0; j<spaceY; j++) 
+				{
 					space[i][j]=new Tile(i,j);
 				}
 			}
@@ -245,7 +251,8 @@
 			visMult = land.act.visMult;
 			opacWater = land.act.opacWater;
 			darkness = land.act.darkness;
-			if (nroom.options.length()) {
+			if (nroom.options.length()) 
+			{
 				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
 				if (nroom.options.@backform.length()) backform=nroom.options.@backform;
 				if (nroom.options.@transpfon.length()) transpFon=true;
@@ -285,39 +292,48 @@
 				if (nroom.options.@zoom.length()) zoom=nroom.options.@zoom;
 				if (nroom.options.@trus.length()) trus=nroom.options.@trus;
 				if (!black) {
-					for (i=0; i<spaceX; i++) {
-						for (j=0; j<spaceY; j++) {
+					for (i=0; i<spaceX; i++) 
+					{
+						for (j=0; j<spaceY; j++) 
+						{
 							(space[i][j] as Tile).visi=1;
 						}
 					}
 				}
 			}
-			if (homeStable) {
+			if (homeStable) 
+			{
 				color='yellow';
 				lightOn=1;
 				base=true;
 			}
-			if (homeAtk) {
+			if (homeAtk) 
+			{
 				color='fire';
 				lightOn=1;
 			}
 
 			// Create a room. (I think this part works correctly.)
-			for (j=0; j<spaceY; j++) { //Build the room from XML Data.
+			for (j=0; j<spaceY; j++) //Build the room from XML Data.
+			{ 
 				var js:String=''; //XML data as string
 				js = nroom.a[j];
 				var arri:Array=js.split('.'); //Demarcates the room into tiles.
-				for (i=0; i<spaceX; i++) {
+				for (i=0; i<spaceX; i++) 
+				{
 					var jis:String;
 					if (mirror) {
 						jis=arri[spaceX-i-1];
-					} else {
+					} 
+					else 
+					{
 						jis=arri[i];
 					}
 					if (jis==null) jis='';
 					space[i][j].dec(jis,mirror);
 					if (space[i][j].stair!=0) {  // Shelf on top of the ladder
-						if (j>0 && space[i][j].phis==0 && !space[i][j].shelf && space[i][j].stair!=space[i][j-1].stair) {
+						if (j>0 && space[i][j].phis==0 && !space[i][j].shelf && space[i][j].stair!=space[i][j-1].stair) 
+						{
 							space[i][j].shelf=true;
 							space[i][j].vid++;
 						}
@@ -325,7 +341,8 @@
 					// Water line
 					if (j>=waterLevel) space[i][j].water=1;
 					// Frame
-					if (i==0 || i==spaceX-1 || j==0 || j==spaceY-1) {
+					if (i==0 || i==spaceX-1 || j==0 || j==spaceY-1) 
+					{
 						if (ramka==1
 							|| (ramka==2 || ramka==4) && (i==0 || i==spaceX-1)
 							|| (ramka==3 || ramka==4) && (j==spaceY-1)
@@ -340,7 +357,8 @@
 			}
 			
 			// Possible passages to other locations
-			if (nroom.doors.length()>0) {
+			if (nroom.doors.length()>0) 
+			{
 				var s:String=nroom.doors[0];
 				doors=s.split('.');
 				if (mirror) {
@@ -363,7 +381,9 @@
 						doors[i+11]=d;
 					}
 				}
-			} else {
+			} 
+			else 
+			{
 				doors=new Array();
 				for (i=0; i<22; i++) doors[i]=2;
 			}
@@ -371,7 +391,8 @@
 			// Visibility
 			lDist1*=visMult;
 			lDist2*=visMult;
-			if (isNaN(lDist1)) {
+			if (isNaN(lDist1)) 
+			{
 				lDist1=300, lDist2=1000;
 			}
 			// Color filter
@@ -485,7 +506,6 @@
 				cT.blueMultiplier=1.08;
 			}
 			return cT;
-			//cTransform.blueMultiplier=cTransform.greenMultiplier=cTransform.redMultiplier=0.3;
 		}
 		
 // ------------------------------------------------------------------------------------------------
@@ -1342,12 +1362,7 @@
 				obj.setNull(n-nAct>2 || n==0 || prob &&!prob.closed);
 				obj=nextObj;
 			}
-			/*for (var i=0; i<spaceX; i++) {
-				for (var j=0; j<spaceY; j++) {
-				}
-			}*/
-			// Filter out destroyed units
-			//if (prob==null || prob.closed)
+
 			resetUnits();
 			if (n>0) nAct=n;
 			showSign(false);
@@ -1358,13 +1373,12 @@
 			Snd.resetShum();
 		}
 		
-		public function resetUnits() {
+		public function resetUnits() 
+		{
 			units=units.filter(isAct);
-			//trace('Units:',units.length);
 		}
 		
 		private function isAct(element:*, index:int, arr:Array):Boolean {
-			//trace(element);
 			if (element==null) return false;
 			if (element is src.unit.UnitPet) return true;
             return (element.sost < 4);
@@ -1373,7 +1387,8 @@
 		// Deactivate the location  This doesn't do anything.
 		//This function is actually overwritten later??? wtf?
 
-		public function out() {
+		public function out() 
+		{
 			active=false;
 			for each (var un:Unit in units) 
 			{
@@ -1402,16 +1417,25 @@
 		}
 		
 		// Remove an object from the processing chain
-		public function remObj(obj:Pt) {
+		public function remObj(obj:Pt) 
+		{
 			if (!obj.in_chain) return;
-			if (obj.nobj) {
+
+			if (obj.nobj) 
+			{
 				obj.nobj.pobj=obj.pobj;
-			} else {
+			} 
+			else 
+			{
 				lastObj=obj.pobj;
 			}
-			if (obj.pobj) {
+
+			if (obj.pobj) 
+			{
 				obj.pobj.nobj=obj.nobj;
-			} else {
+			} 
+			else 
+			{
 				firstObj=obj.nobj;
 			}
 			obj.in_chain=false;
@@ -1549,29 +1573,40 @@
 				return;
 			}
 			// Has damage been dealt to the tile?
-			if (t.udar(hit)) {	// Hit the tile, passes if damage was dealt
-				if (t.hp<=0) {	// If the tile is destroyed
-					if (t.phis>=1) {
-						isRebuild=true;				 // Change the location configuration
-						if (t.Y<waterLevel) {		// Recalculate water
+			if (t.udar(hit))  // Hit the tile, passes if damage was dealt
+			{	
+				if (t.hp<=0)  // If the tile is destroyed
+				{	
+					if (t.phis>=1) // Change the location configuration
+					{
+						isRebuild=true;				 
+						if (t.Y<waterLevel)  // Recalculate water
+						{		
 							recalcTiles.push(t);
 							isRecalc=true;
 						}
 					}
-					if (t.door) {				// If it's a door
+					if (t.door) // If it's a door
+					{				
 						t.door.die(tip);
-					} else if (t.phis>=1) {		// If it's a regular solid block
-					//} else if (t.phis>=1 || t.diagon!=0 || t.stair!=0 || t.floor!=0) {		//если обычный твёрдый блок
+					} 
+					else if (t.phis>=1) // If it's a regular solid block
+					{		
 						t.die();
-						try {
+						try 
+						{
 							if (tileSpawn>0 && Math.random()<tileSpawn) enemySpawn(true,true);
 						} catch(err) {}
 						if (active) grafon.tileDie(t,tip);
 					}
-				} else if (t.phis>=1) {	// If it's not destroyed but damage was dealt
+				} 
+				else if (t.phis>=1)  // If it's not destroyed but damage was dealt
+				{	
 					if (active) grafon.dyrka(nx,ny,tip,t.mat,false,hit/t.hp);
 				}
-			} else if (t.phis>=1) {		// If there was no damage
+			} 
+			else if (t.phis>=1) // If there was no damage
+			{		
 				if (active) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
 			}
 		}
@@ -1597,13 +1632,15 @@
 		
 		
 		// Called on any change in the block space configuration
-		private function rebuild() {
+		private function rebuild() 
+		{
 			recalcWater();
 			isRebuild=false;
 		}
 		
 		// Water physics   
-		private function recalcWater() {
+		private function recalcWater() 
+		{
 			//trace(recalcTiles.length);
 			var rec:Array=recalcTiles;
 			recalcTiles=new Array();
@@ -1621,19 +1658,22 @@
 						t.water=1;
 						if (active) grafon.drawWater(t);
 					} else {
-						if (tl.water>0 && t.phis!=1) {
+						if (tl.water>0 && t.phis!=1) 
+						{
 							tl.water=0;
 							recalcTiles.push(tl);
 							if (active) grafon.drawWater(tl);
 							isRecalc=true;
 						}
-						if (tr.water>0 && t.phis!=1) {
+						if (tr.water>0 && t.phis!=1) 
+						{
 							tr.water=0;
 							recalcTiles.push(tr);
 							if (active) grafon.drawWater(tr);
 							isRecalc=true;
 						}
-						if (tt.water>0 && t.phis!=1) {
+						if (tt.water>0 && t.phis!=1) 
+						{
 							tt.water=0;
 							recalcTiles.push(tt);
 							if (active) grafon.drawWater(tt);
@@ -1653,51 +1693,56 @@
 		}
 		
 		// Check for the possibility of placing a ghost wall, returns true if nothing obstructs
-		public function testTile(t:Tile):Boolean {
+		public function testTile(t:Tile):Boolean 
+		{
 			if (t.phis>0 || t.stair!=0 || t.water!=0 || t.door) return false;
-			for each (var cel in units) {
+			for each (var cel in units) 
+			{
 				if (cel==null || (cel as Unit).sost==4) continue;
 				if (cel.transT) continue;
 				if (!(cel.X1>=(t.X+1)*Tile.tilePixelWidth || cel.X2<=t.X*Tile.tilePixelWidth || cel.Y1>=(t.Y+1)*Tile.tilePixelHeight || cel.Y2<=t.Y*Tile.tilePixelHeight)) {
 					return false;
 				}
 			}
-			/*for each (cel in loc.objs) {
-				if ((cel as Box).wall>0) continue;
-				if (!(cel.X-cel.scX/2>=X2 || cel.X+cel.scX/2<=X1 || cel.Y-cel.scY>=Y2 || cel.Y<=Y1)) {
-					return true;
-				}
-			}*/
+
 			return true;
 		}
 		
 		// Draw the map on the PipBuck
-		public function drawMap(m:BitmapData) {
+		public function drawMap(m:BitmapData) 
+		{
 			//m.fillRect(m.rect,0xFF000000);
 			var vid:Number=1;
-			for (var i=0; i<spaceX; i++) {
-				for (var j=0; j<spaceY; j++) {
+			for (var i=0; i<spaceX; i++)
+			 {
+				for (var j=0; j<spaceY; j++) 
+				{
 					var color:uint=0x003323;
 					var t:Tile=space[i][j];
 					if (t.water) color=0x0066FF;
 					if (t.shelf || t.diagon!=0) color=0x7B482F;
 					if (t.stair!=0) color=0x666666;
-					if (t.phis==1) {
+					if (t.phis==1) 
+					{
 						if (t.indestruct) color=0xFFFFFF;
 						else if (t.door) color=0x639104;
 						else if (t.hp<100) color=0x01995A; 
 						else color=0x00FF99;
 					}
 					if (t.phis==2) color=0x01995A; 
-					if (!World.w.drawAllMap) {
+					if (!World.w.drawAllMap) 
+					{
 						vid=space[i][j].visi;
-						if (i<spaceX-1) {
+						if (i<spaceX-1) 
+						{
 							if (space[i+1][j].visi>vid) vid=space[i+1][j].visi;
-							if (j<spaceY-1) {
+							if (j<spaceY-1) 
+							{
 								if (space[i+1][j+1].visi>vid) vid=space[i+1][j+1].visi;
 							}
 						}
-						if (j<spaceY-1) {
+						if (j<spaceY-1) 
+						{
 							if (space[i][j+1].visi>vid) vid=space[i][j+1].visi;
 						}
 					}
@@ -1705,30 +1750,40 @@
 					m.setPixel32((landX-land.minLocX)*World.cellsX+i,(landY-land.minLocY)*World.cellsY+j,color);
 				}
 			}
-			for each (var obj:Obj in objs) {
-				if (obj.inter && obj.inter.cont!='' && obj.inter.active) {
+			for each (var obj:Obj in objs) 
+			{
+				if (obj.inter && obj.inter.cont!='' && obj.inter.active) 
+				{
 					drawMapObj(m, obj, 0xFFCC00);
 					//m.setPixel(landX*World.cellsX+Math.floor(obj.X/World.tilePixelWidth),landY*World.cellsY+Math.floor((obj.Y-obj.scY/2)/World.tilePixelHeight),color);
 				}
-				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) {
+				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) 
+				{
 					drawMapObj(m, obj, 0xFF0077);
 				}
 			}
-			for each (obj in acts) {
-				if (obj is CheckPoint) {
+			for each (obj in acts) 
+			{
+				if (obj is CheckPoint) 
+				{
 					drawMapObj(m, obj, 0xFF00FF)
 				}
 			}
-			for each (obj in units) {
-				if ((obj as Unit).npc) {
+			for each (obj in units) 
+			{
+				if ((obj as Unit).npc)
+				{
 					drawMapObj(m, obj, 0x5500FF);
 				}
 			}
 		}
 		
-		function drawMapObj(m, obj:Obj, color:uint) {
-			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tilePixelWidth+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tilePixelWidth-0.5); i++) {
-				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tilePixelHeight+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tilePixelHeight-0.5); j++) {
+		function drawMapObj(m, obj:Obj, color:uint) 
+		{
+			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tilePixelWidth+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tilePixelWidth-0.5); i++) 
+			{
+				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tilePixelHeight+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tilePixelHeight-0.5); j++) 
+				{
 					m.setPixel(i,j,color);
 				}
 			}
@@ -1740,24 +1795,31 @@
 //
 //**************************************************************************************************************************
 		// Command to all objects
-		public function allAct(emit:Obj, allact:String, allid:String='') {
+		public function allAct(emit:Obj, allact:String, allid:String='') 
+		{
 			var obj:Obj;
-			for each (obj in objs) {
+			for each (obj in objs) 
+			{
 				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) obj.command(allact,'13');
 			}
-			for each (obj in areas) {
+			for each (obj in areas) 
+			{
 				if (obj!=emit && allid=='' || allid==null || (obj as Area).allid==allid) obj.command(allact);
 			}
-			for each (obj in units) {
+			for each (obj in units) 
+			{
 				if (obj!=emit && obj.inter && (allid=='' || allid==null || obj.inter.allid==allid)) obj.command(allact);
 			}
 		}
 		
 		// Wake up everyone around
-		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null) {
+		public function budilo(nx:Number, ny:Number, rad:Number=1000, owner:Unit=null) 
+		{
 			var r2:Number=rad*rad*earMult*earMult;
-			for each(var un in units) {
-				if (un && un!=owner && un.sost==1 && !un.unres) {
+			for each(var un in units) 
+			{
+				if (un && un!=owner && un.sost==1 && !un.unres) 
+				{
 					var dx=un.X-nx;
 					var dy=un.Y-ny;
 					var delta=rad/2;
@@ -1767,37 +1829,45 @@
 			}
 		}
 		
-		public function electroCheck() {
+		public function electroCheck() 
+		{
 			electroDam=0;
-			for each (var obj in objs) {
+			for each (var obj in objs) 
+			{
 				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
 			}
 		}
 		
 		// Activate all robot cells
-		public function robocellActivate() {
-			for each(var un in objs) {
+		public function robocellActivate() 
+		{
+			for each(var un in objs) 
+			{
 				if (un.inter && un.inter.allact=='robocell') un.inter.genRobot();
 			}
 		}
 		
 		// Activate the alarm
-		public function signal(n:int=300) {
+		public function signal(n:int=300) 
+		{
 			t_alarm=n;
 			t_alarmsp=Math.floor(n*Math.random()*0.25+0.25);
 			if (prob && prob.alarmScript) prob.alarmScript.start(); 
 		}
 		// Turn on everything
-		public function allon() {
+		public function allon() 
+		{
 			color='yellow';
 			cTransform=colorFilter(color);
 			lightOn=1;
 			darkness=-20;
 			gg.inLoc(this);
-			for each(var obj in units) {
+			for each(var obj in units) 
+			{
 				obj.cTransform=cTransform;
 			}
-			for each(var obj in objs) {
+			for each(var obj in objs) 
+			{
 				obj.cTransform=cTransform;
 				if (obj.inter) {
 					if (obj.inter.lockTip=='4') obj.inter.setAct('open',0);
@@ -1805,53 +1875,64 @@
 					obj.inter.update();
 				}
 			}
-			for each(var obj in backobjs) {
+			for each(var obj in backobjs)
+			 {
 				obj.onoff(1);
 			}
 			World.w.redrawLoc();
 		}
 		// Turn off everything
-		public function alloff() {
+		public function alloff() 
+		{
 			color='black';
 			cTransform=colorFilter(color);
 			lightOn=-1;
 			darkness=20;
 			gg.inLoc(this);
-			for each(var obj in units) {
+			for each(var obj in units) 
+			{
 				obj.cTransform=cTransform;
 			}
-			for each(var obj in objs) {
+			for each(var obj in objs) 
+			{
 				obj.cTransform=cTransform;
 			}
-			for each(var obj in backobjs) {
+			for each(var obj in backobjs) 
+			{
 				obj.onoff(-1);
 			}
 			World.w.redrawLoc();
 		}
 		
 		// Spawn an enemy at the spawn point
-		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null) {
+		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null) 
+		{
 			if (kolEnSpawn<=0 || enspawn==null || enspawn.length==0) return;
 			kolEnSpawn--;
 			if (!one) t_alarmsp=Math.floor(Math.random()*30);
 			var sp:Object=enspawn[Math.floor(Math.random()*enspawn.length)];
 			var un:Unit=createUnit((tipSp==null)?tipSpawn:tipSp,sp.x,sp.y,true,null,null,30);
-			if (getGG) {
+			if (getGG) 
+			{
 				un.alarma(gg.X, gg.Y);
-			} else {
+			} 
+			else 
+			{
 				un.alarma();
 			}
 		}
 		
 		// Spawn an enemy from a wave
-		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit {
+		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit 
+		{
 			if (w==null) return null;
 			if (enspawn.length==0) return null;
 			var sp:Object=enspawn[n];
 			if (sp==null) sp=enspawn[Math.floor(Math.random()*enspawn.length)];
 			var un:Unit=createUnit(w.@id,sp.x,sp.y,true,w,w.@cid,30);
 			if (spart!=null) Emitter.emit(spart,this,sp.x,sp.y);
-			if (un) {
+			if (un) 
+			{
 				un.trup=false;
 				un.isRes=false;
 				un.fraction=1;
@@ -1863,14 +1944,17 @@
 		}
 		
 		// Cause an earthquake
-		public function earthQuake(n:int) {
-			if (quake<n) {
+		public function earthQuake(n:int) 
+		{
+			if (quake<n) 
+			{
 				quake=n;
 				World.w.quake(n,n/4);
 			}
 		}
 		
-		public function createHealBonus(nx:Number, ny:Number) {
+		public function createHealBonus(nx:Number, ny:Number) 
+		{
 			if (World.w.pers.bonusHeal<=0) return;
 			var obj:Bonus=new Bonus(this,'heal',nx,ny);
 			obj.liv=300;
@@ -1884,15 +1968,21 @@
 		function gwalls() {
 			var est=false;
 			var t:Tile
-			for (var i=0; i<spaceX; i++) {
-				for (var j=0; j<spaceY; j++) {
+			for (var i=0; i<spaceX; i++) 
+			{
+				for (var j=0; j<spaceY; j++) 
+				{
 					t=space[i][j];
-					if (t.phis==3) {
-						if (active) {
+					if (t.phis==3) 
+					{
+						if (active) 
+						{
 							t.t_ghost--;
 							est=true;
 							if (t.t_ghost<=0) dieTile(t);
-						} else {
+						} 
+						else 
+						{
 							t.t_ghost=0;
 							dieTile(t);
 						}
@@ -1902,21 +1992,17 @@
 			if (est) t_gwall=World.fps+1;
 		}
 		
-		public function lightAll() {
-			for each (var cel in objs) {
-				if (cel.light) {
+		public function lightAll() 
+		{
+			for each (var cel in objs) 
+			{
+				if (cel.light) 
+				{
 					lighting(cel.X-10, cel.Y-cel.scY/2);
 					lighting(cel.X, cel.Y-cel.scY/2);
 					lighting(cel.X+10, cel.Y-cel.scY/2);
 				}
 			}
-			/*for each (cel in units) {
-				if (cel.light) {
-					lighting(cel.X-10, cel.Y-cel.scY/2);
-					lighting(cel.X, cel.Y-cel.scY/2);
-					lighting(cel.X+10, cel.Y-cel.scY/2);
-				}
-			}*/
 		}
 		
 		public function lighting(nx:int=-10000,ny:int=-10000,dist1:int=-1, dist2:int=-1) {
@@ -1985,12 +2071,13 @@
 						}
 					}
 					if (n2>1) n2=1;
-					if (n2>n1+0.01) {
+					if (n2>n1+0.01) 
+					{
 						space[i][j].t_visi=n2;
 						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
-					//} else if (retDark && n2==0 && space[i][j].t_visi!=0) {
-						//space[i][j].t_visi=0;
-					} else if (retDark && n2<n1-0.01) {
+					} 
+					else if (retDark && n2<n1-0.01) 
+					{
 						space[i][j].t_visi-=0.025;
 						if (space[i][j].t_visi<n2) space[i][j].t_visi=n2;
 						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
@@ -1999,12 +2086,16 @@
 			}
 		}
 		
-		public function lighting2() {
+		public function lighting2() 
+		{
 			if (!active) return;
 			relight_t--;
-			for (var i=1; i<spaceX; i++) {
-				for (var j=1; j<spaceY; j++) {
-					if (space[i][j].visi!=space[i][j].t_visi) {
+			for (var i=1; i<spaceX; i++) 
+			{
+				for (var j=1; j<spaceY; j++) 
+				{
+					if (space[i][j].visi!=space[i][j].t_visi) 
+					{
 						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
 					}
 				}
@@ -2012,12 +2103,17 @@
 		}
 		
 		//дать опыт
-		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false) {
-			if (un) {
-				if (dxp>summXp) {
+		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false) 
+		{
+			if (un) 
+			{
+				if (dxp>summXp) 
+				{
 					dxp=summXp;
 					summXp=0;
-				} else {
+				} 
+				else 
+				{
 					summXp-=dxp;
 				}
 				land.summXp+=dxp;
@@ -2027,22 +2123,27 @@
 		
 		
 		//обработка за кадром
-		public function stepInvis() {
+		public function stepInvis() 
+		{
 			//for each (var un:Unit in units) if (!un.player) un.step();
 			//for each (var obj:Obj in objs) obj.step();
 			var numb=0;
 			var obj:Pt=firstObj;
 			if (warning>0) warning--;
-			while (obj) {
+			while (obj) 
+			{
 				nextObj=obj.nobj;
-				try {
+				try 
+				{
 					obj.step();
-				} catch(err) {
+				} catch(err) 
+				{
 					World.w.showError(err, obj.err());
 				}
 				obj=nextObj;
 				numb++;
-				if (numb>10000) {
+				if (numb>10000) 
+				{
 					trace('alarma');
 					break;
 				}
@@ -2053,33 +2154,40 @@
 			if (t_gwall>0) t_gwall--;
 		}
 		
-		public function step() {
+		public function step() 
+		{
 			gg.step(); 
 			if (prob) prob.step();
 			// Iterate through a chain of objects
 			var numb=0;
 			var obj:Pt=firstObj;
 			if (warning>0) warning--;
-			while (obj) {
+			while (obj) 
+			{
 				nextObj=obj.nobj;
-				try {
+				try 
+				{
 					obj.step();
 					// Determine the object under the cursor
 					if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) celObj=(obj as Obj);
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					World.w.showError(err, obj.err());
 				}
 				obj=nextObj;
 				// Check for infinite loop prevention
 				numb++;
-				if (numb>10000) {
+				if (numb>10000) 
+				{
 					trace('alarma');
 					break;
 				}
 			}
 			if (unitCoord && unitCoord.step) unitCoord.step();
 			if (celObj && celObj.onCursor<=0) celObj=null;
-			if (black) {
+			if (black) 
+			{
 				if (gg.dx+gg.osndx>0.5 || gg.dy+gg.osndy>0.5 || gg.dx+gg.osndx<-0.5 || gg.dy+gg.osndy<-0.5 || isRelight || isRebuild) lighting();
 				else if (relight_t>0) lighting2();
 			}
@@ -2093,10 +2201,12 @@
 			// Show/hide transition markers based on player position
 			if (sign_vis && World.w.possiblyOut() ||  !sign_vis && !World.w.possiblyOut()) showSign(!sign_vis);
 			// Handle game alarms and enemy spawns
-			if (t_alarm>0) {
+			if (t_alarm>0) 
+			{
 				t_alarm--;
 			}
-			if (t_alarmsp>0) {
+			if (t_alarmsp>0) 
+			{
 				t_alarmsp--;
 				if (t_alarmsp==0) enemySpawn();
 			}
@@ -2106,60 +2216,77 @@
 		}
 		
 		// Kill all enemies and open all containers
-		public function getAll():int {
+		public function getAll():int 
+		{
 			World.w.summxp=0;
 			World.w.pers.expa(unXp*9);
-			for each (var un:Unit in units) {
+			for each (var un:Unit in units) 
+			{
 				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);
 			}
-			for each (var box:Box in objs) {
+			for each (var box:Box in objs) 
+			{
 				if (box.inter && box.inter.cont) box.inter.loot();
 			}
 			return World.w.summxp;
 		}
 		
-		public function openAllPrize() {
-			for each (var box:Box in objs) {
+		public function openAllPrize() 
+		{
+			for each (var box:Box in objs) 
+			{
 				if (box.inter && box.inter.cont && box.inter.prize) box.inter.loot();
 			}
 		}
 		
 		
 		//дистанция между гг и активным объектом
-		private function getDist() {
+		private function getDist() 
+		{
 			if (getTile(Math.round(World.w.celX/Tile.tilePixelWidth),Math.round(World.w.celY/Tile.tilePixelHeight)).visi<0.1) celObj=null;
-			if (celObj) {
+			if (celObj) 
+			{
 				celDist=(gg.X-celObj.X)*(gg.X-celObj.X)+(gg.Y-celObj.Y)*(gg.Y-celObj.Y);
-			} else celDist=-1;
+			} 
+			else celDist=-1;
 		}
 		
 		
 		//показать/скрыть указатели перехода
-		private function showSign(n:Boolean) {
+		private function showSign(n:Boolean) 
+		{
 			for each (var s in signposts) s.visible=n;
 			sign_vis=n;
 		}
 		
-		public function newGrenade(g:Bullet) {
+		public function newGrenade(g:Bullet) 
+		{
 			if (grenades[0]==null) grenades[0]=g;
-			else {
-				for (var i=1; i<10; i++) {
+			else 
+			{
+				for (var i=1; i<10; i++) 
+				{
 					if (grenades[i]==null) grenades[i]=g;
 				}
 			}
 		}
-		public function remGrenade(g:Bullet) {
+		public function remGrenade(g:Bullet) 
+		{
 			if (grenades[0]==g) grenades[0]=null;
-			else {
-				for (var i=1; i<10; i++) {
+			else 
+			{
+				for (var i=1; i<10; i++) 
+				{
 					if (grenades[i]==g) grenades[i]=null;
 				}
 			}
 		}
 		
 		// Save all objects
-		public function saveObjs(arr:Array) {
-			for each (var obj:Obj in saves) {
+		public function saveObjs(arr:Array) 
+		{
+			for each (var obj:Obj in saves) 
+			{
 				if (obj.code) arr[obj.code]=obj.save();
 			}
 		}

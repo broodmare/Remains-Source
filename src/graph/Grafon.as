@@ -93,19 +93,10 @@ public class Grafon {
 	
 	var lightX:int = 49, lightY:int = 28;
 	var lightRect:Rectangle = new Rectangle(0, 0, lightX, lightY);
-	
-	// Loading
-	//public var loadTex:Loader, loadTex1:Loader, loadSprite:Loader, loadSprite1:Loader;
-	
+
 	public var resIsLoad:Boolean = false;  // Have the textures been loaded?
 	public var progressLoad:Number = 0;
 
-	/*progressTex:Number = 0, progressSprite:Number = 0;
-	public static var resTex:*;		// Contents of the loaded file
-	public static var resTex1:*;		// Contents of the loaded file
-	public static var resSprite:*;		// Contents of the loaded file
-	public static var resSprite1:*;		// Contents of the loaded file
-	*/
 	public static var spriteLists:Array = new Array(); 
 	public static var texUrl:Array = ['texture.swf', 'texture1.swf', 'sprite.swf', 'sprite1.swf']; //URLs of the files to load
 	public var grLoaders:Array;
@@ -188,15 +179,17 @@ public class Grafon {
 		ramR = new visBlack();
 		ramL = new visBlack();
 
-
-		ramT.cacheAsBitmap = ramB.cacheAsBitmap = ramR.cacheAsBitmap = ramL.cacheAsBitmap = true;
-
+		ramT.cacheAsBitmap = true;
+		ramB.cacheAsBitmap = true;
+		ramR.cacheAsBitmap = true;
+		ramL.cacheAsBitmap = true;
 
 		visual.addChild(ramT);
 		visual.addChild(ramB);
 		visual.addChild(ramR);
 		visual.addChild(ramL);
 		
+
 		grLoaders = new Array();
 		for (var i in texUrl)
 		{
@@ -231,7 +224,7 @@ public class Grafon {
 		resIsLoad = (GrLoader.kolIsLoad >= GrLoader.kol);
 	}
 	
-	//Determine process of loading.
+	//Determine progress of loading.
 	public function allProgress()
 	{
 		progressLoad = 0; //Clear the current progress.
@@ -264,34 +257,6 @@ public class Grafon {
 		//mouseCursorData.frameRate  =  1;
 		Mouse.registerCursor(nazv, mouseCursorData);
 	}
-	
-	/*function texLoaded(event:Event):void {
-		resTex  =  event.target.content;
-		checkLoaded();
-		trace(event.target.loader.x);
-	}
-	
-	function spriteLoaded(event:Event):void {
-		resSprite  =  event.target.content;
-		checkLoaded();
-	}
-	function sprite1Loaded(event:Event):void {
-		resSprite1  =  event.target.content;
-		checkLoaded();
-	}
-	function checkLoaded()
-	{
-		if (resTex != null && resSprite != null && resSprite1 != null) resIsLoad = true;
-	}
-	
-	private function progressTexHandler(event:ProgressEvent):void {
-		progressTex = event.bytesLoaded/event.bytesTotal;
-		progressLoad = (progressTex+progressSprite)/2;
-	}
-	private function progressSpriteHandler(event:ProgressEvent):void {
-		progressSprite = event.bytesLoaded/event.bytesTotal;
-		progressLoad = (progressTex+progressSprite)/2;
-	}*/
 	
 	//================================================================================================		
 	//							Initial Location Drawing
@@ -425,26 +390,17 @@ public class Grafon {
 			visLight.visible = location.black&&World.w.black;
 			warShadow();
 			
-			//if (colorBmp) colorBmp.dispose();
 			var darkness:int = 0xAA+location.darkness;
 			if (darkness > 0xFF) darkness = 0xFF;
 			if (darkness < 0) darkness = 0;
 			colorBmp.fillRect(allRect, darkness*0x1000000);
 			shadBmp.fillRect(allRect, 0xFFFFFFFF);
-			//colorBmp = new BitmapData(resX, resY, true, darkness*0x1000000);
-			
-			
-			//if (shadBmp) shadBmp.dispose();
-			//shadBmp = new BitmapData(resX, resY, true, 0xFFFFFFFF);
 		
 
 			//####################
 			//      STAGE 4   
 			//####################
 			World.w.gr_stage = 4; 
-
-
-			// removed instantiating m here.
 
 			var front:Sprite = new Sprite();	
 			var back:Sprite = new Sprite();	
@@ -699,7 +655,6 @@ public class Grafon {
 			{
 				backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 			}
-			//backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 
 			//####################
 			//      STAGE 16 - Render Pink Cloud if it exists.
@@ -848,7 +803,6 @@ public class Grafon {
 		}
 
 		backBmp.draw(baseSprite, backgroundMatrix, null, null, null, false);
-		//backBmp.draw(dyr, backgroundMatrix, null, 'erase', null, true);
 	}
 	
 
@@ -959,7 +913,8 @@ public class Grafon {
 					{
 						setMask(mc, material.borderMask, tile, i, j, toFront, bmaska);
 					}
-					if (material.floorMask) { // && !tile.zForm
+					if (material.floorMask) 
+					{ 
 						mc = new material.floorMask();
 						if (mc.c1) 
 						{
@@ -972,18 +927,13 @@ public class Grafon {
 					}
 				}
 			}
-
-
 		}
 
 
 
 
 
-
-
-
-		if (!isDraw) return;
+		if (!isDraw) return; //If the tile's material should not be drawn, return.
 
 		baseSprite.mask = maska; 
 		border.mask = bmaska; 
@@ -1058,7 +1008,6 @@ public class Grafon {
 	{
 		visSats.visible = on;
 		visObjs[2].visible =! on;
-		//for each (var ob in visObjs) ob.visible =! on;
 	}
 		
 	// Drawing water
@@ -1123,31 +1072,31 @@ public class Grafon {
 		var sc = Math.random()*0.5+0.5;
 		var rc = Math.random()*360
 		if (tip == 0 || mat == 0) return;
-		if (mat == 1) //металл
+		if (mat == 1) //metal
 		{ 			
 			if (tip >= 1 && tip <= 6) drC = bullet_metal;
-			else if (tip == 9) //взрыв
+			else if (tip == 9) //explosion
 			{		
 				if (!soft && Math.random()*0.5<ver) drC = metal_tre;
 				centr = true;
 			}
 		} 
-		else if (mat == 2 || mat == 4 || mat == 6)
-		{	//камень
-			if (tip >= 1 && tip <= 3)//пули
+		else if (mat == 2 || mat == 4 || mat == 6) //stone
+		{	
+			if (tip >= 1 && tip <= 3) //bullets
 			{					
 				if (tip>1 && Math.random()>0.5) erC = bullet_dyr;
 				drC = bullet_tre;
 				if (tip == 2) sc += 0.5;
 				if (tip == 3) sc += 1;
 			} 
-			else if (tip >= 4 && tip <= 6) //удары
+			else if (tip >= 4 && tip <= 6) //strikes
 			{			
 				if (!soft) drC = punch_tre;
 				if (tip == 5) sc += 0.5;
 				if (tip == 6) sc += 1;
 			} 
-			else if (tip == 9) //взрыв
+			else if (tip == 9) //explosion
 			{					
 				if (!soft && Math.random()*0.5<ver) drC = expl_tre;
 				centr = true;
@@ -1157,9 +1106,9 @@ public class Grafon {
 				if (mat == 2) Emitter.emit('kusoch', location, nx, ny, {kol:3});
 				else Emitter.emit('kusochB', location, nx, ny, {kol:3});
 			}
-		} else if (mat == 3) //дерево
+		} else if (mat == 3) //wood
 		{	
-			if (tip >= 1 && tip <= 3) //пули
+			if (tip >= 1 && tip <= 3) //bullets
 				{					
 				erC = bullet_dyr;
 				drC = bullet_wood;
@@ -1167,13 +1116,13 @@ public class Grafon {
 				if (tip == 2) sc += 0.5;
 				if (tip == 3) sc += 1;
 			} 
-			else if (tip >= 4 && tip <= 6) //удары
+			else if (tip >= 4 && tip <= 6) // punches
 			{			
 				if (!soft) drC = punch_tre;
 				if (tip == 5) sc += 0.5;
 				if (tip == 6) sc += 1;
 			} 
-			else if (tip == 9) //взрыв
+			else if (tip == 9) // explosion
 			{					
 				if (!soft && Math.random()*0.5<ver) drC = expl_tre;
 				centr = true;
@@ -1183,15 +1132,15 @@ public class Grafon {
 				Emitter.emit('schepoch', location, nx, ny, {kol:3});
 			}
 		} 
-		else if (mat == 7) //поле
+		else if (mat == 7) // field
 		{	
 			Emitter.emit('pole', location, nx, ny, {kol:5});
 		}
-		if (tip == 11) //огонь
+		if (tip == 11) // fire
 		{					
 			if (Math.random()<0.1) drC = fire_soft;
 		} 
-		else if (tip == 12 || tip == 13) //лазеры
+		else if (tip == 12 || tip == 13) // lasers
 		{		
 			if (soft && Math.random()*0.2>ver)
 			{
@@ -1204,8 +1153,8 @@ public class Grafon {
 			if (tip == 13) sc *= 0.6;
 			bl = 'hardlight';
 		} 
-		else if (tip == 15)
-		{					//плазма
+		else if (tip == 15) // plasma
+		{
 			if (soft)
 			{
 				drC = plasma_soft;
@@ -1239,17 +1188,12 @@ public class Grafon {
 			drC = cryo_soft;
 			bl = 'hardlight';
 		} 
-		else if (tip == 19)
-		{							//взрыв
+		else if (tip == 19) // explosion
+		{
 			if (!soft && Math.random()*0.5<ver) drC = plaexpl_tre;
 			centr = true;
 		}			
-		/*
-		if (centr)
-		{
-			nx = (Math.floor(nx/World.tilePixelWidth)+0.5)*World.tilePixelWidth;
-			ny = (Math.floor(nx/World.tilePixelWidth)+0.5)*World.tilePixelWidth;
-		}*/
+
 		
 		decal(erC, drC, nx, ny, sc, rc, bl);
 	}
@@ -1274,7 +1218,6 @@ public class Grafon {
 			nagar.scaleX = nagar.scaleY = sc;
 			nagar.rotation = rc;
 			var dyrx = Math.round(nagar.width/2+2)*2, dyry = Math.round(nagar.height/2+2)*2;
-			//var dyrx = Math.round(nagar.width)+4, dyry = Math.round(nagar.height)+4;
 			var res2:BitmapData  =  new BitmapData(dyrx, dyry, false, 0x0);
 			var rdx = 0, rdy = 0;
 			if (nx-dyrx/2<0) rdx = -(nx-dyrx/2);
@@ -1349,7 +1292,6 @@ public class Grafon {
 		{
 			visual.filters = [];
 			visFon.filters = []
-			//visual.rotation = 0;
 		} 
 		else if (n == 1)
 		{
@@ -1361,12 +1303,10 @@ public class Grafon {
 		} 
 		else if (n == 3)
 		{
-			//visual.filters = [new ColorMatrixFilter([0.5, -1.9, 1.1, 0, 0, 0.5, 0.5, 0.5, 0, 0, 2.4, -1.9, 0.5, 0, 0, 0, 0, 0, 1, 0])];
 			visual.filters = [new ColorMatrixFilter([0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -0.2, 0, 100, 0, 0, 0, 1, 0])];
 		} 
 		else if (n == 4)
 		{
-			//visual.filters = [new ColorMatrixFilter([-1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0, 255, 0, 0, 0, 1, 0])];
 			visual.filters = [new ColorMatrixFilter([0, -0.5, -0.5, 0, 255, -0.5, 0, -0.5, 0, 255, -0.5, -0.5, 0, 0, 255, 0, 0, 0, 1, 0])];
 		} 
 		else if (n == 5)
