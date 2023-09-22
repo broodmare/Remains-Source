@@ -663,8 +663,6 @@
 			if (vis.info.height<vis.info.textHeight && vis.scText) {
 				vis.scText.maxScrollPosition=vis.info.maxScrollV;
 				vis.scText.visible=true;
-				//vis.info.scaleX=vis.info.scaleY=0.8;
-				//vis.info.height=vis.info.textHeight+5;
 			}
 		}
 		
@@ -723,82 +721,127 @@
 		}
 		
 		public function factor(id:String):String {
-			var s:String='', s1:String;
-			var ok=false;
+			var lines:Array = [];
+			var s1:String;
+			var ok:Boolean = false;
+			
+			var xml = AllData.d.param.(@v==id);
+			var xmlTip:String = xml.@tip;
+			
 			if (World.w.pers.factor[id] is Array) {
-				var xml=AllData.d.param.(@v==id);
-				if (xml.@tip=='4') s+='- '+Res.pipText('begvulner')+': '+yel('100%')+'\n';
+				if (xmlTip == '4') lines.push('- ' + Res.pipText('begvulner') + ': ' + yel('100%'));
+				
 				for each (var obj in World.w.pers.factor[id]) {
-					if (obj.id=='beg') {
-						if (xml.@nobeg>0) continue;
-						if (xml.@tip=='0') {
-							if (obj.res!=0) s+='- '+Res.pipText('begval')+': '+yel(Res.numb(obj.res))+'\n';
-						} else if (xml.@tip=='3') {
-							s+='- '+Res.pipText('begvulner')+': '+yel(Res.numb(obj.res*100)+'%')+'\n';
-						} else {
-							s+='- '+Res.pipText('begval')+': '+yel(Res.numb(obj.res*100)+'%')+'\n';
-						}
+					var line:String = '- ';
+					
+					if (obj.id == 'beg') {
+						if (xml.@nobeg > 0) continue;
+						
+						line += handleBeg(obj, xmlTip);
 					} else {
-						if (obj.ref=='add' && obj.val==0 || obj.ref=='mult' && obj.val==1) continue;
-						ok=true;
-						if (obj.tip!=null) s1=Res.txt(obj.tip,obj.id);
-						else if (Res.istxt('e',obj.id)) s1=Res.txt('e',obj.id);
-						else if (Res.istxt('i',obj.id)) s1=Res.txt('i',obj.id);
-						else if (Res.istxt('a',obj.id)) s1=Res.txt('a',obj.id);
-						else s1='???';
-						if (s1.substr(0,6)=='*eff_f') s1=Res.txt('e','food');
-						s+='- '+s1+': ';
-						if (obj.ref=='add') {
-							if (xml.@tip=='0') {
-								s+=(obj.val>0?'+':'-')+' '+yel(Math.abs(obj.val));
-								s+=' = '+yel(Res.numb(obj.res));
-							} else {
-								s+=(obj.val>0?'+':'-')+' '+yel(Res.numb(Math.abs(obj.val*100))+'%');
-								s+=' = '+yel(Res.numb(obj.res*100)+'%');
-							}
-						} else if (obj.ref=='mult') {
-							if (xml.@tip=='0') {
-								s+='× '+yel(obj.val)+' = '+yel(Res.numb(obj.res));
-							} else if (xml.@tip=='3' || xml.@tip=='4') {
-								s+='× (1 '+(obj.val<1?'-':'+')+' '+yel(Math.abs(Math.round(100-obj.val*100))*0.01)+')';
-								s+=' = '+yel(Res.numb(obj.res*100)+'%');
-							} else {
-								s+='× '+yel(obj.val);
-								s+=' = '+yel(Res.numb(obj.res*100)+'%');
-							}
-						} else if (obj.ref=='min') {
-								s+='- '+yel(Res.numb(Math.abs(obj.val*100))+'%');
-								s+=' = '+yel(Res.numb((obj.res)*100)+'%');
-						} else {
-							if (xml.@tip=='0') {
-								s+=yel(obj.val);
-							} else {
-								s+=yel(Res.numb(obj.val*100)+'%');
-							}
-						}
-						s+='\n';
+						if ((obj.ref == 'add' && obj.val == 0) || (obj.ref == 'mult' && obj.val == 1)) continue;
+						
+						ok = true;
+						line += handleOther(obj, xmlTip);
 					}
+					
+					lines.push(line);
 				}
-				if (obj && (xml.@tip=='3' || xml.@tip=='4')) {
-					s+='- '+Res.pipText('result')+': 100% - '+yel(Res.numb(obj.res*100)+'%')+' = '+yel(Res.numb((1-obj.res)*100)+'%');
+				
+				if (obj && (xmlTip == '3' || xmlTip == '4')) {
+					lines.push('- ' + Res.pipText('result') + ': 100% - ' + yel(Res.numb(obj.res * 100) + '%') + ' = ' + yel(Res.numb((1 - obj.res) * 100) + '%'));
 				}
 			}
-			if (ok) s=Res.pipText('factor')+':\n'+s;
-			else return '';
+			
+			if (ok) {
+				lines.unshift(Res.pipText('factor') + ':');
+				return lines.join('\n');
+			}
+			
+			return '';
+		}
+
+		private function handleBeg(obj:Object, xmlTip:String):String 
+		{
+			var s:String = '';
+			if (xmlTip == '0') {
+				if (obj.res != 0) s = Res.pipText('begval') + ': ' + yel(Res.numb(obj.res));
+			} else if (xmlTip == '3') {
+				s = Res.pipText('begvulner') + ': ' + yel(Res.numb(obj.res * 100) + '%');
+			} else {
+				s = Res.pipText('begval') + ': ' + yel(Res.numb(obj.res * 100) + '%');
+			}
 			return s;
 		}
-		
-		public function setTopText(s:String='') {
-			if (s=='') {
-				pip.vis.toptext.visible=false;
+
+		private function handleOther(obj:Object, xmlTip:String):String 
+		{
+			var s1:String, s:String = '';
+			if (obj.tip != null) s1 = Res.txt(obj.tip, obj.id);
+			else if (Res.istxt('e', obj.id)) s1 = Res.txt('e', obj.id);
+			else if (Res.istxt('i', obj.id)) s1 = Res.txt('i', obj.id);
+			else if (Res.istxt('a', obj.id)) s1 = Res.txt('a', obj.id);
+			else s1 = '???';
+			
+			if (s1.substr(0, 6) == '*eff_f') s1 = Res.txt('e', 'food');
+			s += s1 + ': ';
+			
+			if (obj.ref == 'add') {
+				s += handleAdd(obj, xmlTip);
+			} else if (obj.ref == 'mult') {
+				s += handleMult(obj, xmlTip);
+			} else if (obj.ref == 'min') {
+				s += handleMin(obj, xmlTip);
 			} else {
-				pip.vis.toptext.visible=true;
-				var ins:String=Res.txt('p',s,0,true);
-				var myPattern:RegExp = /@/g; 
-				pip.vis.toptext.txt.htmlText=ins.replace(myPattern,'\n');
+				s += handleElse(obj, xmlTip);
 			}
+			return s;
 		}
-		
+
+		private function handleAdd(obj:Object, xmlTip:String):String {
+			var s:String = (obj.val > 0 ? '+' : '-') + ' ' + yel(Math.abs(obj.val));
+			if (xmlTip != '0') {
+				s = (obj.val > 0 ? '+' : '-') + ' ' + yel(Res.numb(Math.abs(obj.val * 100)) + '%');
+				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
+			}
+			return s;
+		}
+
+		private function handleMult(obj:Object, xmlTip:String):String {
+			var s:String = '× ' + yel(obj.val);
+			if (xmlTip == '0') {
+				s += ' = ' + yel(Res.numb(obj.res));
+			} else if (xmlTip == '3' || xmlTip == '4') {
+				s += '× (1 ' + (obj.val < 1 ? '-' : '+') + ' ' + yel(Math.abs(Math.round(100 - obj.val * 100)) * 0.01) + ')';
+				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
+			} else {
+				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
+			}
+			return s;
+		}
+
+		private function handleMin(obj:Object, xmlTip:String):String {
+			var s:String = '- ' + yel(Res.numb(Math.abs(obj.val * 100)) + '%');
+			s += ' = ' + yel(Res.numb((obj.res) * 100) + '%');
+			return s;
+		}
+
+		private function handleElse(obj:Object, xmlTip:String):String {
+			var s:String = (xmlTip == '0') ? yel(obj.val) : yel(Res.numb(obj.val * 100) + '%');
+			return s;
+		}
+				
+				public function setTopText(s:String='') {
+					if (s=='') {
+						pip.vis.toptext.visible=false;
+					} else {
+						pip.vis.toptext.visible=true;
+						var ins:String=Res.txt('p',s,0,true);
+						var myPattern:RegExp = /@/g; 
+						pip.vis.toptext.txt.htmlText=ins.replace(myPattern,'\n');
+					}
+				}
+				
 		//проверка квеста на доступность
 		public function checkQuest(task):Boolean {
 			//проверка на доступ к местности
