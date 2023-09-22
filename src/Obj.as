@@ -1,4 +1,5 @@
-﻿package  src{
+﻿package  src
+{
 	
 	// Base class for objects interacting with the player or the world
 	
@@ -126,7 +127,10 @@
 			else return true;
 		}
 		
-		public function locout() {
+		public function locout()  //Not used
+		{
+
+
 		}
 		
 		public static function setArmor(m:MovieClip) {

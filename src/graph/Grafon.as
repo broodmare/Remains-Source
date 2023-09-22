@@ -726,10 +726,7 @@ public class Grafon {
 			//      STAGE 18   
 			//####################
 			World.w.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
-			frontBmp.unlock();
-			backBmp.unlock();
-			backBmp2.unlock();
-			vodaBmp.unlock();
+
 			
 			if (currentLocation.cTransform && currentLocation.cTransformFon) 
 			{
@@ -740,7 +737,21 @@ public class Grafon {
 				visFon.transform.colorTransform = defTransform;
 			}
 			
-		} catch (err) {World.w.showError(err)}
+		} 
+		catch (err) 
+		{
+			World.w.showError(err)
+		}
+
+		finally //Make sure to unlock all bitmaps, even if an error occurs.
+		{
+			frontBmp.unlock();
+			backBmp.unlock();
+			backBmp2.unlock();
+			vodaBmp.unlock();
+		}
+
+
 
 
 		//####################

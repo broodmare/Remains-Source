@@ -167,12 +167,13 @@
 // First stage - create and build according to the map from xml
 
 		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null) {
-			land=nland;
-			spaceX=World.cellsX;
-			spaceY=World.cellsY;
-			limX=spaceX*World.tilePixelWidth;
-			limY=spaceY*World.tilePixelHeight;
+			land = nland;
+			spaceX = World.cellsX;
+			spaceY = World.cellsY;
+			limX = spaceX*World.tilePixelWidth;
+			limY = spaceY*World.tilePixelHeight;
 			otstoy=new Tile(-1,-1);
+
 			units=new Array();
 			ups=new Array();
 			objs=new Array();
@@ -188,6 +189,7 @@
 			grenades=new Array();
 			bonuses=new Array();
 			maxdy=World.maxdy;
+
 			if (rnd) ramka=1;
 			if (opt) {
 				if (opt.prob) ramka=0;
@@ -220,7 +222,8 @@
 		}
 		
 		// Build according to the xml map
-		public function buildLoc(nroom:XML) {
+		public function buildLoc(nroom:XML) 
+		{
 			// Create an array of tiles
 			for (var i=0; i<spaceX; i++) {
 				space[i]=new Array();
@@ -228,19 +231,20 @@
 					space[i][j]=new Tile(i,j);
 				}
 			}
+
 			// Options
-			backwall=land.act.backwall;
-			sndMusic=land.act.sndMusic;
-			postMusic=land.act.postMusic;
-			rad=land.act.rad;
-			wrad=land.act.wrad;
-			wdam=land.act.wdam;
-			wtipdam=land.act.wtipdam;
-			tipWater=land.act.tipWater;
-			color=land.act.color;
-			visMult=land.act.visMult;
-			opacWater=land.act.opacWater;
-			darkness=land.act.darkness;
+			backwall = land.act.backwall;
+			sndMusic  =land.act.sndMusic;
+			postMusic = land.act.postMusic;
+			rad = land.act.rad;
+			wrad = land.act.wrad;
+			wdam = land.act.wdam;
+			wtipdam = land.act.wtipdam;
+			tipWater = land.act.tipWater;
+			color = land.act.color;
+			visMult = land.act.visMult;
+			opacWater = land.act.opacWater;
+			darkness = land.act.darkness;
 			if (nroom.options.length()) {
 				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
 				if (nroom.options.@backform.length()) backform=nroom.options.@backform;
@@ -301,7 +305,7 @@
 			// Create a room. (I think this part works correctly.)
 			for (j=0; j<spaceY; j++) { //Build the room from XML Data.
 				var js:String=''; //XML data as string
-				js=nroom.a[j];
+				js = nroom.a[j];
 				var arri:Array=js.split('.'); //Demarcates the room into tiles.
 				for (i=0; i<spaceX; i++) {
 					var jis:String;
@@ -375,8 +379,9 @@
 			if (colorfon) cTransformFon=colorFilter(colorfon);
 			
 			// Object spawnpoints
-			objsT=new Array();
-			for each(var obj:XML in nroom.obj) {
+			objsT = new Array();
+			for each(var obj:XML in nroom.obj) 
+			{
 				var xmll:XML=AllData.d.obj.(@id==obj.@id)[0];
 				var size:int=xmll.@size;
 				if (size<=0) size=1;
@@ -385,75 +390,96 @@
 				if (mirror) nx=spaceX-nx-size;
 				if (xmll.@tip=='spawnpoint') spawnPoints.push({x:nx, y:ny});
 				else if (xmll.@tip=='enspawn') addEnSpawn(nx, ny, xmll);
-				else if (xmll.@tip=='up') {
+				else if (xmll.@tip=='up') 
+				{
 					var n:int=xmll.@tipn;
 					ups[n].push({x:nx, y:ny, xml:obj});
-				} else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
+				} 
+
+				else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
 			}
 			
 			// Background objects
-			for each(obj in nroom.back) {
+			for each(obj in nroom.back) 
+			{
 				backobjs.push(new BackObj(this, obj.@id,obj.@x*Tile.tilePixelWidth,obj.@y*Tile.tilePixelHeight, obj));
 			}
-			if (zoom>1) {
+
+			if (zoom>1) 
+			{
 				limX*=zoom;
 				limY*=zoom;
 			}
 		}
 		
 		// Color filter
-		public function colorFilter(f:String=''):ColorTransform {
+		public function colorFilter(f:String=''):ColorTransform 
+		{
 			var cT = new ColorTransform();
-			if (f=='green') {
+			if (f=='green') 
+			{
 				cT.blueMultiplier=cT.redMultiplier=0.8;
 				cT.greenMultiplier=1.16;
-			} else if (f=='red') {
+			} else if (f=='red') 
+			{
 				cT.blueMultiplier=0.7;
 				cT.greenMultiplier=0.9;
 				cT.redMultiplier=1.1;
-			} else if (f=='fire') {
+			} else if (f=='fire') 
+			{
 				cT.blueMultiplier=0.5;
 				cT.greenMultiplier=0.7;
 				cT.redMultiplier=1.1;
-			} else if (f=='lab') {
+			} else if (f=='lab') 
+			{
 				cT.blueMultiplier=0.7;
 				cT.greenMultiplier=1.1;
 				cT.redMultiplier=0.9;
-			} else if (f=='black') {
+			} else if (f=='black') 
+			{
 				cT.blueMultiplier=0.7;
 				cT.greenMultiplier=0.6;
 				cT.redMultiplier=0.5;
-			} else if (f=='blue') {
+			} else if (f=='blue') 
+			{
 				cT.blueMultiplier=1.16;
 				cT.greenMultiplier=cT.redMultiplier=0.8;
-			} else if (f=='sky') {
+			} else if (f=='sky') 
+			{
 				cT.blueMultiplier=cT.greenMultiplier=1.12;
 				cT.redMultiplier=0.85;
-			} else if (f=='yellow') {
+			} else if (f=='yellow') 
+			{
 				cT.blueMultiplier=0.9;
 				cT.greenMultiplier=1.2;
 				cT.redMultiplier=1.25;
-			} else if (f=='purple') {
+			} else if (f=='purple') 
+			{
 				cT.blueMultiplier=1.12;
 				cT.greenMultiplier=0.8;
 				cT.redMultiplier=1.08;
-			} else if (f=='pink') {
+			} else if (f=='pink') 
+			{
 				cT.blueMultiplier=1;
 				cT.greenMultiplier=0.9; //ff66aa
 				cT.redMultiplier=1.1;
-			} else if (f=='blood') {
+			} else if (f=='blood') 
+			{
 				cT.blueMultiplier=0.6;
 				cT.greenMultiplier=0.6;
 				cT.redMultiplier=1.08;
-			} else if (f=='blood2') {
+			} else if (f=='blood2') 
+			{
 				cT.blueMultiplier=0.1;
 				cT.greenMultiplier=0.1;
 				cT.redMultiplier=1;
-			} else if (f=='dark') {
+			} else if (f=='dark') 
+			{
 				cT.blueMultiplier=0;
 				cT.greenMultiplier=0;
 				cT.redMultiplier=0;
-			} else if (f=='mf') {
+			} else if (f=='mf') 
+			{
 				cT.redMultiplier=0.5;
 				cT.greenMultiplier=0.5;
 				cT.blueMultiplier=1.08;
@@ -466,12 +492,14 @@
 // Second stage - determine passages, create a frame, and create objects based on difficulty and passages
 
 		// Add a transition with number n
-		public function setDoor(n:int, fak:int=2) {
+		public function setDoor(n:int, fak:int=2) 
+		{
 			var q:int;
 			if (fak<2) return;
 			var dyr:Boolean=false;
 			if (n>21) return;
-			else if (n>=17) {
+			else if (n>=17) 
+			{
 				q=(n-17)*9+4;
 				dyr=space[q+1][0].hole() || dyr;
 				dyr=space[q+2][0].hole() || dyr;
@@ -479,7 +507,8 @@
 				space[q+2][1].hole();
 				setNoObj(q+1,0,0,2);
 				setNoObj(q+2,0,0,2);
-				if (fak>2) {
+				if (fak>2) 
+				{
 					dyr=space[q][0].hole() || dyr;
 					dyr=space[q+3][0].hole() || dyr;
 					space[q][1].hole();
@@ -488,7 +517,9 @@
 					setNoObj(q+3,0,0,2);
 				}
 				if (dyr) addSignPost(q+2,0,-90);
-			} else if (n>=11) {
+			} 
+			else if (n>=11) 
+			{
 				q=(n-11)*4+3;
 				dyr=space[0][q].hole() || dyr;
 				dyr=space[0][q-1].hole() || dyr;
@@ -502,7 +533,9 @@
 				} 
 				if (dyr) addSignPost(0,q,180);
 				addEnSpawn(Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
-			} else if (n>=6) {
+			} 
+			else if (n>=6) 
+			{
 				q=(n-6)*9+4;
 				dyr=space[q+1][spaceY-1].hole() || dyr;
 				dyr=space[q+2][spaceY-1].hole() || dyr;
@@ -519,7 +552,9 @@
 					setNoObj(q+3,spaceY-1,0,-2);
 				} 
 				if (dyr) addSignPost(q+2,spaceY,90);
-			} else if (n>=0) {
+			} 
+			else if (n>=0) 
+			{
 				q=(n)*4+3;
 				dyr=space[spaceX-1][q].hole() || dyr;
 				dyr=space[spaceX-1][q-1].hole() || dyr;
@@ -533,7 +568,8 @@
 				} 
 				if (dyr) addSignPost(spaceX,q,0);
 				addEnSpawn((spaceX-1)*Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
-			} else return;
+			} 
+			else return;
 		}
 		
 		// Add transition indicators to neighboring locations
@@ -545,21 +581,26 @@
 		}
 		
 		// Add enemy spawn points
-		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null) {
+		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null) 
+		{
 			var obj:Object=new Object();
-			if (xmll) {
+			if (xmll) 
+			{
 				var size:int=xmll.@size;
 				if (size<=0) size=1;
 				obj.x=(nx+0.5*size)*Tile.tilePixelWidth;
 				obj.y=(ny+1)*Tile.tilePixelHeight-1;
-			} else {
+			} 
+			else 
+			{
 				obj.x=nx, obj.y=ny;
 			}
 			enspawn.push(obj);
 		}
 		
 		// Add places where there should be no containers (near passages)
-		private function setNoObj(nx:int, ny:int, dx:int, dy:int) {
+		private function setNoObj(nx:int, ny:int, dx:int, dy:int) 
+		{
 			var i:int;
 			if (dx>0) for (i=nx; i<=nx+dx; i++) space[i][ny].place=false;
 			if (dx<0) for (i=nx+dx; i<=nx; i++) space[i][ny].place=false;
@@ -569,22 +610,27 @@
 		
 		
 		// Main frame, call after creating passages
-		public function mainFrame() {
+		public function mainFrame() 
+		{
 			var border:String='A';
 			if (land && land.act) border=land.act.border;
-			for (var j=0; j<spaceX; j++) {
+			for (var j=0; j<spaceX; j++) 
+			{
 				if (space[j][0].phis>=1) space[j][0].mainFrame(border);
 				if (space[j][spaceY-1].phis>=1) space[j][spaceY-1].mainFrame(border);
 			}
-			for (j=0; j<spaceY; j++) {
+			for (j=0; j<spaceY; j++) 
+			{
 				if (space[0][j].phis>=1) space[0][j].mainFrame(border);
 				if (space[spaceX-1][j].phis>=1) space[spaceX-1][j].mainFrame(border);
 			}
 		}
 		
 		// Create active objects in their spawn locations, except for places near passages, call after creating passages
-		public function setObjects() {
-			for each (var obj in objsT) {
+		public function setObjects() 
+		{
+			for each (var obj in objsT) 
+			{
 				if (noHolesPlace && obj.rem>0 && !space[obj.x][obj.y].place) continue;	/// Do not place boxes near passages
 				if (obj.tip=='unit') createUnit(obj.id,obj.x,obj.y, false, obj.xml);
 				else createObj(obj.id, obj.tip, obj.x,obj.y, obj.xml);
@@ -595,43 +641,59 @@
 		}
 		
 		// Set the number of random enemies
-		public function setKolEn(en:int, min:int, max:int, spl:int=0) {
-			if (en==-1) {
+		public function setKolEn(en:int, min:int, max:int, spl:int=0) 
+		{
+			if (en==-1) 
+			{
 				kolEnSpawn=min+Math.floor(Math.random()*(max-min+1));
-			} else {
+			} 
+			else 
+			{
 				kolEn[en]=min+Math.floor(Math.random()*(max-min+1));
 				if (spl>0 && Math.random()<0.2) kolEn[en]+=spl;
 			}
 		}
 		
 		// Create random enemies in their spawn points
-		public function setRandomUnits() {
-			for (var i=1; i<kolEn.length; i++) {
-				if (kolEn[i]>0 && ups[i].length) {
+		public function setRandomUnits() 
+		{
+			for (var i=1; i<kolEn.length; i++) 
+			{
+				if (kolEn[i]>0 && ups[i].length) 
+				{
 					// Remove points near passages
-					if (noHolesPlace) {
-						for (var j=0; j<ups[i].length; j++) {
-							if (!space[ups[i][j].x][ups[i][j].y].place) {
+					if (noHolesPlace) 
+					{
+						for (var j=0; j<ups[i].length; j++) 
+						{
+							if (!space[ups[i][j].x][ups[i][j].y].place) 
+							{
 								ups[i].splice(j,1);
 								j--;
 							}
 						}
 					}
-					if (ups[i].length>0) {
-						for (j=0; j<kolEn[i]; j++) {
+					if (ups[i].length>0) 
+					{
+						for (j=0; j<kolEn[i]; j++) 
+						{
 							var n=Math.floor(Math.random()*ups[i].length);
 							createUnit(tipEn[i],ups[i][n].x,ups[i][n].y, false, ups[i][n].xml);
-							if (ups[i].length<=1) {
+							if (ups[i].length<=1) 
+							{
 								ups[i]=[];
 								break;
-							} else ups[i].splice(n,1);
+							} 
+							else ups[i].splice(n,1);
 						}
 					}
 				}
 			}
 			// Add hidden enemies
-			if (kolEnHid>0 && ups[2].length>0) {
-				for (j=0; j<kolEnHid; j++) {
+			if (kolEnHid>0 && ups[2].length>0) 
+			{
+				for (j=0; j<kolEnHid; j++) 
+				{
 					n=Math.floor(Math.random()*ups[2].length);
 					createHidden(ups[2][n].x,ups[2][n].y);
 					if (ups[2].length<=1) break;
@@ -641,55 +703,74 @@
 		}
 		
 		// Create random loot
-		public function putRandomLoot() {
+		public function putRandomLoot() 
+		{
 			var nx:int=Math.floor(Math.random()*(spaceX-2)+1);
 			var ny:int=Math.floor(Math.random()*(spaceY-2)+1);
-			if (space[nx][ny].phis==0) {
+			if (space[nx][ny].phis==0) 
+			{
 				LootGen.lootCont(this,(nx+0.5)*Tile.tilePixelWidth,(ny+0.8)*Tile.tilePixelHeight,'metal');
 			}
 		}
 		
 		// Create a unit, nx, ny - coordinates in blocks if abs=false, and in pixels if abs=true
 		// emerg>0 - smooth appearance over X ticks
-		public function createUnit(tip:String,nx:int,ny:int,abs:Boolean=false,xml:XML=null,cid:String=null, emerg:int=0):Unit {
-			if (tip=='mines') {
+		public function createUnit(tip:String,nx:int,ny:int,abs:Boolean=false,xml:XML=null,cid:String=null, emerg:int=0):Unit 
+		{
+			if (tip=='mines') 
+			{
 				createUnit('mine',nx,ny);
 				createUnit('mine',nx+2,ny);
 				createUnit('mine',nx+4,ny);
 				return null;
 			}
-			if (land.rnd && tip=='transm') {
+
+			if (land.rnd && tip=='transm') 
+			{
 				if ((xml==null || xml.@on.length()==0) && Math.random()<0.5) return null;
 			}
+
 			if (xml && xml.@trigger.length() && World.w.game.triggers[xml.@trigger]=='1') return null;
+
 			var loadObj:Object=null;
+
 			if (xml && xml.@code.length() && World.w.game.objs.hasOwnProperty(xml.@code)) loadObj=World.w.game.objs[xml.@code];
+
 			//не генерировать юнита, который сдох
-			if (loadObj && loadObj.dead>0 && loadObj.loot!=2) {
+			if (loadObj && loadObj.dead>0 && loadObj.loot!=2)
+			{
 				return null;
 			}
 			var un:Unit;
 			var scid:String;
 			var hero:int=0;
 			var inWater:Boolean=false;
-			if ((biom==1 || biom==5) && abs==false) {
+
+			if ((biom==1 || biom==5) && abs==false) 
+			{
 				inWater=getTile(nx,ny).water>0;
 			}
 			var s:String=randomUnit(tip,inWater); //определить, является ли юнит случайным, если да, то сгенерировать его id
 			//если тип был случайным и удалось сгенерировать его id
-			if (s!='') {
+
+			if (s!='') 
+			{
 				if (cid) scid=cid;
 				else scid=randomCid(s);
 				if (s=='slmine') s='slime';
 				un=Unit.create(s,locDifLevel,xml,loadObj,scid);
 			}
+
 			//если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
-			if ((s=='' && !homeStable) || un==null) {
+			if ((s=='' && !homeStable) || un==null) 
+			{
 				if (cid) scid=cid;
 				else scid=randomCid(tip);
 				un=Unit.create(tip,locDifLevel,xml,loadObj,scid);
 			}
-			if (un!=null) {
+
+			if (un!=null) 
+			{
 				var enl=enemyLevel;
 				if (land.rnd && landProb=='') {//геройский юнит
 					if (Math.random()<Math.min(0.05,locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);	
@@ -698,24 +779,31 @@
 				if (hero==0 && un.boss==false) enl=Math.round(enl*(1.1-Math.random()*0.4));
 				un.setLevel(enl);
 				un.setHero(hero);
-				if (abs) {
+				if (abs) 
+				{
 					un.putLoc(this,nx,ny);
-				} else {
+				} 
+				else 
+				{
 					var size=Math.floor((un.scX-1)/40)+1;
 					un.putLoc(this,(nx+0.5*size)*Tile.tilePixelWidth,(ny+1)*Tile.tilePixelHeight-1);
 				}
-				if (active) {
+				if (active) 
+				{
 					un.xp=0;
-				} else {
+				} else 
+				{
 					summXp+=un.xp;
 				}
 				addObj(un);
 				units.push(un);
-				if (homeStable) {
+				if (homeStable) 
+				{
 					un.fraction=Unit.F_PLAYER;
 					un.warn=0;
 				}
-				if (homeAtk) {
+				if (homeAtk) 
+				{
 					if (un is UnitTurret) (un as UnitTurret).hack(2);
 					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*Tile.tilePixelWidth,(ny-Math.random()*4)*Tile.tilePixelHeight));
 					//if (un is UnitSentinel) un.fraction=Unit.F_PLAYER;
@@ -723,7 +811,8 @@
 				}
 				if (xml && xml.@code.length()) saves.push(un);
 				//Добавление объектов, имеющих uid в массив
-				if (xml && xml.@uid.length()) {
+				if (xml && xml.@uid.length()) 
+				{
 					un.uid=xml.@uid;
 					land.uidObjs[un.uid]=un;
 				}
@@ -760,8 +849,10 @@
 		}
 		
 		//создать предмет, стоящий на ящике
-		function createSur(box:Box, nsur:String=null) {
-			if (nsur==null) {
+		function createSur(box:Box, nsur:String=null) 
+		{
+			if (nsur==null) 
+			{
 				if (Math.random()>0.25) return;
 				if (biom==0) nsur='fan';
 				if (biom==2) nsur='lamp';
@@ -770,14 +861,16 @@
 			}
 			var item:Item=new Item(null, nsur, 1);
 			var l:Loot=new Loot(this,item,box.X,box.Y-box.scY-3,false,false,false);
-			if (base) {
+			if (base) 
+			{
 				l.inter.active=false;
 				l.levitPoss=false;
 			}
 		}
 		
 		//создать скрытый юнит или дополнительный объект
-		public function createHidden(nx:int,ny:int) {
+		public function createHidden(nx:int,ny:int) 
+		{
 			if (biom==10 || biom==11) return;
 			if (tipEnemy==0) createUnit('zombie',nx,ny, false, <unit dig='2'/>);
 			else if (tipEnemy==2) createObj('robocell','box',nx,ny);
@@ -786,27 +879,35 @@
 		}
 		
 		//облака газа
-		public function createClouds(lvl:int, ncloud:String=null) {
-			if (ncloud==null) {
-				if (biom==1) {
+		public function createClouds(lvl:int, ncloud:String=null) 
+		{
+			if (ncloud==null) 
+			{
+				if (biom==1) 
+				{
 					ncloud='tcloud1';
 					if (lvl>=2) return;
 				}
-				if (biom==5) {
+				if (biom==5) 
+				{
 					ncloud='pcloud1';
 				}
 			}
-			if (ncloud!=null) {
+			if (ncloud!=null) 
+			{
 				var kol:int=1;
 				if (biom==1) kol=Math.random()*5;
-				if (biom==5) {
+				if (biom==5) 
+				{
 					if (lvl==0) kol=Math.random()*2;
 					else kol=Math.random()*3;
 				}
-				for (var i=0; i<kol; i++) {
+				for (var i=0; i<kol; i++) 
+				{
 					var nx:int=Math.floor(Math.random()*(spaceX-4)+2);
 					var ny:int=Math.floor(Math.random()*(spaceY-4)+2);
-					if (cp) {
+					if (cp) 
+					{
 						var dnx=cp.X-(nx*World.tilePixelWidth+20);
 						var dny=cp.Y-(ny*World.tilePixelHeight+40);
 						if (dnx*dnx+dny*dny<80*80) continue;
@@ -819,13 +920,16 @@
 		}
 		
 		//определение id случайного юнита
-		public function randomUnit(tip:String, inWater:Boolean=false):String {
+		public function randomUnit(tip:String, inWater:Boolean=false):String 
+		{
 			var s:String='';
-			switch (tip) {
+			switch (tip) 
+			{
 				case 'enl2':
 					if (biom==10) s='stabpon';
 					else if (tipEnemy==0) s='zombie';
-					else if (tipEnemy==2) {
+					else if (tipEnemy==2) 
+					{
 						if (biom==2 && locDifLevel>=12 && Math.random()<Math.min(locDifLevel/100,0.15)) s='eqd';
 						else if (locDifLevel>=5 && Math.random()<0.1) s='landturret';
 						else if (locDifLevel>=6 && Math.random()<Math.min(locDifLevel/40,0.3)) s='gutsy';
@@ -836,93 +940,137 @@
 					else if (tipEnemy==4) s='merc';
 					else if (tipEnemy==5) s='alicorn';
 					else if (tipEnemy==6) s='zebra';
-					else if (tipEnemy==7) {
-						if (Math.random()<0.4) {
+					else if (tipEnemy==7) 
+					{
+						if (Math.random()<0.4) 
+						{
 							if (Math.random()<0.5) s='gutsy';
 							else s='protect';
-						} else s='ranger';
-					} else if (tipEnemy==8) {
+						} 
+						else s='ranger';
+					} 
+					else if (tipEnemy==8) 
+					{
 						if (Math.random()<0.75) s='zombie';
 						else s='necros'
-					} else if (tipEnemy==9) {
+					} 
+					else if (tipEnemy==9) 
+					{
 						if (Math.random()<0.1) s='hellhound';
 						else if (Math.random()<0.07) s='landturret';
 						else s='encl';
-					} else if (tipEnemy==10) s='hellhound';
-					else if (tipEnemy==11) {
+					} 
+					else if (tipEnemy==10) s='hellhound';
+					else if (tipEnemy==11) 
+					{
 						if (Math.random()<0.3) s='hellhound';
 						else s='encl';
-					} else s='raider';
+					} 
+					else s='raider';
 				break;
 				case 'enl1':
 					if (biom==10 || biom==11) return '';
-					if ((biom==1 || biom==5) && inWater) {
+					if ((biom==1 || biom==5) && inWater) 
+					{
 						s='fish';
-					} else if (biom==5) {
+					} 
+					else if (biom==5) 
+					{
 						if (Math.random()<0.3) s='scorp3';
 						else s='slime';
-					} else if (biom==6) {
+					} 
+					else if (biom==6) 
+					{
 						s='roller';
-					} else if (tipEnemy==2 && locDifLevel>=4 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10) {
+					} 
+					else if (tipEnemy==2 && locDifLevel>=4 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10) 
+					{
 						if ((landX+landY)%2==0) s='roller';
 						else s='msp';
-					} else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) {
-						if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) {
+					} 
+					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) 
+					{
+						if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) 
+						{
 							s='scorp';
-						} else if ((landX+landY)%2==0) s='slime';
+						} 
+						else if ((landX+landY)%2==0) s='slime';
 						else s='ant';
 						if (biom==1 && Math.random()<0.25) s='rat';
-					} else if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) s='molerat';
+					} 
+					else if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) s='molerat';
 					else if (Math.random()<0.6) s='tarakan';
 					else s='rat';
 				break;
 				case 'enc1':
-					if (biom==10) {
+					if (biom==10) 
+					{
 						s='turret';
-					} else if ((biom==1 || biom==5) && inWater) {
+					} 
+					else if ((biom==1 || biom==5) && inWater) 
+					{
 						s='fish';
-					} else if (biom==5) {
+					} 
+					else if (biom==5) 
+					{
 						if ((landX+landY)%2==0) s='bloodwing';
 						else s='slime';
-					} else if (biom==6 || biom==4) {
+					} 
+					else if (biom==6 || biom==4) 
+					{
 						s='cturret';
-					} else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) {
+					} 
+					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) 
+					{
 						if (biom==1 && Math.random()<0.6) s='slime';
 						else s='bloodwing';
-					} else s='turret';
+					} 
+					else s='turret';
 				break;
 				case 'enf1':
 					if (biom==10) return '';
-					if ((biom==1 || biom==5) && inWater) {
+					if ((biom==1 || biom==5) && inWater) 
+					{
 						s='fish';
-					} else if (biom==5) {
+					} 
+					else if (biom==5) 
+					{
 						s='bloat';
-					} else if (tipEnemy==0 || tipEnemy==5) s='bloat';
+					} 
+					else if (tipEnemy==0 || tipEnemy==5) s='bloat';
 					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6) && locDifLevel>=3) s='vortex';
 					else if (tipEnemy==2 && locDifLevel>=3) s='spritebot';
 					else if (tipEnemy==11 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10 || tipEnemy==2 && locDifLevel>10 && Math.random()<Math.min(locDifLevel/40,0.5)) s='dron';
 				break;
 				case 'lov':
 					if (biom==10 || biom==11) return '';
-					if (biom==5) {
+					if (biom==5) 
+					{
 						s='slmine';
-					} else if (tipEnemy==0) {
+					} else if (tipEnemy==0) 
+					{
 						if ((landX+landY)%2==0) s='slmine';
 						else s='trap';
-					} else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6)&&(landX+landY)%2==0) {
+					} 
+					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6)&&(landX+landY)%2==0) 
+					{
 						if (locDifLevel>=10 && Math.random()<0.5) s='trridge';
 						else if (Math.random()<0.5) s='trplate';
 						else s='trcans';
-					} else if ((biom==2 && tipEnemy==2 || tipEnemy==7 || tipEnemy==9) &&(landX+landY)%2==0) {
+					} 
+					else if ((biom==2 && tipEnemy==2 || tipEnemy==7 || tipEnemy==9) &&(landX+landY)%2==0) 
+					{
 						s='trlaser';
-					} else s='mine';
+					} 
+					else s='mine';
 				break;
 			}
 			return s;
 		}
 		
 		//определение сid случайного юнита
-		public function randomCid(tip:String):String {
+		public function randomCid(tip:String):String 
+		{
 			var tr:int=0;
 			switch (tip) {
 				case 'raider':
@@ -1222,13 +1370,16 @@
             return (element.sost < 4);
         }
 		
-		// Deactivate the location
+		// Deactivate the location  This doesn't do anything.
+		//This function is actually overwritten later??? wtf?
+
 		public function out() {
 			active=false;
-			for each (var un:Unit in units) {
+			for each (var un:Unit in units) 
+			{
 				un.locout();
 			}
-			if (prob) prob.out();
+			if (prob) prob.out();   // If the location is a trial, run the trial exit script.
 		}
 		
 //**************************************************************************************************************************
@@ -1276,6 +1427,8 @@
 
 		// Checks if a tile is in bounds of Space, if so returns otstoy (an empty tile).
 		// Otherwise, it attempts to retrieve the tile from the space array using the provided coordinates and returns it.
+
+		//input coordinates and return the tile at that location.
 		public function getTile(nx:int,ny:int):Tile {    //RELATED TO THE BUG!!!
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return otstoy;
 			else return space[nx][ny] as Tile;

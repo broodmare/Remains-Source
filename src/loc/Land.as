@@ -114,126 +114,188 @@
 			if (act.conf==0 && act.landStage<=0) maxLocY=3;
 			var loc1:Location, loc2:Location;
 			var opt:Object=new Object();
-			for (var i=minLocX; i<maxLocX; i++) {
+			for (var i=minLocX; i<maxLocX; i++) 
+			{
 				locs[i]=new Array();
-				for (var j=minLocY; j<maxLocY; j++) {
+				for (var j=minLocY; j<maxLocY; j++) 
+				{
 					opt.mirror=(Math.random()<0.5);
 					opt.water=null;
 					opt.ramka=null;
 					opt.backform=0;
 					opt.transpFon=false;
 					//Flooded rooms
-					if (act.conf==2) {
+					if (act.conf==2) 
+					{
 						if (j==1) opt.water=17;
 						if (j>1) opt.water=0;
 					}
-					if (act.conf==5) {
+					if (act.conf==5) 
+					{
 						if (j==2) opt.water=21;
 						if (j>2) opt.water=0;
 					}
 					//buildings
-					if (act.conf==3) {
+					if (act.conf==3) 
+					{
 						
 					}
 					locs[i][j]=new Array();
-					if (act.conf==0 && j==0 && !act.visited) { //initial rooms
+					if (act.conf==0 && j==0 && !act.visited) 
+					{ //initial rooms
 						opt.mirror=false;
 						loc1=newTipLoc('beg'+i,i,j,opt);	
-					} else if ((act.conf==2 || act.conf==1 || act.conf==5) && j==0 && i==0 && !act.visited) { //initial rooms
+					} 
+					else if ((act.conf==2 || act.conf==1 || act.conf==5) && j==0 && i==0 && !act.visited) 
+					{ //initial rooms
 						opt.mirror=false;
-						if (act.conf==5) {
+						if (act.conf==5) 
+						{
 							opt.ramka=3;
 							opt.backform=3;
 							opt.transpFon=true;
 						}
 						loc1=newTipLoc('beg0',i,j,opt);	
-					} else if (act.conf==3) { //Manehattan
+					} 
+					else if (act.conf==3) 
+					{ //Manehattan
 						opt.transpFon=true;
 						if (i==2) {
-							if (j==0) {
+							if (j==0) 
+							{
 								opt.ramka=7;
 								loc1=newTipLoc('passroof',i,j,opt);
-							} else {
+							} 
+							else 
+							{
 								opt.ramka=5;
 								loc1=newRandomLoc(act.landStage,i,j,opt,'pass');
 							}
 							loc1.bezdna=true;
-						} else if (j==0) {
+						} 
+						else if (j==0) 
+						{
 							opt.ramka=6;
 							loc1=newRandomLoc(act.landStage,i,j,opt,'roof');
-						} else {
+						} 
+						else 
+						{
 							loc1=newRandomLoc(act.landStage,i,j,opt);
 							if (i>2 && loc1.backwall=='tWindows') loc1.backwall='tWindows2';
 						}
-					} else if (act.conf==4) { //military base
-						if (i==0) {
-							if (j==0) {
-								if (!(World.w.game.triggers['mbase_visited']>0)) {
+					} 
+					else if (act.conf==4) 
+					{ //military base
+						if (i==0) 
+						{
+							if (j==0) 
+							{
+								if (!(World.w.game.triggers['mbase_visited']>0)) 
+								{
 									opt.mirror=false;
 									opt.ramka=8;
 									loc1=newTipLoc('beg0',i,j,opt);
-								} else {
+								} 
+								else 
+								{
 									loc1=newRandomLoc(0,i,j,opt);
 								}
-							} else loc1=newRandomLoc(0,i,j,opt,'vert');
-						} else if (i==maxLocX-1) {
-							if (j==maxLocY-1) {
+							} 
+							else loc1=newRandomLoc(0,i,j,opt,'vert');
+						} 
+						else if (i==maxLocX-1) 
+						{
+							if (j==maxLocY-1)
+							{
 								opt.mirror=false;
 								loc1=newTipLoc('end',i,j,opt);
-							} else loc1=newRandomLoc(0,i,j,opt,'vert');
-						} else loc1=newRandomLoc(0,i,j,opt);
-					} else if (act.conf==7) { //bunker
-						if (i==0) {
-							if (j==0) {
+							} 
+							else loc1=newRandomLoc(0,i,j,opt,'vert');
+						} 
+						else loc1=newRandomLoc(0,i,j,opt);
+					} 
+					else if (act.conf==7) 
+					{ //bunker
+						if (i==0) 
+						{
+							if (j==0) 
+							{
 								opt.mirror=false;
 								loc1=newTipLoc('beg1',i,j,opt);
-							} else loc1=newRandomLoc(1,i,j,opt,'vert');
-						} else if (i==maxLocX-1) {
-							if (j==maxLocY-1) {
+							} 
+							else loc1=newRandomLoc(1,i,j,opt,'vert');
+						} 
+						else if (i==maxLocX-1) 
+						{
+							if (j==maxLocY-1) 
+							{
 								opt.mirror=false;
 								loc1=newTipLoc('end1',i,j,opt);
 							} else loc1=newRandomLoc(1,i,j,opt,'vert');
-						} else loc1=newRandomLoc(1,i,j,opt);
-					} else if (act.conf==5) { //canterlot
-						if (j==0) {
+						} 
+						else loc1=newRandomLoc(1,i,j,opt);
+					} 
+					else if (act.conf==5) 
+					{ //canterlot
+						if (j==0) 
+						{
 							opt.ramka=3;
 							opt.backform=3;
 							opt.transpFon=true;
 							loc1=newRandomLoc(act.landStage,i,j,opt,'surf');
 							loc1.visMult=2;
 							//loc1.backwall='sky';
-						} else {
+						} 
+						else 
+						{
 							loc1=newRandomLoc(act.landStage,i,j,opt);
 						}
 						loc1.gas=1;
-					} else if (act.conf==10) { //stable
+					} 
+					else if (act.conf==10) 
+					{ //stable
 						opt.home=true;
-						if (i==act.begLocX && j==act.begLocY) {
+						if (i==act.begLocX && j==act.begLocY) 
+						{
 							opt.mirror=false;
 							loc1=newTipLoc('beg0',i,j,opt);
-						} else if (i==1 && j==1) {
+						} 
+						else if (i==1 && j==1) 
+						{
 							opt.mirror=false;
 							loc1=newTipLoc('roof',i,j,opt);
-						} else {
+						} 
+						else 
+						{
 							loc1=newRandomLoc(10,i,j,opt);
 						}
-					} else if (act.conf==11) { // attacked stable
+					} 
+					else if (act.conf==11) 
+					{ // attacked stable
 						opt.atk=true;
-						if (i==5 && j==0) {
+						if (i==5 && j==0)
+						{
 							opt.mirror=false;
 							loc1=newTipLoc('pass',i,j,opt);
-						} else {
+						} 
+						else 
+						{
 							loc1=newRandomLoc(act.landStage,i,j,opt);
 						}
-					} else {
+					} 
+					else 
+					{
 						loc1=newRandomLoc(act.landStage,i,j,opt);
 					}
 					// add a room on the second level
 					locs[i][j][0]=loc1;
-					if (loc1.room.back!=null) {	
+					if (loc1.room.back!=null) 
+					{	
 						loc2=null;
-						for each(var room:Room in allRoom) {
-							if (room.id==loc1.room.back) {
+						for each(var room:Room in allRoom) 
+						{
+							if (room.id==loc1.room.back) 
+							{
 								loc2=newLoc(room,i,j,1,opt);
 								loc2.tipEnemy=loc1.tipEnemy;
 								locs[i][j][1]=loc2;
@@ -473,11 +535,14 @@
 		}
 		
 		// Create a door and a random test room behind it, return false if none were found
-		public function newRandomProb(nloc:Location, maxlevel:int=100, imp:Boolean=false):Boolean {
+		public function newRandomProb(nloc:Location, maxlevel:int=100, imp:Boolean=false):Boolean 
+		{
 			rndRoom=new Array();
 			var impProb;
-			for each(var xml in act.xmlland.prob) {
-				if (probs[xml.@id]==null && World.w.game.triggers['prob_'+xml.@id]==null && (xml.@level.length==0 || xml.@level<=maxlevel)) {
+			for each(var xml in act.xmlland.prob) 
+			{
+				if (probs[xml.@id]==null && World.w.game.triggers['prob_'+xml.@id]==null && (xml.@level.length==0 || xml.@level<=maxlevel)) 
+				{
 					rndRoom.push(xml.@id);
 					if (xml.@imp.length()) impProb=xml.@id;
 				}
@@ -487,9 +552,11 @@
 			if (imp && impProb) pid=impProb;
 			else if (rndRoom.length==1) pid=rndRoom[0];
 			else pid=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			try {
+			try 
+			{
 				if (act.xmlland.prob.(@id==pid).@tip=='2') did='doorboss';
-			} catch (err) {};
+			} 
+			catch (err) {};
 			if (!nloc.createDoorProb(did,pid)) return false;
 			buildProb(pid);
 			//trace(pid);
@@ -498,14 +565,19 @@
 		
 		
 		// create a new location of the specified type, at the given coordinates
-		public function newTipLoc(ntip:String, nx:int, ny:int, opt:Object=null):Location {
+		public function newTipLoc(ntip:String, nx:int, ny:int, opt:Object=null):Location 
+		{
 			rndRoom=new Array();
-			for each(var room in allRoom) {
+			for each(var room in allRoom) 
+			{
 				if (room.tip==ntip) rndRoom.push(room); 
 			}
-			if (rndRoom.length>0) {
+			if (rndRoom.length>0) 
+			{
 				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			} else {
+			} 
+			else 
+			{
 				room=allRoom[Math.floor(Math.random()*allRoom.length)];
 				trace('нет локации '+ntip);
 			}
@@ -514,31 +586,39 @@
 		}
 		
 		//create a new random location in the given coordinates
-		public function newRandomLoc(maxlevel:int, nx:int, ny:int, opt:Object=null, ntip:String=null):Location {
+		public function newRandomLoc(maxlevel:int, nx:int, ny:int, opt:Object=null, ntip:String=null):Location 
+		{
 			rndRoom=new Array();
 			var r1:Room, r2:Room;
 			if (nx>minLocX) r1=locs[nx-1][ny][0].room;
 			if (ny>minLocY) r2=locs[nx][ny-1][0].room;
 			//array of all rooms that meet the conditions
-			for each(var room in allRoom) {
+			for each(var room in allRoom) 
+			{
 				if (room.lvl<=maxlevel && room.kol>0 && room!=r1 && room!=r2 && (ntip==null && room.rnd || room.tip==ntip)) {
 					var rndKol=room.kol*room.kol;
-					if (rndKol==4 && room.lvl==0 && maxlevel>1) {
+					if (rndKol==4 && room.lvl==0 && maxlevel>1) 
+					{
 						rndKol=2;
 						//if (maxlevel==1 || maxlevel==2) rndKol=2;
 						//if (maxlevel>2) rndKol=1;
 					}
-					for (var i=0; i<rndKol; i++) {
+					for (var i=0; i<rndKol; i++) 
+					{
 						rndRoom.push(room);
 					}
 				}
 			}
 			if (rndRoom.length>0) {
 				room=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			} else {
+			} 
+			else 
+			{
 				//array of all rooms suitable for random selection
-				for each(room in allRoom) {
-					if (room.rnd) {
+				for each(room in allRoom) 
+				{
+					if (room.rnd) 
+					{
 						rndRoom.push(room);
 					}
 				}
@@ -551,7 +631,8 @@
 		
 		
 		//create a new location based on the given Room template, at the specified coordinates
-		public function newLoc(room:Room, nx:int, ny:int, nz:int=0, opt:Object=null):Location {
+		public function newLoc(room:Room, nx:int, ny:int, nz:int=0, opt:Object=null):Location 
+		{
 			var loc:Location=new Location(this, room.xml, rnd, opt);
 			loc.biom=act.biom;
 			loc.room=room;
@@ -564,7 +645,8 @@
 			
 			// Set the difficulty level gradient
 			var deep:Number=0;
-			if (rnd) {
+			if (rnd) 
+			{
 				if (act.conf==0) deep=ny/2;	
 				if (act.conf==1) deep=ny;
 				if (act.conf==2) deep=ny*2.5;
@@ -576,7 +658,8 @@
 		}
 		
 		// Setting the difficulty level of the location based on the character's level and difficulty gradient
-		function setLocDif(loc:Location, deep:Number) {
+		function setLocDif(loc:Location, deep:Number) 
+		{
 			var ml:Number=landDifLevel+deep;
 			loc.locDifLevel=ml;
 			loc.locksLevel=ml*0.7;	// level of locks
@@ -593,18 +676,21 @@
 			if (loc.tipEnemy<0) loc.tipEnemy=Math.floor(Math.random()*3);
 			if (act.biom==1) loc.tipEnemy=0;
 			if (act.biom==2 && loc.tipEnemy==1 && Math.random()<ml/20) loc.tipEnemy=3;	// slave traders
-			if (act.biom==3) {
+			if (act.biom==3) 
+			{
 				loc.tipEnemy=Math.floor(Math.random()*3)+3;			 // 4-mercenaries, 5-unicorns
 			}
 			if (ml>12 && (act.biom==0 || act.biom==2 || act.biom==3) && Math.random()<0.1) loc.tipEnemy=6;	// zebras
 			//loc.tipEnemy=6;
 			if (act.biom==4) loc.tipEnemy=7;	// steel+robots
-			if (act.biom==5) {
+			if (act.biom==5) 
+			{
 				if (Math.random()<0.3) loc.tipEnemy=5;
 				//else if (loc.landY==0 && Math.random()<0.05) loc.tipEnemy=4;
 				else loc.tipEnemy=8;	// pink
 			}
-			if (act.biom==6) {// || act.biom==11
+			if (act.biom==6)  // || act.biom==11
+			{
 				if (Math.random()>0.3) loc.tipEnemy=9;	// enclave
 				else loc.tipEnemy=10;// greyhounds
 			}
@@ -612,7 +698,8 @@
 			//loc.tipEnemy=4;
 			// number of enemies
 			// type, minimum, maximum, random increase
-			if (ml<4) {
+			if (ml<4) 
+			{
 				loc.setKolEn(1,3,5,2);
 				loc.setKolEn(2,2,4,0);
 				loc.setKolEn(3,3,4,2);
@@ -623,7 +710,9 @@
 					if (loc.tipEnemy!=5) loc.setKolEn(-1,1,2);
 				}
 				loc.kolEnHid=0;
-			} else if (ml<10) {
+			} 
+			else if (ml<10) 
+			{
 				loc.setKolEn(1,3,6,2);
 				if (Math.random()<0.15) loc.setKolEn(2,1,1,0);
 				else if (loc.tipEnemy==6) loc.setKolEn(2,2,3,0);
@@ -635,7 +724,9 @@
 					if (loc.tipEnemy!=5) loc.setKolEn(-1,2,3);
 				}
 				loc.kolEnHid=Math.floor(Math.random()*3);
-			} else {
+			} 
+			else 
+			{
 				loc.setKolEn(1,4,6,2);
 				if (Math.random()<0.15) loc.setKolEn(2,1,2,0);
 				else if (loc.tipEnemy==6) loc.setKolEn(2,3,4,0);
@@ -649,10 +740,12 @@
 				}
 				loc.kolEnHid=Math.floor(Math.random()*4);
 			}
-			if (loc.tipEnemy==5 || loc.tipEnemy==10) {
+			if (loc.tipEnemy==5 || loc.tipEnemy==10) 
+			{
 				loc.setKolEn(2,1,3,1);
 			}
-			if (act.biom==11) {
+			if (act.biom==11) 
+			{
 				//if (loc.tipEnemy==10) loc.setKolEn(2,4,5,0);
 				//else 
 					loc.setKolEn(2,5,8,0);
@@ -660,7 +753,8 @@
 			//loc.kolEnHid=2;
 		}
 		
-		public function createMap() {
+		public function createMap() 
+		{
 			map=new BitmapData(World.cellsX*(maxLocX-minLocX), World.cellsY*(maxLocY-minLocY),true,0);
 		}
 		
@@ -669,10 +763,13 @@
 //==============================================================================================================================		
 		
 		//enter the land
-		public function enterLand(first:Boolean=false, coord:String=null) {
+		public function enterLand(first:Boolean=false, coord:String=null) 
+		{
 			act.visited=true;
+			
 			loc=null;
-			if (coord!=null) {
+			if (coord!=null) 
+			{
 				var narr:Array=coord.split(':');
 				if (narr.length>=1) locX=narr[0]; else locX=0;
 				if (narr.length>=2) locY=narr[1]; else locY=0;
@@ -680,12 +777,16 @@
 				prob='';
 				ativateLoc();
 				setGGToSpawnPoint();
-			} else if (currentCP && !first) {
+			} 
+			else if (currentCP && !first) 
+			{
 				World.w.pers.currentCP=currentCP;
 				//trace('currentCP', currentCP);
 				gotoCheckPoint();
 				currentCP.activate();
-			} else {
+			} 
+			else 
+			{
 				locX=act.begLocX;
 				locY=act.begLocY;
 				locZ=0;
@@ -695,7 +796,8 @@
 			}
 		}
 		
-		public function saveObjs(arr:Array) {
+		public function saveObjs(arr:Array) 
+		{
 			if (rnd) return;
 			for (var i=minLocX; i<maxLocX; i++) {
 				for (var j=minLocY; j<maxLocY; j++) {
@@ -708,7 +810,8 @@
 		}
 		
 		//Move the character to the spawn point
-		public function setGGToSpawnPoint() {
+		public function setGGToSpawnPoint() 
+		{
 			var nx:int=3, ny:int=3;
 			if (loc.spawnPoints.length>0) {
 				var n=Math.floor(Math.random()*loc.spawnPoints.length);
@@ -722,13 +825,17 @@
 		}
 		
 		//Activate the location with the current coordinates
-		public function ativateLoc():Boolean {
+		public function ativateLoc():Boolean 
+		{
 			var nloc:Location;
 			if (prob!='' && probs[prob]==null)  return false;
-			try {
+			try 
+			{
 				if (prob!='') nloc=probs[prob][locX][locY][locZ];	
 				else nloc=locs[locX][locY][locZ];
-			} catch (err) {
+			} 
+			catch (err) 
+			{
 				trace('Location not found',act.id,locX,locY,locZ)
 				nloc=locs[0][0][0];
 			}
@@ -741,7 +848,8 @@
 			gg.inLoc(loc);
 			loc.reactivate(locN);
 			World.w.ativateLoc(loc);
-			if (loc.sky) {
+			if (loc.sky) 
+			{
 				gg.isFly=true;
 				gg.stay=false;
 				World.w.cam.setZoom(2);
@@ -751,7 +859,8 @@
 		}
 		
 		//Go to location x,y
-		public function gotoXY(nx:int,ny:int) {
+		public function gotoXY(nx:int,ny:int) 
+		{
 			if (nx<minLocX) nx=minLocX;
 			if (nx>=maxLocX) nx=maxLocX-1;
 			if (ny<minLocY) ny=minLocY;
@@ -765,7 +874,8 @@
 		
 		
 		//Transition between locations
-		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object {
+		public function gotoLoc(napr:int, portX:Number=-1, portY:Number=-1):Object 
+		{
 			var X:Number=gg.X, Y:Number=gg.Y, scX:Number=gg.scX, scY:Number=gg.scY;
 			var newX:int=locX, newY:int=locY, newZ:int=locZ;
 			if (napr==1) newX--;
@@ -774,33 +884,50 @@
 			else if (napr==4) newY--;
 			else if (napr==5) newZ=1-newZ;
 			else return null;
-			if (prob=='' && (locs[newX]==null || locs[newX][newY]==null || locs[newX][newY][newZ]==null)) {
+
+			if (prob=='' && (locs[newX]==null || locs[newX][newY]==null || locs[newX][newY][newZ]==null)) 
+			{
 				if (napr==3) return {die:true};
 				return null;
 			}
-			if (prob!='' && (probs[prob][newX]==null || probs[prob][newX][newY]==null || probs[prob][newX][newY][newZ]==null)) {
+
+			if (prob!='' && (probs[prob][newX]==null || probs[prob][newX][newY]==null || probs[prob][newX][newY][newZ]==null)) 
+			{
 				if (napr==3) return {die:true};
 				return null;
 			}
-			var newLoc:Location=locs[newX][newY][newZ];
+
+			var newLoc:Location = locs[newX][newY][newZ];
 			var outP:Object=new Object();
-			if (napr==1) {
+
+			if (napr==1) 
+			{
 				outP.x=newLoc.limX-scX/2-9;
 				outP.y=Y-1;
-			} else if (napr==2) {
+			} 
+			else if (napr==2) 
+			{
 				outP.x=0+scX/2+9;
 				outP.y=Y-1;
-			} else if (napr==3) {
+			} 
+			else if (napr==3) 
+			{
 				outP.x=X;
 				outP.y=0+scY+10;
-			} else if (napr==4) {
+			} 
+			else if (napr==4) 
+			{
 				outP.x=X;
 				outP.y=newLoc.limY-10;
-			} else if (napr==5) {
+			} 
+			else if (napr==5) 
+			{
 				outP.x=portX;
 				outP.y=portY;
 			}
+
 			if (newLoc.collisionUnit(outP.x,outP.y,scX-4,scY)) return null;
+			
 			loc_t=150;
 			locX=newX, locY=newY, locZ=newZ;
 			ativateLoc();
@@ -809,8 +936,10 @@
 		}
 		
 		// Go to the test layer nprob, or return to the main layer if the parameter is not specified
-		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) {
-			if (nprob=='') {
+		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) 
+		{
+			if (nprob=='') 
+			{
 				prob='';
 				locX=retLocX;
 				locY=retLocY;
@@ -818,18 +947,26 @@
 				ativateLoc();
 				if (retX==0 && retY==0) setGGToSpawnPoint();
 				else gg.setLocPos(retX,retY);
-			} else {
+			}
+			else 
+			{
 				retLocX=locX, retLocY=locY, retLocZ=locZ;
-				if (nretX<0 || nretY<0) {
+				if (nretX<0 || nretY<0) 
+				{
 					retX=gg.X, retY=gg.Y;
-				} else {
+				} 
+				else 
+				{
 					retX=nretX, retY=nretY;
 				}
 				prob=nprob;
 				locX=locY=locZ=0;
-				if (ativateLoc()) {
+				if (ativateLoc()) 
+				{
 					setGGToSpawnPoint();
-				} else {
+				} 
+				else 
+				{
 					prob='';
 					locX=retLocX;
 					locY=retLocY;
@@ -838,25 +975,31 @@
 			}
 		}
 		
-		public function gotoCheckPoint() {
+		public function gotoCheckPoint() 
+		{
 			var cp:CheckPoint=World.w.pers.currentCP;
-			if (cp==null) {
+			if (cp==null) 
+			{
 				gg.setNull();
 				return;
 			}
-			if (cp.loc.land!=this && currentCP)	{
+			if (cp.loc.land!=this && currentCP)	
+			{
 				cp=currentCP;
 				World.w.pers.currentCP=currentCP;
 				currentCP.activate();
 			}
-			if (cp.loc.land!=this) {
+			if (cp.loc.land!=this) 
+			{
 				locX=act.begLocX;
 				locY=act.begLocY;
 				locZ=0;
 				prob='';
 				if (!ativateLoc()) loc.reactivate();
 				setGGToSpawnPoint();
-			} else {
+			} 
+			else 
+			{
 				locX=cp.loc.landX;
 				locY=cp.loc.landY;
 				locZ=cp.loc.landZ;
@@ -867,24 +1010,31 @@
 			gg.dx=3;
 		}
 		
-		public function refill() {
+		public function refill() 
+		{
 			if (isRefill) return;
-			if (summXp*10>allXp || !rnd) {
+			if (summXp*10>allXp || !rnd) 
+			{
 				World.w.game.refillVendors();
 				isRefill=true;
-			} else {
+			} 
+			else 
+			{
 				trace('Experience obtained: ',summXp,allXp);
 			}
 		}
 		
-		public function artBabah() {
+		public function artBabah() 
+		{
 			Snd.ps('artfire');
 			World.w.quake(10,3);
 		}
 		
-		public function artStep() {
+		public function artStep() 
+		{
 			art_t--;
-			if (art_t<=0) {
+			if (art_t<=0) 
+			{
 				art_t=Math.floor(Math.random()*1000+20);
 				if (act.artFire!=null && World.w.game.triggers[act.artFire]!=1) {
 					artBabah();
@@ -892,10 +1042,13 @@
 			}
 		}
 		
-		public function drawMap():BitmapData {
+		public function drawMap():BitmapData 
+		{
 			map.fillRect(map.rect,0x00000000);
-			for (var i=minLocX; i<maxLocX; i++) {
-				for (var j=minLocY; j<maxLocY; j++) {
+			for (var i=minLocX; i<maxLocX; i++) 
+			{
+				for (var j=minLocY; j<maxLocY; j++) 
+				{
 					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
 				}
 			}
@@ -905,11 +1058,15 @@
 		}
 		
 		//Kill all enemies and open all containers
-		public function getAll():int {
+		public function getAll():int 
+		{
 			var summ:int=0;
-			for (var i=minLocX; i<maxLocX; i++) {
-				for (var j=minLocY; j<maxLocY; j++) {
-					for (var e=minLocZ; e<maxLocZ; e++) {
+			for (var i=minLocX; i<maxLocX; i++) 
+			{
+				for (var j=minLocY; j<maxLocY; j++) 
+				{
+					for (var e=minLocZ; e<maxLocZ; e++) 
+					{
 						if (locs[i][j][e]==null) continue;
 						summ+=locs[i][j][e].getAll();
 					}
@@ -918,17 +1075,22 @@
 			return summ;
 		}
 		
-		public function step() {
-			if (!World.w.catPause) {
+		public function step() 
+		{
+			if (!World.w.catPause) 
+			{
 				loc.step();
-				if (loc_t>0) {
+				if (loc_t>0) 
+				{
 					loc_t--;
 					if (prevloc && loc!=prevloc) prevloc.stepInvis();
 				}
 				artStep();
 			}
-			if (scripts.length) {
-				for each (var scr:Script in scripts) {
+			if (scripts.length) 
+			{
+				for each (var scr:Script in scripts) 
+				{
 					if (scr.running) scr.step();
 				}
 			}

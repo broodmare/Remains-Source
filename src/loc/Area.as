@@ -41,7 +41,7 @@
 		public var trig:Boolean;	// Disable and set trigger on first activation
 
 		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) {
-			loc=nloc;
+			loc = nloc;
 			if (xml) {
 				bx=xml.@x;
 				by=xml.@y;
