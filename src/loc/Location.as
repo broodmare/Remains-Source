@@ -1453,46 +1453,66 @@
 		// Otherwise, it attempts to retrieve the tile from the space array using the provided coordinates and returns it.
 
 		//input coordinates and return the tile at that location.
-		public function getTile(nx:int,ny:int):Tile {    //RELATED TO THE BUG!!!
-			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return otstoy;
-			else return space[nx][ny] as Tile;
+		public function getTile(nx:int, ny:int):Tile 
+		{
+			if (nx < 0 || nx >= spaceX || ny < 0 || ny >= spaceY) return otstoy;
+			return space[nx][ny] as Tile;
 		}
 
-		//What does this do?
-		public function getAbsTile(nx:int,ny:int):Tile {
-			if (nx<0 || nx>=spaceX*Tile.tilePixelWidth || ny<0 || ny>=spaceY*Tile.tilePixelHeight) return otstoy;
-			else return space[Math.floor(nx/Tile.tilePixelWidth)][Math.floor(ny/Tile.tilePixelHeight)] as Tile;
+		public function getAbsTile(nx:int, ny:int):Tile 
+		{
+			if (nx < 0 || nx >= spaceX * Tile.tilePixelWidth || ny < 0 || ny >= spaceY * Tile.tilePixelHeight) return otstoy;
+			
+			var xIndex:int = nx / Tile.tilePixelWidth | 0;
+			var yIndex:int = ny / Tile.tilePixelHeight | 0;
+			
+			return space[xIndex][yIndex] as Tile;
 		}
-		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean {
-			var X1=X-scX/2, X2=X+scX/2, Y1=Y-scY;
-			//trace(X1,X2,Y1,Y);
-			for (var i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
-				for (var j=Math.floor(Y1/Tile.tilePixelHeight); j<=Math.floor(Y/Tile.tilePixelHeight); j++) {
-					//trace(i,j);
-					if (i<0 || i>=spaceX || j<0 || j>=spaceY) continue;
-					if (space[i][j].phis>0) return true;
+
+		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean 
+		{
+			var X1:Number = X - scX / 2, X2:Number = X + scX / 2, Y1:Number = Y - scY;
+			
+			var startX:int = X1 / Tile.tilePixelWidth | 0;
+			var endX:int = X2 / Tile.tilePixelWidth | 0;
+			var startY:int = Y1 / Tile.tilePixelHeight | 0;
+			var endY:int = Y / Tile.tilePixelHeight | 0;
+			
+			for (var i:int = startX; i <= endX; i++) 
+			{
+				for (var j:int = startY; j <= endY; j++) 
+				{
+					if (i < 0 || i >= spaceX || j < 0 || j >= spaceY) continue;
+					if (space[i][j].phis > 0) return true;
 				}
 			}
 			return false;
 		}
-		// Try to create a line. obj - the door to ignore
-		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean {
-			var ndx=cx-nx;
-			var ndy=cy-ny;
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
-			//trace('check');
-			for (var i=1; i<div; i++) {
-				var t:Tile=World.w.loc.getAbsTile(Math.floor(nx+ndx*i/div),Math.floor(ny+ndy*i/div));
-				//trace(t.X,t.Y);
-				if (t.phis==1 && nx+ndx*i/div>=t.phX1 && nx+ndx*i/div<=t.phX2 && ny+ndy*i/div>=t.phY1 && ny+ndy*i/div<=t.phY2) {
-					if (obj==null || t.door!=obj) return false;
+
+		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean 
+		{
+			var ndx:Number = cx - nx;
+			var ndy:Number = cy - ny;
+			var div:int = Math.floor(Math.max(Math.abs(ndx), Math.abs(ndy)) / World.maxdelta) + 1;
+			
+			for (var i:int = 1; i < div; i++) 
+			{
+				var tempX:Number = nx + ndx * i / div;
+				var tempY:Number = ny + ndy * i / div;
+				
+				var t:Tile = World.w.loc.getAbsTile(tempX | 0, tempY | 0);
+				
+				if (t.phis == 1 && tempX >= t.phX1 && tempX <= t.phX2 && tempY >= t.phY1 && tempY <= t.phY2) 
+				{
+					if (obj == null || t.door != obj) return false;
 				}
 			}
 			return true;
 		}
 	
 		// Tile contours
-		public function tileKontur(tx:int, ty:int, t:Tile) {
+		public function tileKontur(tx:int, ty:int, t:Tile) 
+		{
 			var a0:Boolean,a1:Boolean,a2:Boolean,a3:Boolean,a4:Boolean,a5:Boolean,a6:Boolean,a7:Boolean;
 			if (t.phis==1) {
 				a0=uslKontur(tx-1,ty-1);
@@ -1503,12 +1523,12 @@
 				a5=uslKontur(tx,  ty+1);
 				a6=uslKontur(tx-1,ty+1);
 				a7=uslKontur(tx-1,ty);
-				//if (t.zForm>0) a1=true;
 				t.kont1=insKontur(a1,a7,a0);
 				t.kont2=insKontur(a1,a3,a2);
 				t.kont3=insKontur(a5,a7,a6);
 				t.kont4=insKontur(a5,a3,a4);
-				if (b!='') {
+				if (b!='') 
+				{
 					if (!a1) a1=uslPontur(tx, ty-1);
 					if (!a3) a3=uslPontur(tx+1,ty);
 					if (!a5) a5=uslPontur(tx, ty+1);
@@ -1518,7 +1538,9 @@
 					t.pont3=insKontur(a5,a7,a6);
 					t.pont4=insKontur(a5,a3,a4);
 				}
-			} else {
+			} 
+			else 
+			{
 				var b:String=t.back;
 				var vse:Boolean=(backwall=='sky');
 				a0=uslBontur(tx-1,ty-1, b, vse);
@@ -1536,7 +1558,8 @@
 			}
 		}
 		
-		private function insKontur(a:Boolean, b:Boolean, c:Boolean):int {
+		private function insKontur(a:Boolean, b:Boolean, c:Boolean):int 
+		{
 			if (a && b) return c?0:1;
 			else if (!a && b) return 2;
 			else if (a && !b) return 3;
@@ -1544,31 +1567,35 @@
 		}
 		
 		// Front contours
-		private function uslKontur(nx:int,ny:int):Boolean {
+		private function uslKontur(nx:int,ny:int):Boolean 
+		{
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].phis==1 || space[nx][ny].door!=null);
-			//else return space[nx][ny].back==b;
 		}
 
 		// Back contours with a wall
-		private function uslPontur(nx:int,ny:int):Boolean {
+		private function uslPontur(nx:int,ny:int):Boolean 
+		{
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].back!='' || space[nx][ny].shelf>0);
 		}
 
 		// Back contours without a wall
-		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean {
+		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean 
+		{
 			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
 			return (space[nx][ny].back==b || vse && space[nx][ny].back!='' || space[nx][ny].phis==1 || space[nx][ny].shelf>0);
 		}
 		
 		// Tile damage
-		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9) {
+		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9) 
+		{
 			// Damage from falling
 			if (tip==100 && hit<=50 && (t.thre>0 || t.indestruct)) return;
 			if (tip==100) tip=4;
 			// Location walls are not destructible
-			if (!destroyOn && t.hp>500) {
+			if (!destroyOn && t.hp>500) 
+			{
 				if (active && t.phis==1) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
 				return;
 			}
