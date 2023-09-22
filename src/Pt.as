@@ -24,21 +24,30 @@
 			// constructor code
 		}
 
-		public function addVisual() {
+		public function addVisual() 
+		{
 			if (vis && loc && loc.active) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
-		public function remVisual() {
+		
+		public function remVisual() 
+		{
 			if (vis && vis.parent) vis.parent.removeChild(vis);
 		}
-		public function setNull(f:Boolean=false) {
+
+		public function setNull(f:Boolean=false) 
+		{
+
 		}
 		
-		public function err():String {
+		public function err():String 
+		{
 			if (loc) loc.remObj(this);
 			return null;
 		}
 		
-		public function step() {
+		public function step() 
+		{
+
 		}
 		
 	}

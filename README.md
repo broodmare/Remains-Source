@@ -44,6 +44,11 @@ f -> filter
 Draw rear tiles before front tiles.
 
 
+1.0.3b Changelog:
+
+Refactored some tile calculations and PipBuck text handling.
+
+
 
 
 ---

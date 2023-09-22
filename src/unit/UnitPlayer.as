@@ -347,13 +347,15 @@
 //
 //**************************************************************************************************************************
 		//выход из локации (попытка, возвращает true если выход успешный)
-		public override function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean {
+		public override function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean 
+		{
 			//не давать выйти
 			if (teleObj || actionObj || t_work>0 || isFetter>0 || loc.sky) return false;
 			
 			//не давать выйти, пока гг под атакой
 			var po:int=World.w.possiblyOut();
-			if (po>0 && !(napr==3 && loc.bezdna) && rat==0) {
+			if (po>0 && !(napr==3 && loc.bezdna) && rat==0) 
+			{
 				if (napr==3 && !loc.bezdna) {
 					dy=-jumpdy;
 					dx=maxSpeed*storona;
@@ -364,7 +366,8 @@
 			
 			var laz=isLaz, lev=levit;
 			var outP:Object=World.w.land.gotoLoc(napr, portX, portY);
-			if (outP!=null) {
+			if (outP!=null) 
+			{
 				if (outP.die) {						//смерть от падения в бездну (переход на кт)
 					//damage(10000,Unit.D_INSIDE);
 					die(-1);

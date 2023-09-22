@@ -720,7 +720,8 @@
 				return s;
 		}
 		
-		public function factor(id:String):String {
+		public function factor(id:String):String 
+		{
 			var lines:Array = [];
 			var s1:String;
 			var ok:Boolean = false;

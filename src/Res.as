@@ -92,7 +92,8 @@
 				s=s.replace(/\[/g,"<span classData='yel'>");
 				s=s.replace(/\]/g,"</span>");
 			}
-			if (dop) {
+			if (dop) 
+			{
 				s=s.replace(/[\b\r\t]/g,'');
 			}
 			if (type=='f' || type=='e' && razd==2 || razd>=1 && xl.@st.length()) s="<span classData = 'r"+xl.@st+"'>"+s+"</span>";
