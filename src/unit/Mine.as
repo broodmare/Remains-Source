@@ -1,13 +1,13 @@
-﻿package src.unit {
-	
-	//import flash.utils.*;
+﻿package src.unit 
+{
+
 	import src.*;
-	//import src.weapon.Bullet;
 	import src.serv.Interact;
 	import src.serv.LootGen;
 	import src.loc.Location;
 	
-	public class Mine extends Unit{
+	public class Mine extends Unit
+	{
 
 		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
 		public var wdestroy:Number=10;	//урон блокам
@@ -25,20 +25,29 @@
 		public var chain:Boolean=false;
 		public var TrapLvl:int=1;
 		
-		public function Mine(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function Mine(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			prior=3;
 			if (ndif>5) ndif=5;
 			
-			if (loadObj && loadObj.tr) {			//из загружаемого объекта
+			if (loadObj && loadObj.tr) 		//из загружаемого объекта
+			{	
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			} 
+			else if (xml && xml.@tr.length()) 	//из настроек карты
+			{
 				tr=xml.@tr;
-			} else if (cid) {
+			} 
+			else if (cid) 
+			{
 				id=cid;
-			} else {
+			} 
+			else 
+			{
 				tr=1;
 			}
-			if (tr>0) {
+			if (tr>0) 
+			{
 				id='hmine';
 				if (tr==1) id='hmine';
 				if (tr==2) id='mine';
@@ -100,9 +109,11 @@
 			//inter = new Interact(this);
 			inter.mine=Math.round(1+Math.random()*(ndif+1));
 			if (inter.mine>inter.maxMechLvl) inter.mine=inter.maxMechLvl;
-			if (tr>=5) {
+			if (tr>=5) 
+			{
 				inter.mine=Math.floor(Math.random()*3+5);
-				if (tr==5) {
+				if (tr==5) 
+				{
 					chain=true;
 					visibility=180;
 				}
@@ -116,42 +127,49 @@
 			//fixed=1;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public override function putLoc(nloc:Location, nx:Number, ny:Number)
+		{
 			super.putLoc(nloc,nx,ny);
 			if (loc.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0) 
+		{
 			super.setLevel(nlevel);
 			if (nlevel>10) damage1*=(1+(nlevel-10)*0.1);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false) 
+		{
 			super.setNull(f);
 			oduplenie=World.oduplenie/2;
 		}
 
-		public override function save():Object {
+		public override function save():Object 
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
 			return obj;
 		}	
 		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean) 
+		{
 			isVis=v;
 			levitPoss=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot() 
+		{
 			explosion(damage1,tipDamage,explRadius,0,otbros1,wdestroy,tipDecal);
 		}
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public function remine() {
+		public function remine() 
+		{
 			inter.active=false;
 			if (!loc.train) LootGen.lootId(loc,X,Y,id);
 			if (sndDem!='') Snd.ps(sndDem,X,Y);
@@ -160,38 +178,49 @@
 			loc.remObj(this);
 		}
 		
-		public function activate() {
+		public function activate() 
+		{
 			inter.active=0;
 			aiState=2;
 			setVis(true);
 			vis.play();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0) 
+		{
 			super.die(0);
 		}
 		
-		public override function control() {
+		public override function control() 
+		{
 			aiN++;
-			if (levit || !stay && !fixed && oduplenie<=0 || !stay && fraction==F_PLAYER) {
+			if (levit || !stay && !fixed && oduplenie<=0 || !stay && fraction==F_PLAYER) 
+			{
 				massa=0.06;
 			}
-			if (reloadTime>0) {
+			if (reloadTime>0) 
+			{
 				reloadTime--;
 				if (reloadTime==1) vis.gotoAndStop(2);
 				return;
 			}
 			inter.X=X, inter.Y=Y;
-			if (aiState==1 && oduplenie<=0 && sens>0) { //взведена, поиск целей
-				if (aiN%4==0) {
-					for each (var un:Unit in loc.units) {
+			if (aiState==1 && oduplenie<=0 && sens>0) //взведена, поиск целей
+			{ 
+				if (aiN%4==0) 
+				{
+					for each (var un:Unit in loc.units) 
+					{
 						if (un==null || un.activateTrap==0 || un.activateTrap==1 && fraction!=Unit.F_PLAYER && un.fraction!=Unit.F_PLAYER || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;
-						if (un.X-X<sens && un.X-X>-sens && un.Y-Y<sens*0.4 && un.Y-Y>-sens && (tipDamage!=8 || un.vulner[8]>0)) {
-							if (otschet>0 && un.activateTrap==1 && un.fraction==Unit.F_PLAYER) {
+						if (un.X-X<sens && un.X-X>-sens && un.Y-Y<sens*0.4 && un.Y-Y>-sens && (tipDamage!=8 || un.vulner[8]>0)) 
+						{
+							if (otschet>0 && un.activateTrap==1 && un.fraction==Unit.F_PLAYER) 
+							{
 								otschet--;
 								continue;
 							}
-							if (un.player && chain) {
+							if (un.player && chain) 
+							{
 								World.w.gg.bindChain(X,Y);
 							}
 							activate();
@@ -199,28 +228,28 @@
 						}
 					}
 				}
-				if (levit && aiN%10==1 && isrnd(0.1)) {
+				if (levit && aiN%10==1 && isrnd(0.1)) 
+				{
 					activate();
 				}
-			} else if (aiState==2) {
+			} else if (aiState==2) 
+			{
 				if (sndSens!='' && explTime%5==3) Snd.ps(sndSens,X,Y);
 				
 				explTime--;
 			}
-			if (explTime<=0) {
+			if (explTime<=0) 
+			{
 				die();
 			}
-			if (aiN%10==0 && !isVis) {
+			if (aiN%10==0 && !isVis) 
+			{
 				isVis=World.w.gg.lookInvis(this);
-				if (isVis) {
+				if (isVis) 
+				{
 					setVis(true);
 				}
 			}
 		}
-		
-		//public override function animate() {
-			
-		//}
 	}
-	
 }

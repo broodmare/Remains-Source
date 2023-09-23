@@ -1,4 +1,5 @@
-﻿package src.unit {
+﻿package src.unit 
+{
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
@@ -20,7 +21,8 @@
 	import flash.filters.GlowFilter;
 	import src.graph.Part;
 	
-	public class Unit extends Obj{
+	public class Unit extends Obj
+	{
 		
 		public static const
 			D_BUL = 0,       // Bullets       +
@@ -768,39 +770,50 @@
 		}
 		
 		// Condition under which the boss does not restore HP
-		public function isNoResBoss():Boolean {
+		public function isNoResBoss():Boolean 
+		{
 			var res=false;
-			try {
+			try 
+			{
 				res=World.w.game.globalDif<=3 && loc && loc.land.act.tip!='base';
-			} catch(err) {}
+			} 
+			catch(err) {}
 			return res;
 		}
 		
-		public override function err():String {
+		public override function err():String 
+		{
 			//setNull();
 			return 'Error unit '+nazv;
 		}
 		
 		
 		
-		public override function step() {
+		public override function step() 
+		{
 			if (disabled || trigDis) return;
-			if (t_emerg>0) {
+			if (t_emerg>0)
+			{
 				t_emerg--;
 				setVisPos();
-				if (vis) {
-					if (t_emerg>0) {
+				if (vis) 
+				{
+					if (t_emerg>0) 
+					{
 						var tf=t_emerg/(max_emerg+1);
 						vis.filters=[new GlowFilter(0xAADDFF,tf,tf*20,tf*20,1,3)];
 						vis.alpha=1-tf;
-					} else {
+					} 
+					else 
+					{
 						vis.filters=[];
 						vis.alpha=1;
 					}
 				}
 				return;
 			}
-			if (sost==2) {
+			if (sost==2) 
+			{
 				timerDie--;
 				if (timerDie<=0) die();
 			}
@@ -808,15 +821,19 @@
 			getRasst2();
 			if (radioactiv) ggModum();	//действие на ГГ (радиация)
 			forces();		//внешние силы, влияющие на ускорение
-			//try {
-				control();		//управление игроком или ИИ
-			//} catch (err) {
-			//}
+			control();		//управление игроком или ИИ
+
 			//движение
-			if (fixed) {
-			} else if (bind || Math.abs(dx+osndx)<World.maxdelta && Math.abs(dy+osndy)<World.maxdelta)	{
+			if (fixed) 
+			{
+
+			} 
+			else if (bind || Math.abs(dx+osndx)<World.maxdelta && Math.abs(dy+osndy)<World.maxdelta)	
+			{
 				run();
-			} else {
+			} 
+			else 
+			{
 				var div=Math.floor(Math.max(Math.abs(dx+osndx),Math.abs(dy+osndy))/World.maxdelta)+1;
 				for (var i=0; i<div; i++) run(div);
 			}
@@ -825,27 +842,33 @@
 			setVisPos();
 			if (hpbar) setHpbarPos();
 			if (burn==null) animate();		//анимация
-			else {
+			else 
+			{
 				burn.step();
 				if (burn.vse) exterminate();
 			}
 			onCursor=(isVis && !disabled && sost<4 && X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
+
 			//подчинённые объекты
-			for (i in childObjs) if (childObjs[i]) {
-				try {
+			for (i in childObjs) if (childObjs[i]) 
+			{
+				try 
+				{
 					childObjs[i].step();
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					childObjs[i].err();
 				}
 			}
 			visDamDY=0;
 			if (sndRunOn && sndRun && loc && loc.active) sndRunPlay();
 
-			//if (id=='slaver1')	trace(dx);
-
 		}
 		
-		public function control() {
+		public function control() 
+		{
+
 		}
 		
 //**************************************************************************************************************************
@@ -854,7 +877,8 @@
 //
 //**************************************************************************************************************************
 		//Move to a point
-		public function setPos(nx:Number,ny:Number) {
+		public function setPos(nx:Number,ny:Number) 
+		{
 			X=nx, Y=ny;
 			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
 			setCel();
@@ -862,20 +886,26 @@
 		
 		
 		// Exiting the location
-		public function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean {
+		public function outLoc(napr:int, portX:Number=-1, portY:Number=-1):Boolean 
+		{
 			// 1 - left, 2 - right, 3 - down, 4 - up
 			// Should return false for all characters except the main character
 			if (isFly || levit) return false;
-			if (napr==3) {
-				if (loc.bezdna || jumpdy<=0 || sost==3) {		// Falling beyond the location boundaries
+			if (napr==3) 
+			{
+				if (loc.bezdna || jumpdy<=0 || sost==3) 	// Falling beyond the location boundaries
+				{	
 					disabled=true;
 					dy=0;
-					if (sost==3) {
+					if (sost==3) 
+					{
 						sost=4;
 						loc.remObj(this);
 					}
 					remVisual();
-				} else {
+				} 
+				else 
+				{
 					dy=-jumpdy;
 					dx=storona*maxSpeed;
 				}
@@ -884,50 +914,70 @@
 		}
 		
 		// Gradual appearance
-		public function emergence(n:int=30) {
+		public function emergence(n:int=30) 
+		{
 			t_emerg=max_emerg=n;
 		}
 
 		// Acting forces
-		public function forces() {
-			if (levit) {
+		public function forces() 
+		{
+			if (levit) 
+			{
 				dy*=0.8;
 				dx*=0.8;
 				isLaz=0;
 			}
-			if (isPlav) {
+			if (isPlav) 
+			{
 				if (!levit) dy+=World.ddy*ddyPlav;
 				dy*=0.8;
 				dx*=0.8;
-			} else if (isFly) {
-				if (t_throw>0) {
-				} else {
-					if ((dx*dx+dy*dy)>maxSpeed*maxSpeed) {
+			} 
+			else if (isFly) 
+			{
+				if (t_throw>0) 
+				{
+
+				} 
+				else 
+				{
+					if ((dx*dx+dy*dy)>maxSpeed*maxSpeed) 
+					{
 						dx*=0.7;
 						dy*=0.7;
 					}
 					if (dx>-brake && dx<brake) dx=0;
 					if (dy>-brake && dy<brake) dy=0;
 				}
-			} else {
+			} 
+			else 
+			{
 				if (inWater) dx*=0.5;
-				//if (!levit && dy<World.maxdy) dy+=World.ddy;
-				if (!levit && isLaz==0) {
+				if (!levit && isLaz==0) 
+				{
 					var t:Tile=loc.getAbsTile(X,Y-scY/4);
 					if (t.grav>0 && dy<World.maxdy*t.grav || t.grav<0 && dy>World.maxdy*t.grav) dy+=World.ddy*t.grav*grav;
 				}
-				if (stay) {
+				if (stay) 
+				{
 					dx*=tormoz;
-					if (walk<0) {
+					if (walk<0) 
+					{
 						if (dx<-maxSpeed) dx+=brake;
-					} else if (walk>0) {
+					} 
+					else if (walk>0) 
+					{
 						if (dx>maxSpeed) dx-=brake;
-					} else {
+					} 
+					else 
+					{
 						if (dx>-brake && dx<brake) dx=0;
 						else if (dx>0) dx-=brake;
 						else if (dx<0) dx+=brake;
 					}
-					if (loc.quake && massa<=2 && sost==1) {
+					if (loc.quake && massa<=2 && sost==1) 
+					{
 						var pun:Number=(1+(2-massa)/2)*loc.quake;
 						if (pun>10) pun=10;
 						dy=-pun*Math.random();
@@ -935,15 +985,20 @@
 					}
 				}
 			}
-			if (slow>0) {
+			if (slow > 0) 
+			{
 				dx*=0.75;
 				dy*=0.75;
 			}
 			osndx=osndy=0;
-			if (stayOsn) {
-				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) {
+			if (stayOsn) 
+			{
+				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) 
+				{
 					stay=false;
-				} else {
+				} 
+				else 
+				{
 					osndx=stayOsn.cdx;
 					osndy=stayOsn.cdy;
 				}
@@ -953,8 +1008,10 @@
 		
 		
 		
-		public function run(div:int=1) {
-			if (loc.sky) {
+		public function run(div:int=1) 
+		{
+			if (loc.sky) 
+			{
 				run2(div);
 				return;
 			}
@@ -965,34 +1022,42 @@
 			var autoSit:Boolean=false;
 			//porog=(diagon==0)?10:40;
 			
-			if (!throu && stay && diagon!=0 && dy>=0) {
-				if (!collisionAll(dx/div,-dx/div*diagon)) {
+			if (!throu && stay && diagon!=0 && dy>=0) 
+			{
+				if (!collisionAll(dx/div,-dx/div*diagon)) 
+				{
 					X+=dx/div;
 					Y-=dx/div*diagon;
 					Y1=Y-scY, Y2=Y;
 					X1=X-scX/2, X2=X+scX/2;
 					dy=0;
 					checkDiagon(0);
-				} else if (-dx/div*diagon>0 && !collisionAll(dx/div,0)) {
+				} 
+				else if (-dx/div*diagon>0 && !collisionAll(dx/div,0)) 
+				{
 					diagon=0;
 				}
 				return;
 			}			
 			diagon=0;
 			// HORIZONTAL
-			if (!isLaz) {
+			if (!isLaz) 
+			{
 				X+=(dx+osndx)/div;
-				//Y-=dx/div*diagon;
-				if (X-scX/2<0) {
-					if (!outLoc(1)) {
+				if (X-scX/2<0) 
+				{
+					if (!outLoc(1)) 
+					{
 						X=scX/2;
 						dx=Math.abs(dx)*elast;
 						turnX=1;
 						kray=true;
 					}
 				}
-				if (X+scX/2>=loc.limX) {
-					if (!outLoc(2)) {
+				if (X+scX/2>=loc.limX) 
+				{
+					if (!outLoc(2)) 
+					{
 						X=loc.limX-1-scX/2;
 						dx=-Math.abs(dx)*elast;
 						turnX=-1;
@@ -1001,43 +1066,59 @@
 				}
 				X1=X-scX/2, X2=X+scX/2;
 				//Move to the left
-				if (dx+osndx<0) {
-					if (!player && stay && shX1>0.5) {
+				if (dx+osndx<0) 
+				{
+					if (!player && stay && shX1>0.5) 
+					{
 						newmy=checkDiagon(-5);
-						if (newmy>0) {
+						if (newmy>0) 
+						{
 							Y=newmy;
 							Y1=Y-scY, Y2=Y;
 						}
 					}
-					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1>0.5)) {
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1>0.5)) 
+					{
 						newmy=checkDiagon(-2,-1);
-						if (newmy>0) {
+						if (newmy>0) 
+						{
 							Y=newmy;
 							Y1=Y-scY, Y2=Y;
 						}
 					}
-					if (player && isUp && stay && !isSit) {
+					if (player && isUp && stay && !isSit) 
+					{
 						t=loc.space[Math.floor(X1/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)];
 						t2=loc.space[Math.floor(X1/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)+1];
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) 
+						{
 							Y=Y2=t2.phY1;
 							sit(true);
 							autoSit=true;
 						}
 					}
-					if (mater) {
-						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) {
+					if (mater) 
+					{
+						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) 
+						{
 							t=loc.space[Math.floor(X1/Tile.tilePixelWidth)][i];
-							if (collisionTile(t)) {
+							if (collisionTile(t)) 
+							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-Y2)) {
+								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(-20,t.phY1-Y2)) 
+								{
 									Y=t.phY1;
-								} else {
+								} 
+								else 
+								{
 									X=t.phX2+scX/2;
-									if (t_throw>0 && dx<-damWallSpeed && damWall) damageWall(2);//((-dx-damWallSpeed)/4*damWall,D_PHIS);
-									if (destroy>0 && destroyWall(t,1)) {
+									if (t_throw>0 && dx<-damWallSpeed && damWall) damageWall(2);
+									if (destroy>0 && destroyWall(t,1)) 
+									{
 										dx*=0.75;
-									} else {
+									} 
+									else 
+									{
 										dx=Math.abs(dx)*elast;
 										turnX=1;
 										if (t.mat==1) tykMat=1;
@@ -1050,42 +1131,57 @@
 				}
 				//Move to the right
 				if (dx+osndx>0) {
-					if (!player && stay && shX2>0.5) {
+					if (!player && stay && shX2>0.5) 
+					{
 						newmy=checkDiagon(-5);
-						if (newmy>0) {
+						if (newmy>0) 
+						{
 							Y=newmy;
 							Y1=Y-scY, Y2=Y;
 						}
 					}
-					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2>0.5)) {
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2>0.5)) 
+					{
 						newmy=checkDiagon(-2,1);
-						if (newmy>0) {
+						if (newmy>0) 
+						{
 							Y=newmy;
 							Y1=Y-scY, Y2=Y;
 						}
 					}
-					if (player && isUp && stay && !isSit) {
+					if (player && isUp && stay && !isSit) 
+					{
 						t=loc.space[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)];
 						t2=loc.space[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)+1];
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) {
+						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) 
+						{
 							Y=Y2=t2.phY1;
 							sit(true);
 							autoSit=true;
 						}
 					} 
-					if (mater) {
-						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) {
+					if (mater) 
+					{
+						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) 
+						{
 							t=loc.space[Math.floor(X2/Tile.tilePixelWidth)][i];
-							if (collisionTile(t)) {
+							if (collisionTile(t)) 
+							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
-								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-Y2)) {
+								if (Y2-t.phY1<=(stay?porog:porog_jump) && !collisionAll(20,t.phY1-Y2)) 
+								{
 									Y=t.phY1;
-								} else {
+								} 
+								else 
+								{
 									X=t.phX1-scX/2;
 									if (t_throw>0 && dx>damWallSpeed && damWall) damageWall(1);
-									if (destroy>0 && destroyWall(t,2)) {
+									if (destroy>0 && destroyWall(t,2)) 
+									{
 										dx*=0.75;
-									} else {
+									} 
+									else 
+									{
 										dx=-Math.abs(dx)*elast;
 										turnX=-1;
 										if (t.mat==1) tykMat=1;
@@ -1104,8 +1200,10 @@
 			// VERTICAL
 			// Move down
 			newmy=0;
-			if (dy+osndy>0) {
-				if (dy>0) {
+			if (dy+osndy>0) 
+			{
+				if (dy>0) 
+				{
 					stay=false;
 					stayPhis=stayMat=0;
 				}
@@ -1114,18 +1212,23 @@
 				if (levit || plav && isPlav || isFly) {	// Flight, levitation, or swimming
 					diagon=0;
 					Y+=(dy+osndy)/div;
-					if (Y>loc.limY) {
-						if (!outLoc(3)) {
+					if (Y>loc.limY) 
+					{
+						if (!outLoc(3)) 
+						{
 							Y=loc.limY-1;
 							dy=0;
 							turnY=-1;
 						}
 					}
 					Y1=Y-scY, Y2=Y;
-					if (mater) {
-						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+					if (mater) 
+					{
+						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
+						{
 							t=loc.space[i][Math.floor(Y2/Tile.tilePixelHeight)];
-							if (collisionTile(t)) {
+							if (collisionTile(t)) 
+							{
 								Y=t.phY1;
 								Y1=Y-scY, Y2=Y;
 								dy=0;
@@ -1134,20 +1237,28 @@
 							}
 						}
 					}
-				} else {						// Falling
-					if (mater) {
-						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+				} 
+				else 
+				{						// Falling
+					if (mater) 
+					{
+						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
+						{
 							t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tilePixelHeight)];
-							if (collisionTile(t,0,dy/div)) {
+							if (collisionTile(t,0,dy/div)) 
+							{
 								if (-(X1-t.phX1)/scX<shX1) shX1=-(X1-t.phX1)/scX;
 								if ((X2-t.phX2)/scX<shX2) shX2=(X2-t.phX2)/scX;
 								newmy=t.phY1;
 								if (t.mat>0) stayMat=t.mat;
-								if (t.phis>=1 && !(transT && t.phis==3)) {
+								if (t.phis>=1 && !(transT && t.phis==3)) 
+								{
 									stayPhis=1;
 									if (t_throw>0 && dy>damWallSpeed && damWall) damageWall(3);
 									if (destroy>0 || massa>=1) destroyWall(t,3);
-								} else if (t.shelf && stayPhis==0) {
+								} 
+								else if (t.shelf && stayPhis==0) 
+								{
 									stayPhis=2;
 									stayMat=t.mat;
 								}
@@ -1157,14 +1268,17 @@
 					}
 					if (newmy==0 && !throu) newmy=checkDiagon(dy/div);
 					if (newmy==0 && !throu) newmy=checkShelf(dy/div, osndy/div);
-					if (newmy) {	// Bugs!!!!!
+					if (newmy) 
+					{	// Bugs!!!!!
 						Y1=newmy-scY;
-						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
+						{
 							t=loc.space[i][Math.floor((newmy-scY)/Tile.tilePixelHeight)];
 							if (collisionTile(t)) newmy=0;
 						}
 					}
-					if (newmy) {
+					if (newmy) 
+					{
 						Y=newmy;
 						Y1=Y-scY, Y2=Y;
 						if (dy>16) makeNoise(noiseRun,true);
@@ -1173,7 +1287,9 @@
 						if (jumpBall>0 && dy>3) {
 							dy=-dy*jumpBall;
 							turnY=-1;
-						} else {
+						} 
+						else 
+						{
 							dy=0;
 							
 						}
@@ -1181,12 +1297,16 @@
 						fracLevit=0;
 		
 						isLaz=0;
-					} else {
+					} 
+					else 
+					{
 						Y+=dy/div;
 						Y1=Y-scY, Y2=Y;
 					}
-					if (Y>loc.limY) {
-						if (!outLoc(3)) {
+					if (Y>loc.limY) 
+					{
+						if (!outLoc(3)) 
+						{
 							Y=loc.limY-1;
 							turnY=-1;
 							Y1=Y-scY, Y2=Y;
@@ -1195,34 +1315,45 @@
 				}
 			}
 			// Move up
-			if (dy+osndy<0) {
-				if (dy<0) {
+			if (dy+osndy<0) 
+			{
+				if (dy<0) 
+				{
 					stay=false;
 					diagon=0;
 				}
-				if (Y-scY<0) {
-					if (!outLoc(4)) {
+				if (Y-scY<0) 
+				{
+					if (!outLoc(4)) 
+					{
 						Y=scY-0.1;
 						dy=0;
 						turnY=1;
 					}
 				}
-				if (dy>0) {
+				if (dy>0) 
+				{
 					newmy=checkShelf(dy/div, osndy/div);
-					if (newmy) {
+					if (newmy) 
+					{
 						Y=newmy;
 						Y1=Y-scY, Y2=Y;
 						dy=0;
 						stay=true;
 					}
-				} else {
+				} 
+				else 
+				{
 					Y+=(dy+osndy)/div;
 					Y1=Y-scY, Y2=Y;
 				}
-				if (mater) {
-					for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) {
+				if (mater) 
+				{
+					for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
+					{
 						t=loc.space[i][Math.floor(Y1/Tile.tilePixelHeight)];
-						if (collisionTile(t)) {
+						if (collisionTile(t)) 
+						{
 							if (t_throw>0 && dy<-damWallSpeed && damWall) damageWall(4);
 							if (destroy>0) destroyWall(t,4);
 							Y=t.phY2+scY;
@@ -1235,31 +1366,37 @@
 					}
 				}
 			} 
-			if (autoSit) {
+			if (autoSit)
+			{
 				autoSit=false;	
 				unsit();
 			}
 		}
 		
-		public function run2(div:int=1) {
+		public function run2(div:int=1) 
+		{
 			X+=dx/div;
 			Y+=dy/div;
-			if (X-scX/2<0) {
+			if (X-scX/2<0) 
+			{
 				X=scX/2;
 				dx=Math.abs(dx)*elast;
 				turnX=1;
 			}
-			if (X+scX/2>=loc.limX) {
+			if (X+scX/2>=loc.limX) 
+			{
 				X=loc.limX-1-scX/2;
 				dx=-Math.abs(dx)*elast;
 				turnX=-1;
 			}
-			if (Y-scY<0) {
+			if (Y-scY<0) 
+			{
 				Y=scY-0.1;
 				dy=0;
 				turnY=1;
 			}
-			if (Y>loc.limY) {
+			if (Y>loc.limY) 
+			{
 				Y=loc.limY-1;
 				dy=0;
 				turnY=-1;
@@ -1268,28 +1405,37 @@
 			Y1=Y-scY, Y2=Y;
 		}
 		
-		public function sit(turn:Boolean) {
+		public function sit(turn:Boolean) 
+		{
 			if (isSit==turn) return;
 			isSit=turn;
-			if (isSit) {
+			if (isSit) 
+			{
 				scX=sitX, scY=sitY;
-			} else {
+			} 
+			else 
+			{
 				scX=stayX, scY=stayY;
 			}
 			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
 		}
 		
-		public function unsit() {
+		public function unsit() 
+		{
 			sit(false);
-			if (collisionAll()) {
+			if (collisionAll()) 
+			{
 				sit(true);
 			}
 		}
 		
-		public function collisionAll(gx:Number=0, gy:Number=0):Boolean {
+		public function collisionAll(gx:Number=0, gy:Number=0):Boolean 
+		{
 			if (loc.sky) return false;
-			for (var i=Math.floor((X1+gx)/Tile.tilePixelWidth); i<=Math.floor((X2+gx)/Tile.tilePixelWidth); i++) {
-				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) {
+			for (var i=Math.floor((X1+gx)/Tile.tilePixelWidth); i<=Math.floor((X2+gx)/Tile.tilePixelWidth); i++) 
+			{
+				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) 
+				{
 					if (i<0 || i>=loc.spaceX || j<0 || j>=loc.spaceY) continue;
 					if (collisionTile(loc.space[i][j],gx,gy)) return true;
 				}
@@ -1299,26 +1445,32 @@
 		
 		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int {
 			if (!t || (t.phis==0 || transT&&t.phis==3) && !t.shelf) return 0;  //пусто
-			if (X2+gx<=t.phX1 || X1+gx>=t.phX2 || Y2+gy<=t.phY1 || Y1+gy>=t.phY2) {
+			if (X2+gx<=t.phX1 || X1+gx>=t.phX2 || Y2+gy<=t.phY1 || Y1+gy>=t.phY2) 
+			{
 				return 0;
-			} else if ((t.phis==0 || transT&&t.phis==3) && t.shelf && (Y2-(stay?porog:porog_jump)>t.phY1 || throu || t_throw>0 || levit || isFly || diagon!=0)) {  //полка 
-			//} else if (t.phis==0 && t.shelf && (Y2>t.phY1 || throu || levit || isFly || diagon!=0)) {  //полка 
+			} 
+			else if ((t.phis==0 || transT&&t.phis==3) && t.shelf && (Y2-(stay?porog:porog_jump)>t.phY1 || throu || t_throw>0 || levit || isFly || diagon!=0))  //полка 
+			{ 
 				return 0;
 			}
 			else return 1;
 		}
 
 		// Search for stairs
-		public function checkStairs(ny:int=-1, nx:int=0):Boolean {
-			try {
+		public function checkStairs(ny:int=-1, nx:int=0):Boolean 
+		{
+			try 
+			{
 				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
 				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
 				if (j>=loc.spaceY) j=loc.spaceY-1;
-				if (loc.space[i][j].phis>=1 && !(transT&&loc.space[i][j].phis==3)) {
+				if (loc.space[i][j].phis>=1 && !(transT&&loc.space[i][j].phis==3)) 
+				{
 					isLaz=0;
 					return false;
 				}
-				if ((loc.space[i][j] as Tile).stair) {
+				if ((loc.space[i][j] as Tile).stair) 
+				{
 					isLaz=storona=(loc.space[i][j] as Tile).stair;
 					if (isLaz==-1) X=(loc.space[i][j] as Tile).phX1+scX/2;
 					else X=(loc.space[i][j] as Tile).phX2-scX/2;
@@ -1327,71 +1479,87 @@
 					sit(false);
 					return true;
 				}
-			} catch (err) {
-			}
+			} catch (err) {}
 			isLaz=0;
 			return false;
 		}
 		// Search for liquid
-		public function checkWater():Boolean {
+		public function checkWater():Boolean 
+		{
 			var pla=inWater;
 			try {
-				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.75)/Tile.tilePixelHeight)] as Tile).water>0) {
+				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.75)/Tile.tilePixelHeight)] as Tile).water>0) 
+				{
 					isPlav=true;
 					inWater=true;
-					if (plav) {
+					if (plav) 
+					{
 						stay=false;
 						sit(false);
 					}
-				} else {
+				} 
+				else 
+				{
 					isPlav=false;
-					if (scY<=Tile.tilePixelHeight) {
+					if (scY<=Tile.tilePixelHeight) 
+					{
 						inWater=false;
-					} else if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.25)/Tile.tilePixelHeight)] as Tile).water>0) {
+					} 
+					else if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.25)/Tile.tilePixelHeight)] as Tile).water>0) 
+					{
 						inWater=true;
-					} else inWater=false;
+					} 
+					else inWater=false;
 				}
-			} catch (err) {
+			} catch (err) 
+			{
 				isPlav=inWater=false;
 			}
-			if (pla!=inWater && (dy>8 || dy<-8 || plaKap)) {
+			if (pla!=inWater && (dy>8 || dy<-8 || plaKap)) 
+			{
 				Emitter.emit('kap',loc,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)+1)});
 				
 			}
-			if (pla!=inWater && dy>5) {
+			if (pla!=inWater && dy>5) 
+			{
 				if (massa>2) sound('fall_water0', 0, dy/10);
 				else if (massa>0.4) sound('fall_water1', 0, dy/10);
 				else if (massa>0.2) sound('fall_water2', 0, dy/10);
 				else sound('fall_item_water', 0, dy/10);
 			}
 			if (pla!=inWater && dy<-5 && massa>0.4) sound('fall_water2', 0, -dy/10);
-			//newPart('kap',0,X+(Math.random()-0.5)*scX,Y-scY*0.25,0,-Math.abs(dy)*(Math.random()*0.3+0.3),Math.min(30,Math.floor(Math.abs(dy*massa*3)-5)));
 			if (inWater && !isPlav && (dx>3 || dx<-3)) Emitter.emit('kap',loc,X,Y-scY*0.25,{rx:scX});
-			//newPart('kap',0,X+(Math.random()-0.5)*scX,Y-Tile.tilePixelHeight,0,-Math.abs(dy)*(Math.random()*0.3+0.3));
-			if (isPlav) {
+			if (isPlav) 
+			{
 				namok_t++;
-				if (namok_t>=100) {
+				if (namok_t>=100) 
+				{
 					namok_t=0;
 					addEffect('namok');
 				}
-			} else if (namok_t>0) {
+			} else if (namok_t>0) 
+			{
 				namok_t--
 			}
 			return isPlav;
 		}
 
 		// Search for an object to stand on
-		public function checkShelf(pdy:Number,pdy2:Number=0):Number {
-			for (var i in loc.objs) {
-				var b:Box=loc.objs[i] as Box;//
-				if (!b.invis && b.shelf && !b.levit && !(X2<b.X1 || X1>b.X2) && Y2+pdy2<=b.Y1 && Y2+pdy+pdy2>b.Y1) {
+		public function checkShelf(pdy:Number,pdy2:Number=0):Number 
+		{
+			for (var i in loc.objs) 
+			{
+				var b:Box=loc.objs[i] as Box;
+				if (!b.invis && b.shelf && !b.levit && !(X2<b.X1 || X1>b.X2) && Y2+pdy2<=b.Y1 && Y2+pdy+pdy2>b.Y1) 
+				{
 					shX1=shX2=1;
 					if (-(X1-b.X1)/scX<shX1) shX1=-(X1-b.X1)/scX;
 					if ((X2-b.X2)/scX<shX2) shX2=(X2-b.X2)/scX;
 					stayMat=b.mat;
 					stayPhis=2;
 					stayOsn=b;
-					if (!b.stay) {
+					if (!b.stay) 
+					{
 						b.dy+=dy*massa/(massa+b.massa);
 						b.fixPlav=false;
 					}
@@ -1402,41 +1570,57 @@
 		}
 		
 		// Search for steps
-		public function checkDiagon(dy:Number, napr:int=0):Number {
+		public function checkDiagon(dy:Number, napr:int=0):Number 
+		{
 			var ddy:Number, newmy:Number=0;
 			var t:Tile=loc.getAbsTile(X,Y+dy);
-			if (diagon==0) {
-				if (t.diagon!=0 && (napr==0 || t.diagon==napr)) {
+			if (diagon==0) 
+			{
+				if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
+				{
 					ddy=t.getMaxY(X);
-					if (ddy<Y+dy) {
+					if (ddy<Y+dy) 
+					{
 						diagon=t.diagon;
 						newmy=ddy;
 					}
-				} else {
+				} 
+				else 
+				{
 					t=loc.getAbsTile(X,Y+40);
-					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) {
+					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
+					{
 						ddy=t.getMaxY(X);
-						if (ddy<Y+dy) {
+						if (ddy<Y+dy) 
+						{
 							diagon=t.diagon;
 							newmy=ddy;
 						}
 					}
 				}
-			} else {
-				if (t.diagon!=0 && (napr==0 || t.diagon==napr)) {
+			} 
+			else 
+			{
+				if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
+				{
 					ddy=t.getMaxY(X);
 					diagon=t.diagon;
 					newmy=ddy;
-				} else {
+				} 
+				else 
+				{
 					t=loc.getAbsTile(X,Y-40);
-					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) {
+					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
+					{
 						ddy=t.getMaxY(X);
 						diagon=t.diagon;
 						newmy=ddy;
-					} else diagon=0;
+					} 
+					else diagon=0;
 				}
 			}
-			if (diagon!=0 && (napr==0 || t.diagon==napr)) {
+			if (diagon!=0 && (napr==0 || t.diagon==napr)) 
+			{
 				shX1=shX2=0;
 				stayPhis=2;
 				stayMat=t.mat;
@@ -1445,10 +1629,12 @@
 		}
 		
 		// Teleportation
-		public function teleport(nx:Number,ny:Number,eff:int=0) {
+		public function teleport(nx:Number,ny:Number,eff:int=0) 
+		{
 			if (eff>0) Emitter.emit('tele',loc,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
 			setPos(nx,ny);
-			if (currentWeapon) {
+			if (currentWeapon) 
+			{
 				setWeaponPos(currentWeapon.tip);
 				currentWeapon.setNull();
 			}
@@ -1458,7 +1644,8 @@
 		}
 		
 		// Detach from a fixed position
-		public function otryv() {
+		public function otryv() 
+		{
 			fixed=false;
 		}
 
@@ -1468,24 +1655,21 @@
 //
 //**************************************************************************************************************************
 
-		public static function initIcos() {
+		public static function initIcos() 
+		{
 			arrIcos=new Array();
-			for each(var xml in AllData.d.unit) {
-				if (xml.@cat=='3') {
+			for each(var xml in AllData.d.unit) 
+			{
+				if (xml.@cat=='3') 
+				{
 					var bmpd:BitmapData;
 					var ok:Boolean=false;
-					if (xml.vis.length() && xml.vis.@blit.length()) {
-						/*var data:BitmapData=World.w.grafon.getSpriteList(xml.vis.@blit);
-						if (data==null) continue;
-						var sprX:int=xml.vis.@sprX;
-						var sprY:int=(xml.vis.@sprY>0)?xml.vis.@sprY:sprX;
-						var begSprX:int=(xml.vis.@icoX>0)?xml.vis.@icoX:0;
-						var begSprY:int=(xml.vis.@icoY>0)?xml.vis.@icoY:0;
-						var rect:Rectangle = new Rectangle(begSprX*sprX, begSprY*sprY, (begSprX+1)*sprX, (begSprY+1)*sprY);
-						bmpd=new BitmapData(sprX,sprY);
-						bmpd.copyPixels(data,rect,new Point(0,0));
-						ok=true;*/
-					} else if (xml.vis.length() && xml.vis.@vclass.length()) {
+					if (xml.vis.length() && xml.vis.@blit.length()) 
+					{
+
+					} 
+					else if (xml.vis.length() && xml.vis.@vclass.length()) 
+					{
 						var dvis:MovieClip=Res.getVis(xml.vis.@vclass);
 						var sprX:int=dvis.width+2;
 						var sprY:int=dvis.height+2;
@@ -1496,7 +1680,8 @@
 						bmpd.draw(dvis,m);
 						ok=true;
 					}
-					if (ok) {
+					if (ok) 
+					{
 						var bmp:Bitmap=new Bitmap(bmpd);
 						arrIcos[xml.@id]=bmp;
 					}
@@ -1504,11 +1689,13 @@
 			}
 		}
 		
-		public static function initIco(nid:String) {
+		public static function initIco(nid:String) 
+		{
 			if (arrIcos==null) arrIcos=new Array();
 			if (arrIcos[nid]) return;
 			var xml=AllData.d.unit.(@id==nid);
-			if (xml.vis.length() && xml.vis.@blit.length()) {
+			if (xml.vis.length() && xml.vis.@blit.length()) 
+			{
 				var bmpd:BitmapData;
 				var data:BitmapData=World.w.grafon.getSpriteList(xml.vis.@blit);
 				if (data==null) return;
@@ -1524,7 +1711,8 @@
 			}
 		}
 		
-		public function initBlit() {
+		public function initBlit() 
+		{
 			blitData=World.w.grafon.getSpriteList(blitId);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
 			blitPoint = new Point(0,0);
@@ -1541,17 +1729,20 @@
 			animState='stay';
 		}
 		
-		public function blit(blstate:int, blframe:int) {
+		public function blit(blstate:int, blframe:int) 
+		{
 			blitRect.x=blframe*blitX, blitRect.y=blstate*blitY;
 			visData.copyPixels(blitData,blitRect,blitPoint);
 		}
 		
-		public override function addVisual() {
+		public override function addVisual() 
+		{
 			if (disabled) return;
 			trigDis=!checkTrig();
 			if (trigDis) return;
 			super.addVisual();
-			if (!player && !hpbar && vis) {
+			if (!player && !hpbar && vis) 
+			{
 				hpbar=new hpBar();
 				if (hero<=0) hpbar.goldstar.visible=false;
 				if (invis) hpbar.visible=false;
@@ -1560,34 +1751,43 @@
 			if (hpbar && loc && loc.active) World.w.grafon.visObjs[3].addChild(hpbar);
 			if (cTransform && ctrans) vis.transform.colorTransform=cTransform;
 			if (childObjs) {
-				for (var i in childObjs) {
-					if (childObjs[i]!=null && childObjs[i].vis) {
+				for (var i in childObjs) 
+				{
+					if (childObjs[i]!=null && childObjs[i].vis) 
+					{
 						childObjs[i].addVisual();
-						//World.w.grafon.visObjs[.sloy].addChild(childObjs[i].vis);
 					}
 				}
 			}
 		}
 		
-		public override function remVisual() {
+		public override function remVisual() 
+		{
 			super.remVisual();
 			if (hpbar && hpbar.parent) hpbar.parent.removeChild(hpbar);
-			if (childObjs) {
-				for (var i in childObjs) {
+			if (childObjs) 
+			{
+				for (var i in childObjs) 
+				{
 					if (childObjs[i]) childObjs[i].remVisual();
-					//if (childObjs[i].vis && childObjs[i].vis.parent) World.w.grafon.visObjs[childObjs[i].sloy].removeChild(childObjs[i].vis);
 				}
 			}
 		}
 		
-		public function animate() {
+		public function animate() 
+		{
+
 		}
 		
-		protected function sndFall() {
+		protected function sndFall() 
+		{
+
 		}
 		
-		function sndRunPlay() {
-				if (rasst2<sndRunDist*sndRunDist) {
+		function sndRunPlay() 
+		{
+				if (rasst2<sndRunDist*sndRunDist) 
+				{
 					sndVolkoef=(sndRunDist-Math.sqrt(rasst2))/sndRunDist;
 					if (sndVolkoef<0.5) sndVolkoef*=2;
 					else sndVolkoef=1;
@@ -1595,43 +1795,59 @@
 				}
 		}
 		
-		function newPart(nid:String,kol:int=1,frame:int=0) {
+		function newPart(nid:String,kol:int=1,frame:int=0) 
+		{
 			Emitter.emit(nid,loc,X,Y-scY/2,{kol:kol, frame:frame});
 		}
 
-		public function setVisPos() {
-			if (vis) {
+		public function setVisPos() 
+		{
+			if (vis) 
+			{
 				vis.x=X,vis.y=Y;
 				vis.scaleX=storona;
 			}
 		}
 
-		public function visDetails() {
+		public function visDetails() 
+		{
 			if (hpbar==null) return;
-			if ((hp<maxhp || armor_qual>0 && armor_hp<armor_maxhp || hero>0) && hp>0 && !invis || boss) {
-				if (boss) {
+			if ((hp<maxhp || armor_qual>0 && armor_hp<armor_maxhp || hero>0) && hp>0 && !invis || boss) 
+			{
+				if (boss) 
+				{
 					World.w.gui.hpBarBoss(hp/maxhp);
 					hpbar.visible=false;
-				} else {
+				} 
+				else 
+				{
 					hpbar.visible=true;
-					if (hp<maxhp) {
+					if (hp<maxhp) 
+					{
 						hpbar.bar.visible=true;
 						hpbar.bar.gotoAndStop(Math.floor((1-hp/maxhp)*20+1));
-					} else hpbar.bar.visible=false;
-					if (armor_qual>0) {
+					} 
+					else hpbar.bar.visible=false;
+					if (armor_qual>0) 
+					{
 						hpbar.armor.visible=true;
 						hpbar.armor.gotoAndStop(Math.floor((1-armor_hp/armor_maxhp)*20+1));
-					} else hpbar.armor.visible=false;
+					} 
+					else hpbar.armor.visible=false;
 				}
-				//hpbar.hpNum.text=Math.round(hp)+'/'+maxhp;
-			} else hpbar.visible=false;
+			} 
+			else hpbar.visible=false;
 		}
 		
-		public function setHpbarPos() {
-			if (boss) {
+		public function setHpbarPos() 
+		{
+			if (boss) 
+			{
 				hpbar.y=60;
 				hpbar.x=World.w.cam.screenX/2;
-			} else {
+			} 
+			else 
+			{
 				hpbar.y=Y-stayY-20;
 				if (hpbar.y<20) hpbar.y=20;
 				hpbar.x=X;
@@ -1640,7 +1856,8 @@
 		}
 		
 		
-		public function sound(sid:String, msec:Number=0, vol:Number=1):SoundChannel {
+		public function sound(sid:String, msec:Number=0, vol:Number=1):SoundChannel 
+		{
 			return Snd.ps(sid,X,Y,msec,vol);
 		}
 
@@ -1650,18 +1867,22 @@
 //
 //**************************************************************************************************************************
 
-		public function actions() {
-			if (isNaN(dx)) {
+		public function actions() 
+		{
+			if (isNaN(dx)) 
+			{
 				trace(nazv, 'dx!!!');
 				dx=0;
 			}
-			if (isNaN(dy)) {
+			if (isNaN(dy)) 
+			{
 				trace(nazv, 'dy!!!');
 				dy=0;
 			}
 			if (neujaz>0) neujaz--;
 			if (shok>0) shok--;
-			if (oduplenie>0) {
+			if (oduplenie>0) 
+			{
 				if (opt && opt.izvrat && World.w.pers.socks || noAgro) {}
 				else oduplenie--;
 			}
@@ -1678,28 +1899,37 @@
 			eyeY=Y-scY*0.75;
 			
 			// Levitation
-			if (sost==1) {
-				if (levit) {
+			if (sost==1) 
+			{
+				if (levit) 
+				{
 					levit_r++;
-				} else {
+				} 
+				else 
+				{
 					if (levit_r==1) levitPoss=true;
 					if (levit_r>60) levit_r=60;
 					if (levit_r>0) levit_r--;
 				}
 			}
-			if (levit) {
+			if (levit) 
+			{
 				if (!fixed && massa!=massaMove) otryv();
-				if (fixed) {
+				if (fixed) 
+				{
 					if (levit_r>75) otryv();
 				}
 				massa=massaMove;
 			}
 			
 			if (demask>0) demask-=5;
-			if (effects.length>0) {
-				for (var i=0; i<effects.length; i++) {
+			if (effects.length>0) 
+			{
+				for (var i=0; i<effects.length; i++) 
+				{
 					if (!(effects[i] as Effect).vse) (effects[i] as Effect).step();
-					else {
+					else 
+					{
 						effects.splice(i,1);
 						i--;
 					}
@@ -1707,47 +1937,60 @@
 			}
 						// Damage from water
 			// Periodic effects
-			if (cut>0 || poison>0 || inWater && loc.wdam>0) {
-				if (t_hp<=0) {
+			if (cut>0 || poison>0 || inWater && loc.wdam>0) 
+			{
+				if (t_hp<=0) 
+				{
 					t_hp=30;
-					if (cut>0) {
+					if (cut>0) 
+					{
 						damage(Math.sqrt(cut),D_BLEED,null,true);
 						cut-=critHeal;
 						if (cut<0) cut=0;
 					}
-					if (poison>0) {
+					if (poison>0) 
+					{
 						damage(Math.sqrt(poison),D_POISON,null,true);
 						poison-=critHeal;
 						if (poison<0) poison=0;
 						Emitter.emit('poison',loc,X,Y-scY*0.5);
 					}
-					if (inWater && loc.wdam>0) {
-						//trace('wdam',loc.wdam,loc.wtipdam,vulner[loc.wtipdam]);
+					if (inWater && loc.wdam>0) 
+					{
 						damage(loc.wdam,loc.wtipdam,null,true);
 					}
 				}
 			}
-			if (stun>0) {
+			if (stun>0) 
+			{
 				stun--;
-				if (stun%10==0) {
+				if (stun%10==0) 
+				{
 					//trace(stun)
-					if (opt && opt.robot) {
+					if (opt && opt.robot) 
+					{
 						Emitter.emit('discharge',loc,X,Y-scY*0.5);
 						Emitter.emit('iskr',loc,X,Y-scY*0.5,{kol:5});
-					} else if (!mech) Emitter.emit('stun',loc,X,Y-scY*0.75);
+					} 
+					else if (!mech) Emitter.emit('stun',loc,X,Y-scY*0.75);
 				}
 			}
 			if (t_hp>0) t_hp--;
-			if (slow>0) {
+			if (slow>0) 
+			{
 				slow--;
 				if (!fixed && slow%10==0 && vis && vis.visible && (dx>3 || dx<-3 || dy>5 || dy<-5)) Emitter.emit('slow',loc,X,Y-scY*0.25);
 			}
 			if (t_throw>0) t_throw--;
 			// Accumulated display of damage numbers
-			if (World.w.showHit==2) {
-				if (t_hitPart>0) {
+			if (World.w.showHit==2) 
+			{
+				if (t_hitPart>0) 
+				{
 					t_hitPart--;
-				} else {
+				} 
+				else 
+				{
 					hitSumm=0;
 					hitPart=null;
 				}
@@ -1755,12 +1998,15 @@
 			if (t_mess>0) t_mess--;
 		}
 		
-		public function makeNoise(n:int, hlup:Boolean=false) {
+		public function makeNoise(n:int, hlup:Boolean=false) 
+		{
 			if (n<=0) return;
 			if (noise<n) noise=n;
-			if (noise_t==0 || hlup && noise_t<=20) {
+			if (noise_t==0 || hlup && noise_t<=20) 
+			{
 				noise_t=30;
-				if (loc && loc.active && !getTileVisi()) {
+				if (loc && loc.active && !getTileVisi()) 
+				{
 					if (!player) Emitter.emit('noise',loc,X,Y,{rx:40, ry:40, alpha:Math.min(1,n/500)});
 				}
 			}
@@ -1771,31 +2017,37 @@
 //				Attack
 
 		// Attack the target with the unit's own damage using the body
-		public function attKorp(cel:Unit, mult:Number=1):Boolean {
+		public function attKorp(cel:Unit, mult:Number=1):Boolean 
+		{
 			if (sost>1 || cel==null || cel.loc!=loc || burn!=null) return false;
 			if (cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2 || cel.Y2<Y1 || cel.neujaz>0) return false;
 			return cel.udarUnit(this, mult);
 		}
 		// The hit reached the target
-		public function crash(b:Bullet) {
+		public function crash(b:Bullet) 
+		{
 			if (b.weap) makeNoise(b.weap.noise, true);
 		}
 		// Set weapon position
-		public function setWeaponPos(tip:int=0) {
+		public function setWeaponPos(tip:int=0) 
+		{
 			weaponX=X;
 			weaponY=Y-scY*0.5;
 			magicX=X;
 			magicY=Y-scY*0.5;
 		}
-		public function setPunchWeaponPos(w:WPunch) {
+		public function setPunchWeaponPos(w:WPunch) 
+		{
 			w.X=X+scX/3*storona;
 			w.Y=Y-scY*0.75;
 			w.rot=(storona>0)?0:Math.PI;
 		}
 		
-		public function destroyWall(t:Tile, napr:int=0):Boolean {
+		public function destroyWall(t:Tile, napr:int=0):Boolean 
+		{
 			if (isPlav || levit || sost!=1) return false;
-			if (napr==3 && dy>15 && destroy<50 && massa>=1) {
+			if (napr==3 && dy>15 && destroy<50 && massa>=1) 
+			{
 				loc.hitTile(t,50,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight,100);
 				if (t.phis==0) return true;
 			}
@@ -1804,7 +2056,8 @@
 			return false;
 		}
 		
-		public function explosion(tdam:Number, ttipdam:int=4, trad:Number=200, tkol:int=0, totbros:Number=0, tdestroy:Number=0, tdecal:int=0) {
+		public function explosion(tdam:Number, ttipdam:int=4, trad:Number=200, tkol:int=0, totbros:Number=0, tdestroy:Number=0, tdecal:int=0) 
+		{
 			var bul:Bullet=new Bullet(this,X,Y-3,null,tkol>1);
 			bul.weapId=id;
 			bul.damageExpl=tdam;
@@ -1825,20 +2078,25 @@
 //				Effects
 
 		// Add an effect
-		public function addEffect(id:String, val:Number=0, t:int=0, se:Boolean=true):Effect {
+		public function addEffect(id:String, val:Number=0, t:int=0, se:Boolean=true):Effect 
+		{
 			if (id==null || id=='') return null;
 			var eff:Effect = new Effect(id, this, val);
 			if (t>0) eff.t=t*World.fps;
 			// Get a temporary effect
-			for (var i in effects) {
-				if (eff.tip==3 && effects[i].tip==3) {
+			for (var i in effects) 
+			{
+				if (eff.tip==3 && effects[i].tip==3) 
+				{
 					effects[i]=eff;
 					eff.setEff();
 					return eff;
 				}
-				if (effects[i].id==id || effects[i].id==eff.post) {
+				if (effects[i].id==id || effects[i].id==eff.post) 
+				{
 					if (effects[i].val>eff.val) eff.val=effects[i].val;
-					if (eff.add) {
+					if (eff.add) 
+					{
 						eff.t+=effects[i].t;
 						if (eff.t>30000) eff.t=30000;
 						eff.checkT();
@@ -1855,15 +2113,19 @@
 			return eff;
 		}
 		
-		public function remEffect(id:String) {
-			for each(var eff in effects) {
+		public function remEffect(id:String) 
+		{
+			for each(var eff in effects) 
+			{
 				if (eff!=null && eff.id==id) eff.unsetEff();
 			}
 		}
 		
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) {
+		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) 
+		{
 			if (xml==null) return;
-			for each(var sk in xml.sk) {
+			for each(var sk in xml.sk) 
+			{
 				var val:Number, lvl:int;
 				if (sk.@dop.length()) lvl=lvl2;
 				else lvl=lvl1;
@@ -1871,7 +2133,8 @@
 				else if (sk.attribute('v'+lvl).length()) val=Number(sk.attribute('v'+lvl));
 				else val=Number(sk.@v0);
 				if (sk.@tip=='res') vulner[sk.@id]-=val;
-				else if (hasOwnProperty(sk.@id)) {
+				else if (hasOwnProperty(sk.@id)) 
+				{
 					if (sk.@ref=='add') this[sk.@id]+=val;
 					else if (sk.@ref=='mult') this[sk.@id]*=val;
 					else this[sk.@id]=val;
@@ -1879,23 +2142,31 @@
 			}
 			
 		}
-		public function setEffParams() {
-				try {
-			tormoz=1;
-			precMultCont=1;			
-			rapidMultCont=1;
-			if (begvulner==null) return;
-			for (var i=0; i<kolVulners; i++) vulner[i]=begvulner[i];
-			if (!player && loc.biom==5) {
-				vulner[D_PINK]=0;	// Immune to the pink cloud
+		public function setEffParams() 
+		{
+			try 
+			{
+				tormoz=1;
+				precMultCont=1;			
+				rapidMultCont=1;
+				if (begvulner==null) return;
+				for (var i=0; i<kolVulners; i++) vulner[i]=begvulner[i];
+				if (!player && loc.biom==5) 
+				{
+					vulner[D_PINK]=0;	// Immune to the pink cloud
+				}
+				for each(var eff:Effect in effects) 
+				{
+					var effid=eff.id;
+					var sk=AllData.d.eff.(@id==effid)[0];
+					setSkillParam(sk, eff.vse?0:1);
+				}
+				setHeroVulners();
+			} 
+			catch (err) 
+			{
+				trace('Error in effects',nazv)
 			}
-			for each(var eff:Effect in effects) {
-				var effid=eff.id;
-				var sk=AllData.d.eff.(@id==effid)[0];
-				setSkillParam(sk, eff.vse?0:1);
-			}
-			setHeroVulners();
-				} catch (err) {trace('Error in effects',nazv)}
 		}
 		
 //--------------------------------------------------------------------------------------------------------------------
@@ -1924,26 +2195,19 @@
 
 
 		// Get damage
-		public function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number 
+		{
 			if (invulner) return 0;
 			if (sost==1) dieWeap=null;
 			if (tip<kolVulners) dam*=vulner[tip];			// Vulnerabilities
 			//var damageNumb:Part;
 			var isCrit:int=0;
 			var isShow:Boolean=false;
-			if (bul) {					// Critical damage
-				/*if (Math.random()<bul.critCh) {
-					dam*=bul.critDamMult;
-					isCrit=1;
-				}
-				if (!doop && celUnit!=bul.owner && bul.critInvis>0) {
-					if (Math.random()<bul.critInvis) {
-						dam*=2;
-						isCrit+=2;
-					}
-				}*/
+			if (bul) 
+			{					// Critical damage
 				// Damage specific types
-				if (bul.owner && bul.owner.player && opt) {
+				if (bul.owner && bul.owner.player && opt) 
+				{
 					if (opt.pony) dam*=(bul.owner as UnitPlayer).pers.damPony;
 					if (opt.zombie) dam*=(bul.owner as UnitPlayer).pers.damZombie;
 					if (opt.robot) dam*=(bul.owner as UnitPlayer).pers.damRobot;
@@ -1955,87 +2219,102 @@
 			}
 			if (dam==0) return 0;
 			// Reduce electrical damage
-			if (tip==D_SPARK) {
+			if (tip==D_SPARK) 
+			{
 				if (!stay && !inWater && isLaz==0) dam*=0.5;
 			}
 			// Poison damage only affects living units
-			if (tip==D_VENOM && sost!=1) {
+			if (tip==D_VENOM && sost!=1) 
+			{
 				return 0;
 			}
 			var mess:String;
 			// Damage to armor
-			if (!player && armor_hp>0 && (shithp<=0 || dam>shitArmor) && (armor>0 || marmor>0) && (tip<=D_BALE && tip!=D_EMP && tip!=D_POISON && tip!=D_BLEED || tip==D_ASTRO)) {
+			if (!player && armor_hp>0 && (shithp<=0 || dam>shitArmor) && (armor>0 || marmor>0) && (tip<=D_BALE && tip!=D_EMP && tip!=D_POISON && tip!=D_BLEED || tip==D_ASTRO)) 
+			{
 				var damarm=dam;
 				if (shithp>0) damarm-=shitArmor;
-				//if (bul && bul.pier>0) damarm+=bul.pier;
 				if (bul && bul.armorMult>1) damarm/=bul.armorMult;
 				if (tip==D_ACID) damarm*=4;
 				else if (tip==D_EXPL) damarm*=2;
 				armor_hp-=damarm;
-				if (armor_hp<=0) {	// Armor destruction
+				if (armor_hp<=0) 	// Armor destruction
+				{
 					armor_hp=0;
 					armor_qual=0;
 					mess=Res.guiText('abr');
 				}
 			}
-			/*if (!player && tip==D_ACID && acidDey>0 && armor>0 && armor_qual>0.25) {
-				armor_qual-=dam/maxhp*acidDey;
-				if (armor_qual<0.25) armor_qual=0.25;
-				if (dam/maxhp>0.01) numbEmit.cast(loc,X,Y-scY/2,{txt:('-'+Math.round(dam/maxhp*100).toString()+'%'), frame:5, rx:20, ry:20});
-			}*/
-			if (dam<0) {
+
+			if (dam<0) 
+			{
 				heal(-dam);
 				return 0;
 			}
 			var armor2=0;		// Armor and armor penetration
-			if (!tt) {
-				if (tip==D_BUL || tip==D_BLADE || tip==D_EXPL || tip==D_PHIS || tip==D_FANG || tip==D_ACID) {
+			if (!tt) 
+			{
+				if (tip==D_BUL || tip==D_BLADE || tip==D_EXPL || tip==D_PHIS || tip==D_FANG || tip==D_ACID) 
+				{
 					armor2=skin;
 					if (armor_qual>0 && isrnd(armor_qual)) armor2+=armor;
 				}
-				if (tip==D_FIRE || tip==D_LASER || tip==D_PLASMA || tip==D_SPARK || tip==D_CRIO || tip==D_ASTRO) {
+				if (tip==D_FIRE || tip==D_LASER || tip==D_PLASMA || tip==D_SPARK || tip==D_CRIO || tip==D_ASTRO) 
+				{
 					armor2=skin;
 					if (armor_qual>0 && isrnd(armor_qual)) armor2+=marmor;
 				}
-				if (shithp>0) {
+				if (shithp>0) 
+				{
 					shithp-=dam;
 					if (shithp<0) shithp=0;
 					armor2+=shitArmor;
 				}
-				if (bul) {
+				if (bul) 
+				{
 					armor2*=bul.armorMult;
 					armor2-=bul.pier;
 				}
-				if (armor2>0) {
+				if (armor2>0) 
+				{
 					dam-=armor2;
-					if (bul && bul.probiv>0) {	// If the bullet is armor-piercing, subtract armor value from damage
+					if (bul && bul.probiv>0) 	// If the bullet is armor-piercing, subtract armor value from damage
+					{
 						bul.damage-=armor2/bul.probiv;
 					}
 				}
 			}
-			if (bul) {					// Critical damage
-				if (Math.random()<bul.critCh) {
+			if (bul) 	// Critical damage
+			{
+				if (Math.random()<bul.critCh) 
+				{
 					dam*=bul.critDamMult;
 					isCrit=1;
 				}
-				if (!doop && celUnit!=bul.owner && bul.critInvis>0) {
-					if (Math.random()<bul.critInvis) {
+				if (!doop && celUnit!=bul.owner && bul.critInvis>0) 
+				{
+					if (Math.random()<bul.critInvis) 
+					{
 						dam*=2;
 						isCrit+=2;
 					}
 				}
 			}
-			if (dam>0) {
+			if (dam>0) 
+			{
 				var sposob:int=0;		// Method of dying
-				if (bul && bul.desintegr && (tip==D_LASER || tip==D_PLASMA)) {	// Instant disintegration
-					if (hp<=dam*10 && isrnd(bul.desintegr)) {
+				if (bul && bul.desintegr && (tip==D_LASER || tip==D_PLASMA)) 	// Instant disintegration
+				{
+					if (hp<=dam*10 && isrnd(bul.desintegr)) 
+					{
 						sposob=1;
 						dam*=12;
 					}
 				}
 				if (tip!=D_POISON && tip!=D_BLEED && tip!=D_INSIDE) dam*=allVulnerMult;
 				isShow=((sost==1 || sost==2) && showNumbs && dam>0.5);
-				if (bul && bul.probiv>0) {
+				if (bul && bul.probiv>0) 
+				{
 					if (maxhp>dam*20) bul.damage=0;
 					else if (maxhp>dam) bul.damage*=bul.probiv;
 					else bul.damage*=1-(1-bul.probiv)*maxhp/dam;
@@ -2045,7 +2324,8 @@
 				if (nshok>maxShok) nshok=maxShok;
 				if (tt || nshok<5) nshok=0;
 				if (shok<nshok) shok=nshok;
-				if (hp<=0) {
+				if (hp<=0) 
+				{
 					if (bul && bul.weap) dieWeap=bul.weap.id;
 					if (bul && bul.weapId) dieWeap=bul.weapId;
 					if (tip==D_FIRE && (hp<=-maxhp*3 || !trup)) sposob=1;
@@ -2057,49 +2337,62 @@
 					else sost=2;
 				}
 				// Electric and EMP damage stun robots
-				if ((tip==D_SPARK || tip==D_EMP) && opt && opt.robot && sost==1 && Math.random()<dam/maxhp) {
+				if ((tip==D_SPARK || tip==D_EMP) && opt && opt.robot && sost==1 && Math.random()<dam/maxhp) 
+				{
 					mess=Res.guiText('kz');
 					if (stun<robotKZ) stun=robotKZ;
 				}
 				// Explosions cause concussion
-				if (tip==D_EXPL && opt && !opt.robot && !mech && !doop && sost==1 && Math.random()<dam/maxhp) {
+				if (tip==D_EXPL && opt && !opt.robot && !mech && !doop && sost==1 && Math.random()<dam/maxhp) 
+				{
 					mess=Res.txt('e','contusion');
 					addEffect('contusion');
 				}
 				if (!tt && demask<200) demask=200;	// An invisible object becomes visible when taking damage
 				// Additional effects
-				if (bul && bul.weap) {								
-					if (bul.weap.dopEffect!=null && bul.weap.dopCh>0 && (bul.weap.dopCh>=1 || Math.random()<bul.weap.dopCh)) {
-						if (bul.weap.dopEffect=='igni' && vulner[D_FIRE]>0.1) {
+				if (bul && bul.weap) 
+				{								
+					if (bul.weap.dopEffect!=null && bul.weap.dopCh>0 && (bul.weap.dopCh>=1 || Math.random()<bul.weap.dopCh)) 
+					{
+						if (bul.weap.dopEffect=='igni' && vulner[D_FIRE]>0.1) 
+						{
 							addEffect('burning',bul.weap.dopDamage);
 							mess=Res.txt('e','burning');
 						}
-						if (bul.weap.dopEffect=='ice' && vulner[D_CRIO]>0.1 && !mech) {
+						if (bul.weap.dopEffect=='ice' && vulner[D_CRIO]>0.1 && !mech) 
+						{
 							mess=Res.txt('e','freezing');
 							addEffect('freezing');
 						}
-						if (bul.weap.dopEffect=='blind' && vulner[D_LASER]>0.1 && !mech && !doop) {
+						if (bul.weap.dopEffect=='blind' && vulner[D_LASER]>0.1 && !mech && !doop) 
+						{
 							mess=Res.txt('e','blindness');
 							addEffect('blindness');
 						}
-						if (bul.weap.dopEffect=='acid' && vulner[D_ACID]>0.1) {
+						if (bul.weap.dopEffect=='acid' && vulner[D_ACID]>0.1) 
+						{
 							mess=Res.txt('e','chemburn');
 							addEffect('chemburn',bul.weap.dopDamage);
 						}
-						if (bul.weap.dopEffect=='pink' && vulner[D_PINK]>0.1) {
+						if (bul.weap.dopEffect=='pink' && vulner[D_PINK]>0.1) 
+						{
 							mess=Res.txt('e','pinkcloud');
 							addEffect('pinkcloud',bul.weap.dopDamage);
 						}
-						if (bul.weap.dopEffect=='poison' && vulner[D_POISON]>0.1) {
+						if (bul.weap.dopEffect=='poison' && vulner[D_POISON]>0.1) 
+						{
 							if (player && poison<=0) World.w.gui.infoText('poison');
 							poison+=bul.weap.dopDamage;
 						}
-						if (bul.weap.dopEffect=='cut' && vulner[D_BLEED]>0.1 && !mech) {
+						if (bul.weap.dopEffect=='cut' && vulner[D_BLEED]>0.1 && !mech) 
+						{
 							if (player && cut<=0) World.w.gui.infoText('cut');
 							cut+=bul.weap.dopDamage;
 						}
-						if (bul.weap.dopEffect=='stun') {
-							if (!mech && opt && !opt.robot && Math.random()<dam/maxhp && sost==1) {
+						if (bul.weap.dopEffect=='stun') 
+						{
+							if (!mech && opt && !opt.robot && Math.random()<dam/maxhp && sost==1) 
+							{
 								stun=bul.weap.dopDamage;
 								//trace(stun);
 								if (player && stun<=0) World.w.gui.infoText('stun');
@@ -2107,33 +2400,43 @@
 							}
 						}
 					}
-					if (bul.weap.ammoFire) {
+					if (bul.weap.ammoFire) 
+					{
 						addEffect('burning',bul.weap.ammoFire);
 						mess=Res.txt('e','burning');
 					}
 				}
 				// Return damage to the owner of the bullet
-				if (bul && bul.owner && bul.owner.relat>0) {
+				if (bul && bul.owner && bul.owner.relat>0) 
+				{
 					bul.owner.damage(dam*bul.owner.relat, D_INSIDE);
 				}
 				if (tip==D_INSIDE && dam<5) isShow=false;
-				if (blood>0 && (tip==D_BUL || tip==D_BLADE || tip==D_PHIS || tip==D_BLEED || tip==D_FANG)) {	//кровь
-					if (bloodEmit==null) {
+				if (blood>0 && (tip==D_BUL || tip==D_BLADE || tip==D_PHIS || tip==D_BLEED || tip==D_FANG)) 	//кровь
+				{
+					if (bloodEmit==null) 
+					{
 						if (blood==1) bloodEmit=Emitter.arr['blood'];
 						if (blood==2) bloodEmit=Emitter.arr['gblood'];
 						if (blood==3) bloodEmit=Emitter.arr['pblood'];
 					}
-					if (!(player && World.w.alicorn)) {
-						if (bul) {
+					if (!(player && World.w.alicorn)) 
+					{
+						if (bul) 
+						{
 							bloodEmit.cast(loc,bul.X,bul.Y,{dx:bul.dx/bul.vel*5, dy:bul.dy/bul.vel*5,kol:Math.floor(Math.random()*5+dam/5)});
-						} else {
+						} 
+						else 
+						{
 							bloodEmit.cast(loc,X,Y-scY/2,{kol:Math.floor(dam/3)});
 						}
-						if (blood==1 && tip!=D_BLEED && massa>0.2) {
+						if (blood==1 && tip!=D_BLEED && massa>0.2) 
+						{
 							var ver=Math.random();
 							if (tip==D_BLADE) ver=ver*ver;
 							if (isCrit>0) ver*=0.3;
-							if (dam/1000>ver) {
+							if (dam/1000>ver) 
+							{
 								var st:int=1;
 								if (bul && bul.dx<0) st=-1;
 								if (bul==null && Math.random()<0.5) st=-1;
@@ -2142,10 +2445,12 @@
 						}
 					}
 				}
-				if (mat==10 && bul) {
+				if (mat==10 && bul) 
+				{
 					Emitter.emit('pole2',loc,bul.X,bul.Y);
 				}
-				if (isShow) {// Show damage
+				if (isShow) // Show damage
+				{
 					var vnumb:int=1;
 					var castX:Number=X;
 					var castY:Number=Y-scY/2;
@@ -2153,15 +2458,22 @@
 					if (player || isCrit>=2) vnumb=2;
 					if (tt) vnumb=3;
 					if (player && tt && tip==D_PINK) vnumb=11;
-					if (World.w.showHit==1 || tt) {
+					if (World.w.showHit==1 || tt) 
+					{
 						visDamDY-=15;
 						numbEmit.cast(loc,castX,castY+visDamDY,{txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
-					} else if (World.w.showHit==2) {
+					} 
+					else if (World.w.showHit==2) 
+					{
 						hitSumm+=dam;
-						if (hitPart==null) {
+						if (hitPart==null) 
+						{
 							hitPart=numbEmit.cast(loc,castX,castY+visDamDY,{txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
-						} else {
-							if (isCrit==1 || isCrit==3) {
+						} 
+						else
+						{
+							if (isCrit==1 || isCrit==3) 
+							{
 								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;;
 							}
 							hitPart.vis.numb.text=Math.round(hitSumm);
@@ -2171,10 +2483,13 @@
 					}
 				}
 				if (hp>0 && !player && isrnd()) replic('dam');
-			} else if (World.w.showHit==2) t_hitPart=10
+			} 
+			else if (World.w.showHit==2) t_hitPart=10
 			visDetails();
-			if (World.w.showHit>=1 && t_mess<=0) {
-				if (hp>0 && mess) {
+			if (World.w.showHit>=1 && t_mess<=0) 
+			{
+				if (hp>0 && mess) 
+				{
 					numbEmit.cast(loc,X,Y-scY/2,{txt:mess, frame:5, rx:20, ry:20});
 					t_mess=45;
 				}
@@ -2184,13 +2499,16 @@
 		}
 		
 		// Hit the wall: 1 - right, 2 - left, 3 - bottom, 4 - top
-		public function damageWall(napr:int=0) {
+		public function damageWall(napr:int=0) 
+		{
 			t_throw=0;
-			if (damWall>0) {
+			if (damWall>0) 
+			{
 				var dam=Math.sqrt(dx*dx+dy*dy)/damWallSpeed*damWall;
 				damage(dam,D_PHIS);
 				if (Math.random()<dam/maxhp) stun=damWallStun;
-				if (napr>0) {
+				if (napr>0) 
+				{
 					var nx:Number=X, ny:Number=Y-scY/2;
 					if (napr==1) nx=X+scX/2;
 					if (napr==2) nx=X-scX/2;
@@ -2202,40 +2520,36 @@
 			}
 		}
 		
-		public function heal(hl:Number, tip:int=0, ismess:Boolean=true) {
+		public function heal(hl:Number, tip:int=0, ismess:Boolean=true) 
+		{
 			if (hp==maxhp) return;
-			if (hl>maxhp-hp) {
+			if (hl>maxhp-hp) 
+			{
 				hl=maxhp-hp;
 				hp=maxhp;
-			} else {
+			} 
+			else 
+			{
 				hp+=hl;
 			}
 			visDetails();
-			if (World.w.showHit>=1) {
+			if (World.w.showHit>=1) 
+			{
 				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(loc,X,Y-scY/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
 			}
-			//newPart('numb',4,X+Math.random()*20-10,Y-scY/2+Math.random()*20-10,0,0,1,'+'+Math.round(hl));
 		}
 		
-		public function dopTest(bul:Bullet):Boolean {
+		public function dopTest(bul:Bullet):Boolean 
+		{
 			return true;
-			/*ppp.x=nx-vis.x;
-			ppp.y=ny-vis.y;
-			ppp=vis.localToGlobal(ppp);
-			if (!vis.hitTestPoint(ppp.x,ppp.y,true)) return false;
-			Emitter.emit('marker',loc,nx,ny);
-			return true;*/
 		}
 		
 		// Check for bullet hit, apply damage if the bullet hit, return -1 if it missed
-		public override function udarBullet(bul:Bullet, sposob:int=0):int {
+		public override function udarBullet(bul:Bullet, sposob:int=0):int 
+		{
 			var acc:Number=bul.accuracy();
-			if ((bul.miss<=0 || Math.random()>bul.miss) && (
-				dexter<=0 ||
-				bul.precision<=0 && bul.tipBullet==0 || 
-				bul.tipBullet==0 && Math.random()<acc/(dexter+dexterPlus+0.05) || 
-				bul.tipBullet==1 && dodge<1 && (dodge<=0 || Math.random()>dodge)
-			)) {
+			if ((bul.miss<=0 || Math.random()>bul.miss) && (dexter<=0 || bul.precision<=0 && bul.tipBullet==0 || bul.tipBullet==0 && Math.random()<acc/(dexter+dexterPlus+0.05) || bul.tipBullet==1 && dodge<1 && (dodge<=0 || Math.random()>dodge))) 
+			{
 				//trace('попал',bul.precision/bul.dist);
 				var dm=0;
 				if (transp && (vulner[bul.tipDamage]<=0 || invulner)) {
@@ -2256,8 +2570,11 @@
 					else if (mat==12) return 12;
 					else return 10;
 				} else return 0;
-			} else {
-				if (World.w.showHit==1 || World.w.showHit==2 && t_hitPart==0) {
+			} 
+			else 
+			{
+				if (World.w.showHit==1 || World.w.showHit==2 && t_hitPart==0) 
+				{
 					visDamDY-=15;
 					t_hitPart=10;
 					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(loc,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
@@ -2266,41 +2583,56 @@
 			}
 		}
 		// Unit-to-unit attack
-		public function udarUnit(un:Unit, mult:Number=1):Boolean {
+		public function udarUnit(un:Unit, mult:Number=1):Boolean 
+		{
 			if (neujaz>0) return false;
 			neujaz=neujazMax;
-			if (dodge-un.undodge>0 && isrnd(dodge-un.undodge)) {
+			if (dodge-un.undodge>0 && isrnd(dodge-un.undodge)) 
+			{
 				if (World.w.showHit>=1)	numbEmit.cast(loc,X,Y-scY/2,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
 				return false;
 			}
 			var sila=Math.random()*0.4+0.8;
-			if (un.collisionTip==1) {
+			if (un.collisionTip==1) 
+			{
 				var ndx=(un.dx*un.massa+dx*massa)/(un.massa+massa);
 				var ndy=(un.dy*un.massa+dy*massa)/(un.massa+massa);
 				dx=(-dx+ndx)*knocked+ndx, dy=(-dy+ndy)*knocked+ndy;
 				un.dx=(-un.dx+ndx)*un.knocked+ndx, un.dy=(-un.dy+ndy)*un.knocked+ndy;
 			}
-			if (un.currentWeapon && un.currentWeapon.tip==1) {
+			if (un.currentWeapon && un.currentWeapon.tip==1) 
+			{
 				damage((un.currentWeapon.damage*0.5+un.dam)*sila*mult, un.currentWeapon.tipDamage)
-			} else {
+			} 
+			else 
+			{
 				damage((un.dam)*sila*mult, un.tipDamage);
 			}
 			var sc:Number=(un.dam*sila*mult)/20;
 			if (sc<0.5) sc=0.5;
 			if (sc>3) sc=3;
-			if (un.tipDamage == Unit.D_SPARK) {
+			if (un.tipDamage == Unit.D_SPARK) 
+			{
 				Emitter.emit('moln',loc,X,Y-scY/2,{celx:un.X, cely:(un.Y-un.scY/2)});
 				Snd.ps('electro',X,Y);
-			} else if (un.tipDamage == Unit.D_ACID) {
+			} 
+			else if (un.tipDamage == Unit.D_ACID) 
+			{
 				Emitter.emit('buma',loc,(X+un.X)/2,(Y-scY/2+un.Y-un.scY/2)/2,{scale:sc});
 				Snd.ps('acid',X,Y);
-			} else if (un.tipDamage == Unit.D_NECRO) {
+			} 
+			else if (un.tipDamage == Unit.D_NECRO) 
+			{
 				Emitter.emit('bumn',loc,(X+un.X)/2,(Y-scY/2+un.Y-un.scY/2)/2,{scale:sc});
 				Snd.ps('hit_necr',X,Y);
-			} else if (un.tipDamage == Unit.D_FANG) {
+			} 
+			else if (un.tipDamage == Unit.D_FANG) 
+			{
 				Emitter.emit('bum',loc,(X+un.X)/2,(Y-scY/2+un.Y-un.scY/2)/2,{scale:sc});
 				Snd.ps('fang_hit',X,Y);
-			} else {
+			} 
+			else 
+			{
 				Emitter.emit('bum',loc,(X+un.X)/2,(Y-scY/2+un.Y-un.scY/2)/2,{scale:sc});
 				Snd.ps('hit_flesh',X,Y);
 			}
@@ -2308,19 +2640,24 @@
 			return true;
 		}
 		// Impact by a falling object
-		public function udarBox(un:Box):int {
+		public function udarBox(un:Box):int 
+		{
 			if (neujaz>0 || noBox || un.loc!=loc) return 0;
-			if (un.molnDam>0) {
+			if (un.molnDam>0) 
+			{
 				damage(un.molnDam, D_SPARK);
 				return 1;
 			}
 			neujaz=neujazMax;
-			if (!fixed) {
+			if (!fixed) 
+			{
 				var ndx=(un.dx*un.massa+dx*massa)/(un.massa+massa);
 				var ndy=(un.dy*un.massa+dy*massa)/(un.massa+massa);
 				dx=(-dx+ndx)*knocked+ndx, dy=(-dy+ndy)*knocked+ndy;
 				un.dx=(-un.dx+ndx)*0.25+ndx, un.dy=(-un.dy+ndy)*0.25+ndy;
-			} else {
+			} 
+			else 
+			{
 				un.dx*=0.5;
 				un.dy*=0.5;
 			}
@@ -2329,36 +2666,46 @@
 			return 2;
 		}
 		// Bullet recoil effect
-		public function otbros(bul:Bullet) {
+		public function otbros(bul:Bullet) 
+		{
 			if (invulner) return;
 			var sila=Math.random()*0.4+0.8;
 			sila*=knocked/massa;
 			if (sila>3) sila=3;
 			dx+=bul.knockx*bul.otbros*sila;
 			dy+=bul.knocky*bul.otbros*sila;
-			if (bul.explRadius>0) {
-				//trace(bul.dx/bul.vel*bul.otbros/massa*sila,bul.dy/bul.vel*bul.otbros/massa*sila)
+			if (bul.explRadius>0) 
+			{
+
 			}
 		}
 		
 		// Activation from passive mode
-		public function alarma(nx:Number=-1,ny:Number=-1) {
+		public function alarma(nx:Number=-1,ny:Number=-1) 
+		{
 			oduplenie=0;
-			if (nx>0 && ny>0 && celUnit==null) {
+			if (nx>0 && ny>0 && celUnit==null) 
+			{
 				setCel(null,nx,ny);
 			}
 		}
 		// Awaken everyone around
-		public function budilo(rad:Number=500) {
+		public function budilo(rad:Number=500) 
+		{
 			makeNoise(noiseRun*1.2);
 			//trace('budilo');
-			for each(var un:Unit in loc.units) {
-				if (un && un!=this && un.fraction==fraction && un.sost==1 && !un.unres) {
+			for each(var un:Unit in loc.units) 
+			{
+				if (un && un!=this && un.fraction==fraction && un.sost==1 && !un.unres) 
+				{
 					var nx=un.X-X;
 					var ny=un.Y-Y;
-					if (opt && opt.robot && un.opt && un.opt.robot) {
+					if (opt && opt.robot && un.opt && un.opt.robot)
+					{
 						if (nx*nx+ny*ny<rad*rad) un.alarma(celX,celY);
-					} else {
+					} 
+					else 
+					{
 						//trace(un.ear);
 						if (nx*nx+ny*ny<rad*rad*un.ear*un.ear) un.alarma(X+(Math.random()-0.5)*250,Y+(Math.random()-0.5)*250);
 					}
@@ -2366,30 +2713,39 @@
 			}
 		}
 		// Deactivation (for security systems)
-		public function hack(sposob:int=0) {
+		public function hack(sposob:int=0) 
+		{
+
 		}
 		
 		
 //--------------------------------------------------------------------------------------------------------------------
 //				Death
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0) 
+		{
 			if (hpbar) hpbar.visible=false;
-			if (boss) {
+			if (boss) 
+			{
 				World.w.gui.hpBarBoss();
 				if (sndMusic) Snd.combatMusic(sndMusic, sndMusicPrior, 90);
 			}
 			if (sposob==0 && sost==1 && sndDie) sound(sndDie);
-			if (noDestr) {			// Don't remove after death
+			if (noDestr) // Don't remove after death
+			{			
 				sost=3;
-			} else if (sposob>0) {	// Killed by an exotic method
+			} 
+			else if (sposob>0) 	// Killed by an exotic method
+			{
 				isFly=false;
 				initBurn(sposob);
 				dexter=100;
 				fraction=0;
 				throu=false;
 				sost=3;
-			} else if (trup && hp>-maxhp*2) {	// Leave a corpse that is not completely destroyed
+			} 
+			else if (trup && hp>-maxhp*2) 	// Leave a corpse that is not completely destroyed
+			{
 				replic('die');
 				isFly=false;
 				scX=sitX, scY=sitY;
@@ -2398,7 +2754,9 @@
 				throu=false;
 				porog=0;
 				sost=3;
-			} else if (trup && blood>0) {		// There is blood
+			} 
+			else if (trup && blood>0) 		// There is blood
+			{
 				if (burn==null) sound('trup');
 				initBurn(4+blood);
 				isFly=false;
@@ -2406,7 +2764,9 @@
 				throu=false;
 				porog=0;
 				sost=3;
-			} else if (burn==null) {			// Destroy
+			} 
+			else if (burn==null) 			// Destroy
+			{
 				if (trup && blood>0) sound('trup');
 				expl();
 				exterminate();
@@ -2420,26 +2780,30 @@
 			sndRunOn=false;
 			plaKap=false;
 			if (!doop && World.w.t_battle>30) World.w.t_battle=30;
-			if (!lootIsDrop && (!isRes || sost==4 || burn)) {
+			if (!lootIsDrop && (!isRes || sost==4 || burn)) 
+			{
 				lootIsDrop=true;
 				if (mother) mother.kolChild--;
 				if (hero>0) World.w.gui.infoText('killHero',nazv);
 				runScript();
 				dropLoot();
 				incStat();
-				if (xp>0) {
+				if (xp>0) 
+				{
 					loc.takeXP(xp,X,Y,true);
 					xp=0;
 				}
 				if (loc.prob) loc.prob.check();
-				if (opt && opt.hbonus) {
+				if (opt && opt.hbonus) 
+				{
 					loc.createHealBonus(X, Y-scY/2);
 				}
 			}
 		}
 		
 		// Destroy, remove from the world
-		public function exterminate() {
+		public function exterminate() 
+		{
 			radioactiv=0;
 			levitPoss=false;
 			if (sost!=4) loc.remObj(this);
@@ -2448,9 +2812,12 @@
 		}
 		
 		// Explosion, guts, or other effect after death
-		public function expl()	{
-			if (blood) {
-				if (bloodEmit==null) {
+		public function expl()	
+		{
+			if (blood) 
+			{
+				if (bloodEmit==null) 
+				{
 					if (blood==1) bloodEmit=Emitter.arr['blood'];
 					if (blood==2) bloodEmit=Emitter.arr['gblood'];
 					if (blood==3) bloodEmit=Emitter.arr['pblood'];
@@ -2459,16 +2826,19 @@
 			}
 		}
 		// Called in any case at the moment of death, only once!
-		public function dropLoot() {
+		public function dropLoot() 
+		{
 			if (inter) inter.loot();
 			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(loc,X,Y-scY/2,'essence');
 			// Dropping a precious gem
-			if (World.w.pers && World.w.pers.dropTre>0 && xp>0) {
+			if (World.w.pers && World.w.pers.dropTre>0 && xp>0) 
+			{
 				if (Math.random()<World.w.pers.dropTre*xp/4000) LootGen.lootId(loc,X,Y-scY/2,'gem'+Math.floor(Math.random()*3+1));
 			}
 		}
 		
-		public function initBurn(sposob:int) {
+		public function initBurn(sposob:int) 
+		{
 			if (burn!=null) return;
 			remVisual();
 			burn=new Desintegr(this,sposob);
@@ -2480,22 +2850,27 @@
 			setVisPos();
 		}
 
-		public function runScript() {
+		public function runScript() 
+		{
 			if (scrDie) scrDie.start();
-			if (questId)  {
+			if (questId) 
+			{
 				if (loc.land.itemScripts[questId]) loc.land.itemScripts[questId].start();
 				World.w.game.incQuests(questId);
 			}
 			if (wave && loc.prob) loc.prob.checkWave(true);
 			// Perform an action like destroying a certain number of enemies with a specific weapon
-			if (dieWeap!=null && World.w.game.triggers['look_'+dieWeap]>0 && xp>0) {
+			if (dieWeap!=null && World.w.game.triggers['look_'+dieWeap]>0 && xp>0) 
+			{
 				World.w.game.incQuests('kill_'+dieWeap);
 			}
 		}
 
 		// Modify statistics
-		public function incStat(sposob:int=0) {
-			if (World.w.game) {
+		public function incStat(sposob:int=0) 
+		{
+			if (World.w.game) 
+			{
 				if (World.w.game.triggers['frag_'+id]>0) World.w.game.triggers['frag_'+id]++;
 				else World.w.game.triggers['frag_'+id]=1;
 			}
@@ -2505,21 +2880,25 @@
 //				Service functions for AI
 
 		// Ability to interact with a unit
-		public function isMeet(un:Unit):Boolean {
+		public function isMeet(un:Unit):Boolean 
+		{
 			return un!=null && loc==un.loc && !un.disabled && !un.trigDis && un.sost!=4 && un!=this;
 		}
 		// Determines if a unit doesn't obstruct line of sight, returns true if it doesn't
-		public function getTileVisi(r:Number=0.3):Boolean {
+		public function getTileVisi(r:Number=0.3):Boolean 
+		{
 			return (loc.getAbsTile(X,Y-scY/2).visi>r);
 		}
 		
 		// Listen to another unit
-		public function listen(ncel:Unit):Number {
+		public function listen(ncel:Unit):Number 
+		{
 			var noi=ncel.noise*ear*loc.earMult;	// Radius of sound audibility
 			if (noi<=0) return 0;
 			var r2:Number;		// Distance to the object squared
 			if (ncel.player) r2=rasst2;
-			else {
+			else 
+			{
 				var nx=ncel.X-X;
 				var ny=ncel.Y-ncel.scY/2-Y+scY/2;
 				r2=nx*nx+ny*ny;
@@ -2535,11 +2914,13 @@
 		// visParam - parameter for determining visibility range, defaults to vision
 		// nDist - object visibility distance, defaults to calculated value
 		// Returns the value by which the hero's obs is increased
-		public function look(ncel:Unit, over:Boolean=true, visParam:Number=0, nDist:Number=0):Number {
+		public function look(ncel:Unit, over:Boolean=true, visParam:Number=0, nDist:Number=0):Number 
+		{
 			if (ncel==null || nDist<=0 && visParam<=0 && vision<=0) return 0;
 			var cx=(ncel.X-eyeX);
 			var cy=(ncel.Y-ncel.scY*0.6-eyeY);
-			if (eyeX==-1000 || eyeY==-1000) {
+			if (eyeX==-1000 || eyeY==-1000) 
+			{
 				eyeX=X,eyeY=Y-30;
 				//trace('Point of view not set', nazv);
 			}
@@ -2547,7 +2928,8 @@
 			var distVis=nDist;		// take from parameter
 			if (nDist<=0) distVis=(ncel.visibility*ncel.stealthMult*loc.visMult+ncel.demask)*(visParam?visParam:vision);	//или вычислить
 			// if there's no vision behind, and the object is above or below 45 degrees, reduce the distance
-			if (vKonus==0 && !over && cy*cy>cx*cx && cy>0) {
+			if (vKonus==0 && !over && cy*cy>cx*cx && cy>0) 
+			{
 				distVis*=(0.5+0.5*Math.abs(cx/cy));
 			}
 			// if the distance is greater than the visibility distance, return 0
@@ -2556,7 +2938,8 @@
 			// if there's no vision behind, and the object is behind, return 0
 			if (vKonus==0 && !over && cx*storona<0 && r2>detecting*detecting) return 0;
 			// vision cone
-			if (vKonus>0) {
+			if (vKonus>0) 
+			{
 				var ug:Number=Math.atan2(cy,cx);
 				var dug:Number=vAngle-ug;
 				if (dug>Math.PI) dug-=Math.PI*2;
@@ -2566,11 +2949,13 @@
 			
 			// Check the line of sight
 			var div=Math.floor(Math.max(Math.abs(cx),Math.abs(cy))/World.maxdelta)+1;
-			for (var i=(mater?1:4); i<div; i++) {
+			for (var i=(mater?1:4); i<div; i++) 
+			{
 				var nx=X+scX*0.25*storona+cx*i/div;
 				var ny=Y-scY*0.75+cy*i/div;
 				var t:Tile=World.w.loc.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
-				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
+				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) 
+				{
 					return 0;
 				}
 			}
@@ -2579,13 +2964,15 @@
 			return (distVis*distVis)/r2*4;
 		}
 		// Get a target for AI
-		public function findCel(over:Boolean=false):Boolean {
+		public function findCel(over:Boolean=false):Boolean 
+		{
 			if (oduplenie>0) return false;
 			var ncel:Unit;
 			if (priorUnit && isMeet(priorUnit) && priorUnit.fraction!=fraction && priorUnit.sost<3 && priorUnit.hp>-priorUnit.maxhp && (!priorUnit.doop || priorUnit.levit)) ncel=priorUnit;
 			else if (isMeet(loc.gg) && !loc.gg.invulner && fraction!=F_PLAYER) ncel=loc.gg;
 			else return false;
-			if (ncel.player) {
+			if (ncel.player) 
+			{
 				var res1:Number=listen(ncel);
 				if (res1) {
 					(ncel as UnitPlayer).observation(res1);
@@ -2593,18 +2980,23 @@
 				var res2:Number=look(ncel,overLook || over);
 				if (res2>0) {
 					(ncel as UnitPlayer).observation(res2,observ);
-					if ((ncel as UnitPlayer).obs>=(ncel as UnitPlayer).maxObs) {
+					if ((ncel as UnitPlayer).obs>=(ncel as UnitPlayer).maxObs) 
+					{
 						setCel(ncel);
 						return true;
 					}
 				} else if (res1>0){
-					if ((ncel as UnitPlayer).obs>=(ncel as UnitPlayer).maxObs) {
+					if ((ncel as UnitPlayer).obs>=(ncel as UnitPlayer).maxObs) 
+					{
 						setCel(null,ncel.X+(Math.random()-0.5)*200, ncel.Y+(Math.random()-0.5)*200);
 					}
 					if (res1>1) return true;
 				}
-			} else {
-				if (look(ncel,overLook || over)>0.5) {
+			} 
+			else 
+			{
+				if (look(ncel,overLook || over)>0.5) 
+				{
 					setCel(ncel);
 					return true;
 				}
@@ -2614,8 +3006,10 @@
 			return false;
 		}
 		// Set a target to a unit or a point
-		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
-			if (un && isMeet(un)) {
+		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) 
+		{
+			if (un && isMeet(un)) 
+			{
 				celX=un.X+un.scX/4*un.storona, celY=un.Y-un.scY/2;
 				celUnit=un;
 				if (un.player) {
@@ -2624,10 +3018,14 @@
 					loc.detecting=true;
 					if (sndMusic && !loc.postMusic) Snd.combatMusic(sndMusic, sndMusicPrior, boss?10000:150);
 				}
-			} else if (cx>-10000 && cy>-10000) {
+			} 
+			else if (cx>-10000 && cy>-10000) 
+			{
 				celX=cx, celY=cy;
 				celUnit=null;
-			} else {
+			} 
+			else 
+			{
 				celX=X, celY=Y-scY/2;
 				celUnit=null;
 			}
@@ -2635,13 +3033,17 @@
 			celDY=celY-Y+scY;
 		}
 		
-		public function findGrenades():Boolean {
-			for (var i=0; i<10; i++) {
+		public function findGrenades():Boolean 
+		{
+			for (var i=0; i<10; i++) 
+			{
 				if (loc.grenades[i]==null) continue;
 				var gx:Number=loc.grenades[i].X-X;
 				var gy:Number=loc.grenades[i].Y-Y+scY/2;
-				if (gx*gx+gy*gy<400*400) {	//граната есть
-					if (loc.isLine(X,Y-scY*0.75,loc.grenades[i].X, loc.grenades[i].Y)) {
+				if (gx*gx+gy*gy<400*400) 	//граната есть
+				{
+					if (loc.isLine(X,Y-scY*0.75,loc.grenades[i].X, loc.grenades[i].Y)) 
+					{
 						acelX=loc.grenades[i].X;
 						acelY=loc.grenades[i].Y;
 						return true;
@@ -2651,8 +3053,10 @@
 			return false;
 		}
 		
-		public function findLevit() {
-			if (isMeet(loc.gg) && loc.gg.teleObj) {
+		public function findLevit() 
+		{
+			if (isMeet(loc.gg) && loc.gg.teleObj) 
+			{
 				var gx:Number=loc.gg.teleObj.X-X;
 				if (!overLook && gx*storona<0) return false;
 				var gy:Number=loc.gg.teleObj.Y-loc.gg.teleObj.scY/2-Y+scY/2;
@@ -2661,16 +3065,19 @@
 			return false;
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null) 
+		{
 			super.command(com,val);
-			if (com=='activate') {
+			if (com=='activate') 
+			{
 				noAct=false;
 				disabled=false;
 				setNull(true);
 				addVisual();
 				Emitter.emit('tele',loc,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
 			}
-			if (com=='fraction') {
+			if (com=='fraction') 
+			{
 				fraction=int(val);
 				if (fraction==F_PLAYER) warn=0;
 				else warn=1;
@@ -2681,26 +3088,33 @@
 //--------------------------------------------------------------------------------------------------------------------
 //				Conversations
 
-		public function replic(s:String) {
+		public function replic(s:String) 
+		{
 			//trace(id,s);
 			if (sost!=1 || id_replic=='' || !loc.active) return;
 			var s_replic:String;
-			if (s=='dam') {
+			if (s=='dam') 
+			{
 				if (isrnd(0.05)) t_replic=0;
 			} 
-			if (s=='die') {
+			if (s=='die') 
+			{
 				if (isrnd()) t_replic=0;
 			} 
-			if (t_replic<=0) {
-				if (s=='attack') {
+			if (t_replic<=0) 
+			{
+				if (s=='attack') 
+				{
 					t_replic=50+Math.random()*100;
-				} else {
+				} 
+				else 
+				{
 					t_replic=110+Math.random()*150;
 				}
 				s_replic=Res.repText(id_replic, s, msex);
-				if (s_replic!='' && s_replic!=null) {
+				if (s_replic!='' && s_replic!=null) 
+				{
 					Emitter.emit('replic',loc,X,Y-110,{txt:s_replic, ry:50});
-					//var p:Part=newPart('replic',0,X,Y-80-Math.random()*50,0,0,1,s_replic);
 				}
 			}
 		}
@@ -2708,7 +3122,8 @@
 		
 //--------------------------------------------------------------------------------------------------------------------
 //				Random
-		protected function isrnd(n:Number=0.5):Boolean {
+		protected function isrnd(n:Number=0.5):Boolean 
+		{
 			return Math.random()<n;
 		}
 		

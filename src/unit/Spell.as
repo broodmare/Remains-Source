@@ -1,4 +1,5 @@
-﻿package src.unit {
+﻿package src.unit 
+{
 	
 	import src.*;
 	import src.loc.Location;
@@ -6,7 +7,8 @@
 	import src.graph.Emitter;
 	import flash.ui.Multitouch;
 
-	public class Spell {
+	public class Spell 
+	{
 		
 		public var owner:Unit;
 		public var gg:UnitPlayer;
@@ -38,12 +40,14 @@
 		
 		public var snd:String;
 
-		public function Spell(own:Unit, nid:String) {
+		public function Spell(own:Unit, nid:String) 
+		{
 			id=nid;
 			owner=own;
-			if (owner && owner.player) {
-				player=true;
-				gg=owner as UnitPlayer;
+			if (owner && owner.player) 
+			{
+				player = true;
+				gg = owner as UnitPlayer;
 			}
 			
 			xml=AllData.d.item.(@id==id)[0];
@@ -72,30 +76,38 @@
 			if (id=='sp_invulner') cf=cast_invulner;
 		}
 		
-		public function step() {
+		public function step() 
+		{
 			if (t_culd>0) t_culd--;
 		}
 		
-		public function cast(nx:Number=0, ny:Number=0):Boolean {
+		public function cast(nx:Number=0, ny:Number=0):Boolean 
+		{
 			//проверка возможности магии и наличия маны
 			if (cf==null) return false;
-			if (player) {
+			if (player) 
+			{
 				if (World.w.alicorn && id!='sp_mshit') return false;
 				if (gg.rat>0) return false;
-				if (gg.invent.weapons[id] && gg.invent.weapons[id].respect==1) {
+				if (gg.invent.weapons[id] && gg.invent.weapons[id].respect==1) 
+				{
 					World.w.gui.infoText('disSpell',null,null,false);
 					Snd.ps('nomagic');
 					return false;
 				}
-				if (World.w.pers.spellsPoss==0 || atk && !gg.atkPoss) {
+				if (World.w.pers.spellsPoss==0 || atk && !gg.atkPoss) 
+				{
 					World.w.gui.infoText('noSpells',null,null,false);
 					Snd.ps('nomagic');
 					World.w.gui.bulb(owner.X,owner.Y);
 					return false;
 				}
-				if (t_culd>0) {
-					if (!active) {
-						if (culd>=100) {
+				if (t_culd>0) 
+				{
+					if (!active) 
+					{
+						if (culd>=100) 
+						{
 							World.w.gui.infoText('spellCuld',Math.ceil(t_culd/World.fps),null,false);
 							World.w.gui.bulb(owner.X,owner.Y-20);
 						}
@@ -106,20 +118,23 @@
 				dmagic=magic*World.w.pers.allDManaMult;
 				dmana=mana*World.w.pers.allDManaMult;
 				if (dmagic>999) dmagic=999;
-				if (owner.mana<dmagic) {
+				if (owner.mana<dmagic) 
+				{
 					World.w.gui.infoText('overMana',null,null,false);
 					Snd.ps('nomagic');
 					World.w.gui.bulb(owner.X,owner.Y-20);
 					return false;
 				}
-				if (dmana>World.w.pers.manaHP) {
+				if (dmana>World.w.pers.manaHP) 
+				{
 					World.w.gui.infoText('noMana',null,null,false);
 					Snd.ps('nomagic');
 					return false;
 				}
 			}
 			//координаты источника
-			if (owner) {
+			if (owner) 
+			{
 				X=owner.magicX;
 				Y=owner.magicY;
 				loc=owner.loc;
@@ -127,20 +142,25 @@
 				if (player && teleSpell) {
 					power=gg.pers.telePower;
 				}
-			} else {
+			} 
+			else 
+			{
 				loc=World.w.loc;
 			}
 			//координаты цели
 			cx=nx, cy=ny;
 			//проверка видимости точки цели, если это нужно
-			if (line==1 && owner && !owner.loc.isLine(X,Y, cx, cy)) {
+			if (line==1 && owner && !owner.loc.isLine(X,Y, cx, cy)) 
+			{
 				if (player) World.w.gui.infoText('noVisible',null,null,false);
 				return false;
 			}
 			//проверка и коррекция дистанции
-			if (dist>0) {
+			if (dist>0) 
+			{
 				var rasst2=(X-cx)*(X-cx)+(Y-cy)*(Y-cy);
-				if (rasst2>dist*dist) {
+				if (rasst2>dist*dist) 
+				{
 					var rasst=Math.sqrt(rasst2);
 					cx=X-(X-cx)*dist/rasst;
 					cy=Y-(Y-cy)*dist/rasst;
@@ -149,13 +169,16 @@
 			//снять ману
 			//вызов нужной функции
 			cf();
-			if (est==1) {
-				if (player) {
+			if (est==1) 
+			{
+				if (player) 
+				{
 					gg.manaSpell(magic*gg.pers.warlockDManaMult,mana*gg.pers.warlockDManaMult);
 					t_culd=Math.round(culd*gg.pers.spellDown);
 				}
 				if (snd) Snd.ps(snd,X,Y);
-			} else if (est==0) {
+			} else if (est==0) 
+			{
 				Snd.ps('nomagic');
 				return false;
 			}
@@ -164,7 +187,8 @@
 		}
 		
 		//создать магическую стену
-		function cast_mwall() {
+		function cast_mwall() 
+		{
 			var un:Unit=loc.createUnit('mwall',cx,cy+60,true);
 			if (owner) un.fraction=owner.fraction;
 			un.maxhp=hp*power;
@@ -172,21 +196,25 @@
 		}
 		
 		//магический щит
-		function cast_mshit() {
+		function cast_mshit() 
+		{
 			if (owner.player && World.w.alicorn) owner.shithp=World.w.pers.alicornShitHP;
 			else owner.shithp=hp*power;
 		}
 		//магический щит
-		function cast_cryst() {
+		function cast_cryst() 
+		{
 			est=1;
-			if (player) {
+			if (player) 
+			{
 				if (gg.t_cryst>0) est=2;
 				gg.t_cryst=5;
 			}
 		}
 		
 		//кинетический рывок
-		function cast_kdash() {
+		function cast_kdash() 
+		{
 			if (!owner.loc.levitOn) return;
 			var dx:Number=(cx-owner.X);
 			var dy:Number=(cy-owner.Y+owner.scY);
@@ -201,18 +229,21 @@
 			owner.levit=0;
 			owner.dx+=d.x;
 			owner.dy+=d.y;
-			if (player) {
+			if (player) 
+			{
 				gg.kdash_t=prod;
 				gg.t_levitfilter=20;
 			}
 		}
 		
 		//кинетический взрыв
-		function cast_blast() {
+		function cast_blast() 
+		{
 			if (loc==null) return;
 			X=owner.X;
 			Y=owner.Y;
-			for each(var un:Unit in loc.units) {
+			for each(var un:Unit in loc.units) 
+			{
 				if (un.fixed || un.fraction==owner.fraction || !owner.isMeet(un)) continue;
 				var dx:Number=un.X-X;
 				var dy:Number=un.Y-un.scY/2-Y;
@@ -234,7 +265,8 @@
 		}
 		
 		//замедляющее поле
-		function cast_slow() {
+		function cast_slow() 
+		{
 			if (owner) owner.addEffect('inhibitor',rad*power);
 		}
 		
@@ -243,14 +275,17 @@
 			if (gg.currentPet!='moon') {
 				gg.pets['moon'].hp=gg.pets['moon'].maxhp;
 				gg.callPet('moon',true);
-			} else if (gg.pet){
+			} 
+			else if (gg.pet)
+			{
 				gg.pet.heal(gg.pet.maxhp);
 			}
 		}
 		
 		public function gwall(nx,ny) {
 			var t:Tile=loc.getAbsTile(nx,ny);
-			if (loc.testTile(t)) {
+			if (loc.testTile(t)) 
+			{
 				t.phis=3;
 				t.hp=Math.round(hp*power);
 				t.mat=7;
@@ -261,7 +296,8 @@
 			Emitter.emit('gwall',loc,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight);
 		}
 		
-		function cast_gwall() {
+		function cast_gwall() 
+		{
 			est=0;
 			gwall(cx,cy-40);				
 			gwall(cx,cy);				
@@ -270,11 +306,16 @@
 		}
 		
 		//замедляющее поле
-		function cast_invulner() {
-			if (owner && player) {
-				if (gg.pers.bloodHP<=dam*3) {
+		function cast_invulner() 
+		{
+			if (owner && player) 
+			{
+				if (gg.pers.bloodHP<=dam*3) 
+				{
 					est=0;
-				} else {
+				} 
+				else 
+				{
 					owner.addEffect('bloodinv');
 					gg.pers.bloodDamage(dam,Unit.D_BLEED);
 					est=1;
