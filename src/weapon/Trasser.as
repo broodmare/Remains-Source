@@ -1,11 +1,13 @@
-﻿package src.weapon {
+﻿package src.weapon 
+{
 	
 	import src.*;
 	import src.unit.Unit;
 	import src.loc.*;
 	import flash.display.Graphics;
 	
-	public class Trasser {
+	public class Trasser 
+	{
 		
 		public var loc:Location;
 		public var X:Number, Y:Number, dx:Number, dy:Number, begx:Number, begy:Number, begdx:Number, begdy:Number, ddx:Number=0, ddy:Number=0;
@@ -145,7 +147,5 @@
 				}
 			}
 		}
-		
 	}
-	
 }

@@ -1,4 +1,5 @@
-﻿package src.weapon {
+﻿package src.weapon 
+{
 	
 	import src.*;
 	import src.unit.Unit;
@@ -254,5 +255,4 @@
 			}
 		}
 	}
-	
 }

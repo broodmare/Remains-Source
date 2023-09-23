@@ -1,4 +1,5 @@
-﻿package src.weapon {
+﻿package src.weapon 
+{
 	
 	import flash.geom.Point;
 	import flash.utils.*;
@@ -10,7 +11,8 @@
 	import src.graph.Emitter;
 	import src.unit.Pers;
 
-	public class Weapon extends src.Obj{
+	public class Weapon extends src.Obj
+	{
 		
 		public static var weaponPerks:Array=['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']
 		public static var variant2=' - II';

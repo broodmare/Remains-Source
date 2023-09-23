@@ -1,9 +1,11 @@
-﻿package src.weapon {
+﻿package src.weapon 
+{
 	
 	import src.*;
 	import src.unit.Unit;
 	
-	public class SmartBullet  extends Bullet{
+	public class SmartBullet  extends Bullet
+	{
 
 		public var manevr:Number=3;
 		public var maxVel=150;
@@ -43,5 +45,4 @@
 			}
 		}
 	}
-	
 }

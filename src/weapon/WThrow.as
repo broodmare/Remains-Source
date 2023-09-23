@@ -1,4 +1,5 @@
-﻿package src.weapon  {
+﻿package src.weapon  
+{
 	
 	import src.*;
 	import src.unit.Unit;
@@ -7,7 +8,8 @@
 	import flash.display.Graphics;
 	
 	
-	public class WThrow  extends Weapon{
+	public class WThrow  extends Weapon
+	{
 		
 		public var kolAmmo:int=4;
 		public var detTime:int=75;
@@ -18,7 +20,8 @@
 		public var sndFall:String='';
 		
 		
-		public function WThrow(own:Unit, nid:String, nvar:int=0) {
+		public function WThrow(own:Unit, nid:String, nvar:int=0) 
+		{
 			super(own,nid,nvar);
 			noPerc=true;
 			vBullet=vWeapon;
@@ -35,58 +38,71 @@
 			if (node.snd.length() && node.snd[0].@fall.length()) sndFall=node.snd[0].@fall;
 		}
 
-		public override function attack(waitReady:Boolean=false):Boolean {
-			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) {
+		public override function attack(waitReady:Boolean=false):Boolean 
+		{
+			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) 
+			{
 				t_auto=3;
 				return false;
 			}
 			skillConf=1;
-			if (owner.player && World.w.weaponsLevelsOff) {
-				if (lvlNoUse) {
-					if ((owner as UnitPlayer).pers.getWeapLevel(skill)<lvl) {
+			if (owner.player && World.w.weaponsLevelsOff) 
+			{
+				if (lvlNoUse) 
+				{
+					if ((owner as UnitPlayer).pers.getWeapLevel(skill)<lvl) 
+					{
 						World.w.gui.infoText('weaponSkillLevel');
 						return false;
 					}
-				} else {
+				} 
+				else 
+				{
 					var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 					if (razn==1) skillConf=0.75;
 					else if (razn==2) skillConf=0.5;
-					else if (razn>2) {
+					else if (razn>2) 
+					{
 						World.w.gui.infoText('weaponSkillLevel');
 						return false;
 					}
 				}
 			}
-			if (t_attack<=0) {
-				if (getAmmo()) {
+			if (t_attack<=0) 
+			{
+				if (getAmmo()) 
+				{
 					t_attack=rapid;
-					//shoot();
 				}
 			}
 			return true;
 		}
 		
-		private function getVel(rx:Number, ry:Number, sk:Number):Number {
+		private function getVel(rx:Number, ry:Number, sk:Number):Number 
+		{
 			return Math.min(speed*sk,Math.sqrt(rx*rx+ry*ry)/10*sk-ry/10*sk)
 		}
-		private function getRot(rx:Number, ry:Number, rvel:Number):Number {
+		private function getRot(rx:Number, ry:Number, rvel:Number):Number 
+		{
 			return -rx/(rvel+0.0001)/100;
 		}
 		
-		protected override function shoot():Bullet {
+		protected override function shoot():Bullet 
+		{
 			var sk=1;
-			if (owner) {
+			if (owner) 
+			{
 				sk=owner.weaponSkill;
 				if (owner.player) sk=weaponSkill;
 			}
 			var r=(Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
 			var rasstx=owner.celX-X;
 			var rassty=owner.celY-Y;
-			if (throwTip==1) {
+			if (throwTip==1) 
+			{
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
 				un.putLoc(World.w.loc,X,Y);
-				//un.loc=World.w.loc;
 				un.loc.addObj(un);
 				un.loc.units.push(un);
 				un.fraction=owner.fraction;
@@ -98,14 +114,15 @@
 				un.vis.gotoAndStop(1);
 				un.setVis(true);
 				un.inter.mine=1;
-				//un.setPos(X,Y);
 				if (un.collisionAll()) un.setPos(owner.X,owner.Y);
 				if (un.collisionAll()) un.fixed=true;
 				if (owner && owner.player && World.w.pers.sapper>1) {
 					un.damage1*=World.w.pers.sapper;
 					un.vulner[Unit.D_EXPL]=un.vulner[Unit.D_PLASMA]=0;
 				}
-			} else {
+			} 
+			else 
+			{
 				b = new PhisBullet(owner,X,Y,vBullet);
 				b.weap=this;
 				b.vel=getVel(rasstx, rassty, sk*skillConf);
@@ -121,12 +138,13 @@
 				(b as PhisBullet).tormoz=tormoz;
 				(b as PhisBullet).brake=brake;
 				setBullet(b);
-				(b as PhisBullet).dr=(throwTip==2)?0:b.dx;// owner.storona*Math.random()*15+5;
+				(b as PhisBullet).dr=(throwTip==2)?0:b.dx;
 				(b as PhisBullet).lip=(throwTip==2);
 				b.vis.play();
 				b.critDamMult=1;
 				(b as PhisBullet).sndHit=sndFall;
-				if (owner.player) {
+				if (owner.player) 
+				{
 					if (World.w.pers.grenader && !World.w.ctr.keyRun) (b as PhisBullet).isSensor=true;
 				}
 				loc.newGrenade(b);
@@ -135,7 +153,8 @@
 			if (sndShoot!='') Snd.ps(sndShoot,X,Y);
 			is_shoot=true;
 			hold=0;
-			if (owner.player && loc.train) {
+			if (owner.player && loc.train) 
+			{
 				World.w.invent.items[ammo].kol++;
 				World.w.invent.mass[2]+=World.w.invent.items[ammo].mass;
 			}
@@ -143,7 +162,8 @@
 			return b;
 		}
 		
-		public override function setTrass(gr:Graphics) {
+		public override function setTrass(gr:Graphics) 
+		{
 			skillConf=1;
 			var razn=lvl-World.w.pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.75;
@@ -169,17 +189,25 @@
 			trasser.trass(gr);
 		}
 
-		public override function reloadWeapon() {
+		public override function reloadWeapon() 
+		{
 			
 		}
 		
-		public function getAmmo():Boolean {
-			if (owner.player) {
+		public function getAmmo():Boolean 
+		{
+			if (owner.player) 
+			{
 				return (owner as UnitPlayer).getInvAmmo(ammo,1,1,true)>0
-			} else {
-				if (kolAmmo<=0) {
+			} 
+			else 
+			{
+				if (kolAmmo<=0) 
+				{
 					return false;
-				} else {
+				} 
+				else 
+				{
 					kolAmmo--
 					return true;
 				}
@@ -188,7 +216,8 @@
 		}
 		
 		
-		public override function animate() {
+		public override function animate() 
+		{
 			super.animate();
 			vis.rotation=0;
 			vis.scaleX=1;
@@ -196,22 +225,25 @@
 			else vis.alpha=1;
 		}
 		
-		public override function detonator():Boolean {
-			if (radio) {
-				for each (var un:Unit in loc.units) {
-					if ((un is Mine) && un.id==id) {
+		public override function detonator():Boolean 
+		{
+			if (radio) 
+			{
+				for each (var un:Unit in loc.units) 
+				{
+					if ((un is Mine) && un.id==id) 
+					{
 						(un as Mine).activate();
 					}
 				}				
 				return true;
-			} else return false;
+			} 
+			else return false;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false) 
+		{
 			super.setNull();
-			//initReload();
 		}
-		
 	}
-	
 }
