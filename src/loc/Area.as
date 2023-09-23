@@ -40,13 +40,16 @@
 		public var frec:Number=1, t_frec:Number=0;
 		public var trig:Boolean;	// Disable and set trigger on first activation
 
-		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) {
+		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) 
+		{
 			loc = nloc;
-			if (xml) {
+			if (xml) 
+			{
 				bx=xml.@x;
 				by=xml.@y;
 				if (xml.@w.length()) rx=xml.@w;
-				if (mirror) {
+				if (mirror) 
+				{
 					bx=loc.spaceX-bx-rx;
 				}
 				scX=rx*World.tilePixelWidth;
@@ -57,9 +60,12 @@
 				scY=ry*World.tilePixelHeight;
 				Y1=Y2-scY;
 				// Visual
-				if (xml.@vis.length()) {
+				if (xml.@vis.length()) 
+				{
 					vis=Res.getVis('vis'+xml.@vis,visArea);
-				} if (World.w.showArea) {
+				} 
+				if (World.w.showArea) 
+				{
 					vis=new visArea();
 				}
 				if (xml.@tip.length()) tip=xml.@tip;
@@ -69,9 +75,12 @@
 				if (xml.@allact.length()) allact=xml.@allact;
 				if (xml.@allid.length()) allid=xml.@allid;
 				if (xml.@trig.length()) trig=true;
+
 				// Attached Scripts
-				if (xml.scr.length()) {
-					for each (var xscr in xml.scr) {
+				if (xml.scr.length()) 
+				{
+					for each (var xscr in xml.scr) 
+					{
 						var scr:Script=new Script(xscr,loc.land,this);
 						if (scr.eve==null || scr.eve=='over') scrOver=scr;
 						if (scr.eve=='out') scrOut=scr;
@@ -80,21 +89,27 @@
 				if (xml.@scr.length()) scrOver=World.w.game.getScript(xml.@scr,this);
 				if (xml.@scrout.length()) scrOut=World.w.game.getScript(xml.@scrout,this);
 				// Change Walls
-				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@tilethre.length()) {
-					for (var i=bx; i<bx+rx; i++) {
-						for (var j=by-ry+1; j<=by; j++) {
+				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@tilethre.length()) 
+				{
+					for (var i=bx; i<bx+rx; i++) 
+					{
+						for (var j=by-ry+1; j<=by; j++) 
+						{
 							var t:Tile=loc.getTile(i,j);
-							if (xml.@tilehp.length()) {
+							if (xml.@tilehp.length()) 
+							{
 								t.hp=xml.@tilehp;
 								t.indestruct=false;
 								if (t.hp<=1) t.fake=true;
 								if (t.thre>t.hp) t.thre=t.hp;
 							}
-							if (xml.@tilethre.length()) {
+							if (xml.@tilethre.length()) 
+							{
 								t.indestruct=false;
 								t.thre=xml.@tilethre;
 							}
-							if (xml.@tileop.length()) {
+							if (xml.@tileop.length()) 
+							{
 								if (t.phis==0) t.opac=xml.@tileop;
 							}
 						}
@@ -107,21 +122,25 @@
 				if (xml.@dens.length()) dens=xml.@dens;
 				frec=dens*rx*ry/100;
 				// Teleport
-				if (xml.@port.length()) {
+				if (xml.@port.length()) 
+				{
 					var s:String=xml.@port;
 					var arr:Array=s.split(':');
-					if (arr.length>=2) {
+					if (arr.length>=2) 
+					{
 						onPort=true;
 						portX=arr[0];
 						portY=arr[1];
 					}
 				}
 			}
-			if (loadObj) {
+			if (loadObj) 
+			{
 				enabled=loadObj.enabled;
 			}
 			if (enabled && lift!=1) setLift();
-			if (vis) {
+			if (vis)
+			{
 				if (vis.totalFrames<=1) vis.cacheAsBitmap=true;
 				vis.x=X, vis.y=Y;
 				vis.scaleX=scX/100;
@@ -131,13 +150,15 @@
 			}
 		}
 		
-		public override function save():Object {
+		public override function save():Object 
+		{
 			var obj:Object=new Object();
 			obj.enabled=enabled;
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null) 
+		{
 			if (com=='onoff') enabled=!enabled;
 			if (com=='off') enabled=false;
 			if (com=='on') enabled=true;
@@ -146,25 +167,33 @@
 			if (com=='dam') damTiles(int(val));
 		}
 		
-		public override function step() {
+		public override function step() 
+		{
 			if (!enabled || !loc.active || tip=='') return;
-			if (emit) {
+			if (emit)
+			{
 				t_frec+=frec;
-				if (t_frec>1) {
+				if (t_frec>1) 
+				{
 					var kol:int=Math.floor(t_frec);
 					t_frec-=kol;
 					emit.cast(loc,(X1+X2)/2,(Y1+Y2)/2,{rx:scX, ry:scY, kol:kol});
 				}
 			}
 			activator=null;
-			if (tip=='gg') {
+			if (tip=='gg') 
+			{
 				active=areaTest(loc.gg);
 				if (active && noRad) loc.gg.noRad=true;
 				activator=loc.gg;
-			} else {
+			}
+			else 
+			{
 				active=false;
-				for each(var un:Unit in loc.units) {
-					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && areaTest(un)) {
+				for each(var un:Unit in loc.units) 
+				{
+					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && areaTest(un)) 
+					{
 						active=true;
 						activator=un;
 						break;
@@ -177,19 +206,24 @@
 			if (active && !preactive && over) over();
 			if (active && !preactive && onPort) teleport(activator);
 			if (!active && preactive && out) out();
-			if (active && !preactive && scrOver) {
-				if (trig && uid) {
-					if (World.w.game.triggers[uid]!=1) {
+			if (active && !preactive && scrOver) 
+			{
+				if (trig && uid) 
+				{
+					if (World.w.game.triggers[uid]!=1) 
+					{
 						World.w.game.triggers[uid]=1;
 						scrOver.start();
 					}
-				} else scrOver.start();
+				} 
+				else scrOver.start();
 			}
 			if (!active && preactive && scrOut) scrOut.start();
 			preactive=active;
 		}
 		
-		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number) {
+		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number) 
+		{
 			X=X1=x1;
 			Y1=y1;
 			X2=x2;
@@ -198,25 +232,33 @@
 			scY=Y2-Y1;
 		}
 		
-		public function setLift() {
-			for (var i=bx; i<bx+rx; i++) {
-				for (var j=by-ry+1; j<=by; j++) {
+		public function setLift() 
+		{
+			for (var i=bx; i<bx+rx; i++) 
+			{
+				for (var j=by-ry+1; j<=by; j++) 
+				{
 					loc.getTile(i,j).grav=enabled?lift:1;
 				}
 			}
 		}
 		
-		public function damTiles(destroy:int,tipDam:int=11) {
-			for (var i=bx; i<bx+rx; i++) {
-				for (var j=by-ry+1; j<=by; j++) {
+		public function damTiles(destroy:int,tipDam:int=11) 
+		{
+			for (var i=bx; i<bx+rx; i++) 
+			{
+				for (var j=by-ry+1; j<=by; j++) 
+				{
 					loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tilePixelWidth,(j+0.5)*Tile.tilePixelHeight,tipDam);
 				}
 			}
 		}
 		
-		public function teleport(un:Unit) {
+		public function teleport(un:Unit) 
+		{
 			if (un==null) return;
-			if (!loc.collisionUnit((portX+1)*World.tilePixelWidth, (portY+1)*World.tilePixelHeight-1,un.scX, un.scY)) {
+			if (!loc.collisionUnit((portX+1)*World.tilePixelWidth, (portY+1)*World.tilePixelHeight-1,un.scX, un.scY)) 
+			{
 				un.teleport((portX+1)*World.tilePixelWidth, (portY+1)*World.tilePixelHeight-1);
 			}
 		}

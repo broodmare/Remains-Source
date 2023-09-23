@@ -38,13 +38,9 @@
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
 			X=nx, Y=ny;
 			var vClass:Class=Res.getClass('vischeckpoint', null, vischeckpoint);
-			//var vClass2:Class=AllData.getClass('vistrap'+id+'2', null, null);
 			vis=new vClass();
 			vis.x=X, vis.y=Y;
-			/*if (vClass2!=null) {
-				vis2=new vClass2();
-				vis2.x=X, vis2.y=Y;
-			}*/
+
 			vis.gotoAndStop(1);
 			try {
 				if (id.charAt(10)) {
@@ -52,8 +48,7 @@
 					locked=true;
 				} else vis.lock.visible=false;
 			} catch (err) {}
-			//if (!anim) vis.cacheAsBitmap=true;
-			//if (vis2 && !anim) vis2.cacheAsBitmap=true;
+
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
 			cTransform=loc.cTransform;
 			loc.getAbsTile(X-20,Y+10).shelf=true;
@@ -83,8 +78,9 @@
 				}
 				if (loadObj.used) used=true;
 			}
-			//trace(main);
-			if (main) {
+
+			if (main) 
+			{
 				area=null;
 				active=2;
 				teleOn=true;
@@ -96,27 +92,31 @@
 				inter.update();
 				vis.fiol.gotoAndStop(25);
 			}
-			if (hide) {
+			if (hide) 
+			{
 				vis.visible=false;
 				nazv='';
 				inter.active=false;
 			}
 		}
 		
-		public override function addVisual() {
-			if (vis && !hide) {
+		public override function addVisual() 
+		{
+			if (vis && !hide) 
+			{
 				World.w.grafon.visObjs[sloy].addChild(vis);
 				if (cTransform) {
 					vis.transform.colorTransform=cTransform;
 				}
 			}
 		}
-		public override function remVisual() {
+		public override function remVisual() 
+		{
 			super.remVisual();
-			//if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
 		}
 		
-		public override function save():Object {
+		public override function save():Object 
+		{
 			if (active==0) return null;
 			var obj:Object=new Object();
 			inter.save(obj);
@@ -125,32 +125,36 @@
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			activate();
 		}
 		
 		//активировать контрольную точку. если параметр true - не добавлять скилл-поинт
-		public function activate(first:Boolean=false) {
+		public function activate(first:Boolean=false) 
+		{
 			if (inter.lock>0 || inter.mine>0) return;
-			if (active==2) {
+			if (active==2) 
+			{
 				return;
 			}
-			/*if (active==0 && World.w.addCheckSP && first==false) {
-				World.w.pers.addSkillPoint();
-			}*/
-			if (active==0 && first==false) {
+
+			if (active==0 && first==false) 
+			{
 				if (World.w.pers.manaCPres) World.w.pers.heal(World.w.pers.manaCPres,6);
 				if (World.w.pers.xpCPadd) World.w.pers.expa(loc.unXp*3);
 			}
 			active=2;
 			World.w.pers.currentCP=this;
 			World.w.pers.currentCPCode=code;
-			if (code) {
+			if (code) 
+			{
 				World.w.pers.prevCPCode=code;
 				loc.land.act.lastCpCode=code;
 			}
 			loc.land.currentCP=this;
-			if (first) {
+			if (first) 
+			{
 				vis.osn.gotoAndStop('open');
 				if (World.w.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
 			} else {
@@ -159,7 +163,8 @@
 			}
 			if (used) vis.fiol.gotoAndStop(1);
 			//trace(World.w.game.mReturn)
-			if (World.w.game.mReturn && teleOn && !used) {
+			if (World.w.game.mReturn && teleOn && !used) 
+			{
 				inter.actFun=teleport;
 				inter.userAction='returnb';
 				inter.t_action=30;
@@ -172,24 +177,30 @@
 			World.w.saveGame();
 		}
 		
-		public function teleport() {
-			if (!main) {
+		public function teleport() 
+		{
+			if (!main) 
+			{
 				World.w.game.gotoLand(World.w.game.baseId);
-				if (World.w.hardInv && World.w.land.rnd) {
+				if (World.w.hardInv && World.w.land.rnd) 
+				{
 					used=true;
 					inter.active=false;
 					inter.actionText='';
 					vis.fiol.gotoAndStop(1);
 				}
-			} else if (World.w.game.missionId!='rbl') World.w.game.gotoLand(World.w.game.missionId);
+			} 
+			else if (World.w.game.missionId!='rbl') World.w.game.gotoLand(World.w.game.missionId);
 			//trace('GOTO '+World.w.game.curLandId);
 		}
 		
-		public function areaActivate() {
-			if (active==0) activate();
+		public function areaActivate() 
+		{
+			if (active == 0) activate();
 		}
 		
-		public function deactivate() {
+		public function deactivate() 
+		{
 			if (main) return;
 			inter.active=!hide;
 			active=1;
@@ -201,18 +212,23 @@
 			inter.update();
 		}
 		
-		public override function step() {
+		public override function step() 
+		{
 			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
 			if (inter) inter.step();
-			if (main) {
+			if (main) 
+			{
 				if (World.w.game.missionId && World.w.game.lands[World.w.game.missionId] && World.w.game.lands[World.w.game.missionId].tip!='base') inter.active=true;
 				else inter.active=false;
 				return;
 			}
-			if (locked && inter.lock==0 && inter.mine==0) {
+
+			if (locked && inter.lock==0 && inter.mine==0) 
+			{
 				locked=false;
 				vis.lock.visible=false;
 			}
+			
 			if (area) area.step();
 			if (active==2 && World.w.pers.currentCP!=this) deactivate();
 		}

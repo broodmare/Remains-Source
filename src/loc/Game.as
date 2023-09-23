@@ -12,7 +12,6 @@
 		public var probs:Array;
 		public var vendors:Array;
 		public var npcs:Array;
-//		public var curLandId:String='begin';
 		public var curLandId:String='test';
 		public var curCoord:String=null;
 		public var curLand:LandAct;
@@ -23,12 +22,12 @@
 		public var names:Array;
 		
 		// Game Time
-		public var dBeg:Date;			// Start time of the game
-		public var t_proshlo:Number;	// Current session time
-		public var t_save:Number=0;		// Saved time
+		public var dBeg:Date;				// Start time of the game
+		public var t_proshlo:Number;		// Current session time
+		public var t_save:Number=0;			// Saved time
 		
-		public var globalDif:int=2;	// Global difficulty level
-		public var baseId:String='';	// Area to which the return occurs
+		public var globalDif:int=2;			// Global difficulty level
+		public var baseId:String='';		// Area to which the return occurs
 		public var missionId:String='';
 		public var crea:Boolean=false;
 		public var mReturn:Boolean=true;	// Can return to the base camp
@@ -36,7 +35,8 @@
 		var objs:Array;
 		
 
-		public function Game() {
+		public function Game() 
+		{
 			lands=new Array();
 			probs=new Array();
 			notes=new Array();
@@ -47,10 +47,11 @@
 			quests=new Array();
 			names=new Array();
 			
-			for each(var xl in GameData.d.land) {
-				//if (!World.w.testMode && xl.@test>0) continue;
+			for each(var xl in GameData.d.land) 
+			{
 				var land:LandAct=new LandAct(xl);
-				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) {
+				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) 
+				{
 					land.allroom=World.w.landData[xl.@id].allroom;
 					land.loaded=true;
 				}
@@ -59,13 +60,15 @@
 			}
 		}
 
-		public function save():Object {
+		public function save():Object 
+		{
 			var obj:Object=new Object;
 			obj.dif=globalDif;
 			obj.land=curLandId;
 			World.w.land.saveObjs(objs);	//Save an array of objects with IDs
 			obj.objs=new Array();
-			for (var uid in objs) {
+			for (var uid in objs) 
+			{
 				var obj1=objs[uid];
 				var nobj=new Object();
 				for (var n in obj1) {
@@ -79,25 +82,31 @@
 			obj.quests=new Array();
 			obj.lands=new Array();
 			obj.triggers=new Array();
-			for (var i in vendors) {
+			for (var i in vendors) 
+			{
 				var v=vendors[i].save();
 				if (v!=null) obj.vendors[i]=v;
 			}
-			for (i in npcs) {
+			for (i in npcs) 
+			{
 				var npc=npcs[i].save();
 				if (npc!=null) obj.npcs[i]=npc;
 			}
-			for (i in triggers) {
+			for (i in triggers) 
+			{
 				obj.triggers[i]=triggers[i];
 			}
-			for (i in notes) {
+			for (i in notes) 
+			{
 				obj.notes[i]=notes[i];
 			}
-			for (i in quests) {
+			for (i in quests) 
+			{
 				var q:Object=quests[i].save();
 				if (q!=null) obj.quests[i]=q;
 			}
-			for (var i in lands) {
+			for (var i in lands) 
+			{
 				var l=lands[i].save();
 				if (l!=null) obj.lands[i]=l;
 			}
@@ -107,63 +116,79 @@
 			return obj;
 		}
 		
-		public function init(loadObj:Object=null, opt:Object=null) {
-			if (loadObj) {
+		public function init(loadObj:Object=null, opt:Object=null) 
+		{
+			if (loadObj) 
+			{
 				if (loadObj.dif!=null) globalDif=loadObj.dif;
 				else globalDif=2;
 				if (loadObj.t_save) t_save=loadObj.t_save;
-			} else {
+			} 
+			else 
+			{
 				if (opt && opt.dif!=null) globalDif=opt.dif;
 				else globalDif=2;
 				triggers['noreturn']=1;
 			}
 			objs=new Array();
-			if (loadObj && loadObj.objs) {
-				for (var uid in loadObj.objs) {
+			if (loadObj && loadObj.objs) 
+			{
+				for (var uid in loadObj.objs) 
+				{
 					var obj=loadObj.objs[uid];
 					var nobj=new Object();
-					for (var n in obj) {
-						//if (uid=='i40Ck396UNu1Lzef') trace(n,obj[n]);
+					for (var n in obj) 
+					{
 						nobj[n]=obj[n];
 					}
 					objs[uid]=nobj;
 				}
 				
 			}
-			for each(var xl in GameData.d.vendor) {
+			for each(var xl in GameData.d.vendor) 
+			{
 				var loadVendor=null;
 				if (loadObj && loadObj.vendors && loadObj.vendors[xl.@id]) loadVendor=loadObj.vendors[xl.@id];
 				var v:Vendor=new Vendor(0,xl,loadVendor);
 				vendors[v.id]=v;
 			}
-			for each(var xl in GameData.d.npc) {
+			for each(var xl in GameData.d.npc) 
+			{
 				var loadNPC=null;
 				if (loadObj && loadObj.npcs && loadObj.npcs[xl.@id]) loadNPC=loadObj.npcs[xl.@id];
 				var npc:NPC=new NPC(xl,loadNPC);
 				npcs[npc.id]=npc;
 			}
-			if (loadObj) {
-				for (var i in loadObj.triggers) {
+			if (loadObj) 
+			{
+				for (var i in loadObj.triggers) 
+				{
 					triggers[i]=loadObj.triggers[i];
 				}
-				for (var i in loadObj.notes) {
+				for (var i in loadObj.notes) 
+				{
 					notes[i]=loadObj.notes[i];
 				}
-				for (var i in loadObj.quests) {
+				for (var i in loadObj.quests) 
+				{
 					addQuest(i,loadObj.quests[i]);
 				}
-				for (var i in loadObj.lands) {//!!!!!
+				for (var i in loadObj.lands)  //!!!!!
+				{
 					if (lands[i]) lands[i].load(loadObj.lands[i]);
 				}
 				if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
 			}
 			baseId=curLandId='rbl';
-			if (loadObj) {
+			if (loadObj) 
+			{
 				curLandId=loadObj.land;
 				if (curLandId!='rbl') missionId=loadObj.land;
-			} else if (opt && opt.propusk==true) {		// Skip training
+			} else if (opt && opt.propusk==true) 	// Skip training
+			{		
 				triggers['dial_dialCalam2']=1;
-			} else {									// Do not skip training
+			} else 									// Do not skip training
+			{									
 				curLandId='begin';
 			}
 			for each(var q in quests) {
@@ -178,10 +203,10 @@
 			addNote('helpGl2');
 			dBeg=new Date();
 			if (loadObj==null) triggers['nomed']=1;
-			//trace('Global Difficulty ',globalDif)
 		}
 		
-		public function changeDif(ndif):Boolean {
+		public function changeDif(ndif):Boolean 
+		{
 			if (ndif==globalDif) return false;
 			globalDif=ndif;
 			if (globalDif<0) globalDif=0;
@@ -194,14 +219,14 @@
 		public function enterToCurLand() 
 		{
 			Land.locN+=5;
-			World.w.time___metr();
 			if (World.w.land && objs) World.w.land.saveObjs(objs);
+
 			///Transition to a random encounter
 			Encounter();
 			curLand=lands[curLandId];
 			if (curLand==null) curLand=lands['rbl'];
 			var first=false;
-			if (!curLand.rnd && !curLand.visited) first=true;// || curLand.rnd && crea
+			if (!curLand.rnd && !curLand.visited) first=true;
 
 			if (curLand.land==null || crea) 
 			{
@@ -213,7 +238,6 @@
 				}
 				curLand.land=new Land(World.w.gg, curLand, n);
 			}
-			World.w.time___metr('Creating Area');
 			if (!first) triggers['firstroom']=1;
 			crea=false;
 			World.w.ativateLand(curLand.land);
@@ -242,7 +266,6 @@
 			{
 				curLand.upStage=false;
 			}
-			World.w.time___metr('Entering the location');
 		}
 		
 		// Redirect to another location
@@ -338,7 +361,8 @@
 			World.w.gui.infoText('refill');
 		}
 		
-		public function addQuest(id:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest {
+		public function addQuest(id:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest 
+		{
 			// Check if the quest exists, if so...
 			if (quests[id]) 
 			{
@@ -356,7 +380,8 @@
 				return quests[id];
 			}
 			var xlq:XMLList=GameData.d.quest.(@id==id);
-			if (xlq.length()==0) {
+			if (xlq.length()==0) 
+			{
 				trace ('Quest not found',id);
 				return null;
 			}

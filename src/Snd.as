@@ -413,11 +413,6 @@
 			for each (var i in d.res) {
 				resSnd = new Loader();
 				var fileSound:String=World.w.soundPath+i.@id;
-				if (World.w.playerMode=='PlugIn') {
-					//fileSound+='?u='+World.w.fileVersion;
-					//fileSound+='?u='+ Math.random().toFixed(5);
-				}
-				//trace(fileSound+'?u='+World.w.fileVersion);
 				var urlReq:URLRequest = new URLRequest(fileSound);
 				resSnd.load(urlReq);
 				resSnd.contentLoaderInfo.addEventListener(Event.COMPLETE, resLoaded);  
@@ -479,12 +474,13 @@
 					}
 				}
 			}
-    		//resIsLoad=true;
 		}
 		
-		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150) {
+		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150) 
+		{
 			t_combat=n;
-			if (sndMusicPrior>currentMusicPrior) {
+			if (sndMusicPrior>currentMusicPrior) 
+			{
 				currentMusicPrior=sndMusicPrior;
 				playMusic(sndMusic);
 			}
@@ -537,13 +533,17 @@
 			return null;
 		}
 		
-		public static function pshum(txt:String,vol:Number=1) {
+		public static function pshum(txt:String,vol:Number=1) 
+		{
 			if (!inited || !onSnd || off) return null;
 			var shum:Object;
-			if (shumArr[txt]) {
+			if (shumArr[txt]) 
+			{
 				shum=shumArr[txt];
 				if (shum.maxVol<vol) shum.maxVol=vol;
-			} else if (snd[txt]) {
+			}
+			else if (snd[txt]) 
+			{
 				shum=new Object();
 				shum.txt=txt;
 				shum.curVol=vol;
@@ -553,11 +553,12 @@
 			}
 		}
 		
-		public static function resetShum() {
+		public static function resetShum() 
+		{
+
 		}
 		
 		public static function step() {
-			//if (World.w.currentMusic!='' && World.w.currentMusic!=currentMusic
 			if (t_hit>0) t_hit--;
 			if (t_music>0 && musicPrevCh) {
 				if (t_music%10==1) {

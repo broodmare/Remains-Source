@@ -1,10 +1,14 @@
-﻿package src {
+﻿package src 
+{
 	
 	//var ClassRef:Class = getDefinitionByName("int") as Class;
 	
-	public class AllData {
+	public class AllData 
+	{
 
-		public function AllData() {
+		public function AllData() 
+		{
+
 		}
 		
 		public static var d:XML=
@@ -19,7 +23,7 @@
 			</unit>
 			
 		
-	<!--       *******   Units   *******         -->
+			<!--       *******   Units   *******         -->
 			
 			<!-- player and allies -->
 			<unit id='littlepip'>

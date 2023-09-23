@@ -9,7 +9,8 @@
 	import flash.media.SoundChannel;
 	import flash.sampler.StackFrame;
 	
-	public class Interact {
+	public class Interact 
+	{
 		
 		//public var id:String;
 		
@@ -108,7 +109,8 @@
 		public static var chanceUnlock2:Array=[0.95, 0.8, 0.55, 0.35, 0.2, 0.08, 0.03];
 		
 		// node - template, xml - individual parameter taken from the map
-		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) {
+		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) 
+		{
 			owner=own;
 			location=owner.loc;
 			X=own.X, Y=own.Y;
@@ -120,22 +122,29 @@
 			// lock type
 			if (node && node.@locktip.length()) lockTip=node.@locktip;
 			if (xml && xml.@locktip.length()) lockTip=xml.@locktip;
-			if (node) {
-				// content
+			if (node)  // content
+			{
 				if (node.@cont.length()) cont=node.@cont;
 				// lock
-				if (node.@lock.length()) {
+				if (node.@lock.length()) 
+				{
 					var lk:Number=Number(node.@lock);
-					if (rnd) {		// random lock
-						if (node.@lockch.length()==0 || Math.random()<Number(node.@lockch)) {
+					if (rnd)  // random lock
+					{		
+						if (node.@lockch.length()==0 || Math.random()<Number(node.@lockch)) 
+						{
 							if (lockTip==1 || lockTip==2) {
 								lock=Math.floor(lk+(0.3+Math.random())*location.locksLevel);
-							} else {
+							} 
+							else 
+							{
 								lock=Math.floor(lk+Math.random()*location.mechLevel);
 							}
 						}
 						if (Math.random()<lk-Math.floor(lk)) lock+=1;
-					} else {		// specified lock
+					} 
+					else  // specified lock
+					{		
 						lock=Math.floor(lk);
 					}
 				}
@@ -144,13 +153,19 @@
 				// lock HP
 				if (node.@lockhp.length()) lockHP=node.@lockhp;
 				// mined
-				if (node.@mine.length()) {
-					if (rnd) {
-						if (node.@minech.length()) {
+				if (node.@mine.length()) 
+				{
+					if (rnd) 
+					{
+						if (node.@minech.length()) 
+						{
 							if (Math.random()<Number(node.@minech))	mine=Math.floor(Math.random()*(Number(node.@mine)+Math.random()*location.mechLevel+1));
-						} else mine=Math.floor(Number(node.@mine)+Math.random()*location.mechLevel);
+						} 
+						else mine=Math.floor(Number(node.@mine)+Math.random()*location.mechLevel);
 						if (mine>=2 && Math.random()<0.25) mine--;
-					} else {
+					} 
+					else 
+					{
 						mine=node.@mine;
 					}
 					if (node.@minetip.length()) mineTip=node.@minetip;
@@ -171,14 +186,17 @@
 				if (node.@expl.length()) expl=node.@expl;
 				if (node.@autoclose.length()) autoClose=node.@autoclose;
 			}
-			if (xml) {
+			if (xml) 
+			{
 				if (xml.@off.length()) active=false;
-				if (xml.@open.length()) {
+				if (xml.@open.length()) 
+				{
 					setAct('open',1);
 					update();
 				}
 				if (xml.@cont.length()) cont=xml.@cont;
-				if (xml.@lock.length()) {
+				if (xml.@lock.length()) 
+				{
 					lock=xml.@lock;
 					saveLock=lock;
 					low=0;
@@ -189,7 +207,8 @@
 				if (xml.@cons.length()) cons=xml.@cons;
 				if (xml.@lockhp.length()) lockHP=xml.@lockhp;
 				if (xml.@lockatt.length()) lockAtt=xml.@lockatt;
-				if (xml.@mine.length()) {
+				if (xml.@mine.length()) 
+				{
 					mine=xml.@mine;
 					saveMine=mine;
 				}
@@ -208,10 +227,12 @@
 				if (xml.@noruna.length()) noRuna=true;
 				if (xml.@sign.length()) sign=xml.@sign;
 				
-				if (xml.move.length()) {
+				if (xml.move.length()) 
+				{
 					isMove=true;
 					begX=X, begY=Y;
-					if (xml.move.@dx.length()) {
+					if (xml.move.@dx.length()) 
+					{
 						if (location && location.mirror) endX=X-xml.move.@dx*World.tilePixelWidth;
 						else endX=X+xml.move.@dx*World.tilePixelWidth;
 					} else endX=endX2=X;
@@ -222,16 +243,19 @@
 					if (xml.move.@on.length()) moveSt=4;
 				}
 			}
-			if (location && location.base && cont!=null && !noBase) {
+			if (location && location.base && cont!=null && !noBase) 
+			{
 				cont=null;
 				lock=mine=saveMine=saveLock=0;
 				action=0;
 				active=false;
 			}
-			if (location && (location.homeStable) && !noBase) {
+			if (location && (location.homeStable) && !noBase) 
+			{
 				lock=mine=saveMine=saveLock=0;
 			}
-			if (location && (location.homeAtk) && !noBase) {
+			if (location && (location.homeAtk) && !noBase) 
+			{
 				lock=mine=saveMine=saveLock=0;
 				if (cont && own is Box) {
 					setAct('loot',1);
@@ -239,53 +263,68 @@
 			}
 			if (loadObj) load(loadObj);
 			var difSet:Boolean=(allDif>=0);
-			if (lock<100) {
-				if (lockTip==1 || lockTip==2) {
+			if (lock<100) 
+			{
+				if (lockTip==1 || lockTip==2) 
+				{
 					if (low>0 && Math.random()<low) lock=Math.ceil(lock*0.5);
 					if (lock>maxLockLvl) lock=maxLockLvl;
 					if (lock>0 && low<=0 && own && own.loc && own.loc.land.rnd && own.loc.prob==null && Math.random()<0.2) lock+=Math.floor(Math.random()*2)+2;
 					//определить уровень замка
-					if (lock>2 && lockLevel==0) {
+					if (lock>2 && lockLevel==0) 
+					{
 						lockLevel=Math.round(Math.random()*(lock-2)/3.2);
 						if (lockLevel>5) lockLevel=5;
 					}
 					if (!difSet) allDif=lock+lockLevel*2;
-				} else {
+				} 
+				else 
+				{
 					if (lock>maxMechLvl) lock=maxMechLvl;
 					if (!difSet) allDif=lock*3;
 				}
 			}
 			if (mine>maxMechLvl) mine=maxMechLvl;
-			if (mine>0) {
-				if (mineTip==6) {
+			if (mine>0) 
+			{
+				if (mineTip==6) 
+				{
 					fiascoRemine=alarm;
-				} else {
+				} 
+				else 
+				{
 					damage=mine*50*(0.8+Math.random()*0.4)*(1+location.locDifLevel*0.1);
 					fiascoRemine=explosion;
 				}
 				if (!difSet) allDif+=mine*2;
 			}
-			if (location) {
+			if (location) 
+			{
 				damdis=30+location.mechLevel*20;
 			}
-			if (expl>0) {
+			if (expl>0) 
+			{
 				if (node.@damage.length()) damage=node.@damage;
 				if (node.@destroy.length()) destroy=node.@destroy;
 				if (node.@radius.length()) explRadius=node.@radius;
 			}
-			if (allact=='robocell') {
+			if (allact=='robocell') 
+			{
 				fiascoUnlock=robocellFail;
 			}
-			if (allact=='alarm') {
+			if (allact=='alarm') 
+			{
 				fiascoRemine=alarm2;
-				if (owner) {
+				if (owner) 
+				{
 					area=new Area(location);
 					owner.copy(area);
 					area.tip='raider';
 					area.over=alarm2;
 				}
 			}
-			if (prize) {
+			if (prize) 
+			{
 				mine=0;
 				lockTip=0;
 				lock=1;
@@ -296,7 +335,8 @@
 			inited=true;
 		}
 		
-		public function save(obj:Object) {
+		public function save(obj:Object) 
+		{
 			obj.lock=saveLock;
 			obj.lockLevel=lockLevel;
 			obj.mine=saveMine;
@@ -307,26 +347,32 @@
 			obj.sign=sign;
 		}
 		
-		public function step() {
+		public function step() 
+		{
 			if (is_act) act();
 			else is_ready=true;
 			is_act=false;
 			if (isMove) move();
 			if (area) area.step();
-			if (t_autoClose>0) {
+			if (t_autoClose>0) 
+			{
 				t_autoClose--;
 				if (t_autoClose==1) command('close');
 			}
-			if (t_budilo>0) {
-				if (t_budilo%30==0) {
+			if (t_budilo>0) 
+			{
+				if (t_budilo%30==0) 
+				{
 					location.budilo(owner.X,owner.Y,1500);
 					Emitter.emit('laser2',location,owner.X,owner.Y-owner.scY+20);
 					Snd.ps('alarm',X,Y);
 				}
 				t_budilo--;
 			}
-			if (sign>0) {
-				if (t_sign<=0) {
+			if (sign>0) 
+			{
+				if (t_sign<=0) 
+				{
 					t_sign=30;
 					if (World.w.helpMess) Emitter.emit('sign'+sign,location,owner.X,owner.Y-owner.scY/2);
 				}
@@ -334,11 +380,16 @@
 			}
 		}
 		
-		public function update() {
-			if (userAction && userAction!='') {
+		public function update() 
+		{
+			if (userAction && userAction!='') 
+			{
 				 actionText=Res.guiText(userAction);
-			} else {
-				if (active && action>0) {
+			} 
+			else 
+			{
+				if (active && action>0) 
+				{
 					if (action==1) actionText=Res.guiText(!open?'open':'close');
 					if (action==2) actionText=Res.guiText('use'); 
 					if (action==3) actionText=Res.guiText('remine'); 
@@ -349,85 +400,110 @@
 					if (action==10) actionText=Res.guiText('beginm'); 
 					if (action==11) actionText=Res.guiText('return'); 
 					if (action==12) actionText=Res.guiText('see'); 
-				} else actionText='';
+				} 
+				else actionText='';
 			}
 			
-			if (mine>0) {
-				if (mineTip==6) {
+			if (mine>0) 
+			{
+				if (mineTip==6) 
+				{
 					stateText="<span class = 'r2'>"+Res.guiText('signal')+"</span>";
 					actionText=Res.guiText('shutoff');
-				} else {
+				} 
+				else 
+				{
 					if (owner is Box) stateText="<span class = 'warn'>"+Res.guiText('mined')+"</span>";
 					actionText=Res.guiText('remine');
 				}
 				sndAct='rem_act';
-			} else if (lock>0) {
-				if (lockTip==0)	{
+			} 
+			else if (lock>0) 
+			{
+				if (lockTip==0)	
+				{
 					stateText="<span class = 'r2'>"+Res.guiText('lock')+"</span>";
 					actionText='';
 					sndAct='lock_act';
 				}
-				if (lockTip==1)	{
+				if (lockTip==1)	
+				{
 					if (lock>=100) stateText="<span class = 'r3'>"+Res.guiText('zhopa')+"</span>";
 					else stateText="<span class = 'r2'>"+Res.guiText('lock')+"</span>";
 					actionText=Res.guiText('unlock');
 					sndAct='lock_act';
 				}
-				if (lockTip==2)	{
+				if (lockTip==2)	
+				{
 					if (lock>=100)stateText="<span class = 'r3'>"+Res.guiText('block')+"</span>";
 					else stateText="<span class = 'r2'>"+Res.guiText('termlock')+"</span>";
 					actionText=Res.guiText('termunlock'); 
 					sndAct='term_act';
 				}
-				if (lockTip==4)	{
+				if (lockTip==4)	
+				{
 					actionText=Res.guiText('shutoff');
 					sndAct='rem_act';
 				}
-				if (lockTip==5)	{
+				if (lockTip==5)	
+				{
 					actionText=Res.guiText('fixup');
 					sndAct='rem_act';
 				}
-			} else if (cont=='empty') {
+			} 
+			else if (cont=='empty') 
+			{
 				stateText="<span class = 'r0'>"+Res.guiText('empty')+"</span>";
-			} else {
+			} 
+			else 
+			{
 				stateText='';
 			}
 		}
 		
 		// Set the state
-		public function setAct(a:String, n:int=0) {
-			if (a=='mine') {
-				if (n<100) {
+		public function setAct(a:String, n:int=0) 
+		{
+			if (a=='mine') 
+			{
+				if (n<100) 
+				{
 					mine=n;
 					saveMine=mine;
 				}
-				if (n==101) {
+				if (n==101) 
+				{
 					mine=0;
 					saveMine=101;
 					owner.warn=0;
 				}
 			}
-			if (a=='lock') {
-				if (n<100) {
+			if (a=='lock') 
+			{
+				if (n<100) 
+				{
 					lock=n;
 					saveLock=lock;
 				}
-				if (n==101) {
+				if (n==101) 
+				{
 					saveLock=101;
 					lock=0;
 					stateText='';
 				}
-				if (n==102) {
+				if (n==102) 
+				{
 					saveLock=102;
-					//active=false;
 					lock=100;
 					if (lockTip==1) stateText="<span class = 'r3'>"+Res.guiText('zhopa')+"</span>";
 					if (lockTip==2) stateText="<span class = 'r3'>"+Res.guiText('block')+"</span>";
 					if (lockTip==5) stateText="<span class = 'r3'>"+Res.guiText('broken')+"</span>";
 				}
 			}
-			if (a=='loot') {
-				if (n>0) {
+			if (a=='loot') 
+			{
+				if (n>0) 
+				{
 					saveLoot=n;
 					active=false;
 					cont='empty';
@@ -435,65 +511,81 @@
 					owner.setVisState('open');
 				}
 			}
-			if (a=='open') {
+			if (a=='open') 
+			{
 				if (autoClose==0) saveOpen=n;
 				open=(n==1);
 				if (door) setDoor();
-				if (knop) {
+				if (knop) 
+				{
 					if (open) owner.setVisState('open');
 					else owner.setVisState('close');
 				}
-				if (open) {
+				if (open) 
+				{
 					lock=mine=0;
 					update();
 				}
-				if (open && (allact=='robocell' || allact=='alarm')) {
+				if (open && (allact=='robocell' || allact=='alarm')) 
+				{
 					allact='';
 					active=false;
 					owner.setVisState('open');
 				}
 				if (location && location.prob && location.active) location.prob.check();
 			}
-			if (a=='expl') {
+			if (a=='expl') 
+			{
 				saveExpl=n;
 			}
 		}
 		
 		// Perform an action
-		public function act() {
+		public function act() 
+		{
 			var verZhopa=0, verFail=0;
 			if (action==0) return;
-			if (scrTouch) {
+			if (scrTouch) 
+			{
 				scrTouch.start();
 				scrTouch=null;
 				return;
 			}
-			if (needSkill && needSkillLvl>unlock) {
+			if (needSkill && needSkillLvl>unlock) 
+			{
 				World.w.gui.infoText('needSkill', Res.txt('e',needSkill), needSkillLvl,false);	// Skill required
-			} else if (mine>0) {
+			} 
+			else if (mine>0) 
+			{
 					verZhopa=0, verFail=0;
 					if (mine>unlock) verZhopa=(mine-unlock+1)*0.15;
 					verFail=(mine-unlock+2)*0.2;
-					if (Math.random()<verZhopa) {	// Critical failure
+					if (Math.random()<verZhopa)  // Critical failure
+					{	
 						setAct('mine',101);
 						if (mineTip==6) World.w.gui.infoText('signalZhopa');	// Alarm triggered
 						else World.w.gui.infoText('remineZhopa');	// Bomb triggered
 						if (fiascoRemine!=null) fiascoRemine();
-						if (at_once>0) {
+						if (at_once>0) 
+						{
 							actOsn();
 						}
 						replic('zhopa');
 						update();
-					} else if (Math.random()<verFail) { // Failure	
+					} else if (Math.random()<verFail)  // Failure	
+					{ 
 						if (mineTip==6) World.w.gui.infoText('signalFail',null,null,false);	// Alarm not disarmed
 						else World.w.gui.infoText('remineFail',null,null,false);	// Bomb not disarmed
 						replic('fail');
-					} else {						// Success
+					} 
+					else // Success
+					{						
 						setAct('mine',101);
 						if (mineTip==6) World.w.gui.infoText('signalOff');	// Alarm disarmed
 						else  World.w.gui.infoText('remine');	// Bomb disarmed
 						if (successRemine!=null) successRemine();
-						if (at_once>0) {
+						if (at_once>0) 
+						{
 							actOsn();
 						}
 						replic('success');
@@ -503,7 +595,9 @@
 					// trace('disarm', unlock, 'failure', verFail,'жопа',verZhopa);
 				unlock=0;
 				is_ready=false;
-			} else if (lock>0 && lockKey && World.w.invent.items[lockKey].kol>0) {
+			} 
+			else if (lock>0 && lockKey && World.w.invent.items[lockKey].kol>0) 
+			{
 				setAct('lock',101);
 				if (lockTip==1) World.w.gui.infoText('unLockKey');
 				if (lockTip==2) World.w.gui.infoText('unTermLock');
@@ -512,35 +606,38 @@
 				update();
 				if (successUnlock!=null) successUnlock();
 				//if (lockKeyMinus) 
-			} else if (lock>=100) {
-			} else if (lock>0) {
-				if (unlock>-99) {
+			} 
+			else if (lock>=100) 
+			{
+
+			} 
+			else if (lock>0) 
+			{
+				if (unlock>-99) 
+				{
 					var lockDam1:Number=0, lockDam2:Number=2;
 					verFail=0;
-					if (lockTip==1 || lockTip==5) {
-						/*if (lock-unlock<0) verFail=0.2;
-						else if (lock-unlock==0) verFail=0.4;
-						else if (lock-unlock==1) verFail=0.6;
-						else if (lock-unlock==2) verFail=0.8;
-						else verFail=1;*/
+					if (lockTip==1 || lockTip==5) 
+					{
 						verFail=1-this.getChance(lock-unlock);
 						if (master<lockLevel) verFail=1;
-						if (lock-unlock==1) {
+						if (lock-unlock==1) 
+						{
 							lockDam1=1;
 							lockDam2=3;
-						} else if (lock-unlock>1){
+						} else if (lock-unlock>1)
+						{
 							lockDam1=2;
 							lockDam2=4;
 						}
-					} else if (lockTip==2) {
-						/*if (lock-unlock<0) verFail=0.2;
-						else if (lock-unlock==0) verFail=0.5;
-						else if (lock-unlock==1) verFail=0.75;
-						else if (lock-unlock==2) verFail=0.85;
-						else verFail=1;*/
+					} 
+					else if (lockTip==2) 
+					{
 						verFail=1-this.getChance(lock-unlock);
 						if (master<lockLevel) verFail=1;
-					} else if (lockTip==4) {
+					} 
+					else if (lockTip==4) 
+					{
 						if (lock-unlock<0) verFail=0.1;
 						else if (lock-unlock==0) verFail=0.25;
 						else if (lock-unlock==1) verFail=0.6;
@@ -552,116 +649,156 @@
 					//trace(lock,unlock,lockDam1,lockDam2);
 					//trace(lock,unlock,verFail);
 					var lockDam:Number=lockDam1;
-					if (Math.random()<verFail) { //неудача	
-						if (lockTip==1) {
+					if (Math.random()<verFail)  //неудача	
+					{
+						if (lockTip==1) 
+						{
 							var pinCrack:Boolean=false;
-							if (World.w.invent.pin.kol>0) {
-								if (World.w.pers.pinBreak>=1 || Math.random()<World.w.pers.pinBreak) {
+							if (World.w.invent.pin.kol>0) 
+							{
+								if (World.w.pers.pinBreak>=1 || Math.random()<World.w.pers.pinBreak) 
+								{
 									World.w.invent.minusItem('pin');
 									pinCrack=true;
 								}
-							} else lockDam1+=2;
+							} 
+							else lockDam1+=2;
 							lockDam=(lockDam1+Math.random()*lockDam2)*World.w.pers.lockAtt;
 							lockHP-=lockDam;
 							//trace(lockDam,lockHP);
-							if (lockHP<=0) {		//Замок заклинило
+							if (lockHP<=0) 
+							{		//Замок заклинило
 								setAct('lock',102);
 								World.w.gui.infoText('unLockZhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
 								replic('zhopa');
-							} else if (pinCrack) {
+							} 
+							else if (pinCrack) 
+							{
 								World.w.gui.infoText('unLockFailP', null,null,false);	//замок не открыт, заколка сломана
 								replic('fail');
-							} else if (lockHP>100) {
+							} 
+							else if (lockHP>100) 
+							{
 								World.w.gui.infoText('unLockFailA', null,null,false);	//замок не открыт, попробуйте ещё
-							} else {
+							} 
+							else 
+							{
 								World.w.gui.infoText('unLockFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
-						} else if (lockTip==2) {
+						} 
+						else if (lockTip==2) 
+						{
 							if (lockAtt==-100) lockAtt=World.w.pers.hackAtt;
 							lockAtt--;
 							if (lockAtt>10) World.w.gui.infoText('unTermLockFail2',null,null,false);	//терминал не взломан
-							else if (lockAtt>1) {
+							else if (lockAtt>1) 
+							{
 								World.w.gui.infoText('unTermLockFail',lockAtt,null,false);	//терминал не взломан
 								replic('fail');
-							} else if (lockAtt==1) {
+							} 
+							else if (lockAtt==1) 
+							{
 								World.w.gui.infoText('unTermLockFail1',null,null,false);	//терминал не взломан
 								replic('fail');
-							} else {					//терминал блокирован
+							} else 
+							{					//терминал блокирован
 								setAct('lock',102);
 								replic('zhopa');
 								World.w.gui.infoText('unLockBlock');
 								if (fiascoUnlock!=null) fiascoUnlock();
 							}
-						} else if (lockTip==4) {		//отключение с помощью навыка ремонт
+						} 
+						else if (lockTip==4) 
+						{		//отключение с помощью навыка ремонт
 							var lockDam=(lockDam1+Math.random()*lockDam2);
 							lockHP-=lockDam;
 							//trace(lockDam,lockHP);
-							if (lockHP<=0) {		//Удар током
+							if (lockHP<=0) 
+							{		//Удар током
 								//setAct('lock',102);
 								discharge();
 								World.w.gui.infoText('unRepZhopa',null,null,false);
 								replic('zhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
-							} else {
+							} 
+							else 
+							{
 								World.w.gui.infoText('unRepFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
-						} else if (lockTip==5) {		//ремонт механизма
+						} 
+						else if (lockTip==5) //ремонт механизма
+						{		
 							lockDam=(lockDam1+Math.random()*lockDam2);
 							lockHP-=lockDam;
 							//trace(lockDam,lockHP);
-							if (lockHP<=0) {		//Замок заклинило
+							if (lockHP<=0) //Замок заклинило
+							{		
 								setAct('lock',102);
 								World.w.gui.infoText('unFixZhopa');
 								replic('zhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
-							} else {
+							} 
+							else
+							{
 								World.w.gui.infoText('unFixFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
 						}
-					} else {						//успех	//замок открыт
+					} 
+					else 	//успех	//замок открыт
+					{					
 						setAct('lock',101);
-						if (lockTip==1) {
+						if (lockTip==1) 
+						{
 							World.w.gui.infoText('unLock');
 							if (Math.random()<0.8) replic('success');
 							else replic('unlock');
 						}
-						if (lockTip==2) {
+						if (lockTip==2) 
+						{
 							World.w.gui.infoText('unTermLock');
 							if (Math.random()<0.8) replic('success');
 							else replic('hack');
 						}
-						if (lockTip==4) {
+						if (lockTip==4) 
+						{
 							World.w.gui.infoText('unRepLock');
 							replic('success');
 						}
-						if (lockTip==5) {
+						if (lockTip==5) 
+						{
 							World.w.gui.infoText('unFixLock');
 							replic('success');
 						}
 						if (successUnlock!=null) successUnlock();
-						if (at_once>0) {
+						if (at_once>0) 
+						{
 							actOsn();
 						}
 						update();
 					}
 					World.w.gui.bulb(owner.X,owner.Y);
-				} else {
+				} 
+				else 
+				{
 					World.w.gui.infoText('noPoss',null,null,false);
 					World.w.gui.bulb(owner.X,owner.Y);
 				}
 				unlock=0;
 				is_ready=false;
-			} else if (is_ready) {
+			} 
+			else if (is_ready) 
+			{
 				actOsn();
 			}
 			is_ready=false;
 		}
 		
-		public function getChance(dif:int):Number {
+		public function getChance(dif:int):Number 
+		{
 			if (dif<-2) return 1;
 			if (dif>4) return 0;
 			if (World.w.pers.upChance>0) return chanceUnlock2[dif+2];
@@ -669,26 +806,34 @@
 		}
 		
 		// Perform the main action
-		public function actOsn() {
-			if (cons) {
-				if (World.w.invent.items[cons] && World.w.invent.items[cons].kol>0)	{
+		public function actOsn() 
+		{
+			if (cons) 
+			{
+				if (World.w.invent.items[cons] && World.w.invent.items[cons].kol>0)	
+				{
 					World.w.invent.minusItem(cons);
 					World.w.gui.infoText('usedCons', Res.txt('i',cons));
 					if (cons=='empbomb') Emitter.emit('impexpl',location,owner.X, owner.Y-owner.scY/2);
-				} else {
+				} 
+				else 
+				{
 					World.w.gui.infoText('needCons', Res.txt('i',cons),null,false);
 					return;
 				}
 			}
-			if (actFun) {
+			if (actFun) 
+			{
 				actFun();
 			}
-			if (cont!=null) {
+			if (cont!=null)
+			{
 				loot();
 			}
 			sign=0;
 			if (expl) owner.die();
-			if ((door>0 || knop>0)&& action>0) {
+			if ((door>0 || knop>0)&& action>0) 
+			{
 				open=!open;
 				setAct('open',(open?1:0));
 				if (open && scrOpen) scrOpen.start();
@@ -696,7 +841,8 @@
 				if (open) t_autoClose=autoClose;
 				if (door>0 && World.w.pers.noiseDoorOpen) World.w.gg.makeNoise(World.w.pers.noiseDoorOpen, true);
 			}
-			if (allact || prob!=null) {
+			if (allact || prob!=null) 
+			{
 				allAct();
 			}
 			
@@ -706,12 +852,15 @@
 		}
 		
 		// Break the container
-		public function dieCont() {
+		public function dieCont() 
+		{
 			lootBroken=true;
-			if (cont!=null) {
+			if (cont!=null) 
+			{
 				loot();
 			}
-			if (mine) {
+			if (mine) 
+			{
 				setAct('mine',101);
 				World.w.gui.infoText('remineZhopa');	// The bomb has triggered
 				if (fiascoRemine!=null) fiascoRemine();
@@ -722,39 +871,51 @@
 			update();
 		}
 		
-		public function load(obj:Object) {
+		public function load(obj:Object) 
+		{
 			if (obj==null) return;
-			if (obj.lock!=null) {
+			if (obj.lock!=null) 
+			{
 				setAct('lock',obj.lock);
 			}
-			if (obj.lockLevel!=null) {
+			if (obj.lockLevel!=null) 
+			{
 				lockLevel=obj.lockLevel;
 			}
-			if (obj.dif!=null) {
+			if (obj.dif!=null) 
+			{
 				allDif=obj.dif;
 			}
-			if (obj.mine!=null) {
+			if (obj.mine!=null) 
+			{
 				setAct('mine',obj.mine);
 			}
-			if (obj.loot!=null) {
-				if (obj.loot==2) {
+			if (obj.loot!=null) 
+			{
+				if (obj.loot==2) 
+				{
 					loot(true);	// Generate critical loot if the state is 2
 				}
 				setAct('loot',obj.loot);
 			}
-			if (obj.open!=null) {
+			if (obj.open!=null) 
+			{
 				setAct('open',obj.open);
 			}
-			if (obj.expl!=null) {
+			if (obj.expl!=null) 
+			{
 				setAct('expl',obj.expl);
 			}
-			if (obj.sign!=null) {
+			if (obj.sign!=null) 
+			{
 				sign=obj.sign;
 			}
 		}
 
-		public function setDoor() {
-			if (inited && !open && (owner as Box).attDoor()) {
+		public function setDoor() 
+		{
+			if (inited && !open && (owner as Box).attDoor()) 
+			{
 				open=true;
 				if (t_autoClose<=0) World.w.gui.infoText('noClose',null,null,false);
 				return;
@@ -763,20 +924,23 @@
 		}
 		
 		// Unsuccessful attempt at defusing - explosion
-		public function explosion() {
+		public function explosion() 
+		{
 			if (saveExpl) return;
 			var un:Unit=new Unit();
 			un.loc=location;
 			var bul:Bullet=new Bullet(un,owner.X,owner.Y,null,false);
 			bul.iExpl(damage,destroy,explRadius);
 			setAct('expl',1);
-			if (expl) {
+			if (expl) 
+			{
 				owner.die();
 			}
 		}
 		
 		// Unsuccessful attempt at hacking a force field - electric shock
-		public function discharge() {
+		public function discharge() 
+		{
 			World.w.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
 			//damage(,Unit.D_SPARK);
 			//Emitter.emit('moln',location,owner.X,owner.Y-owner.scY/2,{celx:World.w.gg.X, cely:(World.w.gg.Y-World.w.gg.scY/2)});
@@ -786,7 +950,8 @@
 		}
 		
 		// Unsuccessful attempt to disable the alarm - alarm
-		public function alarm() {
+		public function alarm() 
+		{
 			if (saveExpl) return;
 			t_budilo=240;
 			setAct('expl',1);
@@ -795,7 +960,8 @@
 		}
 		
 		// Unsuccessful attempt to disable the alarm button
-		public function alarm2() {
+		public function alarm2() 
+		{
 			if (allact!='alarm') return;
 			t_budilo=240;
 			location.signal();
@@ -807,12 +973,14 @@
 		}
 		
 		// Unsuccessful attempt to hack the robot cell - alarm
-		public function robocellFail() {
+		public function robocellFail() 
+		{
 			location.robocellActivate();
 		}
 		
 		// Create a robot
-		public function genRobot() {
+		public function genRobot() 
+		{
 			if (allact!='robocell') return;
 			location.createUnit('robot',X,Y,true,null,null,30);
 			allact='';
@@ -820,7 +988,8 @@
 			owner.setVisState('active');
 		}
 		
-		public function needRuna(gg:UnitPlayer):int {
+		public function needRuna(gg:UnitPlayer):int 
+		{
 			if (mineTip==6 && mine>0) return 1;
 			if (noRuna || lock==0) return 0;
 			if (gg.invent==null || mine>0) return 0;
@@ -830,24 +999,30 @@
 			if (lockTip==2 && gg.invent.items['reboot'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			return 0;
 		}
-		public function useRuna(gg:UnitPlayer) {
-			if (mineTip==6 && mine>0) {
+
+		public function useRuna(gg:UnitPlayer) 
+		{
+			if (mineTip==6 && mine>0) 
+			{
 				if (fiascoRemine!=null) fiascoRemine();
 				setAct('mine',101);
-				if (at_once>0) {
+				if (at_once>0) 
+				{
 					actOsn();
 				}
 				update();
 				return;
 			}
 			if (gg.invent==null) return;
-			if (lockTip==1 && lock>0 && gg.invent.items['runa'].kol>0) {
+			if (lockTip==1 && lock>0 && gg.invent.items['runa'].kol>0) 
+			{
 				command('unlock');
 				gg.invent.minusItem('runa');
 				World.w.gui.infoText('useRuna');
 				World.w.gui.bulb(owner.X,owner.Y);
 			}
-			if (lockTip==2 && lock>0 && gg.invent.items['reboot'].kol>0) {
+			if (lockTip==2 && lock>0 && gg.invent.items['reboot'].kol>0) 
+			{
 				command('unlock');
 				gg.invent.minusItem('reboot');
 				World.w.gui.infoText('useReboot');
@@ -855,94 +1030,132 @@
 			}
 		}
 		
-		public function off() {
+		public function off() 
+		{
 				stateText='';
 				active=false;
 				lock=0;
 		}
 		
-		public function allAct() {
-			if (prob!=null) {
-				if (World.w.possiblyOut()==2) {
+		public function allAct() 
+		{
+			if (prob!=null) 
+			{
+				if (World.w.possiblyOut()==2) 
+				{
 					World.w.gui.infoText('noOutLoc',null,null,false);
 					return;
 				}
 				location.land.gotoProb(prob, owner.X, owner.Y);
-			} else if (allact=='probreturn') {
-				if (location.landProb!='') {
-					if (World.w.possiblyOut()==2) {
+			} 
+			else if (allact=='probreturn') 
+			{
+				if (location.landProb!='') 
+				{
+					if (World.w.possiblyOut()==2) 
+					{
 						World.w.gui.infoText('noOutLoc',null,null,false);
 						return;
 					}
 					location.land.gotoProb('', owner.X, owner.Y);
 				}
-			} else if (allact=='hack_robot') {
+			} 
+			else if (allact=='hack_robot') 
+			{
 				World.w.gui.infoText('term1Act');
 				World.w.gui.bulb(X,Y);
 				for each (var un:Unit in owner.loc.units) un.hack(World.w.pers.security);				
-			} else if (allact=='hack_lock') {
+			} 
+			else if (allact=='hack_lock') 
+			{
 				World.w.gui.infoText('term2Act');
 				World.w.gui.bulb(X,Y);
-				for each (var obj:Obj in owner.loc.objs) {
+				for each (var obj:Obj in owner.loc.objs) 
+				{
 					if (obj.inter) obj.inter.command('hack');
 				}
-			} else if (allact=='prob_help') {
+			} 
+			else if (allact=='prob_help') 
+			{
 				if (location.prob) location.prob.showHelp();
-			} else if (allact=='electro_check') {
+			} 
+			else if (allact=='electro_check') 
+			{
 				location.electroCheck();
 				if (location.electroDam<=0) World.w.gui.infoText('electroOff',null,null,true);
 				else World.w.gui.infoText('electroOn',null,null,true);
-			} else if (allact=='comein') {
+			} 
+			else if (allact=='comein') 
+			{
 				World.w.gg.outLoc(5,X,Y);
-			} else if (allact=='bind') {
+			} 
+			else if (allact=='bind') 
+			{
 				World.w.gg.bindChain(X,Y-20);
-			} else if (allact=='work' || allact=='lab' || allact=='stove') {
+			} 
+			else if (allact=='work' || allact=='lab' || allact=='stove') 
+			{
 				World.w.pip.workTip=allact;
 				World.w.pip.onoff(7);
-			} else if (allact=='app') {
+			} 
+			else if (allact=='app') 
+			{
 				World.w.pip.onoff(8);
-			} else if (allact=='map') {
+			} 
+			else if (allact=='map') 
+			{
 				World.w.pip.travel=true;
 				World.w.pip.onoff(3,3);
 				World.w.pip.travel=true;
-			} else if (allact=='stand') {
+			} 
+			else if (allact=='stand') 
+			{
 				World.w.stand.onoff(1);
-			} else if (allact=='exit') {
+			} 
+			else if (allact=='exit') 
+			{
 				World.w.game.gotoNextLevel();
-			} else if (allact=='robocell') {
+			} 
+			else if (allact=='robocell') 
+			{
 				World.w.gui.infoText('robocellOff');
 				setAct('open',1);
-			} else if (allact=='alarm') {
+			} 
+			else if (allact=='alarm') 
+			{
 				World.w.gui.infoText('alarmOff');
 				setAct('open',1);
-			} else if (allact=='vault') {
+			} 
+			else if (allact=='vault') 
+			{
 				World.w.pip.onoff(9);
 			} else owner.loc.allAct(owner,allact,allid);
-			/*{
-				for each (var obj:Obj in owner.loc.objs) {
-					if (obj.inter && obj.inter!=this && obj.inter.allid==allid) obj.inter.command(allact);
-				}
-			}*/
 		}
 		
 		// Start of prolonged action on the object
-		public function beginAct() {
-			if (allact=='comein') {
+		public function beginAct()
+		{
+			if (allact=='comein') 
+			{
 				owner.setVisState('comein');
 			}
 		}
 		
-		public function shine() {
+		public function shine() 
+		{
 			Emitter.emit('unlock',location,owner.X,owner.Y-owner.scY/2,{kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
 		}
 		
-		public function signal(n:String) {
+		public function signal(n:String) 
+		{
 			Emitter.emit(n,location,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
 		}
 		
 		
-		public function command(com:String, val:String=null) {
-			if (com=='hack' && is_hack) {
+		public function command(com:String, val:String=null) 
+		{
+			if (com=='hack' && is_hack) 
+			{
 				active=true;
 				setAct('mine',101);
 				setAct('lock',101);
@@ -950,95 +1163,125 @@
 				update();
 				shine();
 			}
-			if (com=='unlock') {
+			if (com=='unlock') 
+			{
 				active=true;
 				setAct('mine',101);
 				setAct('lock',101);
 				update();
 				shine();
 			}
-			if (com=='open') {
+			if (com=='open') 
+			{
 				open=true;
 				setAct('open',1);
 				t_autoClose=autoClose;
 				if (allact && val!='13')	allAct();
 			}
-			if (com=='close') {
+			if (com=='close') 
+			{
 				open=false;
 				setAct('open',0);
 				if (open) t_autoClose=150;
 				if (allact && val!='13')	allAct();
 			}
-			if (com=='dam') {
+			if (com=='dam') 
+			{
 				if (expl) explosion();
-				else if (knop && action==0) {
+				else if (knop && action==0) 
+				{
 					setAct('open',1);
 					if (location.prob) location.prob.check();
-				} else actOsn();
+				} 
+				else actOsn();
 			}
-			if (com=='swap') {
+			if (com=='swap') 
+			{
 				open=!open;
 				setAct('open',(open?1:0));
 			}
-			if (com=='sign') {
+			if (com=='sign') 
+			{
 				sign=int(val);
 			}
-			if (com=='off') {
+			if (com=='off') 
+			{
 				active=false;
 			}
-			if (isMove) {
-				if (com=='stop') {
+			if (isMove)
+			 {
+				if (com=='stop') 
+				{
 					moveSt=0;
 				}
-				if (com=='move') {
+				if (com=='move') 
+				{
 					moveSt=4;
 				}
-				if (com=='pop') {
+				if (com=='pop') 
+				{
 					if (moveSt==0) moveSt=4;
 					else moveSt=0;
 				}
-				if (com=='move1') {	// Move from the beginning to the end
+				if (com=='move1') // Move from the beginning to the end
+				{	
 					moveTo(1);
 				}
-				if (com=='move2') {	// Move from the end to the beginning
+				if (com=='move2') // Move from the end to the beginning
+				{	
 					moveTo(2);
 				}
-				if (com=='move3') {	// Move from one end to the other
+				if (com=='move3') // Move from one end to the other
+				{	
 					moveTo(3);
 				}
 			}
-			if (com=='red') {
+			if (com=='red') 
+			{
 				signal('red');
 			}
-			if (com=='green') {
+			if (com=='green') 
+			{
 				signal('green');
 			}
 		}
 		
-		public function move() {
-			if (isMove && moveSt>0) {
+		public function move() 
+		{
+			if (isMove && moveSt>0) 
+			{
 				var f:Number=0;
 				var pp=moveP;
 				if (dt_move<1) dt_move+=0.1;
-				if (t_move>=0 && t_move<tStay) {	// standing at the beginning
+				if (t_move>=0 && t_move<tStay) // standing at the beginning
+				{	
 					moveP=false;
 					f=0;
 					if (moveSt==2 || moveSt==3) moveSt=0;
-				} if (t_move>=tStay && t_move<tStay+tMove) { // moving from the beginning to the end
+				} 
+				if (t_move>=tStay && t_move<tStay+tMove)  // moving from the beginning to the end
+				{
 					moveP=true;
 					f=(t_move-tStay)/tMove;
-				} else if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
+				} 
+				else if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) // standing at the end
+				{ 
 					moveP=false;
 					f=1;
 					if (moveSt==1 || moveSt==3) moveSt=0;
-				} else if (t_move>=tStay+tMove+tStay && t_move<(tStay+tMove)*2) { // moving from the end to the beginning
+				} 
+				else if (t_move>=tStay+tMove+tStay && t_move<(tStay+tMove)*2)  // moving from the end to the beginning
+				{
 					moveP=true;
 					f=((tStay+tMove)*2-t_move)/tMove;
-				} else {
+				} 
+				else 
+				{
 					moveP=false;
 					f=0;
 				}
-				if (pp!=moveP) {
+				if (pp!=moveP) 
+				{
 					if (moveP) sound('move');
 					else sound('stop');
 				}
@@ -1051,80 +1294,107 @@
 			}
 		}
 		
-		public function moveTo(n:int) {
+		public function moveTo(n:int) 
+		{
 			moveSt=n;
-			if (n==1) {
-				if (t_move>=0 && t_move<tStay) { // standing at the beginning
+			if (n==1) 
+			{
+				if (t_move>=0 && t_move<tStay) // standing at the beginning
+				{ 
 					t_move=tStay;
 				}
-				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
+				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) // standing at the end
+				{ 
 					moveSt=0;
 				}
 			}
-			if (n==2) {
-				if (t_move>=0 && t_move<tStay) { // standing at the beginning
+			if (n==2) 
+			{
+				if (t_move>=0 && t_move<tStay)  // standing at the beginning
+				{
 					moveSt=0;
 				}
-				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
+				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) // standing at the end
+				{ 
 					t_move=tStay+tMove+tStay;
 				}
 			}
-			if (n==3) {
-				if (t_move>=0 && t_move<tStay) { // standing at the beginning
+			if (n==3)
+			{
+				if (t_move>=0 && t_move<tStay)  // standing at the beginning
+				{
 					t_move=tStay;
 				}
-				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) { // standing at the end
+				if (t_move>=tStay+tMove && t_move<tStay+tMove+tStay) // standing at the end
+				{ 
 					t_move=tStay+tMove+tStay;
 				}
 			}
 		}
 		
-		public function sound(s:String=null) {
-			if (s=='move') {
+		public function sound(s:String=null) 
+		{
+			if (s=='move') 
+			{
 				moveCh=Snd.ps('move',X,Y,0);
-			} else if (s=='stop') {
+			} 
+			else if (s=='stop') 
+			{
 				if (moveCh) moveCh.stop();
 				moveCh=Snd.ps('move',X,Y,5500);
-			} else if (sndAct!='') Snd.actionCh=Snd.ps(sndAct,X,Y);
+			} 
+			else if (sndAct!='') Snd.actionCh=Snd.ps(sndAct,X,Y);
 			
 		}
 		
-		function replic(s:String) {
+		function replic(s:String) 
+		{
 			if (Math.random()<0.25) World.w.gg.replic(s);
 		}	
 		
 		// Confirm the receipt of a critical item
-		public function receipt() {
+		public function receipt() 
+		{
 			saveLoot=1;
 		}
 		
-		public function loot(impOnly:Boolean=false) {
+		public function loot(impOnly:Boolean=false) 
+		{
 			if (location==null || cont=='empty') return;
 			X=owner.X, Y=owner.Y-owner.scY/2;
 			var kol:int, imp:int;
 			var is_loot=false;
 			var imp_loot=1;
-			if (xml && xml.item.length()) {
-				for each(var item:XML in xml.item) {
+			if (xml && xml.item.length()) 
+			{
+				for each(var item:XML in xml.item) 
+				{
 					if (impOnly && item.@imp.length()==0) continue;
 					if (item.@kol.length()) kol=item.@kol;
 					else kol=1;
-					if (item.@imp.length()) {
+					if (item.@imp.length()) 
+					{
 						imp=2;
 						imp_loot=2;
-					} else imp=1;
+					} 
+					else imp=1;
 					LootGen.lootId(location,X,Y,item.@id,kol,imp,this,lootBroken);
 					is_loot=true;
 				}
 			}
 			if (impOnly) return;
-			if (cont!='' && cont!='empty') {
-				if (owner is Unit) {
+			if (cont!='' && cont!='empty') 
+			{
+				if (owner is Unit) 
+				{
 					is_loot=LootGen.lootDrop(location,X,Y,cont,(owner as Unit).hero) || is_loot;
-				} else {
+				} 
+				else 
+				{
 					is_loot=LootGen.lootCont(location,X,Y,cont,lootBroken,prize?allDif:50) || is_loot;
 					// Give experience points
-					if (!lootBroken && allDif>0 && xp>0) {
+					if (!lootBroken && allDif>0 && xp>0) 
+					{
 						location.takeXP(Math.round(xp*(allDif+1)),X,Y);
 					}
 				}

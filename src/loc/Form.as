@@ -25,8 +25,10 @@
 		public var stair:int=0;
 		public var lurk:int=0;
 
-		public function Form(node:XML=null) {
-			if (node!=null) {
+		public function Form(node:XML=null) 
+		{
+			if (node!=null) 
+			{
 				id=node.@id;
 				if (node.@m.length()) idMirror=node.@m;
 				tip=node.@ed;
@@ -51,10 +53,12 @@
 		public static var fForms:Array;
 		public static var oForms:Array;
 		
-		public static function setForms() {
+		public static function setForms() 
+		{
 			fForms=new Array();
 			oForms=new Array();
-			for each (var node in AllData.d.mat) {
+			for each (var node in AllData.d.mat) 
+			{
 				if (node.@ed==1) fForms[node.@id]=new Form(node);
 				else oForms[node.@id]=new Form(node);
 			}

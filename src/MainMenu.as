@@ -71,10 +71,6 @@
 			main.stage.addEventListener(Event.RESIZE, resizeDisplay); 
 			main.stage.addEventListener(Event.ENTER_FRAME, mainStep);
 			
-			//mainTimer = new Timer(30);
-			//mainTimer.addEventListener(TimerEvent.TIMER, mainStep);
-			//mainTimer.start();
-			
 			showButtons(false);
 			mainMenuOn();
 			
@@ -84,7 +80,6 @@
 			
 			mainMenu.testtest.visible=world.testMode;
 			mainMenu.info.visible=false;
-			//mainMenu.testtest.htmlText='555 <a href="https://tabun.everypony.ru/">gre</a> 777';
 			Snd.initSnd();
 			setMenuSize();
 			displ=new Displ(mainMenu.pipka, mainMenu.groza);
@@ -109,19 +104,16 @@
 			styleObj.textDecoration= "underline";
 			style.setStyle("a:hover", styleObj);
 			
-			//mainMenu.testtest.styleSheet=style;
 			mainMenu.info.txt.styleSheet=style;
 			mainMenu.link.l1.styleSheet=style;
 			mainMenu.link.l2.styleSheet=style;
-			//mainMenu.link.l1.htmlText="<a href='http://foe.ucoz.org/main.html'>foe.ucoz.org</a>";
-			//mainMenu.link.l1.useHandCursor=true;
+
 		}
 
 		public function mainMenuOn() 
 		{
 			active=true;
-			//mainMenu.butRus.addEventListener(MouseEvent.CLICK, funRus);
-			//mainMenu.butEng.addEventListener(MouseEvent.CLICK, funEng);
+
 			mainMenu.butNewGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
 			mainMenu.butNewGame.addEventListener(MouseEvent.MOUSE_OUT, funOut);
 			mainMenu.butLoadGame.addEventListener(MouseEvent.MOUSE_OVER, funOver);
@@ -146,8 +138,7 @@
 		public function mainMenuOff() 
 		{
 			active=false;
-			//mainMenu.butRus.removeEventListener(MouseEvent.CLICK, funRus);
-			//mainMenu.butEng.removeEventListener(MouseEvent.CLICK, funEng);
+
 			mainMenu.butNewGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
 			mainMenu.butNewGame.removeEventListener(MouseEvent.MOUSE_OUT, funOut);
 			mainMenu.butLoadGame.removeEventListener(MouseEvent.MOUSE_OVER, funOver);
@@ -288,8 +279,6 @@
 			if (world.app) world.app.setLang();
 			mainMenu.adv.text=Res.advText(world.nadv);
 			mainMenu.adv.y=main.stage.stageHeight-mainMenu.adv.textHeight-40;
-			//mainMenu.butRus.visible=(Res.lang==1);
-			//mainMenu.butEng.visible=(Res.lang==0);
 			mainMenu.info.txt.htmlText=Res.txt('g','inform')+'<br>'+Res.txt('g','inform',1);
 			mainMenu.info.visible=(mainMenu.info.txt.text.length>0);
 			setScrollInfo();
@@ -694,7 +683,7 @@
 						if (opt.hardcore) opt.autoSaveN=loadCell;
 						loadCell=-1;
 					}
-					world.newGame(loadCell,mainMenu.dialNew.inputName.text,opt);
+					world.startNewGame(loadCell,mainMenu.dialNew.inputName.text,opt);
 				}
 			} 
 			else world.step();

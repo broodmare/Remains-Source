@@ -194,10 +194,6 @@ public class Grafon {
 		for (var i in texUrl)
 		{
 			var textureURL:String = texUrl[i];
-			if (World.w.playerMode == 'PlugIn')
-			{
-				textureURL += '?u='+World.w.fileVersion;
-			}
 			grLoaders[i] = new GrLoader(i, textureURL, this);
 		}
 		createCursors();

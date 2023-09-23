@@ -19,22 +19,26 @@
 			X=nx;
 			Y=ny;
 			setSize();
-			if (loadObj) {
+			if (loadObj) 
+			{
 				sost=loadObj.sost;
 			}
 			levitPoss=false;
 			sloy=3;
-			if (sost==1) {
+			if (sost==1) 
+			{
 				if (id=='heal') vis=new visualHealBonus();
 				else vis=new visualBonus();
 			}
-			if (vis) {
+			if (vis) 
+			{
 				vis.bonus.cacheAsBitmap=true;
 				vis.x=X, vis.y=Y;
 			}
 		}
 		
-		function setSize() {
+		function setSize() 
+		{
 			scX=scY=40;
 			X1=X-scX/2;
 			X2=X+scX/2;
@@ -42,16 +46,20 @@
 			Y2=Y+scY/2;
 		}
 		
-		public override function save():Object {
+		public override function save():Object 
+		{
 			var obj:Object=new Object();
 			obj.sost=sost;
 			return obj;
 		}
 		
-		public override function step() {
-			if (liv<1000000) {
+		public override function step() 
+		{
+			if (liv<1000000) 
+			{
 				liv--;
-				if (!loc.active || liv==0) {
+				if (!loc.active || liv==0) 
+				{
 					liv=0;
 					sost=2;
 					vis.gotoAndPlay(22);
@@ -62,26 +70,33 @@
 			if (areaTest(loc.gg)) take();
 		}
 		
-		public function take() {
+		public function take() 
+		{
 			sost=2;
 			liv=0;
 			vis.gotoAndPlay(2);
-			if (id=='xp') {
+			if (id=='xp') 
+			{
 				loc.kolXp--;
-				if (loc.kolXp==0 && loc.maxXp>1) {	//собрали все бонусы
+				if (loc.kolXp==0 && loc.maxXp>1)  //собрали все бонусы
+				{	
 					World.w.pers.expa(loc.unXp*loc.maxXp);
-					if (!loc.detecting && loc.summXp>0) {
+					if (!loc.detecting && loc.summXp>0) 
+					{
 						loc.takeXP(loc.summXp,World.w.gg.X, World.w.gg.Y-100,true);
 						World.w.gui.infoText('sneakBonus');
 					}
 					Snd.ps('bonus2');
-				} else {
+				} 
+				else 
+				{
 					World.w.pers.expa(loc.unXp);
 					Snd.ps('bonus1');
 				}
 				
 			}
-			if (id=='heal') {
+			if (id=='heal') 
+			{
 				World.w.gg.heal(val);
 				Snd.ps('bonus1');
 			}

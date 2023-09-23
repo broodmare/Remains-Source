@@ -28,7 +28,6 @@
 		{
 			def=ndef;
 			textFile=nfile;
-			if (World.w.playerMode=='PlugIn') textFile+="?u="+Math.random().toFixed(5);
 			loader_text = new URLLoader(); 
 			request = new URLRequest(textFile); 
 			loader_text.load(request); 

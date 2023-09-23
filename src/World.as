@@ -38,7 +38,6 @@
 	{
 		public static var w:World;
 		
-		public var playerMode:String;	//Flash player mode
 		public var urle:String;			//URL from which the game was launched
 
 		//Visual components
@@ -214,7 +213,6 @@
 		
 		//Maps
 		public var landPath:String;
-		public var fileVersion:int=2;		//change this number to clear cache
 		public var landData:Array;
 		public var kolLands:int=0;
 		public var kolLandsLoaded:int=0;
@@ -227,10 +225,8 @@
 		public var autoSaveN:int=0;		//autosave slot number
 		public var log:String='';
 		
-		//fps counter
-		public var tfc:Timer;	
-
 		var fc:int=0;
+
 		//var date:Date,
 		var d1:int, d2:int;
 		
@@ -242,16 +238,6 @@
 			World.w=this;
 
 			// Technical part
-			// Determine the player type and the address from which it is launched
-			playerMode = Capabilities.playerType;
-			
-			//if (playerMode=='PlugIn') roomsLoad=0;
-			/*if (playerMode=='PlugIn' && ExternalInterface.available) {
-			   urle = ExternalInterface.call("window.location.href.toString");
-			   if (urle=="http://foe.ucoz.org/test318/psrc.html") chitOn=true;
-			}
-			if (playerMode=='External') chitOn=true;
-			chitOn=true;*/
 			
 			//files
 			soundPath = '';
@@ -263,26 +249,6 @@
 			//textURL='D:/Dropbox/foe/text.xml';
 			langURL='lang.xml';
 			landPath='Rooms/';
-
-
-			if (testMode) fileVersion=Math.random()*100000;
-
-			if (playerMode=='PlugIn') 
-			{
-				musicPath='http://foe.ucoz.org/Sound/music/';
-				//soundPath='http://foe.ucoz.org/Sound/';
-				//musicPath='Sound/music/';
-				soundPath='';
-				langURL += '?u='+ Math.random().toFixed(5);
-				//langURL+='?u='+fileVersion;
-				textureURL += '?u='+fileVersion;
-				spriteURL += '?u='+fileVersion;
-				//ressoundURL+='?u='+fileVersion;
-				//textURL='http://foe.ucoz.org/text.xml?u='+ Math.random().toFixed(5);
-				//landPath='http://foe.ucoz.org/Rooms/';
-				//graphURL='http://foe.ucoz.org/texture.swf'
-				//ressoundURL='http://foe.ucoz.org/res.swf'
-			}
 			
 			main = nmain;
 
@@ -356,19 +322,15 @@
 
 			grafon=new Grafon(visual);
 			cam=new Camera(this);
+
 			load_log+='Stage 1 Ok\n';
 			//FPS counter
-			d1=d2=getTimer();
+			d1 = d2 = getTimer();
 			
 			//config, immediately loads sound settings
 			configObj=SharedObject.getLocal('config',savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
-			
-			/*var nq:int=0;
-			for each(var q in GameData.d.quest) {
-				if (q.@rep>0) nq+=int(q.@rep);	
-			}
-			trace('rep',nq);*/
+
 		}
 
 //=============================================================================================================
@@ -482,7 +444,9 @@
 		{
 			if (consol) return;
 			if (configObj) lastCom=configObj.data.lastCom;
+
 			consol=new Consol(vconsol, lastCom);
+
 			//saves and config
 			saveArr=new Array();
 			for (var i=0; i<=saveKol; i++) 
@@ -490,10 +454,7 @@
 				saveArr[i]=SharedObject.getLocal('PFEgame'+i,savePath);
 			}
 			saveObj = saveArr[0];
-			/*if (configObj.data.lang) {
-				curLang=configObj.data.lang;
-				setLang();
-			}*/
+
 			if (configObj.data.dialon!=null) dialOn=configObj.data.dialon;
 			if (configObj.data.zoom100!=null) zoom100=configObj.data.zoom100;
 			if (zoom100) cam.isZoom=0; else cam.isZoom=2;
@@ -506,7 +467,7 @@
 			if (configObj.data.quakeCam!=null) quakeCam=configObj.data.quakeCam;
 			if (configObj.data.errorShowOpt!=null) errorShowOpt=configObj.data.errorShowOpt;
 			if (configObj.data.app) {
-				app.load(configObj.data.app);// .loadObj=configObj.data.app;
+				app.load(configObj.data.app);
 				app.setTransforms();
 			}
 			try 
@@ -558,7 +519,6 @@
 				landData[xl.@id]=ll;
 			}
 			
-			//
 			load_log+='Stage 2 Ok\n';
 			Snd.loadMusic();
 			
@@ -584,7 +544,6 @@
 			if (allStat==1) 
 			{
 				pip.onoff(11);
-				if (playerMode=='PlugIn') ctr.active=false;
 			}
 			if (allStat>0 && !alicorn) saveGame();
 		}
@@ -592,7 +551,7 @@
 		//Pause and call pipbuck if window size is changed
 		public function resizeScreen() 
 		{
-			if (allStat>0) 
+			if (allStat > 0) 
 			{
 				cam.setLoc(loc);
 			} 
@@ -607,14 +566,14 @@
 				vwait.x=swfStage.stageWidth/2;
 				vwait.y=swfStage.stageHeight/2;
 			}
-			if (allStat==1 && !testMode) pip.onoff(11);
+			if (allStat == 1 && !testMode) pip.onoff(11);
 		}
 		
 		//Console call
 		public function consolOnOff() 
 		{
-			onConsol=!onConsol;
-			consol.vis.visible=onConsol;
+			onConsol =! onConsol; //Toggles the state of onConsole
+			consol.vis.visible = onConsol; //Toggles the visibility of consol depending on the state of onConsol
 			if (onConsol) swfStage.focus=consol.vis.input;
 		}
 		
@@ -623,7 +582,7 @@
 //			Game
 //=============================================================================================================
 		
-		var ng:Boolean;
+		var newGame:Boolean;
 		var data:Object;
 		var opt:Object;
 		var newName:String;
@@ -631,7 +590,7 @@
 		//Start a new game or load a save. Pass the slot number or -1 for a new game
 		//Stage 0 - create HUD, SATS, and pipuck
 		//Initialize game
-		public function newGame(nload:int=-1, nnewName:String='LP', nopt:Object=null) 
+		public function startNewGame(nload:int=-1, nnewName:String='LP', nopt:Object=null) 
 		{
 			if (testMode && !chitOn) 
 			{
@@ -640,14 +599,13 @@
 			}
 			try 
 			{
-				time___metr();
 				allStat=-1;
 				opt=nopt;
-				newName=nnewName;
+				newName = nnewName;
 				game=new Game();
 				if (!roomsLoad) allLandsLoaded=true;
-				ng=nload<0;
-				if (ng) 
+				newGame = nload<0;
+				if (newGame) 
 				{
 					if (opt && opt.autoSaveN) 
 					{
@@ -658,6 +616,7 @@
 					else nload=0;
 					saveObj.clear();
 				}
+				
 				// create GUI
 				gui=new GUI(vgui);
 				gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
@@ -666,7 +625,6 @@
 				pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 				// create SATS interface
 				sats=new Sats(vsats);
-				time___metr('Интерфейс');
 				
 				// create game
 				if (nload==99) 
@@ -678,11 +636,10 @@
 					data=saveArr[nload].data; // loaded from slot
 				}
 
-				if (ng)	game.init(null,opt); 
+				if (newGame)	game.init(null,opt); 
 				else game.init(data.game);
 
 				ng_wait=1;
-				time___metr('Game init');
 				
 			} 
 			catch (err) {showError(err);}
@@ -693,12 +650,12 @@
 		{
 			try 
 			{
-				if (!ng) app.load(data.app);
+				if (!newGame) app.load(data.app);
 				if (data.hardInv==true) hardInv=true; else hardInv=false;
 				if (opt && opt.hardinv) hardInv=true;
 				// create character
 				pers = new Pers(data.pers, opt);
-				if (ng) pers.persName=newName;
+				if (newGame) pers.persName=newName;
 				// create player character
 				gg = new UnitPlayer();
 				gg.ctr=ctr;
@@ -709,14 +666,12 @@
 				invent=new Invent(gg, data.invent, opt);
 				stand=new Stand(vstand,invent);
 				gg.attach();
-				time___metr('Персонаж'); //'Character'
 				// auto save slot number
-				if (!ng) if (data.n!=null) autoSaveN=data.n;
+				if (!newGame) if (data.n!=null) autoSaveN=data.n;
 				Unit.txtMiss=Res.guiText('miss');
 				
 				waitLoadClick();
 				ng_wait=2;
-				time___metr('Местность'); //'Terrain'
 			} 
 			catch (err) {showError(err);}
 		}
@@ -740,7 +695,6 @@
 				
 				Snd.off=false;
 				gui.setAll();
-				if (World.w.playerMode=='PlugIn') ctr.active=false;
 				allStat=1;
 				ng_wait=0;
 			} 
@@ -751,7 +705,6 @@
 		{
 			try 
 			{
-				time___metr();
 				comLoad=-1;
 				if (loc) loc.out();
 				land=null;
@@ -759,31 +712,40 @@
 				try {cur('arrow');} catch(err){}
 				//loading object
 				var data:Object;
-				if (nload==99) {
+
+				if (nload==99) 
+				{
 					data=loaddata;
-				} else {
+				} 
+				else 
+				{
 					data=saveArr[nload].data;
 				}
+
 				//create game
-				Snd.off=true;
-				cam.showOn=false;
+				Snd.off = true;
+				cam.showOn = false;
 				if (data.hardInv==true) hardInv=true; else hardInv=false;
-				game=new Game();
+				game = new Game();
 				game.init(data.game);
 				app.load(data.app);
+
 				//create character
-				pers=new Pers(data.pers);
+				pers = new Pers(data.pers);
+
 				//create player unit
-				gg=new UnitPlayer();
+				gg = new UnitPlayer();
 				gg.ctr=ctr;
 				gg.sats=sats;
 				sats.gg=gg;
 				gui.gg=gg;
+
 				// create an inventory
 				invent=new Invent(gg, data.invent);
 				if (stand) stand.inv=invent;
 				else stand=new Stand(vstand,invent);
 				gg.attach();
+
 				// auto-save cell number
 				if (data.n!=null) autoSaveN=data.n;
 				
@@ -795,14 +757,13 @@
 				gui.allOn();
 				t_die=0;
 				t_battle=0;
-				time___metr('Персонаж'); //'Character'
+
 				//enter the current location
 				game.enterToCurLand();//!!!!
 				game.beginGame();
 				log='';
 				Snd.off=false;
 				gui.setAll();
-				if (World.w.playerMode=='PlugIn') ctr.active=false;
 				allStat=1;
 			} 
 			catch (err) {showError(err);}
@@ -815,9 +776,6 @@
 		{
 			land=nland;
 			grafon.drawFon(vfon,land.act.fon);
-			//grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
-			//vblack.alpha=1;
-			//cam.dblack=-10;
 		} 
 		catch (err) {showError(err);}
 		}
@@ -829,8 +787,7 @@
 		try 
 		{
 			if (loc) loc.out(); //Unload current area
-			loc=nloc; //Set the desired area as the current area
-			//MAYBE TRY ZEROING OUT EVERYTHING IN GRAFON?
+			loc = nloc; //Set the desired area as the current area
 			grafon.drawLoc(loc); //Draw the current area
 			cam.setLoc(loc);
 			grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
@@ -856,15 +813,14 @@
 			} catch (err) {showError(err);}
 		}
 		
-
-		//MIGHT HAVE TO DO WITH BUG
-		public function exitLand(fast:Boolean=false) {
+		public function exitLand(fast:Boolean=false) 
+		{
 			if (t_exit>0) return;
 			gg.controlOff();
 			pip.noAct=true;
 			if (fast) 
 			{
-				t_exit=21; // is the game running out of rendering time because it's cut short for quicker transitions??
+				t_exit=21;
 			} 
 			else 
 			{
@@ -911,31 +867,28 @@
 			catch (err) {showError(err);}
 		}
 		
-		// Player death
-		/*public function ggDie() {
-			gg.controlOff();
-			gui.unshowSelector();
-			if (pers.hardcore) {
-				pers.dead=true;
-				saveGame();
-			} else {
-				t_die=300;
-			}
-		}*/
-		
-		function ggDieStep() {
-		try {
+		function ggDieStep() 
+		{
+		try 
+		{
 			t_die--;
 			if (t_die==200) cam.dblack=2.2;
-			if (t_die==150) {
-				if (alicorn) {
+			if (t_die==150) 
+			{
+				if (alicorn) 
+				{
 					game.runScript('gameover');
 					t_die=0;
-				} else {
-					if (gg.sost==3) {
+				} 
+				else 
+				{
+					if (gg.sost==3) 
+					{
 						game.curLandId=game.baseId;
 						game.enterToCurLand();
-					} else {
+					} 
+					else 
+					{
 						land.gotoCheckPoint();
 					}
 					cam.dblack=-4;
@@ -943,39 +896,39 @@
 				}
 			}
 			if (t_die==100) gg.resurect();
-			if (t_die==1) {
+			if (t_die==1) 
+			{
 				gg.controlOn();
 			}
-		} catch (err) {showError(err);}
+		} 
+		catch (err) {showError(err);}
 		}
-		
-		/*public function onTfc(event:TimerEvent):void {
-			step();
-			//fc++;
-			//vgui.vfc.text=swfStage.focus;
-		}*/
-		
+
 		// Main loop
 		public function step() 
 		{
 			try 
 			{
 				if (verror.visible) return;
-				//Controls
-				ctr.step();				
-				Snd.step();
-				if (ng_wait>0) 
+
+				
+				ctr.step();	//Process controls
+				Snd.step(); //Process sound
+
+				if (ng_wait > 0) 
 				{
 					if (ng_wait==1) 
 					{
 						newGame1();
-					} else if (ng_wait==2) 
+					} 
+					else if (ng_wait==2) 
 					{
 						if (clickReq!=1) newGame2();
 					}
 					return;
 				}
-				if (!onConsol && !pip.active) swfStage.focus=swfStage;
+
+				if (!onConsol && !pip.active) swfStage.focus = swfStage;
 				
 				//Only if the game has started and not paused, game loops
 				if (allStat==1 && !onPause) 
@@ -1091,14 +1044,6 @@
 						onConsol=consol.vis.visible=consol.visoff=false;
 					}
 				}
-				//var d1a=d1;  FPS
-				/*d1=getTimer();
-				fc++;
-				if (fc==30) {
-					fc=0;
-					vgui.vfc.text=d1-d2;
-					d2=d1;
-				}*/
 			} catch (err) {showError(err);}
 		}
 
@@ -1156,14 +1101,6 @@
 			verror.txt.text+='\n'+'gr_stage: '+gr_stage;
 			if (dop!=null) verror.txt.text+='\n'+dop;
 			verror.visible=true;
-		}
-		
-		//measurement of action time
-		public function time___metr(s=null) 
-		{
-			d2=getTimer();
-			if (s!=null) trace(d2-d1,s);
-			d1=d2;
 		}
 		
 		public function gc() 

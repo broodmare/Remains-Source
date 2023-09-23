@@ -22,26 +22,32 @@
 		
 		public var allroom:XML;
 		
-		public function LandLoader(nid:String) {
+		public function LandLoader(nid:String) 
+		{
 			id=nid;
 			roomsFile=GameData.d.land.(@id==id).@file;
 			test=GameData.d.land.(@id==id).@test>0;
 			// Source of location templates
-			if (World.w.roomsLoad) {
+			if (World.w.roomsLoad) 
+			{
 				loader_rooms = new URLLoader();
 				var roomsURL=World.w.landPath+roomsFile+".xml";
-				if (World.w.playerMode=='PlugIn') roomsURL+="?u="+Math.random().toFixed(5);
 				request = new URLRequest(roomsURL); 
-				try {
+				try 
+				{
 					loader_rooms.load(request); 
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					errLoad=true;
 					trace('no load '+roomsFile);
 					World.w.load_log+='Load error '+roomsFile+'\n';
 				}
 				loader_rooms.addEventListener(Event.COMPLETE, onCompleteLoadRooms); 
 				loader_rooms.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
-			} else {
+			} 
+			else 
+			{
 				allroom=World.w.rooms.rooms[roomsFile];
 				loaded=true;
 				World.w.load_log+='Land '+roomsFile+' loaded\n';

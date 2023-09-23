@@ -59,7 +59,8 @@
 		public var door:Box;
 		public var trap:Obj;
 		
-		public function Tile(nx:int,ny:int) { //Initialization
+		public function Tile(nx:int,ny:int) //Initialization
+		{ 
 			X=nx, Y=ny;
 			phX1=X*Tile.tilePixelWidth;
 			phX2=(X+1)*Tile.tilePixelWidth;
@@ -169,7 +170,8 @@
 		}
 		
 		//If it has physics, turn them off.
-		public function hole():Boolean {
+		public function hole():Boolean 
+		{
 			if (phis > 0) 
 			{
 				phis = 0;
