@@ -431,78 +431,111 @@
 		}
 		
 		// Color filter
-		public function colorFilter(f:String=''):ColorTransform 
+		public function colorFilter(filter:String=''):ColorTransform 
 		{
-			var cT = new ColorTransform();
-			if (f=='green') 
+			
+			var colorT = new ColorTransform();
+			var red:Number;
+			var green:Number;
+			var blue:Number;
+			
+			var lookup:Object = 
 			{
-				cT.blueMultiplier=cT.redMultiplier=0.8;
-				cT.greenMultiplier=1.16;
-			} else if (f=='red') 
-			{
-				cT.blueMultiplier=0.7;
-				cT.greenMultiplier=0.9;
-				cT.redMultiplier=1.1;
-			} else if (f=='fire') 
-			{
-				cT.blueMultiplier=0.5;
-				cT.greenMultiplier=0.7;
-				cT.redMultiplier=1.1;
-			} else if (f=='lab') 
-			{
-				cT.blueMultiplier=0.7;
-				cT.greenMultiplier=1.1;
-				cT.redMultiplier=0.9;
-			} else if (f=='black') 
-			{
-				cT.blueMultiplier=0.7;
-				cT.greenMultiplier=0.6;
-				cT.redMultiplier=0.5;
-			} else if (f=='blue') 
-			{
-				cT.blueMultiplier=1.16;
-				cT.greenMultiplier=cT.redMultiplier=0.8;
-			} else if (f=='sky') 
-			{
-				cT.blueMultiplier=cT.greenMultiplier=1.12;
-				cT.redMultiplier=0.85;
-			} else if (f=='yellow') 
-			{
-				cT.blueMultiplier=0.9;
-				cT.greenMultiplier=1.2;
-				cT.redMultiplier=1.25;
-			} else if (f=='purple') 
-			{
-				cT.blueMultiplier=1.12;
-				cT.greenMultiplier=0.8;
-				cT.redMultiplier=1.08;
-			} else if (f=='pink') 
-			{
-				cT.blueMultiplier=1;
-				cT.greenMultiplier=0.9; //ff66aa
-				cT.redMultiplier=1.1;
-			} else if (f=='blood') 
-			{
-				cT.blueMultiplier=0.6;
-				cT.greenMultiplier=0.6;
-				cT.redMultiplier=1.08;
-			} else if (f=='blood2') 
-			{
-				cT.blueMultiplier=0.1;
-				cT.greenMultiplier=0.1;
-				cT.redMultiplier=1;
-			} else if (f=='dark') 
-			{
-				cT.blueMultiplier=0;
-				cT.greenMultiplier=0;
-				cT.redMultiplier=0;
-			} else if (f=='mf') 
-			{
-				cT.redMultiplier=0.5;
-				cT.greenMultiplier=0.5;
-				cT.blueMultiplier=1.08;
+				'green': function() 
+				{
+            		red = 0.8;
+					green = 1.16;
+					blue = 0.8;
+        		},
+				'red': function() 
+				{
+            		red = 1.1;
+					green = 0.9;
+					blue = 0.7;
+        		},
+				'fire': function() 
+				{
+            		red = 1.1;
+					green = 0.7;
+					blue = 0.5;
+        		},
+				'lab': function() 
+				{
+            		red = 0.9;
+					green = 1.1;
+					blue = 0.7;
+        		},
+				'black': function() 
+				{
+            		red = 0.5;
+					green = 0.7;
+					blue = 0.6;
+        		},
+				'blue': function() 
+				{
+            		red = 0.8;
+					green = 0.8;
+					blue = 1.16;
+        		},
+				'sky': function() 
+				{
+            		red = 0.85;
+					green = 1.12;
+					blue = 1.12;
+        		},
+				'yellow': function() 
+				{
+            		red = 1.25;
+					green = 1.2;
+					blue = 0.9;
+        		},
+				'purple': function() 
+				{
+            		red = 1.08;
+					green = 0.8;
+					blue = 1.12;
+        		},
+				'pink': function() 
+				{
+            		red = 1.1;
+					green = 0.9;
+					blue = 1;
+        		},
+				'blood': function() 
+				{
+            		red = 1.08;
+					green = 0.6;
+					blue = 1.08;
+        		},
+				'blood2': function() 
+				{
+            		red = 1;
+					green = 0.1;
+					blue = 0.1;
+        		},
+				'dark': function() 
+				{
+            		red = 0;
+					green = 0;
+					blue = 0;
+        		},
+				'mf': function() 
+				{
+            		red = 0.5;
+					green = 0.5;
+					blue = 1.08;
+        		}
 			}
-			return cT;
+
+			if (lookup.hasOwnProperty(filter)) 
+			{
+        		lookup[filter]();
+				colorT.redMultiplier = red;
+				colorT.greenMultiplier = green;
+				colorT.blueMultiplier = blue;
+    		}
+
+			return colorT;
 		}
 		
 // ------------------------------------------------------------------------------------------------
@@ -544,7 +577,8 @@
 				space[1][q-1].hole();
 				setNoObj(0,q,5,0);
 				setNoObj(0,q-1,5,0);
-				if (fak>2) {
+				if (fak>2) 
+				{
 					dyr=space[0][q-2].hole() || dyr;
 					space[1][q-2].hole();
 				} 
@@ -560,7 +594,8 @@
 				space[q+2][spaceY-2].hole();
 				setNoObj(q+1,spaceY-1,0,-2);
 				setNoObj(q+2,spaceY-1,0,-2);
-				if (fak>2) {
+				if (fak>2) 
+				{
 					dyr=space[q][spaceY-1].hole() || dyr;
 					dyr=space[q+3][spaceY-1].hole() || dyr;
 					space[q][spaceY-2].hole();
@@ -579,7 +614,8 @@
 				space[spaceX-2][q-1].hole();
 				setNoObj(spaceX-1,q,-5,0);
 				setNoObj(spaceX-1,q-1,-5,0);
-				if (fak>2) {
+				if (fak>2) 
+				{
 					dyr=space[spaceX-1][q-2].hole() || dyr;
 					space[spaceX-2][q-2].hole();
 				} 
@@ -791,7 +827,6 @@
 				var enl=enemyLevel;
 				if (land.rnd && landProb=='') {//геройский юнит
 					if (Math.random()<Math.min(0.05,locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);	
-					//hero=Math.floor(Math.random()*4+1);
 				}
 				if (hero==0 && un.boss==false) enl=Math.round(enl*(1.1-Math.random()*0.4));
 				un.setLevel(enl);
@@ -823,7 +858,6 @@
 				{
 					if (un is UnitTurret) (un as UnitTurret).hack(2);
 					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*Tile.tilePixelWidth,(ny-Math.random()*4)*Tile.tilePixelHeight));
-					//if (un is UnitSentinel) un.fraction=Unit.F_PLAYER;
 					
 				}
 				if (xml && xml.@code.length()) saves.push(un);
@@ -840,7 +874,8 @@
 		}
 		
 		//создать феникса, сидящего на ящике
-		function createPhoenix(box:Box):Boolean {
+		function createPhoenix(box:Box):Boolean 
+		{
 			if (box.wall || !box.shelf) return false;
 			if (collisionUnit(box.X,box.Y1-1,38,38)) return false;
 			var un:Unit=new UnitPhoenix();
@@ -853,7 +888,8 @@
 			return true;
 		}
 		//создать передатчик на ящике
-		function createTransmitter(box:Box):Boolean {
+		function createTransmitter(box:Box):Boolean 
+		{
 			if (box.wall || !box.shelf) return false;
 			if (land.rnd && Math.random()<0.5) return false;
 			if (collisionUnit(box.X,box.Y1-1,30,20)) return false;
@@ -1086,11 +1122,10 @@
 		}
 		
 		//определение сid случайного юнита
-		public function randomCid(tip:String):String 
+		public function randomCid(type:String):String 
 		{
-			var tr:*;
-			var randNum:Number = Math.random();
 
+			var randNum:Number = Math.random();
 			var lookup:Object = 
 			{
 				'raider': function() 
@@ -1107,7 +1142,7 @@
 				},
 				'zebra': function()
 				{
-					if (locDifLevel>=25 && randNum < 0.1) return 5; 
+					if (locDifLevel >= 25 && randNum < 0.1) return 5; 
 					if (locDifLevel >= 15) return Math.floor(randNum * 4 + 1);
 					return Math.floor(randNum * 2 + 1);
 				},
@@ -1141,9 +1176,9 @@
 				{
 					if (tipEnemy == 9)
 					{
-						var x = Math.floor(randNum * 4 + 1);
-						if (x > 3) return 3;
-						return x;
+						var i = Math.floor(randNum * 4 + 1);
+						if (i > 3) return 3;
+						return i;
 
 					}
 					return Math.floor(randNum * 2 + 1);
@@ -1209,52 +1244,59 @@
 				},
 				'scorp': function()
 				{
-					var x;
-					if (locDifLevel >= 5) x = Math.floor(randNum * 2 + 1);
-					else x = 1;
-					return 'scorp' + x;
+					var i;
+					if (locDifLevel >= 5) i = Math.floor(randNum * 2 + 1);
+					else i = 1;
+					return 'scorp' + i;
 				},
 				'mine': function()
 				{
-					var x;
 					if (biom == 4) return 'plamine'
 					if (biom==2 && randNum < Math.min(locDifLevel / 20, 0.4)) return 'plamine';
 					if (randNum < Math.min(locDifLevel / 20, 0.75)) return 'mine';
 					return 'hmine';
 				}
 			}
-			// Check if the 'tip' exists in the lookup table
-			if (lookup.hasOwnProperty(tip)) 
+			// Check if the 'type' exists in the lookup table
+			if (lookup.hasOwnProperty(type)) 
 			{
-				tr = lookup[tip]();  // Call the function from the lookup table
+				if (type == 'scorp' || type == 'mine') 
+				{
+					var s:String;
+					s = lookup[type]();  // Special cases, return strings.
+					return s;
+				}
+			 	else 
+				{
+					var i:Number = 0; // Normal cases, initialize as INT and return.
+					i = lookup[type]();
+					return i.toString();
+    			}
 			} 
 			else 
 			{
-				return null;  // 'tip' not found
+				return null;  // 'type' not found
 			}
-			if (tip == 'scorp' || tip == 'mine') 
-			{
-				return tr;  // These two are already strings, so just return them
-			}
-			return tr.toString();
-			
 		}
 		
 		//создать активный объект, nx,ny-координаты в блоках
-		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj {
+		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj 
+		{
 			var obj:Obj;
 			var size:int=AllData.d.obj.(@id==id).@size;
 			if (size<=0) size=1;
 			var loadObj:Object=null;
 			if (xml && xml.@code.length() && World.w.game.objs.hasOwnProperty(xml.@code)) loadObj=World.w.game.objs[xml.@code];
-			if (tip=='box' || tip=='door') {
+			if (tip=='box' || tip=='door') 
+			{
 				obj=new Box(this, id, (nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
 				objs.push(obj);
 				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
 				//создать феникса
 				if (xml && xml.@ph=='1' && !World.w.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
 				if (xml && xml.@transm=='1') createTransmitter((obj as Box));
-				if (land.rnd && land.act.biom==0 && !World.w.game.triggers['pet_phoenix'] && kol_phoenix==0 && land.kol_phoenix<3 && Math.random()<0.02) {
+				if (land.rnd && land.act.biom==0 && !World.w.game.triggers['pet_phoenix'] && kol_phoenix==0 && land.kol_phoenix<3 && Math.random()<0.02) 
+				{
 					createPhoenix(obj as Box);
 				}
 				if ((obj is Box) && (obj as Box).sur && land.rnd) createSur(obj as Box);
@@ -1310,11 +1352,14 @@
 		}
 		
 		//создание чекпоинта в случайной точке появления
-		public function createCheck(act:Boolean=false) {
-			if (spawnPoints.length>0) {
+		public function createCheck(act:Boolean=false) 
+		{
+			if (spawnPoints.length>0) 
+			{
 				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				var id='checkpoint';
-				if (!act && land.rnd && Math.random()<0.5) {
+				if (!act && land.rnd && Math.random()<0.5) 
+				{
 					id+=Math.floor(Math.random()*5+1);
 				}
 				cp=createObj(id,'checkpoint',sp.x,sp.y) as CheckPoint;
@@ -1324,16 +1369,20 @@
 			}
 		}
 		//создание выхода в случайной точке появления
-		public function createExit(s:String='') {
-			if (spawnPoints.length>0) {
+		public function createExit(s:String='') 
+		{
+			if (spawnPoints.length>0) 
+			{
 				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={land.act.exitProb+s} time='20' inter='8' sign='1'/>);
 				isCheck=true;
 			}
 		}
 		//создание двери испытаний в случайной точке появления
-		public function createDoorProb(nid:String, nprob:String):Boolean {
-			if (spawnPoints.length>0) {
+		public function createDoorProb(nid:String, nprob:String):Boolean 
+		{
+			if (spawnPoints.length>0) 
+			{
 				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} nazv={Res.txt('m',nprob)} time='20' inter='8'/>);
 				isCheck=true;
@@ -1343,37 +1392,50 @@
 		}
 		
 		// Creates the golden horseshoes I think...
-		public function createXpBonuses(kol:int=5) {
+		public function createXpBonuses(kol:int=5) 
+		{
 			if (homeStable || homeAtk) return;
 			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
 			var mesto:int=4;
 			var n:int=5;
 			maxXp=kol;
-			for (var i=1; i<=100; i++) {
+			for (var i=1; i<=100; i++) 
+			{
 				x1=2, y1=2, x2=spaceX-2, y2=spaceY-2;
-				if (mesto==4) {
+				if (mesto==4) 
+				{
 					x2=spaceX/2;
 					y2=spaceY/2;
-				} else if (mesto==3) {
+				} 
+				else if (mesto==3) 
+				{
 					x1=spaceX/2;
 					y2=spaceY/2;
-				} else if (mesto==2) {
+				} 
+				else if (mesto==2) 
+				{
 					x2=spaceX/2;
 					y1=spaceY/2;
-				} else if (mesto==1) {
+				} 
+				else if (mesto==1) 
+				{
 					x1=spaceX/2;
 					y1=spaceY/2;
 				}
 				nx=Math.floor(x1+Math.random()*(x2-x1));
 				ny=Math.floor(y1+Math.random()*(y2-y1));
-				if (getTile(nx,ny).phis==0 && (getTile(nx-1,ny).phis==0 || getTile(nx+1,ny).phis==0)) {
+				if (getTile(nx,ny).phis==0 && (getTile(nx-1,ny).phis==0 || getTile(nx+1,ny).phis==0)) 
+				{
 					createObj('xp','bonus',nx,ny);
 					kolXp++;
 					if (mesto>0) mesto--;
 					if (kolXp>=kol) return;
-				} else {
+				} 
+				else 
+				{
 					n--;
-					if (n<=0) {
+					if (n<=0) 
+					{
 						n=5;
 						if (mesto>0) mesto--;
 					}
@@ -1381,7 +1443,8 @@
 			}
 		}
 		
-		public function preStep() {
+		public function preStep() 
+		{
 			for (var i=0; i<30; i++) stepInvis();
 		}
 		
