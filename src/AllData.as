@@ -4832,8 +4832,8 @@
 	<!--       *******   Активные объекты   *******         -->
 			
 			<!-- контейнеры -->
-			<obj ed='2' ico='cont' id='safe' tip='box' explcrack='1' xp='50' hp='1200' shield='0.5' thre='200' mat='1' inter='1' cont='safe' lock='2.2' lockhp='16' mine='2' minech='0.6' massaMult='1.5' lurk='2' size='2' wid='2' fall='fall_metal_safe' open='safe_open'/>
-			<obj ed='2' ico='cont' id='wallsafe' tip='box' explcrack='1' xp='50' hp='1200' thre='200' mat='1' inter='1' hack='1' wall='2' cont='safe' mine='3' minech='0.75' lock='2.5' lockhp='13' massaMult='1.5' size='1' wid='1' open='safe_open'/>
+			<obj ed='2' ico='cont' id='safe' tip='box' explcrack='1' xp='50' hp='1200' shield='0.5' damageThreshold='200' mat='1' inter='1' cont='safe' lock='2.2' lockhp='16' mine='2' minech='0.6' massaMult='1.5' lurk='2' size='2' wid='2' fall='fall_metal_safe' open='safe_open'/>
+			<obj ed='2' ico='cont' id='wallsafe' tip='box' explcrack='1' xp='50' hp='1200' damageThreshold='200' mat='1' inter='1' hack='1' wall='2' cont='safe' mine='3' minech='0.75' lock='2.5' lockhp='13' massaMult='1.5' size='1' wid='1' open='safe_open'/>
 			<obj ed='2' ico='cont' id='chest' tip='box' inter='1' hp='400' shield='0.25' montdam='15' mat='1' cont='chest' rem='1' plav='0.5' lurk='3' lock='1.5' low='0.4' lockch='0.85' size='2' wid='1' fall='fall_metal_big' open='metal_open'/>
 			<obj ed='3' ico='cont' id='case' inter='1' tip='box' cont='case' rem='1' plav='-1' size='1' wid='1' fall='fall_metal_small' massaMult='0.5'/>
 			<obj ed='3' ico='cont' id='ammobox' inter='1' tip='box' hp='200' montdam='8' mat='1' cont='ammo' rem='1' lock='1' low='0.5' lockch='0.25' size='1' wid='1' fall='fall_metal_small' open='small_open'/>
@@ -4865,24 +4865,24 @@
 			
 			<!-- двери -->
 			<obj ed='6' ico='door' id='septum' tip='door' door='1' wall='2' hp='30' mat='3' size='1' wid='3' n='Деревянная стенка' die='break_wood'/>
-			<obj ed='6' ico='door' id='grate' inter='0' tip='door' door='1' phis='2' wall='2' opac='0.1' hp='1000' thre='100' mat='1' size='1' wid='3' n='Решётка верт' open='big_door_close' close='big_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='hgrate' inter='0' tip='door' door='1' phis='2' wall='2' opac='0.1' hp='1000' thre='100' mat='1' size='3' wid='1' n='Решётка гор' open='big_door_close' close='big_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='platform1' inter='0' tip='door' door='1' wall='2' hp='5000' thre='800' mat='1' size='3' wid='1' open='big_door_close' close='big_door_close' n='Твёрдая платформа' die='break_metal'/>
+			<obj ed='6' ico='door' id='grate' inter='0' tip='door' door='1' phis='2' wall='2' opac='0.1' hp='1000' damageThreshold='100' mat='1' size='1' wid='3' n='Решётка верт' open='big_door_close' close='big_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='hgrate' inter='0' tip='door' door='1' phis='2' wall='2' opac='0.1' hp='1000' damageThreshold='100' mat='1' size='3' wid='1' n='Решётка гор' open='big_door_close' close='big_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='platform1' inter='0' tip='door' door='1' wall='2' hp='5000' damageThreshold='800' mat='1' size='3' wid='1' open='big_door_close' close='big_door_close' n='Твёрдая платформа' die='break_metal'/>
 			<obj ed='7' ico='door' id='window1' tip='door' door='1' wall='2'  opac='0.2' hp='10' mat='5' size='1' wid='2' n='Окно' die='break_glass'/>
-			<obj ed='6' ico='door' id='window2' tip='door' door='1' wall='2' opac='0.2' hp='1000' thre='100' mat='5' size='1' wid='2' n='Бронированное окно' die='break_glass'/>
-			<obj ed='7' ico='door' id='door1' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='60' thre='10' lockch='0.3' low='0.8' lock='1' mat='3' size='1' wid='2' open='wood_door_open' close='wood_door_close' die='break_wood'/>
-			<obj ed='7' ico='door' id='door1a' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='300' thre='50' lock='1' low='0.8' lockch='0.6' mat='3' size='1' wid='2' open='wood_door_open' close='wood_door_close' die='break_wood'/>
-			<obj ed='7' ico='door' id='door1b' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='400' thre='50' lock='1.3' low='0.8' lockch='0.8' mat='1' size='1' wid='2' open='metal_door_open' close='metal_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='door2' inter='1' tip='door' hack='1' door='2' wall='1'  hp='1000' thre='100' lock='1.5' low='0.8' lockch='0.8' mat='1' size='1' wid='2' open='metal_door_open' close='metal_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='door2a' inter='1' tip='door' door='2' wall='1' scx='40'  hp='1000' thre='100' locktip='2' low='0.5' lock='1.4' mat='1' size='1' wid='2' open='metal_door_open' close='metal_door_close' n='Дверь с электронным замком' die='break_metal'/>
-			<obj ed='6' ico='door' id='stdoor' inter='1' time='15' tip='door' hack='1' door='2' wall='1' mine='1' minetip='6' minech='0.2' low='0.7' hp='1000' thre='100' lock='1.2' lockch='0.8' mat='1' size='1' wid='3' open='metal_door_open' close='metal_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='basedoor' inter='1' time='15' tip='door' hack='1' door='2' wall='1' mine='1' minetip='6' minech='0.2' low='0.7' hp='4000' thre='800' lock='1.2' lockch='0.8' mat='1' size='1' wid='3' open='metal_door_open' close='metal_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='door3' inter='1' time='15' tip='door' hack='1' door='1' wall='2'  hp='5000' thre='800' lock='3' lockhp='16' mat='1' size='1' wid='3' open='big_door_close' close='big_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='door4' inter='1' time='15' tip='door' hack='1' locktip='4' once='1' door='1' opac='0.3' wall='2'  hp='5000' thre='800' lock='3' lockhp='10' mat='7' size='1' wid='3' open='pole_off' die='pole_off'/>
-			<obj ed='7' ico='door' id='hatch1' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='60' thre='10' lock='1' low='0.8' lockch='0.2' mat='3' size='2' wid='1' open='wood_door_open' close='wood_door_close' die='break_wood'/>
-			<obj ed='6' ico='door' id='hatch2' inter='1' tip='door' door='1' wall='2' hp='1000' thre='100' lock='1.5' low='0.8' lockch='0.8'  mat='1' size='2' wid='1' open='metal_door_open' close='metal_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='encldoor' inter='1' time='15' tip='door' hack='1' door='2' wall='1' mine='1' minetip='6' minech='0.2' low='0.7' hp='4000' thre='800' lock='1.2' lockch='0.8' mat='1' size='1' wid='3' open='metal_door_open' close='metal_door_close' die='break_metal'/>
-			<obj ed='6' ico='door' id='enclpole' inter='1' time='15' tip='door' hack='1' locktip='4' once='1' door='1' opac='0.3' wall='2'  hp='5000' thre='800' lock='3' lockhp='10' mat='7' size='1' wid='3' open='pole_off' die='pole_off'/>
+			<obj ed='6' ico='door' id='window2' tip='door' door='1' wall='2' opac='0.2' hp='1000' damageThreshold='100' mat='5' size='1' wid='2' n='Бронированное окно' die='break_glass'/>
+			<obj ed='7' ico='door' id='door1' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='60' damageThreshold='10' lockch='0.3' low='0.8' lock='1' mat='3' size='1' wid='2' open='wood_door_open' close='wood_door_close' die='break_wood'/>
+			<obj ed='7' ico='door' id='door1a' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='300' damageThreshold='50' lock='1' low='0.8' lockch='0.6' mat='3' size='1' wid='2' open='wood_door_open' close='wood_door_close' die='break_wood'/>
+			<obj ed='7' ico='door' id='door1b' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='400' damageThreshold='50' lock='1.3' low='0.8' lockch='0.8' mat='1' size='1' wid='2' open='metal_door_open' close='metal_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='door2' inter='1' tip='door' hack='1' door='2' wall='1'  hp='1000' damageThreshold='100' lock='1.5' low='0.8' lockch='0.8' mat='1' size='1' wid='2' open='metal_door_open' close='metal_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='door2a' inter='1' tip='door' door='2' wall='1' scx='40'  hp='1000' damageThreshold='100' locktip='2' low='0.5' lock='1.4' mat='1' size='1' wid='2' open='metal_door_open' close='metal_door_close' n='Дверь с электронным замком' die='break_metal'/>
+			<obj ed='6' ico='door' id='stdoor' inter='1' time='15' tip='door' hack='1' door='2' wall='1' mine='1' minetip='6' minech='0.2' low='0.7' hp='1000' damageThreshold='100' lock='1.2' lockch='0.8' mat='1' size='1' wid='3' open='metal_door_open' close='metal_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='basedoor' inter='1' time='15' tip='door' hack='1' door='2' wall='1' mine='1' minetip='6' minech='0.2' low='0.7' hp='4000' damageThreshold='800' lock='1.2' lockch='0.8' mat='1' size='1' wid='3' open='metal_door_open' close='metal_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='door3' inter='1' time='15' tip='door' hack='1' door='1' wall='2'  hp='5000' damageThreshold='800' lock='3' lockhp='16' mat='1' size='1' wid='3' open='big_door_close' close='big_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='door4' inter='1' time='15' tip='door' hack='1' locktip='4' once='1' door='1' opac='0.3' wall='2'  hp='5000' damageThreshold='800' lock='3' lockhp='10' mat='7' size='1' wid='3' open='pole_off' die='pole_off'/>
+			<obj ed='7' ico='door' id='hatch1' inter='1' tip='door' door='1' opac='0.8' wall='2' hp='60' damageThreshold='10' lock='1' low='0.8' lockch='0.2' mat='3' size='2' wid='1' open='wood_door_open' close='wood_door_close' die='break_wood'/>
+			<obj ed='6' ico='door' id='hatch2' inter='1' tip='door' door='1' wall='2' hp='1000' damageThreshold='100' lock='1.5' low='0.8' lockch='0.8'  mat='1' size='2' wid='1' open='metal_door_open' close='metal_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='encldoor' inter='1' time='15' tip='door' hack='1' door='2' wall='1' mine='1' minetip='6' minech='0.2' low='0.7' hp='4000' damageThreshold='800' lock='1.2' lockch='0.8' mat='1' size='1' wid='3' open='metal_door_open' close='metal_door_close' die='break_metal'/>
+			<obj ed='6' ico='door' id='enclpole' inter='1' time='15' tip='door' hack='1' locktip='4' once='1' door='1' opac='0.3' wall='2'  hp='5000' damageThreshold='800' lock='3' lockhp='10' mat='7' size='1' wid='3' open='pole_off' die='pole_off'/>
 			<!-- физические объекты -->
 			<obj ed='1' ico='phis' id='woodbox' tip='box' mat='3' massa='15' shield='0.4' lurk='2' size='2' plav='-0.5' wid='2' fall='fall_wood_big'/>
 			<obj ed='1' ico='phis' id='mcrate1' tip='box' mat='1' massa='25' shield='0.5' lurk='2' size='2' plav='-0.5' wid='2' fall='fall_metal_big' n='м ящик 25 кг'/>
@@ -5044,8 +5044,8 @@
 			<obj ed='4' ico='' id='generat' tip='box' wall='1' size='6' wid='4'/>
 			<obj ed='1' ico='' id='tcloud1' tip='box' wall='2' size='1' wid='1' rad='5' radtip='1' radrad='200' n='Облако газа' sloy='3' scy='1' scx='1'/>
 			<obj ed='1' ico='' id='pcloud1' tip='box' wall='2' size='1' wid='1' rad='25' radtip='2' radrad='200' n='Розовое облако' sloy='3' scy='1' scx='1'/>
-			<obj ed='6' ico='' id='alib1' inter='0' tip='door' door='1' phis='1' wall='2' opac='0.1' hp='10000' thre='1000' mat='7' size='1' wid='7' n='А-Поле верт' open='pole_off' die='pole_off'/>
-			<obj ed='6' ico='' id='alib2' inter='0' tip='door' door='1' phis='1' wall='2' opac='0.1' hp='10000' thre='1000' mat='7' size='7' wid='1' n='А-Поле гор' open='pole_off' die='pole_off'/>
+			<obj ed='6' ico='' id='alib1' inter='0' tip='door' door='1' phis='1' wall='2' opac='0.1' hp='10000' damageThreshold='1000' mat='7' size='1' wid='7' n='А-Поле верт' open='pole_off' die='pole_off'/>
+			<obj ed='6' ico='' id='alib2' inter='0' tip='door' door='1' phis='1' wall='2' opac='0.1' hp='10000' damageThreshold='1000' mat='7' size='7' wid='1' n='А-Поле гор' open='pole_off' die='pole_off'/>
 			<obj ed='8' ico='' id='door_st1' inter='8' tip='box' wall='2' size='6' wid='6' allact='comein' n='Дверь стойла снаружи'/>
 			<obj ed='8' ico='' id='door_st2' inter='8' tip='box' wall='2' size='6' wid='6' allact='comein' n='Дверь стойла изнутри'/>
 			<obj ed='8' ico='' id='aaa' inter='0' knop='1' tip='box' wall='1' size='4' wid='5' n='Стенд с бронёй'/>
@@ -6424,27 +6424,27 @@
 			<!--       *******   Материалы   *******         -->
 			
 			<!-- передний план -->
-			<mat ed='1' id='A' n='Сталь' phis='1' hp='30000' thre='1200' back='A' indestruct='1' mat='1'>
+			<mat ed='1' id='A' n='Сталь' phis='1' hp='30000' damageThreshold='1200' back='A' indestruct='1' mat='1'>
 				<main tex='tMetal'/>
 				<border tex='tKlep' mask='maskSimple'/>
 				<filter f='cont'/>
 			</mat>
-			<mat ed='1' id='B' n='Супербетон' phis='1' hp='5000' thre='1200' back='A' mat='2'>
+			<mat ed='1' id='B' n='Супербетон' phis='1' hp='5000' damageThreshold='1200' back='A' mat='2'>
 				<main tex='tSuperCon' mask='maskBare'/>
 				<border tex='tBorder' mask='maskBorderBare'/>
 				<filter f='potek'/>
 			</mat>
-			<mat ed='1' id='C' n='Бетон' phis='1' hp='1000' thre='100' back='A' mat='2'>
+			<mat ed='1' id='C' n='Бетон' phis='1' hp='1000' damageThreshold='100' back='A' mat='2'>
 				<main tex='tConcrete' mask='maskBare'/>
 				<border tex='tBorder' mask='maskBorderBare'/>
 				<floor tex='tFloor' mask='maskFloor'/>
 			</mat>
-			<mat ed='1' id='D' n='Побитый бетон' phis='1' hp='1000' thre='100' back='A' mat='2'>
+			<mat ed='1' id='D' n='Побитый бетон' phis='1' hp='1000' damageThreshold='100' back='A' mat='2'>
 				<main tex='tConcreteD' mask='maskDamaged'/>
 				<border tex='tSkol' mask='maskSkol'/>
 				<filter f='potek'/>
 			</mat>
-			<mat ed='1' id='E' n='Трещины' phis='1' hp='150' thre='10' back='A' mat='2'>
+			<mat ed='1' id='E' n='Трещины' phis='1' hp='150' damageThreshold='10' back='A' mat='2'>
 				<main tex='tCracked' mask='maskDamaged'/>
 				<border tex='tSkol' mask='maskSkol'/>
 				<filter f='potek'/>
@@ -6453,72 +6453,72 @@
 				<main tex='tWood' mask='maskDamaged'/>
 				<filter f='cont_th'/>
 			</mat>
-			<mat ed='1' id='G' n='Камень' phis='1' hp='1000' thre='100' back='A' mat='2'>
+			<mat ed='1' id='G' n='Камень' phis='1' hp='1000' damageThreshold='100' back='A' mat='2'>
 				<main tex='tRock' mask='maskStone'/>
 				<border tex='tSkol' mask='maskStoneBorder'/>
 			</mat>
-			<mat ed='1' id='H' n='Земля' phis='1' hp='1000' thre='100' back='L' mat='6'>
+			<mat ed='1' id='H' n='Земля' phis='1' hp='1000' damageThreshold='100' back='L' mat='6'>
 				<main tex='tStones' mask='maskDirt'/>
 				<border tex='tDirt2' mask='maskDirtBorder'/>
 				<filter f='potek'/>
 			</mat>
-			<mat ed='1' id='I' n='Кирпич' phis='1' hp='1000' thre='100' back='A' mat='4'>
+			<mat ed='1' id='I' n='Кирпич' phis='1' hp='1000' damageThreshold='100' back='A' mat='4'>
 				<main tex='tBrick2' mask='maskBare'/>
 				<floor tex='tFloor' mask='maskFloor'/>
 			</mat>
-			<mat ed='1' id='J' n='Железная стенка' phis='1' hp='5000' thre='1200' back='A' mat='1'>
+			<mat ed='1' id='J' n='Железная стенка' phis='1' hp='5000' damageThreshold='1200' back='A' mat='1'>
 				<main tex='tMWall'/>
 				<filter f='cont_metal'/>
 				<floor tex='tFloorMetal' mask='maskFloor'/>
 				<border tex='tKlep2' mask='maskMetalBorder'/>
 			</mat>
-			<mat ed='1' id='K' n='Железные конструкции' phis='1' hp='1000' thre='100' back='A' mat='1'>
+			<mat ed='1' id='K' n='Железные конструкции' phis='1' hp='1000' damageThreshold='100' back='A' mat='1'>
 				<main tex='tMWall2'/>
 				<floor tex='tFloorMetal' mask='maskFloor'/>
 				<filter f='cont_metal'/>
 			</mat>
-			<mat ed='1' id='L' n='Мох' phis='1' hp='1000' thre='100' back='A' mat='2'>
+			<mat ed='1' id='L' n='Мох' phis='1' hp='1000' damageThreshold='100' back='A' mat='2'>
 				<main tex='tConcreteMoss' mask='maskDirt'/>
 				<border tex='tMoss' mask='maskDirtBorder'/>
 				<filter f='potek'/>
 			</mat>
-			<mat ed='1' id='M' n='Ржавый металл' phis='1' hp='5000' thre='1200' back='A' mat='1'>
+			<mat ed='1' id='M' n='Ржавый металл' phis='1' hp='5000' damageThreshold='1200' back='A' mat='1'>
 				<main tex='tRust'/>
 				<border tex='tKlep' mask='maskSimple'/>
 				<filter f='cont'/>
 			</mat>
-			<mat ed='1' id='N' n='Стена здания' phis='1' hp='1000' thre='100' back='A' mat='2'>
+			<mat ed='1' id='N' n='Стена здания' phis='1' hp='1000' damageThreshold='100' back='A' mat='2'>
 				<main tex='tBuild' mask='maskDirt'/>
 				<border tex='tConRough' mask='maskDirtBorder'/>
 				<floor tex='tFloor' mask='maskFloor'/>
 			</mat>
-			<mat ed='1' id='O' n='Стена базы' phis='1' hp='5000' thre='4000' back='A' mat='1'>
+			<mat ed='1' id='O' n='Стена базы' phis='1' hp='5000' damageThreshold='4000' back='A' mat='1'>
 				<main tex='tBaseMetal'/>
 				<filter f='cont_metal'/>
 				<floor tex='tFloorMetal' mask='maskFloor'/>
 				<border tex='tKlep2' mask='maskMetalBorder'/>
 			</mat>
-			<mat ed='1' id='P' n='Кирпич Кантерлота' phis='1' hp='1000' thre='100' back='A' mat='2'>
+			<mat ed='1' id='P' n='Кирпич Кантерлота' phis='1' hp='1000' damageThreshold='100' back='A' mat='2'>
 				<main tex='tCanBrick' mask='maskBare'/>
 				<floor tex='tFloor' mask='maskFloor'/>
 			</mat>
-			<mat ed='1' id='Q' n='Бетон Кантерлота' phis='1' hp='1000' thre='100' back='A' mat='2'>
+			<mat ed='1' id='Q' n='Бетон Кантерлота' phis='1' hp='1000' damageThreshold='100' back='A' mat='2'>
 				<main tex='tConRough' mask='maskBare'/>
 				<border tex='tBorder' mask='maskBorderBare'/>
 				<floor tex='tFloor' mask='maskFloor'/>
 			</mat>
-			<mat ed='1' id='R' n='Крыша' phis='1' hp='150' thre='10' back='A' mat='4'>
+			<mat ed='1' id='R' n='Крыша' phis='1' hp='150' damageThreshold='10' back='A' mat='4'>
 				<main tex='tRoof' mask='maskDirt'/>
 				<floor tex='tRoofFloor' mask='maskFloor'/>
 				<filter f='potek'/>
 			</mat>
-			<mat ed='1' id='S' n='Прочная Стена Анклава' phis='1' hp='5000' thre='4000' back='A' mat='1'>
+			<mat ed='1' id='S' n='Прочная Стена Анклава' phis='1' hp='5000' damageThreshold='4000' back='A' mat='1'>
 				<main tex='tEncl1'/>
 				<filter f='cont_metal'/>
 				<floor tex='tFloorMetal' mask='maskFloor'/>
 				<border tex='tKlep3' mask='maskMetalBorder'/>
 			</mat>
-			<mat ed='1' id='T' n='Стена Анклава' phis='1' hp='1000' thre='100' back='A' mat='1'>
+			<mat ed='1' id='T' n='Стена Анклава' phis='1' hp='1000' damageThreshold='100' back='A' mat='1'>
 				<main tex='tEncl2'/>
 				<filter f='cont_metal'/>
 				<floor tex='tFloorMetal' mask='maskFloor'/>

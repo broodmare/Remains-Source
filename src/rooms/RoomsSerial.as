@@ -4158,11 +4158,11 @@
     <obj id="indoor4" code="w6ZjhfsxGXJJWcOk" x="23" y="3"/>
     <obj id="mcrate4" code="c0bkLqmrffgIopBA" x="2" y="3"/>
     <obj id="instdoor" code="S5jNmVX3Tl9NahWc" x="10" y="20"/>
-    <obj id="area" code="tGSwwoiFL2ANGpUM" x="4" y="14" tilethre="30" w="1" h="14"/>
+    <obj id="area" code="tGSwwoiFL2ANGpUM" x="4" y="14" damageThreshold="30" w="1" h="14"/>
     <obj id="player" code="xRW6kS0zljjOH8Gl" x="1" y="6"/>
-    <obj id="area" code="rqm0vrlWOgxMRPvo" x="43" y="14" tilethre="30" w="1" h="14"/>
+    <obj id="area" code="rqm0vrlWOgxMRPvo" x="43" y="14" damageThreshold="30" w="1" h="14"/>
     <obj id="safe" code="xJDYy41NZy40gVVM" x="25" y="3" locktip="0" key="key_cat" mine="0"/>
-    <obj id="area" code="vP5CCYcSaBDatUqK" x="20" y="4" w="8" h="1" tilethre="30"/>
+    <obj id="area" code="vP5CCYcSaBDatUqK" x="20" y="4" w="8" h="1" damageThreshold="30"/>
     <obj id="area" code="u3Qd8sGYrL1YixX9" x="1" y="23" port="5:2" vis="Port"/>
     <back id="stlight1" x="36" y="2"/>
     <back id="vents" x="1" y="22"/>

@@ -33,8 +33,8 @@
 		public var wall:int=0;		// attaches to the wall
 		public var phis:int=1;
 		public var sur:int=0;		// object on the box
-		public var hp:Number=100;
-		public var thre:Number=0;
+		public var hp:Number = 100;
+		public var damageThreshold:Number = 0;
 		public var montdam:int=5;		// how much will it break by crowbar
 		public var electroDam:Number=0;	// if greater than 0, acts as an electric shield generator
 		public var tiles:Array;			// involved blocks
@@ -108,7 +108,7 @@
 			
 			if (node.@mat.length()) mat=node.@mat;
 			if (node.@hp.length()) hp=node.@hp;
-			if (node.@thre.length()) thre=node.@thre;
+			if (node.@damageThreshold.length()) damageThreshold = node.@damageThreshold;
 			if (node.@shield.length()) bulChance=node.@shield;
 			if (node.@lurk.length()) lurk=node.@lurk;
 			if (node.@sur.length()) sur=node.@sur;
@@ -138,8 +138,8 @@
 			
 			if (xml && xml.@indestruct.length()) 
 			{
-				hp=10000;
-				thre=10000;
+				hp = 10000;
+				damageThreshold = 10000;
 			}
 
 			//дверь
@@ -381,7 +381,7 @@
 					 t.door=this;
 					 t.mat=mat;
 					 t.hp=hp;
-					 t.thre=thre;
+					 t.damageThreshold = damageThreshold;
 					 tiles.push(t);
 				}
 			}
@@ -469,7 +469,7 @@
 		
 		public function damage(dam:Number) 
 		{
-			dam-=thre;
+			dam -= damageThreshold;
 			if (dam>0) hp-=dam;
 			if (hp<=0) die();
 		}

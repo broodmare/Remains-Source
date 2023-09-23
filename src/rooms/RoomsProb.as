@@ -34,10 +34,10 @@
     <a>A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>
     <back id="vents" x="5" y="1"/>
     <obj id="mcrate4" code="c0bkLqmrffgIopBA" x="2" y="3"/>
-    <obj id="area" code="tGSwwoiFL2ANGpUM" x="4" y="14" tilethre="30" w="1" h="14" tilehp="8000"/>
-    <obj id="area" code="rqm0vrlWOgxMRPvo" x="43" y="14" tilethre="30" w="1" h="14" tilehp="8000"/>
+    <obj id="area" code="tGSwwoiFL2ANGpUM" x="4" y="14" damageThreshold="30" w="1" h="14" tilehp="8000"/>
+    <obj id="area" code="rqm0vrlWOgxMRPvo" x="43" y="14" damageThreshold="30" w="1" h="14" tilehp="8000"/>
     <obj id="safe" code="xJDYy41NZy40gVVM" x="23" y="3" prize="1"/>
-    <obj id="area" code="vP5CCYcSaBDatUqK" x="20" y="4" w="8" h="1" tilehp="10000" tilethre="30"/>
+    <obj id="area" code="vP5CCYcSaBDatUqK" x="20" y="4" w="8" h="1" tilehp="10000" damageThreshold="30"/>
     <obj id="area" code="u3Qd8sGYrL1YixX9" x="1" y="23" port="5:2" vis="Port"/>
     <obj id="area" code="yQ2yByjjc1OZK3wH" x="45" y="23" port="41:2" vis="Port"/>
     <obj id="ammobox" code="NOHXOAwVGiSfbnnz" x="22" y="3"/>
@@ -681,7 +681,7 @@
     <a>A._F._F.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A._F._F.A</a>
     <a>A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>
     <back id="stlight4" x="25" y="5"/>
-    <obj id="area" code="vP5CCYcSaBDatUqK" x="20" y="4" w="8" h="1" tilehp="10000" tilethre="30"/>
+    <obj id="area" code="vP5CCYcSaBDatUqK" x="20" y="4" w="8" h="1" tilehp="10000" damageThreshold="30"/>
     <obj id="area" code="u3Qd8sGYrL1YixX9" x="1" y="23" port="5:2" vis="Port"/>
     <obj id="area" code="yQ2yByjjc1OZK3wH" x="45" y="23" port="41:2" vis="Port"/>
     <obj id="mcrate2" code="DgCBJm164l6YJu0W" x="37" y="20"/>
@@ -690,8 +690,8 @@
     <obj id="ultra" code="yYdioPjd2JR87890" x="18" y="20" turn="1" uid="bossultra1F1"/>
     <obj id="bigbox" code="zwTKWxRYnvXs9nTQ" x="44" y="3"/>
     <obj id="mcrate4" code="c0bkLqmrffgIopBA" x="2" y="3"/>
-    <obj id="area" code="tGSwwoiFL2ANGpUM" x="4" y="14" tilethre="30" w="1" h="14" tilehp="8000"/>
-    <obj id="area" code="rqm0vrlWOgxMRPvo" x="43" y="14" tilethre="30" w="1" h="14" tilehp="8000"/>
+    <obj id="area" code="tGSwwoiFL2ANGpUM" x="4" y="14" damageThreshold="30" w="1" h="14" tilehp="8000"/>
+    <obj id="area" code="rqm0vrlWOgxMRPvo" x="43" y="14" damageThreshold="30" w="1" h="14" tilehp="8000"/>
     <back id="vents" x="41" y="1"/>
     <back id="stlight1" x="11" y="2"/>
     <back id="stlight1" x="36" y="2"/>
@@ -4318,7 +4318,7 @@
     <obj id="chest" code="DQjCgZWDESzCdSb4" x="9" y="14"/>
     <obj id="case" code="Nc7KvJwBcXqFjPKM" x="46" y="23"/>
     <obj id="wallcab" code="HsYiJ8cQL8PneLr6" x="43" y="22"/>
-    <obj id="area" code="N3YmGXGRVHbMiCqL" x="7" y="23" uid="barahloA1" h="8" w="2" tilehp="10000" tilethre="10000"/>
+    <obj id="area" code="N3YmGXGRVHbMiCqL" x="7" y="23" uid="barahloA1" h="8" w="2" tilehp="10000" damageThreshold="10000"/>
     <obj id="septum" code="oGJaRR9mH70zrb49" x="29" y="23"/>
     <obj id="trap" code="RYBfEnv7gERzuJv1" x="40" y="19"/>
     <obj id="trap" code="DxCwECbOpQUpdFz4" x="33" y="15"/>

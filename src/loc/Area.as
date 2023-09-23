@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	import src.*;
 	import src.serv.Script;
 	import src.graph.Emitter;
@@ -6,16 +7,17 @@
 	
 	// Active Area
 	
-	public class Area extends Obj{
+	public class Area extends Obj
+	{
 		
-		public var enabled:Boolean=true;
-		public var tip:String='gg';	//1 - GG is activated
+		public var enabled:Boolean = true;
+		public var tip:String = 'gg';	//1 - GG is activated
 		
 		// Sizes in blocks
 		var bx:int=0, by:int=0, rx:int=2, ry:int=2;
 		
-		var active:Boolean=false;		// Area is active (activator is in it)
-		var preactive:Boolean=false;	// Area was active in the previous cycle
+		var active:Boolean = false;		// Area is active (activator is in it)
+		var preactive:Boolean = false;	// Area was active in the previous cycle
 		
 		public var over:Function;
 		public var out:Function;
@@ -31,13 +33,15 @@
 		public var allact:String;		// Action for the entire room
 		public var allid:String;		// ID for the specified action
 		public var lift:Number=1;		// Gravity change
-		public var onPort:Boolean=false;// Teleportation
-		public var portX:int=-1, portY:int=-1;
-		public var noRad:Boolean=false;
+		public var onPort:Boolean = false;// Teleportation
+		public var portX:int = -1;
+		public var portY:int = -1;
+		public var noRad:Boolean = false;
 		
 		public var emit:Emitter;
-		public var dens:Number=1;
-		public var frec:Number=1, t_frec:Number=0;
+		public var dens:Number = 1;
+		public var frec:Number = 1;
+		public var t_frec:Number = 0;
 		public var trig:Boolean;	// Disable and set trigger on first activation
 
 		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) 
@@ -45,36 +49,46 @@
 			loc = nloc;
 			if (xml) 
 			{
-				bx=xml.@x;
-				by=xml.@y;
-				if (xml.@w.length()) rx=xml.@w;
+				bx = xml.@x;
+				by = xml.@y;
+				if (xml.@w.length()) 
+				{
+					rx = xml.@w;
+				}
 				if (mirror) 
 				{
-					bx=loc.spaceX-bx-rx;
+					bx=loc.spaceX - bx - rx;
 				}
-				scX=rx*World.tilePixelWidth;
-				X=X1=bx*World.tilePixelWidth;
-				Y=Y2=by*World.tilePixelHeight+World.tilePixelHeight;
-				X2=X1+scX;
-				if (xml.@h.length()) ry=xml.@h;
-				scY=ry*World.tilePixelHeight;
-				Y1=Y2-scY;
+				scX = rx * World.tilePixelWidth;
+				X = bx * World.tilePixelWidth;
+				X1 = bx * World.tilePixelWidth;
+				Y = by * World.tilePixelHeight + World.tilePixelHeight;
+				Y2 = by * World.tilePixelHeight + World.tilePixelHeight;
+				X2 = X1 + scX;
+				if (xml.@h.length()) 
+				{
+					ry=xml.@h;
+				}
+				scY = ry * World.tilePixelHeight;
+				Y1 = Y2 - scY;
+
 				// Visual
 				if (xml.@vis.length()) 
 				{
 					vis=Res.getVis('vis'+xml.@vis,visArea);
 				} 
-				if (World.w.showArea) 
+
+				if (World.w.showArea) //If the world.showArea toggle is true;
 				{
-					vis=new visArea();
+					vis = new visArea(); 
 				}
-				if (xml.@tip.length()) tip=xml.@tip;
-				if (xml.@mess.length()) mess=xml.@mess;
-				if (xml.@down.length()) messDown=true;
-				if (xml.@off.length()) enabled=xml.@off<=0;
-				if (xml.@allact.length()) allact=xml.@allact;
-				if (xml.@allid.length()) allid=xml.@allid;
-				if (xml.@trig.length()) trig=true;
+				if (xml.@tip.length()) tip = xml.@tip;
+				if (xml.@mess.length()) mess = xml.@mess;
+				if (xml.@down.length()) messDown = true;
+				if (xml.@off.length()) enabled=xml.@off <= 0;
+				if (xml.@allact.length()) allact = xml.@allact;
+				if (xml.@allid.length()) allid = xml.@allid;
+				if (xml.@trig.length()) trig = true;
 
 				// Attached Scripts
 				if (xml.scr.length()) 
@@ -88,39 +102,60 @@
 				}
 				if (xml.@scr.length()) scrOver=World.w.game.getScript(xml.@scr,this);
 				if (xml.@scrout.length()) scrOut=World.w.game.getScript(xml.@scrout,this);
+
 				// Change Walls
-				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@tilethre.length()) 
+				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@tilethre.length())  //If the tile has a HP value, tileop, or tilethre property?
 				{
-					for (var i=bx; i<bx+rx; i++) 
+					for (var i = bx; i < bx + rx; i++) 
 					{
-						for (var j=by-ry+1; j<=by; j++) 
+						for (var j = by - ry + 1; j <= by; j++) 
 						{
-							var t:Tile=loc.getTile(i,j);
+							var tile:Tile = loc.getTile(i, j);
+
 							if (xml.@tilehp.length()) 
 							{
-								t.hp=xml.@tilehp;
-								t.indestruct=false;
-								if (t.hp<=1) t.fake=true;
-								if (t.thre>t.hp) t.thre=t.hp;
+								tile.hp = xml.@tilehp;
+								tile.indestruct = false;
+								if (tile.hp <= 1)
+								{
+									tile.fake = true;
+								}
+								if (tile.damageThreshold > tile.hp) 
+								{
+									tile.damageThreshold = tile.hp;
+								}
 							}
-							if (xml.@tilethre.length()) 
+
+							if (xml.@damageThreshold.length()) 
 							{
-								t.indestruct=false;
-								t.thre=xml.@tilethre;
+								tile.indestruct = false;
+								tile.damageThreshold = xml.@damageThreshold;
 							}
+
 							if (xml.@tileop.length()) 
 							{
-								if (t.phis==0) t.opac=xml.@tileop;
+								if (tile.phis == 0) 
+								{
+									tile.opac = xml.@tileop;
+								}
 							}
 						}
 					}
 				}
-				if (xml.@grav.length()) lift=xml.@grav;
-				if (xml.@norad.length()) noRad=true;
+				if (xml.@grav.length()) lift = xml.@grav;
+				if (xml.@norad.length()) noRad = true;
+
 				// Particle Emitter
-				if (xml.@emit.length()) emit=Emitter.arr[xml.@emit];
-				if (xml.@dens.length()) dens=xml.@dens;
-				frec=dens*rx*ry/100;
+				if (xml.@emit.length()) 
+				{
+					emit=Emitter.arr[xml.@emit];
+				}
+				if (xml.@dens.length()) 
+				{
+					dens=xml.@dens;
+				}
+				frec = dens * rx * ry / 100;
+
 				// Teleport
 				if (xml.@port.length()) 
 				{
@@ -141,11 +176,15 @@
 			if (enabled && lift!=1) setLift();
 			if (vis)
 			{
-				if (vis.totalFrames<=1) vis.cacheAsBitmap=true;
-				vis.x=X, vis.y=Y;
-				vis.scaleX=scX/100;
-				vis.scaleY=scY/100;
-				vis.alpha=enabled?1:0.1;
+				if (vis.totalFrames <= 1) 
+				{
+					vis.cacheAsBitmap=true;
+				}
+				vis.x = X;
+				vis.y = Y;
+				vis.scaleX = scX / 100;
+				vis.scaleY = scY / 100;
+				vis.alpha = enabled? 1:0.1;
 				vis.blendMode='screen';
 			}
 		}
@@ -172,30 +211,32 @@
 			if (!enabled || !loc.locationActive || tip=='') return;
 			if (emit)
 			{
-				t_frec+=frec;
-				if (t_frec>1) 
+				t_frec += frec;
+				if (t_frec > 1) 
 				{
-					var kol:int=Math.floor(t_frec);
-					t_frec-=kol;
-					emit.cast(loc,(X1+X2)/2,(Y1+Y2)/2,{rx:scX, ry:scY, kol:kol});
+					var kol:int = Math.floor(t_frec);
+					t_frec -= kol;
+					emit.cast(loc,(X1 + X2) / 2,(Y1 + Y2) / 2, {rx:scX, ry:scY, kol:kol});
 				}
 			}
+
 			activator=null;
-			if (tip=='gg') 
+
+			if (tip == 'gg') 
 			{
-				active=areaTest(loc.gg);
-				if (active && noRad) loc.gg.noRad=true;
-				activator=loc.gg;
+				active = areaTest(loc.gg);
+				if (active && noRad) loc.gg.noRad = true;
+				activator = loc.gg;
 			}
 			else 
 			{
-				active=false;
+				active = false;
 				for each(var un:Unit in loc.units) 
 				{
 					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && areaTest(un)) 
 					{
-						active=true;
-						activator=un;
+						active = true;
+						activator = un;
 						break;
 					}
 				}
@@ -210,9 +251,9 @@
 			{
 				if (trig && uid) 
 				{
-					if (World.w.game.triggers[uid]!=1) 
+					if (World.w.game.triggers[uid] != 1) 
 					{
-						World.w.game.triggers[uid]=1;
+						World.w.game.triggers[uid] = 1;
 						scrOver.start();
 					}
 				} 
@@ -224,42 +265,44 @@
 		
 		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number) 
 		{
-			X=X1=x1;
-			Y1=y1;
-			X2=x2;
-			Y=Y2=y2;
-			scX=X2-X1;
-			scY=Y2-Y1;
+			X = x1;
+			X1 = x1;
+			Y1 = y1;
+			X2 = x2;
+			Y2 = y2;
+			Y2 = y2;
+			scX = X2 - X1;
+			scY = Y2 - Y1;
 		}
 		
 		public function setLift() 
 		{
 			for (var i=bx; i<bx+rx; i++) 
 			{
-				for (var j=by-ry+1; j<=by; j++) 
+				for (var j = by - ry + 1; j <= by; j++) 
 				{
-					loc.getTile(i,j).grav=enabled?lift:1;
+					loc.getTile(i, j).grav = enabled? lift:1;
 				}
 			}
 		}
 		
 		public function damTiles(destroy:int,tipDam:int=11) 
 		{
-			for (var i=bx; i<bx+rx; i++) 
+			for (var i = bx; i < bx + rx; i++) 
 			{
-				for (var j=by-ry+1; j<=by; j++) 
+				for (var j = by - ry + 1; j <= by; j++) 
 				{
-					loc.hitTile(loc.getTile(i,j),destroy,(i+0.5)*Tile.tilePixelWidth,(j+0.5)*Tile.tilePixelHeight,tipDam);
+					loc.hitTile(loc.getTile(i, j), destroy, (i + 0.5) * Tile.tilePixelWidth, (j + 0.5) * Tile.tilePixelHeight, tipDam);
 				}
 			}
 		}
 		
 		public function teleport(un:Unit) 
 		{
-			if (un==null) return;
-			if (!loc.collisionUnit((portX+1)*World.tilePixelWidth, (portY+1)*World.tilePixelHeight-1,un.scX, un.scY)) 
+			if (un == null) return;
+			if (!loc.collisionUnit((portX+1) * World.tilePixelWidth, (portY + 1) * World.tilePixelHeight - 1, un.scX, un.scY)) 
 			{
-				un.teleport((portX+1)*World.tilePixelWidth, (portY+1)*World.tilePixelHeight-1);
+				un.teleport((portX + 1) * World.tilePixelWidth, (portY + 1) * World.tilePixelHeight - 1);
 			}
 		}
 	}

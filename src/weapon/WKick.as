@@ -53,7 +53,7 @@
 					storona=-owner.storona;
 					var t1:Tile=owner.loc.getAbsTile(X+storona*60, Y-30);
 					var t2:Tile=owner.loc.getAbsTile(X+storona*60, Y-50);
-					if (t1 && t2 && t2.thre<t1.thre) vverh=true;
+					if (t1 && t2 && t2.damageThreshold < t1.damageThreshold) vverh=true;
 					b.knockx=storona;
 					b.damage*=2;
 					b.otbros*=1.5;
@@ -75,7 +75,7 @@
 				{
 					var t1:Tile=owner.loc.getAbsTile(X+storona*60, Y-30);
 					var t2:Tile=owner.loc.getAbsTile(X+storona*60, Y-50);
-					if (t1 && t2 && t2.thre<t1.thre) vverh=true;
+					if (t1 && t2 && t2.damageThreshold < t1.damageThreshold) vverh=true;
 					if (vverh) b.bindMove(X+storona*60,Y-50,X+storona*20,Y-50);
 					b.bindMove(X+storona*60,Y-30,X+storona*20,Y-30);
 					for (var i=1; i<=5; i++) 

@@ -1701,8 +1701,8 @@
 		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9) 
 		{
 			// Damage from falling
-			if (tip==100 && hit<=50 && (t.thre>0 || t.indestruct)) return;
-			if (tip==100) tip=4;
+			if (tip == 100 && hit <= 50 && (t.damageThreshold > 0 || t.indestruct)) return;
+			if (tip == 100) tip = 4;
 			// Location walls are not destructible
 			if (!destroyOn && t.hp>500) 
 			{

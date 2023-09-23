@@ -17,7 +17,7 @@
 		public var mat:int=0;
 		
 		public var hp:int=0;
-		public var thre:int=0;
+		public var damageThreshold:int=0;
 		public var indestruct:Boolean=false;
 		
 		public var phis:int=0;
@@ -41,7 +41,7 @@
 				if (node.@lurk.length()) lurk=node.@lurk;
 				
 				if (node.@hp>0) hp=node.@hp;
-				if (node.@thre>0) thre=node.@thre;
+				if (node.@damageThreshold > 0) damageThreshold = node.@damageThreshold;
 				if (node.@indestruct>0) indestruct=true;
 				
 				if (node.@phis.length()) phis=node.@phis;

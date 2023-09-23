@@ -114,7 +114,7 @@
 		public var chitOn:Boolean = false;
 		public var chit:String=''; 					//current cheat
 		public var chitX:String = null;	
-		public var showArea:Boolean = false;		//show active zones
+		public var showArea:Boolean = false;		//Should the current room be rendered?
 		public var godMode:Boolean = false;			//invincibility 
 		public var showAddInfo:Boolean = false;		//show additional information
 		public var testBattle:Boolean = false;		//stamina will be consumed outside of battle
