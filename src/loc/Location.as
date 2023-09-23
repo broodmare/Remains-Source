@@ -217,10 +217,6 @@
 		public function addPlayer(un:UnitPlayer) 
 		{
 			gg=un;
-			//units.shift(null)
-			//units.shift(un);
-			//units['gg']=un;
-			//units['pet']=un.pets[0];
 			units.push(un);
 			units.push(un.defpet);
 		}
@@ -285,13 +281,14 @@
 				if (nroom.options.@tilespawn.length()) tileSpawn=nroom.options.@tilespawn;
 				if (nroom.options.@items.length()) itemsTip=nroom.options.@items;
 				if (nroom.options.@maxdy.length()) maxdy=nroom.options.@maxdy;
-				if (nroom.options.@sky.length()) {
+				if (nroom.options.@sky.length()) 
+				{
 					sky=true;
-					//spaceY=spaceX=1;
 				}
 				if (nroom.options.@zoom.length()) zoom=nroom.options.@zoom;
 				if (nroom.options.@trus.length()) trus=nroom.options.@trus;
-				if (!black) {
+				if (!black) 
+				{
 					for (i=0; i<spaceX; i++) 
 					{
 						for (j=0; j<spaceY; j++) 
@@ -1091,128 +1088,156 @@
 		//определение сid случайного юнита
 		public function randomCid(tip:String):String 
 		{
-			var tr:int=0;
-			switch (tip) {
-				case 'raider':
-					if (locDifLevel>=5) tr=Math.floor(Math.random()*9+1);
-					else if (locDifLevel>=2) tr=Math.floor(Math.random()*5+1);
-					else tr=Math.floor(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'slaver':
-					if (locDifLevel>=18) tr=Math.floor(Math.random()*6+1);
-					else if (locDifLevel>=15) tr=Math.floor(Math.random()*5+1);
-					else tr=Math.floor(Math.random()*4+1);
-					return tr.toString();
-				break;
-				case 'zebra':
-					if (locDifLevel>=15) tr=Math.floor(Math.random()*4+1);
-					else tr=Math.floor(Math.random()*2+1);
-					if (locDifLevel>=25 && Math.random()<0.1) tr=5; 
-					return tr.toString();
-				break;
-				case 'ranger':
-					if (land.act.conf==7) tr=Math.floor(Math.random()*3+1);
-					else if (landY==0) tr=1;
-					else tr=Math.floor(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'merc':
-					if (locDifLevel>=19) tr=Math.floor(Math.random()*5+1);
-					else if (locDifLevel>=15 && Math.random()>0.5) tr=Math.floor(Math.random()*4+1);
-					else tr=Math.floor(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'encl':
-					tr=Math.floor(Math.random()*4+1);
-					return tr.toString();
-				break;
-				case 'protect':
-					if (tipEnemy==7) tr=1;
-					return tr.toString();
-				break;
-				case 'gutsy':
-					if (tipEnemy==7) tr=1;
-					return tr.toString();
-				break;
-				case 'dron':
-					if (tipEnemy==9) {
-						tr=Math.floor(Math.random()*4+1);
-						if (tr>3) tr=3;
+			var tr:*;
+			var randNum:Number = Math.random();
+
+			var lookup:Object = 
+			{
+				'raider': function() 
+				{
+            		if (locDifLevel >= 5) return Math.floor(randNum * 9 + 1);
+            		if (locDifLevel >= 2) return Math.floor(randNum * 5 + 1);
+            		return Math.floor(randNum * 2 + 1);
+        		},
+				'slaver': function()
+				{
+					if (locDifLevel >= 18) return Math.floor(randNum * 6 + 1);
+					if (locDifLevel >= 15) return Math.floor(randNum * 5 + 1);
+					return Math.floor(randNum * 4 + 1);
+				},
+				'zebra': function()
+				{
+					if (locDifLevel>=25 && randNum < 0.1) return 5; 
+					if (locDifLevel >= 15) return Math.floor(randNum * 4 + 1);
+					return Math.floor(randNum * 2 + 1);
+				},
+				'ranger': function()
+				{
+					if (land.act.conf == 7) return Math.floor(randNum * 3 + 1);
+					if (landY == 0) return 1;
+					return Math.floor(randNum * 2 + 1);
+				},		
+				'merc': function()
+				{
+					if (locDifLevel>=19) return Math.floor(randNum * 5 + 1);
+					if (locDifLevel>=15 && Math.random()>0.5) return Math.floor(randNum * 4 + 1);
+					return Math.floor(randNum * 2 + 1);
+				},
+				'encl': function()
+				{
+					return Math.floor(randNum * 4 + 1);
+				},
+				'protect': function()
+				{
+					if (tipEnemy == 7) return 1;
+					return null
+				},
+				'gutsy': function()
+				{
+					if (tipEnemy == 7) return 1;
+					return null
+				},
+				'dron': function()
+				{
+					if (tipEnemy == 9)
+					{
+						var x = Math.floor(randNum * 4 + 1);
+						if (x > 3) return 3;
+						return x;
+
 					}
-					else tr=Math.floor(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'roller':
-					if (biom==6) tr=2;
-					else tr=1;
-					return tr.toString();
-				break;
-				case 'zombie':
-					if (biom==5) {
-						if (locDifLevel>=20 && Math.random()<0.1) tr=9;
-						else tr=Math.floor(Math.random()*4+5);
-					} else if (biom>=1 && locDifLevel>=8) tr=Math.floor(Math.random()*7);
-					else if (locDifLevel>=5) tr=Math.floor(Math.random()*5);
-					else if (locDifLevel>=2) tr=Math.floor(Math.random()*4);
-					else tr=0;
-					return tr.toString();
-				break;
-				case 'alicorn':
-					tr=Math.floor(Math.random()*3+1);
-					return tr.toString();
-				break;
-				case 'hellhound':
-					tr=1;
-					return tr.toString();
-				break;
-				case 'bloat':
-					if (biom==5) tr=Math.floor(Math.random()*3+4);
-					else if (locDifLevel>=10) tr=Math.floor(Math.random()*5);
-					else if (locDifLevel>=4) tr=Math.floor(Math.random()*4);
-					else if (locDifLevel>=2) tr=Math.floor(Math.random()*3);
-					else tr=0;
-					return tr.toString();
-				break;
-				case 'ant':
-					if (biom>=1 && locDifLevel>=6) tr=Math.floor(Math.random()*3+1);
-					else if (locDifLevel>=3) tr=Math.floor(Math.random()*2+1);
-					else tr=1;
-					return tr.toString();
-				break;
-				case 'fish':
-					if (biom==5) tr=3;
-					else tr=Math.floor(Math.random()*2+1);
-					return tr.toString();
-				break;
-				case 'slime':
-					if (biom==5) tr=2;
-					else tr=0;
-					return tr.toString();
-				break;
-				case 'slmine':
-					if (biom==5) tr=12;
-					else tr=10;
-					return tr.toString();
-				break;
-				case 'bloodwing':
-					if (biom==5) tr=2;
-					else tr=1;
-					return tr.toString();
-				break;
-				case 'scorp':
-					if (locDifLevel>=5) tr=Math.floor(Math.random()*2+1);
-					else tr=1;
-					return 'scorp'+tr;
-				break;
-				case 'mine':
-					if (biom==4) return 'plamine';
-					if (biom==2 && Math.random()<Math.min(locDifLevel/20,0.4)) return 'plamine';
-					else if (Math.random()<Math.min(locDifLevel/20,0.75)) return 'mine';
-					else return 'hmine';
-				break;
+					return Math.floor(randNum * 2 + 1);
+				},
+				'roller': function()
+				{
+					if (biom == 6) return 2;
+					return 1
+				},
+				'zombie': function()
+				{
+					if (biom == 5)
+					{
+						if (locDifLevel >= 20 && randNum < 0.1) return 9;
+						return Math.floor(randNum * 4 + 5);
+					}
+					if (biom >= 1 && locDifLevel>=8) return Math.floor(randNum * 7);
+					if (locDifLevel >= 5) return Math.floor(randNum * 5);
+					if (locDifLevel >= 2) return Math.floor(randNum * 4);
+					return 0;
+				},
+				'alicorn': function()
+				{
+					return Math.floor(randNum * 3 + 1);
+				},
+				'hellhound': function()
+				{
+					return 1;
+				},
+				'bloat': function()
+				{
+					if (biom == 5) return Math.floor(randNum * 3 + 4);
+					if (locDifLevel >= 10) return Math.floor(randNum * 5);
+					if (locDifLevel >= 4) return Math.floor(randNum * 4);
+					if (locDifLevel >= 2) return Math.floor(randNum * 3);
+					return 0;
+				},
+				'ant': function()
+				{
+					if (biom >= 1 && locDifLevel >= 6) return Math.floor(randNum * 3 + 1);
+					if (locDifLevel>=3) return Math.floor(randNum * 2 + 1);
+					return 1;
+				},
+				'fish': function()
+				{
+					if (biom == 5) return 3;
+					return Math.floor(randNum * 2 + 1);
+				},
+				'slime': function()
+				{
+					if (biom == 5) return 2;
+					return 0;
+				},
+				'slmine': function()
+				{
+					if (biom == 5) return 12;
+					return 10;
+				},
+				'bloodwing': function()
+				{
+					if (biom == 5) return 2;
+					return 1;
+				},
+				'scorp': function()
+				{
+					var x;
+					if (locDifLevel >= 5) x = Math.floor(randNum * 2 + 1);
+					else x = 1;
+					return 'scorp' + x;
+				},
+				'mine': function()
+				{
+					var x;
+					if (biom == 4) return 'plamine'
+					if (biom==2 && randNum < Math.min(locDifLevel / 20, 0.4)) return 'plamine';
+					if (randNum < Math.min(locDifLevel / 20, 0.75)) return 'mine';
+					return 'hmine';
+				}
 			}
-			return null;
+			// Check if the 'tip' exists in the lookup table
+			if (lookup.hasOwnProperty(tip)) 
+			{
+				tr = lookup[tip]();  // Call the function from the lookup table
+			} 
+			else 
+			{
+				return null;  // 'tip' not found
+			}
+			if (tip == 'scorp' || tip == 'mine') 
+			{
+				return tr;  // These two are already strings, so just return them
+			}
+			return tr.toString();
+			
 		}
 		
 		//создать активный объект, nx,ny-координаты в блоках
@@ -1235,35 +1260,47 @@
 				if ((obj is Box) && (obj as Box).sur && land.rnd) createSur(obj as Box);
 				if (!land.rnd && xml && xml.@sur.length()) createSur(obj as Box, xml.@sur);
 				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
-			} else if (tip=='trap') {
+			} 
+			else if (tip=='trap') 
+			{
 				obj=new Trap(this, id,(nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1);
-			} else if (tip=='checkpoint') {
+			} 
+			else if (tip=='checkpoint') 
+			{
 				obj=new CheckPoint(this, id,(nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
 				//установить на контрольных точках телепорты на базу
 				if (World.w.game.globalDif<=1 || land.rnd && World.w.game.globalDif==2 && Math.random()<0.33) (obj as CheckPoint).teleOn=true;
 				acts.push(obj);
-			} else if (tip=='area') {
+			} 
+			else if (tip=='area') 
+			{
 				obj=new Area(this, xml, loadObj, mirror);
 				areas.push(obj);
-			} else if (tip=='bonus') {
+			} 
+			else if (tip=='bonus') 
+			{
 				obj=new Bonus(this, id,(nx+0.5)*Tile.tilePixelWidth, (ny+0.5)*Tile.tilePixelHeight, xml, loadObj);
 				bonuses.push(obj);
 			}
-			if (xml && xml.@code.length()) { // Assignment of checkpoint objects to the currentCP property of the land.Act when specific conditions are met.
+			if (xml && xml.@code.length()) // Assignment of checkpoint objects to the currentCP property of the land.Act when specific conditions are met.
+			{ 
 				saves.push(obj);
 				obj.code=xml.@code;
-				if (tip=='checkpoint' && !land.rnd) {	//сохранённая контрольная точка
+				if (tip=='checkpoint' && !land.rnd) //сохранённая контрольная точка
+				{	
 					if (World.w.pers.currentCPCode!=null && obj.code==World.w.pers.currentCPCode || World.w.pers.prevCPCode!=null && obj.code==World.w.pers.prevCPCode || land.act.lastCpCode==obj.code) {
 						land.currentCP=obj as CheckPoint;
 					}
 				}
 			}
 			//Добавление объектов, имеющих uid в массив
-			if (xml && xml.@uid.length()) {
+			if (xml && xml.@uid.length()) 
+			{
 				obj.uid=xml.@uid;
 				land.uidObjs[obj.uid]=obj;
 			}
-			if (xml && xml.@nazv.length()) {
+			if (xml && xml.@nazv.length()) 
+			{
 				obj.nazv=xml.@nazv;
 			}
 			//Добавление id испытаний
