@@ -10,18 +10,22 @@
 		public var cel:Unit;
 		static var p:Object={x:0, y:0};
 
-		public function SmartBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true) {
+		public function SmartBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true) 
+		{
 			super(own,nx,ny,visClass);
 			vRot=true;
 		}
 		
-		public function setCel(ncel:Unit, man:Number=3) {
+		public function setCel(ncel:Unit, man:Number=3) 
+		{
 			cel=ncel;
 			manevr=man;
 		}
 		
-		public override function step() {
-			if (!babah && cel && manevr>0) {
+		public override function step() 
+		{
+			if (!babah && cel && manevr>0) 
+			{
 				p.x=cel.X-X;
 				p.y=(cel.Y1+cel.Y2)/2-Y;
 				norma(p,manevr);
@@ -33,7 +37,8 @@
 			}
 			super.step();
 			rot=Math.atan2(dy,dx);
-			if (vis) {
+			if (vis) 
+			{
 				vis.rotation=rot*180/Math.PI;
 			}
 		}

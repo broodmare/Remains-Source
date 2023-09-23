@@ -245,8 +245,6 @@
 			textureURL = 'texture.swf';
 			spriteURL='sprite.swf';
 			sprite1URL='sprite1.swf';
-			//ressoundURL='sound.swf';
-			//textURL='D:/Dropbox/foe/text.xml';
 			langURL='lang.xml';
 			landPath='Rooms/';
 			

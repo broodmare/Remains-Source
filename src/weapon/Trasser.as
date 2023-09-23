@@ -16,10 +16,13 @@
 		
 		var brake=2, skok:Number=0.5, tormoz:Number=0.7;
 
-		public function Trasser() {
+		public function Trasser() 
+		{
+
 		}
 		
-		public function trass(gr:Graphics) {
+		public function trass(gr:Graphics) 
+		{
 			sled=new Array();
 			X=begx;
 			Y=begy;
@@ -30,16 +33,19 @@
 			gr.lineStyle(5,0x00FF99,0.5);
 			gr.moveTo(X,Y);
 			
-			for (var i=0; i<liv; i++) {
+			for (var i=0; i<liv; i++) 
+			{
 				dy+=ddy;
 				dx+=ddx;
-				if (stay) {
+				if (stay) 
+				{
 					if (dx>1) dx-=brake;
 					else if (dx<-1) dx+=brake;
 					else dx=0;
 				}
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
-				else {
+				else 
+				{
 					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
 					for (var j=0; (j<div && !vse); j++) run(div);
 				}
@@ -50,47 +56,59 @@
 			}
 		}
 		
-		public function run(div:int=1) {
+		public function run(div:int=1)
+		{
 			if (vse) return;
 			var t:Tile;
 			X+=dx/div;
-			if (X<0 || X>=loc.spaceX*Tile.tilePixelWidth) {
+			if (X<0 || X>=loc.spaceX*Tile.tilePixelWidth)
+			{
 				vse=true;
 				return;
 			}
-			if (dx<0) {
+			if (dx<0) 
+			{
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) {
+				if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) 
+				{
 					if (!is_skok) vse=true;
-					else {
+					else 
+					{
 						X=t.phX2+1;
 						dx=Math.abs(dx*skok);
 					}
 				}
 			}
 			//movement to the right
-			if (dx>0) {
+			if (dx>0) 
+			{
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
+				if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) 
+				{
 					if (!is_skok) vse=true;
-					else {
+					else 
+					{
 						X=t.phX1-1;
 						dx=-Math.abs(dx*skok);
 					}
 				}
 			}
-			if (vse) {
+			if (vse) 
+			{
 				Y+=dy/div;
 				return;
 			}
 			//VERTICAL
 			//upward movement
-			if (dy<0) {
+			if (dy<0) 
+			{
 				Y+=dy/div;
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) {
+				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) 
+				{
 					if (!is_skok) vse=true;
-					else {
+					else 
+					{
 						Y=t.phY2+1;
 						dy=Math.abs(dy*skok);
 					}
@@ -98,21 +116,28 @@
 			}
 			//movement down-up
 			var newmy:Number=0;
-			if (dy>0) {
+			if (dy>0) 
+			{
 				Y+=dy/div;
-				if (Y>=loc.spaceY*Tile.tilePixelHeight) {
+				if (Y>=loc.spaceY*Tile.tilePixelHeight) 
+				{
 					vse=true;
 					return;
 				}
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2) {
+				if (t.phis==1 && Y>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2) 
+				{
 					Y=t.phY1-1;
 					if (!is_skok) vse=true;
-					else {
-						if (dy>2) {
+					else 
+					{
+						if (dy>2) 
+						{
 							dy=-Math.abs(dy*skok);
 							dx*=tormoz;
-						} else {
+						} 
+						else 
+						{
 							dy=0;
 							stay=true;
 						}

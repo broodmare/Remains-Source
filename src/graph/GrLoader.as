@@ -39,7 +39,7 @@
 		function funLoaded(event:Event):void 
 		{
 
-			resource = event.target.content; // 
+			resource = event.target.content;
 			isLoad=true; // Indicate the file is fully loaded.  CHECK IF THIS IS EVEN USED.
 			progressLoad = 1; // Set the progress to 100%.
 			kolIsLoad++; // Increase the global number of loaded instances.

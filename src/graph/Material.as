@@ -61,23 +61,27 @@
 				try 
 				{
 					textureMask=getDefinitionByName(material.main.@mask) as Class;
-				} catch (err:ReferenceError) 
+				} 
+				catch (err:ReferenceError) 
 				{
 					textureMask=TileMask;
 				}
-			} else textureMask=TileMask;
+			} 
+			else textureMask=TileMask;
 
 			try 
 			{
 				borderMask=getDefinitionByName(material.border.@mask) as Class;
-			} catch (err:ReferenceError) 
+			} 
+			catch (err:ReferenceError) 
 
 			{
 				borderMask=null;
 			}
 			try {
 				floorMask=getDefinitionByName(material.floor.@mask) as Class;
-			} catch (err:ReferenceError) 
+			} 
+			catch (err:ReferenceError) 
 
 			{
 				floorMask=null;
