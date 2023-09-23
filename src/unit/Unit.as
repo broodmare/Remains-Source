@@ -43,7 +43,7 @@
 			D_BALE = 15,     // Doom
 			D_NECRO = 16,    // Necromancy
 			D_PSY = 17,      // Psychic
-			D_ASTRO = 18,    // Astrology
+			D_ASTRO = 18,    // Astrology ???
 			D_PINK = 19,     // Pink Cloud
 			D_INSIDE = 100,  // ???
 			D_FRIEND = 101;  // Friendship
@@ -329,10 +329,9 @@
 				}
 				if (xml.@die.length()) postDie=true;
 			}
-			/*if (xml && xml.@code=='MraR4xuhkXhpQYkj') {
-				trace(loadObj.dead)
-			}*/
-			if (loadObj && loadObj.dead && !postDie) {
+
+			if (loadObj && loadObj.dead && !postDie) 
+			{
 				sost=4;
 				disabled=true;
 				trace(this, nazv)
@@ -340,18 +339,21 @@
 			mapxml=xml;
 		}
 		
-		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit {
+		public static function create(id:String, dif:int, xml:XML=null, loadObj:Object=null, ncid:String=null):Unit //TODO: Replace with dictionary
+		{
 			if (id=='mwall') return new UnitMWall(null,0,null,null);
 			if (id=='scythe') return new UnitScythe(null,0,null,null);
 			if (id=='ttur') return new UnitThunderTurret(ncid,0,null,null);
 			var node:XML=AllData.d.obj.(@id==id)[0];
-			if (node==null) {
+			if (node==null) 
+			{
 				trace('Не найден юнит',id);
 				return null;
 			}
 			var uc:Class;
 			var cn:String=node.@cl;
-			switch (cn) {
+			switch (cn) 
+			{
 				case 'Mine': uc=Mine;break;
 				case 'UnitTrap': uc=UnitTrap;break;
 				case 'UnitTrigger': uc=UnitTrigger;break;
@@ -399,7 +401,8 @@
 				case 'UnitThunderHead': uc=UnitThunderHead;break;
 				case 'UnitDestr': uc=UnitDestr;break;
 			}
-			if (uc==null) {
+			if (uc==null) 
+			{
 				return null;
 			}
 			var cid:String=null;						// Creation identifier
@@ -410,7 +413,8 @@
 			return un;
 		}
 		
-		public override function save():Object {
+		public override function save():Object 
+		{
 			var obj:Object=new Object();
 			if (sost>=3 && !postDie) obj.dead=true;
 			if (inter) inter.save(obj);
@@ -420,10 +424,13 @@
 		public function getXmlParam(mid:String=null) 
 		{
 			var setOpts:Boolean=false;
-			if (opts[id]) {
+			if (opts[id]) 
+			{
 				opt=opts[id];
 				begvulner=begvulners[id];
-			} else {
+			} 
+			else 
+			{
 				opt=new Object();
 				opts[id]=opt;
 				begvulner=new Array();
@@ -432,7 +439,8 @@
 			}
 			var node:XML;
 			var isHero:Boolean=false;
-			if (mid==null) {
+			if (mid==null) 
+			{
 				if (hero>0) isHero=true;
 				mid=id;
 			}
@@ -442,9 +450,12 @@
 			inter.cont=mid;
 			if (node0.@cont.length() && inter) inter.cont=node0.@cont;
 			if (fraction==F_PLAYER) warn=0;
-			if (node0.@xp.length()) xp=node0.@xp*World.unitXPMult;
+
+			if (node0.@xp.length()) xp = node0.@xp * World.unitXPMult; //TODO - Probably redundant, remove from World.
+
 			//физические параметры
-			if (node0.phis.length()) {
+			if (node0.phis.length()) 
+			{
 				node=node0.phis[0];
 				if (node.@sX.length()) stayX=scX=node.@sX;
 				if (node.@sY.length()) stayY=scY=node.@sY;
@@ -457,7 +468,8 @@
 			massa=massaFix;
 			if (massa>=1) destroy=0;
 			//Movement parameters
-			if (node0.move.length()) {
+			if (node0.move.length()) 
+			{
 				node=node0.move[0];
 				if (node.@speed.length()) maxSpeed=node.@speed;
 				if (node.@run.length()) runSpeed=node.@run;
@@ -475,10 +487,12 @@
 				if (node.@damwall.length()) damWall=node.@damwall;		// Damage from hitting a wall
 			}
 			//Combat parameters
-			if (node0.comb.length()) {
+			if (node0.comb.length()) 
+			{
 				node=node0.comb[0];
 				if (node.@hp.length()) hp=maxhp=node.@hp*hpmult;
-				if (fraction!=F_PLAYER && World.w.game.globalDif<=1) {
+				if (fraction!=F_PLAYER && World.w.game.globalDif<=1) 
+				{
 					if (World.w.game.globalDif==0) maxhp*=0.4;
 					if (World.w.game.globalDif==1) maxhp*=0.7;
 					hp=maxhp;
@@ -502,8 +516,9 @@
 				if (node.@levitatk.length()) levitAttack=node.@levitatk;// Attack during levitation
 			}
 			// Vulnerabilities
-			if (node0.vulner.length()) {
-		//public static const D_BUL=0, D_BLADE=1, D_PHIS=2, D_FIRE=3, D_EXPL=4, D_LASER=5, D_PLASMA=6, D_VENOM=7, D_EMP=8, D_SPARK=9, D_ACID=10, D_INSIDE=100;
+			if (node0.vulner.length()) 
+			{
+				//public static const D_BUL=0, D_BLADE=1, D_PHIS=2, D_FIRE=3, D_EXPL=4, D_LASER=5, D_PLASMA=6, D_VENOM=7, D_EMP=8, D_SPARK=9, D_ACID=10, D_INSIDE=100;
 				node=node0.vulner[0];
 				if (node.@bul.length()) vulner[D_BUL]=node.@bul;
 				if (node.@blade.length()) vulner[D_BLADE]=node.@blade;
@@ -523,10 +538,12 @@
 				if (node.@pink.length()) vulner[D_PINK]=node.@pink;
 			}
 			// Visual parameters
-			if (node0.vis.length()) {
+			if (node0.vis.length()) 
+			{
 				node=node0.vis[0];
 				if (node.@sex=='w') msex=false;
-				if (node.@blit.length()) {
+				if (node.@blit.length()) 
+				{
 					blitId=node.@blit;
 					if (node.@sprX>0) blitX=node.@sprX;
 					if (node.@sprY>0) blitY=node.@sprY;
@@ -538,9 +555,11 @@
 				if (node.@noise.length()) noiseRun=node.@noise;
 			}
 			// Sound Parameters
-			if (node0.snd.length()) {
+			if (node0.snd.length()) 
+			{
 				node=node0.snd[0];
-				if (node.@music.length()) {
+				if (node.@music.length()) 
+				{
 					sndMusic=node.@music;
 					sndMusicPrior=1;
 				}
@@ -549,7 +568,8 @@
 				if (node.@run.length()) sndRun=node.@run;
 			}
 			// Other Parameters
-			if (node0.param.length()) {
+			if (node0.param.length()) 
+			{
 				node=node0.param[0];
 				if (node.@invulner.length()) invulner=(node.@invulner>0);	// Full invulnerability
 				if (node.@overlook.length()) overLook=(node.@overlook>0);	// Can look behind
@@ -559,47 +579,57 @@
 				if (node.@trup.length()) trup=(node.@trup>0);				// Leave a corpse after death
 				if (node.@blood.length()) blood=node.@blood;				// Blood
 				if (node.@retdam.length()) retDamage=node.@retdam>0;		// Damage reflection
-				if (node.@hero.length()) {
-					mHero=true;						// Can be a hero
+				if (node.@hero.length()) 
+				{
+					mHero=true;												// Can be a hero
 					id_name=node.@hero;
 				}
-				if (setOpts) {
+				if (setOpts) 
+				{
 					if (node.@pony.length()) opt.pony=true;					// Is a pony
-					if (node.@zombie.length()) opt.zombie=true;					// Is a zombie
-					if (node.@robot.length()) opt.robot=true;					// Is a robot
-					if (node.@insect.length()) opt.insect=true;					// Is an insect
-					if (node.@monster.length()) opt.monster=true;					// Is a monster
-					if (node.@alicorn.length()) opt.alicorn=true;					// Is an alicorn
-					if (node.@mech.length()) {
-						opt.mech=true;					// Is a mechanism
+					if (node.@zombie.length()) opt.zombie=true;				// Is a zombie
+					if (node.@robot.length()) opt.robot=true;				// Is a robot
+					if (node.@insect.length()) opt.insect=true;				// Is an insect
+					if (node.@monster.length()) opt.monster=true;			// Is a monster
+					if (node.@alicorn.length()) opt.alicorn=true;			// Is an alicorn
+					if (node.@mech.length()) 
+					{
+						opt.mech=true;										// Is a mechanism
 						mech=true;
 					}
-					if (node.@hbonus.length()) opt.hbonus=true;					// Is a bonus
-					if (node.@izvrat.length()) opt.izvrat=true;					// Is a pervert
+					if (node.@hbonus.length()) opt.hbonus=true;				// Is a bonus
+					if (node.@izvrat.length()) opt.izvrat=true;				// Is a pervert
 				}
 			}
 			if (blood==0) vulner[D_BLEED]=0;
-			if (opt) {
-				if (opt.robot || opt.mech) {
+			if (opt) 
+			{
+				if (opt.robot || opt.mech) 
+				{
 					vulner[D_NECRO]=vulner[D_BLEED]=vulner[D_VENOM]=vulner[D_POISON]=0;
 				}
 			}
-			if (node0.blit.length()) {
+			if (node0.blit.length()) 
+			{
 				if (anims==null) anims=new Array();
-				for each(var xbl:XML in node0.blit) {
+				for each(var xbl:XML in node0.blit) 
+				{
 					anims[xbl.@id]=new BlitAnim(xbl);
 				}
 			}
 			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];
 		}
 		
-		public function getXmlWeapon(dif:int):Weapon {
+		public function getXmlWeapon(dif:int):Weapon 
+		{
 			var node0:XML=AllData.d.unit.(@id==id)[0];
 			var weap:Weapon;
-			for each(var n:XML in node0.w) {
+			for each(var n:XML in node0.w) 
+			{
 				if (n.@f.length()) continue;
 				if (n.@dif.length() && n.@dif>dif) continue;
-				if (n.@ch.length()==0 || isrnd(n.@ch)) {
+				if (n.@ch.length()==0 || isrnd(n.@ch)) 
+				{
 					weap=Weapon.create(this,n.@id);
 					if (weap) return weap;
 				}
@@ -607,7 +637,8 @@
 			return null;
 		}
 		
-		public function getName():String {
+		public function getName():String 
+		{
 			if (World.w.game==null || id_name==null) return '';
 			var arr:Array=World.w.game.names[id_name];
 			if (arr==null || arr.length==0) arr=Res.namesArr(id_name); 	//подготовить массив имён
@@ -619,8 +650,10 @@
 			return s;
 		}
 		
-		public function checkTrig():Boolean {
-			if (trig) {
+		public function checkTrig():Boolean 
+		{
+			if (trig) 
+			{
 				if (trig=='eco' && (World.w.pers==null || World.w.pers.eco==0)) return false;
 				if (World.w.game.triggers[trig]!=1) return false;
 			}
@@ -628,34 +661,43 @@
 		}
 		
 		//поместить созданный юнит в локацию
-		public function putLoc(nloc:Location, nx:Number, ny:Number) {
+		public function putLoc(nloc:Location, nx:Number, ny:Number) 
+		{
 			if (loc!=null) return;
 			loc=nloc;
-			if (loc.mirror) {
+			if (loc.mirror) 
+			{
 				storona=-storona;
 				aiNapr=storona;
 			}
 			setPos(nx,ny);
-			if (collisionAll()) {
-				if (!collisionAll(-Tile.tilePixelWidth)) {
+			if (collisionAll()) 
+			{
+				if (!collisionAll(-Tile.tilePixelWidth)) 
+				{
 					setPos(nx-Tile.tilePixelWidth,ny);
 				}
 			}
 			if (inter) inter.location=nloc;
-			if (inter && inter.saveLoot==2) {
+			if (inter && inter.saveLoot==2) 
+			{
 				inter.loot(true);	//если состояние 2, сгенерировать критичный лут
 			}
 			if (sost>=3) return;
 			begX=X, begY=Y;
 			if (hero==0) cTransform=loc.cTransform;
 			else cTransform=heroTransforms[hero-1];
-			if (loc.biom==5) {
+			if (loc.biom==5) 
+			{
 				vulner[D_PINK]=0;	//неуязв. к розовому облаку
 			}
 			//прикреплённые скрипты
-			if (mapxml) {
-				if (mapxml.scr.length()) {
-					for each (var xscr in mapxml.scr) {
+			if (mapxml) 
+			{
+				if (mapxml.scr.length()) 
+				{
+					for each (var xscr in mapxml.scr) 
+					{
 						var scr:Script=new Script(xscr,loc.land, this);
 						if (scr.eve=='die' || scr.eve==null) scrDie=scr;
 						if (scr.eve=='alarm') scrAlarm=scr;
@@ -664,7 +706,8 @@
 				if (mapxml.@scr.length()) scrDie=World.w.game.getScript(mapxml.@scr,this);
 				if (mapxml.@alarm.length()) scrAlarm=World.w.game.getScript(mapxml.@alarm,this);
 			}
-			if (postDie) {
+			if (postDie) 
+			{
 				sost=3;
 				setCel(null, X+storona*100,Y+50);
 				lootIsDrop=true;
@@ -672,7 +715,8 @@
 			};
 		}
 		//установить левел моба (значение прибавляется к левелу, заданному через карту, по умолчанию 0)
-		public function setLevel(nlevel:int=0) {
+		public function setLevel(nlevel:int=0) 
+		{
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.11);
@@ -684,34 +728,44 @@
 			skin*=(1+level*0.05);
 			armor_hp=armor_maxhp=armor_hp*(1+level*0.1);
 			observ+=Math.min(nlevel*0.6,15)*(0.9+Math.random()*0.2);
-			if (currentWeapon && currentWeapon.tip==0) {
+			if (currentWeapon && currentWeapon.tip==0) 
+			{
 				currentWeapon.damage*=(1+level*0.07);
-			} else {
+			} 
+			else 
+			{
 				weaponSkill*=(1+level*0.035);
 			}
 			damWall*=(1+level*0.04);
-			//nazv+=' '+level;
 		}
 		
 		//сделать героем
-		public function setHero(nhero:int=1) {
+		public function setHero(nhero:int=1) 
+		{
 			if (!mHero) return;
 			if (hero==0) hero=nhero;
-			if (hero>0) {
-				if (!uniqName) {
+			if (hero>0) 
+			{
+				if (!uniqName) 
+				{
 					var s=getName();
 					if (s!=null && s!='') nazv=s;
 				}
 				xp*=5;
 			}
-			if (hero==1) {
+			if (hero==1) 
+			{
 				hp=maxhp=maxhp*2.5;
 				dam*=1.8;
 				if (currentWeapon) currentWeapon.damage*=1.5;
-			} else if (hero==2 || hero==3) {
+			} 
+			else if (hero==2 || hero==3) 
+			{
 				hp=maxhp=maxhp*3;
 				dam*=1.2;
-			} else if (hero==4) {
+			} 
+			else if (hero==4) 
+			{
 				hp=maxhp=maxhp*2;
 				dam*=1.4;
 				observ+=8;
@@ -723,18 +777,21 @@
 			//trace(id,hero)
 		}
 		
-		public function setHeroVulners() {
+		public function setHeroVulners() 
+		{
 			vulner[D_EMP]*=0.8;
 			vulner[D_BALE]*=0.7;
 			vulner[D_NECRO]*=0.7;
 			vulner[D_ASTRO]*=0.7;
-			if (hero==2) {
+			if (hero==2) 
+			{
 				vulner[D_BUL]*=0.5;
 				vulner[D_PHIS]*=0.65;
 				vulner[D_BLADE]*=0.65;
 				vulner[D_EXPL]*=0.75;
 			}
-			if (hero==3) {
+			if (hero==3) 
+			{
 				vulner[D_LASER]*=0.6;
 				vulner[D_PLASMA]*=0.5;
 				vulner[D_EMP]*=0.75;
@@ -744,12 +801,16 @@
 		}
 		
 		// Set to the initial state; if f=true, return to the original position
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false) 
+		{
 			if (boss && isNoResBoss()) f=false;
-			if (sost==1) {
-				if (f) {
+			if (sost==1) 
+			{
+				if (f) 
+				{
 					// Reset effects
-					if (effects.length>0) {
+					if (effects.length>0) 
+					{
 						for each (var eff in effects) eff.unsetEff();
 						effects=new Array();
 					}

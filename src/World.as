@@ -38,154 +38,155 @@
 	{
 		public static var w:World;
 		
-		public var urle:String;			//URL from which the game was launched
+		public var urle:String;						//URL from which the game was launched
 
 		//Visual components
-		public var main:Sprite;			//Main game sprite
+		public var main:Sprite;						//Main game sprite
 		public var swfStage:Stage;	
 		
-		public var vwait:MovieClip;		//Loading image
-		public var vfon:MovieClip;		//Static background
-		public var visual:Sprite;		//Active area
-		public var vscene:MovieClip;	//Scene
-		public var vblack:MovieClip;	//Darkness
-		public var vpip:MovieClip;		//Pipbuck
-		public var vsats:MovieClip;		//HUD interface
-		public var vgui:MovieClip;		//GUI (HUD)
-		public var vstand:MovieClip;	//Stand
-		public var verror:MovieClip;	//Error window
-		public var vconsol:MovieClip;	//Console scroll
+		public var vwait:MovieClip;					//Loading image
+		public var vfon:MovieClip;					//Static background
+		public var visual:Sprite;					//Active area
+		public var vscene:MovieClip;				//Scene
+		public var vblack:MovieClip;				//Darkness
+		public var vpip:MovieClip;					//Pipbuck
+		public var vsats:MovieClip;					//HUD interface
+		public var vgui:MovieClip;					//GUI (HUD)
+		public var vstand:MovieClip;				//Stand
+		public var verror:MovieClip;				//Error window
+		public var vconsol:MovieClip;				//Console scroll
 	
 		//All main components
 		public var mainMenu:MainMenu;
-		public var cam:Camera;			//Camera
-		public var ctr:Ctr;				//Controls
-		public var consol:Consol;		//Console
-		public var game:Game;			//Game
-		public var gg:UnitPlayer;		//Player unit
-		public var pers:Pers;			//Character
-		public var invent:Invent;		//Inventory
-		public var gui:GUI;				//GUI
-		public var grafon:Grafon;		//Graphics
-		public var pip:PipBuck;			//Pipbuck
-		public var stand:Stand;			//Stand
-		public var sats:Sats;			//SATS
-		public var app:Appear;			//Character appearance settings
+		public var cam:Camera;						//Camera
+		public var ctr:Ctr;							//Controls
+		public var consol:Consol;					//Console
+		public var game:Game;						//Game
+		public var gg:UnitPlayer;					//Player unit
+		public var pers:Pers;						//Character
+		public var invent:Invent;					//Inventory
+		public var gui:GUI;							//GUI
+		public var grafon:Grafon;					//Graphics
+		public var pip:PipBuck;						//Pipbuck
+		public var stand:Stand;						//Stand
+		public var sats:Sats;						//SATS
+		public var app:Appear;						//Character appearance settings
 		
 		//Location components
-		public var land:Land;		//Current terrain
-		public var loc:Location;	//Current location
+		public var land:Land;						//Current terrain
+		public var loc:Location;					//Current location
 		public var rooms:Rooms;
 		
 		//Working variables
-		public var onConsol:Boolean=false;	//Console active
-		public var onPause:Boolean=false;	//Game on pause
-		public var allStat:int=0; 			//Overall status 0 - game has not started
-		public var celX:Number;				//Cursor coordinates in location coordinate system
+		public var onConsol:Boolean = false;		//Console active
+		public var onPause:Boolean = false;			//Game on pause
+		public var allStat:int = 0; 				//Overall status 0 - game has not started
+		public var celX:Number;						//Cursor coordinates in location coordinate system
 		public var celY:Number;
-		public var t_battle:int=0;			//Is there a battle happening or not
-		public var t_die:int=0;				//Player character has died
-		public var t_exit:int=0;			//Exit from location
-		public var gr_stage:int=0;			//Location rendering stage
-		public var checkLoot:Boolean=false;	//Recalculate auto-loot
-		public var calcMass:Boolean=false;	//Recalculate mass
-		public var calcMassW:Boolean=false;	//Recalculate weapon mass
-		public var lastCom:String=null;
-		public var armorWork:String='';		//Temporary display of armor
-		public var mmArmor:Boolean=false;	//Armor in main menu
-		public var catPause:Boolean=false;	//Pause for scene display
+		public var t_battle:int = 0;				//Is there a battle happening or not
+		public var t_die:int = 0;					//Player character has died
+		public var t_exit:int = 0;					//Exit from location
+		public var gr_stage:int = 0;				//Location rendering stage
+		public var checkLoot:Boolean = false;		//Recalculate auto-loot
+		public var calcMass:Boolean = false;		//Recalculate mass
+		public var calcMassW:Boolean = false;		//Recalculate weapon mass
+		public var lastCom:String = null;
+		public var armorWork:String = '';			//Temporary display of armor
+		public var mmArmor:Boolean = false;			//Armor in main menu
+		public var catPause:Boolean = false;		//Pause for scene display
 		
-		public var testLoot:Boolean=false;	 //Loot and experience testing
-		public var summxp:int=0;
+		public var testLoot:Boolean = false;		//Loot and experience testing
+		public var summxp:int = 0;
 		var ccur:String;
 		
 		public var currentMusic:String='';
 		
 		
 		//Settings variables
-		public var enemyAct:int=3;					//enemy activity, should be 3. If 0, enemies will not be active
-		public var roomsLoad:int=1;  				//1-load from file
-		var langLoad=1;  							//1-load from file
-		public var addCheckSP:Boolean=false;		//add skill points when visiting checkpoints
-		public var weaponsLevelsOff:Boolean=true;	//disable using weapons of incorrect level
-		public var drawAllMap:Boolean=false;		//display the whole map without fog of war
-		public var black:Boolean=true;				//display fog of war
-		public var testMode:Boolean=false;			//Test mode
-		public var chitOn:Boolean=false;
-		public var chit:String='', chitX:String=null;	//current cheat
-		public var showArea:Boolean=false;		//show active zones
-		public var godMode:Boolean=false;		//invincibility 
-		public var showAddInfo:Boolean=false;	//show additional information
-		public var testBattle:Boolean=false;	//stamina will be consumed outside of battle
-		public var testEff:Boolean=false;		//effects will be 10 times shorter
-		public var testDam:Boolean=false;		//cancel damage range
-		public var hardInv:Boolean=false;		//limited inventory
-		public var alicorn:Boolean=false;
-		public var maxParts:int=100;			//maximum particles
+		public var enemyAct:int = 3;				//enemy activity, should be 3. If 0, enemies will not be active
+		public var roomsLoad:int = 1;  				//1-load from file
+		var langLoad = 1;  							//1-load from file
+		public var addCheckSP:Boolean = false;		//add skill points when visiting checkpoints
+		public var weaponsLevelsOff:Boolean = true;	//disable using weapons of incorrect level
+		public var drawAllMap:Boolean = false;		//display the whole map without fog of war
+		public var black:Boolean = true;			//display fog of war
+		public var testMode:Boolean = false;		//Test mode
+		public var chitOn:Boolean = false;
+		public var chit:String=''; 					//current cheat
+		public var chitX:String = null;	
+		public var showArea:Boolean = false;		//show active zones
+		public var godMode:Boolean = false;			//invincibility 
+		public var showAddInfo:Boolean = false;		//show additional information
+		public var testBattle:Boolean = false;		//stamina will be consumed outside of battle
+		public var testEff:Boolean = false;			//effects will be 10 times shorter
+		public var testDam:Boolean = false;			//cancel damage range
+		public var hardInv:Boolean = false;			//limited inventory
+		public var alicorn:Boolean = false;
+		public var maxParts:int = 100;				//maximum particles
 		
-		public var zoom100:Boolean=false;		//zoom 100%
-		public var dialOn:Boolean=true;			//show dialogues with NPCs
-		public var showHit:int=2;				//show damage
-		public var matFilter:Boolean=true;		//material filter
-		public var helpMess:Boolean=true;		//tutorial messages
+		public var zoom100:Boolean = false;			//zoom 100%
+		public var dialOn:Boolean = true;			//show dialogues with NPCs
+		public var showHit:int = 2;					//show damage
+		public var matFilter:Boolean = true;		//material filter
+		public var helpMess:Boolean = true;			//tutorial messages
 		
-		public var shineObjs:Boolean=false;		//objects glow
-		public var sysCur:Boolean=false;		//system cursor
-		public var hintKeys:Boolean=true;		//keyboard hints
-		public var hintTele:Boolean=true;		//teleport hints
-		public var showFavs:Boolean=true;		//show additional info when cursor is on top of the screen
-		public var errorShow:Boolean=true;
-		public var errorShowOpt:Boolean=true;
-		public var quakeCam:Boolean=true;		//camera shake
+		public var shineObjs:Boolean = false;		//objects glow
+		public var sysCur:Boolean = false;			//system cursor
+		public var hintKeys:Boolean = true;			//keyboard hints
+		public var hintTele:Boolean = true;			//teleport hints
+		public var showFavs:Boolean = true;			//show additional info when cursor is on top of the screen
+		public var errorShow:Boolean = true;
+		public var errorShowOpt:Boolean = true;
+		public var quakeCam:Boolean = true;			//camera shake
 		
-		public var vsWeaponNew:Boolean=true;	//automatically take new weapon if there is room
-		public var vsWeaponRep:Boolean=true;	//automatically take weapon for repair
-		public var vsAmmoAll:Boolean=true;		
-		public var vsAmmoTek:Boolean=true;		
-		public var vsExplAll:Boolean=true;		
-		public var vsMedAll:Boolean=true;		
-		public var vsHimAll:Boolean=true;		
-		public var vsEqipAll:Boolean=true;		
-		public var vsStuffAll:Boolean=true;		
-		public var vsVal:Boolean=true;		
-		public var vsBook:Boolean=true;		
-		public var vsFood:Boolean=true;		
-		public var vsComp:Boolean=true;		
-		public var vsIngr:Boolean=true;		
+		public var vsWeaponNew:Boolean = true;		//automatically take new weapon if there is room
+		public var vsWeaponRep:Boolean = true;		//automatically take weapon for repair
+		public var vsAmmoAll:Boolean = true;		
+		public var vsAmmoTek:Boolean = true;		
+		public var vsExplAll:Boolean = true;		
+		public var vsMedAll:Boolean = true;		
+		public var vsHimAll:Boolean = true;		
+		public var vsEqipAll:Boolean = true;		
+		public var vsStuffAll:Boolean = true;		
+		public var vsVal:Boolean = true;		
+		public var vsBook:Boolean = true;		
+		public var vsFood:Boolean = true;		
+		public var vsComp:Boolean = true;		
+		public var vsIngr:Boolean = true;		
 		
 		//Global constants
-		public var actionDist=200*200;
-		public static const tilePixelWidth=40;
-		public static const tilePixelHeight=40;
-		public static const cellsX:int=48;
-		public static const cellsY:int=25;
-		public static const fps=30;
-		public static const ddy=1;
-		public static const maxdy=20;
-		public static const maxwaterdy=20;
-		public static const maxdelta=9;
-		public static const oduplenie=100;
-		public static const battleNoOut=120;
-		public static const unitXPMult:Number=2;
-		public static const kolHK=12;			//number of hotkeys
-		public static const kolQS=4;			//number of quick spells
+		public var actionDist = 200*200;
+		public static const tilePixelWidth = 40;	//Tile Width
+		public static const tilePixelHeight = 40;	//Tile Height
+		public static const cellsX:int = 48; 		//Room Width
+		public static const cellsY:int = 25;		//Room Height
+		public static const fps = 30;
+		public static const ddy = 1;
+		public static const maxdy = 20;
+		public static const maxwaterdy = 20;
+		public static const maxdelta = 9;
+		public static const oduplenie = 100;
+		public static const battleNoOut = 120;
+		public static const unitXPMult:Number = 2;
+		public static const kolHK = 12;				//number of hotkeys
+		public static const kolQS = 4;				//number of quick spells
 			
 		
-		public static const boxDamage=0.2;		//box attack strength multiplier
+		public static const boxDamage = 0.2;		//box attack strength multiplier
 		
 		//Load texts
-		public var lang:String='en';
-		public var langDef:String='ru';
+		public var lang:String = 'en';
+		public var langDef:String = 'ru';
 		public var languageList:Array;
-		public var kolLangs:int=0;
+		public var kolLangs:int = 0;
 		public var tl:TextLoader;
 		public var tld:TextLoader;
-		public var textLoaded:Boolean=false;
-		public var textLoadErr:Boolean=false;
+		public var textLoaded:Boolean = false;
+		public var textLoadErr:Boolean = false;
 		var loader_lang:URLLoader; 
 		var request_lang:URLRequest;
 		public var langsXML:XML;
-		public var textProgressLoad:Number=0;
+		public var textProgressLoad:Number = 0;
 		
 		//Files
 		public var soundPath:String;
@@ -204,25 +205,25 @@
 		public var configObj:SharedObject;
 		var saveObj:SharedObject;
 		var saveArr:Array;
-		public var saveKol:int=10;
-		var savePath:String=null;
-		var t_save:int=0;
-		public var loaddata:Object;				//data loaded from file
-		public var nadv:int=0, koladv:int=10;	//advice number
+		public var saveKol:int = 10;
+		var savePath:String = null;
+		var t_save:int = 0;
+		public var loaddata:Object;					//data loaded from file
+		public var nadv:int = 0, koladv:int = 10;	//advice number
 		public var load_log:String='';
 		
 		//Maps
 		public var landPath:String;
 		public var landData:Array;
-		public var kolLands:int=0;
-		public var kolLandsLoaded:int=0;
-		public var allLandsLoaded:Boolean=false;
+		public var kolLands:int = 0;
+		public var kolLandsLoaded:int = 0;
+		public var allLandsLoaded:Boolean = false;
 		
-		public var comLoad:int=-1;		//load command
-		public var clickReq:int=0;		//button click request, if set to 1, 2 will only be set after click
-		public var ng_wait:int=0;		//new game wait
-		public var loadScreen:int=-1;	//loading screen
-		public var autoSaveN:int=0;		//autosave slot number
+		public var comLoad:int = -1;				//load command
+		public var clickReq:int = 0;				//button click request, if set to 1, 2 will only be set after click
+		public var ng_wait:int = 0;					//new game wait
+		public var loadScreen:int = -1;				//loading screen
+		public var autoSaveN:int = 0;				//autosave slot number
 		public var log:String='';
 		
 		var fc:int=0;
@@ -798,7 +799,10 @@
 			pers.invMassParam();
 			gc();
 		} 
-		catch (err) {showError(err);}
+		catch (err) 
+		{
+			showError(err);
+		}
 		}
 		
 		public function redrawLoc() 
@@ -808,7 +812,11 @@
 				grafon.drawLoc(loc);
 				cam.setLoc(loc);
 				gui.setAll();
-			} catch (err) {showError(err);}
+			} 
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		public function exitLand(fast:Boolean=false) 
@@ -862,44 +870,50 @@
 					gui.allOn();
 				}
 			} 
-			catch (err) {showError(err);}
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		function ggDieStep() 
 		{
-		try 
-		{
-			t_die--;
-			if (t_die==200) cam.dblack=2.2;
-			if (t_die==150) 
+			try 
 			{
-				if (alicorn) 
+				t_die--;
+				if (t_die==200) cam.dblack=2.2;
+				if (t_die==150) 
 				{
-					game.runScript('gameover');
-					t_die=0;
-				} 
-				else 
-				{
-					if (gg.sost==3) 
+					if (alicorn) 
 					{
-						game.curLandId=game.baseId;
-						game.enterToCurLand();
+						game.runScript('gameover');
+						t_die=0;
 					} 
 					else 
 					{
-						land.gotoCheckPoint();
+						if (gg.sost==3) 
+						{
+							game.curLandId=game.baseId;
+							game.enterToCurLand();
+						} 
+						else 
+						{
+							land.gotoCheckPoint();
+						}
+						cam.dblack=-4;
+						gg.vis.visible=true;
 					}
-					cam.dblack=-4;
-					gg.vis.visible=true;
 				}
-			}
-			if (t_die==100) gg.resurect();
-			if (t_die==1) 
+				if (t_die==100) gg.resurect();
+				if (t_die==1) 
+				{
+					gg.controlOn();
+				}
+			} 
+			catch (err) 
 			{
-				gg.controlOn();
+				showError(err);
 			}
-		} 
-		catch (err) {showError(err);}
 		}
 
 		// Main loop
@@ -929,26 +943,26 @@
 				if (!onConsol && !pip.active) swfStage.focus = swfStage;
 				
 				//Only if the game has started and not paused, game loops
-				if (allStat==1 && !onPause) 
+				if (allStat == 1 && !onPause) 
 				{
 					//exit loop
-					if (t_exit>0) 
+					if (t_exit > 0) 
 					{
-						if (!(t_exit==17 && clickReq==1)) exitStep();
+						if (!(t_exit == 17 && clickReq == 1)) exitStep();
 					}
 					//particle count
-					Emitter.kol2=Emitter.kol1;
-					Emitter.kol1=0;
+					Emitter.kol2 = Emitter.kol1;
+					Emitter.kol1 = 0;
 					//trace(Emitter.kol2);
 
 					//main loop !!!!
-					if (t_exit!=17) land.step();
+					if (t_exit != 17) land.step();
 
 					//death loop
-					if (t_die>0) ggDieStep();
+					if (t_die > 0) ggDieStep();
 
 					//battle timer
-					if (t_battle>0) t_battle--;
+					if (t_battle > 0) t_battle--;
 
 					sats.step2();
 
@@ -963,19 +977,21 @@
 						invent.calcWeaponMass();
 						calcMassW=false;
 					}
-					//save
+
+					//Increment ticks since last save, if over 5000, and not in either test or alicorn mode, save the game.
 					t_save++;
-					if (t_save>5000 && !testMode && !alicorn) 
+					if (t_save>5000 && !testMode && !alicorn)
 					{
 						saveGame();
 					}
+
 					checkLoot=false;
 				}
 				//trace(clickReq,t_exit)
 				
-				if (comLoad>=0) 
+				if (comLoad >= 0) 
 				{
-					if (comLoad>=100) 
+					if (comLoad >= 100) 
 					{
 						if (autoSaveN>0) saveGame();
 						loadGame(comLoad-100);
@@ -989,12 +1005,13 @@
 				}
 				
 				//If the game has started, and is also on pause
-				if (allStat>=1) 
+				if (allStat >= 1) 
 				{
 					cam.calc(gg);
 					gui.step();
 					pip.step();
 					sats.step();
+					
 					if (ctr.keyPip) 
 					{
 						if (!sats.active) pip.onoff();
@@ -1035,6 +1052,7 @@
 						if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
 						ctr.keySats=false;
 					}
+
 					allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
 					
 					if (consol && consol.visoff) 
@@ -1042,7 +1060,11 @@
 						onConsol=consol.vis.visible=consol.visoff=false;
 					}
 				}
-			} catch (err) {showError(err);}
+			} 
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 
 //=============================================================================================================
@@ -1066,12 +1088,13 @@
 			if (loc.sky) return;
 			if (quakeCam) 
 			{
-				cam.quakeX+=x;
-				cam.quakeY+=y;
-				if (cam.quakeX>20) cam.quakeX=20;
-				if (cam.quakeX<-20) cam.quakeX=-20;
-				if (cam.quakeY>20) cam.quakeY=20;
-				if (cam.quakeY<-20) cam.quakeY=-20;
+				cam.quakeX += x;
+				cam.quakeY += y;
+
+				if (cam.quakeX >  20) cam.quakeX =  20;
+				if (cam.quakeX < -20) cam.quakeX = -20;
+				if (cam.quakeY >  20) cam.quakeY =  20;
+				if (cam.quakeY < -20) cam.quakeY = -20;
 			}
 		}
 		
@@ -1093,7 +1116,11 @@
 				verror.butClose.text.text=Res.pipText('err_close');
 				verror.butForever.text.text=Res.pipText('err_dont_show');
 				verror.butCopy.text.text=Res.pipText('err_copy_to_clipboard');
-			} catch (e) {}
+			} 
+			catch (e) 
+			{
+				
+			}
 
 			verror.txt.text=err.message+'\n'+err.getStackTrace();
 			verror.txt.text+='\n'+'gr_stage: '+gr_stage;
@@ -1109,6 +1136,7 @@
 //=============================================================================================================
 //			Loading Screen
 //=============================================================================================================
+
 		//set loading screen
 		public function setLoadScreen(n:int=-1) 
 		{
@@ -1159,11 +1187,15 @@
 			{
 				var nscr=game.lands[game.curLandId].loadScr;
 				if (nscr>=0 && (game.triggers['loadScr']==null || game.triggers['loadScr']<nscr))
-				 {
+				{
 					game.triggers['loadScr']=nscr;
 					return nscr;
 				}
-			} catch(err) {}
+			} 
+			catch(err) 
+			{
+
+			}
 			return -1;
 		}
 		
@@ -1171,35 +1203,40 @@
 		function waitLoadClick() 
 		{
 			vwait.story.lmb.play();
-			vwait.story.lmb.visible=true;
+			vwait.story.lmb.visible = true;
 		}
 		
 		// Remove the loading screen
 		function offLoadScreen() 
 		{
-			vwait.visible=false;
-			vwait.story.visible=false;
-			vwait.skill.visible=vwait.progres.visible=true;
+			vwait.visible = false;
+			vwait.story.visible = false;
+			vwait.skill.visible=vwait.progres.visible = true;
 			vwait.story.lmb.stop();
-			vwait.story.lmb.visible=false;
+			vwait.story.lmb.visible = false;
 			clickReq=0;
 		}
+
 		// Show the scene
 		public function showScene(sc:String, n:int=0) 
 		{
-			catPause=true;
-			visual.visible=false;
+			catPause = true;
+			visual.visible = false;
 			gui.allOff();
 			gui.offCelObj();
 
 			try 
 			{
 				vscene.gotoAndStop(sc);
-			}  catch(err){vscene.gotoAndStop(1);}
+			}  
+			catch(err)
+			{
+				vscene.gotoAndStop(1);
+			}
 
 			try 
 			{
-				if (n>0) 
+				if (n > 0) 
 				{
 					vscene.sc.gotoAndPlay(n);
 				} 
@@ -1207,7 +1244,11 @@
 				{
 					vscene.sc.gotoAndPlay(1);
 				}
-			} catch(err){}
+			} 
+			catch(err)
+			{
+
+			}
 
 			vscene.visible=true;
 		}
@@ -1215,19 +1256,19 @@
 		// Remove the scene
 		public function unshowScene() 
 		{
-			catPause=false;
-			visual.visible=true;
+			catPause = false;
+			visual.visible = true;
 			gui.allOn();
 			vscene.gotoAndStop(1);
-			vscene.visible=false;
+			vscene.visible = false;
 		}
 		
 		// Final credits or game over
 		public function endgame(n:int=0) 
 		{
-			vwait.visible=vfon.visible=false;
+			vwait.visible=vfon.visible = false;
 			var s:String;
-			if (n==1) 
+			if (n == 1) 
 			{
 				showScene('gameover');
 				s=Res.lpName(Res.guiText('end_bad'));
@@ -1242,13 +1283,17 @@
 			{
 				showScene('endgame');
 				s=Res.lpName(Res.guiText('end_norm'));
-				//Snd.playMusic('music_fall_2');
 			}
 			try 
 			{
 				vscene.sc.txt.htmlText=s;
-			} catch(err){}
+			} 
+			catch(err)
+			{
+
+			}
 		}
+
 //=============================================================================================================
 //			Saves and configuration
 //=============================================================================================================
@@ -1268,9 +1313,9 @@
 		
 		public function saveGame(n:int=-1) 
 		{
-			if (n==-2) 
+			if (n == -2) 
 			{
-				n=autoSaveN;
+				n = autoSaveN;
 				var save=saveArr[n];
 				saveToObj(save.data);
 				save.flush();
@@ -1281,11 +1326,12 @@
 			if (pip.noAct) return;
 			if (n==-1) n=autoSaveN;
 			var save=saveArr[n];
-			if (save is SharedObject) {
+			if (save is SharedObject) 
+			{
 				saveToObj(save.data);
 				var r=save.flush();
 				trace(r);
-				if (n==0) t_save=0;
+				if (n == 0) t_save = 0;
 			}
 		}
 		
@@ -1331,7 +1377,11 @@
 			configObj.data.vsComp=vsComp?0:1;
 			configObj.data.vsIngr=vsIngr?0:1;
 			configObj.flush();
-			} catch (err) {showError(err);}
+			} 
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		function weaponWrite() 
@@ -1350,8 +1400,5 @@
 			}
 			trace(s);
 		}
-				
-		
 	}
-	
 }

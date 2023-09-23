@@ -289,14 +289,18 @@ public class Grafon {
 				visFon.y = visual.y;
 				visFon.width = rectX;
 				visFon.height = rectY;
-			} else {
+			} 
+			else 
+			{
 				var koef = visFon.width/visFon.height;
 				visFon.x = visFon.y = 0;
 				if (nx >= ny*koef)
 				{
 					visFon.width = nx;
 					visFon.height = nx/koef;
-				} else {
+				} 
+				else 
+				{
 					visFon.height = ny;
 					visFon.width = ny*koef;
 				}
@@ -311,7 +315,9 @@ public class Grafon {
 		{
 			visLight.transform.colorTransform = infraTransform;
 			visLight.blendMode = 'multiply';
-		} else {
+		} 
+		else 
+		{
 			visLight.transform.colorTransform = defTransform
 			visLight.blendMode = 'normal';
 		}
@@ -343,7 +349,7 @@ public class Grafon {
 			resX = location.spaceX*Tile.tilePixelWidth;
 			resY = location.spaceY*Tile.tilePixelHeight;
 			
-			var transpFon:Boolean = location.transpFon; //Removed extra ';' here?
+			var transpFon:Boolean = location.transpFon;
 			if (location.backwall == 'sky') transpFon = true;
 			
 			//####################
@@ -979,7 +985,8 @@ public class Grafon {
 	//							Execution Time
 	//================================================================================================		
 	
-	public function getSpriteList(id:String, n:int = 0):BitmapData {
+	public function getSpriteList(id:String, n:int = 0):BitmapData 
+	{
 		if (spriteLists[id] == null)
 		{
 			if (n>0) spriteLists[id] = getObj(id, numbSprite+n);
