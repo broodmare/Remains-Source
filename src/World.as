@@ -244,10 +244,10 @@
 			soundPath = '';
 			musicPath = 'Music/';
 			textureURL = 'texture.swf';
-			spriteURL='sprite.swf';
-			sprite1URL='sprite1.swf';
-			langURL='lang.xml';
-			landPath='Rooms/';
+			spriteURL = 'sprite.swf';
+			sprite1URL = 'sprite1.swf';
+			langURL = 'lang.xml';
+			landPath = 'Rooms/';
 			
 			main = nmain;
 
@@ -287,16 +287,16 @@
 			app=new Appear();
 			
 			visual = new Sprite();
-			vgui=new visualGUI();
-			vfon=new MovieClip();
-			vpip=new visPipBuck();
-			vstand=new visualStand();
-			vsats=new MovieClip();
-			vscene=new visualScene();
-			vblack=new visBlack();
-			vblack.cacheAsBitmap=true;
-			vconsol=new visConsol();
-			verror=new visError();
+			vgui =   new visualGUI();
+			vfon =   new MovieClip();
+			vpip =   new visPipBuck();
+			vstand = new visualStand();
+			vsats =  new MovieClip();
+			vscene = new visualScene();
+			vblack = new visBlack();
+			vblack.cacheAsBitmap = true;
+			vconsol = new visConsol();
+			verror = new visError();
 
 			setLoadScreen();
 			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
@@ -319,10 +319,10 @@
 			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {errorShow=false; verror.visible=false;});
 			vstand.visible=false;
 
-			grafon=new Grafon(visual);
-			cam=new Camera(this);
+			grafon = new Grafon(visual);
+			cam = new Camera(this);
 
-			load_log+='Stage 1 Ok\n';
+			load_log += 'Stage 1 Ok\n';
 			//FPS counter
 			d1 = d2 = getTimer();
 			
@@ -347,13 +347,13 @@
 			catch(err) 
 			{
 				trace('Error in language file');
-				load_log+='Language file error: '+langURL+'\n';
+				load_log+='Language file error: ' + langURL + '\n';
 				initLangs(true);
 			}
 
 			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
 			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			load_log+='Language file loading: '+langURL+' Ok\n';
+			load_log += 'Language file loading: ' + langURL + ' Ok\n';
 		}
 		
 		//error loading language list from xml
@@ -362,7 +362,7 @@
 			initLangs(true);
 			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
 			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			load_log+='Load lang error '+langURL+'\n';
+			load_log += 'Load lang error ' + langURL + '\n';
 			trace('Cannot load the list of languages');
         }
 		
@@ -424,16 +424,16 @@
 		//select new language
 		public function defuxLang(nid:String) 
 		{
-			lang=nid;
-			textLoadErr=false;
-			if (nid!=langDef) 
+			lang = nid;
+			textLoadErr = false;
+			if (nid != langDef) 
 			{
-				textLoaded=false;
-				tl=new TextLoader(languageList[nid].file);
+				textLoaded = false;
+				tl = new TextLoader(languageList[nid].file);
 			} 
 			else
 			{
-				Res.d=Res.e;
+				Res.d = Res.e;
 				pip.updateLang();
 			}
 			saveConfig();
@@ -444,36 +444,44 @@
 			if (consol) return;
 			if (configObj) lastCom=configObj.data.lastCom;
 
-			consol=new Consol(vconsol, lastCom);
+			consol = new Consol(vconsol, lastCom);
 
 			//saves and config
-			saveArr=new Array();
+			saveArr = new Array();
 			for (var i=0; i<=saveKol; i++) 
 			{
-				saveArr[i]=SharedObject.getLocal('PFEgame'+i,savePath);
+				saveArr[i] = SharedObject.getLocal('PFEgame' + i, savePath);
 			}
 			saveObj = saveArr[0];
 
 			if (configObj.data.dialon!=null) dialOn=configObj.data.dialon;
 			if (configObj.data.zoom100!=null) zoom100=configObj.data.zoom100;
-			if (zoom100) cam.isZoom=0; else cam.isZoom=2;
-			if (configObj.data.mat!=null) matFilter=configObj.data.mat;
-			if (configObj.data.help!=null) helpMess=configObj.data.help;
-			if (configObj.data.hit!=null) showHit=configObj.data.hit;
-			if (configObj.data.sysCur!=null) sysCur=configObj.data.sysCur;
-			if (configObj.data.hintTele!=null) hintTele=configObj.data.hintTele;
-			if (configObj.data.showFavs!=null) showFavs=configObj.data.showFavs;
-			if (configObj.data.quakeCam!=null) quakeCam=configObj.data.quakeCam;
-			if (configObj.data.errorShowOpt!=null) errorShowOpt=configObj.data.errorShowOpt;
-			if (configObj.data.app) {
+			if (zoom100) 
+			{
+				cam.isZoom = 0; 
+			}
+			else cam.isZoom = 2;
+			if (configObj.data.mat!=null) matFilter = configObj.data.mat;
+			if (configObj.data.help!=null) helpMess = configObj.data.help;
+			if (configObj.data.hit!=null) showHit = configObj.data.hit;
+			if (configObj.data.sysCur!=null) sysCur = configObj.data.sysCur;
+			if (configObj.data.hintTele!=null) hintTele = configObj.data.hintTele;
+			if (configObj.data.showFavs!=null) showFavs = configObj.data.showFavs;
+			if (configObj.data.quakeCam!=null) quakeCam = configObj.data.quakeCam;
+			if (configObj.data.errorShowOpt!=null) errorShowOpt = configObj.data.errorShowOpt;
+			if (configObj.data.app) 
+			{
 				app.load(configObj.data.app);
 				app.setTransforms();
 			}
 			try 
 			{
-				koladv=Res.d.advice[0].a.length();
+				koladv = Res.d.advice[0].a.length();
 			} 
-			catch (err) {}
+			catch (err) 
+			{
+
+			}
 
 			if (configObj.data.nadv) 
 			{
@@ -520,27 +528,23 @@
 			
 			load_log+='Stage 2 Ok\n';
 			Snd.loadMusic();
-			
-			//for (var i=0; i<100; i++) trace(Res.repText('raider', 'neutral'));
-			//weaponWrite();
-			//mainMenu.main.stage.quality='low';
 		}
 
 		public function roomsLoadOk() 
 		{
 			if (!roomsLoad) 
 			{
-				allLandsLoaded=true;
+				allLandsLoaded = true;
 				return;
 			}
 			kolLandsLoaded++;
-			if (kolLands==kolLandsLoaded) allLandsLoaded=true;
+			if (kolLands == kolLandsLoaded) allLandsLoaded = true;
 		}
 
 		//Pause and calling the pipbuck if focus is lost
 		public function onDeactivate(event:Event):void  
 		{
-			if (allStat==1) 
+			if (allStat == 1) 
 			{
 				pip.onoff(11);
 			}
@@ -558,8 +562,8 @@
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
 			if (stand) stand.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			vblack.width=swfStage.stageWidth;
-			vblack.height=swfStage.stageHeight;
+			vblack.width = swfStage.stageWidth;
+			vblack.height = swfStage.stageHeight;
 			if (loadScreen<0) 
 			{
 				vwait.x=swfStage.stageWidth/2;
@@ -573,7 +577,7 @@
 		{
 			onConsol =! onConsol; //Toggles the state of onConsole
 			consol.vis.visible = onConsol; //Toggles the visibility of consol depending on the state of onConsol
-			if (onConsol) swfStage.focus=consol.vis.input;
+			if (onConsol) swfStage.focus = consol.vis.input;
 		}
 		
 		
@@ -589,20 +593,20 @@
 		//Start a new game or load a save. Pass the slot number or -1 for a new game
 		//Stage 0 - create HUD, SATS, and pipuck
 		//Initialize game
-		public function startNewGame(nload:int=-1, nnewName:String='LP', nopt:Object=null) 
+		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null) 
 		{
 			if (testMode && !chitOn) 
 			{
 				vwait.progres.text='error';
 				return;
 			}
-			try 
+			try
 			{
 				allStat=-1;
-				opt=nopt;
+				opt = nopt;
 				newName = nnewName;
-				game=new Game();
-				if (!roomsLoad) allLandsLoaded=true;
+				game = new Game();
+				if (!roomsLoad) allLandsLoaded = true;
 				newGame = nload<0;
 				if (newGame) 
 				{
@@ -612,36 +616,43 @@
 						saveObj=saveArr[autoSaveN];
 						nload=autoSaveN;
 					} 
-					else nload=0;
+					else nload = 0;
 					saveObj.clear();
 				}
 				
 				// create GUI
-				gui=new GUI(vgui);
+				gui = new GUI(vgui);
 				gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 				// switch PipBuck to normal mode
 				pip.toNormalMode();
 				pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 				// create SATS interface
-				sats=new Sats(vsats);
+				sats = new Sats(vsats);
 				
 				// create game
-				if (nload==99) 
+				if (nload == 99) 
 				{
-					data=loaddata;	// loaded from file
+					data = loaddata;	// loaded from file
 				} 
 				else 
 				{
 					data=saveArr[nload].data; // loaded from slot
 				}
 
-				if (newGame)	game.init(null,opt); 
-				else game.init(data.game);
-
-				ng_wait=1;
-				
+				if (newGame)	
+				{
+					game.init(null, opt); 
+				}
+				else 
+				{
+					game.init(data.game);
+				}
+				ng_wait = 1;
 			} 
-			catch (err) {showError(err);}
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		// stage 1 - create character and inventory
@@ -650,29 +661,39 @@
 			try 
 			{
 				if (!newGame) app.load(data.app);
-				if (data.hardInv==true) hardInv=true; else hardInv=false;
-				if (opt && opt.hardinv) hardInv=true;
+				if (data.hardInv == true) hardInv = true; else hardInv = false;
+				if (opt && opt.hardinv) hardInv = true;
+
 				// create character
 				pers = new Pers(data.pers, opt);
 				if (newGame) pers.persName=newName;
+
 				// create player character
 				gg = new UnitPlayer();
-				gg.ctr=ctr;
-				gg.sats=sats;
-				sats.gg=gg;
-				gui.gg=gg;
+				gg.ctr = ctr;
+				gg.sats = sats;
+				sats.gg = gg;
+				gui.gg = gg;
+
 				// create inventory
-				invent=new Invent(gg, data.invent, opt);
-				stand=new Stand(vstand,invent);
+				invent = new Invent(gg, data.invent, opt);
+				stand = new Stand(vstand,invent);
 				gg.attach();
+
 				// auto save slot number
-				if (!newGame) if (data.n!=null) autoSaveN=data.n;
-				Unit.txtMiss=Res.guiText('miss');
+				if (!newGame && data.n != null) 
+				{
+					autoSaveN = data.n;
+				}
+				Unit.txtMiss = Res.guiText('miss');
 				
 				waitLoadClick();
-				ng_wait=2;
+				ng_wait = 2;
 			} 
-			catch (err) {showError(err);}
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		// Stage 2 - create a terrain and enter it
@@ -684,7 +705,7 @@
 				//visual part
 				resizeScreen();
 				offLoadScreen();
-				vgui.visible=vfon.visible=visual.visible=true;
+				vgui.visible=vfon.visible=visual.visible = true;
 				vblack.alpha=1;
 				cam.dblack=-10;
 				pip.onoff(-1);
@@ -697,28 +718,36 @@
 				allStat=1;
 				ng_wait=0;
 			} 
-			catch (err) {showError(err);}
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
-		public function loadGame(nload:int=0) 
+		public function loadGame(nload:int = 0) 
 		{
 			try 
 			{
-				comLoad=-1;
-				if (loc) loc.out();
-				land=null;
-				loc=null;
-				try {cur('arrow');} catch(err){}
+				comLoad = -1;
+				if (loc) loc.unloadLocation();
+				land = null;
+				loc = null;
+				try {cur('arrow');} 
+				catch(err)
+				{
+
+				}
+
 				//loading object
 				var data:Object;
 
-				if (nload==99) 
+				if (nload == 99) 
 				{
-					data=loaddata;
+					data = loaddata;
 				} 
 				else 
 				{
-					data=saveArr[nload].data;
+					data = saveArr[nload].data;
 				}
 
 				//create game
@@ -734,15 +763,15 @@
 
 				//create player unit
 				gg = new UnitPlayer();
-				gg.ctr=ctr;
-				gg.sats=sats;
-				sats.gg=gg;
-				gui.gg=gg;
+				gg.ctr = ctr;
+				gg.sats = sats;
+				sats.gg = gg;
+				gui.gg = gg;
 
 				// create an inventory
-				invent=new Invent(gg, data.invent);
-				if (stand) stand.inv=invent;
-				else stand=new Stand(vstand,invent);
+				invent = new Invent(gg, data.invent);
+				if (stand) stand.inv = invent;
+				else stand = new Stand(vstand,invent);
 				gg.attach();
 
 				// auto-save cell number
@@ -765,44 +794,54 @@
 				gui.setAll();
 				allStat=1;
 			} 
-			catch (err) {showError(err);}
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		// Call when entering a specific location
 		public function ativateLand(nland:Land) 
 		{
-		try 
-		{
-			land=nland;
-			grafon.drawFon(vfon,land.act.fon);
-		} 
-		catch (err) {showError(err);}
+			try 
+			{
+				land = nland;
+				grafon.drawFon(vfon,land.act.fon);
+			} 
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		// Call when entering a specific area
 		// There is a graphical bug here
 		public function ativateLoc(nloc:Location) 
 		{
-		try 
-		{
-			if (loc) loc.out(); //Unload current area
-			loc = nloc; //Set the desired area as the current area
-			grafon.drawLoc(loc); //Draw the current area
-			cam.setLoc(loc);
-			grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
-			gui.setAll();
-			currentMusic=loc.sndMusic;
-			Snd.playMusic(currentMusic);
-			gui.hpBarBoss();
-			if (t_die<=0) World.w.gg.controlOn();
-			gui.dialText();
-			pers.invMassParam();
-			gc();
-		} 
-		catch (err) 
-		{
-			showError(err);
-		}
+			try 
+			{
+				if (loc != null) //If a location exists, unload it.
+				{
+					loc.unloadLocation();
+				}
+
+				loc = nloc; //Set the desired area as the current area
+				grafon.drawLoc(loc); //Draw the current area
+				cam.setLoc(loc);
+				grafon.setFonSize(swfStage.stageWidth, swfStage.stageHeight);
+				gui.setAll();
+				currentMusic = loc.sndMusic;
+				Snd.playMusic(currentMusic);
+				gui.hpBarBoss();
+				if (t_die <= 0) World.w.gg.controlOn();
+				gui.dialText();
+				pers.invMassParam();
+				gc();
+			} 
+			catch (err) 
+			{
+				showError(err);
+			}
 		}
 		
 		public function redrawLoc() 
@@ -821,16 +860,16 @@
 		
 		public function exitLand(fast:Boolean=false) 
 		{
-			if (t_exit>0) return;
+			if (t_exit > 0) return;
 			gg.controlOff();
 			pip.noAct=true;
 			if (fast) 
 			{
-				t_exit=21;
+				t_exit = 21;
 			} 
 			else 
 			{
-				t_exit=100;
+				t_exit = 100;
 			}
 		}
 		
@@ -840,32 +879,34 @@
 			try 
 			{
 				t_exit--;
-				if (t_exit==99) cam.dblack=1.5;
-				if (t_exit==20) 
+
+				if (t_exit == 99) cam.dblack = 1.5; // Fade to black for level change. (Canterlot, Factory, etc.)
+
+				if (t_exit == 20) 
 				{
-					vblack.alpha=0;
-					cam.dblack=0;
+					vblack.alpha = 0;
+					cam.dblack = 0;
 					setLoadScreen(getLoadScreen());
 					Snd.off=true;
 				}
-				if (t_exit==19) 
+				if (t_exit == 19) 
 				{
 					cur('arrow');
 					game.enterToCurLand();
 				}
-				if (t_exit==18 && clickReq>0) waitLoadClick();
-				if (t_exit==16) 
+				if (t_exit == 18 && clickReq>0) waitLoadClick();
+				if (t_exit == 16) 
 				{
 					Mouse.show();
-					Snd.off=false;
+					Snd.off = false;
 					offLoadScreen();
-					vgui.visible=vfon.visible=visual.visible=true;
+					vgui.visible=vfon.visible=visual.visible = true;
 					vblack.alpha=1;
-					cam.dblack=-10;
+					cam.dblack = -10;
 					gg.controlOn();
-					pip.noAct=false;
+					pip.noAct = false;
 				}
-				if (t_exit==1) 
+				if (t_exit == 1) 
 				{
 					gui.allOn();
 				}
@@ -881,8 +922,8 @@
 			try 
 			{
 				t_die--;
-				if (t_die==200) cam.dblack=2.2;
-				if (t_die==150) 
+				if (t_die == 200) cam.dblack = 2.2;
+				if (t_die == 150) 
 				{
 					if (alicorn) 
 					{
@@ -891,7 +932,7 @@
 					} 
 					else 
 					{
-						if (gg.sost==3) 
+						if (gg.sost == 3) 
 						{
 							game.curLandId=game.baseId;
 							game.enterToCurLand();
@@ -904,8 +945,8 @@
 						gg.vis.visible=true;
 					}
 				}
-				if (t_die==100) gg.resurect();
-				if (t_die==1) 
+				if (t_die == 100) gg.resurect();
+				if (t_die == 1) 
 				{
 					gg.controlOn();
 				}
@@ -1140,30 +1181,33 @@
 		//set loading screen
 		public function setLoadScreen(n:int=-1) 
 		{
-			loadScreen=n;
+			loadScreen = n;
 			vwait.story.lmb.stop();
-			vwait.story.lmb.visible=false;
-			vgui.visible=vfon.visible=visual.visible=vscene.visible=false;
-			vwait.visible=true;
-			catPause=false;
-			vwait.progres.text=Res.guiText('loading');
+			vwait.story.lmb.visible = false;
+			vgui.visible = false;
+			vfon.visible = false;
+			visual.visible = false;
+			vscene.visible = false;
+			vwait.visible = true;
+			catPause = false;
+			vwait.progres.text = Res.guiText('loading');
 
-			if (n<0) 
+			if (n < 0) 
 			{
-				vwait.x=swfStage.stageWidth/2;
-				vwait.y=swfStage.stageHeight/2;
+				vwait.x = swfStage.stageWidth / 2;
+				vwait.y = swfStage.stageHeight / 2;
 				vwait.skill.gotoAndStop(Math.floor(Math.random()*vwait.skill.totalFrames+1));
-				vwait.skill.visible=vwait.progres.visible=true;
-				vwait.story.visible=false;
+				vwait.skill.visible = vwait.progres.visible=true;
+				vwait.story.visible = false;
 				clickReq=0;
 			} 
 			else 
 			{
-				vwait.x=vwait.y=0;
-				vwait.story.visible=true;
-				vwait.skill.visible=vwait.progres.visible=false;
+				vwait.x=vwait.y = 0;
+				vwait.story.visible = true;
+				vwait.skill.visible = vwait.progres.visible=false;
 
-				if (n==0) 
+				if (n == 0) 
 				{
 					vwait.story.txt.htmlText='<i>'+Res.guiText('story')+'</i>';
 				} 
@@ -1172,7 +1216,7 @@
 					vwait.story.txt.htmlText='<i>'+'История'+n+'</i>';
 				}
 
-				clickReq=1;
+				clickReq = 1;
 			}
 
 			vwait.cacheAsBitmap=false;
@@ -1185,10 +1229,10 @@
 			return -1;
 			try 
 			{
-				var nscr=game.lands[game.curLandId].loadScr;
-				if (nscr>=0 && (game.triggers['loadScr']==null || game.triggers['loadScr']<nscr))
+				var nscr = game.lands[game.curLandId].loadScr;
+				if (nscr >= 0 && (game.triggers['loadScr'] == null || game.triggers['loadScr'] < nscr))
 				{
-					game.triggers['loadScr']=nscr;
+					game.triggers['loadScr'] = nscr;
 					return nscr;
 				}
 			} 

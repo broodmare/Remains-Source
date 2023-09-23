@@ -169,7 +169,7 @@
 		
 		public override function step() 
 		{
-			if (!enabled || !loc.active || tip=='') return;
+			if (!enabled || !loc.locationActive || tip=='') return;
 			if (emit)
 			{
 				t_frec+=frec;

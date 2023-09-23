@@ -182,7 +182,6 @@
 				Snd.ps('nomagic');
 				return false;
 			}
-			//active=true;
 			return true;
 		}
 		
@@ -259,9 +258,9 @@
 				un.t_throw=30;
 			}
 			if (owner.player) loc.budilo(X,Y,500);
-			if (loc.active) Emitter.emit('blast',loc,X,Y);
+			if (loc.locationActive) Emitter.emit('blast',loc,X,Y);
 			
-			if (loc.active) World.w.quake(Math.random()*30-10,Math.random()*10-5);
+			if (loc.locationActive) World.w.quake(Math.random()*30-10,Math.random()*10-5);
 		}
 		
 		//замедляющее поле

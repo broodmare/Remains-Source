@@ -923,7 +923,7 @@
 				}
 			}
 			visDamDY=0;
-			if (sndRunOn && sndRun && loc && loc.active) sndRunPlay();
+			if (sndRunOn && sndRun && loc && loc.locationActive) sndRunPlay();
 
 		}
 		
@@ -1809,7 +1809,7 @@
 				if (invis) hpbar.visible=false;
 				visDetails();
 			}
-			if (hpbar && loc && loc.active) World.w.grafon.visObjs[3].addChild(hpbar);
+			if (hpbar && loc && loc.locationActive) World.w.grafon.visObjs[3].addChild(hpbar);
 			if (cTransform && ctrans) vis.transform.colorTransform=cTransform;
 			if (childObjs) {
 				for (var i in childObjs) 
@@ -2066,7 +2066,7 @@
 			if (noise_t==0 || hlup && noise_t<=20) 
 			{
 				noise_t=30;
-				if (loc && loc.active && !getTileVisi()) 
+				if (loc && loc.locationActive && !getTileVisi()) 
 				{
 					if (!player) Emitter.emit('noise',loc,X,Y,{rx:40, ry:40, alpha:Math.min(1,n/500)});
 				}
@@ -3152,7 +3152,7 @@
 		public function replic(s:String) 
 		{
 			//trace(id,s);
-			if (sost!=1 || id_replic=='' || !loc.active) return;
+			if (sost!=1 || id_replic=='' || !loc.locationActive) return;
 			var s_replic:String;
 			if (s=='dam') 
 			{

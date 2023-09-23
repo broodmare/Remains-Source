@@ -61,7 +61,7 @@
 		public var doors:Array;			// Passages to other locations
 		public var signposts:Array, sign_vis:Boolean=true;		// Exit indicators
 		public var nAct:int=0;			// Last visit
-		public var active:Boolean=false;		// Currently active
+		public var locationActive:Boolean = false;		// Currently active
 		public var visited:Boolean=false;		// Visited
 		
 		// Service
@@ -840,7 +840,7 @@
 					var size=Math.floor((un.scX-1)/40)+1;
 					un.putLoc(this,(nx+0.5*size)*Tile.tilePixelWidth,(ny+1)*Tile.tilePixelHeight-1);
 				}
-				if (active) 
+				if (locationActive) 
 				{
 					un.xp=0;
 				} else 
@@ -1464,11 +1464,11 @@
 			}
 
 			resetUnits();
-			if (n>0) nAct=n;
+			if (n>0) nAct = n;
 			showSign(false);
-			active=true;
-			visited=true;
-			warning=0;
+			locationActive = true;    //Set the location to active.
+			visited = true; 
+			warning = 0;
 			if (prob) prob.over();
 			Snd.resetShum();
 		}
@@ -1487,14 +1487,24 @@
 		// Deactivate the location  This doesn't do anything.
 		//This function is actually overwritten later??? wtf?
 
-		public function out() 
+		public function unloadLocation() 
 		{
-			active=false;
+			locationActive = false; // Set the Location as inactive.
+
 			for each (var un:Unit in units) 
 			{
-				un.locout();
+				un.locout(); // Unload all units.
 			}
-			if (prob) prob.out();   // If the location is a trial, run the trial exit script.
+
+			if (prob) 
+			{
+				prob.out();   // unload trial with it's built in unloader TODO: replace!
+			}
+			
+			if (World.w.loc != null) //If the location still exists, clear it.
+			{
+				World.w.loc = null;
+			}
 		}
 		
 //**************************************************************************************************************************
@@ -1513,7 +1523,7 @@
 			obj.nobj=null;
 			lastObj=obj;
 			obj.in_chain=true;
-			if (active) obj.addVisual();
+			if (locationActive) obj.addVisual();
 		}
 		
 		// Remove an object from the processing chain
@@ -1696,7 +1706,7 @@
 			// Location walls are not destructible
 			if (!destroyOn && t.hp>500) 
 			{
-				if (active && t.phis==1) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
+				if (locationActive && t.phis == 1) grafon.dyrka(nx, ny, tip, t.mat, true, hit / t.hp);
 				return;
 			}
 			// Has damage been dealt to the tile?
@@ -1724,17 +1734,17 @@
 						{
 							if (tileSpawn>0 && Math.random()<tileSpawn) enemySpawn(true,true);
 						} catch(err) {}
-						if (active) grafon.tileDie(t,tip);
+						if (locationActive) grafon.tileDie(t,tip);
 					}
 				} 
 				else if (t.phis>=1)  // If it's not destroyed but damage was dealt
 				{	
-					if (active) grafon.dyrka(nx,ny,tip,t.mat,false,hit/t.hp);
+					if (locationActive) grafon.dyrka(nx,ny,tip,t.mat,false,hit/t.hp);
 				}
 			} 
 			else if (t.phis>=1) // If there was no damage
 			{		
-				if (active) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
+				if (locationActive) grafon.dyrka(nx,ny,tip,t.mat,true,hit/t.hp);
 			}
 		}
 		
@@ -1753,7 +1763,7 @@
 			}
 			if (t.phis>=1) {
 				t.die();
-				if (active) grafon.tileDie(t,4);
+				if (locationActive) grafon.tileDie(t,4);
 			}
 		}
 		
@@ -1783,27 +1793,27 @@
 					tb=getTile(t.X,t.Y+1);
 					if ((tb.phis==1 || tb.water==1) && (tr.phis==1 || tr.water==1) && (tl.phis==1 || tl.water==1) && (tl.water==1 || tr.water==1 || tt.water==1)) {
 						t.water=1;
-						if (active) grafon.drawWater(t);
+						if (locationActive) grafon.drawWater(t);
 					} else {
 						if (tl.water>0 && t.phis!=1) 
 						{
 							tl.water=0;
 							recalcTiles.push(tl);
-							if (active) grafon.drawWater(tl);
+							if (locationActive) grafon.drawWater(tl);
 							isRecalc=true;
 						}
 						if (tr.water>0 && t.phis!=1) 
 						{
 							tr.water=0;
 							recalcTiles.push(tr);
-							if (active) grafon.drawWater(tr);
+							if (locationActive) grafon.drawWater(tr);
 							isRecalc=true;
 						}
 						if (tt.water>0 && t.phis!=1) 
 						{
 							tt.water=0;
 							recalcTiles.push(tt);
-							if (active) grafon.drawWater(tt);
+							if (locationActive) grafon.drawWater(tt);
 							isRecalc=true;
 						}
 					}
@@ -2086,7 +2096,7 @@
 			var obj:Bonus=new Bonus(this,'heal',nx,ny);
 			obj.liv=300;
 			obj.val=World.w.pers.bonusHeal*World.w.pers.bonusHealMult;
-			if (active) obj.addVisual();
+			if (locationActive) obj.addVisual();
 			//bonuses.push(obj);
 			addObj(obj);
 		}
@@ -2102,7 +2112,7 @@
 					t=space[i][j];
 					if (t.phis==3) 
 					{
-						if (active) 
+						if (locationActive) 
 						{
 							t.t_ghost--;
 							est=true;
@@ -2133,25 +2143,33 @@
 		}
 		
 		public function lighting(nx:int=-10000,ny:int=-10000,dist1:int=-1, dist2:int=-1) {
-			if (!active) return;
+			if (locationActive == false) 
+			{
+				return;
+			}
 			if (dist1<0) dist1=lDist1;
 			if (dist2<0) dist2=lDist2;
-			if (nx==-10000) {
+			if (nx==-10000) 
+			{
 				nx=gg.X+gg.storona*12;
 				ny=gg.Y1+gg.stayY*0.247;
 			}
 			var n1:Number, n2:Number;
 			relight_t=10;
 //			trace(opacWater);
-			for (var i=1; i<spaceX; i++) {
-				for (var j=1; j<spaceY; j++) {
+			for (var i=1; i<spaceX; i++) 
+			{
+				for (var j=1; j<spaceY; j++) 
+				{
 					n1=space[i][j].visi;
 					if (!retDark && n1>=1) continue;
 					var dx:int=i*Tile.tilePixelWidth-nx;
 					var dy:int=j*Tile.tilePixelHeight-ny;
 					var rasst=dx*dx+dy*dy;
-					if (rasst>=dist2*dist2) {
-						if (retDark && space[i][j].t_visi>0) {
+					if (rasst>=dist2*dist2) 
+					{
+						if (retDark && space[i][j].t_visi>0) 
+						{
 							space[i][j].t_visi-=0.025;
 							if (space[i][j].t_visi<0) space[i][j].t_visi=0;
 							grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
@@ -2162,35 +2180,48 @@
 					if (rasst1<=dist1) n2=1;
 					else n2=(dist2-rasst1)/(dist2-dist1);
 					//видимость по линии
-					if (rasst<=dist2*dist2) {
+					if (rasst<=dist2*dist2) 
+					{
 						var dex:Number,dey:Number,maxe:int;
 						if (Math.abs(dx)==Math.abs(dy)) dy++;
-						if (Math.abs(dx)>=Math.abs(dy)) {//двигаемся по х
-							if (dx>0) {
+						if (Math.abs(dx)>=Math.abs(dy)) //двигаемся по х
+						{
+							if (dx>0) 
+							{
 								dex=Tile.tilePixelWidth;
 								dey=dy/dx*Tile.tilePixelHeight;
-							} else {
+							} 
+							else 
+							{
 								dex=-Tile.tilePixelWidth;
 								dey=-dy/dx*Tile.tilePixelHeight;
 							}
 							maxe=dx/dex;
-						} else {
-							if (dy>0) {
+						} 
+						else 
+						{
+							if (dy>0) 
+							{
 								dey=Tile.tilePixelHeight;
 								dex=dx/dy*Tile.tilePixelWidth;
-							} else {
+							} 
+							else 
+							{
 								dey=-Tile.tilePixelHeight;
 								dex=-dx/dy*Tile.tilePixelWidth;
 							}
 							maxe=dy/dey;
 						}
-						for (var e=1; e<=maxe; e++) {
+						for (var e=1; e<=maxe; e++) 
+						{
 							var t:Tile=getAbsTile(nx+e*dex, ny+e*dey);
 							var opac:Number=t.opac;
 							if (opacWater>0 && t.water>0 && opacWater>opac) opac=opacWater;
-							if (opac>0) {
+							if (opac>0) 
+							{
 								n2-=opac;
-								if (n2<=0) {
+								if (n2<=0) 
+								{
 									n2=0;
 									break;
 								}
@@ -2215,7 +2246,7 @@
 		
 		public function lighting2() 
 		{
-			if (!active) return;
+			if (!locationActive) return;
 			relight_t--;
 			for (var i=1; i<spaceX; i++) 
 			{

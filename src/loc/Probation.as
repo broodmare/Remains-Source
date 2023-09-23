@@ -190,7 +190,7 @@
 		//активировать испытание
 		public function activateProb() 
 		{
-			if (closed || active || !loc.active) return;
+			if (closed || active || !loc.locationActive) return;
 			active=true;
 			doorsOnOff(-1);
 		}

@@ -191,7 +191,7 @@
 		}
 		public override function setPos(nx:Number,ny:Number) {
 			super.setPos(nx,ny);
-			if ((turrettip==0 || turrettip==4) && loc && !loc.active) {
+			if ((turrettip==0 || turrettip==4) && loc && !loc.locationActive) {
 				osnova=loc.getAbsTile(X, Y-50);
 			}
 		}

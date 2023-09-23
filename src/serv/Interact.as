@@ -329,7 +329,6 @@
 				lockTip=0;
 				lock=1;
 			}
-			//if (lockTip==0 && lock>0) active=false;
 			update();
 			owner.prior+=1;
 			inited=true;
@@ -532,7 +531,7 @@
 					active=false;
 					owner.setVisState('open');
 				}
-				if (location && location.prob && location.active) location.prob.check();
+				if (location && location.prob && location.locationActive) location.prob.check();
 			}
 			if (a=='expl') 
 			{

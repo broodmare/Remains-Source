@@ -58,7 +58,7 @@
 			if (liv<1000000) 
 			{
 				liv--;
-				if (!loc.active || liv==0) 
+				if (!loc.locationActive || liv==0) 
 				{
 					liv=0;
 					sost=2;
@@ -66,7 +66,7 @@
 				}
 			}
 			if (liv<-25) loc.remObj(this);
-			if (sost!=1 || !loc.active) return;
+			if (sost!=1 || !loc.locationActive) return;
 			if (areaTest(loc.gg)) take();
 		}
 		

@@ -26,7 +26,7 @@
 
 		public function addVisual() 
 		{
-			if (vis && loc && loc.active) World.w.grafon.visObjs[sloy].addChild(vis);
+			if (vis && loc && loc.locationActive) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
 		
 		public function remVisual() 

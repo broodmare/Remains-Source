@@ -125,7 +125,7 @@
 		
 		public override function setPos(nx:Number,ny:Number) {
 			super.setPos(nx,ny);
-			if (digger && loc && !loc.active) {
+			if (digger && loc && !loc.locationActive) {
 				kop1=loc.getAbsTile(X-10, Y+10);
 				kop2=loc.getAbsTile(X+10, Y+10);
 				if (kop1.phis>0 && kop2.phis>0) {

@@ -29,7 +29,7 @@
 		
 		public override function addVisual() {
 			if (disabled) return;
-			if (vis && loc && loc.active) World.w.grafon.visObjs[sloy].addChild(vis);
+			if (vis && loc && loc.locationActive) World.w.grafon.visObjs[sloy].addChild(vis);
 		}
 		
 		public override function visDetails() {

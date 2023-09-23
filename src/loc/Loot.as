@@ -141,7 +141,7 @@
 				dx=Math.random()*10-5;
 				dy=Math.random()*5-10;
 			}
-			if (!loc.active) sndFall='';
+			if (!loc.locationActive) sndFall='';
 			auto=nauto;
 				inter=new Interact(this);
 				inter.active=true;
@@ -343,7 +343,7 @@
 					newmy=t.phY1;
 				}
 				if (newmy==0 && !levit && !vsos) newmy=checkShelf(dy/div);
-				if (!loc.active && Y>=(loc.spaceY-1)*Tile.tilePixelHeight) newmy=(loc.spaceY-1)*Tile.tilePixelHeight;
+				if (!loc.locationActive && Y>=(loc.spaceY-1)*Tile.tilePixelHeight) newmy=(loc.spaceY-1)*Tile.tilePixelHeight;
 				if (newmy) 
 				{
 					Y=newmy-1;

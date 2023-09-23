@@ -48,7 +48,7 @@
 		
 		
 		public function sndStep(faza:int,tip:int=0) {
-			if (loc==null || !loc.active) return;
+			if (loc==null || !loc.locationActive) return;
 			var nstep:int;
 			var nleg:int;
 			var sst='footstep';
@@ -92,7 +92,7 @@
 		}
 		
 		protected override function sndFall() {
-			if (loc==null || !loc.active) return;
+			if (loc==null || !loc.locationActive) return;
 			var rnd=isrnd()?'a':'';
 			var nleg:int;
 			var sst='footstep';

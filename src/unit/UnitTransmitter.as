@@ -89,7 +89,7 @@
 					if (rkoef<0.5) rkoef*=2;
 					else rkoef=1;
 					if (rkoef>upKoef) rkoef=upKoef;
-					if (loc.active) {
+					if (loc.locationActive) {
 						Snd.pshum(sndRun,rkoef);
 					}
 					if (aiTCh%15==1) Emitter.emit('necronoise',loc,X,Y-10,{alpha:rkoef});

@@ -97,7 +97,7 @@
 		
 		public override function step() 
 		{
-			if(!loc.active) return;
+			if(!loc.locationActive) return;
 			for each (var un:Unit in loc.units) 
 			{
 				if (!un.activateTrap || un.sost==4) continue;

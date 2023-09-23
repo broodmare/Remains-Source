@@ -378,7 +378,7 @@
 		}
 		
 		public function vsos(n:Number=0, klob:Boolean=false) {
-			if (!loc.active) return;
+			if (!loc.locationActive) return;
 			p.x=X-World.w.gg.X;
 			p.y=Y-World.w.gg.Y;
 			if (n==0) {

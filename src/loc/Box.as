@@ -247,7 +247,7 @@
 		public override function addVisual() 
 		{
 			if (invis) return;
-			if (vis && loc && loc.active) 
+			if (vis && loc && loc.locationActive) 
 			{
 				if (shad) World.w.grafon.visObjs[0].addChild(shad);
 				World.w.grafon.visObjs[sloy].addChild(vis);
@@ -666,7 +666,7 @@
 				{
 					Y=newmy;
 					Y1=Y-scY, Y2=Y;
-					if (loc.active && dy>4 && dy*massa>5) World.w.quake(0,dy*Math.sqrt(massa)/2);
+					if (loc.locationActive && dy>4 && dy*massa>5) World.w.quake(0,dy*Math.sqrt(massa)/2);
 					if (dy>5 && sndFall && sndOn) Snd.ps(sndFall,X,Y,0,dy/15);
 					if (dy>5) 
 					{

@@ -355,7 +355,7 @@
 					if (dopWeapon) dopWeapon.attack();
 					ico.visible=false;
 					zanyato=true;
-				} else if (loc.active && findCel()) {
+				} else if (loc.locationActive && findCel()) {
 					ico.visible=false;
 					zanyato=true;
 				} else {

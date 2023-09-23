@@ -110,7 +110,7 @@
 		//celx+cely - orientation
 		
 		public function cast(loc:Location, nx:Number, ny:Number, param:Object=null):Part {
-			if (loc==null || !loc.active) return null;
+			if (loc==null || !loc.locationActive) return null;
 			if (kol2>World.w.maxParts && imp==0) return null;
 			var kol:int=1;
 			if (param && param.kol) kol=param.kol;

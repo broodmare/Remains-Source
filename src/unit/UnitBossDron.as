@@ -165,7 +165,7 @@
 			}
 			if (t_shit>0) t_shit--;
 			
-			if (loc.active) aiState=1;
+			if (loc.locationActive) aiState=1;
 			else aiState=0;
 			
 			aiTCh++;

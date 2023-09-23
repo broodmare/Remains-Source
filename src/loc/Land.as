@@ -834,7 +834,6 @@
 		{
 			act.visited=true;
 			
-			loc=null;
 			if (coord!=null) 
 			{
 				var narr:Array=coord.split(':');
