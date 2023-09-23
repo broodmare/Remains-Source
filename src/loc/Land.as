@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	
 	import src.*;
 	import src.unit.UnitPlayer;
@@ -6,14 +7,14 @@
 	import flash.display.BitmapData;
 	import src.serv.Script;
 	
-	public class Land {
+	public class Land 
+	{
 		
 		public var act:LandAct;					//template based on which the terrain was created
 		
 		public var rnd:Boolean=false;			//true if the terrain has random generation
 		public var loc:Location;				//current location
 		private var prevloc:Location;			//previously visited location
-		//private var prevCreated:Location;		//previously created location, for prevention
 		public var locs:Array;					//three-dimensional map of all locations
 		public var probs:Array;					//trial locations
 		public var listLocs:Array;				//linear array of locations
@@ -56,7 +57,8 @@
 
 
 		//lvl - character level-1
-		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) {
+		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) 
+		{
 			gg=ngg;
 			act=nact;
 			rnd=act.rnd;
@@ -67,13 +69,16 @@
 			probIds=new Array();
 			probs=new Array();
 			prepareRooms();
-			if (rnd) {
+			if (rnd) 
+			{
 				landDifLevel=lvl;	//difficulty is determined by the given parameter
 				if (landDifLevel<act.dif) landDifLevel=act.dif;	//if the difficulty is less than the minimum, set it to the minimum
 				maxLocX=act.mLocX;	//dimensions are taken from the act settings
 				maxLocY=act.mLocY;
 				buildRandomLand();
-			} else {
+			} 
+			else 
+			{
 				landDifLevel=act.dif;	//difficulty is taken from the act settings
 				if (act.autoLevel) landDifLevel=lvl;
 				maxLocX=maxLocY=1;	//dimensions are determined according to the map
@@ -83,8 +88,10 @@
 			gameStage=act.gameStage;	//story stage is taken from the act settings
 			//attached scripts
 			itemScripts=new Array();
-			for each(var xl in act.xmlland.scr) {
-				if (xl.@eve=='take' && xl.@item.length()) {
+			for each(var xl in act.xmlland.scr) 
+			{
+				if (xl.@eve=='take' && xl.@item.length()) 
+				{
 					var scr:Script=new Script(xl,this);
 					itemScripts[xl.@item]=scr;
 				}
@@ -97,16 +104,20 @@
 //==============================================================================================================================		
 		
 		//Convert from XML to array
-		public function prepareRooms() {
+		public function prepareRooms() 
+		{
 			allRoom=new Array();
-			for each(var xml in act.allroom.room) {
+			for each(var xml in act.allroom.room) 
+			{
 				allRoom.push(new Room(xml));
 			}
 		}
 		
 		
-		public function buildRandomLand() {
-			if (World.w.landError) {
+		public function buildRandomLand() 
+		{
+			if (World.w.landError) 
+			{
 				locs=null;
 				locs[0];
 			}
@@ -307,25 +318,31 @@
 				}
 			}
 			//determine possible passages
-			for (i=minLocX; i<maxLocX; i++) {
-				for (j=minLocY; j<maxLocY; j++) {
+			for (i=minLocX; i<maxLocX; i++) 
+			{
+				for (j=minLocY; j<maxLocY; j++) 
+				{
 					loc1=locs[i][j][0];
 					loc1.pass_r=new Array();
 					loc1.pass_d=new Array();
 					if (i<maxLocX-1) {
 						loc2=locs[i+1][j][0];
-						for (var e=0; e<=5; e++) {
+						for (var e=0; e<=5; e++) 
+						{
 							var hole:int=Math.min(loc1.doors[e],loc2.doors[e+11]);
-							if (hole>=2) {
+							if (hole>=2) 
+							{
 								loc1.pass_r.push({n:e, fak:hole});
 							}
 						}
 					}
 					if (j<maxLocY-1) {
 						loc2=locs[i][j+1][0];
-						for (e=6; e<=11; e++) {
+						for (e=6; e<=11; e++) 
+						{
 							hole=Math.min(loc1.doors[e],loc2.doors[e+11]);
-							if (hole>=2) {
+							if (hole>=2) 
+							{
 								loc1.pass_d.push({n:e, fak:hole});
 							}
 						}
@@ -333,21 +350,28 @@
 				}
 			}
 			//carry out passes, choosing random from the possible ones
-			for (i=minLocX; i<maxLocX; i++) {
-				for (j=minLocY; j<maxLocY; j++) {
+			for (i=minLocX; i<maxLocX; i++) 
+			{
+				for (j=minLocY; j<maxLocY; j++) 
+				{
 					loc1=locs[i][j][0];
-					if (i<maxLocX-1) {
-						if (loc1.pass_r.length) {
+					if (i<maxLocX-1) 
+					{
+						if (loc1.pass_r.length) 
+						{
 							loc2=locs[i+1][j][0];
-							for (e=0; e<=2; e++) {
+							for (e=0; e<=2; e++) 
+							{
 								var n=Math.floor(Math.random()*loc1.pass_r.length);
 								loc1.setDoor(loc1.pass_r[n].n,loc1.pass_r[n].fak);
 								loc2.setDoor(loc1.pass_r[n].n+11,loc1.pass_r[n].fak);
 							}
 						}
 					}
-					if (j<maxLocY-1) {
-						if (loc1.pass_d.length) {
+					if (j<maxLocY-1) 
+					{
+						if (loc1.pass_d.length) 
+						{
 							loc2=locs[i][j+1][0];
 							n=Math.floor(Math.random()*loc1.pass_d.length);
 							loc1.setDoor(loc1.pass_d[n].n,loc1.pass_d[n].fak);
@@ -362,91 +386,124 @@
 			//Manehattan camp
 			if (act.conf==3 && act.landStage>=1) newRandomProb(locs[1][4][0], act.landStage, true);
 			//arrange objects
-			for (j=maxLocY-1; j>=minLocY; j--) {
-				for (i=minLocX; i<maxLocX; i++) {
+			for (j=maxLocY-1; j>=minLocY; j--) 
+			{
+				for (i=minLocX; i<maxLocX; i++) 
+				{
 					var isBonuses=true;
 					locs[i][j][0].setObjects();
 					//Create checkpoints
-					//if ((i+j)%2==0 && !(act.conf==2 && j>=2) && !(act.conf==3 && (j==0 || i==2))) locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
+
 					//Create exit points
 					//factory and stable configuration
-					if (act.conf==0 || act.conf==1) {	
-						if ((i+j)%2==0) {
-							if (j==maxLocY-1) {
-								if (act.conf==0 && act.landStage>=2 || act.conf==1 && act.landStage>=1) {
-									locs[i][j][0].createExit('1');						//Exit points on the lower level
-								} else {
-									locs[i][j][0].createExit();						//Exit points on the lower level
+					if (act.conf==0 || act.conf==1) 
+					{	
+						if ((i+j)%2==0) 
+						{
+							if (j==maxLocY-1) 
+							{
+								if (act.conf==0 && act.landStage>=2 || act.conf==1 && act.landStage>=1) 
+								{
+									locs[i][j][0].createExit('1');		//Exit points on the lower level
+								} 
+								else 
+								{
+									locs[i][j][0].createExit();			//Exit points on the lower level
 								}
-							} else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);	//checkpoints  
-						} else {
+							} 
+							else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);	//checkpoints  
+						} 
+						else 
+						{
 							if (j==maxLocY-1) newRandomProb(locs[i][j][0], act.landStage, true);
 							else if (Math.random()<0.3) newRandomProb(locs[i][j][0], act.landStage, false);
 						}
 					}
 					//sewer and Canterlot configuration
-					if (act.conf==2 || act.conf==5) {	//exit points on the right edge
+					if (act.conf==2 || act.conf==5) 	//exit points on the right edge
+					{
 						if (i!=0 || j!=0) locs[i][j][0].createClouds(j);
 						if (act.conf==2 && i==maxLocX-1) locs[i][j][0].createExit();
 						if (act.conf==5 && i==maxLocX-1 && j==0) {
 							if (act.landStage>=1) locs[i][j][0].createExit('1');
 							else locs[i][j][0].createExit();
-						} else if ((i+j)%2==0) {
+						} 
+						else if ((i+j)%2==0) 
+						{
 							if (act.conf==2 && j<2 && i<maxLocX-1 || act.conf==5 && (i==0 || j>0)) locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
 						}
 						if (act.conf==2 && j>1) locs[i][j][0].petOn=false;
-						if ((j>1 && i<maxLocX-1) || (act.conf==2 && i<maxLocX-1 && Math.random()<0.25)) {
+						if ((j>1 && i<maxLocX-1) || (act.conf==2 && i<maxLocX-1 && Math.random()<0.25)) 
+						{
 							if ((i+j)%2==1) newRandomProb(locs[i][j][0], act.landStage, false);
 						}
 					}
 					//Manehattan configuration
-					if (act.conf==3 && i!=2) {	//Exit points on the upper level
-						if ((i+j)%2==0) {
-							if (j==0) {
+					if (act.conf==3 && i!=2) 	//Exit points on the upper level
+					{
+						if ((i+j)%2==0) 
+						{
+							if (j==0) 
+							{
 								if (act.landStage>=1) locs[i][j][0].createExit('1');
 								else locs[i][j][0].createExit();
-							} else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY); 
-						} else {
+							} 
+							else locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY); 
+						} 
+						else 
+						{
 							if (j==0) newRandomProb(locs[i][j][0], act.landStage, true);
 							else if (j!=4 && Math.random()<0.25) newRandomProb(locs[i][j][0], act.landStage, false);
 						}	
 					}
 					// military base configuration
-					if (act.conf==4) {
-						if (i==act.begLocX && j==act.begLocY || i==3) {
+					if (act.conf==4) 
+					{
+						if (i==act.begLocX && j==act.begLocY || i==3) 
+						{
 							locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
 							if (i==act.begLocX && j==act.begLocY) isBonuses=false;
 						}
 					}
 					//bunker configuration
-					if (act.conf==7) {
-						if (i==act.begLocX && j==act.begLocY) {
+					if (act.conf==7) 
+					{
+						if (i==act.begLocX && j==act.begLocY) 
+						{
 							locs[i][j][0].createCheck(true);
 							isBonuses=false;
 						}
 					}
 					//enclave base configuration
-					if (act.conf==6) {
+					if (act.conf==6) 
+					{
 						opt.transpFon=true;
 						if (j==0) {
-							if (i==0 || i==2) {
+							if (i==0 || i==2) 
+							{
 								if (act.landStage>=1) locs[i][j][0].createExit('1');
 								else locs[i][j][0].createExit();
 							}
 							if (i==1) newRandomProb(locs[i][j][0], act.landStage, true);
-						} else if (i==act.begLocX && j==act.begLocY || i==((7-j)%3)) {
+						} 
+						else if (i==act.begLocX && j==act.begLocY || i==((7-j)%3)) 
+						{
 							locs[i][j][0].createCheck(i==act.begLocX && j==act.begLocY);
-						} else if (Math.random()<0.25) newRandomProb(locs[i][j][0], act.landStage, false);
+						} 
+						else if (Math.random()<0.25) newRandomProb(locs[i][j][0], act.landStage, false);
 					}
 					
 					//stable configuration
-					if (act.conf==10 || act.conf==11) {
-						if (i==act.begLocX && j==act.begLocY) {
+					if (act.conf==10 || act.conf==11) 
+					{
+						if (i==act.begLocX && j==act.begLocY) 
+						{
 							locs[i][j][0].createCheck(true);
 						}
 					}
 					locs[i][j][0].preStep();
-					if (locs[i][j][1]) {
+					if (locs[i][j][1]) 
+					{
 						locs[i][j][1].mainFrame();
 						locs[i][j][1].setObjects();
 						locs[i][j][1].preStep();
@@ -464,11 +521,13 @@
 			//trace('Сложность местности ',landDifLevel)
 		}
 		
-		public function buildSpecifLand() {
+		public function buildSpecifLand() 
+		{
 			var i,j,e;
 			var loc1:Location, loc2:Location;
 			// Determine the actual sizes
-			for each(var room:Room in allRoom) {
+			for each(var room:Room in allRoom) 
+			{
 				if (room.rx<minLocX) minLocX=room.rx;
 				if (room.ry<minLocY) minLocY=room.ry;
 				if (room.rx+1>maxLocX) maxLocX=room.rx+1;
@@ -476,19 +535,24 @@
 			}
 			//create array
 			locs=new Array();
-			for (i=minLocX; i<maxLocX; i++) {
+			for (i=minLocX; i<maxLocX; i++) 
+			{
 				locs[i]=new Array();
 				for (j=minLocY; j<maxLocY; j++) locs[i][j]=new Array();
 			}
 			//populate array
-			for each(room in allRoom) {
+			for each(room in allRoom) 
+			{
 				loc1=newLoc(room,room.rx,room.ry,room.rz);
 				locs[room.rx][room.ry][room.rz]=loc1;
 			}
 			//place objects
-			for (i=minLocX; i<maxLocX; i++) {
-				for (j=minLocY; j<maxLocY; j++) {
-					for (e=minLocZ; e<maxLocZ; e++) {
+			for (i=minLocX; i<maxLocX; i++) 
+			{
+				for (j=minLocY; j<maxLocY; j++) 
+				{
+					for (e=minLocZ; e<maxLocZ; e++) 
+					{
 						if (locs[i][j][e]==null) continue;
 						locs[i][j][e].setObjects();
 						locs[i][j][e].preStep();
@@ -500,9 +564,11 @@
 		
 		//add trial rooms whose ids were used in the area (doors with prob={id} were involved)
 		//process all added
-		public function buildProbs() {
+		public function buildProbs() 
+		{
 			for each (var s in probIds)	buildProb(s);
-			for each (var loc in listLocs) {
+			for each (var loc in listLocs) 
+			{
 				loc.setObjects();
 				loc.preStep();
 				if (loc.prob) loc.prob.prepare();
@@ -510,12 +576,15 @@
 		}
 		
 		//create a test layer, return false if the layer already exists
-		public function buildProb(nprob:String):Boolean {
+		public function buildProb(nprob:String):Boolean 
+		{
 			if (probs[nprob]!=null) return false;
 			//create a single room
 			var arrr:XML=World.w.game.probs['prob'].allroom;
-			for each(var xml in arrr.room) {
-				if (xml.@name==nprob) {
+			for each(var xml in arrr.room) 
+			{
+				if (xml.@name==nprob) 
+				{
 					var room:Room=new Room(xml);
 					var loc:Location=newLoc(room,0,0,0,{prob:nprob});
 					loc.landProb=nprob;
@@ -523,7 +592,8 @@
 					var xmll=GameData.d.land.prob.(@id==nprob);
 					if (xmll.length()) loc.prob=new Probation(xmll[0],loc);
 					//add an exit door
-					if (loc.spawnPoints.length) {
+					if (loc.spawnPoints.length) 
+					{
 						loc.createObj('doorout','box',loc.spawnPoints[0].x,loc.spawnPoints[0].y,<obj prob='' uid='begin'/>);
 					}
 					probs[nprob]=[[[loc]]];
@@ -595,7 +665,8 @@
 			//array of all rooms that meet the conditions
 			for each(var room in allRoom) 
 			{
-				if (room.lvl<=maxlevel && room.kol>0 && room!=r1 && room!=r2 && (ntip==null && room.rnd || room.tip==ntip)) {
+				if (room.lvl<=maxlevel && room.kol>0 && room!=r1 && room!=r2 && (ntip==null && room.rnd || room.tip==ntip)) 
+				{
 					var rndKol=room.kol*room.kol;
 					if (rndKol==4 && room.lvl==0 && maxlevel>1) 
 					{
@@ -663,11 +734,10 @@
 			var ml:Number=landDifLevel+deep;
 			loc.locDifLevel=ml;
 			loc.locksLevel=ml*0.7;	// level of locks
-			//loc.locksDif=ml*0.9;	// quality of locks
 			loc.mechLevel=ml/4;		// level of mines and mechanisms
 			loc.weaponLevel=1+ml/4;	// level of encountered weapons
 			loc.enemyLevel=ml;		// level of enemies
-			//if (ml<4) loc.earMult=ml/4;
+
 			// influence of difficulty settings
 			if (World.w.game.globalDif<2) loc.earMult*=0.5;
 			if (World.w.game.globalDif>2) loc.enemyLevel+=(World.w.game.globalDif-2)*2;	// level of enemies based on difficulty
@@ -681,12 +751,10 @@
 				loc.tipEnemy=Math.floor(Math.random()*3)+3;			 // 4-mercenaries, 5-unicorns
 			}
 			if (ml>12 && (act.biom==0 || act.biom==2 || act.biom==3) && Math.random()<0.1) loc.tipEnemy=6;	// zebras
-			//loc.tipEnemy=6;
 			if (act.biom==4) loc.tipEnemy=7;	// steel+robots
 			if (act.biom==5) 
 			{
 				if (Math.random()<0.3) loc.tipEnemy=5;
-				//else if (loc.landY==0 && Math.random()<0.05) loc.tipEnemy=4;
 				else loc.tipEnemy=8;	// pink
 			}
 			if (act.biom==6)  // || act.biom==11
@@ -695,7 +763,6 @@
 				else loc.tipEnemy=10;// greyhounds
 			}
 			if (act.biom==11) loc.tipEnemy=11; // enclave and greyhounds
-			//loc.tipEnemy=4;
 			// number of enemies
 			// type, minimum, maximum, random increase
 			if (ml<4) 
@@ -706,7 +773,8 @@
 				loc.setKolEn(4,1,2,0);
 				loc.setKolEn(5,1,4,2);
 				if (loc.tipEnemy==6) loc.setKolEn(2,1,3,0);
-				if (loc.kolEnSpawn==0) {
+				if (loc.kolEnSpawn==0) 
+				{
 					if (loc.tipEnemy!=5) loc.setKolEn(-1,1,2);
 				}
 				loc.kolEnHid=0;
@@ -720,7 +788,8 @@
 				loc.setKolEn(3,3,5,2);
 				loc.setKolEn(4,2,3,1);
 				loc.setKolEn(5,2,4,2);
-				if (loc.kolEnSpawn==0) {
+				if (loc.kolEnSpawn==0) 
+				{
 					if (loc.tipEnemy!=5) loc.setKolEn(-1,2,3);
 				}
 				loc.kolEnHid=Math.floor(Math.random()*3);
@@ -734,7 +803,8 @@
 				loc.setKolEn(3,4,7,2);
 				loc.setKolEn(4,2,4,1);
 				loc.setKolEn(5,3,6,2);
-				if (loc.kolEnSpawn==0) {
+				if (loc.kolEnSpawn==0) 
+				{
 					if (loc.tipEnemy!=5) loc.setKolEn(-1,2,4);
 					else if (Math.random()>0.4) loc.setKolEn(-1,1,3);
 				}
@@ -746,11 +816,8 @@
 			}
 			if (act.biom==11) 
 			{
-				//if (loc.tipEnemy==10) loc.setKolEn(2,4,5,0);
-				//else 
 					loc.setKolEn(2,5,8,0);
 			}
-			//loc.kolEnHid=2;
 		}
 		
 		public function createMap() 
@@ -799,9 +866,12 @@
 		public function saveObjs(arr:Array) 
 		{
 			if (rnd) return;
-			for (var i=minLocX; i<maxLocX; i++) {
-				for (var j=minLocY; j<maxLocY; j++) {
-					for (var e=minLocZ; e<maxLocZ; e++) {
+			for (var i=minLocX; i<maxLocX; i++) 
+			{
+				for (var j=minLocY; j<maxLocY; j++) 
+				{
+					for (var e=minLocZ; e<maxLocZ; e++) 
+					{
 						if (locs[i][j][e]==null) continue;
 						locs[i][j][e].saveObjs(arr);
 					}
@@ -813,7 +883,8 @@
 		public function setGGToSpawnPoint() 
 		{
 			var nx:int=3, ny:int=3;
-			if (loc.spawnPoints.length>0) {
+			if (loc.spawnPoints.length>0) 
+			{
 				var n=Math.floor(Math.random()*loc.spawnPoints.length);
 				nx=loc.spawnPoints[n].x;
 				ny=loc.spawnPoints[n].y;
@@ -821,7 +892,6 @@
 			gg.setLocPos((nx+1)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1);
 			gg.dx=3;
 			loc.lighting(gg.X, gg.Y-75);
-			//World.w.cam.calc(gg);
 		}
 		
 		//Activate the location with the current coordinates
@@ -841,7 +911,6 @@
 			}
 			
 			if (loc==nloc) return false;
-			//if (loc) loc.out(); 
 			locN++;
 			prevloc=loc;
 			loc=nloc;
@@ -1036,7 +1105,8 @@
 			if (art_t<=0) 
 			{
 				art_t=Math.floor(Math.random()*1000+20);
-				if (act.artFire!=null && World.w.game.triggers[act.artFire]!=1) {
+				if (act.artFire!=null && World.w.game.triggers[act.artFire]!=1) 
+				{
 					artBabah();
 				}
 			}
@@ -1095,8 +1165,5 @@
 				}
 			}
 		}
-		
-
 	}
-	
 }

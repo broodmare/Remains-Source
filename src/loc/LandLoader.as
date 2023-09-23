@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	
 	// Class for loading terrain maps from a file or retrieving them from variables
 	// Contained within the 'world' object
@@ -8,7 +9,8 @@
 	import flash.events.IOErrorEvent;
 	import src.*;
 	
-	public class LandLoader {
+	public class LandLoader 
+	{
 
 		public var id:String;
 		
@@ -55,14 +57,16 @@
 			}
 		}
 
-		function onCompleteLoadRooms(event:Event):void  {
+		function onCompleteLoadRooms(event:Event):void  
+		{
 			loaded=true;
 			World.w.load_log+='Land '+roomsFile+' loaded\n';
 			allroom = new XML(loader_rooms.data);
 			if (!test) World.w.roomsLoadOk();
 		}
 		
-		private function ioErrorHandler(event:IOErrorEvent):void {
+		private function ioErrorHandler(event:IOErrorEvent):void 
+		{
 			World.w.load_log+='IOerror '+roomsFile+'\n';
         }
 		

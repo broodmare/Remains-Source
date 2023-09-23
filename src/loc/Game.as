@@ -71,7 +71,8 @@
 			{
 				var obj1=objs[uid];
 				var nobj=new Object();
-				for (var n in obj1) {
+				for (var n in obj1) 
+				{
 					nobj[n]=obj1[n];
 				}
 				obj.objs[uid]=nobj;
@@ -184,15 +185,19 @@
 			{
 				curLandId=loadObj.land;
 				if (curLandId!='rbl') missionId=loadObj.land;
-			} else if (opt && opt.propusk==true) 	// Skip training
+			} 
+			else if (opt && opt.propusk==true) 	// Skip training
 			{		
 				triggers['dial_dialCalam2']=1;
-			} else 									// Do not skip training
+			} 
+			else 									// Do not skip training
 			{									
 				curLandId='begin';
 			}
-			for each(var q in quests) {
-				if (q!=null && q.state==2 && q.xml.next.length()) {
+			for each(var q in quests) 
+			{
+				if (q!=null && q.state==2 && q.xml.next.length()) 
+				{
 					for each (var nq in q.xml.next) addQuest(nq.@id);
 				}
 			}
@@ -534,7 +539,7 @@
 		// Create a script from gamedata
 		public function getScript(scr:String, own:Obj=null):Script 
 		{
-				//trace(scr,own);
+			//trace(scr,own);
 			var xml1=GameData.d.scr.(@id==scr);
 			if (xml1.length()) 
 			{

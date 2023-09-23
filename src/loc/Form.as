@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	
 	import src.*;
 	
@@ -63,7 +64,5 @@
 				else oForms[node.@id]=new Form(node);
 			}
 		}
-
 	}
-	
 }

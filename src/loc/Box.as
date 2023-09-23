@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	
 	import flash.utils.*;
 	import flash.filters.DropShadowFilter;
@@ -15,7 +16,8 @@
 	import src.weapon.Bullet;
 	import src.unit.Mine;
 
-	public class Box extends Obj{
+	public class Box extends Obj
+	{
 		
 		public var osnova:Box=null;		// on what it stands (the base)
 		public var shelf:Boolean=true;	// you can stand on this
@@ -71,7 +73,8 @@
 		
 		public var un:VirtualUnit;	//виртуальный юнит для взаимодействия с пулями;
 		
-		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
+		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) 
+		{
 			loc=nloc;
 			id=nid;
 			if (loc.land.kolAll) 
@@ -195,7 +198,8 @@
 				levitPoss=false;
 				stay=true;
 				sloy=0;
-			} else sloy=1;
+			} 
+			else sloy=1;
 			if (node.@sloy.length()) sloy=node.@sloy;
 			
 			cTransform=loc.cTransform;
@@ -280,7 +284,8 @@
 			{
 				if (s=='comein') vis.gotoAndPlay(s);
 				else vis.gotoAndStop(s);
-			} catch (err) {}
+			} 
+			catch (err) {}
 		}
 		
 		public override function step() 
@@ -389,7 +394,8 @@
 				(tiles[i] as Tile).opac=(open?0:door_opac);
 			}
 			setVisState(open?'open':'close');
-			if (open) {
+			if (open) 
+			{
 				loc.isRelight=true;
 				loc.isRebuild=true;
 			}
@@ -550,7 +556,8 @@
 			{
 				if (cel==null || fracLevit>0 && cel.fraction==fracLevit) continue;
 				if (cel.sost==4 || cel.neujaz>0 || cel.loc!=loc || cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2 || cel.Y2<Y1) continue;
-				if (t_throw>0) {
+				if (t_throw>0) 
+				{
 					cel.neujaz=12;
 					continue;
 				}
@@ -827,7 +834,5 @@
 			World.w.gui.infoText('unFixLock');
 			World.w.game.runScript('fixGenerator',this);
 		}
-
 	}
-	
 }

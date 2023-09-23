@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	
 	// Class describing the terrain and player activity related to it
 	// Contained within the game object
@@ -86,7 +87,8 @@
 			if (land.@acc.length()) access=true;
 			if (land.@exit.length()) exitProb=land.@exit;
 			if (land.@loadscr.length()) loadScr=land.@loadscr;
-			if (land.options.length()) {
+			if (land.options.length()) 
+			{
 				if (land.options.@xp.length()) xp=land.options.@xp;
 				if (land.options.@color.length()) color=land.options.@color;
 				if (land.options.@backwall.length()) backwall=land.options.@backwall;
@@ -107,16 +109,19 @@
 		}
 
 		//посчитать, сколько испытаний завершено
-		public function calcProbs() {
+		public function calcProbs() 
+		{
 			kolAllProb=0;
 			kolClosedProb=0;
-			for each(var xml in xmlland.prob) {
+			for each(var xml in xmlland.prob) 
+			{
 				kolAllProb++;
 				if (World.w.game.triggers['prob_'+xml.@id]!=null) kolClosedProb++
 			}
 		}
 		
-		public function save():Object {
+		public function save():Object 
+		{
 			var obj:Object=new Object();
 			obj.cp=lastCpCode;
 			obj.st=landStage;
@@ -125,7 +130,8 @@
 			obj.passed=passed;
 			return obj;
 		}
-		public function load(obj:Object) {
+		public function load(obj:Object) 
+		{
 			if (obj.cp!=null) lastCpCode=obj.cp;
 			if (obj.st!=null) landStage=obj.st;
 			if (obj.access!=null && !access) access=obj.access;
@@ -134,5 +140,4 @@
 			return obj;
 		}
 	}
-	
 }

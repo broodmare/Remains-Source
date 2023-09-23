@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	
 	import src.*;
 	import src.loc.Box;
@@ -7,7 +8,8 @@
 	
 	//Класс представляет собой набор условий для испытания
 	
-	public class Probation {
+	public class Probation 
+	{
 		
 		public var xml:XML;
 		public var loc:Location;
@@ -46,7 +48,8 @@
 		var beg_t:int=90;
 		var next_t:int=300;
 
-		public function Probation(nxml:XML, nloc:Location) {
+		public function Probation(nxml:XML, nloc:Location) 
+		{
 			xml=nxml;
 			loc=nloc;
 			id=xml.@id;
@@ -60,8 +63,10 @@
 			if (xml.@tip.length()) tip=xml.@tip;
 			if (xml.@close.length()) isClose=true;
 			if (tip!=2) loc.petOn=false;
-			if (xml.scr.length()) {
-				for each(var xl in xml.scr) {
+			if (xml.scr.length()) 
+			{
+				for each(var xl in xml.scr) 
+				{
 					if (xl.@eve=='alarm') alarmScript=new Script(xl,loc.land);
 					if (xl.@eve=='out') outScript=new Script(xl,loc.land);
 					if (xl.@eve=='in') inScript=new Script(xl,loc.land);
@@ -72,9 +77,12 @@
 		}
 		
 		//начальная подготовка (один раз)
-		public function prepare() {
-			for each (var b:Box in loc.objs) {
-				if (b.inter && (b.inter.prize && prizeActive)) {
+		public function prepare() 
+		{
+			for each (var b:Box in loc.objs) 
+			{
+				if (b.inter && (b.inter.prize && prizeActive)) 
+				{
 					b.inter.setAct('lock',0);
 					b.inter.update();
 				}
@@ -83,25 +91,36 @@
 		
 		//вызвать при открывании контейнеров и убийстве мобов
 		//если условия выполнены, то закрыть испытание
-		public function check() {
+		public function check() 
+		{
 			if (closed) return;
-			if (checkAllCon()) {
+			if (checkAllCon()) 
+			{
 				closeProb();
 			}
 		}
 		
 		//проверить все условия закрытия
-		function checkAllCon():Boolean {
-			for each (var node in xml.con) {
-				if ((node.@tip=='box' || node.@tip.length()==0) && node.@uid.length()) { //проверка боксов на открытость
-					for each (var b:Box in loc.objs) {
+		function checkAllCon():Boolean 
+		{
+			for each (var node in xml.con) 
+			{
+				if ((node.@tip=='box' || node.@tip.length()==0) && node.@uid.length())  //проверка боксов на открытость
+				{
+					for each (var b:Box in loc.objs) 
+					{
 						if (b.uid==node.@uid && b.inter && (!b.inter.open && b.inter.cont!='empty')) return false;
 					}
-				} else if (node.@tip=='unit') {//проверка юнитов на смерть
-					for each (var un:Unit in loc.units) {
+				} 
+				else if (node.@tip=='unit') //проверка юнитов на смерть
+				{
+					for each (var un:Unit in loc.units) 
+					{
 						if ((node.@uid.length() && un.uid==node.@uid || node.@qid.length() && un.questId==node.@qid) && un.sost<3) return false;
 					}
-				} else if (node.@tip=='wave') {//проверка волны
+				} 
+				else if (node.@tip=='wave') //проверка волны
+				{
 					if (nwave<maxwave || killEn<kolEn) return false;
 				}
 			}
@@ -109,7 +128,8 @@
 		}
 		
 		//испытание пройдено
-		public function closeProb() {
+		public function closeProb() 
+		{
 			closed=true;
 			active=false;
 			if (World.w.game.triggers['prob_'+id]==null) World.w.game.triggers['prob_'+id]=1;
@@ -118,73 +138,88 @@
 			Snd.ps('quest_ok');
 			doorsOnOff(1);
 			//окрыть коробки с призами
-			if (!prizeActive) {
-				for each (var b:Box in loc.objs) {
-					if (b.inter && b.inter.prize) {
+			if (!prizeActive) 
+			{
+				for each (var b:Box in loc.objs) 
+				{
+					if (b.inter && b.inter.prize) 
+					{
 						b.inter.command('unlock');
 					}
 				}
 			}
-			if (closeScript) {
+			if (closeScript) 
+			{
 				closeScript.start();
 			}
 		}
 		
 		//войти в комнату
-		public function over() {
+		public function over() 
+		{
 			World.w.gui.messText('', nazv, World.w.gg.Y<300);
 			if (!closed) defaultProb();
-			if (inScript) {
+			if (inScript) 
+			{
 				inScript.start();
 			}
 			if (isClose) activateProb();
 			loc.broom=false;
 		}
 		//выйти из комнаты
-		public function out() {
-			if (closed) {
+		public function out() 
+		{
+			if (closed) 
+			{
 				loc.openAllPrize();
 				loc.broom=true;
-			} else {
+			} 
+			else 
+			{
 				if (outScript) outScript.start();
 				if (onWave) resetWave();
 			}
 		}
 		
-		public function showHelp() {
+		public function showHelp() 
+		{
 			var isHelp=(help!='');
 			World.w.gui.informText(info+(isHelp?('<br><br>'+Res.guiText('need_help')):''),isHelp);
 		}
 		
 		//активировать испытание
-		public function activateProb() {
+		public function activateProb() 
+		{
 			if (closed || active || !loc.active) return;
 			active=true;
 			doorsOnOff(-1);
 		}
 		
 		//вернуть испытание в исходное состояние
-		public function defaultProb() {
+		public function defaultProb() 
+		{
 			active=false;
 			doorsOnOff(0);
-			/*for each (var un:Unit in loc.units) {
-				un.sost=1;
-				un.setNull(true);
-			}*/
 		}
 
 		//-1 - отключить все выходы, 0 - отключить все выходы, кроме основного, 1-включить все выходы
-		function doorsOnOff(turn:int) {
-			for each (var b:Box in loc.objs) {
-				if (b.id=='doorout') {
-					if (!b.vis.visible && turn==1 || b.vis.visible && turn==-1) {
+		function doorsOnOff(turn:int) 
+		{
+			for each (var b:Box in loc.objs) 
+			{
+				if (b.id=='doorout') 
+				{
+					if (!b.vis.visible && turn==1 || b.vis.visible && turn==-1) 
+					{
 						b.inter.shine();
 					}
-					if (turn==-1 || turn==0 && b.uid!='begin') {
+					if (turn==-1 || turn==0 && b.uid!='begin') 
+					{
 						b.vis.visible=b.shad.visible=false;
 						b.inter.active=false;
 					}
-					if (turn==1 || turn==0 && b.uid=='begin') {
+					if (turn==1 || turn==0 && b.uid=='begin') 
+					{
 						b.vis.visible=b.shad.visible=true;
 						b.inter.active=true;
 					}
@@ -192,7 +227,8 @@
 			}
 		}
 		
-		public function beginWave() {
+		public function beginWave() 
+		{
 			if (onWave) return;
 			doorsOnOff(-1);
 			onWave=true;
@@ -201,11 +237,13 @@
 			t_wave=beg_t;
 		}
 		
-		function createWave() {
+		function createWave() 
+		{
 			nspawn=0;
 			var w:XML=xml.wave[nwave];
 			if (w==null) return;
-			for each (var un in w.obj) {
+			for each (var un in w.obj) 
+			{
 				loc.waveSpawn(un,nspawn);
 				kolEn++;
 				nspawn++;
@@ -215,34 +253,38 @@
 		}
 		
 		//проверка выполняется при убийстве врага
-		public function checkWave(inc:Boolean=false) {
+		public function checkWave(inc:Boolean=false) 
+		{
 			if (inc) killEn++;
-			if (killEn>=kolEn) {
+			if (killEn>=kolEn) 
+			{
 				checkAllCon();
 				if (nwave<maxwave) t_wave=next_t;
 				else t_wave=0;
 			}
 		}
 		
-		function resetWave() {
+		function resetWave() 
+		{
 			onWave=false;
-			for each (var un:Unit in loc.units) {
-				if (un.wave) {
+			for each (var un:Unit in loc.units) 
+			{
+				if (un.wave) 
+				{
 					un.sost=4;
 					un.disabled=true;
 				}
 			}
-			
 		}
 		
-		public function step() {
-			if (onWave) {
+		public function step() 
+		{
+			if (onWave) 
+			{
 				if (t_wave>0) t_wave--;
 				if (t_wave==1 && nwave<maxwave) createWave();
 				if (t_wave%30==1) World.w.gui.messText('',Math.floor(t_wave/30).toString());
 			}
 		}
-		
 	}
-	
 }

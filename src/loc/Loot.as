@@ -1,4 +1,5 @@
-﻿package src.loc {
+﻿package src.loc 
+{
 	
 	import flash.geom.ColorTransform;
 	import flash.utils.*;
@@ -30,7 +31,8 @@
 		private var tvsos:int=0;
 		public var sndFall:String='fall_item';
 
-		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true) {
+		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true) 
+		{
 			loc=nloc;
 			item=nitem;
 			if (loc.cTransform) cTransform=loc.cTransform;
@@ -43,14 +45,19 @@
 			massa=0.1;
 			nazv=item.nazv;
 			scX=30, scY=20;
-			if (item.tip==Item.L_WEAPON) {
-				if (item.xml.vis.length() && item.xml.vis.@loot.length()) {
+			if (item.tip==Item.L_WEAPON) 
+			{
+				if (item.xml.vis.length() && item.xml.vis.@loot.length()) 
+				{
 					vis=new visualItem();
-					try {
+					try 
+					{
 						vis.gotoAndStop(item.xml.vis.@loot);
-					} catch (err) {
-					}
-				} else {
+					} 
+					catch (err) {}
+				} 
+				else 
+				{
 					if (item.variant>0) vClass=Res.getClass('vis'+item.id+'_'+item.variant,'vis'+item.id,visp10mm);
 					else vClass=Res.getClass('vis'+item.id,null,visp10mm);
 					var infIco=new vClass();
@@ -63,7 +70,9 @@
 				}
 				if (item.variant>0) shine();
 				if (item.xml.snd.@fall.length()) sndFall=item.xml.snd.@fall;
-			} else if (item.tip==Item.L_EXPL) {
+			} 
+			else if (item.tip==Item.L_EXPL) 
+			{
 				vClass=Res.getClass('vis'+item.id,null,visualAmmo);
 				var infIco=new vClass();
 				infIco.stop();
@@ -72,22 +81,32 @@
 				vis=new MovieClip();
 				vis.addChild(infIco);
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
-			} else if (item.tip==Item.L_AMMO) {
+			} 
+			else if (item.tip==Item.L_AMMO) 
+			{
 				vClass=visualAmmo;
 				vis=new vClass();
-				try {
+				try 
+				{
 					if (item.xml.@base.length()) vis.gotoAndStop(item.xml.@base);
 					else vis.gotoAndStop(item.id);
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					vis.gotoAndStop(1);
 				}
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
-			} else {
+			} 
+			else 
+			{
 				vClass=visualItem;
 				vis=new vClass();
-				try {
+				try 
+				{
 					vis.gotoAndStop(item.id);
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					//var item.tip:String;
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
@@ -98,29 +117,32 @@
 					else if (item.tip==Item.L_FOOD) vis.gotoAndStop('food');
 					else vis.gotoAndStop(1);
 				}
-				if (item.tip==Item.L_SCHEME) {
+				if (item.tip==Item.L_SCHEME) 
+				{
 					sndFall='fall_paper';
 					vis.gotoAndStop('scheme');
 				}
-				if (item.tip==Item.L_BOOK) {
+				if (item.tip==Item.L_BOOK) 
+				{
 					nazv='"'+nazv+'"';
 					sndFall='fall_paper';
 				}
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
 			} 
-			if (vClass) {
+			if (vClass) 
+			{
 				vis.x=X;
 				vis.y=Y;
 				vis.cacheAsBitmap=true;
 				scX=vis.width, scY=vis.height;
 			}
-			if (jump) {
+			if (jump) 
+			{
 				dx=Math.random()*10-5;
 				dy=Math.random()*5-10;
 			}
 			if (!loc.active) sndFall='';
 			auto=nauto;
-			//if (!loc.base) {
 				inter=new Interact(this);
 				inter.active=true;
 				inter.action=100;
@@ -128,41 +150,51 @@
 				inter.actFun=toTake;
 				inter.update();
 				levitPoss=true;
-			//}
 			loc.addObj(this);
 			auto2=item.checkAuto();
 		}
 		
-		public override function addVisual() {
+		public override function addVisual() 
+		{
 			super.addVisual();
-			if (vis && cTransform) {
+			if (vis && cTransform) 
+			{
 				if (item.tip!='art') vis.transform.colorTransform=cTransform;
 			}
 		}
 		
-		function shine() {
-			if (vis) {
+		function shine() 
+		{
+			if (vis) 
+			{
 				var sh:MovieClip=new lootShine();
 				sh.blendMode='hardlight';
 				vis.addChild(sh);
 			}
 		}
+
 		//при нажатии E
-		public function toTake() {
+		public function toTake() 
+		{
 			item.checkAuto(true);
 			actTake=true;
 			ttake=0;
 			takeR=actRad;
 		}
+
 		//попробовать взять
-		public function take(prinud:Boolean=false) {
+		public function take(prinud:Boolean=false) 
+		{
 			if ((ttake>0 || World.w.gg.loc!=loc || World.w.gg.rat>0) && !prinud) return;
 			var rx=World.w.gg.X-X, ry=World.w.gg.Y-World.w.gg.scY/2-Y;
 			//взять
-			if (prinud || (World.w.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) {
-				if (World.w.hardInv && !actTake) {
+			if (prinud || (World.w.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) 
+			{
+				if (World.w.hardInv && !actTake) 
+				{
 					auto2=item.checkAuto();
-					if (!auto2) {
+					if (!auto2) 
+					{
 						vsos=actTake=false;
 						tvsos=0;
 						levitPoss=true;
@@ -177,15 +209,19 @@
 				onCursor=0;
 				return;
 			}
+
 			//притяжение
-			if ((World.w.gg.isTake>=20 || actTake) && rx<takeR && rx>-takeR && ry<takeR &&ry>-takeR && tvsos<45) {
+			if ((World.w.gg.isTake>=20 || actTake) && rx<takeR && rx>-takeR && ry<takeR &&ry>-takeR && tvsos<45) 
+			{
 				levitPoss=false;
 				stay=false;
 				vsos=true;
 				dx=rx/5;
 				dy=ry/5;
 				tvsos++;
-			} else {
+			} 
+			else 
+			{
 				vsos=actTake=false;
 				tvsos=0;
 				levitPoss=true;
@@ -193,31 +229,39 @@
 			}
 		}
 		
-		public override function step() {
-			if (loc.broom && (auto2 || krit)) {
+		public override function step() 
+		{
+			if (loc.broom && (auto2 || krit)) 
+			{
 				take(true);
 				return;
 			}
 			if (ttake>0) ttake--;
-			if (stay && osnova && !osnova.stay) {
+			if (stay && osnova && !osnova.stay) 
+			{
 				stay=false;
 				osnova=null;
 			}
-			if (!stay) {
+			if (!stay) 
+			{
 				if (!levit && !vsos && dy<World.maxdy) dy+=World.ddy;
-				else if (levit && !isPlav) {
+				else if (levit && !isPlav) 
+				{
 					dy*=0.8; dx*=0.8;
 				}
-				if (isPlav) {
+				if (isPlav) 
+				{
 					dy*=0.7; dx*=0.7;
 				}
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
-				else {
+				else 
+				{
 					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
 					for (var i=0; (i<div && !stay && !isTake); i++) run(div);
 				}
 				checkWater();
-				if (vis) {
+				if (vis) 
+				{
 					vis.x=X;
 					vis.y=Y-dery;
 				}
@@ -228,33 +272,40 @@
 			if (auto && auto2 || actTake) take();
 		}
 		
-		public function run(div:int=1) {
+		public function run(div:int=1) 
+		{
 			//движение
 			var t:Tile;var i:int;
 			
 			
 			//ГОРИЗОНТАЛЬ
 				X+=dx/div;
-				if (X-scX/2<0) {
+				if (X-scX/2<0) 
+				{
 					X=scX/2;
 					dx=Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*Tile.tilePixelWidth) {
+				if (X+scX/2>=loc.spaceX*Tile.tilePixelWidth) 
+				{
 					X=loc.spaceX*Tile.tilePixelWidth-1-scX/2;
 					dx=-Math.abs(dx);
 				}
 				//движение влево
-				if (dx<0) {
+				if (dx<0) 
+				{
 					t=loc.getAbsTile(X,Y);
-					if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) {
+					if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) 
+					{
 						X=t.phX2+1;
 						dx=Math.abs(dx);
 					}
 				}
 				//движение вправо
-				if (dx>0) {
+				if (dx>0) 
+				{
 					t=loc.getAbsTile(X,Y);
-					if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) {
+					if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) 
+					{
 						X=t.phX1-1;
 						dx=-Math.abs(dx);
 					}
@@ -263,82 +314,104 @@
 			
 			//ВЕРТИКАЛЬ
 			//движение вверх
-			if (dy<0) {
+			if (dy<0) 
+			{
 				stay=false;
 				Y+=dy/div;
 				if (Y-scY<0) Y=scY;
 				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) {
+				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) 
+				{
 					Y=t.phY2+1;
 					dy=0;
 				}
 			}
 			//движение вниз
 			var newmy:Number=0;
-			if (dy>0) {
+			if (dy>0) 
+			{
 				stay=false;
-				if (Y+dy/div>=loc.spaceY*Tile.tilePixelHeight) {
+				if (Y+dy/div>=loc.spaceY*Tile.tilePixelHeight) 
+				{
 					if (auto2) take(true);
 					dx=0;
 					return;
 				}
 				t=loc.getAbsTile(X,Y+dy/div);
-				if (t.phis==1 && Y+dy/div>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2 || t.shelf && !levit && !vsos && Y+dy/div>=t.phY1 && Y<=t.phY1 && X>=t.phX1 && X<=t.phX2) {
+				if (t.phis==1 && Y+dy/div>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2 || t.shelf && !levit && !vsos && Y+dy/div>=t.phY1 && Y<=t.phY1 && X>=t.phX1 && X<=t.phX2) 
+				{
 					newmy=t.phY1;
 				}
 				if (newmy==0 && !levit && !vsos) newmy=checkShelf(dy/div);
 				if (!loc.active && Y>=(loc.spaceY-1)*Tile.tilePixelHeight) newmy=(loc.spaceY-1)*Tile.tilePixelHeight;
-				if (newmy) {
+				if (newmy) 
+				{
 					Y=newmy-1;
-					if (!levit) {
+					if (!levit) 
+					{
 						if (dy>5 && sndFall) Snd.ps(sndFall,X,Y,0,dy/15);
 						stay=true;
 						dy=dx=0;
 					}
-				} else {
+				} 
+				else 
+				{
 					Y+=dy/div;
 				}
 			}
 		}
-		public override function checkStay() {
+
+		public override function checkStay() 
+		{
 			if (osnova) return true;
 			var t:Tile=loc.getAbsTile(X,Y+1);
-			if ((t.phis==1 || t.shelf) && Y+1>t.phY1) {
+			if ((t.phis==1 || t.shelf) && Y+1>t.phY1) 
+			{
 				return true;
-			} else {
+			} 
+			else 
+			{
 				stay=false;
 				return false;
 			}
 		}
-		public function checkShelf(dy):Number {
-			for (var i in loc.objs) {
+
+		public function checkShelf(dy):Number 
+		{
+			for (var i in loc.objs) 
+			{
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.stay && b.shelf && b.wall==0 && !(X<b.X1 || X>b.X2) && Y<=b.Y1 && Y+dy>b.Y1) {
+				if (!b.invis && b.stay && b.shelf && b.wall==0 && !(X<b.X1 || X>b.X2) && Y<=b.Y1 && Y+dy>b.Y1) 
+				{
 					osnova=b;
 					return b.Y1;
 				}
 			}
 			return 0;
 		}
+
 		//поиск жидкости
-		public function checkWater():Boolean {
+		public function checkWater():Boolean 
+		{
 			var pla=isPlav;
 			isPlav=false;
-			try {
-				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) {
+			try 
+			{
+				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
+				{
 					isPlav=true;
 				}
-			} catch (err) {
+			} 
+			catch (err)
+			{
 				
 			}
-			if (pla!=isPlav && dy>5) {
+			if (pla!=isPlav && dy>5) 
+			{
 				Emitter.emit('kap',loc,X,Y,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
 				Snd.ps('fall_item_water',X,Y,0, dy/10);
 			}
 			return isPlav;
 		}
-		
-
 	}
-	
 }

@@ -1,4 +1,5 @@
-﻿package  src.loc {
+﻿package  src.loc 
+{
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	
@@ -245,8 +246,5 @@
 			t_ghost=0;
 			if (trap) trap.die();	// Destroy associated traps
 		}
-		
-
 	}
-	
 }
