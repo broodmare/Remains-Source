@@ -57,7 +57,8 @@
 			if (!babah && !prilip) 
 			{
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
-				else {
+				else 
+				{
 					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
 					for (var i=0; (i<div && !babah); i++) run(div);
 				}
@@ -90,6 +91,7 @@
 				loc.remObj(this);
 				loc.remGrenade(this);
 			}
+
 			//trace(liv,expl_t);
 			onCursor=(liv>5 && X-scX/2<World.w.celX && X+scX/2>World.w.celX && Y-scY/2<World.w.celY && Y+scY/2>World.w.celY)?3:0;
 		}
@@ -144,9 +146,14 @@
 			babah=true;
 		}
 		
+
+
+
+//################################
+
+
 		public override function run(div:int = 1) 
 		{
-			var t:Tile;
 			var celobj:* = loc.celObj;
 			var abstile:* = loc.getAbsTile(X,Y) 
 			X += dx/div;
@@ -172,14 +179,14 @@
 			} 
 			else 
 			{
-				if (X<0 || X>=loc.spaceX*Tile.tilePixelWidth) 
+				if (X<0 || X >= loc.spaceX * Tile.tilePixelWidth) 
 				{
 					vse=true;
 					return;
 				}
 				if (dx<0) 
 				{
-					if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) 
+					if (abstile.phis==1 && X<=abstile.phX2 && X>=abstile.phX1 && Y>=abstile.phY1 && Y<=abstile.phY2) 
 					{
 						if (sndHit!='') Snd.ps(sndHit,X,Y,0,Math.abs(dx/10));
 						if (bumc) 
@@ -194,7 +201,7 @@
 				// Move right
 				if (dx>0) 
 				{
-					if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) 
+					if (abstile.phis==1 && X>=abstile.phX1 && X<=abstile.phX2 && Y>=abstile.phY1 && Y<=abstile.phY2) 
 					{
 						if (sndHit!='') Snd.ps(sndHit,X,Y,0,Math.abs(dx/10));
 						if (bumc) 
@@ -212,7 +219,7 @@
 				{
 					stay=false;
 					Y+=dy/div;
-					if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) 
+					if (abstile.phis==1 && Y<=abstile.phY2 && Y>=abstile.phY1 && X>=abstile.phX1 && X<=abstile.phX2) 
 					{
 						if (sndHit!='') Snd.ps(sndHit,X,Y,0,Math.abs(dy/10));
 						if (bumc) 
@@ -235,7 +242,7 @@
 						vse=true;
 						return;
 					}
-					if (t.phis==1 && Y>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2) 
+					if (abstile.phis==1 && Y>=abstile.phY1 && Y<=abstile.phY2 && X>=abstile.phX1 && X<=abstile.phX2) 
 					{
 						if (bumc) 
 						{
@@ -243,7 +250,7 @@
 							popadalo();
 						}
 						Y = abstile.phY1-1;
-						if (lip) prilip=true;
+						if (lip) prilip = true;
 						if (dy>2) 
 						{
 							dy=-Math.abs(dy*skok);
