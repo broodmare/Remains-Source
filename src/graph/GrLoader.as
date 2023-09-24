@@ -21,17 +21,16 @@
 		public function GrLoader(nid:int, url:String, ngr:Grafon) {
 			kol++; //Increment the number of instances of that exist.
 
-			gr=ngr; //Assign the graphics loader a local name.
-			id=nid; //Assign the graphics loader an ID.
+			gr = ngr; //Assign the graphics loader a local name.
+			id = nid; //Assign the graphics loader an ID.
 
 			loader = new Loader();
 
-			var urlReq:URLRequest = new URLRequest(url); //What file to load.
-			loader.load(urlReq); //Load the file.
-			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, funProgress); //Add event listeners to check loading progress.
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, funLoaded);  //Add event listeners to check if file loading is complete.
+			var urlReq:URLRequest = new URLRequest(url); 										//What file to load.
+			loader.load(urlReq); 																//Load the file.
+			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, funProgress); 	//Add event listeners to check loading progress.
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, funLoaded); 			 	//Add event listeners to check if file loading is complete.
 			
-			// constructor code
 		}
 		
 
@@ -40,9 +39,9 @@
 		{
 
 			resource = event.target.content;
-			isLoad=true; // Indicate the file is fully loaded.  CHECK IF THIS IS EVEN USED.
-			progressLoad = 1; // Set the progress to 100%.
-			kolIsLoad++; // Increase the global number of loaded instances.
+			isLoad=true; 		// Indicate the file is fully loaded.  CHECK IF THIS IS EVEN USED.
+			progressLoad = 1; 	// Set the progress to 100%.
+			kolIsLoad++; 		// Increase the global number of loaded instances.
 
 			gr.checkLoaded(id); 
 			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, funLoaded); 			//Remove the event listeners.

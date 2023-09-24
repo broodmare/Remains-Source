@@ -1017,7 +1017,7 @@
 				if (inWater) dx*=0.5;
 				if (!levit && isLaz==0) 
 				{
-					var t:Tile=loc.getAbsTile(X,Y-scY/4);
+					var t:Tile = loc.getAbsTile(X, Y - scY / 4);
 					if (t.grav>0 && dy<World.maxdy*t.grav || t.grav<0 && dy>World.maxdy*t.grav) dy+=World.ddy*t.grav*grav;
 				}
 				if (stay) 
@@ -1606,12 +1606,12 @@
 		}
 
 		// Search for an object to stand on
-		public function checkShelf(pdy:Number,pdy2:Number=0):Number 
+		public function checkShelf(pdy:Number, pdy2:Number = 0):Number 
 		{
 			for (var i in loc.objs) 
 			{
 				var b:Box=loc.objs[i] as Box;
-				if (!b.invis && b.shelf && !b.levit && !(X2<b.X1 || X1>b.X2) && Y2+pdy2<=b.Y1 && Y2+pdy+pdy2>b.Y1) 
+				if (!b.invis && b.shelf && !b.levit && !(X2<b.X1 || X1>b.X2) && Y2 + pdy2 <= b.Y1 && Y2 + pdy + pdy2 > b.Y1) 
 				{
 					shX1=shX2=1;
 					if (-(X1-b.X1)/scX<shX1) shX1=-(X1-b.X1)/scX;
@@ -1621,8 +1621,8 @@
 					stayOsn=b;
 					if (!b.stay) 
 					{
-						b.dy+=dy*massa/(massa+b.massa);
-						b.fixPlav=false;
+						b.dy += dy * massa / (massa + b.massa);
+						b.fixPlav = false;
 					}
 					return b.Y1;
 				}
@@ -1634,7 +1634,7 @@
 		public function checkDiagon(dy:Number, napr:int=0):Number 
 		{
 			var ddy:Number, newmy:Number=0;
-			var t:Tile=loc.getAbsTile(X,Y+dy);
+			var t:Tile = loc.getAbsTile(X, Y + dy);
 			if (diagon==0) 
 			{
 				if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
@@ -1648,43 +1648,44 @@
 				} 
 				else 
 				{
-					t=loc.getAbsTile(X,Y+40);
-					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
+					t = loc.getAbsTile(X, Y + 40);
+					if (t.diagon != 0 && (napr == 0 || t.diagon == napr)) 
 					{
 						ddy=t.getMaxY(X);
 						if (ddy<Y+dy) 
 						{
-							diagon=t.diagon;
-							newmy=ddy;
+							diagon = t.diagon;
+							newmy = ddy;
 						}
 					}
 				}
 			} 
 			else 
 			{
-				if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
+				if (t.diagon!=0 && (napr == 0 || t.diagon==napr)) 
 				{
-					ddy=t.getMaxY(X);
-					diagon=t.diagon;
-					newmy=ddy;
+					ddy = t.getMaxY(X);
+					diagon = t.diagon;
+					newmy = ddy;
 				} 
 				else 
 				{
-					t=loc.getAbsTile(X,Y-40);
-					if (t.diagon!=0 && (napr==0 || t.diagon==napr)) 
+					t = loc.getAbsTile(X, Y - 40);
+					if (t.diagon !=0 && (napr == 0 || t.diagon==napr)) 
 					{
 						ddy=t.getMaxY(X);
 						diagon=t.diagon;
 						newmy=ddy;
 					} 
-					else diagon=0;
+					else diagon = 0;
 				}
 			}
-			if (diagon!=0 && (napr==0 || t.diagon==napr)) 
+			if (diagon != 0 && (napr == 0 || t.diagon==napr)) 
 			{
-				shX1=shX2=0;
-				stayPhis=2;
-				stayMat=t.mat;
+				shX1 = 0;
+				shX2 = 0;
+				stayPhis = 2;
+				stayMat = t.mat;
 			}
 			return newmy;
 		}
@@ -1692,22 +1693,22 @@
 		// Teleportation
 		public function teleport(nx:Number,ny:Number,eff:int=0) 
 		{
-			if (eff>0) Emitter.emit('tele',loc,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
-			setPos(nx,ny);
+			if (eff > 0) Emitter.emit('tele', loc, X, Y - scY / 2,{rx:scX, ry:scY, kol:30});
+			setPos(nx, ny);
 			if (currentWeapon) 
 			{
 				setWeaponPos(currentWeapon.tip);
 				currentWeapon.setNull();
 			}
-			isLaz=0;
-			levit=0;
-			if (eff>0) Emitter.emit('teleport',loc,X,Y-scY/2);
+			isLaz = 0;
+			levit = 0;
+			if (eff>0) Emitter.emit('teleport', loc, X, Y - scY / 2);
 		}
 		
 		// Detach from a fixed position
 		public function otryv() 
 		{
-			fixed=false;
+			fixed = false;
 		}
 
 //**************************************************************************************************************************
@@ -1805,8 +1806,8 @@
 			if (!player && !hpbar && vis) 
 			{
 				hpbar=new hpBar();
-				if (hero<=0) hpbar.goldstar.visible=false;
-				if (invis) hpbar.visible=false;
+				if (hero <= 0) hpbar.goldstar.visible = false;
+				if (invis) hpbar.visible = false;
 				visDetails();
 			}
 			if (hpbar && loc && loc.locationActive) World.w.grafon.visObjs[3].addChild(hpbar);
@@ -1814,7 +1815,7 @@
 			if (childObjs) {
 				for (var i in childObjs) 
 				{
-					if (childObjs[i]!=null && childObjs[i].vis) 
+					if (childObjs[i] != null && childObjs[i].vis) 
 					{
 						childObjs[i].addVisual();
 					}
@@ -1847,26 +1848,27 @@
 		
 		function sndRunPlay() 
 		{
-				if (rasst2<sndRunDist*sndRunDist) 
+				if (rasst2 < sndRunDist * sndRunDist) 
 				{
-					sndVolkoef=(sndRunDist-Math.sqrt(rasst2))/sndRunDist;
-					if (sndVolkoef<0.5) sndVolkoef*=2;
-					else sndVolkoef=1;
-					Snd.pshum(sndRun,sndVolkoef);
+					sndVolkoef = (sndRunDist - Math.sqrt(rasst2)) / sndRunDist;
+					if (sndVolkoef < 0.5) sndVolkoef *= 2;
+					else sndVolkoef = 1;
+					Snd.pshum(sndRun, sndVolkoef);
 				}
 		}
 		
-		function newPart(nid:String,kol:int=1,frame:int=0) 
+		function newPart(nid:String, kol:int = 1, frame:int = 0) 
 		{
-			Emitter.emit(nid,loc,X,Y-scY/2,{kol:kol, frame:frame});
+			Emitter.emit(nid, loc, X, Y - scY / 2,{kol:kol, frame:frame});
 		}
 
 		public function setVisPos() 
 		{
 			if (vis) 
 			{
-				vis.x=X,vis.y=Y;
-				vis.scaleX=storona;
+				vis.x = X;
+				vis.y = Y;
+				vis.scaleX = storona;
 			}
 		}
 
@@ -1996,7 +1998,8 @@
 					}
 				}
 			}
-						// Damage from water
+			
+			// Damage from water
 			// Periodic effects
 			if (cut>0 || poison>0 || inWater && loc.wdam>0) 
 			{
@@ -2363,7 +2366,7 @@
 			}
 			if (dam>0) 
 			{
-				var sposob:int=0;		// Method of dying
+				var sposob: int = 0;		// Method of dying
 				if (bul && bul.desintegr && (tip==D_LASER || tip==D_PLASMA)) 	// Instant disintegration
 				{
 					if (hp<=dam*10 && isrnd(bul.desintegr)) 
@@ -2513,8 +2516,8 @@
 				if (isShow) // Show damage
 				{
 					var vnumb:int=1;
-					var castX:Number=X;
-					var castY:Number=Y-scY/2;
+					var castX:Number = X;
+					var castY:Number = Y - scY / 2;
 					if (bul) {castX=bul.X; castY=bul.Y;}
 					if (player || isCrit>=2) vnumb=2;
 					if (tt) vnumb=3;
@@ -2570,11 +2573,12 @@
 				if (Math.random()<dam/maxhp) stun=damWallStun;
 				if (napr>0) 
 				{
-					var nx:Number=X, ny:Number=Y-scY/2;
-					if (napr==1) nx=X+scX/2;
-					if (napr==2) nx=X-scX/2;
-					if (napr==3) ny=Y;
-					if (napr==4) ny=Y-scY;
+					var nx:Number = X;
+					var ny:Number = Y - scY / 2;
+					if (napr==1) nx = X + scX / 2;
+					if (napr==2) nx = X - scX / 2;
+					if (napr==3) ny = Y;
+					if (napr==4) ny = Y - scY;
 					Emitter.emit('bum',loc,nx,ny);//,{scale:dam/damWall}
 					Snd.ps('hit_flesh',X,Y);
 				}
@@ -2613,24 +2617,26 @@
 			{
 				//trace('попал',bul.precision/bul.dist);
 				var dm=0;
-				if (transp && (vulner[bul.tipDamage]<=0 || invulner)) {
+				if (transp && (vulner[bul.tipDamage]<=0 || invulner)) 
+				{
 					return -1;
-				} else if (bul.damage>0) {
-					if (retDamage && bul.retDam && bul.owner) {//возврат урона
+				} 
+				else if (bul.damage>0) 
+				{
+					if (retDamage && bul.retDam && bul.owner)  //возврат урона
+					{
 						bul.owner.udarUnit(this);
 					}
 					dm=bul.damage*(Math.random()*0.6+0.7);
 					if (World.w.testDam) dm=bul.damage;
-					/*if (acc>1 && bul.critM>0) {		//если меткость>1 и у оружия есть дополнительный модификатор крита, то увеличить урон
-						dm+=dm*bul.critM*(1-1/acc);
-					}*/
 					dm=damage(dm, bul.tipDamage, bul);
 					otbros(bul);
 					if (bul.owner && bul.owner.fraction!=0) priorUnit=bul.owner;
 					if (!invulner && dm<=0 || mat==1) return 1;
 					else if (mat==12) return 12;
 					else return 10;
-				} else return 0;
+				} 
+				else return 0;
 			} 
 			else 
 			{
@@ -2669,7 +2675,7 @@
 			{
 				damage((un.dam)*sila*mult, un.tipDamage);
 			}
-			var sc:Number=(un.dam*sila*mult)/20;
+			var sc:Number=(un.dam*sila*mult) / 20;
 			if (sc<0.5) sc=0.5;
 			if (sc>3) sc=3;
 			if (un.tipDamage == Unit.D_SPARK) 
@@ -2744,8 +2750,8 @@
 		// Activation from passive mode
 		public function alarma(nx:Number=-1,ny:Number=-1) 
 		{
-			oduplenie=0;
-			if (nx>0 && ny>0 && celUnit==null) 
+			oduplenie = 0;
+			if (nx>0 && ny>0 && celUnit == null) 
 			{
 				setCel(null,nx,ny);
 			}
@@ -2753,28 +2759,28 @@
 		// Awaken everyone around
 		public function budilo(rad:Number=500) 
 		{
-			makeNoise(noiseRun*1.2);
+			makeNoise(noiseRun * 1.2);
 			//trace('budilo');
 			for each(var un:Unit in loc.units) 
 			{
-				if (un && un!=this && un.fraction==fraction && un.sost==1 && !un.unres) 
+				if (un && un != this && un.fraction == fraction && un.sost == 1 && !un.unres) 
 				{
-					var nx=un.X-X;
-					var ny=un.Y-Y;
+					var nx = un.X - X;
+					var ny = un.Y - Y;
 					if (opt && opt.robot && un.opt && un.opt.robot)
 					{
-						if (nx*nx+ny*ny<rad*rad) un.alarma(celX,celY);
+						if (nx * nx + ny * ny < rad * rad) un.alarma(celX, celY);
 					} 
 					else 
 					{
 						//trace(un.ear);
-						if (nx*nx+ny*ny<rad*rad*un.ear*un.ear) un.alarma(X+(Math.random()-0.5)*250,Y+(Math.random()-0.5)*250);
+						if (nx * nx + ny * ny < rad * rad * un.ear * un.ear) un.alarma(X + (Math.random() - 0.5) * 250, Y + (Math.random() - 0.5) * 250);
 					}
 				}
 			}
 		}
 		// Deactivation (for security systems)
-		public function hack(sposob:int=0) 
+		public function hack(sposob:int = 0) 
 		{
 
 		}
@@ -2821,10 +2827,10 @@
 				if (burn==null) sound('trup');
 				initBurn(4+blood);
 				isFly=false;
-				fraction=0;
-				throu=false;
-				porog=0;
-				sost=3;
+				fraction = 0;
+				throu = false;
+				porog = 0;
+				sost = 3;
 			} 
 			else if (burn==null) 			// Destroy
 			{
@@ -2832,14 +2838,14 @@
 				expl();
 				exterminate();
 			}
-			shithp=0;
-			walk=0;
-			elast=0;
-			isLaz=0;
-			stun=0;
-			transT=true;
-			sndRunOn=false;
-			plaKap=false;
+			shithp = 0;
+			walk = 0;
+			elast = 0;
+			isLaz = 0;
+			stun = 0;
+			transT = true;
+			sndRunOn = false;
+			plaKap = false;
 			if (!doop && World.w.t_battle>30) World.w.t_battle=30;
 			if (!lootIsDrop && (!isRes || sost==4 || burn)) 
 			{
@@ -2879,9 +2885,9 @@
 			{
 				if (bloodEmit==null) 
 				{
-					if (blood==1) bloodEmit=Emitter.arr['blood'];
-					if (blood==2) bloodEmit=Emitter.arr['gblood'];
-					if (blood==3) bloodEmit=Emitter.arr['pblood'];
+					if (blood == 1) bloodEmit=Emitter.arr['blood'];
+					if (blood == 2) bloodEmit=Emitter.arr['gblood'];
+					if (blood == 3) bloodEmit=Emitter.arr['pblood'];
 				}
 				bloodEmit.cast(loc,X,Y,{kol:massa*50, rx:scX/2, ry:scY/2});
 			}
@@ -2943,12 +2949,12 @@
 		// Ability to interact with a unit
 		public function isMeet(un:Unit):Boolean 
 		{
-			return un!=null && loc==un.loc && !un.disabled && !un.trigDis && un.sost!=4 && un!=this;
+			return un != null && loc == un.loc && !un.disabled && !un.trigDis && un.sost != 4 && un != this;
 		}
 		// Determines if a unit doesn't obstruct line of sight, returns true if it doesn't
 		public function getTileVisi(r:Number=0.3):Boolean 
 		{
-			return (loc.getAbsTile(X,Y-scY/2).visi>r);
+			return (loc.getAbsTile(X, Y - scY / 2).visi > r);
 		}
 		
 		// Listen to another unit

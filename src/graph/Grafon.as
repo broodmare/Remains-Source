@@ -105,11 +105,21 @@ public class Grafon {
 	public static const numbFon = 0;		// Backgrounds
 	public static const numbBack = 1;		// Decorations
 	public static const numbObj = 1;		// Objects
-	public static const numbSprite = 2;	// Starting number for sprite files
+	public static const numbSprite = 2;		// Starting number for sprite files
 	
+	var tilepixelwidth:Number = -1;
+	var tilepixelheight:Number = -1;
+	var finalWidth:Number = -1;
+	var finalHeight:Number = -1;
 	
 	public function Grafon(nvis:Sprite)
 	{
+		//Precalculated for performance.
+		tilepixelwidth = Tile.tilePixelWidth;
+		tilepixelheight = Tile.tilePixelHeight;
+		finalWidth = mapTileWidth * tilepixelwidth;
+		finalHeight = mapTileHeight * tilepixelheight;
+
 		visual = nvis;
 		visBack = new Sprite();
 		visBack2 = new Sprite();
@@ -137,10 +147,10 @@ public class Grafon {
 		visual.addChild(visObjs[4]);	//8
 		visual.addChild(visSats);		//9
 		visual.addChild(visObjs[5]);	//10
-		visLight.x = -Tile.tilePixelWidth / 2;
-		visLight.y = -Tile.tilePixelHeight / 2 - Tile.tilePixelHeight;
-		visLight.scaleX = Tile.tilePixelWidth;
-		visLight.scaleY = Tile.tilePixelHeight;
+		visLight.x = -tilepixelwidth / 2;
+		visLight.y = -tilepixelheight / 2 - tilepixelheight;
+		visLight.scaleX = tilepixelwidth;
+		visLight.scaleY = tilepixelheight;
 		
 
 
@@ -346,8 +356,8 @@ public class Grafon {
 			location = currentLocation; 
 			location.grafon = this;
 
-			resX = location.spaceX*Tile.tilePixelWidth;
-			resY = location.spaceY*Tile.tilePixelHeight;
+			resX = location.spaceX * tilepixelwidth;
+			resY = location.spaceY * tilepixelheight;
 			
 			var transpFon:Boolean = location.transpFon;
 			if (location.backwall == 'sky') transpFon = true;
@@ -429,6 +439,10 @@ public class Grafon {
 			var tile:Tile; 		//Define a tile as an object to hold the current tile's properties in the grid.
 			var tileMovieClip:MovieClip; 	//Define a tileMovieClip as an object to hold the current tile's sprite.
 
+
+
+
+
 			for (var i = 0; i < location.spaceX; i++) //for each tile in theroom's horizontal rows...
 			{
 				for (var j = 0; j < location.spaceY; j++) //for each tile in the room's vertical columns...
@@ -448,8 +462,8 @@ public class Grafon {
 						tileMovieClip.gotoAndStop(tile.vid);
 						if (tile.vRear) back2.addChild(tileMovieClip);
 						else front.addChild(tileMovieClip);
-						tileMovieClip.x = i*Tile.tilePixelWidth;
-						tileMovieClip.y = j*Tile.tilePixelHeight;
+						tileMovieClip.x = i* tilepixelwidth;
+						tileMovieClip.y = j* tilepixelheight;
 					}
 					if (tile.vid2 > 0) //Objects with video 2
 					{				
@@ -457,16 +471,16 @@ public class Grafon {
 						tileMovieClip.gotoAndStop(tile.vid2);
 						if (tile.v2Rear) back2.addChild(tileMovieClip);
 						else front.addChild(tileMovieClip);
-						tileMovieClip.x = i*Tile.tilePixelWidth;
-						tileMovieClip.y = j*Tile.tilePixelHeight;
+						tileMovieClip.x = i* tilepixelwidth;
+						tileMovieClip.y = j* tilepixelheight;
 					}
 					if (tile.water) //Water
 					{				
 						tileMovieClip = new tileVoda();
 						tileMovieClip.gotoAndStop(location.tipWater+1);
 						if (location.getTile(i, j-1).water == 0 && location.getTile(i, j-1).phis == 0) tileMovieClip.voda.gotoAndStop(2);
-						tileMovieClip.x = i*Tile.tilePixelWidth;
-						tileMovieClip.y = j*Tile.tilePixelHeight;
+						tileMovieClip.x = i* tilepixelwidth;
+						tileMovieClip.y = j* tilepixelheight;
 						voda.addChild(tileMovieClip);
 					}
 				}
@@ -496,7 +510,8 @@ public class Grafon {
 
 			for each (mat in arrBack)
 			{
-				try {
+				try 
+				{
 					drawTileSprite(mat, false, false);		// Background
 				} catch (err)
 				{
@@ -529,7 +544,7 @@ public class Grafon {
 			//####################
 			World.w.gr_stage = 10; 
 			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-			var darkness2 = 1-(255-darkness)/150;
+			var darkness2 = 1 - (255 - darkness) /150;
 			//ct = new ColorTransform(darkness2, darkness2, darkness2);
 
 			//background objects
@@ -776,6 +791,7 @@ public class Grafon {
 	// Filling the back wall with texture
 	public function drawBackWall(tex:String, sposob:int = 0)
 	{
+		
 		if (tex == 'sky') return;
 		var backgroundMatrix = new Matrix();
 		var fill:BitmapData = getObj(tex);
@@ -783,25 +799,28 @@ public class Grafon {
 		var baseSprite:Sprite = new Sprite();
 		baseSprite.graphics.beginBitmapFill(fill);
 
+
+
+
 		if (sposob == 0) 
 		{
-			baseSprite.graphics.drawRect(0, 0, mapTileWidth*Tile.tilePixelWidth, mapTileHeight*Tile.tilePixelHeight);
+			baseSprite.graphics.drawRect(0, 0, finalWidth, finalHeight);
 		} 
 		
 		else if (sposob == 1) 
 		{
-			baseSprite.graphics.drawRect(0, 0, 11*Tile.tilePixelWidth-10, mapTileHeight*Tile.tilePixelHeight);
-			baseSprite.graphics.drawRect(37*Tile.tilePixelWidth+10, 0, mapTileWidth*Tile.tilePixelWidth, mapTileHeight*Tile.tilePixelHeight);
+			baseSprite.graphics.drawRect(0, 0, 11 * tilepixelwidth - 10, finalHeight);
+			baseSprite.graphics.drawRect(37 * tilepixelwidth + 10, 0, finalWidth, finalHeight);
 		} 
 
 		else if (sposob == 2) 
 		{
-			baseSprite.graphics.drawRect(0, 16*Tile.tilePixelHeight+10, mapTileWidth*Tile.tilePixelWidth, mapTileHeight*Tile.tilePixelHeight);
+			baseSprite.graphics.drawRect(0, 16 * tilepixelheight + 10, finalWidth, finalHeight);
 		} 
 
 		else if (sposob == 3) 
 		{
-			baseSprite.graphics.drawRect(0, 24*Tile.tilePixelHeight+10, mapTileWidth*Tile.tilePixelWidth, mapTileHeight*Tile.tilePixelHeight);
+			baseSprite.graphics.drawRect(0, 24 * tilepixelheight + 10, finalWidth, finalHeight);
 		}
 
 		backBmp.draw(baseSprite, backgroundMatrix, null, null, null, false);
@@ -867,6 +886,10 @@ public class Grafon {
 		var floor:Sprite = new Sprite();
 		var fmaska:Sprite = new Sprite();
 		
+
+
+
+		
 		
 		if (material.texture == null) baseSprite.graphics.beginFill(0x666666);
 		else if (location.homeStable && material.alttexture != null) 
@@ -875,21 +898,21 @@ public class Grafon {
 		}
 		else baseSprite.graphics.beginBitmapFill(material.texture);
 
-		baseSprite.graphics.drawRect(0, 0, mapTileWidth*Tile.tilePixelWidth, mapTileHeight*Tile.tilePixelHeight);
+		baseSprite.graphics.drawRect(0, 0, finalWidth, finalHeight);
 		tileSprite.addChild(baseSprite);
 		tileSprite.addChild(maska);
 
 		if (material.border) 
 		{
 			border.graphics.beginBitmapFill(material.border);
-			border.graphics.drawRect(0, 0, mapTileWidth*Tile.tilePixelWidth, mapTileHeight*Tile.tilePixelHeight);
+			border.graphics.drawRect(0, 0, finalWidth, finalHeight);
 			tileSprite.addChild(border);
 			tileSprite.addChild(bmaska);
 		}
 		if (material.floor) 
 		{
 			floor.graphics.beginBitmapFill(material.floor);
-			floor.graphics.drawRect(0, 0, mapTileWidth*Tile.tilePixelWidth, mapTileHeight*Tile.tilePixelHeight);
+			floor.graphics.drawRect(0, 0, finalWidth, finalHeight);
 			tileSprite.addChild(floor);
 			tileSprite.addChild(fmaska);
 		}
@@ -897,7 +920,7 @@ public class Grafon {
 
 		
 		var isDraw:Boolean = false;
-		
+
 		//Loop for drawing tiles
 		for (var i = 0; i < location.spaceX; i++) 
 		{
@@ -924,8 +947,8 @@ public class Grafon {
 							mc.c2.gotoAndStop(tile.kont2 + 1);
 						}
 						fmaska.addChild(mc);
-						mc.x = (i + 0.5) * Tile.tilePixelWidth;
-						mc.y = (j + 0.5 + tile.zForm / 4) * Tile.tilePixelHeight;
+						mc.x = (i + 0.5) * tilepixelwidth;
+						mc.y = (j + 0.5 + tile.zForm / 4) * tilepixelheight;
 					}
 				}
 			}
@@ -972,12 +995,12 @@ public class Grafon {
 	{
 		mc = new materialMask();
 		setMCT(mc, tile, toFront);
-		mc.x = (i + 0.5) * Tile.tilePixelWidth;
-		mc.y = (j + 0.5) * Tile.tilePixelHeight;
+		mc.x = (i + 0.5) * tilepixelwidth;
+		mc.y = (j + 0.5) * tilepixelheight;
 		parent.addChild(mc);
 		if (tile.zForm && toFront) 
 		{
-			mc.scaleY = (tile.phY2 - tile.phY1) / Tile.tilePixelHeight;
+			mc.scaleY = (tile.phY2 - tile.phY1) / tilepixelheight;
 			mc.y = (tile.phY2 + tile.phY1) / 2;
 		}
 	}
@@ -1017,8 +1040,8 @@ public class Grafon {
 	public function drawWater(tile:Tile, recurs:Boolean = true)
 	{
 		var backgroundMatrix = new Matrix();
-		backgroundMatrix.tx = tile.X*Tile.tilePixelWidth;
-		backgroundMatrix.ty = tile.Y*Tile.tilePixelHeight;
+		backgroundMatrix.tx = tile.X * tilepixelwidth;
+		backgroundMatrix.ty = tile.Y * tilepixelheight;
 		voda.gotoAndStop(location.tipWater+1);
 		if (location.getTile(tile.X, tile.Y-1).water == 0 && location.getTile(tile.X, tile.Y-1).phis == 0 ) voda.voda.gotoAndStop(2);
 		else voda.voda.gotoAndStop(1);
@@ -1029,8 +1052,8 @@ public class Grafon {
 	public function tileDie(tile:Tile, tip:int)
 	{
 		var erC:Class = block_dyr, drC:Class = block_tre;
-		var nx = (tile.X+0.5)*Tile.tilePixelWidth;
-		var ny = (tile.Y+0.5)*Tile.tilePixelHeight;
+		var nx = (tile.X + 0.5) * tilepixelwidth;
+		var ny = (tile.Y + 0.5) * tilepixelheight;
 		if (tile.fake)
 		{
 			Emitter.emit('fake', location, nx, ny);
@@ -1039,18 +1062,18 @@ public class Grafon {
 		else if (tile.mat == 7)
 		{
 			Emitter.emit('fake', location, nx, ny);
-			Emitter.emit('pole', location, nx, ny, {kol:10, rx:Tile.tilePixelWidth, ry:Tile.tilePixelHeight});
+			Emitter.emit('pole', location, nx, ny, {kol:10, rx:tilepixelwidth, ry:tilepixelheight});
 			erC = TileMask;
 			drC = null;
 		} 
 		else if (tip < 10)
 		{
-			if (tile.mat == 1) Emitter.emit('metal', location, nx, ny, {kol:6, rx:Tile.tilePixelWidth, ry:Tile.tilePixelHeight})
-			else if (tile.mat == 2) Emitter.emit('tileSprite', location, nx, ny, {kol:6, rx:Tile.tilePixelWidth, ry:Tile.tilePixelHeight})
-			else if (tile.mat == 3) Emitter.emit('schep', location, nx, ny, {kol:6, rx:Tile.tilePixelWidth, ry:Tile.tilePixelHeight})
-			else if (tile.mat == 4) Emitter.emit('kusokB', location, nx, ny, {kol:6, rx:Tile.tilePixelWidth, ry:Tile.tilePixelHeight})
-			else if (tile.mat == 5) Emitter.emit('steklo', location, nx, ny, {kol:6, rx:Tile.tilePixelWidth, ry:Tile.tilePixelHeight})
-			else if (tile.mat == 6) Emitter.emit('kusokD', location, nx, ny, {kol:6, rx:Tile.tilePixelWidth, ry:Tile.tilePixelHeight})
+			if (tile.mat == 1) Emitter.emit('metal', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
+			else if (tile.mat == 2) Emitter.emit('tileSprite', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
+			else if (tile.mat == 3) Emitter.emit('schep', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
+			else if (tile.mat == 4) Emitter.emit('kusokB', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
+			else if (tile.mat == 5) Emitter.emit('steklo', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
+			else if (tile.mat == 6) Emitter.emit('kusokD', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
 		} 
 		else if (tip >= 15)
 		{
@@ -1238,8 +1261,8 @@ public class Grafon {
 	public function gwall(nx:int, ny:int)
 	{
 		var backgroundMatrix = new Matrix();
-		backgroundMatrix.tx = nx*Tile.tilePixelWidth;
-		backgroundMatrix.ty = ny*Tile.tilePixelHeight;
+		backgroundMatrix.tx = nx * tilepixelwidth;
+		backgroundMatrix.ty = ny * tilepixelwidth;
 		var wall:MovieClip = new tileGwall();
 		frontBmp.draw(wall, backgroundMatrix);
 	}
