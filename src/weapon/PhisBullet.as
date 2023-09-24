@@ -11,12 +11,15 @@
 	public class PhisBullet extends Bullet 
 	{
 		
-		var brake=2;
-		var dr:Number=0;
-		var lip:Boolean=false, prilip:Boolean=false, bumc:Boolean=false;
+		var brake = 2;
+		var dr:Number = 0;
+		var lip:Boolean = false;
+		var prilip:Boolean = false;
+		var bumc:Boolean = false;
 		
-		var skok:Number=0.5, tormoz:Number=0.7;
-		var isSensor:Boolean=false;
+		var skok:Number = 0.5;
+		var tormoz:Number = 0.7;
+		var isSensor:Boolean = false;
 		
 		public var sndHit:String='';
 
@@ -35,19 +38,21 @@
 		{
 			if (levit) 
 			{
-				dy*=0.8; dx*=0.8;
+				dy *= 0.8; 
+				dx *= 0.8;
 			} 
-			else dy+=ddy;
+			else dy += ddy;
 			if (stay) 
 			{
-				if (dx>1) dx-=brake;
-				else if (dx<-1) dx+=brake;
-				else dx=0;
-				dr=dx;
+				if (dx > 1) dx -= brake;
+				else if (dx < -1) dx += brake;
+				else dx = 0;
+				dr = dx;
 			}
 			if (inWater)
 			{
-				dy*=0.8; dx*=0.8;
+				dy *= 0.8; 
+				dx *= 0.8;
 			}
 			if (!babah && !prilip) 
 			{
@@ -139,16 +144,20 @@
 			babah=true;
 		}
 		
-		public override function run(div:int=1) 
+		public override function run(div:int = 1) 
 		{
 			var t:Tile;
-			X+=dx/div;
+			var celobj:* = loc.celObj;
+			var abstile:* = loc.getAbsTile(X,Y) 
+			X += dx/div;
+
+
 			if (lip) 
 			{
-				if (loc.celObj && (loc.celObj is Box) && (loc.celObj as Box).explcrack && owner && owner.player && X>=loc.celObj.X1 && X<=loc.celObj.X2 && Y>=loc.celObj.Y1 && Y<=loc.celObj.Y2) 
+				if (celobj && (celobj is Box) && (celobj as Box).explcrack && owner && owner.player && X >= celobj.X1 && X<=celobj.X2 && Y >= celobj.Y1 && Y <= celobj.Y2) 
 				{
-					targetObj=loc.celObj;
-					prilip=true;
+					targetObj = celobj;
+					prilip = true;
 					return;
 				}
 			}
@@ -170,7 +179,6 @@
 				}
 				if (dx<0) 
 				{
-					t=loc.getAbsTile(X,Y);
 					if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) 
 					{
 						if (sndHit!='') Snd.ps(sndHit,X,Y,0,Math.abs(dx/10));
@@ -178,15 +186,14 @@
 						{
 							popadalo();
 						}
-						X=t.phX2+1;
-						dx=Math.abs(dx*skok);
-						if (lip) prilip=true;
+						X = abstile.phX2 + 1;
+						dx = Math.abs(dx * skok);
+						if (lip) prilip = true;
 					}
 				}
 				// Move right
 				if (dx>0) 
 				{
-					t=loc.getAbsTile(X,Y);
 					if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) 
 					{
 						if (sndHit!='') Snd.ps(sndHit,X,Y,0,Math.abs(dx/10));
@@ -194,7 +201,7 @@
 						{
 							popadalo();
 						}
-						X=t.phX1-1;
+						X = abstile.phX1 - 1;
 						dx=-Math.abs(dx*skok);
 						if (lip) prilip=true;
 					}
@@ -205,7 +212,6 @@
 				{
 					stay=false;
 					Y+=dy/div;
-					t=loc.getAbsTile(X,Y);
 					if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) 
 					{
 						if (sndHit!='') Snd.ps(sndHit,X,Y,0,Math.abs(dy/10));
@@ -213,7 +219,7 @@
 						{
 							popadalo();
 						}
-						Y=t.phY2+1;
+						Y = abstile.phY2 + 1;
 						dy=Math.abs(dy*skok);
 						if (lip) prilip=true;
 					}
@@ -229,7 +235,6 @@
 						vse=true;
 						return;
 					}
-					t=loc.getAbsTile(X,Y);
 					if (t.phis==1 && Y>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2) 
 					{
 						if (bumc) 
@@ -237,7 +242,7 @@
 							if (sndHit!='') Snd.ps(sndHit,X,Y,0,Math.abs(dy/10));
 							popadalo();
 						}
-						Y=t.phY1-1;
+						Y = abstile.phY1-1;
 						if (lip) prilip=true;
 						if (dy>2) 
 						{

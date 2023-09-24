@@ -266,13 +266,13 @@
 			X+=dx/div, Y+=dy/div;
 			if (loc.sky) 
 			{
-				if (X<0 || X>=loc.limX || Y<0 || Y>=loc.limY) popadalo(0);
+				if (X < 0 || X >= loc.limX || Y < 0 || Y >= loc.limY) popadalo(0);
 			} 
 			else 
 			{
-				if (!outspace && X<0 || X>=loc.spaceX*Tile.tilePixelWidth || Y<0 || Y>=loc.spaceY*Tile.tilePixelHeight) popadalo(0);
-				var t:Tile=loc.getAbsTile(X,Y);
-				if (t.water>0) 
+				if (!outspace && X <0 || X >= loc.spaceX * Tile.tilePixelWidth || Y<0 || Y >= loc.spaceY * Tile.tilePixelHeight) popadalo(0);
+				var t:Tile = loc.getAbsTile(X,Y);
+				if (t.water > 0) 
 				{
 					if (inWater==0) 
 					{
@@ -296,9 +296,9 @@
 				} 
 				else 
 				{
-					if (inWater==1) 
+					if (inWater == 1) 
 					{
-						if (partEmit && (tipDamage==Unit.D_BUL || tipDamage==Unit.D_PHIS || tipDamage==Unit.D_BLADE)) 
+						if (partEmit && (tipDamage == Unit.D_BUL || tipDamage == Unit.D_PHIS || tipDamage == Unit.D_BLADE)) 
 						{
 							Emitter.emit('kap',loc,X,Y,{dx:dx/vel*10, dy:dy/vel*10, kol:Math.floor(Math.random()*5+damage/5)});
 							sound(11);
@@ -340,7 +340,7 @@
 				if (un.sost==4 || un.disabled || un.trigDis || un.loc!=loc) continue;
 				if ((targetObj || un.fraction!=owner.fraction) && X>=un.X1 && X<=un.X2 && Y>=un.Y1 && Y<=un.Y2) 
 				{
-					if (checkLine && weap && !weap.isLine(X,Y)) 	//проверить досягаемость до объекта
+					if (checkLine && weap && !weap.isLine(X,Y)) 	// Check if reachable to the object
 					{
 						off=true;
 						return;
@@ -349,17 +349,17 @@
 					{
 						if (!un.dopTest(this)) continue;
 					}
-					if (udar(un)) //если эта пуля ещё не взаимодействовала с этим объектом
+					if (udar(un)) // If this bullet has not interacted with this object yet
 					{ 
-						var res=un.udarBullet(this); //попасть по объекту, проверить, не уклонился ли объект
+						var res=un.udarBullet(this); // Hit the object and check if the object dodged
 						sound(res);
-						if (probiv>0 && damage>0) 	//если пуля пробивная, то пусть летит дальше
+						if (probiv>0 && damage>0) 	// If the bullet is penetrative, let it continue flying
 						{
 
 						} 
-						else 	//если нет, то уничтожить пулю
+						else 	// If not, destroy the bullet
 						{	
-							if (res>=0) 
+							if (res >= 0) 
 							{
 								popadalo(res);
 								if (weap) 
@@ -375,7 +375,7 @@
 				}
 				if (targetObj) break;
 			}
-			if (loc.celObj && (loc.celObj is Box) && crack && owner && owner.player) //взлом контейнера
+			if (loc.celObj && (loc.celObj is Box) && crack && owner && owner.player) // Hack a container
 			{
 				box=loc.celObj as Box;
 				if (X>=box.X1 && X<=box.X2 && Y>=box.Y1 && Y<=box.Y2 && udar(box)) 
@@ -403,7 +403,7 @@
 					}
 				}
 			}
-			if (celX>-10000 && celY>-10000 && explRadius>0) 
+			if (celX > -10000 && celY > -10000 && explRadius > 0) 
 			{
 				if (Math.abs(celX-X)<50 && Math.abs(celY-Y)<200 && Math.random()<0.3) popadalo(100);
 			}
@@ -522,44 +522,44 @@
 			}
 		}
 		
-		//поражение всех юнитов виртуальными осколками, с учётом защиты от стен
+		// Damage all units with virtual fragments, taking into account wall protection
 		function explBlast() 
 		{
 			var tx,ty;
 			if (loc!=owner.loc) return;
 			for each(var un:Unit in loc.units) 
 			{
-				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;
-				var tx=un.X-X;
-				var ty=un.Y-un.scY/2-Y;
+				if (un.sost == 4 || un.invulner || un.disabled || un.trigDis || un.loc!=loc) continue;
+				var tx = un.X - X;
+				var ty = un.Y - un.scY / 2 - Y;
 				var b:Bullet=explBullet(tx, ty, explRadius+un.scX);
 				if (b) 
 				{
-					b.targetObj=un;
-					//дружественный огонь врагов
-					if (weap && weap.owner.fraction==un.fraction && un.fraction!=Unit.F_PLAYER)
+					b.targetObj = un;
+					// Friendly fire on enemies
+					if (weap && weap.owner.fraction == un.fraction && un.fraction != Unit.F_PLAYER)
 					{
-						b.damage*=un.friendlyExpl;
+						b.damage *= un.friendlyExpl;
 					}
-					//огонь по себе
+					// Fire on oneself
 					if (un.player) 
 					{
-						if (weap && weap.owner.fraction==Unit.F_PLAYER) b.damage*=World.w.pers.autoExpl;
+						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage *= World.w.pers.autoExpl;
 						var p={x:b.knockx, y:b.knocky};
-						norma(p,10);
-						b.knockx=p.x;
-						b.knocky=p.y;
+						norma(p, 10);
+						b.knockx = p.x;
+						b.knocky = p.y;
 					}
 				}
 			}
 		}
 		
-		//создать осколок
+		// Create a fragment
 		function explBullet(tx:Number, ty:Number, er:Number):Bullet 
 		{
 			var rasst=Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
-			if (rasst<er) 
+			if (rasst < er) 
 			{
 				b=new Bullet(owner,X,Y,null);
 				//trace(b.loc.landX, loc.landX);
@@ -589,7 +589,7 @@
 			return b;
 		}
 		
-		//визуальный и звуковой эффект от взрыва
+		// Visual and sound effect of explosion
 		function explVis() 
 		{
 			if (weap && weap.visexpl) 
