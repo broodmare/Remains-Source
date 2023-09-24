@@ -61,7 +61,7 @@
 		public function run(div:int=1)
 		{
 			if (vse) return;
-			var t:Tile;
+			var abstile:* = loc.getAbsTile(X,Y);
 			X+=dx/div;
 			if (X<0 || X>=loc.spaceX*Tile.tilePixelWidth)
 			{
@@ -70,49 +70,46 @@
 			}
 			if (dx<0) 
 			{
-				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) 
+				if (abstile.phis ==1 && X <= abstile.phX2 && X >= abstile.phX1 && Y >= abstile.phY1 && Y <= abstile.phY2) 
 				{
 					if (!is_skok) vse=true;
 					else 
 					{
-						X=t.phX2+1;
-						dx=Math.abs(dx*skok);
+						X = abstile.phX2+1;
+						dx = Math.abs(dx * skok);
 					}
 				}
 			}
 			//movement to the right
 			if (dx>0) 
 			{
-				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) 
+				if (abstile.phis == 1 && X >= abstile.phX1 && X <= abstile.phX2 && Y >= abstile.phY1 && Y <= abstile.phY2) 
 				{
 					if (!is_skok) vse=true;
 					else 
 					{
-						X=t.phX1-1;
-						dx=-Math.abs(dx*skok);
+						X = abstile.phX1-1;
+						dx =- Math.abs(dx * skok);
 					}
 				}
 			}
 			if (vse) 
 			{
-				Y+=dy/div;
+				Y += dy / div;
 				return;
 			}
 			//VERTICAL
 			//upward movement
-			if (dy<0) 
+			if (dy < 0) 
 			{
-				Y+=dy/div;
-				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) 
+				Y += dy / div;
+				if (abstile.phis == 1 && Y <= abstile.phY2 && Y >= abstile.phY1 && X >= abstile.phX1 && X <= abstile.phX2) 
 				{
 					if (!is_skok) vse=true;
 					else 
 					{
-						Y=t.phY2+1;
-						dy=Math.abs(dy*skok);
+						Y = abstile.phY2+1;
+						dy = Math.abs(dy*skok);
 					}
 				}
 			}
@@ -121,22 +118,21 @@
 			if (dy>0) 
 			{
 				Y+=dy/div;
-				if (Y>=loc.spaceY*Tile.tilePixelHeight) 
+				if (Y >= loc.spaceY*Tile.tilePixelHeight) 
 				{
 					vse=true;
 					return;
 				}
-				t=loc.getAbsTile(X,Y);
-				if (t.phis==1 && Y>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2) 
+				if (abstile.phis==1 && Y>=abstile.phY1 && Y<=abstile.phY2 && X>=abstile.phX1 && X<=abstile.phX2) 
 				{
-					Y=t.phY1-1;
+					Y=abstile.phY1-1;
 					if (!is_skok) vse=true;
 					else 
 					{
 						if (dy>2) 
 						{
-							dy=-Math.abs(dy*skok);
-							dx*=tormoz;
+							dy =- Math.abs(dy*skok);
+							dx *= tormoz;
 						} 
 						else 
 						{
