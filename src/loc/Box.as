@@ -19,91 +19,105 @@
 	public class Box extends Obj
 	{
 		
-		public var osnova:Box=null;		// on what it stands (the base)
-		public var shelf:Boolean=true;	// you can stand on this
-		public var isPlav:Boolean=false, isPlav2:Boolean=false, fixPlav:Boolean=false;
+		public var osnova:Box = null;			// on what it stands (the base)
+		public var shelf:Boolean = true;		// you can stand on this
+		public var isPlav:Boolean = false;
+		public var isPlav2:Boolean = false;
+		public var fixPlav:Boolean = false;
 		public var id:String;
-		public var door:int=0;
-		public var begX:Number=-1, begY:Number=-1; 		// starting point
-		public var stX:Number=0, stY:Number=0;	// position at the start of the tick
-		public var cdx:Number=0, cdy:Number=0;	// motion of whoever is standing on the box
-		public var vel2:Number=0; // speed squared
+		public var door:int = 0;
+		public var begX:Number = -1;			// starting point
+		public var begY:Number = -1; 			// starting point
+		public var stX:Number = 0;				// position at the start of the tick
+		public var stY:Number = 0;				// position at the start of the tick
+		public var cdx:Number = 0;				// motion of whoever is standing on the box
+		public var cdy:Number = 0;				// motion of whoever is standing on the box
+		public var vel2:Number = 0; 			// speed squared
 		
-		public var mat:int=0;		// material // 0 - unknown // 1 - metal // 2 - stone // 3 - wood
-		public var wall:int=0;		// attaches to the wall
-		public var phis:int=1;
-		public var sur:int=0;		// object on the box
+		public var mat:int = 0;					// material // 0 - unknown // 1 - metal // 2 - stone // 3 - wood
+		public var wall:int = 0;				// attaches to the wall
+		public var phis:int = 1;				// object physics
+		public var sur:int=0;					// object on the box
 		public var hp:Number = 100;
 		public var damageThreshold:Number = 0;
-		public var montdam:int=5;		// how much will it break by crowbar
-		public var electroDam:Number=0;	// if greater than 0, acts as an electric shield generator
-		public var tiles:Array;			// involved blocks
-		public var dead:Boolean=false;
-		public var invis:Boolean=false;
-		public var light:Boolean=false;	// remove fog of war at this point
-		public var door_opac:Number=1;
-		var massaMult:Number=1;
+		public var montdam:int = 5;				// how much will it break by crowbar
+		public var electroDam:Number = 0;		// if greater than 0, acts as an electric shield generator
+		public var tiles:Array;					// involved blocks
+		public var dead:Boolean = false;
+		public var invis:Boolean = false;
+		public var light:Boolean = false;		// remove fog of war at this point
+		public var door_opac:Number = 1;
+		var massaMult:Number = 1;
 		
-		public var molnDam:Number=0;	// lightning strike
-		public var molnPeriod:int=60;
-		public var moln_t:int=0;
+		public var molnDam:Number = 0;			// lightning strike
+		public var molnPeriod:int = 60;
+		public var moln_t:int = 0;
 
-		public var bulPlayer:Boolean=false;	// catch player bullets
-		public var explcrack:Boolean=false;	// opens with an explosion
-		public var bulTele:Boolean=false;	// catch enemy bullets when levitating
-		public var bulChance:Number=0;
-		public var lurk:int=0;				// ability to hide
-		public var isThrow:Boolean=false;	// was thrown by telekinesis
-		public var t_throw:int=0;
+		public var bulPlayer:Boolean = false;	// catch player bullets
+		public var explcrack:Boolean = false;	// opens with an explosion
+		public var bulTele:Boolean = false;		// catch enemy bullets when levitating
+		public var bulChance:Number = 0;
+		public var lurk:int = 0;				// ability to hide
+		public var isThrow:Boolean = false;		// was thrown by telekinesis
+		public var t_throw:int = 0;
 		
-		public var noiseDie:Number=800;
+		public var noiseDie:Number = 800;
 
 		public var scrDie:Script;
 		
-		public var sndOn:Boolean=false;
-		public var sndFall:String='';
-		public var sndOpen:String='';
-		public var sndClose:String='';
-		public var sndDie:String='';
+		public var sndOn:Boolean = false;
+		public var sndFall:String = '';
+		public var sndOpen:String = '';
+		public var sndClose:String = '';
+		public var sndDie:String = '';
 		
-		private var dsf:DropShadowFilter=new DropShadowFilter(0,90,0,0.8,8,8,1,3,false,false,true);
+		private var dsf:DropShadowFilter = new DropShadowFilter(0, 90, 0, 0.8, 8, 8, 1, 3, false, false, true);
 		public var shad:MovieClip;
 		
-		public var ddyPlav:Number=1; //выталкивающая сила, 1 если нет, <0 если предмет всплывает
+		public var ddyPlav:Number = 1; // buoyant force, 1 if none, <0 if the object floats
 		
-		public var un:VirtualUnit;	//виртуальный юнит для взаимодействия с пулями;
+		public var un:VirtualUnit;	// virtual unit for interaction with bullets;
 		
 		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) 
 		{
-			loc=nloc;
-			id=nid;
+			loc = nloc;
+			id = nid;
 			if (loc.land.kolAll) 
 			{
-				if (loc.land.kolAll[id]>0) loc.land.kolAll[id]++;
-				else loc.land.kolAll[id]=1;
+				if (loc.land.kolAll[id] > 0) loc.land.kolAll[id]++;
+				else loc.land.kolAll[id] = 1;
 				//trace(id, loc.land.kolAll[id])
 			}
-			prior=1;
-			vis=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
-			shad=World.w.grafon.getObj('vis'+id, Grafon.numbObj);
-			if (vis==null) 
+			prior = 1;
+			vis = World.w.grafon.getObj('vis'+id, Grafon.numbObj);
+			shad = World.w.grafon.getObj('vis'+id, Grafon.numbObj);
+			if (vis == null) 
 			{
-				vis=new visbox0();
-				shad=new visbox0();
+				vis = new visbox0();
+				shad = new visbox0();
 			}
 
 			vis.stop();
 			shad.gotoAndStop(vis.currentFrame);
 			shad.filters=[dsf];
 			
-			var node:XML=AllData.d.obj.(@id==id)[0];
+			var node:XML = AllData.d.obj.(@id == id)[0];
 			
-			X=begX=nx, Y=begY=ny;
-			scX=vis.width;
-			scY=vis.height;
-			if (node.@scx.length()) scX=node.@scx;
-			if (node.@scy.length()) scY=node.@scy;
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+			X = nx;
+			begX = nx; 
+			Y = ny;
+			begY = ny;
+
+			scX = vis.width;
+			scY = vis.height;
+
+			if (node.@scx.length()) scX = node.@scx;
+			if (node.@scy.length()) scY = node.@scy;
+
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
+			Y1 = Y - scY;
+			Y2 = Y;
 			
 			
 			if (node.@mat.length()) mat=node.@mat;
@@ -129,12 +143,12 @@
 			if (node.@plav.length()) ddyPlav=node.@plav;
 			if (node.@nazv.length()) nazv=Res.txt('o',node.@nazv);
 			else nazv=Res.txt('o',id);
-			if (node.@explcrack.length()) explcrack=true;
-			if (scX<40 || wall>0) shelf=false;
-			if (node.@shelf.length()) shelf=true;
-			if (node.@massaMult.length()) massaMult=node.@massaMult;
-			massa=scX*scY*scY/250000*massaMult;
-			if (node.@massa.length()) massa=node.@massa/50;
+			if (node.@explcrack.length()) explcrack = true;
+			if (scX < 40 || wall > 0) shelf = false;
+			if (node.@shelf.length()) shelf = true;
+			if (node.@massaMult.length()) massaMult = node.@massaMult;
+			massa = scX * scY * scY / 250000 * massaMult;
+			if (node.@massa.length()) massa=node.@massa / 50;
 			
 			if (xml && xml.@indestruct.length()) 
 			{
@@ -142,7 +156,7 @@
 				damageThreshold = 10000;
 			}
 
-			//дверь
+			// Door
 			if (node.@door.length()) 
 			{
 				door=node.@door;
@@ -150,26 +164,26 @@
 				initDoor();
 			}
 
-			//интерактивность
+			// Interactivity
 			if (node.@inter.length() || (xml && (xml.@inter.length() || xml.scr.length() || xml.@scr.length()))) inter=new Interact(this,node,xml,loadObj);
 			if (inter && inter.cont!='' && inter.cont!='empty' && inter.lock && inter.lockTip<=1) bulPlayer=true;
 			
-			//индивидуальные параметры из xml карты
+			// Individual parameters from the XML map
 			if (xml) 
 			{
 				if (xml.@name.length()) nazv=Res.txt('o',xml.@name);	//название
-				//прикреплённые скрипты
+				// Attached scripts
 				if (xml.scr.length()) 
 				{
 					for each (var xscr in xml.scr) 
 					{
-						var scr:Script=new Script(xscr,loc.land);
-						if (inter && scr.eve==null) inter.scrAct=scr;
-						if (inter && scr.eve=='open') inter.scrOpen=scr;
-						if (inter && scr.eve=='close') inter.scrClose=scr;
-						if (inter && scr.eve=='touch') inter.scrTouch=scr;
-						if (scr.eve=='die') scrDie=scr;
-						scr.owner=this;
+						var scr:Script = new Script(xscr,loc.land);
+						if (inter && scr.eve == null) inter.scrAct=scr;
+						if (inter && scr.eve == 'open') inter.scrOpen=scr;
+						if (inter && scr.eve == 'close') inter.scrClose=scr;
+						if (inter && scr.eve == 'touch') inter.scrTouch=scr;
+						if (scr.eve=='die') scrDie = scr;
+						scr.owner = this;
 					}
 				}
 				if (xml.@scr.length()) inter.scrAct=World.w.game.getScript(xml.@scr,this);
@@ -193,21 +207,24 @@
 				if (xml.@radrad.length()) radrad=xml.@radrad;
 			}
 			
-			if (wall>0) 
+			if (wall > 0) 
 			{
 				levitPoss=false;
 				stay=true;
 				sloy=0;
 			} 
-			else sloy=1;
-			if (node.@sloy.length()) sloy=node.@sloy;
+			else sloy = 1;
+			if (node.@sloy.length()) sloy = node.@sloy;
 			
-			cTransform=loc.cTransform;
+			cTransform = loc.cTransform;
 			
 			
-			vis.cacheAsBitmap=true;
-			vis.x=shad.x=X,vis.y=Y,shad.y=Y+(wall?2:6);
-			prior+=1/(scX*scY);
+			vis.cacheAsBitmap = true;
+			vis.x = X;
+			shad.x = X;
+			vis.y = Y; 
+			shad.y = Y + (wall?2:6);
+			prior += 1 / (scX * scY);
 			if (node.@actdam.length()) 
 			{
 				if (xml && xml.@tipdam.length())  bindUnit(xml.@tipdam);
@@ -215,11 +232,11 @@
 			}
 			if (xml && xml.@pokr.length()) 
 			{
-				sloy=1;
-				prior=3;
+				sloy = 1;
+				prior = 3;
 			}
 			
-			if (loadObj && loadObj.dead) die(-1);		//если объект был уничтожен
+			if (loadObj && loadObj.dead) die(-1);		// If the object was destroyed
 			
 
 			
@@ -227,8 +244,8 @@
 		
 		public override function save():Object 
 		{
-			var obj:Object=new Object();
-			if (dead) obj.dead=true;
+			var obj:Object = new Object();
+			if (dead) obj.dead = true;
 			if (inter) inter.save(obj);
 			return obj;
 		}
@@ -236,9 +253,9 @@
 		public override function command(com:String, val:String=null) 
 		{
 			super.command(com,val);
-			if (com=='die') 
+			if (com == 'die') 
 			{
-				hp=0;
+				hp = 0;
 				die();
 			}
 			if (inter) inter.command(com,val);
@@ -263,10 +280,15 @@
 			super.setNull(f);
 			if (!dead && invis && f) 
 			{
-				invis=false;
-				X=begX, Y=begY;
-				dx=dy=0;
-				Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
+				invis = false;
+				X = begX; 
+				Y = begY;
+				dx = 0;
+				dy = 0;
+				Y1 = Y-scY;
+				Y2 = Y;
+				X1 = X - scX / 2;
+				X2 = X + scX / 2;
 			}
 		}
 		
@@ -324,15 +346,15 @@
 			{
 				if (!osnova.stay || osnova.levit) 
 				{
-					stay=false;
-					osnova=null;
+					stay = false;
+					osnova = null;
 				}
 				if (osnova &&  (osnova.cdx!=0 || osnova.cdy!=0)) 
 				{
 					if (collisionAll(osnova.cdx,osnova.cdy)) 
 					{
-						stay=false;
-						osnova=null;
+						stay = false;
+						osnova = null;
 					} 
 					else 
 					{
@@ -345,7 +367,7 @@
 			}
 			if (wall==0 && !(stay && dx==0) && !fixPlav) 
 			{
-				if (wall==0) forces();		//внешние силы, влияющие на ускорение
+				if (wall == 0) forces();		//внешние силы, влияющие на ускорение
 				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
 				else 
 				{
@@ -369,7 +391,7 @@
 		
 		public function initDoor() 
 		{
-			tiles=new Array();
+			tiles = new Array();
 			for (var i=Math.floor(X1/Tile.tilePixelWidth+0.5); i<=Math.floor(X2/Tile.tilePixelWidth-0.5); i++) 
 			{
 				for (var j=Math.floor(Y1/Tile.tilePixelHeight+0.5); j<=Math.floor(Y2/Tile.tilePixelHeight-0.5); j++) 
@@ -390,26 +412,27 @@
 		{
 			for (var i in tiles) 
 			{
-				(tiles[i] as Tile).phis=(open?0:phis);
-				(tiles[i] as Tile).opac=(open?0:door_opac);
+				(tiles[i] as Tile).phis = (open?0:phis);
+				(tiles[i] as Tile).opac = (open?0:door_opac);
 			}
 			setVisState(open?'open':'close');
 			if (open) 
 			{
-				loc.isRelight=true;
-				loc.isRebuild=true;
+				loc.isRelight = true;
+				loc.isRebuild = true;
 			}
 		}
 
-		//удар закрывающейся дверью
+		// Striking a closing door
 		public function attDoor():Boolean 
 		{
 			for each (var cel in loc.units) 
 			{
-				if (cel==null || (cel as Unit).sost==4) continue;
+				if (cel == null || (cel as Unit).sost == 4) continue;
 				if (cel is src.unit.UnitMWall) continue;
-				if (cel is src.unit.Mine && !(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) {
-					cel.fixed=true;
+				if (cel is src.unit.Mine && !(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) 
+				{
+					cel.fixed = true;
 					(cel as src.unit.Mine).activate();
 					continue;
 				}
@@ -434,33 +457,33 @@
 		{
 			for each (var cel in loc.units) 
 			{
-				if (cel==null || (cel as Unit).sost==4) continue;
-				if (!(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) 
+				if (cel == null || (cel as Unit).sost == 4) continue;
+				if (!(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1)) 
 				{
 					cel.udarBox(this);
 				}
 			}
 		}
 		
-		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
+		// Checking for bullet hit, inflicts damage if the bullet hit, returns -1 if it missed
 		public override function udarBullet(bul:Bullet, sposob:int=0):int 
 		{
-			if (sposob==1)
+			if (sposob == 1)
 			{
 				if (!bulPlayer) return -1;
 				damage(bul.destroy);
 				return mat;
 			}
-			if (sposob==0 && bulChance>0) 
+			if (sposob == 0 && bulChance > 0) 
 			{
 				if (Math.random()<bulChance) 
 				{
-					var sila=Math.random()*0.4+0.8;
-					sila/=massa;
-					if (sila>3) sila=3;
-					dx+=bul.knockx*bul.otbros*sila;
-					dy+=bul.knocky*bul.otbros*sila;
-					World.w.gg.otbrosTele(bul.otbros*sila);
+					var sila = Math.random() * 0.4 + 0.8;
+					sila /= massa;
+					if (sila > 3) sila = 3;
+					dx += bul.knockx * bul.otbros * sila;
+					dy += bul.knocky * bul.otbros * sila;
+					World.w.gg.otbrosTele(bul.otbros * sila);
 					return mat;
 				}
 			}
@@ -470,51 +493,51 @@
 		public function damage(dam:Number) 
 		{
 			dam -= damageThreshold;
-			if (dam>0) hp-=dam;
-			if (hp<=0) die();
+			if (dam > 0) hp -= dam;
+			if (hp <= 0) die();
 		}
 		
 		public override function die(sposob:int=0) 
 		{
 			if (dead) return;
 			if (inter && inter.prize) return;
-			dead=true;
-			if (door>0) 
+			dead = true;
+			if (door > 0) 
 			{
 				for (var i in tiles) 
 				{
-					(tiles[i] as Tile).opac=0;
-					(tiles[i] as Tile).phis=0;
-					(tiles[i] as Tile).hp=0;
+					(tiles[i] as Tile).opac = 0;
+					(tiles[i] as Tile).phis = 0;
+					(tiles[i] as Tile).hp = 0;
 				}
 				setVisState('die');
 				if (inter) 
 				{
-					if (inter.mine>0) 
+					if (inter.mine > 0) 
 					{
 						if (inter.fiascoRemine!=null) inter.fiascoRemine();
 					}
 					inter.off();
 				}
-				if (sposob>=0 && sposob<10) 
+				if (sposob >= 0 && sposob < 10) 
 				{
 					var kus='iskr';
-					if (mat==1) kus='metal';
-					if (mat==2) kus='kusok';
-					if (mat==3) kus='schep';
-					if (mat==5) kus='steklo';
-					if (mat==7) kus='pole';
-					Emitter.emit(kus,loc,X,Y-scY/2,{kol:12,rx:scX, ry:scY});
-					if (sndDie!='') Snd.ps(sndDie,X,Y);
+					if (mat==1) kus = 'metal';
+					if (mat==2) kus = 'kusok';
+					if (mat==3) kus = 'schep';
+					if (mat==5) kus = 'steklo';
+					if (mat==7) kus = 'pole';
+					Emitter.emit(kus, loc, X, Y - scY / 2, {kol:12, rx:scX, ry:scY});
+					if (sndDie!='') Snd.ps(sndDie, X, Y);
 				}
-				if (noiseDie) loc.budilo(X,Y-scY/2,noiseDie);
-				if (inter) inter.sign=0;
+				if (noiseDie) loc.budilo(X, Y - scY / 2, noiseDie);
+				if (inter) inter.sign = 0;
 			} 
 			else if (un) 
 			{
-				invis=true;
-				un.disabled=true;
-				un.sost=4;
+				invis = true;
+				un.disabled = true;
+				un.sost = 4;
 				if (vis) remVisual();
 			} 
 			else 
@@ -523,10 +546,10 @@
 				{
 					inter.dieCont();
 				}
-				bulPlayer=false;
-				bulChance*=0.25;
+				bulPlayer = false;
+				bulChance *= 0.25;
 			}
-			if (scrDie && sposob>=0) scrDie.start();
+			if (scrDie && sposob >= 0) scrDie.start();
 		}
 		
 		
@@ -534,204 +557,251 @@
 		{
 			if (!levit) 
 			{
-				if (!isPlav && dy<World.maxdy) dy+=World.ddy;
-				if (isPlav && isPlav2) dy+=World.ddy*ddyPlav;
+				if (!isPlav && dy < World.maxdy) dy += World.ddy;
+				if (isPlav && isPlav2) dy += World.ddy * ddyPlav;
 			}
 			if (isPlav) 
 			{
-				dy*=0.65; dx*=0.65;
+				dy *= 0.65; 
+				dx *= 0.65;
 			} 
 			else if (levit) 
 			{
-				dy*=0.8; dx*=0.8;
+				dy *= 0.8; 
+				dx *= 0.8;
 			}
 		}
 		
-		//удар от падения
+		// Impact from falling
 		public function attDrop() 
 		{
-			vel2=dx*dx+dy*dy;
-			if (vel2<50) return;
+			vel2 = dx * dx + dy * dy;
+			if (vel2 < 50) return;
 			for each(var cel:Unit in loc.units) 
 			{
-				if (cel==null || fracLevit>0 && cel.fraction==fracLevit) continue;
-				if (cel.sost==4 || cel.neujaz>0 || cel.loc!=loc || cel.X1>X2 || cel.X2<X1 || cel.Y1>Y2 || cel.Y2<Y1) continue;
-				if (t_throw>0) 
+				if (cel == null || fracLevit > 0 && cel.fraction == fracLevit) continue;
+				if (cel.sost == 4 || cel.neujaz > 0 || cel.loc != loc || cel.X1 > X2 || cel.X2 < X1 || cel.Y1 > Y2 || cel.Y2 < Y1) continue;
+				if (t_throw > 0) 
 				{
-					cel.neujaz=12;
+					cel.neujaz = 12;
 					continue;
 				}
 				cel.udarBox(this);
-				isThrow=false;
+				isThrow = false;
 			}
 		}
 		
 		public override function checkStay() 
 		{
 			if (osnova || wall>0) return true;
-			fixPlav=false;
+			fixPlav = false;
 			checkWater();
-			if (isPlav&&!isPlav2 && dy<2 && dy>-2) 
+			if (isPlav && !isPlav2 && dy < 2 && dy > -2) 
 			{
-				fixPlav=true;
+				fixPlav = true;
 			}
-			for (var i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
+			for (var i = Math.floor(X1 / Tile.tilePixelWidth); i <= Math.floor(X2 / Tile.tilePixelWidth); i++) 
 			{
-				var t=loc.space[i][Math.floor((Y2+1)/Tile.tilePixelHeight)];
-				if (collisionTile(t,0,1)) 
+				var t = loc.space[i][Math.floor((Y2 + 1) / Tile.tilePixelHeight)];
+				if (collisionTile(t, 0, 1)) 
 				{
 					return true;
 				}
 			}
-			stay=false;
+			stay = false;
 			return false;
 		}
 		
-		public function run(div:int=1) 
+
+
+
+		//#######################
+		//      MOVEMENT CONTROLLER
+		//#######################
+
+		public function run(div:int = 1) 
 		{
-			//движение
-			var t:Tile;var i:int;
-			
-			
-			//ГОРИЗОНТАЛЬ
-				X+=dx/div;
-				if (X-scX/2<0) 
+			// Movement
+			var t:Tile;
+			var i:int;
+			var halfscX:Number = scX / 2;
+			var tilepixelheight = Tile.tilePixelHeight;
+			var tilepixelwidth = Tile.tilePixelWidth
+			var locspacex:Number = loc.spaceX
+			var locspacey:Number = loc.spaceY
+
+			// HORIZONTAL
+				X += dx / div;
+
+				if (X - halfscX < 0) 
 				{
-					X=scX/2;
-					dx=Math.abs(dx);
+					X = halfscX;
+					dx = Math.abs(dx);
 				}
-				if (X+scX/2>=loc.spaceX*Tile.tilePixelWidth) 
+				if (X + halfscX >= locspacex * tilepixelwidth) 
 				{
-					X=loc.spaceX*Tile.tilePixelWidth-1-scX/2;
-					dx=-Math.abs(dx);
+					X = locspacex * tilepixelwidth - 1 - halfscX;
+					dx = -Math.abs(dx);
 				}
-				X1=X-scX/2, X2=X+scX/2;
-				//движение влево
-				if (dx<0) 
+
+				// Precacalculating these instead of running them repeatedly inside the loops.
+				X1 = X - halfscX;
+				X2 = X + halfscX;
+				var x1Floor:int = Math.floor(X1 / tilepixelwidth);
+				var x2Floor:int = Math.floor(X2 / tilepixelwidth);
+				var y1Floor:int = Math.floor(Y1 / tilepixelheight);
+				var y2Floor:int = Math.floor(Y2 / tilepixelheight);
+
+
+				// movement to the left
+				if (dx < 0) 
 				{
-					for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) 
+					for (i = y1Floor; i <= y2Floor; i++) 
 					{
-						t=loc.space[Math.floor(X1/Tile.tilePixelWidth)][i];
+						t = loc.space[x1Floor][i];
 						if (collisionTile(t)) 
 						{
-								X=t.phX2+scX/2;
-								if (dx<-10) dx=-dx*0.2;
-								else dx=0;
-								X1=X-scX/2, X2=X+scX/2;
-							isThrow=false;
+								X = t.phX2 + halfscX;
+								if (dx < -10) dx =- dx * 0.2;
+								else dx = 0;
+								X1 = X - halfscX;
+								X2 = X + halfscX;
+							isThrow = false;
 						}
 					}
 				}
-				//движение вправо
-				if (dx>0) 
+				// movement to the right
+				if (dx > 0) 
 				{
-					for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) 
+					for (i = y1Floor; i <= y2Floor; i++) 
 					{
-						t=loc.space[Math.floor(X2/Tile.tilePixelWidth)][i];
+						t = loc.space[x2Floor][i];
 						if (collisionTile(t)) 
 						{
-								X=t.phX1-scX/2;
-								if (dx>10) dx=-dx*0.2;
-								else dx=0;
-								X1=X-scX/2, X2=X+scX/2;
-							isThrow=false;
+								X = t.phX1 - halfscX;
+								if (dx > 10) dx =- dx * 0.2;
+								else dx = 0;
+								X1 = X - halfscX;
+								X2 = X + halfscX;
+							isThrow = false;
 						}
 					}
 				}
 			
 			
-			//ВЕРТИКАЛЬ
-			//движение вниз
-			var newmy:Number=0;
-			if (dy>0) 
+			// VERTICAL
+			// downward movement
+			var newmy:Number = 0;
+			if (dy > 0) 
 			{
-				stay=false;
-				for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
+				stay = false;
+				for (i = x1Floor; i <= x2Floor; i++) 
 				{
-					t=loc.space[i][Math.floor((Y2+dy/div)/Tile.tilePixelHeight)];
-					if (collisionTile(t,0,dy/div)) 
+					t = loc.space[i][Math.floor((Y2 + dy / div) / tilepixelheight)];
+					if (collisionTile(t, 0, dy / div)) 
 					{
-						newmy=t.phY1;
+						newmy = t.phY1;
 						break;
 					}
 				}
-				if (newmy==0 && !levit && !isThrow) newmy=checkShelf(dy/div);
-				if (Y>=(loc.spaceY-1)*Tile.tilePixelHeight && !loc.bezdna) newmy=(loc.spaceY-1)*Tile.tilePixelHeight;
-				if (Y>=loc.spaceY*Tile.tilePixelHeight-1 && loc.bezdna) 
+				if (newmy == 0 && !levit && !isThrow) newmy = checkShelf(dy / div);
+				if (Y >= (locspacey - 1) * tilepixelheight && !loc.bezdna) newmy = (locspacey - 1) * tilepixelheight;
+				if (Y >= locspacey * tilepixelheight - 1 && loc.bezdna) 
 				{
-					invis=true;
+					invis = true;
 					if (vis) remVisual();
 				}
+
 				if (newmy) 
 				{
-					Y=newmy;
-					Y1=Y-scY, Y2=Y;
-					if (loc.locationActive && dy>4 && dy*massa>5) World.w.quake(0,dy*Math.sqrt(massa)/2);
-					if (dy>5 && sndFall && sndOn) Snd.ps(sndFall,X,Y,0,dy/15);
-					if (dy>5) 
+					Y = newmy;
+					Y1 = Y - scY;
+					Y2 = Y;
+					if (loc.locationActive && dy > 4 && dy * massa > 5) World.w.quake(0, dy*Math.sqrt(massa) / 2);
+					if (dy > 5 && sndFall && sndOn) Snd.ps(sndFall, X, Y, 0, dy / 15);
+					if (dy>  5) 
 					{
-						loc.budilo(X,Y,dy*dy*massa);
+						loc.budilo(X, Y, dy * dy * massa);
 					}
-					if (dy<5 || massa>1) dy=0;
-					else dy*=-0.2;
-					if (dx>-5 && dx<5) dx=0;
+					if (dy < 5 || massa > 1) dy = 0;
+					else dy *= -0.2;
+					if (dx > -5 && dx < 5) dx = 0;
 					else 
 					{
-						dx*=0.92;
-						if (mat==1)	Emitter.emit('iskr_wall',loc,X+(Math.random()-0.5)*scX,Y);
+						dx *= 0.92;
+						if (mat ==1 )	Emitter.emit('iskr_wall', loc, X+(Math.random() - 0.5) * scX, Y);
 					}
-					if (!levit && (!isPlav || ddyPlav>0)) 
+					if (!levit && (!isPlav || ddyPlav > 0)) 
 					{
-						stay=true;
-						isThrow=false;
-						fracLevit=0;
+						stay = true;
+						isThrow = false;
+						fracLevit = 0;
 					}
-					sndOn=true;
+					sndOn = true;
 				} 
 				else 
 				{
-					Y+=dy/div;
-					Y1=Y-scY, Y2=Y;
+					Y += dy / div;
+					Y1 = Y - scY;
+					Y2 = Y;
 				}
+				
 			}
 
-			//движение вверх
-			if (dy<0) 
+			// upward movement
+			if (dy < 0) 
 			{
-				stay=false;
-				Y+=dy/div;
-				Y1=Y-scY, Y2=Y;
-				if (Y-scY<0) Y=scY;
-				for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
+				stay = false;
+				Y += dy / div;
+				Y1 = Y - scY;
+				Y2 = Y;
+				if (Y - scY < 0) Y = scY;
+				for (i = x1Floor; i <= x2Floor; i++) 
 				{
-					t=loc.space[i][Math.floor(Y1/Tile.tilePixelHeight)];
+					t = loc.space[i][y1Floor];
 					if (collisionTile(t)) 
 					{
-						Y=t.phY2+scY;
-						Y1=Y-scY, Y2=Y;
-						dy=0;
-						isThrow=false;
+						Y = t.phY2 + scY;
+						Y1 = Y - scY;
+						Y2 = Y;
+						dy = 0;
+						isThrow = false;
 					}
 				}
 			}
 		}
 
-		//поиск жидкости
+
+
+
+
+		// search for liquid
 		public function checkWater():Boolean 
 		{
-			var pla=isPlav;
-			isPlav=isPlav2=false;
+			var pla = isPlav;
+			isPlav = false;
+			isPlav2 = false;
+
+			//Precalculating these to speed up loops...
+			var tilepixelheight = Tile.tilePixelHeight;
+			var tilepixelwidth = Tile.tilePixelWidth
+			var xFloor:Number = Math.floor(X / Tile.tilePixelWidth)
+
+
 			try 
 			{
-				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.45)/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((loc.space[xFloor][Math.floor((Y - scY * 0.45) / tilepixelheight)] as Tile).water > 0) 
 				{
-					isPlav=true;
+					isPlav = true;
 				}
-				if ((loc.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.55)/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((loc.space[xFloor][Math.floor((Y - scY * 0.55) / tilepixelheight)] as Tile).water > 0) 
 				{
-					isPlav2=true;
+					isPlav2 = true;
 				}
-			} catch (err) {}
+			} catch (err) 
+			{
+				
+			}
 
 			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap',loc,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
 			if (pla!=isPlav && dy>5) 
@@ -747,7 +817,7 @@
 		{
 			for (var i in loc.objs) 
 			{
-				var b:Box=loc.objs[i] as Box;
+				var b:Box = loc.objs[i] as Box;
 				if (!b.invis && b.stay && b.shelf && !(X<b.X1 || X>b.X2) && Y2<=b.Y1 && Y2+dy>b.Y1) 
 				{
 					osnova=b;
@@ -762,7 +832,7 @@
 			{
 				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) 
 				{
-					if (collisionTile(loc.space[i][j],gx,gy)) return true;
+					if (collisionTile(loc.space[i][j], gx, gy)) return true;
 				}
 			}
 			return false;
@@ -773,10 +843,10 @@
 			un=new VirtualUnit(n);
 			copy(un);
 			un.owner=this;
-			un.loc=loc;
+			un.loc = loc;
 		}
 		
-		//принудительное движение
+		// forced movement
 		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) 
 		{
 			super.bindMove(nx,ny);
@@ -808,7 +878,7 @@
 			else return 1;
 		}
 		
-		//особые функции
+		// special functions
 		
 		function initFun(fun:String) 
 		{

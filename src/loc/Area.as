@@ -67,7 +67,7 @@
 				X2 = X1 + scX;
 				if (xml.@h.length()) 
 				{
-					ry=xml.@h;
+					ry = xml.@h;
 				}
 				scY = ry * World.tilePixelHeight;
 				Y1 = Y2 - scY;
@@ -95,16 +95,16 @@
 				{
 					for each (var xscr in xml.scr) 
 					{
-						var scr:Script=new Script(xscr,loc.land,this);
-						if (scr.eve==null || scr.eve=='over') scrOver=scr;
-						if (scr.eve=='out') scrOut=scr;
+						var scr:Script = new Script(xscr, loc.land, this);
+						if (scr.eve == null || scr.eve == 'over') scrOver = scr;
+						if (scr.eve == 'out') scrOut = scr;
 					}
 				}
-				if (xml.@scr.length()) scrOver=World.w.game.getScript(xml.@scr,this);
-				if (xml.@scrout.length()) scrOut=World.w.game.getScript(xml.@scrout,this);
+				if (xml.@scr.length()) scrOver = World.w.game.getScript(xml.@scr, this);
+				if (xml.@scrout.length()) scrOut = World.w.game.getScript(xml.@scrout, this);
 
 				// Change Walls
-				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@tilethre.length())  //If the tile has a HP value, tileop, or tilethre property?
+				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@damageThreshold.length())  //If the tile has a HP value, tileop(?), or damageThreshold property
 				{
 					for (var i = bx; i < bx + rx; i++) 
 					{
@@ -148,32 +148,32 @@
 				// Particle Emitter
 				if (xml.@emit.length()) 
 				{
-					emit=Emitter.arr[xml.@emit];
+					emit = Emitter.arr[xml.@emit];
 				}
 				if (xml.@dens.length()) 
 				{
-					dens=xml.@dens;
+					dens = xml.@dens;
 				}
 				frec = dens * rx * ry / 100;
 
 				// Teleport
 				if (xml.@port.length()) 
 				{
-					var s:String=xml.@port;
-					var arr:Array=s.split(':');
-					if (arr.length>=2) 
+					var s:String = xml.@port;
+					var arr:Array = s.split(':');
+					if (arr.length >= 2) 
 					{
-						onPort=true;
-						portX=arr[0];
-						portY=arr[1];
+						onPort = true;
+						portX = arr[0];
+						portY = arr[1];
 					}
 				}
 			}
 			if (loadObj) 
 			{
-				enabled=loadObj.enabled;
+				enabled = loadObj.enabled;
 			}
-			if (enabled && lift!=1) setLift();
+			if (enabled && lift != 1) setLift();
 			if (vis)
 			{
 				if (vis.totalFrames <= 1) 
@@ -185,30 +185,30 @@
 				vis.scaleX = scX / 100;
 				vis.scaleY = scY / 100;
 				vis.alpha = enabled? 1:0.1;
-				vis.blendMode='screen';
+				vis.blendMode = 'screen';
 			}
 		}
 		
 		public override function save():Object 
 		{
-			var obj:Object=new Object();
-			obj.enabled=enabled;
+			var obj:Object = new Object();
+			obj.enabled = enabled;
 			return obj;
 		}
 		
 		public override function command(com:String, val:String=null) 
 		{
-			if (com=='onoff') enabled=!enabled;
-			if (com=='off') enabled=false;
-			if (com=='on') enabled=true;
-			if (lift!=1) setLift();
-			if (vis) vis.alpha=enabled?1:0.1;
-			if (com=='dam') damTiles(int(val));
+			if (com == 'onoff') enabled =! enabled;
+			if (com == 'off') enabled = false;
+			if (com == 'on') enabled = true;
+			if (lift != 1) setLift();
+			if (vis) vis.alpha = enabled? 1:0.1;
+			if (com == 'dam') damTiles(int(val));
 		}
 		
 		public override function step() 
 		{
-			if (!enabled || !loc.locationActive || tip=='') return;
+			if (!enabled || !loc.locationActive || tip == '') return;
 			if (emit)
 			{
 				t_frec += frec;
@@ -260,7 +260,7 @@
 				else scrOver.start();
 			}
 			if (!active && preactive && scrOut) scrOut.start();
-			preactive=active;
+			preactive = active;
 		}
 		
 		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number) 
