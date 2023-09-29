@@ -97,15 +97,15 @@
 
 		var aiDx:Number=0, aiDy:Number=0, aiRasst:Number;
 		
-		//состояния
-		//0 - неподвижен
-		//1 - плавает
-		//2 - не видит цели
-		//3 - видит цель, плывёт к ней
-		//4 - атакует
-		//5 - готовится к рывку
-		//6 - рывок
-		//7 - на берегу
+		//States
+		//0 - motionless
+		//1 - swimming
+		//2 - doesn't see the target
+		//3 - sees the target, swimming towards it
+		//4 - attacking
+		//5 - preparing to lunge
+		//6 - lunging
+		//7 - on the shore
 		
 		public override function control() {
 			if (sost>=3) {

@@ -17,8 +17,6 @@
 			flyer=true;
 			kolTrs=1;
 			super(cid, ndif, xml, loadObj);
-			//if (msex) wPos=BlitAnim.wPosRaider1;
-			//else wPos=BlitAnim.wPosRaider2;
 			tupizna=10;
 			visionMult=1.5;
 			maxSpok=50;
@@ -59,7 +57,7 @@
 				arm.scaleX=storona;
 			}
 		}
-		//задать положение оружия
+		//Set weapon position
 		public override function setWeaponPos(tip:int=0) {
 			if (arm==null || arm.parent==null) {
 				super.setWeaponPos(tip);
@@ -75,7 +73,7 @@
 		
 		public override function dropLoot() {
 			budilo(2000);
-			arm.visible=false;
+			arm.visible = false;
 			super.dropLoot();
 		}
 		

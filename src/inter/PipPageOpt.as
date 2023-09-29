@@ -115,20 +115,20 @@
 					vis.butDef.text.text=Res.pipText('loadfile');
 				} else {
 					setTopText('infosave');
-					if (World.w.pers.hardcore) {
+					if (World.w.pers.hardcoreMode) {
 						nSave=World.w.autoSaveN;
 						vis.butOk.visible=true;
 					}
 					vis.butOk.text.text=Res.pipText('opt2');
-					if (gg.pers.hardcore) vis.butDef.visible=false;
+					if (gg.pers.hardcoreMode) vis.butDef.visible=false;
 					vis.butDef.text.text=Res.pipText('savefile');
 				}
-				for (var i=0; i<=World.w.saveKol; i++) {
+				for (var i=0; i<=World.w.saveCount; i++) {
 					var save:Object=World.w.getSave(i);
 					var obj:Object=saveObj(save,i);
 					arr.push(obj);
 				}
-				if (page2==2 && World.w.pers.hardcore) {
+				if (page2==2 && World.w.pers.hardcoreMode) {
 					showSaveInfo(arr[nSave],vis);
 				}
 				pip.vis.butHelp.visible=true;
@@ -152,7 +152,7 @@
 				obj.app=save.app;
 				obj.armor=save.invent.cArmorId;
 				if (save.pers.dead) obj.hard=2;
-				else if (save.pers.hardcore) obj.hard=1;
+				else if (save.pers.hardcoreMode) obj.hard=1;
 				if (save.hardInv) obj.hardInv=1;
 				if (save.pers.rndpump) obj.rndpump=1;
 				obj.time=Res.gameTime(save.game.t_save);
@@ -340,7 +340,7 @@
 					World.w.gui.infoText('noAct');
 					return;
 				}
-				if (page2==2 && gg.pers.hardcore) return;
+				if (page2==2 && gg.pers.hardcoreMode) return;
 				var numb:int=event.currentTarget.id.text;
 				if (page2==1 && event.currentTarget.numb.text=='') return;
 				nSave=numb;

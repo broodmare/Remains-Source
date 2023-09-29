@@ -187,7 +187,7 @@
 		{
 			var n:int = 0;
 			var maxDate:Number = 0;
-			for (var i = 0; i <= world.saveKol; i++) 
+			for (var i = 0; i <= world.saveCount; i++) 
 			{
 				var save:Object=World.w.getSave(i);
 				if (save && save.est && save.date > maxDate) 
@@ -241,14 +241,12 @@
 					mainMenu.lang.addChild(m);
 				}
 			}
-			//mainMenumm.butRus.lang.text= 'ѠҨҼ✶☆☢☣';
 			
 		}
 		
-		//надписи
+		//Language
 		public function setMainLang() 
 		{
-			//mainMenu.butContGame.txt.defaultTextFormat=format;
 			setMainButton(mainMenu.butContGame,Res.guiText('contgame'));
 			setMainButton(mainMenu.butNewGame,Res.guiText('newgame'));
 			setMainButton(mainMenu.butLoadGame,Res.guiText('loadgame'));
@@ -319,26 +317,26 @@
 			if (active) setMenuSize();
 		}
 
-		//загрузка игры
+		//Main menu loading
 		public function mainLoadOn() 
 		{
 			mainMenu.dialLoad.visible=true;
-			mainMenu.dialLoad.title2.visible=(loadReg==1);
-			mainMenu.dialLoad.title.visible=(loadReg==0);
-			mainMenu.dialLoad.slot0.visible=(loadReg==0);
+			mainMenu.dialLoad.title2.visible = (loadReg == 1);
+			mainMenu.dialLoad.title.visible = (loadReg == 0);
+			mainMenu.dialLoad.slot0.visible = (loadReg == 0);
 			mainMenu.dialLoad.info.text='';
 			mainMenu.dialLoad.nazv.text='';
 			mainMenu.dialLoad.pers.visible=false;
-			arr=new Array();
-			for (var i=0; i<=world.saveKol; i++) 
+			arr = new Array();
+			for (var i = 0; i <= world.saveCount; i++) 
 			{
-				var slot:MovieClip=mainMenu.dialLoad['slot'+i];
-				var save:Object=World.w.getSave(i);
-				var obj:Object=src.inter.PipPageOpt.saveObj(save,i);
+				var slot:MovieClip = mainMenu.dialLoad['slot'+i];
+				var save:Object = World.w.getSave(i);
+				var obj:Object = src.inter.PipPageOpt.saveObj(save,i);
 				arr.push(obj);
-				slot.id.text=i;
-				slot.id.visible=false;
-				if (save!=null && save.est!=null) 
+				slot.id.text = i;
+				slot.id.visible = false;
+				if (save != null && save.est != null) 
 				{
 					slot.nazv.text=(i==0)?Res.pipText('autoslot'):(Res.pipText('saveslot')+' '+i);
 					slot.ggName.text=(save.pers.persName==null)?'-------':save.pers.persName;
@@ -350,15 +348,15 @@
 				} 
 				else 
 				{
-					slot.nazv.text=Res.pipText('freeslot');
-					slot.ggName.text=slot.land.text=slot.date.text='';
+					slot.nazv.text = Res.pipText('freeslot');
+					slot.ggName.text = slot.land.text=slot.date.text = '';
 				}
 				slot.addEventListener(MouseEvent.CLICK, funLoadSlot);
 				slot.addEventListener(MouseEvent.MOUSE_OVER, funOverSlot);
 			}
 			mainMenu.dialLoad.butCancel.addEventListener(MouseEvent.CLICK, funLoadCancel);
 			mainMenu.dialLoad.butFile.addEventListener(MouseEvent.CLICK, funLoadFile);
-			animOn=false;
+			animOn = false;
 		}
 		
 		public function mainLoadOff() 
@@ -369,7 +367,8 @@
 				mainMenu.dialLoad.butCancel.removeEventListener(MouseEvent.CLICK, funLoadCancel);
 				mainMenu.dialLoad.butFile.removeEventListener(MouseEvent.CLICK, funLoadFile);
 			}
-			for (var i=0; i<=world.saveKol; i++) {
+			for (var i = 0; i <= world.saveCount; i++) 
+			{
 				var slot:MovieClip=mainMenu.dialLoad['slot'+i];
 				if (slot.hasEventListener(MouseEvent.CLICK)) {
 					slot.removeEventListener(MouseEvent.CLICK, funLoadSlot);
@@ -383,16 +382,17 @@
 		{
 			mainLoadOff();
 		}
-		//выбрать слот
+
+		//select slot
 		public function funLoadSlot(event:MouseEvent) 
 		{
-			loadCell=event.currentTarget.id.text;
-			if (loadReg==1 && loadCell==0) return;
-			if (loadReg==0 && event.currentTarget.ggName.text=='') return;
+			loadCell = event.currentTarget.id.text;
+			if (loadReg == 1 && loadCell == 0) return;
+			if (loadReg == 0 && event.currentTarget.ggName.text == '') return;
 			mainLoadOff();
 			mainMenuOff();
 			command = 3;
-			if (loadReg==1) com='new';
+			if (loadReg == 1) com = 'new';
 			else com='load';
 		}
 		public function funOverSlot(event:MouseEvent) 
@@ -604,8 +604,10 @@
 			mainMenu.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
 		
-		function step() {
-			if (langReload) {
+		function step() 
+		{
+			if (langReload) 
+			{
 				if (world.textLoaded) 
 				{
 					langReload=false;
@@ -633,7 +635,8 @@
 				mainMenu.loading.text='Loading '+(Math.floor(stn/30))+'\n';
 				//+Math.round(world.textProgressLoad*100)+'%\n';
 				if (world.textLoaded) world.init2();
-				if (world.allLandsLoaded && world.textLoaded) {
+				if (world.allLandsLoaded && world.textLoaded) 
+				{
 					setLangButtons();
 					setMainLang();
 					loaded=true;
@@ -648,11 +651,13 @@
 			}
 		}
 		
-		public function log(s:String) {
+		public function log(s:String) 
+		{
 			mainMenu.loading.text+=s+'; ';
 		}
 
-		public function mainStep(event:Event):void {
+		public function mainStep(event:Event):void 
+		{
 			if (active) step();
 			else if (command > 0) 
 			{
@@ -667,23 +672,27 @@
 					var opt:Object;
 					if (com == 'new') 
 					{
-						//propusk - option 1 - skip training
-						//hardcore - option 2
+						//skipTraining - option 1 - skip training
+						//hardcoreMode - option 2
 						//fastxp - option 3, 40% less experience needed
-						//rndpump - option 4, random pumping
-						//hardskills - give 3 sp per level
+						//randomizeLevelUpSkills - option 4, randomize what skillpoints are assigned to when leveling up.
+						//hardskills - give 3 sp per level (instead of?)
 						//autoSaveN - autosave cell
-						opt={dif:newGameDif,
-							propusk:mainMenu.dialNew.checkOpt1.selected,
+						//limitedInventory
+						opt =
+						{
+							dif:newGameDif,
+							skipTraining:mainMenu.dialNew.checkOpt1.selected,
 							hardcore:mainMenu.dialNew.checkOpt2.selected,
 							fastxp:mainMenu.dialNew.checkOpt3.selected,
 							rndpump:mainMenu.dialNew.checkOpt4.selected,
 							hardskills:mainMenu.dialNew.checkOpt5.selected,
-							hardinv:mainMenu.dialNew.checkOpt6.selected};
-						if (opt.hardcore) opt.autoSaveN=loadCell;
-						loadCell=-1;
+							hardinv:mainMenu.dialNew.checkOpt6.selected
+						};
+						if (opt.hardcore) opt.autoSaveN = loadCell;
+						loadCell =- 1;
 					}
-					world.startNewGame(loadCell,mainMenu.dialNew.inputName.text,opt);
+					world.startNewGame(loadCell, mainMenu.dialNew.inputName.text, opt);
 				}
 			} 
 			else world.step();

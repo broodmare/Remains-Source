@@ -18,56 +18,67 @@
 		public var locs:Array;					//three-dimensional map of all locations
 		public var probs:Array;					//trial locations
 		public var listLocs:Array;				//linear array of locations
-		public var locX:int, locY:int, locZ:int=0;	//coordinates of the active location
-		public var retLocX:int=0, retLocY:int=0, retLocZ:int=0, retX:Number=0, retY:Number=0;	//coordinates for returning to the main layer
-		public var prob:String='';				//trial layer, ''-main layer
-		public var minLocX:int=0, minLocY:int=0, minLocZ:int=0;	//terrain size
-		public var maxLocX:int=4, maxLocY:int=6, maxLocZ:int=2;	//terrain size
+		public var locX:int;
+		public var locY:int;
+		public var locZ:int = 0;				//coordinates of the active location
+		public var retLocX:int = 0;
+		public var retLocY:int = 0;
+		public var retLocZ:int = 0;
+		public var retX:Number = 0;
+		public var retY:Number = 0;				//coordinates for returning to the main layer
+		public var prob:String = '';			//trial layer, ''-main layer
+		public var minLocX:int = 0;
+		public var minLocY:int = 0;
+		public var minLocZ:int = 0;				//terrain size
+		public var maxLocX:int = 4;
+		public var maxLocY:int = 6;
+		public var maxLocZ:int = 2;				//terrain size
 		
-		public var loc_t:int=0;					//timer
-		static var locN:int=0;					//transition counter
+		public var loc_t:int = 0;				//timer
+		static var locN:int = 0;				//transition counter
 		
 		public var gg:UnitPlayer;
-		public var ggX:Number=0, ggY:Number=0;	//coordinates of the player in the terrain
+		public var ggX:Number=0;				//X coordinate of the player in the land
+		public var ggY:Number=0;				//Y coordinate of the player in the land
 		public var currentCP:CheckPoint;
 		public var art_t:int=200;
 		
 		public var map:BitmapData;				//terrain map
 		
-		public var landDifLevel:Number=0;		//overall difficulty, depends on player level or map settings
-		public var gameStage:int=0;				//game story stage, affects loot drops, if 0, then no restrictions
-		public var lootLimit:Number=0;			//limit of special item drops
-		public var allXp:int=0;
-		public var summXp:int=0;
-		public var isRefill:Boolean=false;		//goods have been replenished
+		public var landDifLevel:Number = 0;		//overall difficulty, depends on player level or map settings
+		public var gameStage:int = 0;			//game story stage, affects loot drops, if 0, then no restrictions
+		public var lootLimit:Number = 0;		//limit of special item drops
+		public var allXp:int = 0;
+		public var summXp:int = 0;
+		public var isRefill:Boolean = false;	//goods have been replenished
 		
-		var allRoom:Array;		//array of all rooms taken from xml
-		var rndRoom:Array;		//array used for random generation
-		public var kolAll:Array;		//number of each type of object
+		var allRoom:Array;						//array of all rooms taken from xml
+		var rndRoom:Array;						//array used for random generation
+		public var kolAll:Array;				//number of each type of object
 		
-		public var uidObjs:Array;		//all objects with uid
-		public var scripts:Array;		//array of scripts with execution time
-		public var itemScripts:Array;	//array of scripts linked to item pickups
+		public var uidObjs:Array;				//all objects with uid
+		public var scripts:Array;				//array of scripts with execution time
+		public var itemScripts:Array;			//array of scripts linked to item pickups
 		
-		public var kol_phoenix:int=0;
-		public var aliAlarm:Boolean=false;	//alarm among alicorns
+		public var kol_phoenix:int = 0;
+		public var aliAlarm:Boolean = false;		//alarm among alicorns
 		
-		public var probIds:Array;		//available trial rooms
-		var impProb:int=-1;				//important trial room
+		public var probIds:Array;				//available trial rooms
+		var impProb:int = -1;						//important trial room
 
 
 		//lvl - character level-1
 		public function Land(ngg:UnitPlayer, nact:LandAct, lvl:int) 
 		{
-			gg=ngg;
-			act=nact;
-			rnd=act.rnd;
-			uidObjs=new Array();
-			scripts=new Array();
-			kolAll=new Array();
-			listLocs=new Array();
-			probIds=new Array();
-			probs=new Array();
+			gg = ngg;
+			act = nact;
+			rnd = act.rnd;
+			uidObjs = new Array();
+			scripts = new Array();
+			kolAll = new Array();
+			listLocs = new Array();
+			probIds = new Array();
+			probs = new Array();
 			prepareRooms();
 			if (rnd) 
 			{
@@ -79,21 +90,22 @@
 			} 
 			else 
 			{
-				landDifLevel=act.dif;	//difficulty is taken from the act settings
-				if (act.autoLevel) landDifLevel=lvl;
-				maxLocX=maxLocY=1;	//dimensions are determined according to the map
+				landDifLevel = act.dif;	//difficulty is taken from the act settings
+				if (act.autoLevel) landDifLevel = lvl;
+				maxLocX = 1;	//dimensions are determined according to the map
+				maxLocY = 1;	//dimensions are determined according to the map
 				buildSpecifLand();
 			}
-			lootLimit=lvl+3;
-			gameStage=act.gameStage;	//story stage is taken from the act settings
+			lootLimit = lvl + 3;
+			gameStage = act.gameStage;	//story stage is taken from the act settings
 			//attached scripts
-			itemScripts=new Array();
+			itemScripts = new Array();
 			for each(var xl in act.xmlland.scr) 
 			{
-				if (xl.@eve=='take' && xl.@item.length()) 
+				if (xl.@eve == 'take' && xl.@item.length()) 
 				{
 					var scr:Script=new Script(xl,this);
-					itemScripts[xl.@item]=scr;
+					itemScripts[xl.@item] = scr;
 				}
 			}
 			createMap();
@@ -255,7 +267,6 @@
 							opt.transpFon=true;
 							loc1=newRandomLoc(act.landStage,i,j,opt,'surf');
 							loc1.visMult=2;
-							//loc1.backwall='sky';
 						} 
 						else 
 						{
@@ -318,30 +329,32 @@
 				}
 			}
 			//determine possible passages
-			for (i=minLocX; i<maxLocX; i++) 
+			for (i = minLocX; i < maxLocX; i++) 
 			{
 				for (j=minLocY; j<maxLocY; j++) 
 				{
 					loc1=locs[i][j][0];
-					loc1.pass_r=new Array();
-					loc1.pass_d=new Array();
-					if (i<maxLocX-1) {
-						loc2=locs[i+1][j][0];
-						for (var e=0; e<=5; e++) 
+					loc1.pass_r = new Array();
+					loc1.pass_d = new Array();
+					if (i < maxLocX - 1) 
+					{
+						loc2 = locs[i + 1][j][0];
+						for (var e = 0; e <= 5; e++) 
 						{
-							var hole:int=Math.min(loc1.doors[e],loc2.doors[e+11]);
-							if (hole>=2) 
+							var hole:int = Math.min(loc1.doors[e], loc2.doors[e + 11]);
+							if (hole >= 2) 
 							{
 								loc1.pass_r.push({n:e, fak:hole});
 							}
 						}
 					}
-					if (j<maxLocY-1) {
-						loc2=locs[i][j+1][0];
-						for (e=6; e<=11; e++) 
+					if (j<maxLocY - 1) 
+					{
+						loc2 = locs[i][j + 1][0];
+						for (e = 6; e <= 11; e++) 
 						{
-							hole=Math.min(loc1.doors[e],loc2.doors[e+11]);
-							if (hole>=2) 
+							hole = Math.min(loc1.doors[e], loc2.doors[e + 11]);
+							if (hole >= 2) 
 							{
 								loc1.pass_d.push({n:e, fak:hole});
 							}
@@ -355,7 +368,7 @@
 				for (j=minLocY; j<maxLocY; j++) 
 				{
 					loc1=locs[i][j][0];
-					if (i<maxLocX-1) 
+					if (i<maxLocX - 1) 
 					{
 						if (loc1.pass_r.length) 
 						{
@@ -523,37 +536,42 @@
 		
 		public function buildSpecifLand() 
 		{
-			var i,j,e;
-			var loc1:Location, loc2:Location;
-			// Determine the actual sizes
+			var i, j, e;
+			var loc1:Location;
+			var loc2:Location;
+
+			// Determine the actual sizes (of what, the room? the land?)
 			for each(var room:Room in allRoom) 
 			{
-				if (room.rx<minLocX) minLocX=room.rx;
-				if (room.ry<minLocY) minLocY=room.ry;
-				if (room.rx+1>maxLocX) maxLocX=room.rx+1;
-				if (room.ry+1>maxLocY) maxLocY=room.ry+1;
+				if (room.rx < minLocX) minLocX = room.rx;
+				if (room.ry < minLocY) minLocY = room.ry;
+				if (room.rx + 1 > maxLocX) maxLocX = room.rx + 1;
+				if (room.ry + 1 > maxLocY) maxLocY = room.ry + 1;
 			}
-			//create array
-			locs=new Array();
-			for (i=minLocX; i<maxLocX; i++) 
+
+			//create array (for?)
+			locs = new Array();
+			for (i = minLocX; i < maxLocX; i++) 
 			{
-				locs[i]=new Array();
-				for (j=minLocY; j<maxLocY; j++) locs[i][j]=new Array();
+				locs[i] = new Array();
+				for (j = minLocY; j < maxLocY; j++) locs[i][j] = new Array();
 			}
-			//populate array
+
+			//populate array with rooms from the allRoom.
 			for each(room in allRoom) 
 			{
-				loc1=newLoc(room,room.rx,room.ry,room.rz);
-				locs[room.rx][room.ry][room.rz]=loc1;
+				loc1 = newLoc(room, room.rx, room.ry, room.rz);
+				locs[room.rx][room.ry][room.rz] = loc1;
 			}
+
 			//place objects
-			for (i=minLocX; i<maxLocX; i++) 
+			for (i = minLocX; i < maxLocX; i++) 
 			{
-				for (j=minLocY; j<maxLocY; j++) 
+				for (j = minLocY; j < maxLocY; j++) 
 				{
-					for (e=minLocZ; e<maxLocZ; e++) 
+					for (e = minLocZ; e<maxLocZ; e++) 
 					{
-						if (locs[i][j][e]==null) continue;
+						if (locs[i][j][e] == null) continue;
 						locs[i][j][e].setObjects();
 						locs[i][j][e].preStep();
 					}
@@ -578,25 +596,25 @@
 		//create a test layer, return false if the layer already exists
 		public function buildProb(nprob:String):Boolean 
 		{
-			if (probs[nprob]!=null) return false;
+			if (probs[nprob] != null) return false;
 			//create a single room
 			var arrr:XML=World.w.game.probs['prob'].allroom;
 			for each(var xml in arrr.room) 
 			{
 				if (xml.@name==nprob) 
 				{
-					var room:Room=new Room(xml);
-					var loc:Location=newLoc(room,0,0,0,{prob:nprob});
-					loc.landProb=nprob;
-					loc.noMap=true;
-					var xmll=GameData.d.land.prob.(@id==nprob);
-					if (xmll.length()) loc.prob=new Probation(xmll[0],loc);
+					var room:Room = new Room(xml);
+					var loc:Location = newLoc(room,0,0,0,{prob:nprob});
+					loc.landProb = nprob;
+					loc.noMap = true;
+					var xmll = GameData.d.land.prob.(@id == nprob);
+					if (xmll.length()) loc.prob = new Probation(xmll[0],loc);
 					//add an exit door
 					if (loc.spawnPoints.length) 
 					{
 						loc.createObj('doorout','box',loc.spawnPoints[0].x,loc.spawnPoints[0].y,<obj prob='' uid='begin'/>);
 					}
-					probs[nprob]=[[[loc]]];
+					probs[nprob] = [[[loc]]];
 					listLocs.push(loc);
 					break;
 				}
@@ -671,8 +689,6 @@
 					if (rndKol==4 && room.lvl==0 && maxlevel>1) 
 					{
 						rndKol=2;
-						//if (maxlevel==1 || maxlevel==2) rndKol=2;
-						//if (maxlevel>2) rndKol=1;
 					}
 					for (var i=0; i<rndKol; i++) 
 					{
@@ -897,22 +913,23 @@
 		public function ativateLoc():Boolean 
 		{
 			var nloc:Location;
-			if (prob!='' && probs[prob]==null)  return false;
+
+			if (prob != '' && probs[prob] == null)  return false;
 			try 
 			{
-				if (prob!='') nloc=probs[prob][locX][locY][locZ];	
-				else nloc=locs[locX][locY][locZ];
+				if (prob!='') nloc = probs[prob][locX][locY][locZ];	
+				else nloc = locs[locX][locY][locZ];
 			} 
 			catch (err) 
 			{
-				trace('Location not found',act.id,locX,locY,locZ)
+				trace('Location not found', act.id, locX, locY, locZ)
 				nloc=locs[0][0][0];
 			}
 			
 			if (loc==nloc) return false;
-			locN++;
-			prevloc=loc;
-			loc=nloc;
+			locN++; //increment transition timer by 1. (Default is 0)
+			prevloc = loc; //Set prevloc variable as the current location.
+			loc = nloc; //Set the current location as the location being loaded.
 			gg.inLoc(loc);
 			loc.reactivate(locN);
 			World.w.ativateLoc(loc);

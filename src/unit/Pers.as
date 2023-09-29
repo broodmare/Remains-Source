@@ -40,7 +40,7 @@
 		public var owlhpProc:Number=1;		//процент здоровья робосовы
 		
 		//опции
-		public var hardcore:Boolean=false;		//хардкор
+		public var hardcoreMode:Boolean=false;		//хардкор
 		public var dead:Boolean=false;			//смерть в режиме хардкора
 		public var rndpump:Boolean=false;		//случайная прокачка
 		
@@ -348,7 +348,7 @@
 				}
 				xpPrev=xpProgress(level-1);
 				xpNext=xpProgress(level);
-				if (loadObj.hardcore) hardcore=true;
+				if (loadObj.hardcoreMode) hardcoreMode=true;
 				if (loadObj.rndpump) rndpump=true;
 				if (loadObj.cp) currentCPCode=loadObj.cp;
 				if (loadObj.prevcp) prevCPCode=loadObj.prevcp;
@@ -378,7 +378,7 @@
 			} 
 			else if (opt) 
 			{
-				if (opt.hardcore) hardcore=true;
+				if (opt.hardcoreMode) hardcoreMode=true;
 				if (opt.fastxp) xpDelta=3000;
 				if (opt.rndpump) rndpump=true;
 				if (opt.hardskills) levelSkAdd=3;
@@ -396,7 +396,7 @@
 				}
 			}
 			if (loadObj && loadObj.persName) persName=loadObj.persName;
-			if (loadObj==null && opt && opt.propusk) 
+			if (loadObj==null && opt && opt.skipTraining) 
 			{
 				perks['levitation']=1;
 			}
@@ -438,7 +438,7 @@
 			obj.perkPoint=perkPoint;
 			obj.perkPointExtra=perkPointExtra;
 			obj.rndpump=rndpump;
-			obj.hardcore=hardcore;
+			obj.hardcoreMode=hardcoreMode;
 			obj.headHP=headHP/inMaxHP;
 			obj.torsHP=torsHP/inMaxHP;
 			obj.legsHP=legsHP/inMaxHP;
@@ -888,7 +888,7 @@
 			} 
 			else 
 			{
-				//нужного перка нет, добавить
+				// If the required perk is not present, add it
 				perks[id]=1;
 				World.w.gui.infoText('perk',Res.txt('e',id));
 				Snd.ps('skill');

@@ -205,7 +205,7 @@
 		public var configObj:SharedObject;
 		var saveObj:SharedObject;
 		var saveArr:Array;
-		public var saveKol:int = 10;
+		public var saveCount:int = 10;
 		var savePath:String = null;
 		var t_save:int = 0;
 		public var loaddata:Object;					//data loaded from file
@@ -231,7 +231,7 @@
 		//var date:Date,
 		var d1:int, d2:int;
 		
-		public var landError:Boolean=false;
+		public var landError:Boolean= false;
 
 
 		public function World(nmain:Sprite) 
@@ -284,7 +284,7 @@
 			vwait.cacheAsBitmap = true;
 			
 			//Appearance configurator
-			app=new Appear();
+			app = new Appear();
 			
 			visual = new Sprite();
 			vgui =   new visualGUI();
@@ -299,7 +299,7 @@
 			verror = new visError();
 
 			setLoadScreen();
-			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible=false;
+			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible= false;
 			vscene.stop();
 
 			main.addChild(vwait);
@@ -315,9 +315,9 @@
 			main.addChild(vconsol);
 
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function () {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
-			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible=false;});
-			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {errorShow=false; verror.visible=false;});
-			vstand.visible=false;
+			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible= false;});
+			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {errorShow= false; verror.visible= false;});
+			vstand.visible= false;
 
 			grafon = new Grafon(visual);
 			cam = new Camera(this);
@@ -367,11 +367,11 @@
         }
 		
 		//create language list, initiate language loading
-		function initLangs(err:Boolean=false) 
+		function initLangs(err:Boolean= false) 
 		{
 			if (err) langsXML = <all>
-				<lang id='ru' file='text_ru.xml'>Русский</lang>
-				<lang id='en' file='text_en.xml'>English</lang>
+				<lang id = 'ru' file = 'text_ru.xml'>Русский</lang>
+				<lang id = 'en' file = 'text_en.xml'>English</lang>
 			</all>;	
 
 			lang = Capabilities.language;
@@ -382,7 +382,7 @@
 			languageList = new Array();
 			for each (var xmlFile:XML in langsXML.lang) 
 			{
-				if (xmlFile.@off.length()==0 || !xmlFile.@off>0) 
+				if (xmlFile.@off.length()==0 || !xmlFile.@off> 0) 
 				{
 					var obj={file:xmlFile.@file, nazv:xmlFile[0]};
 					languageList[xmlFile.@id]=obj;
@@ -448,27 +448,27 @@
 
 			//saves and config
 			saveArr = new Array();
-			for (var i=0; i<=saveKol; i++) 
+			for (var i = 0; i <= saveCount; i++) 
 			{
 				saveArr[i] = SharedObject.getLocal('PFEgame' + i, savePath);
 			}
 			saveObj = saveArr[0];
 
-			if (configObj.data.dialon!=null) dialOn=configObj.data.dialon;
-			if (configObj.data.zoom100!=null) zoom100=configObj.data.zoom100;
+			if (configObj.data.dialon != null) dialOn=configObj.data.dialon;
+			if (configObj.data.zoom100 != null) zoom100=configObj.data.zoom100;
 			if (zoom100) 
 			{
 				cam.isZoom = 0; 
 			}
 			else cam.isZoom = 2;
-			if (configObj.data.mat!=null) matFilter = configObj.data.mat;
-			if (configObj.data.help!=null) helpMess = configObj.data.help;
-			if (configObj.data.hit!=null) showHit = configObj.data.hit;
-			if (configObj.data.sysCur!=null) sysCur = configObj.data.sysCur;
-			if (configObj.data.hintTele!=null) hintTele = configObj.data.hintTele;
-			if (configObj.data.showFavs!=null) showFavs = configObj.data.showFavs;
-			if (configObj.data.quakeCam!=null) quakeCam = configObj.data.quakeCam;
-			if (configObj.data.errorShowOpt!=null) errorShowOpt = configObj.data.errorShowOpt;
+			if (configObj.data.mat != null) matFilter = configObj.data.mat;
+			if (configObj.data.help != null) helpMess = configObj.data.help;
+			if (configObj.data.hit != null) showHit = configObj.data.hit;
+			if (configObj.data.sysCur != null) sysCur = configObj.data.sysCur;
+			if (configObj.data.hintTele != null) hintTele = configObj.data.hintTele;
+			if (configObj.data.showFavs != null) showFavs = configObj.data.showFavs;
+			if (configObj.data.quakeCam != null) quakeCam = configObj.data.quakeCam;
+			if (configObj.data.errorShowOpt != null) errorShowOpt = configObj.data.errorShowOpt;
 			if (configObj.data.app) 
 			{
 				app.load(configObj.data.app);
@@ -485,31 +485,30 @@
 
 			if (configObj.data.nadv) 
 			{
-				nadv=configObj.data.nadv;
+				nadv = configObj.data.nadv;
 				configObj.data.nadv++;
 				if (configObj.data.nadv>=koladv) configObj.data.nadv=0;
 			} 
 			else 
 			{
-				configObj.data.nadv=1;
+				configObj.data.nadv = 1;
 			}
 
-			if (configObj.data.chit>0) chitOn=true;
-			
-			if (configObj.data.vsWeaponNew>0) vsWeaponNew=false;
-			if (configObj.data.vsWeaponRep>0) vsWeaponRep=false;
-			if (configObj.data.vsAmmoAll>0) vsAmmoAll=false;	
-			if (configObj.data.vsAmmoTek>0) vsAmmoTek=false;	
-			if (configObj.data.vsExplAll>0) vsExplAll=false;	
-			if (configObj.data.vsMedAll>0) vsMedAll=false;
-			if (configObj.data.vsHimAll>0) vsHimAll=false;
-			if (configObj.data.vsEqipAll>0) vsEqipAll=false;
-			if (configObj.data.vsStuffAll>0) vsStuffAll=false;
-			if (configObj.data.vsVal>0) vsVal=false;
-			if (configObj.data.vsBook>0) vsBook=false;
-			if (configObj.data.vsFood>0) vsFood=false;
-			if (configObj.data.vsComp>0) vsComp=false;
-			if (configObj.data.vsIngr>0) vsIngr=false;
+			if (configObj.data.chit > 0) chitOn = true;
+			if (configObj.data.vsWeaponNew > 0) vsWeaponNew = false;
+			if (configObj.data.vsWeaponRep > 0) vsWeaponRep = false;
+			if (configObj.data.vsAmmoAll > 0) vsAmmoAll = false;	
+			if (configObj.data.vsAmmoTek > 0) vsAmmoTek = false;	
+			if (configObj.data.vsExplAll > 0) vsExplAll  = false;	
+			if (configObj.data.vsMedAll > 0) vsMedAll = false;
+			if (configObj.data.vsHimAll > 0) vsHimAll = false;
+			if (configObj.data.vsEqipAll > 0) vsEqipAll = false;
+			if (configObj.data.vsStuffAll > 0) vsStuffAll = false;
+			if (configObj.data.vsVal > 0) vsVal = false;
+			if (configObj.data.vsBook > 0) vsBook = false;
+			if (configObj.data.vsFood > 0) vsFood = false;
+			if (configObj.data.vsComp > 0) vsComp = false;
+			if (configObj.data.vsIngr > 0) vsIngr = false;
 			
 			//trace(configObj.data.vsWeaponNew,vsWeaponNew);
 			ctr = new Ctr(configObj.data.ctr);
@@ -520,9 +519,9 @@
 			landData = new Array();
 			for each(var xl in GameData.d.land) 
 			{
-				if (!testMode && xl.@test>0) continue;
+				if (!testMode && xl.@test> 0) continue;
 				var ll:LandLoader=new LandLoader(xl.@id);
-				if (!(xl.@test>0)) kolLands++;
+				if (!(xl.@test> 0)) kolLands++;
 				landData[xl.@id]=ll;
 			}
 			
@@ -548,7 +547,7 @@
 			{
 				pip.onoff(11);
 			}
-			if (allStat>0 && !alicorn) saveGame();
+			if (allStat> 0 && !alicorn) saveGame();
 		}
 		
 		//Pause and call pipbuck if window size is changed
@@ -713,7 +712,7 @@
 				game.enterToCurLand();//!!!!
 				game.beginGame();
 				
-				Snd.off=false;
+				Snd.off= false;
 				gui.setAll();
 				allStat=1;
 				ng_wait=0;
@@ -753,7 +752,7 @@
 				//create game
 				Snd.off = true;
 				cam.showOn = false;
-				if (data.hardInv==true) hardInv=true; else hardInv=false;
+				if (data.hardInv==true) hardInv=true; else hardInv= false;
 				game = new Game();
 				game.init(data.game);
 				app.load(data.app);
@@ -775,7 +774,7 @@
 				gg.attach();
 
 				// auto-save cell number
-				if (data.n!=null) autoSaveN=data.n;
+				if (data.n != null) autoSaveN=data.n;
 				
 				offLoadScreen();
 				vgui.visible=vfon.visible=visual.visible=true;
@@ -790,7 +789,7 @@
 				game.enterToCurLand();//!!!!
 				game.beginGame();
 				log='';
-				Snd.off=false;
+				Snd.off= false;
 				gui.setAll();
 				allStat=1;
 			} 
@@ -858,7 +857,7 @@
 			}
 		}
 		
-		public function exitLand(fast:Boolean=false) 
+		public function exitLand(fast:Boolean= false) 
 		{
 			if (t_exit > 0) return;
 			gg.controlOff();
@@ -894,7 +893,7 @@
 					cur('arrow');
 					game.enterToCurLand();
 				}
-				if (t_exit == 18 && clickReq>0) waitLoadClick();
+				if (t_exit == 18 && clickReq> 0) waitLoadClick();
 				if (t_exit == 16) 
 				{
 					Mouse.show();
@@ -1011,12 +1010,12 @@
 					if (calcMass) 
 					{
 						invent.calcMass();
-						calcMass=false;
+						calcMass= false;
 					}
 					if (calcMassW) 
 					{
 						invent.calcWeaponMass();
-						calcMassW=false;
+						calcMassW= false;
 					}
 
 					//Increment ticks since last save, if over 5000, and not in either test or alicorn mode, save the game.
@@ -1026,7 +1025,7 @@
 						saveGame();
 					}
 
-					checkLoot=false;
+					checkLoot= false;
 				}
 				//trace(clickReq,t_exit)
 				
@@ -1034,7 +1033,7 @@
 				{
 					if (comLoad >= 100) 
 					{
-						if (autoSaveN>0) saveGame();
+						if (autoSaveN> 0) saveGame();
 						loadGame(comLoad-100);
 					} 
 					else 
@@ -1056,49 +1055,49 @@
 					if (ctr.keyPip) 
 					{
 						if (!sats.active) pip.onoff();
-						ctr.keyPip=false;
+						ctr.keyPip = false;
 					}
 					if (ctr.keyInvent) 
 					{
 						if (!sats.active) pip.onoff(2);
-						ctr.keyInvent=false;
+						ctr.keyInvent = false;
 					}
 					if (ctr.keyStatus) 
 					{
 						if (!sats.active) pip.onoff(1,1);
-						ctr.keyStatus=false;
+						ctr.keyStatus = false;
 					}
 					if (ctr.keySkills) 
 					{
 						if (!sats.active) pip.onoff(1,2);
-						ctr.keySkills=false;
+						ctr.keySkills = false;
 					}
 					if (ctr.keyMed) 
 					{
 						if (!sats.active) pip.onoff(1,5);
-						ctr.keyMed=false;
+						ctr.keyMed = false;
 					}
 					if (ctr.keyMap) 
 					{
 						if (!sats.active) pip.onoff(3,1);
-						ctr.keyMap=false;
+						ctr.keyMap = false;
 					}
 					if (ctr.keyQuest) 
 					{
 						if (!sats.active) pip.onoff(3,2);
-						ctr.keyQuest=false;
+						ctr.keyQuest = false;
 					}
 					if (ctr.keySats) 
 					{
 						if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
-						ctr.keySats=false;
+						ctr.keySats = false;
 					}
 
 					allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
 					
 					if (consol && consol.visoff) 
 					{
-						onConsol=consol.vis.visible=consol.visoff=false;
+						onConsol=consol.vis.visible=consol.visoff= false;
 					}
 				}
 			} 
@@ -1111,12 +1110,12 @@
 //=============================================================================================================
 //			Global interaction functions
 //=============================================================================================================
-		public function cur(ncur:String='arrow') 
+		public function cur(ncur:String = 'arrow') 
 		{
 			if (sysCur) return;
-			if (pip.active || stand.active || comLoad>=0) ncur='arrow';
-			else if (t_battle>0) ncur='combat';
-			if (ncur!=ccur) 
+			if (pip.active || stand.active || comLoad >= 0) ncur = 'arrow';
+			else if (t_battle> 0) ncur='combat';
+			if (ncur != ccur) 
 			{
 				Mouse.cursor = ncur;
 				Mouse.show();
@@ -1141,8 +1140,8 @@
 		
 		public function possiblyOut():int 
 		{
-			if (t_battle>0) return 2;
-			if (loc && loc.t_alarm>0) return 2;
+			if (t_battle> 0) return 2;
+			if (loc && loc.t_alarm> 0) return 2;
 			if (land.loc_t>120) return 1;
 			return 0;
 		}
@@ -1165,7 +1164,7 @@
 
 			verror.txt.text=err.message+'\n'+err.getStackTrace();
 			verror.txt.text+='\n'+'gr_stage: '+gr_stage;
-			if (dop!=null) verror.txt.text+='\n'+dop;
+			if (dop != null) verror.txt.text+='\n'+dop;
 			verror.visible=true;
 		}
 		
@@ -1179,7 +1178,7 @@
 //=============================================================================================================
 
 		//set loading screen
-		public function setLoadScreen(n:int=-1) 
+		public function setLoadScreen(n:int = -1) 
 		{
 			loadScreen = n;
 			vwait.story.lmb.stop();
@@ -1205,21 +1204,21 @@
 			{
 				vwait.x=vwait.y = 0;
 				vwait.story.visible = true;
-				vwait.skill.visible = vwait.progres.visible=false;
+				vwait.skill.visible = vwait.progres.visible= false;
 
 				if (n == 0) 
 				{
-					vwait.story.txt.htmlText='<i>'+Res.guiText('story')+'</i>';
+					vwait.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
 				} 
 				else 
 				{
-					vwait.story.txt.htmlText='<i>'+'История'+n+'</i>';
+					vwait.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
 				}
 
 				clickReq = 1;
 			}
 
-			vwait.cacheAsBitmap=false;
+			vwait.cacheAsBitmap= false;
 			vwait.cacheAsBitmap=true;
 		}
 		
@@ -1315,12 +1314,12 @@
 			if (n == 1) 
 			{
 				showScene('gameover');
-				s=Res.lpName(Res.guiText('end_bad'));
+				s = Res.lpName(Res.guiText('end_bad'));
 			} 
 			else if (pers.rep>=pers.repGood) 
 			{
 				showScene('endgame');
-				s=Res.lpName(Res.guiText('end_good'));
+				s = Res.lpName(Res.guiText('end_good'));
 				Snd.playMusic('music_fall_2');
 			} 
 			else 
@@ -1344,13 +1343,13 @@
 		public function saveToObj(data:Object) 
 		{
 			var now:Date = new Date();
-			data.game=game.save();
-			data.pers=pers.save();
-			data.invent=invent.save();
-			data.app=app.save();
-			data.date=now.time;
-			data.n=autoSaveN;
-			data.hardInv=hardInv;
+			data.game = game.save();
+			data.pers = pers.save();
+			data.invent = invent.save();
+			data.app = app.save();
+			data.date = now.time;
+			data.n = autoSaveN;
+			data.hardInv = hardInv;
 			data.ver = mainMenu.version;
 			data.est=1;
 		}
@@ -1360,15 +1359,15 @@
 			if (n == -2) 
 			{
 				n = autoSaveN;
-				var save=saveArr[n];
+				var save = saveArr[n];
 				saveToObj(save.data);
 				save.flush();
 				trace('Конец');
 				return;
 			}
-			if (t_save<100 && n==-1 && !pers.hardcore) return;
+			if (t_save < 100 && n == -1 && !pers.hardcoreMode) return;
 			if (pip.noAct) return;
-			if (n==-1) n=autoSaveN;
+			if (n == -1) n=autoSaveN;
 			var save=saveArr[n];
 			if (save is SharedObject) 
 			{
@@ -1389,38 +1388,38 @@
 		{
 			try 
 			{
-			configObj.data.ctr=ctr.save();
-			configObj.data.snd=Snd.save();
-			configObj.data.language=lang;
-			configObj.data.chit=(chitOn?1:0);
-			configObj.data.dialon=dialOn;
-			configObj.data.zoom100=zoom100;
-			configObj.data.help=helpMess;
-			configObj.data.mat=matFilter;
-			configObj.data.hit=showHit;
-			configObj.data.sysCur=sysCur;
-			configObj.data.hintTele=hintTele;
-			configObj.data.showFavs=showFavs;
-			configObj.data.quakeCam=quakeCam;
-			configObj.data.errorShowOpt=errorShowOpt;
-			configObj.data.app=app.save();
-			if (lastCom!=null) configObj.data.lastCom=lastCom;
-				
-			configObj.data.vsWeaponNew=vsWeaponNew?0:1;
-			configObj.data.vsWeaponRep=vsWeaponRep?0:1;
-			configObj.data.vsAmmoAll=vsAmmoAll?0:1;	
-			configObj.data.vsAmmoTek=vsAmmoTek?0:1;	
-			configObj.data.vsExplAll=vsExplAll?0:1;	
-			configObj.data.vsMedAll=vsMedAll?0:1;
-			configObj.data.vsHimAll=vsHimAll?0:1;
-			configObj.data.vsEqipAll=vsEqipAll?0:1;
-			configObj.data.vsStuffAll=vsStuffAll?0:1;
-			configObj.data.vsVal=vsVal?0:1;
-			configObj.data.vsBook=vsBook?0:1;
-			configObj.data.vsFood=vsFood?0:1;
-			configObj.data.vsComp=vsComp?0:1;
-			configObj.data.vsIngr=vsIngr?0:1;
-			configObj.flush();
+				configObj.data.ctr = ctr.save();
+				configObj.data.snd = Snd.save();
+				configObj.data.language = lang;
+				configObj.data.chit = (chitOn?1:0);
+				configObj.data.dialon = dialOn;
+				configObj.data.zoom100 = zoom100;
+				configObj.data.help = helpMess;
+				configObj.data.mat = matFilter;
+				configObj.data.hit = showHit;
+				configObj.data.sysCur = sysCur;
+				configObj.data.hintTele = hintTele;
+				configObj.data.showFavs = showFavs;
+				configObj.data.quakeCam = quakeCam;
+				configObj.data.errorShowOpt = errorShowOpt;
+				configObj.data.app = app.save();
+				if (lastCom != null) configObj.data.lastCom = lastCom;
+					
+				configObj.data.vsWeaponNew = vsWeaponNew?0:1;
+				configObj.data.vsWeaponRep = vsWeaponRep?0:1;
+				configObj.data.vsAmmoAll = vsAmmoAll?0:1;	
+				configObj.data.vsAmmoTek = vsAmmoTek?0:1;	
+				configObj.data.vsExplAll = vsExplAll?0:1;	
+				configObj.data.vsMedAll = vsMedAll?0:1;
+				configObj.data.vsHimAll = vsHimAll?0:1;
+				configObj.data.vsEqipAll = vsEqipAll?0:1;
+				configObj.data.vsStuffAll = vsStuffAll?0:1;
+				configObj.data.vsVal = vsVal?0:1;
+				configObj.data.vsBook = vsBook?0:1;
+				configObj.data.vsFood = vsFood?0:1;
+				configObj.data.vsComp = vsComp?0:1;
+				configObj.data.vsIngr = vsIngr?0:1;
+				configObj.flush();
 			} 
 			catch (err) 
 			{
@@ -1432,7 +1431,7 @@
 		{
 			var un:Unit = new Unit();
 			var s:String='';
-			for each (var w in AllData.d.weapon.(@tip>0)) 
+			for each (var w in AllData.d.weapon.(@tip> 0)) 
 			{
 				var weap:Weapon=new Weapon(un,w.@id,0);
 				s+=weap.write()+'\n';

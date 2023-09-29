@@ -168,11 +168,13 @@
 					vis.help.visible=vis.list1.visible=vis.list2.visible=!vis.help.visible;
 					return;
 				}
-				if (s[0]=='hardcore') {
-					World.w.pers.hardcore=!World.w.pers.hardcore;
+				if (s[0]=='hardcoreMode') //Toggle Hardcore mode.
+				{
+					World.w.pers.hardcoreMode =! World.w.pers.hardcoreMode;
 				}
-				if (s[0]=='testmode') {
-					World.w.testMode=!World.w.testMode;
+				if (s[0]=='testmode') //Toggle debug testing mode.
+				{
+					World.w.testMode =! World.w.testMode;
 				}
 				if (s[0]=='dif') {
 					World.w.game.globalDif=s[1];

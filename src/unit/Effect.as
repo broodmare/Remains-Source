@@ -14,14 +14,14 @@
 		public var forever:Boolean=false;
 		public var t:int=1;
 		public var lvl:int=1;
-		public var lvl1:int=0, lvl2:int=0, lvl3:int=0;					//уровни эффекта
+		public var lvl1:int=0, lvl2:int=0, lvl3:int=0;					// Effect levels
 		public var val:Number;
-		public var player:Boolean=false;		//эффект относится к гг
-		public var params:Boolean=false;		//эффект изменяет параметры
-		public var add:Boolean=false;			//время эффекта складывается
-		public var se:Boolean=true;				//сообщение
-		public var him:int=0;					//эффект вызван химией, 1-положительный, 2-отрицательный																						
-		public var ad:Boolean=false;			//зависимость от химии
+		public var player:Boolean=false;		// Effect applies to the player character
+		public var params:Boolean=false;		// Effect modifies parameters
+		public var add:Boolean=false;			// Effect duration is cumulative
+		public var se:Boolean=true;				// Show message
+		public var him:int=0;					// Effect caused by chemistry, 1-positive, 2-negative																					
+		public var ad:Boolean=false;			// Dependency on chemistry
 		public var post:String;
 		var postBad:Boolean=false;
 		var del:Array;
@@ -148,7 +148,7 @@
 			visEff();
 		}
 		
-		//проверить уровень эффекта
+		// Check the level of the effect
 		public function checkT() 
 		{
 			if (lvl1>0) 
@@ -207,7 +207,7 @@
 				if (tip==3) World.w.gui.infoText('endFoodEffect',Res.txt('e',id));
 				else World.w.gui.infoText('endEffect',Res.txt('e',id));
 			}
-			if (post && onPost) 		//замена эффекта пост-эффектом
+			if (post && onPost) 		// Replacement of the effect with a post-effect
 			{
 					id=post;
 					var isBad:Boolean=postBad;
@@ -278,37 +278,37 @@
 		public function secEffect() 
 		{
 			checkT();
-			if (id=='burning') 
+			if (id == 'burning') 
 			{
-				if (owner.isPlav) t=1;
+				if (owner.isPlav) t = 1;
 				else 
 				{
-					owner.damage(val,Unit.D_FIRE,null,true);
+					owner.damage(val, Unit.D_FIRE,null,true);
 					owner.shok=33;
 				}
 			}
-			if (id=='pinkcloud') 
+			if (id == 'pinkcloud') 
 			{
 				owner.damage(val,Unit.D_PINK,null,true);
 			}
-			if (id=='blindness' && player) 
+			if (id == 'blindness' && player) 
 			{
 				if (owner.sost<4) Emitter.emit('blind',owner.loc,owner.X-300+Math.random()*600,owner.Y-200+Math.random()*400);
 			}
-			if (id=='chemburn') 
+			if (id == 'chemburn') 
 			{
 				owner.damage(val,Unit.D_ACID,null,true);
 			}
-			if (id=='drunk' && lvl>3) 
+			if (id == 'drunk' && lvl>3) 
 			{
 				owner.damage(val,Unit.D_POISON,null,true);
 				Emitter.emit('poison',owner.loc,owner.X+owner.storona*20,owner.Y-40);
 			}
-			if (id=='namok') 
+			if (id == 'namok') 
 			{
-				if (!owner.isPlav && owner.sost<4) Emitter.emit('kap',owner.loc,owner.X,owner.Y-owner.scY*0.25,{md:0.1});
+				if (!owner.isPlav && owner.sost < 4) Emitter.emit('kap',owner.loc,owner.X,owner.Y-owner.scY*0.25,{md:0.1});
 			}
-			if (id=='hydra' && owner.sost==1) 
+			if (id == 'hydra' && owner.sost==1) 
 			{
 				owner.heal(val);
 				if (owner.player) 
@@ -318,43 +318,43 @@
 					(owner as UnitPlayer).pers.heal(val,5);
 				}
 			}
-			if (id=='inhibitor') 
+			if (id == 'inhibitor') 
 			{
 				for each (var un:Unit in owner.loc.units) 
 				{
-					if (owner.isMeet(un) && un.fraction!=owner.fraction && un.rasst2<val*val) un.slow=40;
+					if (owner.isMeet(un) && un.fraction != owner.fraction && un.rasst2 < val * val) un.slow = 40;
 				}
 			}
-			if (id=='fetter') 
+			if (id == 'fetter') 
 			{
-				Emitter.emit('slow',owner.loc,(owner as UnitPlayer).fetX,(owner as UnitPlayer).fetY);
+				Emitter.emit('slow', owner.loc, (owner as UnitPlayer).fetX, (owner as UnitPlayer).fetY);
 			}
 		}
 
 		public function stepEffect() 
 		{
-			if (id=='burning') 
+			if (id == 'burning') 
 			{
-				if (owner.sost<4) Emitter.emit('flame',owner.loc,owner.X,owner.Y-owner.scY/2);
+				if (owner.sost<4) Emitter.emit('flame', owner.loc, owner.X, owner.Y - owner.scY / 2);
 			}
-			if (id=='sacrifice' && t==5) 
+			if (id == 'sacrifice' && t == 5) 
 			{
-				owner.damage(owner.maxhp*0.5,Unit.D_INSIDE);
-				owner.newPart('blood',50);
+				owner.damage(owner.maxhp * 0.5, Unit.D_INSIDE);
+				owner.newPart('blood', 50);
 			}
 		}
 		
 		public function step() 
 		{
-			if (t%30==0) 
+			if (t%30 == 0) 
 			{
 				secEffect();
 			}
 			stepEffect();
 			t--; 
-			if (t<=0) 
+			if (t <= 0) 
 			{
-				if (forever) t=30;
+				if (forever) t = 30;
 				else 
 				{
 					unsetEff();

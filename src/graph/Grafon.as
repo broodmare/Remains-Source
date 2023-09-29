@@ -35,7 +35,7 @@ public class Grafon {
 	public var visBack:Sprite;
 	public var visBack2:Sprite;
 	public var visObjs:Array;
-	const kolObjs = 6;
+	const objCount = 6;
 	public var visVoda:Sprite;
 	public var visFront:Sprite;
 	public var visLight:Sprite;
@@ -133,7 +133,7 @@ public class Grafon {
 		
 		//Array of all sprites to display.
 		visObjs = new Array();
-		for (var i = 0; i<kolObjs; i++) visObjs.push(new Sprite());
+		for (var i = 0; i < objCount; i++) visObjs.push(new Sprite());
 		
 		visual.addChild(visBack);		//0 
 		visual.addChild(visBack2);		//0
@@ -227,7 +227,7 @@ public class Grafon {
 				}
 			}
 		}
-		resIsLoad = (GrLoader.kolIsLoad >= GrLoader.kol);
+		resIsLoad = (GrLoader.completedInstances >= GrLoader.instanceCount);
 	}
 	
 	//Determine progress of loading.
@@ -238,7 +238,7 @@ public class Grafon {
 		{
 			progressLoad += grLoaders[i].progressLoad; //Add the progress of the loader to the total progress.
 		}
-		progressLoad /= GrLoader.kol;
+		progressLoad /= GrLoader.instanceCount;
 	}
 	
 	function createCursors()
@@ -767,7 +767,7 @@ public class Grafon {
 	// Drawing all visible (physical?) objects
 	public function drawAllObjs() 
 	{
-		for (var i = 0; i<kolObjs; i++) 
+		for (var i = 0; i < objCount; i++) 
 		{
 			var n = visual.getChildIndex(visObjs[i]);
 			visual.removeChild(visObjs[i]);

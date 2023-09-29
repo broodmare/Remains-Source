@@ -401,43 +401,53 @@
 			
 		}
 		
-		//вход в локацию
-		public function inLoc(nloc:Location) {
-			if (pet) {
-				if (!nloc.petOn && loc.petOn) {
+		//Enter the location
+		public function inLoc(nloc:Location) 
+		{
+			if (pet) 
+			{
+				if (!nloc.petOn && loc.petOn) 
+				{
 					World.w.gui.infoText('noPetFollow');
 					pet.vis.alpha=0;
 					if (pet.hpbar) pet.hpbar.alpha=pet.vis.alpha;
-				} else {
+				} 
+				else 
+				{
 					pet.loc=nloc;
 				}
 				nloc.units[1]=pet;
 				pet.vis.visible=(nloc.petOn && pet.sost<3);
-			} else {
-				nloc.units[1]=defpet;
+			} 
+			else 
+			{
+				nloc.units[1] = defpet;
 			}
-			loc=nloc;
-			if (currentWeapon) currentWeapon.loc=loc;
-			if (throwWeapon) {
-				throwWeapon.loc=loc;
+			loc = nloc;
+			if (currentWeapon) currentWeapon.loc = loc;
+			if (throwWeapon) 
+			{
+				throwWeapon.loc = loc;
 			}
-			if (magicWeapon) {
-				magicWeapon.loc=loc;
+			if (magicWeapon) 
+			{
+				magicWeapon.loc = loc;
 			}
-			cTransform=loc.cTransform;
-			t_nogas=90;
-			vis.transform.colorTransform=cTransform;
-			if (currentWeapon && currentWeapon.tip!=5) currentWeapon.vis.transform.colorTransform=cTransform;
-			if (effects.length>0) {
+			cTransform = loc.cTransform;
+			t_nogas = 90;
+			vis.transform.colorTransform = cTransform;
+			if (currentWeapon && currentWeapon.tip != 5) currentWeapon.vis.transform.colorTransform = cTransform;
+			if (effects.length > 0) 
+			{
 				for each (var eff in effects) eff.visEff();
 			}
-			if (!loc.levitOn && isFly) isFly=false;
-			if (loc.electroDam>0) {
+			if (!loc.levitOn && isFly) isFly = false;
+			if (loc.electroDam > 0) 
+			{
 				World.w.gui.infoText('electroOn',null,null,true);
 				isStayDam=45;
 			}
-			vis.svet.visible=loc.sky;
-			//	trace(loc.sky)
+			vis.svet.visible = loc.sky;
 		}
 		
 		public override function addVisual() {
@@ -451,22 +461,24 @@
 		}
 
 		
-		//установить позицию при входе в локацию
-		public function setLocPos(nx:Number,ny:Number) {
+		//Set position on entering the location
+		public function setLocPos(nx:Number,ny:Number) 
+		{
 			X=nx, Y=ny;
 			setNull();
-			if (pet) {
-				pet.X=X;
-				pet.Y=Y-30;
-				if (isSit) pet.Y=Y;
+			if (pet) 
+			{
+				pet.X = X;
+				pet.Y = Y - 30;
+				if (isSit) pet.Y = Y;
 				pet.setNull();
-				pet.oduplenie=60;
+				pet.oduplenie = 60;
 			}
 		}
 		
 //**************************************************************************************************************************
 //
-//				Действия
+//				Actions
 //
 //**************************************************************************************************************************
 
@@ -2110,7 +2122,7 @@
 			walk=0;
 			t_work=205;
 			work='die';
-			if (pers.hardcore && sposob>=0) {
+			if (pers.hardcoreMode && sposob>=0) {
 				pers.dead=true;
 				World.w.saveGame(-2);
 				if (sposob==10) World.w.gui.messText('hardDie2', pers.persName, false, false, 10000);

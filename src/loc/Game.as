@@ -186,7 +186,7 @@
 				curLandId=loadObj.land;
 				if (curLandId!='rbl') missionId=loadObj.land;
 			} 
-			else if (opt && opt.propusk==true) 	// Skip training
+			else if (opt && opt.skipTraining==true) 	// Skip training
 			{		
 				triggers['dial_dialCalam2']=1;
 			} 

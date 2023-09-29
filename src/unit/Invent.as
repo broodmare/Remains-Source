@@ -67,7 +67,7 @@
 			items['']=new Item('', '', 0, 0, <item/>);
 			if (loadObj==null) 
 			{
-				if (opt && opt.propusk) addMin();
+				if (opt && opt.skipTraining) addMin();
 				else addBegin();
 			} 
 			else 
@@ -702,19 +702,19 @@
 			}
 			var prevCell=favIds[id];
 			var prevId=fav[cell];
-			if (fav[prevCell]) fav[prevCell]=null;
-			if (favIds[prevId]) favIds[prevId]=null;
-			if (prevCell!=cell)
+			if (fav[prevCell]) fav[prevCell] = null;
+			if (favIds[prevId]) favIds[prevId] = null;
+			if (prevCell != cell)
 			{
-				fav[cell]=id;
-				favIds[id]=cell;
+				fav[cell] = id;
+				favIds[id] = cell;
 			}
 		}
 		
-		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int=0):Armor 
+		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int = 0):Armor 
 		{
 			if (armors[id]) return null;
-			var node=AllData.d.armor.(@id==id);
+			var node=AllData.d.armor.(@id == id);
 			if (!node) return null;
 			var w:Armor=new Armor(id, nlvl);
 			w.hp=hp;
@@ -747,165 +747,166 @@
 			}
 		}
 		
-		//добавить в инвентарь, tr=1 если вещь была куплена, 2-если была получена в награду
-		public function take(l:Item, tr:int=0) 
+		// Add to the inventory, tr = 1 if the item was purchased, 2 if it was obtained as a reward
+		public function take(l:Item, tr:int = 0) 
 		{
 			var kol:int=0;
 			var color:int=-1;
-			try {
-			if (l.tip==Item.L_WEAPON) 
+			try 
 			{
-				var patron=l.xml.a[0];
-				if (tr==0 && patron && patron!='recharg') 
+				if (l.tip==Item.L_WEAPON) 
 				{
-					kol=Math.floor(Math.random()*AllData.d.item.(@id==patron).@kol)+1;
-					items[patron].kol+=kol;
-				}
-				var hp:int;
-				if (l.variant>0 && l.xml.char[l.variant].@maxhp.length()) hp=Math.round(l.xml.char[l.variant].@maxhp*l.sost*l.multHP);
-				else hp=Math.round(l.xml.char[0].@maxhp*l.sost*l.multHP);
-				if (weapons[l.id])
-				{
-					if (weapons[l.id].variant<l.variant) 
+					var patron=l.xml.a[0];
+					if (tr==0 && patron && patron!='recharg') 
+					{
+						kol=Math.floor(Math.random()*AllData.d.item.(@id==patron).@kol)+1;
+						items[patron].kol+=kol;
+					}
+					var hp:int;
+					if (l.variant>0 && l.xml.char[l.variant].@maxhp.length()) hp=Math.round(l.xml.char[l.variant].@maxhp*l.sost*l.multHP);
+					else hp=Math.round(l.xml.char[0].@maxhp*l.sost*l.multHP);
+					if (weapons[l.id])
+					{
+						if (weapons[l.id].variant<l.variant) 
+						{
+							if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
+							updWeapon(l.id,l.variant);
+						}
+						if (weapons[l.id].tip!=5) 
+						{
+							repairWeapon(l.id, hp);
+							if (!World.w.testLoot) World.w.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
+						}
+					} 
+					else 
 					{
 						if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
-						updWeapon(l.id,l.variant);
+						addWeapon(l.id, hp, 0,0, l.variant);
+						takeScript(l.id);
+						if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
 					}
-					if (weapons[l.id].tip!=5) 
+					if (l.shpun==2) weapons[l.id].respect=0;
+					World.w.gui.setWeapon();
+					World.w.calcMassW=true;
+					color=5;
+				} 
+				else if (l.tip==Item.L_ARMOR) 
+				{
+					var hp:int=Math.round(l.xml.@hp*l.sost*l.multHP);
+					addArmor(l.id, hp);
+					color=3;
+				} 
+				else if (l.tip==Item.L_SPELL) 
+				{
+					plus(l,tr);
+					World.w.calcMassW=true;
+					color=5;
+				} 
+				else if (l.tip==Item.L_SCHEME) 
+				{
+					if (items[l.id].kol==0)	takeScript(l.id);
+					plus(l,tr);
+					if (tr <=1 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
+					if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) 
 					{
-						repairWeapon(l.id, hp);
-						if (!World.w.testLoot) World.w.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
+						addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
 					}
+					if (l.xml && l.xml.@cat=='armor' && armors[l.id.substr(2)]==null) 
+					{
+						addArmor(l.id.substr(2), 0xFFFFFF, -1);
+					}
+					color=7;
+				} 
+				else if (l.tip==Item.L_EXPL) 
+				{
+					plus(l,tr);
+					if (!weapons[l.id]) addWeapon(l.id);
+					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
+					color=3;
+				} 
+				else if (l.tip==Item.L_AMMO) 
+				{
+					plus(l,tr);
+					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo',l.nazv,l.kol);
+					color=3;
+				} 
+				else if (l.tip==Item.L_MED) 
+				{
+					plus(l,tr);
+					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
+					if (cItem<0) nextItem(1);
+					else World.w.gui.setItems();
+					color=1;
+				} 
+				else if (l.tip==Item.L_BOOK) 
+				{
+					if (items[l.id].kol==0)	takeScript(l.id);
+					plus(l,tr);
+					if (tr <= 1 && !World.w.testLoot) World.w.gui.infoText('takeBook',l.nazv);
+					if (cItem<0) nextItem(1);
+					else World.w.gui.setItems();
+					color=4;
+				} 
+				else if (l.tip==Item.L_INSTR || l.tip==Item.L_ART || l.tip==Item.L_IMPL || l.xml && l.xml.sk.length()) 
+				{
+					if (items[l.id].kol==0)	takeScript(l.id);
+					plus(l,tr);
+					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
+					gg.pers.setParameters();
+					color=6;
 				} 
 				else 
 				{
-					if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
-					addWeapon(l.id, hp, 0,0, l.variant);
-					takeScript(l.id);
-					if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
+					if (items[l.id].kol==0)	takeScript(l.id);
+					plus(l,tr);
+					if (tr==0 && !World.w.testLoot) {
+						if (l.id=='money') World.w.gui.infoText('takeMoney',l.kol);
+						else World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
+					}
+					if (cItem<0) nextItem(1);
+					else World.w.gui.setItems();
+					
+					if (l.tip=='valuables') color=2;
+					else if (l.tip==Item.L_HIM || l.tip==Item.L_POT) color=1;
+					else if (l.tip==Item.L_KEY || l.tip==Item.L_SPEC) color=6;
+					else if (l.tip=='equip') color=8;
+					else color=0;
 				}
-				if (l.shpun==2) weapons[l.id].respect=0;
-				World.w.gui.setWeapon();
-				World.w.calcMassW=true;
-				color=5;
-			} 
-			else if (l.tip==Item.L_ARMOR) 
-			{
-				var hp:int=Math.round(l.xml.@hp*l.sost*l.multHP);
-				addArmor(l.id, hp);
-				color=3;
-			} 
-			else if (l.tip==Item.L_SPELL) 
-			{
-				plus(l,tr);
-				World.w.calcMassW=true;
-				color=5;
-			} 
-			else if (l.tip==Item.L_SCHEME) 
-			{
-				if (items[l.id].kol==0)	takeScript(l.id);
-				plus(l,tr);
-				if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
-				if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) 
+				if (tr==2) 
 				{
-					addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
+					if (l.kol>1) World.w.gui.infoText('reward',l.nazv,l.kol);
+					else World.w.gui.infoText('reward2',l.nazv);
 				}
-				if (l.xml && l.xml.@cat=='armor' && armors[l.id.substr(2)]==null) 
+				//если объект был сгенерирован случайно, обновить лимиты
+				if (tr==0 && l.imp==0 && l.xml.@limit.length()) 
 				{
-					addArmor(l.id.substr(2), 0xFFFFFF, -1);
+					World.w.game.addLimit(l.xml.@limit,2);
 				}
-				color=7;
-			} 
-			else if (l.tip==Item.L_EXPL) 
-			{
-				plus(l,tr);
-				if (!weapons[l.id]) addWeapon(l.id);
-				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
-				color=3;
-			} 
-			else if (l.tip==Item.L_AMMO) 
-			{
-				plus(l,tr);
-				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeAmmo',l.nazv,l.kol);
-				color=3;
-			} 
-			else if (l.tip==Item.L_MED) 
-			{
-				plus(l,tr);
-				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('takeMed',l.nazv);
-				if (cItem<0) nextItem(1);
-				else World.w.gui.setItems();
-				color=1;
-			} 
-			else if (l.tip==Item.L_BOOK) 
-			{
-				if (items[l.id].kol==0)	takeScript(l.id);
-				plus(l,tr);
-				if (tr<=1 && !World.w.testLoot) World.w.gui.infoText('takeBook',l.nazv);
-				if (cItem<0) nextItem(1);
-				else World.w.gui.setItems();
-				color=4;
-			} 
-			else if (l.tip==Item.L_INSTR || l.tip==Item.L_ART || l.tip==Item.L_IMPL || l.xml && l.xml.sk.length()) 
-			{
-				if (items[l.id].kol==0)	takeScript(l.id);
-				plus(l,tr);
-				if (tr==0 && !World.w.testLoot) World.w.gui.infoText('take',l.nazv);
-				gg.pers.setParameters();
-				color=6;
-			} 
-			else 
-			{
-				if (items[l.id].kol==0)	takeScript(l.id);
-				plus(l,tr);
-				if (tr==0 && !World.w.testLoot) {
-					if (l.id=='money') World.w.gui.infoText('takeMoney',l.kol);
-					else World.w.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
-				}
-				if (cItem<0) nextItem(1);
-				else World.w.gui.setItems();
-				
-				if (l.tip=='valuables') color=2;
-				else if (l.tip==Item.L_HIM || l.tip==Item.L_POT) color=1;
-				else if (l.tip==Item.L_KEY || l.tip==Item.L_SPEC) color=6;
-				else if (l.tip=='equip') color=8;
-				else color=0;
-			}
-			if (tr==2) 
-			{
-				if (l.kol>1) World.w.gui.infoText('reward',l.nazv,l.kol);
-				else World.w.gui.infoText('reward2',l.nazv);
-			}
-			//если объект был сгенерирован случайно, обновить лимиты
-			if (tr==0 && l.imp==0 && l.xml.@limit.length()) 
-			{
-				World.w.game.addLimit(l.xml.@limit,2);
-			}
-			//всплывающее сообщение
-			if (!World.w.testLoot && (tr==0 || tr==2)) 
-			{
-				if (l.fc>=0) color=l.fc;
-				World.w.gui.floatText(l.nazv+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
-			}
-			//информационное окно для важных предметов
-			if (World.w.helpMess || l.tip=='art') 
-			{
-				if (l.mess!=null && !(World.w.game.triggers['mess_'+l.mess]>0)) 
+				//всплывающее сообщение
+				if (!World.w.testLoot && (tr==0 || tr==2)) 
 				{
-					World.w.game.triggers['mess_'+l.mess]=1;
-					World.w.gui.impMess(Res.txt('i',l.mess),Res.txt('i',l.mess,2),l.mess);
+					if (l.fc>=0) color=l.fc;
+					World.w.gui.floatText(l.nazv+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
 				}
-			}
-			//если объект критичный, подтвердить получение
-			if (l.imp==2 && l.cont) l.cont.receipt();
-			var res:String=World.w.game.checkQuests(l.id);
-			if (res!=null) 
-			{
-				World.w.gui.infoText('collect',res);
-			}
+				//информационное окно для важных предметов
+				if (World.w.helpMess || l.tip=='art') 
+				{
+					if (l.mess!=null && !(World.w.game.triggers['mess_'+l.mess]>0)) 
+					{
+						World.w.game.triggers['mess_'+l.mess]=1;
+						World.w.gui.impMess(Res.txt('i',l.mess),Res.txt('i',l.mess,2),l.mess);
+					}
+				}
+				//если объект критичный, подтвердить получение
+				if (l.imp==2 && l.cont) l.cont.receipt();
+				var res:String=World.w.game.checkQuests(l.id);
+				if (res!=null) 
+				{
+					World.w.gui.infoText('collect',res);
+				}
 			} catch (err) 
 			{
-				World.w.showError(err, 'Loot error. tip:'+l.tip+' id:'+l.id);
+				World.w.showError(err, 'Loot error. tip:' + l.tip + ' id:' + l.id);
 			}
 			if (World.w.hardInv) mass[l.invCat]+=l.mass*l.kol;
 			World.w.calcMass=true;
