@@ -18,7 +18,7 @@
 -->
 <application xmlns="http://ns.adobe.com/air/application/50.2">
   <id>Remains</id>
-  <versionNumber>1</versionNumber>
+  <versionNumber>1.0</versionNumber>
   <filename>Remains</filename>
   <description/>
   <name>Remains</name>
@@ -35,12 +35,8 @@
     <minimizable>true</minimizable>
     <resizable>true</resizable>
   </initialWindow>
-  <icon>
-    <image128x128>AppIconsForPublish/icon.png</image128x128>
-    <image48x48>AppIconsForPublish/icon2.png</image48x48>
-    <image32x32>AppIconsForPublish/icon3.png</image32x32>
-    <image16x16>AppIconsForPublish/icon4.png</image16x16>
-  </icon>
+  <icon/>
   <customUpdateUI>false</customUpdateUI>
   <allowBrowserInvocation>false</allowBrowserInvocation>
-  <supportedProfiles>desktop </supportedProfiles></application>
+  <supportedProfiles>desktop extendedDesktop </supportedProfiles>
+</application>

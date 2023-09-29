@@ -1,4 +1,6 @@
-﻿package src.graph {
+﻿package src.graph 
+{
+
 	import flash.display.BitmapData;
 	import flash.display.Bitmap;
 	import flash.geom.Rectangle;
@@ -6,29 +8,39 @@
 	import flash.display.MovieClip;
 	
 	import src.*;
-	//import src.serv.BlitAnim;
 	
-	public class Part  extends Pt{
+	public class Part  extends Pt
+	{
 		public var vClass:Class;
 		
-		public var isMove:Boolean=false, isAnim:int=0, isAlph:Boolean=false, isPreAlph:Boolean=false;
-		public var dr:Number=0, r:Number=0, ddy:Number=0;
-		public var liv:int=20, mliv:int=20;
-		public var brake:Number=1;
-		public var otklad:int=0;
+		public var isMove:Boolean = false;
+		public var isAnim:int = 0;
+		public var isAlph:Boolean = false;
+		public var isPreAlph:Boolean = false;
+
+		public var dr:Number=0;
+		public var r:Number=0;
+		public var ddy:Number=0;
+
+		public var liv:int = 20;
+		public var mliv:int = 20;
+		public var brake:Number = 1;
+		public var otklad:int = 0;
+
 
 		public var blitData:BitmapData;
-		var blitX:int=120, blitY:int=120;
+		var blitX:int = 120;
+		var blitY:int = 120;
 		var blitRect:Rectangle;
 		var blitPoint:Point;
 		var visData:BitmapData;
 		var visBmp:Bitmap;
-		var blitFrame:Number=0;
-		var blitDelta:Number=1;
-		var blitMFrame:int=-1;
+		var blitFrame:Number = 0;
+		var blitDelta:Number = 1;
+		var blitMFrame:int = -1;
 		
-		public var water:int=0;
-		public var maxkol:int=0;
+		public var water:int = 0;
+		public var maxkol:int = 0;
 		
 		public function Part() 
 		{
@@ -37,41 +49,50 @@
 		
 		public override function setNull(f:Boolean=false) 
 		{
-			if (visData) visData.dispose();
+			if (visData) 
+			{
+				visData.dispose();
+			}
+
 			loc.remObj(this);
-			if (maxkol>0) Emitter.kols[maxkol]--;
+
+			if (maxkol > 0) 
+			{
+				Emitter.kols[maxkol]--;
+			}
+			
 			delete this;
 		}
 		
-		public function initBlit(blitId:String) 
+		public function initBlit(blitId:String) //Create a bitmap
 		{
-			blitData=World.w.grafon.getSpriteList(blitId,1);
+			blitData = World.w.grafon.getSpriteList(blitId, 1);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
 			blitPoint = new Point(0,0);
-			vis=new MovieClip();
-			visData=new BitmapData(blitX,blitY,true,0);
-			visBmp=new Bitmap(visData);
+			vis = new MovieClip();
+			visData = new BitmapData(blitX, blitY, true, 0);
+			visBmp = new Bitmap(visData);
 			vis.addChild(visBmp);
-			visBmp.x=-blitX/2;
-			visBmp.y=-blitY/2;
-			vis.x=X;
-			vis.y=Y;
-			vis.rotation=r;
+			visBmp.x = -blitX/2;
+			visBmp.y = -blitY/2;
+			vis.x = X;
+			vis.y = Y;
+			vis.rotation = r;
 
-			if (isAnim==0) 
+			if (isAnim == 0) 
 			{
-				var n:int=Math.floor(Math.random()*blitData.width/blitX);
+				var n:int = Math.floor(Math.random() * blitData.width / blitX);
 				blit(n);
 			}
 		}
 		
 		public function blit(blframe:int) 
 		{
-			blitRect.x=blframe*blitX, blitRect.y=0;
-			visData.copyPixels(blitData,blitRect,blitPoint);
+			blitRect.x = blframe * blitX, blitRect.y = 0;
+			visData.copyPixels(blitData, blitRect, blitPoint);
 		}
 		
-		public function initVis(frame:int=0) 
+		public function initVis(frame:int = 0) 
 		{
 			if (vClass) vis=new vClass();
 			else return;
@@ -115,11 +136,19 @@
 				dy*=brake;
 			}
 			
-			if (isAlph && liv<9) vis.alpha=liv/10;
+			if (isAlph && liv<9) 
+			{
+				vis.alpha=liv/10;
+			}
+			else if (isPreAlph && (mliv-liv<9)) 
+			{
+				vis.alpha=(mliv-liv)/10;
+			}
 
-			else if (isPreAlph && (mliv-liv<9)) vis.alpha=(mliv-liv)/10;
-
-			else if (isAlph || isPreAlph) vis.alpha=1;
+			else if (isAlph || isPreAlph) 
+			{
+				vis.alpha=1;
+			}
 
 			if (isAnim && blitData && blitFrame*blitX<blitData.width) 
 			{
@@ -136,7 +165,7 @@
 
 			liv--;
 
-			if (liv<=0) 
+			if (liv <= 0) 
 			{
 				setNull();
 			}

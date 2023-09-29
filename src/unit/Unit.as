@@ -805,8 +805,8 @@
 			}
 		}
 		
-		// Set to the initial state; if f=true, return to the original position
-		public override function setNull(f:Boolean=false) 
+		// Set to the initial state; if f = true, return to the original position
+		public override function setNull(f:Boolean = false) 
 		{
 			if (boss && isNoResBoss()) f=false;
 			if (sost==1) 
@@ -814,20 +814,21 @@
 				if (f) 
 				{
 					// Reset effects
-					if (effects.length>0) 
+					if (effects.length > 0) 
 					{
 						for each (var eff in effects) eff.unsetEff();
-						effects=new Array();
+						effects = new Array();
 					}
 					stun=cut=poison=0;
 					oduplenie=Math.round(World.oduplenie*(Math.random()*0.2+0.9));
 					if (!noAct) disabled=false;		//включить
-					hp=maxhp;			//восстановить хп
-					armor_hp=armor_maxhp;
+					hp = maxhp;			//восстановить хп
+					armor_hp = armor_maxhp;
 					if (hpbar) visDetails();
 					//вернуть в исходную точку
 					if (begX>0 && begY>0) setPos(begX, begY);
-					dx=dy=0;
+					dx = 0;
+					dy = 0;
 					setWeaponPos();
 				}
 				if (currentWeapon) currentWeapon.setNull();
@@ -841,7 +842,7 @@
 			var res=false;
 			try 
 			{
-				res=World.w.game.globalDif<=3 && loc && loc.land.act.tip!='base';
+				res = World.w.game.globalDif <= 3 && loc && loc.land.act.tip != 'base';
 			} 
 			catch(err) {}
 			return res;
@@ -849,8 +850,7 @@
 		
 		public override function err():String 
 		{
-			//setNull();
-			return 'Error unit '+nazv;
+			return 'Error unit ' + nazv;
 		}
 		
 		
@@ -858,13 +858,13 @@
 		public override function step() 
 		{
 			if (disabled || trigDis) return;
-			if (t_emerg>0)
+			if (t_emerg > 0)
 			{
 				t_emerg--;
 				setVisPos();
 				if (vis) 
 				{
-					if (t_emerg>0) 
+					if (t_emerg > 0) 
 					{
 						var tf=t_emerg/(max_emerg+1);
 						vis.filters=[new GlowFilter(0xAADDFF,tf,tf*20,tf*20,1,3)];
@@ -878,7 +878,7 @@
 				}
 				return;
 			}
-			if (sost==2) 
+			if (sost == 2) 
 			{
 				timerDie--;
 				if (timerDie<=0) die();
@@ -990,15 +990,15 @@
 		{
 			if (levit) 
 			{
-				dy*=0.8;
-				dx*=0.8;
+				dy *= 0.8;
+				dx *= 0.8;
 				isLaz=0;
 			}
 			if (isPlav) 
 			{
 				if (!levit) dy+=World.ddy*ddyPlav;
-				dy*=0.8;
-				dx*=0.8;
+				dy *= 0.8;
+				dx *= 0.8;
 			} 
 			else if (isFly) 
 			{
@@ -1013,63 +1013,64 @@
 						dx*=0.7;
 						dy*=0.7;
 					}
-					if (dx>-brake && dx<brake) dx=0;
-					if (dy>-brake && dy<brake) dy=0;
+					if (dx > -brake && dx < brake) dx = 0;
+					if (dy > -brake && dy < brake) dy = 0;
 				}
 			} 
 			else 
 			{
-				if (inWater) dx*=0.5;
-				if (!levit && isLaz==0) 
+				if (inWater) dx *= 0.5;
+				if (!levit && isLaz == 0) 
 				{
 					var t:Tile = loc.getAbsTile(X, Y - scY / 4);
-					if (t.grav>0 && dy<World.maxdy*t.grav || t.grav<0 && dy>World.maxdy*t.grav) dy+=World.ddy*t.grav*grav;
+					if (t.grav > 0 && dy<World.maxdy*t.grav || t.grav < 0 && dy > World.maxdy * t.grav) dy += World.ddy * t.grav * grav;
 				}
 				if (stay) 
 				{
 					dx*=tormoz;
 					if (walk<0) 
 					{
-						if (dx<-maxSpeed) dx+=brake;
+						if (dx < -maxSpeed) dx += brake;
 					} 
 					else if (walk>0) 
 					{
-						if (dx>maxSpeed) dx-=brake;
+						if (dx>maxSpeed) dx -= brake;
 					} 
 					else 
 					{
-						if (dx>-brake && dx<brake) dx=0;
-						else if (dx>0) dx-=brake;
-						else if (dx<0) dx+=brake;
+						if (dx>-brake && dx<brake) dx = 0;
+						else if (dx>0) dx -= brake;
+						else if (dx<0) dx += brake;
 					}
 					if (loc.quake && massa<=2 && sost==1) 
 					{
 						var pun:Number=(1+(2-massa)/2)*loc.quake;
-						if (pun>10) pun=10;
-						dy=-pun*Math.random();
-						dx+=pun*(Math.random()*2-1);
+						if (pun > 10) pun = 10;
+						dy = -pun * Math.random();
+						dx += pun * (Math.random()*2-1);
 					}
 				}
 			}
 			if (slow > 0) 
 			{
-				dx*=0.75;
-				dy*=0.75;
+				dx *= 0.75;
+				dy *= 0.75;
 			}
-			osndx=osndy=0;
+			osndx = 0;
+			osndy = 0;
 			if (stayOsn) 
 			{
-				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) 
+				if (stayOsn.cdx > 10 || stayOsn.cdx < -10 || stayOsn.cdy > 10 || stayOsn.cdy < -10) 
 				{
 					stay=false;
 				} 
 				else 
 				{
-					osndx=stayOsn.cdx;
-					osndy=stayOsn.cdy;
+					osndx = stayOsn.cdx;
+					osndy = stayOsn.cdy;
 				}
 			}
-			stayOsn=null;
+			stayOsn = null;
 		}
 		
 		
@@ -1084,9 +1085,8 @@
 			//Movement
 			var t:Tile, t2:Tile;
 			var i:int;
-			var newmy:Number=0;
-			var autoSit:Boolean=false;
-			//porog=(diagon==0)?10:40;
+			var newmy:Number = 0;
+			var autoSit:Boolean = false;
 			
 			if (!throu && stay && diagon!=0 && dy>=0) 
 			{
@@ -1109,13 +1109,13 @@
 			// HORIZONTAL
 			if (!isLaz) 
 			{
-				X+=(dx+osndx)/div;
-				if (X-scX/2<0) 
+				X += (dx + osndx) / div;
+				if (X - scX / 2 < 0) 
 				{
 					if (!outLoc(1)) 
 					{
-						X=scX/2;
-						dx=Math.abs(dx)*elast;
+						X = scX / 2;
+						dx = Math.abs(dx) * elast;
 						turnX=1;
 						kray=true;
 					}
@@ -1124,43 +1124,49 @@
 				{
 					if (!outLoc(2)) 
 					{
-						X=loc.limX-1-scX/2;
-						dx=-Math.abs(dx)*elast;
+						X = loc.limX - 1 - scX / 2;
+						dx = -Math.abs(dx) * elast;
 						turnX=-1;
 						kray=true;
 					}
 				}
-				X1=X-scX/2, X2=X+scX/2;
+				X1 = X - scX / 2, X2 = X + scX / 2;
 				//Move to the left
-				if (dx+osndx<0) 
+				if (dx + osndx < 0) 
 				{
-					if (!player && stay && shX1>0.5) 
+					if (!player && stay && shX1 > 0.5) 
 					{
-						newmy=checkDiagon(-5);
-						if (newmy>0) 
+						newmy = checkDiagon(-5);
+						if (newmy > 0) 
 						{
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+							Y = newmy;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
-					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1>0.5)) 
+					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX1 > 0.5)) 
 					{
-						newmy=checkDiagon(-2,-1);
-						if (newmy>0) 
+						newmy = checkDiagon(-2, -1);
+						if (newmy > 0) 
 						{
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+							Y = newmy;
+							Y1 = Y - scY, Y2 = Y;
 						}
 					}
 					if (player && isUp && stay && !isSit) 
 					{
-						t=loc.space[Math.floor(X1/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)];
-						t2=loc.space[Math.floor(X1/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)+1];
-						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) 
+						var x1Floor:int = Math.floor(X1 / Tile.tilePixelWidth);
+						var y1Floor:int = Math.floor(Y1 / Tile.tilePixelHeight);
+
+						t = loc.space[x1Floor][y1Floor];
+						t2 = loc.space[x1Floor][y1Floor + 1];
+						
+						if ((t.phis == 0 || t.phis == 3) && !(t2.phis == 0 || t2.phis == 3) && t2.zForm == 0) 
 						{
-							Y=Y2=t2.phY1;
+							Y = t2.phY1;
+							Y2 = t2.phY1;
 							sit(true);
-							autoSit=true;
+							autoSit = true;
 						}
 					}
 					if (mater) 

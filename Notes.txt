@@ -4,25 +4,50 @@
 
 skipTraining appears in MainMenu, Game, Invent, and Pers; Why?
 
-Unit.SetLevel
-    Set MaxHP before HP.
-    Before HP was being set before a max value was calculated.
-    TODO: Check this!
+
+
+All functions have a return type.
+Variables changed to strongly typed instead of dynamic.
 
 
 
+Unit
+	SetLevel()
+		Set MaxHP before HP.
+		Before HP was being set before a max value was calculated.
+		TODO: Check this!
+	setp()
+		Fixed loop.
+Grafon
+	Fixed for loop in constructor.
+	Fixed for loop in drawAllObjs().
+	
+Stand
+	Fixed for loop in showWeaponList().
 
+Sats
+	concatenating strings method changed from '+=' to '.appendText()' for performance.
+
+Pipbuck
+	Fixed for loop in constructor.
+
+PipPageOpt
+	Fixed for loop in setSubPages().
+
+PipPageStat
+	Fixed for loop in setSubPages().
+
+Form
+	Fixed loop in setForms().
 
 TODO:
 Define res_watcher
-
-
-
-
-
-
-
-
+Fix funtion capitalization for public functions.
+Sound.pshum() has a weird return, fix.
+PipPageInv.itemClick() has a weird return, fix.
+Remove DropLoot() overrides from units and merge into one table.
+Remove Expl() overrides from units and merge into one table.
+Remove 'Sky' checks from all over.
 
 
 

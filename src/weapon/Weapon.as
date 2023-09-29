@@ -11,7 +11,7 @@
 	import src.graph.Emitter;
 	import src.unit.Pers;
 
-	public class Weapon extends src.Obj
+	public class Weapon extends Obj
 	{
 		
 		public static var weaponPerks:Array=['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']

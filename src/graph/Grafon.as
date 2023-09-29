@@ -51,20 +51,22 @@ public class Grafon {
 	
 	//BITMAPS
 	public var frontBmp:BitmapData;
-	var frontBitmap:Bitmap;
-	var vodaBmp:BitmapData;
-	var vodaBitmap:Bitmap;
-	var backBmp:BitmapData;
-	var backBitmap:Bitmap;
-	var backBmp2:BitmapData;
-	var backBitmap2:Bitmap;
+	public var frontBitmap:Bitmap;
+	public var vodaBmp:BitmapData;
+	public var vodaBitmap:Bitmap;
+	public var backBmp:BitmapData;
+	public var backBitmap:Bitmap;
+	public var backBmp2:BitmapData;
+	public var backBitmap2:Bitmap;
 	public var lightBmp:BitmapData;
-	var lightBitmap:Bitmap;
+	public var lightBitmap:Bitmap;
 	public var satsBmp:BitmapData;
-	var satsBitmap:Bitmap;
-	var shadBmp:BitmapData;
-	var colorBmp:BitmapData;
+	public var satsBitmap:Bitmap;
+	public var shadBmp:BitmapData;
+	public var colorBmp:BitmapData;
 
+
+	var bitmapCachingOption:Boolean; //EXPORT THIS
 
 	var dsFilter:DropShadowFilter = new DropShadowFilter(7, 90, 0, 0.75, 16, 16, 1, 3, false, false, true);
 	var infraTransform:ColorTransform = new ColorTransform(1, 1, 1, 1, 100);
@@ -119,6 +121,8 @@ public class Grafon {
 		tilepixelheight = Tile.tilePixelHeight;
 		finalWidth = mapTileWidth * tilepixelwidth;
 		finalHeight = mapTileHeight * tilepixelheight;
+		bitmapCachingOption = false;
+
 
 		visual = nvis;
 		visBack = new Sprite();
@@ -133,7 +137,10 @@ public class Grafon {
 		
 		//Array of all sprites to display.
 		visObjs = new Array();
-		for (var i = 0; i < objCount; i++) visObjs.push(new Sprite());
+		for (var i = 0; i < objCount; i++) 
+		{
+			visObjs.push(new Sprite());
+		}
 		
 		visual.addChild(visBack);		//0 
 		visual.addChild(visBack2);		//0
@@ -346,7 +353,6 @@ public class Grafon {
 		try 
 		{
 				
-			//var d1:Date = new Date();
 			
 			//####################
 			//      STAGE 1   
@@ -571,7 +577,6 @@ public class Grafon {
 						var backgroundMatrix = new Matrix(); //New matrix to hold the translation data for the objects in the background.
 
 						backgroundMatrix.scale(backObject.scX, backObject.scY);
-						//trace(backgroundMatrix.a, backgroundMatrix.b, backgroundMatrix.c, backgroundMatrix.d);
 
 						backgroundMatrix.tx = backObject.X; // Object sprite's X offset
 						backgroundMatrix.ty = backObject.Y; // Object sprite's Y offset
@@ -593,7 +598,6 @@ public class Grafon {
 									else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 0.55+darkness2;
 								} 
 								else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
-								//trace(darkness2)
 								backBmp2.draw(backObject.vis, backgroundMatrix, ct, backObject.blend, null, true);
 								if (backObject.light) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
 								else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
@@ -729,16 +733,15 @@ public class Grafon {
 		//####################
 		//      STAGE 19
 		//####################
+
 		World.w.gr_stage = 19;  //Render all game objects.
-		
 		drawAllObjs();  //Draw all active objects
-		//var d2:Date = new Date();
-		//trace('***', d2.getTime()-d1.getTime(), 'ms')  // Render time.
 
 
 		//####################
 		//      STAGE 20 FINISHED
 		//####################
+
 		World.w.gr_stage = 0;  //Screen is now rendered.
 	}
 	
@@ -767,7 +770,7 @@ public class Grafon {
 	// Drawing all visible (physical?) objects
 	public function drawAllObjs() 
 	{
-		for (var i = 0; i < objCount; i++) 
+		for (var i:int = 0; i < objCount; i++) 
 		{
 			var n = visual.getChildIndex(visObjs[i]);
 			visual.removeChild(visObjs[i]);
@@ -785,7 +788,10 @@ public class Grafon {
 
 		location.gg.addVisual();
 
-		for (i in location.signposts) visObjs[3].addChild(location.signposts[i]);
+		for (var i = 0; i < location.signposts.length; i++)
+		{
+			visObjs[3].addChild(location.signposts[i]);
+		}
 	}
 	
 	// Filling the back wall with texture
@@ -964,12 +970,12 @@ public class Grafon {
 		border.mask = bmaska; 
 		floor.mask = fmaska;
 
-		baseSprite.cacheAsBitmap =  true; 
-		maska.cacheAsBitmap =  true; 
-		border.cacheAsBitmap =  true; 
-		bmaska.cacheAsBitmap =  true; 
-		floor.cacheAsBitmap =  true; 
-		fmaska.cacheAsBitmap = true; 
+		baseSprite.cacheAsBitmap = bitmapCachingOption; 
+		maska.cacheAsBitmap		 = bitmapCachingOption; 
+		border.cacheAsBitmap	 = bitmapCachingOption; 
+		bmaska.cacheAsBitmap 	 = bitmapCachingOption; 
+		floor.cacheAsBitmap 	 = bitmapCachingOption; 
+		fmaska.cacheAsBitmap 	 = bitmapCachingOption; 
 
 		if (material.appliedFilters) //If the material has any filters...
 		{
@@ -1012,7 +1018,7 @@ public class Grafon {
 	{
 		if (spriteLists[id] == null)
 		{
-			if (n>0) spriteLists[id] = getObj(id, numbSprite+n);
+			if (n > 0) spriteLists[id] = getObj(id, numbSprite + n);
 			else 
 			{
 				spriteLists[id] = getObj(id, numbSprite);

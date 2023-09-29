@@ -373,3 +373,15 @@ Remains.swf
 Compiled/Remains.swf
 Compiled/Remains.swf
 pfe.fla
+bat/SetupSDK.bat
+.gitignore
+bat/RunApp.bat
+bat/PackageApp.bat
+bat/CreateCertificate.bat
+bat/Packager.bat
+bat/SetupApp.bat
+bat/AIR_readme.txt
+Remains Source.as3proj
+lib.swc
+application.xml
+pfe.fla
