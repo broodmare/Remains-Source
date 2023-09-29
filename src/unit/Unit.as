@@ -519,23 +519,23 @@
 			if (node0.vulner.length()) 
 			{
 				//public static const D_BUL=0, D_BLADE=1, D_PHIS=2, D_FIRE=3, D_EXPL=4, D_LASER=5, D_PLASMA=6, D_VENOM=7, D_EMP=8, D_SPARK=9, D_ACID=10, D_INSIDE=100;
-				node=node0.vulner[0];
-				if (node.@bul.length()) vulner[D_BUL]=node.@bul;
-				if (node.@blade.length()) vulner[D_BLADE]=node.@blade;
-				if (node.@phis.length()) vulner[D_PHIS]=node.@phis;
-				if (node.@fire.length()) vulner[D_FIRE]=node.@fire;
-				if (node.@expl.length()) vulner[D_EXPL]=node.@expl;
-				if (node.@laser.length()) vulner[D_LASER]=node.@laser;
-				if (node.@plasma.length()) vulner[D_PLASMA]=node.@plasma;
-				if (node.@venom.length()) vulner[D_VENOM]=node.@venom;
-				if (node.@emp.length()) vulner[D_EMP]=node.@emp;
-				if (node.@spark.length()) vulner[D_SPARK]=node.@spark;
-				if (node.@acid.length()) vulner[D_ACID]=node.@acid;
-				if (node.@cryo.length()) vulner[D_CRIO]=node.@cryo;
-				if (node.@poison.length()) vulner[D_POISON]=node.@poison;
-				if (node.@bleed.length()) vulner[D_BLEED]=node.@bleed;
-				if (node.@fang.length()) vulner[D_FANG]=node.@fang;
-				if (node.@pink.length()) vulner[D_PINK]=node.@pink;
+				node = node0.vulner[0];
+				if (node.@bul.length()) vulner[D_BUL] = node.@bul;
+				if (node.@blade.length()) vulner[D_BLADE] = node.@blade;
+				if (node.@phis.length()) vulner[D_PHIS] = node.@phis;
+				if (node.@fire.length()) vulner[D_FIRE] = node.@fire;
+				if (node.@expl.length()) vulner[D_EXPL] = node.@expl;
+				if (node.@laser.length()) vulner[D_LASER] = node.@laser;
+				if (node.@plasma.length()) vulner[D_PLASMA] = node.@plasma;
+				if (node.@venom.length()) vulner[D_VENOM] = node.@venom;
+				if (node.@emp.length()) vulner[D_EMP] = node.@emp;
+				if (node.@spark.length()) vulner[D_SPARK] = node.@spark;
+				if (node.@acid.length()) vulner[D_ACID] = node.@acid;
+				if (node.@cryo.length()) vulner[D_CRIO] = node.@cryo;
+				if (node.@poison.length()) vulner[D_POISON] = node.@poison;
+				if (node.@bleed.length()) vulner[D_BLEED] = node.@bleed;
+				if (node.@fang.length()) vulner[D_FANG] = node.@fang;
+				if (node.@pink.length()) vulner[D_PINK] = node.@pink;
 			}
 			// Visual parameters
 			if (node0.vis.length()) 
@@ -601,23 +601,26 @@
 					if (node.@izvrat.length()) opt.izvrat=true;				// Is a pervert
 				}
 			}
-			if (blood==0) vulner[D_BLEED]=0;
+			if (blood == 0) vulner[D_BLEED] = 0;
 			if (opt) 
 			{
 				if (opt.robot || opt.mech) 
 				{
-					vulner[D_NECRO]=vulner[D_BLEED]=vulner[D_VENOM]=vulner[D_POISON]=0;
+					vulner[D_NECRO] = 0;
+					vulner[D_BLEED] = 0;
+					vulner[D_VENOM] = 0;
+					vulner[D_POISON] = 0;
 				}
 			}
 			if (node0.blit.length()) 
 			{
-				if (anims==null) anims=new Array();
+				if (anims == null) anims = new Array();
 				for each(var xbl:XML in node0.blit) 
 				{
-					anims[xbl.@id]=new BlitAnim(xbl);
+					anims[xbl.@id] = new BlitAnim(xbl);
 				}
 			}
-			if (setOpts) for (var i=0; i<kolVulners; i++) begvulner[i]=vulner[i];
+			if (setOpts) for (var i = 0; i < kolVulners; i++) begvulner[i] = vulner[i];
 		}
 		
 		public function getXmlWeapon(dif:int):Weapon 
@@ -714,12 +717,14 @@
 				die();
 			};
 		}
-		//установить левел моба (значение прибавляется к левелу, заданному через карту, по умолчанию 0)
-		public function setLevel(nlevel:int=0) 
+
+		// Set the level of the mob (the value is added to the level set through the map, default is 0)
+		public function setLevel(nlevel:int = 0) 
 		{
-			level+=nlevel;
-			if (level<0) level=0;
-			hp=maxhp=hp*(1+level*0.11);
+			level += nlevel;
+			if (level < 0) level = 0;
+			maxhp = hp*(1 + level*0.11);
+			hp = hp*(1 + level*0.11);
 			dam*=(1+level*0.07);
 			radDamage*=(1+level*0.1);
 			critCh=level*0.01;
