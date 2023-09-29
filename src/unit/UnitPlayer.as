@@ -1201,49 +1201,68 @@
 		
 		
 		//действие с активным объектом при удерживаемой клавише действия
-		function actAction() {
-			if (actionObj) {
-				//actionObj.getRasst2()
-					//trace(actionObj.X, actionObj.Y);
-				if ((X-actionObj.X)*(X-actionObj.X)+(Y-actionObj.Y)*(Y-actionObj.Y)>World.w.actionDist) {
-					actionObj=null;
+		function actAction() 
+		{
+			if (actionObj) 
+			{
+
+				if ((X-actionObj.X)*(X-actionObj.X)+(Y-actionObj.Y)*(Y-actionObj.Y)>World.w.actionDist) 
+				{
+					actionObj = null;
 				}
-			} else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist){
+			} 
+			else if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist)
+			{
 				actionReady=false;
-				if ((pers.telemaster==0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact=='comein')) && !loc.isLine(X,Y-scY*0.75,loc.celObj.X, loc.celObj.Y-loc.celObj.scY/2, loc.celObj)) {
+				if ((pers.telemaster==0 || !loc.portOn || (loc.celObj is Loot) || (loc.celObj.inter && loc.celObj.inter.allact=='comein')) && !loc.isLine(X, Y - scY * 0.75, loc.celObj.X, loc.celObj.Y - loc.celObj.scY / 2, loc.celObj)) 
+				{
 					World.w.gui.infoText('noVisible',null,null,false);
 					return;
 				}
-				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat==1) {
-					electroDamage(loc.electroDam,loc.celObj.X,loc.celObj.Y-loc.celObj.scY/2);
+				if (loc.electroDam && (loc.celObj is Box) && (loc.celObj as Box).mat == 1) 
+				{
+					electroDamage(loc.electroDam, loc.celObj.X, loc.celObj.Y - loc.celObj.scY / 2);
 					return;
 				}
-				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action>0) {
-					if (loc.celObj.inter.needSkill) {
+				if (loc.celObj.inter &&  loc.celObj.inter.active &&  loc.celObj.inter.action>0) 
+				{
+					if (loc.celObj.inter.needSkill) 
+					{
 						loc.celObj.inter.unlock=pers.getSkillLevel(loc.celObj.inter.needSkill);
 					} 
-					if (loc.celObj.inter.mine>0) {	//ловушка или бабах
+					if (loc.celObj.inter.mine>0) //ловушка или бабах
+					{
 						loc.celObj.inter.unlock=pers.getLockTip(loc.celObj.inter.mineTip);
-						t_action=loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.mine, 3);
-						actionObj=loc.celObj.inter;
-					} else if (loc.celObj.inter.lock>0 && loc.celObj.inter.lockKey && invent.items[loc.celObj.inter.lockKey].kol>0) {	//открыть ключом
+						t_action = loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.mine, 3);
+						actionObj = loc.celObj.inter;
+					} 
+					else if (loc.celObj.inter.lock > 0 && loc.celObj.inter.lockKey && invent.items[loc.celObj.inter.lockKey].kol > 0) 	//открыть ключом
+					{
 						loc.celObj.inter.unlock=1;
 						t_action=20;
 						actionObj=loc.celObj.inter;
-					} else if (loc.celObj.inter.lock>=100) {	//заклинило
+					} 
+					else if (loc.celObj.inter.lock>=100) 	//заклинило
+					{
 						return;
-					} else if (loc.celObj.inter.lock>0) {	//взлом
+					} 
+					else if (loc.celObj.inter.lock>0) 	//взлом
+					{
 						if (loc.celObj.inter.lockTip==0) return;
 						//if (pers.possLockPick<=0) return;
 						loc.celObj.inter.unlock=pers.getLockTip(loc.celObj.inter.lockTip);
 						loc.celObj.inter.master=pers.getLockMaster(loc.celObj.inter.lockTip);
 						t_action=loc.celObj.inter.t_action+pers.getLockPickTime(loc.celObj.inter.lock, loc.celObj.inter.lockTip);
 						actionObj=loc.celObj.inter;
-					} else if (loc.celObj.inter.t_action) {			//открывается какое-то время
+					} 
+					else if (loc.celObj.inter.t_action) 	//открывается какое-то время
+					{		
 						t_action=loc.celObj.inter.t_action;
 						actionObj=loc.celObj.inter;
 						actionObj.beginAct();
-					} else {								//открыть сразу
+					} 
+					else 		//открыть сразу
+					{						
 						loc.celObj.inter.is_act=true;
 					}
 					mt_action=t_action;
@@ -1252,9 +1271,13 @@
 				}
 			}
 		}
-		function crackAction() {
-			if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist){
-				if (loc.celObj.inter &&  loc.celObj.inter.needRuna(this)) {
+		
+		function crackAction() 
+		{
+			if (actionReady && loc.celObj && loc.celObj.onCursor && loc.celDist<=World.w.actionDist)
+			{
+				if (loc.celObj.inter &&  loc.celObj.inter.needRuna(this)) 
+				{
 					loc.celObj.inter.useRuna(this);
 				}
 			}
@@ -1298,8 +1321,10 @@
 			super.sit(turn);
 		}
 		
-		public override function control() {
-			if (!ggControl) {
+		public override function control() 
+		{
+			if (!ggControl) 
+			{
 				return;
 			}
 			var keyLeft:Boolean=zaput?ctr.keyRight:ctr.keyLeft;
@@ -1321,7 +1346,8 @@
 			}
 			//--------------------- различные действия ---------------------------
 			//действие
-			if (ctr.keyAction && rat==0) {
+			if (ctr.keyAction && rat==0) 
+			{
 				if (!teleObj) {
 					if (sats.que.length>0) sats.clearAll();
 					actAction();
@@ -1329,17 +1355,22 @@
 					throwTele();
 					ctr.keyAction=false;
 				}
-			} else {
+			} 
+			else 
+			{
 				actionReady=true;
 				actionObj=null;
 			}
-			if (ctr.keyCrack && !ctr.keyAction && !loc.base && rat==0) {
+			if (ctr.keyCrack && !ctr.keyAction && !loc.base && rat==0) 
+			{
 				ctr.keyCrack=false;
 				crackAction();
 			}
 			//телекинез
-			if (ctr.keyTele && !ctr.keyAction && !loc.base && rat==0) {
-				if (!teleReady) {
+			if (ctr.keyTele && !ctr.keyAction && !loc.base && rat==0) 
+			{
+				if (!teleReady) 
+				{
 					if (sats.que.length>0) sats.clearAll();
 					if (visSel) World.w.gui.unshowSelector(0);
 					else actTele();
@@ -2681,13 +2712,14 @@
 			if (t_work==0 && animState=='punch') {
 				animState='';
 			}
-			if (stay || t_stay>0) {
+			if (stay || t_stay>0) 
+			{
 				//Какие-то действия
-				if (animState=='punch' || animState=='kick') {
-				//если не нажаты влево или вправа, или стоим на месте, то СТОИМ
-				} else if  (diagon==0 && (dx<=1 && dx>=-1 && walk!=0 || dx<=4 && dx>=-4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit)) {
+				if  (diagon==0 && (dx<=1 && dx>=-1 && walk!=0 || dx<=4 && dx>=-4 && walk==0 || shX1>0.5 && isSit || shX2>0.5 && isSit)) 
+				{
 					t_walk=0;
-					if (freeAnim==0 || isSit) {
+					if (freeAnim==0 || isSit) 
+					{
 						freeAnim=0;
 						if (vis.osn.currentFrameLabel!='stay') {
 							if (vis.osn.currentFrameLabel=='jump' || vis.osn.currentFrameLabel=='levit') {
@@ -2734,26 +2766,37 @@
 							}
 						}
 						//trace(vis.body.currentFrame+' '+cframe);
-					} else {
+					} 
+					else 
+					{
 						if (vis.osn.body.currentFrame>=49) freeAnim=0;
 					}
-				} else if (diagon!=0 && dx==0) {
+				} 
+				else if (diagon!=0 && dx==0) 
+				{
 					freeAnim=0;
 					t_walk=0;
-					if (diagon*storona>0) {
-						if (animState!='diag_up') {
+					if (diagon*storona>0) 
+					{
+						if (animState!='diag_up') 
+						{
 							animState='diag_up';
 							vis.osn.gotoAndStop('trot_up');
 							vis.osn.body.gotoAndStop(1);
 						}
-					} else {
-						if (animState!='diag_down') {
+					} 
+					else 
+					{
+						if (animState!='diag_down') 
+						{
 							animState='diag_down';
 							vis.osn.gotoAndStop('trot_down');
 							vis.osn.body.gotoAndStop(1);
 						}
 					}
-				} else {			//движение
+				} 
+				else 
+				{			//движение
 					freeAnim=0;
 					if (diagon!=0) {
 						if (diagon*storona>0) {
@@ -2771,9 +2814,13 @@
 						}
 						sndStep(t_walk,1);
 						t_walk++;
-					} else {
-						if (isSit) {
-							if (animState=='roll' && vis.osn.body.currentFrame>=15) {
+					} 
+					else 
+					{
+						if (isSit) 
+						{
+							if (animState=='roll' && vis.osn.body.currentFrame>=15) 
+							{
 								vis.osn.gotoAndStop('polz');
 								animState='polz';
 							}
@@ -2806,7 +2853,6 @@
 						} else if (dx*storona>0) {
 							sndStep(t_walk,1);
 							t_walk++;
-							//nstep==7 || nstep==13 || nstep==15) Snd.ps('footstep'+Math.floor(Math.random()*8),X,Y,0,noiseRun/1000);
 							if (animState!='trot') {
 								vis.osn.gotoAndStop('trot');
 								vis.osn.body.play();

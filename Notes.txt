@@ -49,22 +49,29 @@ Remove DropLoot() overrides from units and merge into one table.
 Remove Expl() overrides from units and merge into one table.
 Remove 'Sky' checks from all over.
 
+Cyclomatic complexity Highscore:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Unit.actAction - 331
+Unit.getXmlParam - 115
+Unit.run - 129
+Unit.damage - 184
+Consol.analis - 95
+GUI.setCelObj - 79
+PipPageInv.setSubPages - 75
+PipPageVend.setSubPages - 84
+Interact.Interact - 110
+LootGen.lootCont - 89
+Script.com - 79
+Invent.usePotion - 86
+Invent.take - 81
+UnitAIRobot.control - 102
+UnitAlicorn.control - 160
+UnitAnt.control - 123
+UnitHellhound.control - 126
+Unitplayer.actions - 219
+Unitplayer.control - 331
+Unitplayer.anim - 169
+Bullet.run - 92
 
 
 
