@@ -1,4 +1,4 @@
-﻿package unitdata 
+package unitdata 
 {
 
 	import weapondata.Bullet;

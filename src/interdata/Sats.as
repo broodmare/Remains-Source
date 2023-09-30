@@ -1,4 +1,4 @@
-﻿package interdata 
+package interdata 
 {
 	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;

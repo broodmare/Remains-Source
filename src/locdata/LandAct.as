@@ -1,4 +1,4 @@
-﻿package locdata 
+package locdata 
 {
 	
 	// Class describing the terrain and player activity related to it

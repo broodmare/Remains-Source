@@ -1,4 +1,4 @@
-﻿package
+package
 {
 	
 	// Base class for objects interacting with the player or the world

@@ -1,4 +1,4 @@
-﻿package interdata 
+package interdata 
 {
 	
 	public class SatsCel extends Obj

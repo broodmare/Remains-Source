@@ -1,4 +1,4 @@
-﻿package graphdata 
+package graphdata
 {
 	import flash.display.MovieClip;
 	import flash.utils.*;

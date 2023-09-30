@@ -1,4 +1,4 @@
-﻿package unitdata 
+package unitdata 
 {
 	
 	public class UnitBloatEmitter  extends Unit{

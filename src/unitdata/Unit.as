@@ -1,4 +1,4 @@
-﻿package unitdata 
+package unitdata 
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;

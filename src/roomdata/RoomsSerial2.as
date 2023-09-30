@@ -1,4 +1,4 @@
-﻿package roomdata {
+package roomdata {
 	
 	public class RoomsSerial2 {
 		

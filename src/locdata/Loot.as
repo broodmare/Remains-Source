@@ -1,4 +1,4 @@
-﻿package locdata 
+package locdata 
 {
 	
 	import flash.geom.ColorTransform;

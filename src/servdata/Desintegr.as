@@ -1,4 +1,4 @@
-﻿package servdata 
+package servdata 
 {
 	import flash.display.MovieClip;
 	import flash.filters.GlowFilter;

@@ -1,4 +1,4 @@
-﻿package interdata 
+package interdata 
 {
 	
 	import flash.events.MouseEvent;

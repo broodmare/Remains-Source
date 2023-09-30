@@ -1,4 +1,4 @@
-﻿package locdata 
+package locdata 
 {
 	
 	public class Form 

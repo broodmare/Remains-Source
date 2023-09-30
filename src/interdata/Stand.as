@@ -1,4 +1,4 @@
-﻿package interdata 
+package interdata 
 {
 	//Стенд для оружия, коллекционных вещей и ачивок
 	

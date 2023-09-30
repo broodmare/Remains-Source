@@ -1,4 +1,4 @@
-﻿package unitdata 
+package unitdata 
 {
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;

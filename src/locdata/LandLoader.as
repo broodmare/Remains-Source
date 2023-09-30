@@ -1,4 +1,4 @@
-﻿package locdata 
+package locdata 
 {
 	
 	// Class for loading terrain maps from a file or retrieving them from variables

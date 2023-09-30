@@ -1,4 +1,4 @@
-﻿package
+package
 {
 	
 	// Base class for all objects.

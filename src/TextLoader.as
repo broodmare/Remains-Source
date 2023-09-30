@@ -1,4 +1,4 @@
-﻿package
+package
 {
 	
 	//A class that performs the loading of text files

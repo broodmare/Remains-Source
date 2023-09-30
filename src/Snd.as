@@ -1,4 +1,4 @@
-﻿package
+package
 {
 	import flash.media.Sound;
 	import flash.media.SoundChannel;

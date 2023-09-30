@@ -1,4 +1,4 @@
-﻿package graphdata
+package graphdata
 {
 	
 	import flash.filters.GlowFilter;

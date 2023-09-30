@@ -1,4 +1,4 @@
-﻿package weapondata 
+package weapondata 
 {
 	
 	import flash.geom.Point;

@@ -1,4 +1,4 @@
-﻿package servdata {
+package servdata {
 	
 	//Элемент инвентаря
 	import unitdata.Invent;

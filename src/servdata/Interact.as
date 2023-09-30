@@ -1,4 +1,4 @@
-﻿package servdata 
+package servdata 
 {
 	import flash.media.SoundChannel;
 	import flash.sampler.StackFrame;

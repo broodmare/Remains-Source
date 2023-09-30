@@ -1,4 +1,4 @@
-﻿package servdata 
+package servdata 
 {
 
 	import locdata.Land;

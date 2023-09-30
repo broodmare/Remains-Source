@@ -1,4 +1,4 @@
-﻿package  
+package  
 {
 	import fl.controls.Button;
 	import flash.display.Bitmap;

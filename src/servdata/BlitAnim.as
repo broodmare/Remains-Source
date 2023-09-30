@@ -1,4 +1,4 @@
-﻿package servdata 
+package servdata 
 {
 	
 	//Анимация с помощью спрайт-листов, шаблон
