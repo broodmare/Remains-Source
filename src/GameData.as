@@ -1,8 +1,13 @@
-﻿package src {
+﻿package
+{
 	
-	public class GameData {
+	public class GameData 
+	{
 
-		public function GameData() {}
+		public function GameData() 
+		{
+			
+		}
 
 		public static var d:XML=<game>
 		

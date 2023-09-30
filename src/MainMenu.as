@@ -1,4 +1,5 @@
-﻿package src {
+﻿package
+{
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -7,20 +8,19 @@
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import src.inter.PipBuck;
-	import src.inter.Appear;
-	import src.graph.Displ;
 	import flash.display.SimpleButton;
 	import flash.text.TextFormat;
 	import flash.text.StyleSheet;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
-	//import flash.net.URLLoader; 
-	//import flash.net.URLRequest; 
 	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
-	import src.inter.PipPageOpt;
+
+	import interdata.PipPageOpt;
+	import interdata.PipBuck;
+	import interdata.Appear;
+	import graphdata.Displ;
 	
 	public class MainMenu 
 	{
@@ -332,7 +332,7 @@
 			{
 				var slot:MovieClip = mainMenu.dialLoad['slot'+i];
 				var save:Object = World.w.getSave(i);
-				var obj:Object = src.inter.PipPageOpt.saveObj(save,i);
+				var obj:Object = interdata.PipPageOpt.saveObj(save,i);
 				arr.push(obj);
 				slot.id.text = i;
 				slot.id.visible = false;
@@ -397,7 +397,7 @@
 		}
 		public function funOverSlot(event:MouseEvent) 
 		{
-			src.inter.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mainMenu.dialLoad);
+			interdata.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mainMenu.dialLoad);
 		}
 		
 		public function funLoadFile(event:MouseEvent) 

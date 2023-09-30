@@ -1,13 +1,16 @@
-﻿package src {
+﻿package
+{
 	
 	// Base class for all objects.
 	
 	import flash.display.MovieClip;
-	import src.loc.Location;
-	
-	public class Pt {
 
-		public var loc:Location;
+	import locdata.Location;
+	
+	public class Pt
+	{
+
+		public var location:Location;
 		public var nobj:Pt, pobj:Pt;
 		public var in_chain:Boolean=false;
 		
@@ -20,13 +23,17 @@
 		public var dx:Number=0, dy:Number=0;
 		public var vis:MovieClip;
 		
-		public function Pt() {
+		public function Pt() 
+		{
 			// constructor code
 		}
 
 		public function addVisual() 
 		{
-			if (vis && loc && loc.locationActive) World.w.grafon.visObjs[sloy].addChild(vis);
+			if (vis && location && location.locationActive) 
+			{
+				World.w.grafon.visObjs[sloy].addChild(vis);
+			}
 		}
 		
 		public function remVisual() 
@@ -41,7 +48,7 @@
 		
 		public function err():String 
 		{
-			if (loc) loc.remObj(this);
+			if (location) location.remObj(this);
 			return null;
 		}
 		

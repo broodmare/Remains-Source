@@ -1,4 +1,4 @@
-﻿package src.rooms {
+﻿package rooms {
 	
 	public class RoomsProb {
 		
@@ -6000,7 +6000,7 @@
     <a>N._E._E.NE.NE.NE.AE._T._T._T._T._T._T._T._T._TБ._._K._K._K._K._._K._K._K._K._._K._K._K._K._._K._K._K._K._._K._K._K._K._._K._K._K._K._.A</a>
     <a>N._E._E.NE.NE.NE.AE._T._T._T._T._T._T._T._T._TБ._._K._K._K._K._._K._K._K._K._._K._K._K._K._._K._K._K._K._._K._K._K._K._._K._K._K._K._.A</a>
     <a>N._E._E.NE.NE.NE.AE.AE.AE.AE.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A._._А.A.A.A</a>
-    <a>N.src.src.NE.NE.NE.NE.NE.NE.NE.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N._C._CА.N.N.N</a>
+    <a>N.FE.FE.NE.NE.NE.NE.NE.NE.NE.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N._C._CА.N.N.N</a>
     <a>N._C._C._C._C._C._C._C._C._C.NC._C._C._C._C._._._._._._._._._._C._C._C._C.NC._C._C._C._C._._._._._._._._._._._C._CА._C._C.N</a>
     <a>N._C._C._C._C._C._C._C._C._C.NC._C._C._C._C._._._._._._._._._._C._C._C._C._C._C._C._C._C._._._._._._._._._._._C._CА._C._C.N</a>
     <a>N._C._C._C._C._C._C._C._C._C.NC._C._C._C._C._._._._._._._._._._C._C._C._C._C._C._C._C._C._._._._._._._._._._._C._CА._C._C.N</a>

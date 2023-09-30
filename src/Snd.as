@@ -1,4 +1,5 @@
-﻿package src{
+﻿package
+{
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
@@ -8,7 +9,8 @@
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
-	public class Snd {
+	public class Snd 
+	{
 		public static var snd:Array=new Array();
 		public static var globalVol=0.4;
 		public static var stepVol=0.5;
@@ -22,7 +24,6 @@
 			
 		public static var resSnd:Loader;
 		public static var resSounds:*;
-		//public static var resIsLoad:Boolean=false;
 		
 		public static var musicCh:SoundChannel;
 		public static var musicPrevCh:SoundChannel;

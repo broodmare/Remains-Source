@@ -1,4 +1,4 @@
-﻿package src 
+﻿package
 {
 	
 	//var ClassRef:Class = getDefinitionByName("int") as Class;

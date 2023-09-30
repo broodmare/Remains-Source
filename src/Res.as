@@ -1,4 +1,5 @@
-﻿package src {
+﻿package
+{
 	
 	import flash.utils.*;
 	import flash.display.MovieClip;

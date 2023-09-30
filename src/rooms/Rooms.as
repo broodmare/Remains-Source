@@ -1,4 +1,4 @@
-﻿package src.rooms {
+﻿package rooms {
 	
 	public class Rooms {
 		public var rooms:Array;

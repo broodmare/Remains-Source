@@ -1,4 +1,4 @@
-﻿package  src
+﻿package 
 {
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
@@ -18,20 +18,20 @@
 	import flash.desktop.Clipboard;	
 	import flash.utils.getTimer;
 	import flash.system.System;
-	
-	import src.loc.*;
-	import src.rooms.Rooms;
-	import src.graph.Grafon;
-	import src.graph.Part;
-	import src.graph.Emitter;
-	import src.inter.*;
-	import src.serv.LootGen;
-	import src.unit.Unit;
-	import src.unit.UnitPlayer;
-	import src.unit.Invent;
-	import src.unit.Pers;
 	import flash.external.ExternalInterface;
-	import src.weapon.Weapon;
+
+	import locdata.*;
+	import rooms.Rooms;
+	import graphdata.Grafon;
+	import graphdata.Part;
+	import graphdata.Emitter;
+	import interdata.*;
+	import servdata.LootGen;
+	import unitdata.Unit;
+	import unitdata.UnitPlayer;
+	import unitdata.Invent;
+	import unitdata.Pers;
+	import weapondata.Weapon;
 
 	
 	public class World 
@@ -74,7 +74,7 @@
 		
 		//Location components
 		public var land:Land;						//Current terrain
-		public var loc:Location;					//Current location
+		public var location:Location;					//Current location
 		public var rooms:Rooms;
 		
 		//Working variables
@@ -555,7 +555,7 @@
 		{
 			if (allStat > 0) 
 			{
-				cam.setLoc(loc);
+				cam.setLoc(location);
 			} 
 			if (gui) gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
@@ -728,9 +728,9 @@
 			try 
 			{
 				comLoad = -1;
-				if (loc) loc.unloadLocation();
+				if (location) location.unloadLocation();
 				land = null;
-				loc = null;
+				location = null;
 				try {cur('arrow');} 
 				catch(err)
 				{
@@ -819,17 +819,17 @@
 		{
 			try 
 			{
-				if (loc != null) //If a location exists, unload it.
+				if (location != null) //If a location exists, unload it.
 				{
-					loc.unloadLocation();
+					location.unloadLocation();
 				}
 
-				loc = nloc; //Set the desired area as the current area
-				grafon.drawLoc(loc); //Draw the current area
-				cam.setLoc(loc);
+				location = nloc; //Set the desired area as the current area
+				grafon.drawLoc(location); //Draw the current area
+				cam.setLoc(location);
 				grafon.setFonSize(swfStage.stageWidth, swfStage.stageHeight);
 				gui.setAll();
-				currentMusic = loc.sndMusic;
+				currentMusic = location.sndMusic;
 				Snd.playMusic(currentMusic);
 				gui.hpBarBoss();
 				if (t_die <= 0) World.w.gg.controlOn();
@@ -847,8 +847,8 @@
 		{
 			try 
 			{
-				grafon.drawLoc(loc);
-				cam.setLoc(loc);
+				grafon.drawLoc(location);
+				cam.setLoc(location);
 				gui.setAll();
 			} 
 			catch (err) 
@@ -1125,7 +1125,7 @@
 		
 		public function quake(x:Number, y:Number) 
 		{
-			if (loc.sky) return;
+			if (location.sky) return;
 			if (quakeCam) 
 			{
 				cam.quakeX += x;
@@ -1141,7 +1141,7 @@
 		public function possiblyOut():int 
 		{
 			if (t_battle> 0) return 2;
-			if (loc && loc.t_alarm> 0) return 2;
+			if (location && location.t_alarm> 0) return 2;
 			if (land.loc_t>120) return 1;
 			return 0;
 		}

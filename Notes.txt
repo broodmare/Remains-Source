@@ -1,13 +1,20 @@
 
 
+Remains.swf --
+MainFE renamed to Main.
+import 'fe.Obj' calls removed.
+Removed import protection.
+Exported audio changed from Mono to Stereo.
+Exported audio set at 128kbs mp3.
+Flash version 30 -> 32.
 
 
 skipTraining appears in MainMenu, Game, Invent, and Pers; Why?
 
+Renamed all 'loc' variables to avoid compiler ambigiuity with the loc folder.
+Renamed all folders to reduce compiler ambiguity.
 
-
-All functions have a return type.
-Variables changed to strongly typed instead of dynamic.
+Reduced import nesting.
 
 
 
@@ -41,7 +48,8 @@ Form
 	Fixed loop in setForms().
 
 TODO:
-Define res_watcher
+Change undeclared variables to internal.
+Define the res_watcher console command (empty on wiki).
 Fix funtion capitalization for public functions.
 Sound.pshum() has a weird return, fix.
 PipPageInv.itemClick() has a weird return, fix.
@@ -73,6 +81,43 @@ Unitplayer.control - 331
 Unitplayer.anim - 169
 Bullet.run - 92
 
+
+
+Adobe Animate calls:
+
+Displ --
+displVolna()
+visWav()
+visSerost()
+
+Grafon --
+paintaero()
+paintbrush()
+Color()
+tileVoda()
+visBlack()
+createCursor()
+tileFront()
+block_plav
+block_pla
+block_bur
+metal_tre
+bullet_metal
+bullet_tre
+bullet_dyr
+bullet_wood
+punch_tre
+expl_tre
+fire_soft
+laser_tre
+plasma_soft
+plasma_dyr
+plasma_tre
+bluplasma_tre
+pinkplasma_tre
+cryo_soft
+plaexpl_tre
+tileGwall()
 
 
 

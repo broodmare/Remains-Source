@@ -1,4 +1,4 @@
-﻿package  src
+﻿package
 {
 	
 	// Base class for objects interacting with the player or the world
@@ -7,13 +7,13 @@
 	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
 	
-	import src.graph.Emitter;
-	import src.graph.Part;
-	import src.loc.Location;
-	import src.serv.Interact;
-	import src.weapon.Bullet;
-	import src.unit.UnitPlayer;
-	import src.inter.Appear;
+	import graphdata.Emitter;
+	import graphdata.Part;
+	import locdata.Location;
+	import servdata.Interact;
+	import weapondata.Bullet;
+	import unitdata.UnitPlayer;
+	import interdata.Appear;
 	
 	public class Obj extends Pt{
 		public var code:String;		//individual code
@@ -84,13 +84,13 @@
 		
 		//affecting the main character
 		public function ggModum() {
-			if (loc==World.w.gg.loc && radioactiv && rasst2>=0 && rasst2<radrad*radrad) {
+			if (location==World.w.gg.location && radioactiv && rasst2>=0 && rasst2<radrad*radrad) {
 				World.w.gg.raddamage((radrad-Math.sqrt(rasst2))/radrad,radioactiv,radtip);
 			}
 		}
 		
 		public override function err():String {
-			if (loc) loc.remObj(this);
+			if (location) location.remObj(this);
 			return 'Error obj '+nazv;
 		}
 		

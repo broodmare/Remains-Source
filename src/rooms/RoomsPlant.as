@@ -1,4 +1,4 @@
-﻿package src.rooms {
+﻿package rooms {
 	
 	public class RoomsPlant {
 		
@@ -4568,8 +4568,8 @@
     <a>_H._H._H._H._H._H._H._H._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._А._._._._</a>
     <a>C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C._EБ._E.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
     <a>C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C._EБ._E.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
-    <a>C.C.C.C.C.C.C.C.C.C.C.C.C._E._E._E._E._E._E._EБ._E._E._E._E._E._E._E._E._E.src._E._E._E._E._E.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
-    <a>C.C.C.C.C.C.C.C.C.C.C.C.C._E._E._E._E._E._E._EБ._E._E._E._E._E._E._E._E._E.src._E._E._E._E._E.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
+    <a>C.C.C.C.C.C.C.C.C.C.C.C.C._E._E._E._E._E._E._EБ._E._E._E._E._E._E._E._E._E.FE._E._E._E._E._E.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
+    <a>C.C.C.C.C.C.C.C.C.C.C.C.C._E._E._E._E._E._E._EБ._E._E._E._E._E._E._E._E._E.FE._E._E._E._E._E.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
     <a>C.C.C.C.C.C.C.C.C.C.C.C.C._E-._E-._E-._E-.C.C.C.C.C._E-._E-._E-._E-.C.C.C.C.C._E-._E-._E-._E-.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
     <back id="pipe4" x="28" y="22"/>
     <obj id="enl2" code="Aze250Ud17exbImK" x="9" y="19"/>
@@ -5305,12 +5305,12 @@
     <a>_E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.DE._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E</a>
     <a>_E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.DE._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E</a>
     <a>_E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.DE._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E</a>
-    <a>C.C.C.C.C._H._H.C.C.C._E._E._E._E._E._E._E._E._E._E._E.src.src._E._E._E._E._E._E.DE._E._E._E._E._E._E._E.C.C.C.C.C.C.C._Б._.C._</a>
+    <a>C.C.C.C.C._H._H.C.C.C._E._E._E._E._E._E._E._E._E._E._E.FE.FE._E._E._E._E._E._E.DE._E._E._E._E._E._E._E.C.C.C.C.C.C.C._Б._.C._</a>
     <a>C.C.C.C.C._H._H.C.C.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.DE._E._E._E._E._E._E._E.C.C._._._._._._Б._._._</a>
     <a>_._H._H._H._H._H._H._H._H.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.DE._E._E._E._E._E._E._E.C.C._._._._._._Б._._._</a>
     <a>_._H._H._H._H._H._H._H._H.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.C.C._._._._._._Б._._._</a>
     <a>C.C._H._H.C.C.C.C.C.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.C.C.C.C._._А.C.C.C.C._</a>
-    <a>C.C._H._H.C.C.C.C.C.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.src.src.src._E._E.C.C._._._._А._._._._._</a>
+    <a>C.C._H._H.C.C.C.C.C.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.FE.FE.FE._E._E.C.C._._._._А._._._._._</a>
     <a>_._H._H._H._H._H._H._H._H.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.C.C._._._._А._._._._._</a>
     <a>_._H._H._H._H._H._H._H._H.C._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E._E.C.C._._._._А._._._._._</a>
     <a>C.C.C.C.C._-._-.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C._._-._-._А-._-._._._._</a>
