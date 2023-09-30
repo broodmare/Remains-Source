@@ -87,7 +87,7 @@ package
 			{
 				if (xl.@s1.length()) s=addKeys(s,xl);	// Control keys
 				try {
-					if (xl[classData[razd]][0].@s1.length()) s=addKeys(s,xl[classData[razd]][0]);
+					if (xl[classData[razd]][0].@s1.length) s=addKeys(s,xl[classData[razd]][0]);
 				} catch (err) {}
 				s=s.replace(/\[br\]/g,'<br>');
 				s=s.replace(/\[/g,"<span classData='yel'>");
@@ -226,7 +226,7 @@ package
 
 			var num:int=Math.floor(Math.random()*n);
 
-			if (World.w.matFilter && xl[num].@m.length()) return '';
+			if (World.w.matFilter && xl[num].@m.length) return '';
 
 			var s:String=xl[num];
 			var n1=s.indexOf('#');
