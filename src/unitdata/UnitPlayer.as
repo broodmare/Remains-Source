@@ -1439,7 +1439,7 @@ package unitdata
 				k_pet++;
 				if (k_pet>20) {
 					if (pet) {
-						pet.goto(X,Y-40,true);		//отзыв назад
+						pet.moveTo(X,Y-40,true);		//отзыв назад
 					}
 					k_pet=0;
 					ctr.keyPet=false;
@@ -1448,7 +1448,7 @@ package unitdata
 				if (k_pet>0) {				//приказ
 					if (pet) {
 						if (location.celObj && location.celObj is Unit && (location.celObj as Unit).fraction!=fraction) pet.atk((location.celObj as Unit));
-						else pet.goto(celX,celY);
+						else pet.moveTo(celX,celY);
 					}
 				}
 				k_pet=0;

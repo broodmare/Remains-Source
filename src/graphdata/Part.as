@@ -54,13 +54,13 @@ package graphdata
 			}
 
 			location.remObj(this);
-
+			
 			if (maxkol > 0) 
 			{
 				Emitter.kols[maxkol]--;
 			}
 			
-			delete this;
+			this = null;
 		}
 		
 		public function initBlit(blitId:String) //Create a bitmap

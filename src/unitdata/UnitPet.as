@@ -246,11 +246,12 @@ package unitdata
 		}
 		
 		//приказ двигаться
-		public function goto(nx:Number, ny:Number, unmat:Boolean=false) {
+		public function moveTo(nx:Number, ny:Number, unmat:Boolean=false) {
 			if (sost==4 || oduplenie>0) return;
 			tempUnmat=unmat;
 			flyBox=null;
-			if (!location.base && location.getAbsTile(nx,ny).visi<0.5) {
+			if (!location.base && location.getAbsTile(nx,ny).visi<0.5) 
+			{
 				//не лететь в неразведанное место
 				return;
 			}
