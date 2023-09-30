@@ -14,13 +14,12 @@
 	import flash.display.Loader;
 	import flash.net.URLRequest;
 	import flash.system.Security;
-
 	
 	
 	public class Main extends flash.display.MovieClip
 	{
 		
-		var mainMenu:MainMenu;
+		public var mainMenu:MainMenu;
 
 		public function Main() 
 		{
@@ -39,7 +38,7 @@
 			addEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 		}
 		
-		function onEnterFrameLoader(event:Event)
+		public function onEnterFrameLoader(event:Event):void
 		{
 			var bLoaded:uint = loaderInfo.bytesLoaded;
 			var bTotal:uint = loaderInfo.bytesTotal;

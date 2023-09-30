@@ -1,8 +1,9 @@
 
 
-Remains.swf --
+Remains.fla --
+Duplicate Zastavki folder removed from inside of Zastavki.
 MainFE renamed to Main.
-import 'fe.Obj' calls removed.
+import 'fe.Obj' calls changed to import 'Obj'.
 Removed import protection.
 Exported audio changed from Mono to Stereo.
 Exported audio set at 128kbs mp3.
@@ -29,6 +30,13 @@ Grafon
 	Fixed for loop in constructor.
 	Fixed for loop in drawAllObjs().
 	
+	
+Material
+		Imports a 'mask' propety from 'AllData.xml' as a generic class. This was changed to be imported as a string.
+		If the import failed, it was set as a class that doesn't exist (TileMask).
+	
+	
+	
 Stand
 	Fixed for loop in showWeaponList().
 
@@ -46,6 +54,7 @@ PipPageStat
 
 Form
 	Fixed loop in setForms().
+
 
 TODO:
 Change undeclared variables to internal.
@@ -122,7 +131,10 @@ tileGwall()
 
 
 
+Graphcis Bug--
 
+
+Rendering a door may temporarily fix the issue.
 
 
 

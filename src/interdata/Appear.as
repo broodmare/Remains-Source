@@ -227,7 +227,8 @@
 		}
 		
 		//событие ползунков
-		function chColor(event:SliderEvent):void {
+		function chColor(event:SliderEvent):void 
+		{
 			col.redOffset=vis.slRed.value;
 			col.greenOffset=vis.slGreen.value;
 			col.blueOffset=vis.slBlue.value;

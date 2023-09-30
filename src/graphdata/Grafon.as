@@ -871,7 +871,7 @@ public class Grafon
 	// veryFront If the material is a beam/stairs/etc.
 
 	// m must be instantiated for this function!
-	public function drawTileSprite(material:Material, toFront:Boolean = false, veryFront:Boolean = false) 
+	public function drawTileSprite(material:Material, toFront:Boolean = false, veryFront:Boolean = false):void 
 	{
 		
 
@@ -884,8 +884,8 @@ public class Grafon
 
 		var tile:Tile;
 		var mc:MovieClip;
+
 		var tileSprite:Sprite = new Sprite();
-		
 		var baseSprite:Sprite = new Sprite();
 		var maska:Sprite = new Sprite();
 		var border:Sprite = new Sprite();
@@ -928,41 +928,63 @@ public class Grafon
 		
 		var isDraw:Boolean = false;
 
-		//Loop for drawing tiles
-		for (var i = 0; i < location.spaceX; i++) 
+		//Loop for drawing tiles. Draws all tiles in an X axis, then increments the Y axis by 1.
+		for (var i:int = 0; i < location.spaceX; i++) //X axis
 		{
-			for (var j = 0; j < location.spaceY; j++) 
+			for (var j:int = 0; j < location.spaceY; j++) //Y axis
 			{
-				var tile = location.getTile(i, j);
-				if (tile.front == material.id && (toFront || veryFront) || tile.back == material.id && !toFront) 
+				var thisTile:Tile = location.getTile(i, j); //What tile to draw.
+
+				if (thisTile.front == material.id && (toFront || veryFront) || thisTile.back == material.id && !toFront) 
 				{
 					isDraw = true;
+
 					if (material.textureMask) 
 					{
-						setMask(mc, material.textureMask, tile, i, j, toFront, maska);
+						try
+						{
+							setMask(mc, material.textureMask, thisTile, i, j, toFront, maska);
+						}
+						catch(err)
+						{
+							trace('applying texturemask failed on tile ', thisTile, 'at ', i, ',', j)
+						}
 					}
+
 					if (material.borderMask) 
 					{
-						setMask(mc, material.borderMask, tile, i, j, toFront, bmaska);
+						try
+						{
+							setMask(mc, material.borderMask, thisTile, i, j, toFront, bmaska);
+						}
+						catch(err)
+						{
+							trace('applying bordermask failed on tile ', thisTile, 'at ', i, ',', j)
+						}
 					}
+
 					if (material.floorMask) 
 					{ 
-						mc = new material.floorMask();
-						if (mc.c1) 
+						try
 						{
-							mc.c1.gotoAndStop(tile.kont1 + 1);
-							mc.c2.gotoAndStop(tile.kont2 + 1);
+							mc = new material.floorMask();
+							if (mc.c1) 
+							{
+								mc.c1.gotoAndStop(thisTile.kont1 + 1);
+								mc.c2.gotoAndStop(thisTile.kont2 + 1);
+							}
+							fmaska.addChild(mc);
+							mc.x = (i + 0.5) * tilepixelwidth;
+							mc.y = (j + 0.5 + thisTile.zForm / 4) * tilepixelheight;
 						}
-						fmaska.addChild(mc);
-						mc.x = (i + 0.5) * tilepixelwidth;
-						mc.y = (j + 0.5 + tile.zForm / 4) * tilepixelheight;
+						catch(err)
+						{
+							trace('applying floorMask failed on tile ', thisTile, 'at ', i, ',', j)
+						}
 					}
 				}
 			}
 		}
-
-
-
 
 
 		if (!isDraw) return; //If the tile's material should not be drawn, return.
@@ -996,21 +1018,25 @@ public class Grafon
 		{
 			backBmp.draw(tileSprite, null, null, null, null, false);
 		}
-	}
-	
-	public function setMask(mc, materialMask, tile, i, j, toFront, parent) 
-	{
-		mc = new materialMask();
-		setMCT(mc, tile, toFront);
-		mc.x = (i + 0.5) * tilepixelwidth;
-		mc.y = (j + 0.5) * tilepixelheight;
-		parent.addChild(mc);
-		if (tile.zForm && toFront) 
+
+
+		function setMask(mc:MovieClip, materialMask:Class, tile:Tile, k:int, l:int, toFront:Boolean, parent:Sprite):void 
 		{
-			mc.scaleY = (tile.phY2 - tile.phY1) / tilepixelheight;
-			mc.y = (tile.phY2 + tile.phY1) / 2;
+			mc = new materialMask();
+			setMCT(mc, tile, toFront);
+			mc.x = (k + 0.5) * tilepixelwidth;
+			mc.y = (l + 0.5) * tilepixelheight;
+			parent.addChild(mc);
+			if (tile.zForm && toFront) 
+			{
+				mc.scaleY = (tile.phY2 - tile.phY1) / tilepixelheight;
+				mc.y = (tile.phY2 + tile.phY1) / 2;
+			}
 		}
 	}
+	
+	
+
 	//================================================================================================		
 	//							Execution Time
 	//================================================================================================		
@@ -1030,21 +1056,21 @@ public class Grafon
 		return spriteLists[id];
 	}
 		
-	public function drawSats()
+	public function drawSats():void
 	{
 		satsBmp.fillRect(satsBmp.rect, 0);
 		satsBmp.draw(visual, new Matrix);
 	}
 
 	// Enable SATS overlay??	
-	public function onSats(on:Boolean)
+	public function onSats(on:Boolean):void
 	{
 		visSats.visible = on;
 		visObjs[2].visible =! on;
 	}
 		
 	// Drawing water
-	public function drawWater(tile:Tile, recurs:Boolean = true)
+	public function drawWater(tile:Tile, recurs:Boolean = true):void
 	{
 		var backgroundMatrix = new Matrix();
 		backgroundMatrix.tx = tile.X * tilepixelwidth;
@@ -1056,7 +1082,7 @@ public class Grafon
 		if (recurs) drawWater(location.getTile(tile.X, tile.Y+1), false);
 	}
 		
-	public function tileDie(tile:Tile, tip:int)
+	public function tileDie(tile:Tile, tip:int):void
 	{
 		var erC:Class = block_dyr, drC:Class = block_tre;
 		var nx = (tile.X + 0.5) * tilepixelwidth;
@@ -1097,7 +1123,7 @@ public class Grafon
 	}
 		
 	// Bullet holes
-	public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1)
+	public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1):void
 	{
 		var erC:Class, drC:Class;
 		var bl:String = 'normal';
@@ -1231,7 +1257,7 @@ public class Grafon
 		decal(erC, drC, nx, ny, sc, rc, bl);
 	}
 		
-	public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number = 1, rc:Number = 0, bl:String = 'normal')
+	public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number = 1, rc:Number = 0, bl:String = 'normal'):void
 	{
 		var backgroundMatrix = new Matrix();
 		if (sc != 1) backgroundMatrix.scale(sc, sc);
@@ -1265,7 +1291,7 @@ public class Grafon
 		}
 	}
 		
-	public function gwall(nx:int, ny:int)
+	public function gwall(nx:int, ny:int):void
 	{
 		var backgroundMatrix = new Matrix();
 		backgroundMatrix.tx = nx * tilepixelwidth;
@@ -1274,7 +1300,7 @@ public class Grafon
 		frontBmp.draw(wall, backgroundMatrix);
 	}
 		
-	public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false)
+	public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false):void
 	{
 		var br:MovieClip;
 		if (aero) br = pa; else br = pb;
@@ -1319,7 +1345,7 @@ public class Grafon
 		backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 	}
 		
-	public function specEffect(n:Number = 0)
+	public function specEffect(n:Number = 0):void
 	{
 		if (n == 0)
 		{

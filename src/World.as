@@ -21,7 +21,7 @@
 	import flash.external.ExternalInterface;
 
 	import locdata.*;
-	import rooms.Rooms;
+	import roomdata.Rooms;
 	import graphdata.Grafon;
 	import graphdata.Part;
 	import graphdata.Emitter;
