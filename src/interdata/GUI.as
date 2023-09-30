@@ -7,6 +7,7 @@
 	import flash.text.TextFormat;
 	import flash.text.StyleSheet;
 	import flash.events.MouseEvent;
+	
 	import fl.events.ScrollEvent;
 	
 	import weapondata.Weapon;

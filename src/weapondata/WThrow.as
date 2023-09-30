@@ -1,10 +1,12 @@
 ﻿package weapondata
 {
 	
+	import flash.display.Graphics;
+
 	import unitdata.Unit;
 	import unitdata.UnitPlayer;
 	import unitdata.Mine;
-	import flash.display.Graphics;
+
 	
 	
 	public class WThrow  extends Weapon

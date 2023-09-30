@@ -108,11 +108,13 @@
 		
 		public var visoff=false;
 		
-		function off() {
+		function off() 
+		{
 			visoff=true;
 		}
 		
-		function analis() {
+		function analis() 
+		{
 			var str:String=vis.input.text;
 			ist.push(str);
 			World.w.lastCom=str;

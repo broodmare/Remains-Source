@@ -9,7 +9,6 @@
     import flash.ui.ContextMenuItem;
     import flash.ui.ContextMenuBuiltInItems;
     import flash.events.ContextMenuEvent;
-	
 	import flash.display.LoaderInfo;
 	import flash.display.Loader;
 	import flash.net.URLRequest;

@@ -1,9 +1,11 @@
 ﻿package weapondata 
 {
+
+	import flash.display.Graphics;
 	
 	import unitdata.Unit;
 	import locdata.*;
-	import flash.display.Graphics;
+
 	
 	public class Trasser 
 	{

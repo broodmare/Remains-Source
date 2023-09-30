@@ -3,13 +3,14 @@
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 	import flash.display.SimpleButton;
-	import fl.controls.ScrollBar;
-	import fl.events.ScrollEvent;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.StyleSheet;
 	import flash.filters.GlowFilter;
 	import flash.geom.ColorTransform;
+
+	import fl.controls.ScrollBar;
+	import fl.events.ScrollEvent;
 
 	import unitdata.Invent;
 	import unitdata.Pers;
@@ -21,7 +22,6 @@
 	import servdata.Item;
 	import servdata.LootGen;
 	import locdata.LandAct;
-
 	import unitdata.UnitPet;
 	
 	public class PipPage 

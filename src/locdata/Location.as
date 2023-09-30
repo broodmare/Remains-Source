@@ -2,13 +2,13 @@
 {
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
+	import flash.display.BitmapData;
 
 	import unitdata.Unit;
 	import unitdata.UnitPlayer;
 	import unitdata.UnitPhoenix;
 	import unitdata.UnitTransmitter;
 	import graphdata.*;
-	import flash.display.BitmapData;
 	import weapondata.Bullet;
 	import servdata.LootGen;
 	import servdata.Item;

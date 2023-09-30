@@ -2,10 +2,11 @@
 {
 	import flash.display.MovieClip;
 	import flash.display.SimpleButton;
-	import fl.controls.ScrollBar;
-	import fl.events.ScrollEvent;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
+
+	import fl.controls.ScrollBar;
+	import fl.events.ScrollEvent;
 	
 	import unitdata.Invent;
 	import unitdata.Unit;

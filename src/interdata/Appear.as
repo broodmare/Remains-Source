@@ -1,16 +1,17 @@
 ﻿package interdata 
 {
 	
-	import fl.controls.ColorPicker;
-	import fl.events.ColorPickerEvent;
-	import fl.events.SliderEvent;
+
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.ColorTransform;
-	import fl.motion.Color;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
-	
+
+	import fl.controls.ColorPicker;
+	import fl.events.ColorPickerEvent;
+	import fl.events.SliderEvent;
+	import fl.motion.Color;
 	// Character Appearance Settings
 	
 	public class Appear {

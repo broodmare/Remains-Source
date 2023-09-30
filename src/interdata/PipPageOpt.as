@@ -5,16 +5,16 @@
 	import flash.text.TextField;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import fl.controls.ScrollBar;
-	import fl.events.ScrollEvent;
 	import flash.display.StageDisplayState;
-	import fl.controls.CheckBox;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.utils.ByteArray;
-	
+
+	import fl.controls.ScrollBar;
+	import fl.events.ScrollEvent;
+	import fl.controls.CheckBox;
 	public class PipPageOpt extends PipPage
 	{
 		
