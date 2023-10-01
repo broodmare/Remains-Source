@@ -248,7 +248,7 @@ package interdata
 				item.ammo.text='';
 				item.ammotip.text='';
 			} else  {
-				item.ramka.visible=(World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);;
+				item.ramka.visible=(World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
 				item.nazv.text=obj.nazv;
 				item.hp.text=obj.kol;
 				if (World.w.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);

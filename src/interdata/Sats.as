@@ -328,7 +328,7 @@ package interdata
 				var txt:TextField=su.txt;
 				var info:TextField=su.info;
 				txt.y=3;
-				txt.autoSize=TextFieldAutoSize.CENTER;;
+				txt.autoSize=TextFieldAutoSize.CENTER;
 				if (!weapon.noPerc) var prec:Number=getPrec(un);
 				txt.text=un.nazv;
 				txt.selectable=false;

@@ -199,7 +199,7 @@ package weapondata
 		{
 			if (owner.player) 
 			{
-				return (owner as UnitPlayer).getInvAmmo(ammo,1,1,true)>0
+				return (owner as UnitPlayer).getInvAmmo(ammo,1,1,true) > 0;
 			} 
 			else 
 			{

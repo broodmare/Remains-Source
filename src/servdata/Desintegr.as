@@ -81,13 +81,21 @@ package servdata
 		}
 		
 		public function step() {
-			if (burnN>0 && burnN<=burnTime1) {
+			if (burnN>0 && burnN<=burnTime1) 
+			{
 				burnBmp.colorTransform(burnBmp.rect,burnCt);
 				burnBm.filters=[new GlowFilter(burnGlowColor,burnN/burnTime1,3,3,2,3)];
-			} else if (burnN>burnTime1 && burnN<=burnTime2+burnTime1)  {
+			} 	
+			else if (burnN>burnTime1 && burnN<=burnTime2+burnTime1)  
+			{
 	   			burnBmp.pixelDissolve(burnBmp, burnBmp.rect, new Point(0,0), burnRnd, burnKolPix*(burnN-burnTime1)/burnTime2, 0x00FF0000);
-				if (owner.massa>=0.25 || Math.random()<owner.massa*4) Emitter.emit(burnPart,owner.location,owner.X,owner.Y-owner.scY/2,{rx:owner.scX*0.75,rx:owner.scY*0.5}); 
-			} else if (burnN>=burnTime2+burnTime1) {
+				if (owner.massa>=0.25 || Math.random() < owner.massa * 4)
+				{
+					Emitter.emit(burnPart, owner.location, owner.X, owner.Y - owner.scY / 2, {rx:owner.scX * 0.75, ry:owner.scY * 0.5}); 
+				} 
+			} 
+			else if (burnN>=burnTime2+burnTime1) 
+			{
 				vse=true;
 			}
 			burnN++;

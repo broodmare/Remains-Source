@@ -850,7 +850,7 @@ package locdata
 		{
 			super.bindMove(nx,ny);
 			if (this.un) un.bindMove(nx,ny);
-			if (vis) runVis()
+			if (vis) runVis();
 		}
 		
 		public function runVis() 

@@ -126,7 +126,7 @@ package unitdata
 			if (vis) {
 				if (sost==2) {
 					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;;
+					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;
 				} else {
 					vis.x=X,vis.y=Y;
 				}

@@ -1102,12 +1102,12 @@ public class Grafon
 		} 
 		else if (tip < 10) //tips 7, 8, 9 are not handled.
 		{
-			if (tile.mat == 1) Emitter.emit('metal', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
-			else if (tile.mat == 2) Emitter.emit('tileSprite', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
-			else if (tile.mat == 3) Emitter.emit('schep', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
-			else if (tile.mat == 4) Emitter.emit('kusokB', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
-			else if (tile.mat == 5) Emitter.emit('steklo', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
-			else if (tile.mat == 6) Emitter.emit('kusokD', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight})
+			if (tile.mat == 1) Emitter.emit('metal', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+			else if (tile.mat == 2) Emitter.emit('tileSprite', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+			else if (tile.mat == 3) Emitter.emit('schep', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+			else if (tile.mat == 4) Emitter.emit('kusokB', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+			else if (tile.mat == 5) Emitter.emit('steklo', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+			else if (tile.mat == 6) Emitter.emit('kusokD', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
 		} 
 		else if (tip >= 15)
 		{

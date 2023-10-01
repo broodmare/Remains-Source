@@ -34,6 +34,10 @@ Grafon --
 	Fixed 'i' being defined twice in constructor.
 	Fixed for loop in drawAllObjs().
 	
+Emitter
+	step()
+		Fixed Emitter.emit setting rx twice instead of rx and ry.
+	
 	
 Material --
 		Imports a 'mask' propety from 'AllData.xml' as a generic class. This was changed to be imported as a string.

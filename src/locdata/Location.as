@@ -1903,7 +1903,7 @@ package locdata
 			{
 				if (obj is CheckPoint) 
 				{
-					drawMapObj(m, obj, 0xFF00FF)
+					drawMapObj(m, obj, 0xFF00FF);
 				}
 			}
 			for each (obj in units) 
@@ -2102,9 +2102,10 @@ package locdata
 		}
 		
 		// Process ghost walls
-		function gwalls() {
+		function gwalls() 
+		{
 			var est=false;
-			var t:Tile
+			var t:Tile;
 			for (var i=0; i<spaceX; i++) 
 			{
 				for (var j=0; j<spaceY; j++) 

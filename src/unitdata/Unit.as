@@ -2548,7 +2548,7 @@ package unitdata
 						{
 							if (isCrit==1 || isCrit==3) 
 							{
-								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;;
+								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.w.cam.scaleV;
 							}
 							hitPart.vis.numb.text=Math.round(hitSumm);
 							hitPart.liv=60;
