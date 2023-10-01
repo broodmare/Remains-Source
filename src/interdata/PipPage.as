@@ -160,8 +160,10 @@ package interdata
 			pip.snd(2);
 		}
 		
-		function setButtons() {
-			for (var i=1; i<=5; i++) {
+		public function setButtons() 
+		{
+			for (var i=1; i<=5; i++) 
+			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				if (page2==i) item.gotoAndStop(2);
 				else if (signs[i]>0) item.gotoAndStop(signs[i]+2);
@@ -169,7 +171,8 @@ package interdata
 			}
 		}
 		
-		public function setStatus(flop:Boolean=true) {
+		public function setStatus(flop:Boolean=true) 
+		{
 			pip.reqKey=false;
 			statHead.id.text='';
 			vis.visible=true;
@@ -190,80 +193,107 @@ package interdata
 			setStatItems(flop?0:-1);
 
 			var sc:ScrollBar=vis.scBar;
-			if (arr.length>maxrows) {
+			if (arr.length>maxrows) 
+			{
 				sc.visible=true;
 				sc.minScrollPosition=0
 				sc.maxScrollPosition=arr.length-maxrows;
 				sc.scrollPosition=scrl;
-			} else {
+			} 
+			else 
+			{
 				sc.visible=false;
 			}
 			setSigns();
 			setButtons();
 		}
 		
-		//подготовка страниц
-		function setSubPages() {
+		
+		public function setSubPages() //подготовка страниц
+		{
+
 		}
-		//определение подсвеченности кнопок
-		function setSigns() {
+		
+		public function setSigns() //определение подсвеченности кнопок
+		{
 			signs=[0,0,0,0,0,0];
 		}
 		
 		//показ одного элемента
-		function setStatItem(item:MovieClip, obj:Object) {
+		public function setStatItem(item:MovieClip, obj:Object) 
+		{
+
 		}
 		
 		//информация об элементе
-		function statInfo(event:MouseEvent) {
+		public function statInfo(event:MouseEvent) 
+		{
+
 		}
 		
-		function itemClick(event:MouseEvent) {
+		public function itemClick(event:MouseEvent) 
+		{
+
 		}
-		function itemRightClick(event:MouseEvent) {
+		public function itemRightClick(event:MouseEvent) 
+		{
+
 		}
 		
 		//показ всех элементов
-		public function setStatItems(n:int=-1) {
+		public function setStatItems(n:int=-1) 
+		{
 			if (n>=0) scrl=n;
-			for (var i=0; i<statArr.length; i++) {
-				if (i+scrl>=arr.length) {
+			for (var i=0; i<statArr.length; i++) 
+			{
+				if (i+scrl>=arr.length) 
+				{
 					statArr[i].visible=false;
-				} else {
+				} 
+				else 
+				{
 					statArr[i].visible=true;
 					setStatItem(statArr[i],arr[i+scrl]);
 				}
 			}
 		}
 		
-		public function setIco(tip:int=0, id:String='') {
+		public function setIco(tip:int=0, id:String='') 
+		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
 			vis.pers.visible=vis.skill.visible=false;
 			vis.item.gotoAndStop(1);
-			//vis.ico.y=vis.nazv.y+vis.nazv.textHeight+20;
 			vis.info.y=vis.ico.y;
 			if (tip==1) {//оружие
 				var w:Weapon=pip.arrWeapon[id];
-				if (w.tip==5) {
+				if (w.tip==5) 
+				{
 					tip=3;
 					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
-				} else {
+				} 
+				else 
+				{
 					var vWeapon:Class=w.vWeapon;
 					var node=AllData.d.weapon.(@id==id);
-					if (node.length()) {
+					if (node.length()) 
+					{
 						node=node[0];
 						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
 					}
-					if (vWeapon==null) {
+					if (vWeapon==null) 
+					{
 						vWeapon=Res.getClass('vis'+id, null);
 					}
-					if (vWeapon!=null) {
+					if (vWeapon!=null) 
+					{
 						infIco=new vWeapon();
 						infIco.stop();
 						if (infIco.lez) infIco.lez.stop();
 						var r:Number=1;
-						if (node.length() && node.vis.length()) {
-							if (node.vis.@icomult.length()) {
+						if (node.length() && node.vis.length()) 
+						{
+							if (node.vis.@icomult.length()) 
+							{
 								r=infIco.scaleX=infIco.scaleY=node.vis.@icomult;
 							}
 						}
@@ -276,8 +306,8 @@ package interdata
 					}
 				}
 			}
-			if (tip==2) {//бронька
-				//var child:DisplayObject;
+			if (tip==2) //бронька
+			{
 				pip.setArmor(id);
 				vis.pers.gotoAndStop(2);
 				vis.pers.gotoAndStop(1);
@@ -285,54 +315,68 @@ package interdata
 				vis.pers.visible=true;
 				vis.info.y=vis.pers.y+25;
 			}
-			if (tip==3) {
+			if (tip==3) 
+			{
 				vis.item.visible=true;
-				try {
+				try 
+				{
 					vis.item.gotoAndStop(id);
 					vis.info.y=vis.item.y+vis.item.height+25;
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					vis.item.gotoAndStop(1);
 					vis.item.visible=false;
 					vis.info.y=vis.ico.y;
 				}
 			}
-			if (tip==5) {//перки
+			if (tip==5) //перки 
+			{
 				vis.skill.visible=true;
-				try {
+				try 
+				{
 					vis.skill.gotoAndStop(id);
 					vis.info.y=vis.ico.y+220;
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					vis.skill.visible=false;
 					vis.info.y=vis.ico.y;
 				}
 			}
 		}
 		
-		public static function yel(s):String {
+		public static function yel(s):String 
+		{
 			return "<span class = 'yel'>"+s+"</span>";
 		}
-		public static function red(s):String {
+		public static function red(s):String 
+		{
 			return "<span class = 'red'>"+s+"</span>";
 		}
-		public static function pink(s):String {
+		public static function pink(s):String 
+		{
 			return "<span class = 'pink'>"+s+"</span>";
 		}
-		public static function mass(s):String {
+		public static function mass(s):String 
+		{
 			return "<span class = 'mass'>"+s+"</span>";
 		}
-		public static function blue(s):String {
+		public static function blue(s):String 
+		{
 			return "<span class = 'blu'>"+s+"</span>";
 		}
 		
 		//добавить в текстовую строку значения
-		public static function addVar(s:String, xml):String {
-			for (var i=1; i<=5; i++) {
+		public static function addVar(s:String, xml):String 
+		{
+			for (var i=1; i<=5; i++) 
+			{
 				if (xml.attribute('s'+i).length())  s=s.replace('#'+i,"<span class='yel'>"+xml.attribute('s'+i)+"</span>");
 			}
 			return s;
 		}
 		
-		//dlvl=1 если перк не текущий, а выбираемый
 		public static function effStr(tip:String, id:String, dlvl:int=0):String {
 			var s:String;
 			if (tip=='item') s=Res.txt('i',id,1)
@@ -369,10 +413,13 @@ package interdata
 				}
 			}
 			//добавление эффектов веса
-			if (World.w.hardInv && dp.sk.length()) {
+			if (World.w.hardInv && dp.sk.length()) 
+			{
 				s+='<br>';
-				for each(var sk in dp.sk) {
-					if (sk.@tip=='m') {
+				for each(var sk in dp.sk) 
+				{
+					if (sk.@tip=='m') 
+					{
 						var add=mass('+1');
 						if (sk.@vd>0) add=mass('+'+sk.@vd)+' '+Res.pipText('perlevel');
 						if (sk.@v1>0) add=mass('+'+sk.@v1);
@@ -381,22 +428,29 @@ package interdata
 				}
 			}
 			//добавление требований
-			if (dp.req.length()) {
+			if (dp.req.length()) 
+			{
 				s+='<br><br>'+Res.pipText('requir');
 				lvl--;
-				for each(var req in dp.req) {
+				for each(var req in dp.req) 
+				{
 					var reqlevel:int=1;
 					if (req.@lvl.length()) reqlevel=req.@lvl;
 					if (lvl>0 && req.@dlvl.length()) reqlevel+=lvl*req.@dlvl;
 					var s1:String='<br>';
 					var ok:Boolean=true;
-					if (req.@id=='level') {
+					if (req.@id=='level') 
+					{
 						s1+=Res.pipText('level');
 						if (pers.level<reqlevel) ok=false;
-					} else if (req.@id=='guns') {
+					} 
+					else if (req.@id=='guns') 
+					{
 						s1+=Res.txt('e','smallguns')+' '+Res.pipText('or')+' '+Res.txt('e','energy');
 						if (pers.getSkLevel(pers.skills['smallguns'])<reqlevel && pers.getSkLevel(pers.skills['energy'])<reqlevel) ok=false;
-					} else {
+					}
+					else 
+					{
 						s1+=Res.txt('e',req.@id);
 						if (pers.getSkLevel(pers.skills[req.@id])<reqlevel) ok=false;
 					}
@@ -694,7 +748,8 @@ package interdata
 			return s;
 		}
 		
-		function infoQuest(id:String):String {
+		public function infoQuest(id:String):String 
+		{
 				var q:Quest=World.w.game.quests[id];
 				if (q==null) return '';
 				vis.nazv.text=q.nazv;
@@ -801,7 +856,8 @@ package interdata
 			return s;
 		}
 
-		private function handleAdd(obj:Object, xmlTip:String):String {
+		private function handleAdd(obj:Object, xmlTip:String):String 
+		{
 			var s:String = (obj.val > 0 ? '+' : '-') + ' ' + yel(Math.abs(obj.val));
 			if (xmlTip != '0') {
 				s = (obj.val > 0 ? '+' : '-') + ' ' + yel(Res.numb(Math.abs(obj.val * 100)) + '%');
@@ -810,7 +866,8 @@ package interdata
 			return s;
 		}
 
-		private function handleMult(obj:Object, xmlTip:String):String {
+		private function handleMult(obj:Object, xmlTip:String):String 
+		{
 			var s:String = '× ' + yel(obj.val);
 			if (xmlTip == '0') {
 				s += ' = ' + yel(Res.numb(obj.res));
@@ -823,21 +880,27 @@ package interdata
 			return s;
 		}
 
-		private function handleMin(obj:Object, xmlTip:String):String {
+		private function handleMin(obj:Object, xmlTip:String):String 
+		{
 			var s:String = '- ' + yel(Res.numb(Math.abs(obj.val * 100)) + '%');
 			s += ' = ' + yel(Res.numb((obj.res) * 100) + '%');
 			return s;
 		}
 
-		private function handleElse(obj:Object, xmlTip:String):String {
+		private function handleElse(obj:Object, xmlTip:String):String 
+		{
 			var s:String = (xmlTip == '0') ? yel(obj.val) : yel(Res.numb(obj.val * 100) + '%');
 			return s;
 		}
 				
-				public function setTopText(s:String='') {
-					if (s=='') {
+				public function setTopText(s:String='') 
+				{
+					if (s=='') 
+					{
 						pip.vis.toptext.visible=false;
-					} else {
+					} 
+					else 
+					{
 						pip.vis.toptext.visible=true;
 						var ins:String=Res.txt('p',s,0,true);
 						var myPattern:RegExp = /@/g; 
@@ -846,33 +909,40 @@ package interdata
 				}
 				
 		//проверка квеста на доступность
-		public function checkQuest(task):Boolean {
+		public function checkQuest(task):Boolean 
+		{
 			//проверка на доступ к местности
-			if (task.@land.length()) {
+			if (task.@land.length()) 
+			{
 				var land:LandAct=World.w.game.lands[task.@land];
 				if (land==null) return false;
 				if (!land.access && !land.visited && World.w.pers.level<land.dif) return false;
 			}
 			//проверка триггера
-			if (task.@trigger.length()) {
+			if (task.@trigger.length()) 
+			{
 				if (World.w.game.triggers[task.@trigger]!=1) return false;
 			}
 			//проверка скилла
-			if (task.@skill.length() && task.@skilln.length()) {
+			if (task.@skill.length() && task.@skilln.length()) 
+			{
 				if (World.w.pers.skills[task.@skill]<task.@skilln) return false;
 			}
 			return true;
 		}
 		
-		function initCats() {
-			for (var i=0; i<=kolCats; i++) {
+		function initCats() 
+		{
+			for (var i=0; i<=kolCats; i++) 
+			{
 				vis.cats['cat'+i].addEventListener(MouseEvent.CLICK,selCatEvent);
 			}
 			selCat();
 		}
 		
 		//установить кнопки категорий
-		function setCats() {
+		function setCats() 
+		{
 			var arr=tips[page2];
 			if (arr==null) {
 				vis.cats.visible=false;
@@ -898,20 +968,25 @@ package interdata
 
 		
 		//выбор подкатегории инвентаря
-		function selCatEvent(event:MouseEvent) {
+		function selCatEvent(event:MouseEvent) 
+		{
 			var n:int=int(event.currentTarget.name.substr(3));
 			cat[page2]=n;
 			setStatus();
 		}
 		
-		function selCat(n:int=0) {
-			for (var i=0; i<=kolCats; i++) {
+		function selCat(n:int=0) 
+		{
+			for (var i=0; i<=kolCats; i++) 
+			{
 				vis.cats['cat'+i].fon.gotoAndStop(1);
 			}
 			vis.cats['cat'+n].fon.gotoAndStop(2);
 			try {
 				curTip=tips[page2][n];
-			} catch (err) {
+			} 
+			catch (err) 
+			{
 				curTip='';
 			}
 			if (curTip==null) curTip='';
@@ -919,31 +994,44 @@ package interdata
 		}
 		
 		//проверить соответствии категории
-		function checkCat(tip:String):Boolean {
+		function checkCat(tip:String):Boolean 
+		{
 			if (curTip=='' || curTip==null || curTip==tip) return true;
-			if (curTip is Array) {
+			if (curTip is Array) 
+			{
 				for each (var t in curTip) if (t==tip) return true;
 			}
 			return false;
 		}
 		
-		public function statScroll(event:ScrollEvent) {
+		function statScroll(event:ScrollEvent) 
+		{
 			setStatItems(event.position);
 		}
-		public function onMouseWheel1(event:MouseEvent):void {
+		function onMouseWheel1(event:MouseEvent):void 
+		{
 			if (World.w.ctr.setkeyOn) return;
-			try {
+			try 
+			{
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
-			} catch(err){}
+			} 
+			catch(err)
+			{
+
+			}
 			scroll(event.delta);
 			if (!vis.scBar.visible) return;
 			if (event.delta<0) (event.currentTarget as MovieClip).scBar.scrollPosition++;
 			if (event.delta>0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
 			event.stopPropagation();
 		}
-		public function scroll(dn:int=0) {
+		function scroll(dn:int=0) 
+		{
+
 		}
-		public function step() {
+		function step() 
+		{
+
 		}
 	}
 	

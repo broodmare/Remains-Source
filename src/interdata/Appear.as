@@ -166,13 +166,16 @@ package interdata
 			for each(var l in clist) vis['color'+l].selectedColor=this['c'+l];
 			vis.checkHair1.selected=visHair1;
 		}
+
 		// Convert all colors to transforms
-		public function setTransforms() {
-			for each(var l in clist) colorToTransform(this['c'+l],Appear['tr'+l]);
+		public function setTransforms() 
+		{
+			for each(var i in clist) colorToTransform(this['c'+i],Appear['tr'+i]);
 		}
 		
 		
-		public function save():Object {
+		public function save():Object 
+		{
 			if (saved!=null) {
 				load(saved);
 			}
@@ -187,18 +190,23 @@ package interdata
 		}
 		
 		// Save when calling the save or load page
-		public function saveOst() {
+		public function saveOst() 
+		{
 			if (saved==null) saved=save();
 		}
 		
-		public function load(obj:Object) {
-			if (obj==null) {
-				for each(var l in clist) this['c'+l]=this['t'+l];
+		public function load(obj:Object) 
+		{
+			if (obj == null) 
+			{
+				for each(var i in clist) this['c'+i]=this['t'+i];
 				visHair1=false;
 				fEye=1;
 				fHair=1;
-			} else {
-				for each(var l in clist) this['c'+l]=obj['c'+l];
+			} 
+			else 
+			{
+				for each(var j in clist) this['c'+j]=obj['c'+j];
 				visHair1=obj.visHair1;
 				fEye=obj.fEye;
 				fHair=obj.fHair;

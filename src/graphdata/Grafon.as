@@ -210,10 +210,10 @@ public class Grafon
 		
 
 		grLoaders = new Array();
-		for (var i in texUrl)
+		for (var j in texUrl)
 		{
-			var textureURL:String = texUrl[i];
-			grLoaders[i] = new GrLoader(i, textureURL, this);
+			var textureURL:String = texUrl[j];
+			grLoaders[j] = new GrLoader(j, textureURL, this);
 		}
 		createCursors();
 	}

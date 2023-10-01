@@ -25,7 +25,8 @@ package interdata
 		var targetLand:String='';
 		var game:Game;
 
-		public function PipPageInfo(npip:PipBuck, npp:String) {
+		public function PipPageInfo(npip:PipBuck, npp:String) 
+		{
 			itemClass=visPipQuestItem;
 			pageClass=visPipInfo;
 			isLC=true;
@@ -54,7 +55,8 @@ package interdata
 		}
 		
 
-		override function setSubPages() {
+		override function setSubPages() 
+		{
 			vis.bottext.visible=false;
 			vis.butOk.visible=false;
 			statHead.visible=false;
@@ -69,28 +71,39 @@ package interdata
 			targetLand='';
 			setTopText();
 			game=World.w.game;
-			if (page2==1) {		//карта
-				if (World.w.location.noMap) {
+			if (page2==1) 
+			{		//карта
+				if (World.w.location.noMap) 
+				{
 					vis.emptytext.text=Res.pipText('emptymap');
-				} else {
+				} 
+				else 
+				{
 					vis.emptytext.text='';
 					map.bitmapData=World.w.land.drawMap();
 					setMapSize();
 					visMap.visible=true;
 				}
-			} else if (page2==2) {	//задания
-				for each(var q:Quest in game.quests) {
-					if (q.state>0) {
-						var n:Object={id:q.id, nazv:q.nazv, main:q.main, sort:(q.main?0:1), state:q.state};
+			} 
+			else if (page2==2) 
+			{	//задания
+				for each(var i:Quest in game.quests) 
+				{
+					if (i.state>0) 
+					{
+						var n:Object={id:i.id, nazv:i.nazv, main:i.main, sort:(i.main?0:1), state:i.state};
 						arr.push(n);
 					}
 				}
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
 				if (World.w.location && World.w.location.base) {
-					for each (var task in GameData.d.vendor.task) {
-						if (checkQuest(task)) {
-							var q:Quest=game.quests[task.@id];
-							if (q==null || q.state==0) {
+					for each (var task in GameData.d.vendor.task) 
+					{
+						if (checkQuest(task)) 
+						{
+							var j:Quest=game.quests[task.@id];
+							if (j==null || j.state==0) 
+							{
 								vis.butOk.visible=true;
 								vis.butOk.text.text=Res.pipText('alltask');
 								break;
@@ -98,35 +111,44 @@ package interdata
 						}
 					}
 				}
-			} else if (page2==3) {	//общая карта
+			} 
+			else if (page2==3) 	//общая карта
+			{
 				vis.nazv.x=vis.info.x=584;
 				vis.nazv.width=287;
 				vis.info.width=332;
 				if (pip.travel) setTopText('infotravel');
-				for each (var land:LandAct in game.lands) {
+				for each (var land:LandAct in game.lands) 
+				{
 					if (land.prob) continue;
 					land.calcProbs();
 					var sim:MovieClip=visWMap[land.id];
-					if (sim) {
+					if (sim) 
+					{
 						sim.alpha=1;
 						sim.zad.gotoAndStop(1);
 						sim.sign.stop();
 						sim.sign.visible=false;
 						sim.visible=false;
-						if (!sim.hasEventListener(MouseEvent.CLICK)) {
+						if (!sim.hasEventListener(MouseEvent.CLICK)) 
+						{
 							sim.addEventListener(MouseEvent.CLICK,itemClick);
 							sim.addEventListener(MouseEvent.MOUSE_OVER,statInfo);
 						}
-						try {
+						try 
+						{
 							sim.sim.gotoAndStop(land.id);
-						} catch (err) {
+						} 
+						catch (err) 
+						{
 							sim.sim.gotoAndStop(1);
 						}
 						//trace(land.id, World.w.testMode);
 						if (land.test && !World.w.testMode) continue;
 						if (!game.checkTravel(land.id)) sim.alpha=0.5;
 						if (World.w.testMode && !land.visited && !land.access) sim.alpha=0.3;
-						if (World.w.helpMess && !land.visited && land.access) {
+						if (World.w.helpMess && !land.visited && land.access) 
+						{
 							sim.sign.play();
 							sim.sign.visible=true;
 						}
@@ -137,19 +159,19 @@ package interdata
 				visWMap.visible=true;
 				pip.vis.butHelp.visible=true;
 				pip.helpText=Res.txt('p','helpWorld',0,true);
-			} else if (page2==4) {	//записи
+			} 
+			else if (page2==4)
+			{	//записи
 				var doparr:Array=new Array();
-				for each (var note:String in game.notes) {
-					/*var s:String=Res.messText(note,0,false);
-					if (s=='') continue;
-					s=s.replace(/&lp/g,World.w.pers.persName);
-					s=s.replace(/\[/g,"<span class='yel'>");
-					s=s.replace(/\]/g,"</span>");*/
+				for each (var note:String in game.notes) 
+				{
 					var xml=Res.d.txt.(@id==note);
 					var nico:int=0;
-					if (xml && xml.@imp>0) {
+					if (xml && xml.@imp>0) 
+					{
 						nico=int(xml.@imp);
-					} else continue;
+					} 
+					else continue;
 					var title:String;
 					if (xml.n.t.length()) title=xml.n.t[0];
 					else title=xml.n.r[0];
@@ -160,7 +182,9 @@ package interdata
 				}
 				arr.reverse();
 				arr=doparr.concat(arr);
-			} else if (page2==5) {	//противники
+			} 
+			else if (page2==5) 	//противники
+			{
 				if (Unit.arrIcos==null) Unit.initIcos();
 				var prevObj:Object=null;
 				statHead.visible=true;
@@ -168,14 +192,20 @@ package interdata
 				statHead.mq.visible=false;
 				statHead.kol.text=Res.pipText('frag');
 				vis.ico.visible=true;
-				for each(var xml in AllData.d.unit) {
-					if (xml && xml.@cat.length()) {
+				for each(var xml in AllData.d.unit) 
+				{
+					if (xml && xml.@cat.length()) 
+					{
 						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
 						if (xml.@cat=='3' && World.w.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.w.game.triggers['frag_'+xml.@id]);
-						if (xml.@cat=='2') {
+						if (xml.@cat=='2') 
+						{
 							prevObj=n;
-						} else if (xml.@cat=='3') {
-							if (prevObj && n.kol>=0) {
+						} 
+						else if (xml.@cat=='3') 
+						{
+							if (prevObj && n.kol>=0) 
+							{
 								if (prevObj.kol<0) prevObj.kol=0;
 								prevObj.kol+=n.kol;
 							}
@@ -185,20 +215,16 @@ package interdata
 					}
 				}
 				arr=arr.filter(isKol);		//отфильтровать
-				//if (arr.length) arr.sortOn('sort');
 			}
 		}
 		
-		/*override function setSigns() {
-			super.setSigns();
-			signs[5]=2;
-		}*/
-		
-		private function isKol(element:*, index:int, arr:Array):Boolean {
+		private function isKol(element:*, index:int, arr:Array):Boolean 
+		{
             return (element.kol>=0 || element.cat=='1');
         }		
 		//один эемент списка
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override function setStatItem(item:MovieClip, obj:Object) 
+		{
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.nazv.text=obj.nazv;
@@ -207,29 +233,36 @@ package interdata
 			item.nazv.alpha=1;
 			item.kol.text='';
 			item.kol.visible=false;
-			if (page2==2) {
+			if (page2==2) 
+			{
 				item.nazv.x=32;
 				item.mq.visible=obj.main;
 				item.mq.gotoAndStop(1);
-				if (obj.state==2) {
+				if (obj.state==2) 
+				{
 					item.nazv.alpha=item.mq.alpha=0.4;
 					item.nazv.text+=' ('+Res.pipText('done')+')';
-				} else {
+				} 
+				else 
+				{
 					item.nazv.alpha=item.mq.alpha=1;
 				}
-			} else if (page2==3) {
-				/*item.nazv.x=5;
-				if (obj.id==targetLand) item.ramka.visible=true;
-				if (obj.kol>0) item.kol.text=obj.kol;
-				item.kol.visible=true;*/
-			} else if (page2==4) {
+			} 
+			else if (page2==3) 
+			{
+
+			} 
+			else if (page2==4) 
+			{
 				item.nazv.x=32;
 				item.nazv.htmlText=obj.nazv.substr((obj.nazv.charAt(0)==' ')?3:0, 60);
 				item.kol.text=obj.nazv;
 				item.mq.visible=true;
 				item.mq.alpha=1;
 				item.mq.gotoAndStop(obj.ico+1);
-			} else if (page2==5) {
+			} 
+			else if (page2==5) 
+			{
 				item.nazv.x=5;
 				if (obj.cat=='1') item.nazv.htmlText='<b>'+item.nazv.text+'</b>';
 				if (obj.cat=='2') item.nazv.htmlText='      <b>'+item.nazv.text+'</b>';
@@ -238,13 +271,18 @@ package interdata
 				item.kol.visible=true;
 			}
 		}
-		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+
+		
+		override function statInfo(event:MouseEvent) //информация об элементе
+		{
 			vis.info.y=vis.ico.y;
 			//vis.info.condenseWhite=false;
-			if (page2==2) {
+			if (page2==2) 
+			{
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
-			} else if (page2==3) {
+			} 
+			else if (page2==3) 
+			{
 				var l:LandAct=game.lands[event.currentTarget.name];
 				if (l==null) return;
 				vis.nazv.text=Res.txt('m',l.id);
@@ -269,8 +307,6 @@ package interdata
 				vis.info.htmlText=s;
 			} else if (page2==4) {
 				vis.info.y=vis.nazv.y;
-				//vis.info.condenseWhite=true;
-				//vis.info.htmlText=event.currentTarget.kol.text;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.w.pers.persName);
 				s=s.replace(/\[/g,"<span class='yel'>");

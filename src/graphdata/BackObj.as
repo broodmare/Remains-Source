@@ -25,23 +25,28 @@ package graphdata
 			id=nid;
 			X=nx, Y=ny;
 			var node:XML=AllData.d.back.(@id==id)[0];
-			/*if (node.@light>0) {
-				light=Grafon.resTex.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_l');
-			}*/
 			var wid=node.@x2*World.tilePixelWidth;
 			if (xml && xml.@w.length()) wid=xml.@w*World.tilePixelWidth
 			if (!(wid>0)) wid=World.tilePixelWidth;
-			if (nloc && nloc.mirror) {
-				if (node.@mirr=='2' && Math.random()<0.5) {
+			if (nloc && nloc.mirror) 
+			{
+				if (node.@mirr=='2' && Math.random()<0.5) 
+				{
 					X=nloc.limX-X;
 					scX=-1;
-				} else if (node.@mirr=='1') {
+				} 
+				else if (node.@mirr=='1') 
+				{
 					X=nloc.limX-X;
 					scX=-1;
-				} else {
+				} 
+				else 
+				{
 					X=nloc.limX-X-wid;
 				}
-			} else if (node.@mirr=='2' && Math.random()<0.5) {
+			} 
+			else if (node.@mirr=='2' && Math.random()<0.5) 
+			{
 				X=nx+wid;
 				scX=-1;
 			} 
@@ -57,7 +62,8 @@ package graphdata
 			if (node.@blend.length()) blend=node.@blend;
 			if (node.@alpha.length()) alpha=node.@alpha;
 			if (node.@er.length()) er=true;
-			if (xml) {
+			if (xml) 
+			{
 				if (xml.@w.length()) scX=xml.@w;
 				if (xml.@h.length()) scY=xml.@h;
 				if (xml.@a.length()) alpha=xml.@a;
@@ -65,7 +71,8 @@ package graphdata
 				if (xml.@lon.length() && xml.@lon>1 && node.@lon.length()) frame=node.@lon;
 				if (xml.@lon.length() && xml.@lon<1 && node.@loff.length()) frame=node.@loff;
 			}
-			if (frame>0) {
+			if (frame>0) 
+			{
 				if (vis) vis.gotoAndStop(frame);
 				if (erase) erase.gotoAndStop(frame);
 				if (light) light.gotoAndStop(frame);
@@ -74,10 +81,12 @@ package graphdata
 			if (node.@lon.length()) frameOn=node.@lon;
 		}
 		
-		public function onoff(n:int) {
+		public function onoff(n:int) 
+		{
 			if (n>0 && frameOn) frame=frameOn;
 			if (n<0 && frameOff) frame=frameOff;
-			if (frame>0) {
+			if (frame>0) 
+			{
 				if (vis) vis.gotoAndStop(frame);
 				if (erase) erase.gotoAndStop(frame);
 				if (light) light.gotoAndStop(frame);

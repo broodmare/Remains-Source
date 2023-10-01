@@ -46,7 +46,7 @@ package graphdata
 			
 		}
 		
-		public override function setNull(f:Boolean=false) 
+		public override function setNull() 
 		{
 			if (visData) 
 			{
@@ -60,7 +60,6 @@ package graphdata
 				Emitter.kols[maxkol]--;
 			}
 			
-			this = null;
 		}
 		
 		public function initBlit(blitId:String) //Create a bitmap

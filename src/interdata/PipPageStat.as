@@ -80,39 +80,11 @@ package interdata
 						if (xml.@tip=='3' || xml.@tip=='4') {
 							if (param!=1) arr.push({id:xml.@id, nazv:nazv, lvl:((param<1?'+':'')+Res.numb((1-param)*100)+'%')});
 						}
-						/*if (xml.@tip=='5') {
-							if (param!=1) arr.push({id:xml.@id, nazv:nazv, lvl:((1/param>1?'+':'')+Res.numb((1/param-1)*100)+'%')});
-						}*/
 					}
 				}
-				
-				/*if (gg.pers.allDamMult!=1) arr.push({id:'alldamage', nazv:Res.pipText('alldamage'), lvl:(gg.pers.allDamMult>1?'+':'')+Math.round((gg.pers.allDamMult-1)*100)+'%'});
-				if (gg.pers.meleeDamMult!=1) arr.push({id:'meleedamage', nazv:Res.pipText('meleedamage'), lvl:(gg.pers.meleeDamMult>1?'+':'')+Math.round((gg.pers.meleeDamMult-1)*100)+'%'});
-				if (gg.pers.spellsDamMult!=1) arr.push({id:'spelldamage', nazv:Res.pipText('spelldamage'), lvl:(gg.pers.spellsDamMult>1?'+':'')+Math.round((gg.pers.spellsDamMult-1)*100)+'%'});
-				
-				if (gg.skin>0) arr.push({id:'skin', nazv:Res.pipText('skin'), lvl:Math.round(gg.skin*10)/10});
-				if (gg.armor>0) arr.push({id:'armor', nazv:Res.pipText('armor'), lvl:Math.round(gg.armor*10)/10});
-				if (gg.marmor>0) arr.push({id:'marmor', nazv:Res.pipText('marmor'), lvl:Math.round(gg.marmor*10)/10});
-				if (gg.armor>0 || gg.marmor>0) arr.push({id:'aqual', nazv:Res.pipText('aqual'), lvl:Math.round(gg.armor_qual*100)+'%'});
-				if (gg.dexter!=1) arr.push({id:'dexter', nazv:Res.pipText('dexter'), lvl:Math.round((gg.dexter-1)*100)+'%'});
-				if (gg.allVulnerMult!=1) arr.push({id:'allresist', nazv:Res.pipText('allresist'), lvl:Math.round((1-gg.allVulnerMult)*100)+'%'});
-				if (gg.vulner[Unit.D_BUL]!=1) arr.push({nazv:Res.pipText('bullet'), lvl:Math.round((1-gg.vulner[Unit.D_BUL])*100)+'%'});
-				if (gg.vulner[Unit.D_BLADE]!=1) arr.push({nazv:Res.pipText('blade'), lvl:Math.round((1-gg.vulner[Unit.D_BLADE])*100)+'%'});
-				if (gg.vulner[Unit.D_PHIS]!=1) arr.push({nazv:Res.pipText('phis'), lvl:Math.round((1-gg.vulner[Unit.D_PHIS])*100)+'%'});
-				if (gg.vulner[Unit.D_FANG]!=1) arr.push({nazv:Res.pipText('fang'), lvl:Math.round((1-gg.vulner[Unit.D_FANG])*100)+'%'});
-				if (gg.vulner[Unit.D_FIRE]!=1) arr.push({nazv:Res.pipText('fire'), lvl:Math.round((1-gg.vulner[Unit.D_FIRE])*100)+'%'});
-				if (gg.vulner[Unit.D_CRIO]!=1) arr.push({nazv:Res.pipText('crio'), lvl:Math.round((1-gg.vulner[Unit.D_CRIO])*100)+'%'});
-				if (gg.vulner[Unit.D_EXPL]!=1) arr.push({nazv:Res.pipText('expl'), lvl:Math.round((1-gg.vulner[Unit.D_EXPL])*100)+'%'});
-				if (gg.vulner[Unit.D_LASER]!=1) arr.push({nazv:Res.pipText('laser'), lvl:Math.round((1-gg.vulner[Unit.D_LASER])*100)+'%'});
-				if (gg.vulner[Unit.D_PLASMA]!=1) arr.push({nazv:Res.pipText('plasma'), lvl:Math.round((1-gg.vulner[Unit.D_PLASMA])*100)+'%'});
-				if (gg.vulner[Unit.D_VENOM]!=1) arr.push({nazv:Res.pipText('venom'), lvl:Math.round((1-gg.vulner[Unit.D_VENOM])*100)+'%'});
-				if (gg.vulner[Unit.D_ACID]!=1) arr.push({nazv:Res.pipText('acid'), lvl:Math.round((1-gg.vulner[Unit.D_ACID])*100)+'%'});
-				if (gg.vulner[Unit.D_SPARK]!=1) arr.push({nazv:Res.pipText('spark'), lvl:Math.round((1-gg.vulner[Unit.D_SPARK])*100)+'%'});
-				if (gg.vulner[Unit.D_PINK]!=1 && World.w.game.triggers['story_canter']>0) arr.push({nazv:Res.pipText('pink'), lvl:Math.round((1-gg.vulner[Unit.D_PINK])*100)+'%'});
-				if (gg.vulner[Unit.D_NECRO]!=1) arr.push({nazv:Res.pipText('necro'), lvl:Math.round((1-gg.vulner[Unit.D_NECRO])*100)+'%'});
-				
-				if (gg.pers.visiMult!=1) arr.push({id:'sneak', nazv:Res.pipText('sneak'), lvl:Math.round((1-gg.pers.visiMult)*100)+'%'});*/
-			} else if (page2==5) {
+			} 
+			else if (page2==5) 
+			{
 				if (World.w.game.triggers['nomed']>0) {
 					vis.emptytext.text=Res.pipText('emptymed');
 					statHead.visible=false;
@@ -292,63 +264,81 @@ package interdata
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override function statInfo(event:MouseEvent) 
+		{
 			var id:String=event.currentTarget.id.text;
 			var nazv:String=event.currentTarget.nazv.text;
 			if (page2==2 || page2==3 || page2==6) setIco(5,id);
 			else setIco();
-			if (id!='') {
-				if (page2==1) {
+			if (id!='') 
+			{
+				if (page2==1) 
+				{
 					infoItemId=id;
-					if (id=='diff') {
+					if (id=='diff') 
+					{
 						vis.nazv.text=Res.txt('p',id);
 						vis.info.htmlText=Res.txt('g','dif'+World.w.game.globalDif,1);
-					} else {
+					} 
+					else 
+					{
 						vis.nazv.text=Res.pipText(id);
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
 					var xml=AllData.d.param.(@id==id);
 					if (xml.length() && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
-				} else if (page2==5) {
+				} 
+				else if (page2==5) 
+				{
 					infoItemId=id;
 					showBottext();
 					var lvl;
-					if (event.currentTarget.cat.text=='ad') {
+					if (event.currentTarget.cat.text=='ad') 
+					{
 						vis.nazv.text=Res.txt('e',id+'_ad');
 						lvl=0;
 						lvl=int(event.currentTarget.numb.text);
 						if (lvl>0) lvl--;
 						vis.info.htmlText=effStr('eff',id+'_ad',lvl);
-					} else if (id=='phoenix') {
+					} 
+					else if (id=='phoenix') 
+					{
 						vis.nazv.text=nazv;
 						vis.info.htmlText=Res.txt('u','phoenix',1);
-					} else {
+					} 
+					else 
+					{
 						vis.nazv.text=Res.pipText(id);
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
-					if (id.substr(0,8)=='statHead') {
+					if (id.substr(0,8)=='statHead') 
+					{
 						lvl=id.substr(8,1);
 						if (lvl>3) lvl=3;
 						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_head',lvl);
 					}
-					if (id.substr(0,8)=='statTors') {
+					if (id.substr(0,8)=='statTors') 
+					{
 						lvl=id.substr(8,1);
 						if (lvl>3) lvl=3;
 						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_tors',lvl);
 					}
-					if (id.substr(0,8)=='statLegs') {
+					if (id.substr(0,8)=='statLegs') 
+					{
 						lvl=id.substr(8,1);
 						if (lvl>3) lvl=3;
 						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_legs',lvl);
 					}
-					if (id.substr(0,9)=='statBlood') {
+					if (id.substr(0,9)=='statBlood') 
+					{
 						lvl=id.substr(9,1);
 						if (lvl>3) lvl=3;
 						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_blood',lvl);
 					}
-					if (id.substr(0,8)=='statMana') {
+					if (id.substr(0,8)=='statMana') 
+					{
 						lvl=id.substr(8,1);
 						if (lvl>2) vis.info.htmlText+=effStr('perk','trauma_mana',lvl);
 					}
@@ -356,27 +346,42 @@ package interdata
 					if (id=='radx') vis.info.htmlText+=factor('radX');
 					if (id=='resbleeding') vis.info.htmlText+=factor('13');
 					if (id=='respoison') vis.info.htmlText+=factor('12');
-				} else {
+				} 
+				else 
+				{
 					vis.nazv.text=nazv;
 					if (page2==4) {
-						if (id=='drunk') {
+						if (id=='drunk') 
+						{
 							vis.info.htmlText=effStr('eff',id,drunk-1);
-						} else if (nazv==n_food) vis.info.htmlText=Res.txt('e','food',1)+'<br><br>'+effStr('eff',id);
+						} 
+						else if (nazv==n_food) vis.info.htmlText=Res.txt('e','food',1)+'<br><br>'+effStr('eff',id);
 						else vis.info.htmlText=effStr('eff',id);
-					} else if (page2==2) {
-						if (World.w.alicorn && Res.istxt('e',id+'_al')) {
+					} 
+					else if (page2==2) 
+					{
+						if (World.w.alicorn && Res.istxt('e',id+'_al')) 
+						{
 							vis.info.htmlText=Res.rainbow(Res.txt('e',id+'_al'));
 							vis.info.htmlText+='<br><br>'+effStr('skill',id+'_al');
-						} else {
+						} 
+						else 
+						{
 							vis.info.htmlText=effStr('skill',id);
 						}
-					} else if (page2==6) {
+					} 
+					else if (page2==6) 
+					{
 						vis.info.htmlText=effStr('perk',id, 1);
-					} else if (page2==3) {
+					} 
+					else if (page2==3) 
+					{
 						vis.info.htmlText=effStr('perk',id);
 					}
 				}
-			} else {
+			} 
+			else 
+			{
 				vis.nazv.text=vis.info.htmlText='';
 			}
 		}

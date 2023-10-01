@@ -17,44 +17,51 @@ Renamed all folders to reduce compiler ambiguity.
 
 Reduced import nesting.
 
+Appear --
+	Load()
+		Fixed 'l' being defined twice.
 
-
-Unit
+Unit --
 	SetLevel()
 		Set MaxHP before HP.
 		Before HP was being set before a max value was calculated.
 		TODO: Check this!
-	setp()
+	step()
 		Fixed loop.
-Grafon
+		
+Grafon --
 	Fixed for loop in constructor.
+	Fixed 'i' being defined twice in constructor.
 	Fixed for loop in drawAllObjs().
 	
 	
-Material
+Material --
 		Imports a 'mask' propety from 'AllData.xml' as a generic class. This was changed to be imported as a string.
 		If the import failed, it was set as a class that doesn't exist (TileMask).
 	
 	
 	
-Stand
+Stand --
 	Fixed for loop in showWeaponList().
 
-Sats
+Sats --
 	concatenating strings method changed from '+=' to '.appendText()' for performance.
 
-Pipbuck
+Pipbuck --
 	Fixed for loop in constructor.
 
-PipPageOpt
+PipPageOpt --
 	Fixed for loop in setSubPages().
 
-PipPageStat
+PipPageStat --
 	Fixed for loop in setSubPages().
 
-Form
+Form --
 	Fixed loop in setForms().
 
+PipPageInfo --
+	SetSubPages()
+		Fixed 'q' being defined twice.
 
 TODO:
 Change undeclared variables to internal.
