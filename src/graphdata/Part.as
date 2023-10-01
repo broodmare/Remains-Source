@@ -46,7 +46,7 @@ package graphdata
 			
 		}
 		
-		public override function setNull() 
+		public override function setNull(f:Boolean=false) 
 		{
 			if (visData) 
 			{

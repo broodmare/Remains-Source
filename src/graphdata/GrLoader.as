@@ -41,6 +41,10 @@ package graphdata
 		{
 
 			resource = event.target.content;
+			if (resource = null)
+			{
+				trace('ressource:', resource, 'failed to load.')
+			}
 			isLoad=true; 		// Indicate the file is fully loaded.  CHECK IF THIS IS EVEN USED.
 			progressLoad = 1; 	// Set the progress to 100%.
 			completedInstances++; 		// Increase the global number of loaded instances.

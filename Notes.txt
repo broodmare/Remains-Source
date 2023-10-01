@@ -10,7 +10,7 @@ Exported audio set at 128kbs mp3.
 Flash version 30 -> 32.
 
 
-skipTraining appears in MainMenu, Game, Invent, and Pers; Why?
+
 
 Renamed all 'loc' variables to avoid compiler ambigiuity with the loc folder.
 Renamed all folders to reduce compiler ambiguity.
@@ -64,14 +64,15 @@ PipPageInfo --
 		Fixed 'q' being defined twice.
 
 TODO:
-Change undeclared variables to internal.
 Define the res_watcher console command (empty on wiki).
-Fix funtion capitalization for public functions.
+Fix funtion capitalization for public functions(?)
 Sound.pshum() has a weird return, fix.
 PipPageInv.itemClick() has a weird return, fix.
 Remove DropLoot() overrides from units and merge into one table.
 Remove Expl() overrides from units and merge into one table.
 Remove 'Sky' checks from all over.
+skipTraining appears in MainMenu, Game, Invent, and Pers; Why?
+
 
 Cyclomatic complexity Highscore:
 
@@ -139,7 +140,6 @@ tileGwall()
 
 
 Graphcis Bug--
-
 
 Rendering a door may temporarily fix the issue.
 

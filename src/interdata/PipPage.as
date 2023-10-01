@@ -209,39 +209,40 @@ package interdata
 		}
 		
 		
-		public function setSubPages() //подготовка страниц
+		function setSubPages() //подготовка страниц
 		{
 
 		}
 		
-		public function setSigns() //определение подсвеченности кнопок
+		function setSigns() //определение подсвеченности кнопок
 		{
 			signs=[0,0,0,0,0,0];
 		}
 		
 		//показ одного элемента
-		public function setStatItem(item:MovieClip, obj:Object) 
+		function setStatItem(item:MovieClip, obj:Object) 
 		{
 
 		}
 		
 		//информация об элементе
-		public function statInfo(event:MouseEvent) 
+		function statInfo(event:MouseEvent) 
 		{
 
 		}
 		
-		public function itemClick(event:MouseEvent) 
+		function itemClick(event:MouseEvent) 
 		{
 
 		}
-		public function itemRightClick(event:MouseEvent) 
+
+		function itemRightClick(event:MouseEvent) 
 		{
 
 		}
 		
 		//показ всех элементов
-		public function setStatItems(n:int=-1) 
+		function setStatItems(n:int=-1) 
 		{
 			if (n>=0) scrl=n;
 			for (var i=0; i<statArr.length; i++) 
@@ -258,7 +259,7 @@ package interdata
 			}
 		}
 		
-		public function setIco(tip:int=0, id:String='') 
+		function setIco(tip:int=0, id:String='') 
 		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
 			vis.pers.visible=vis.skill.visible=false;
@@ -1025,11 +1026,11 @@ package interdata
 			if (event.delta>0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
 			event.stopPropagation();
 		}
-		function scroll(dn:int=0) 
+		public function scroll(dn:int=0) 
 		{
 
 		}
-		function step() 
+		public function step() 
 		{
 
 		}
