@@ -38,7 +38,6 @@ package
 		public static function istxt(type:String, id:String):Boolean 
 		{
 			var xl=d[classData[type]].(@id==id);
-			//if (type=='w') trace (id,xl,xl.length());
 			if (xl.length()==0) 
 			{
 				xl=e[classData[type]].(@id==id);
@@ -59,14 +58,22 @@ package
 			{
 				xl=d[classData[type]].(@id==id);	// Retrieve from the main language file
 				s=xl[classData[razd]][0];		
-			} catch (err) {}
+			} 
+			catch (err) 
+			{
+
+			}
 
 			if (s==null) 
 			{
 				try {
 					xl=e[classData[type]].(@id==id);	// Retrieve from the main language file
 					s=xl[classData[razd]][0];		
-				} catch (err) {}
+				} 
+				catch (err) 
+				{
+
+				}
 			}
 			if (s==null) 
 			{
@@ -88,10 +95,14 @@ package
 				if (xl.@s1.length()) s=addKeys(s,xl);	// Control keys
 				try {
 					if (xl[classData[razd]][0].@s1.length) s=addKeys(s,xl[classData[razd]][0]);
-				} catch (err) {}
-				s=s.replace(/\[br\]/g,'<br>');
-				s=s.replace(/\[/g,"<span classData='yel'>");
-				s=s.replace(/\]/g,"</span>");
+				} 
+				catch (err) 
+				{
+
+				}
+				s = s.replace(/\[br\]/g,'<br>');
+				s = s.replace(/\[/g,"<span classData='yel'>");
+				s = s.replace(/\]/g,"</span>");
 			}
 			if (dop) 
 			{
@@ -174,8 +185,6 @@ package
 								else 
 								{
 									var pers=node.@p;
-									//if (pers.substr(0,2)!='lp') s+="<span classData='yel'>"+World.w.pers.persName+': '+"</span>"+s1+'<br>';
-								
 									if (pers.substr(0,2)=='lp') s+="<span classData='light'>"+' - '+s1+"</span>"+'<br>';
 									else s+=' - '+s1+'<br>';
 								}
@@ -186,7 +195,6 @@ package
 
 					else s=xml.n[0];
 				}
-				//s=s.replace('@lp',World.w.pers.persName);
 				s=lpName(s);
 				s=s.replace(/\[br\]/g,'<br>');
 				if (xml.@s1.length()) 
@@ -202,7 +210,6 @@ package
 				return 'err: '+id;
 			}
 			return (s == null)?'':s;
-			//return '';
 		}
 
 
@@ -238,7 +245,6 @@ package
 				s=s.substring(0,n1)+ss.split('|')[msex?0:1]+s.substring(n2+1);
 			}
 			s=s.replace('@lp',World.w.pers.persName);
-			//if () s=matFilter(s);
 			return s;
 		}
 		
@@ -344,7 +350,8 @@ package
 		}
 		
 
-		public static function getClass(id1:String, id2:String=null, def:Class=null):Class {
+		public static function getClass(id1:String, id2:String=null, def:Class=null):Class 
+		{
 			var r:Class;
 			try 
 			{
@@ -353,10 +360,14 @@ package
 			catch (err:ReferenceError) 
 			{
 				if (id2==null) r=def;
-				else {
-					try {
+				else 
+				{
+					try 
+					{
 						r=getDefinitionByName(id2) as Class;
-					} catch (err:ReferenceError) {
+					} 
+					catch (err:ReferenceError) 
+					{
 						r=def;
 					}
 				}

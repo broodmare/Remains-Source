@@ -9,29 +9,26 @@ package graphdata
 	public class GrLoader 
 	{
 		
-		public var id:int;
+		public var loaderID:int;
 		public var loader:Loader;
 		public var progressLoad:Number;
 		public var isLoad:Boolean;
+		public var grafon:Grafon;
 		public var resource:*;
-
-		public var gr:Grafon;
-		
 
 		public static var instanceCount:int		 = 0;  	//How many instances of the graphics loader (this class) exist.  Used to determine when all graphics are loaded.
 		public static var completedInstances:int = 0; 	//How many instances are loaded.  Used to determine when all graphics are loaded.
 
-		public function GrLoader(nid:int, url:String, ngr:Grafon) 
+		public function GrLoader(ID:int, url:String, gr:Grafon) 
 		{
+			instanceCount++; 		//Increment the number of instances of that exist.
+
 			progressLoad = 0;
 			isLoad = false;
+			grafon = gr; 			//Assign the graphics loader a local name.
+			loaderID = ID; 	//Assign the graphics loader an ID.
+			loader = new Loader(); 	// Sets the loader a new Flash.Loader class.
 
-			instanceCount++; //Increment the number of instances of that exist.
-
-			gr = ngr; //Assign the graphics loader a local name.
-			id = nid; //Assign the graphics loader an ID.
-
-			loader = new Loader(); // Sets the loader a new Flash.Loader class.
 
 			var urlReq:URLRequest = new URLRequest(url); 										//What file to load.
 			loader.load(urlReq); 																//Load the file.
@@ -46,15 +43,17 @@ package graphdata
 		{
 
 			resource = event.target.content; // Set 'resource' as the loaded content.
+			
 			if (resource == null)
 			{
 				trace('ressource:', resource, 'failed to load.')
 			}
+
 			isLoad = true; 				// Indicate the file is fully loaded.  CHECK IF THIS IS EVEN USED.
 			progressLoad = 1; 			// Set the progress to 100%.
 			completedInstances++; 		// Increase the global number of loaded instances.
 
-			gr.checkLoaded(id); 
+			grafon.checkLoaded(); 
 			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, funLoaded); 			//Remove the event listeners.
 			loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, funProgress);  //Remove the event listeners.
  		}
@@ -63,9 +62,8 @@ package graphdata
 		public function funProgress(event:ProgressEvent):void 
 		{
 			progressLoad = event.bytesLoaded/event.bytesTotal; //Progress is the number of bytes loaded divided by the total number of bytes.
-			gr.allProgress();
+			grafon.allProgress();
         }
 
 	}
-	
 }

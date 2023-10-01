@@ -61,7 +61,7 @@ package
 		
 		var mainTimer:Timer;
 			
-		public function MainMenu(nmain:Sprite) 
+		public function MainMenu(nmain:MovieClip) 
 		{
 			main = nmain;
 			mainMenu = new visMainMenu();   //Linkage defined in pfe.fla
@@ -226,7 +226,8 @@ package
 		public function setLangButtons() 
 		{
 			butsLang=new Array();
-			if (world.kolLangs>1) {
+			if (world.kolLangs>1) 
+			{
 				var i=world.kolLangs;
 				for each(var l in world.langsXML.lang) 
 				{
@@ -306,13 +307,15 @@ package
 		
 		function setScrollInfo() 
 		{
-			if (mainMenu.info.txt.height<mainMenu.info.txt.textHeight) {
+			if (mainMenu.info.txt.height<mainMenu.info.txt.textHeight) 
+			{
 				mainMenu.info.scroll.maxScrollPosition=mainMenu.info.txt.maxScrollV;
 				mainMenu.info.scroll.visible=true;
 			} else mainMenu.info.scroll.visible=false;
 		}
 		
-		public function resizeDisplay(event:Event) {
+		public function resizeDisplay(event:Event) 
+		{
 			world.resizeScreen();
 			if (active) setMenuSize();
 		}
@@ -425,7 +428,10 @@ package
 					com='load';
 					return;
 				}
-			} catch(err) {}
+			} catch(err) 
+			{
+
+			}
 			trace('Error load');
        }		
 		
@@ -585,21 +591,21 @@ package
 		}
 		
 		//creators
-		public function funAbout(event:MouseEvent) {
+		public function funAbout(event:MouseEvent) 
+		{
 			mainMenu.dialAbout.title.text=Res.guiText('about');
 			var s:String=Res.formatText(Res.txt('g','about',1));
 			s+='<br><br>'+Res.guiText('usedmusic')+'<br>';
 			s+="<br><span class='music'>"+Res.formatText(Res.d.gui.(@id=='usedmusic').info[0])+"</span>"
 			s+="<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
-			//s=s.replace(/\[/g,"<span class='imp'>");
-			//s=s.replace(/\]/g,"</span>");
 			mainMenu.dialAbout.txt.styleSheet=style;
 			mainMenu.dialAbout.txt.htmlText=s;
 			mainMenu.dialAbout.visible=true;
 			mainMenu.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
 			mainMenu.dialAbout.scroll.maxScrollPosition=mainMenu.dialAbout.txt.maxScrollV;
 		}
-		public function funAboutOk(event:MouseEvent) {
+		public function funAboutOk(event:MouseEvent) 
+		{
 			mainMenu.dialAbout.visible=false;
 			mainMenu.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
@@ -629,11 +635,10 @@ package
 				}
 				return;
 			}
-			if (world.grafon.resIsLoad) 
+			if (world.grafon.resourcesLoaded) 
 			{
 				stn++;
 				mainMenu.loading.text='Loading '+(Math.floor(stn/30))+'\n';
-				//+Math.round(world.textProgressLoad*100)+'%\n';
 				if (world.textLoaded) world.init2();
 				if (world.allLandsLoaded && world.textLoaded) 
 				{
@@ -653,7 +658,7 @@ package
 		
 		public function log(s:String) 
 		{
-			mainMenu.loading.text+=s+'; ';
+			mainMenu.loading.text += s +'; ';
 		}
 
 		public function mainStep(event:Event):void 
@@ -666,8 +671,8 @@ package
 				{
 					world.setLoadScreen(0);
 				}
-				//start the game!!!!
-				if (command == 0) 
+				
+				if (command == 0) //start the game!!!!
 				{
 					var opt:Object;
 					if (com == 'new') 

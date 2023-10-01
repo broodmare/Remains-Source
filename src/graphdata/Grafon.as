@@ -24,7 +24,7 @@ package graphdata
 
 	import fl.motion.Color;
 
-	import locdata.*;	
+	import locdata.*;
 
 
 	public class Grafon 
@@ -107,25 +107,27 @@ package graphdata
 		public var lightY:int;
 		public var lightRect:Rectangle;
 
-		public var resIsLoad:Boolean;  			// Have the textures been loaded?
+		public var grLoaderArray:Array; 				//Array to hold resource loaders.
+
+		public var resourcesLoaded:Boolean;				// Have the textures been loaded?
 		public var progressLoad:Number;
 
 		public static var spriteLists:Array = new Array();
-		public static var texUrl:Array = ['texture.swf', 'texture1.swf', 'sprite.swf', 'sprite1.swf']; 		//URLs of the files to load
-		public var grLoaderArray:Array; // Should this be changed to static?
+		public static var resourceURLArray:Array = ['texture.swf', 'texture1.swf', 'sprite.swf', 'sprite1.swf']; //URLs of the files to load
 		
-		public static const objCount:Number = 6;
+		
+		public static const objCount:int = 6;
 
-		public static const numbMat:Number 	  = 0;		// Materials
-		public static const numbFon:Number 	  = 0;		// Backgrounds
-		public static const numbBack:Number   = 1;		// Decorations
-		public static const numbObj:Number 	  = 1;		// Objects
-		public static const numbSprite:Number = 2;		// Starting number for sprite files
+		public static const numbMat:int 	  = 0;		// Materials
+		public static const numbFon:int 	  = 0;		// Backgrounds
+		public static const numbBack:int   	  = 1;		// Decorations
+		public static const numbObj:int 	  = 1;		// Objects
+		public static const numbSprite:int 	  = 2;		// Starting number for sprite files
 
-		public var tilepixelwidth:Number;
-		public var tilepixelheight:Number;
-		public var finalWidth:Number;
-		public var finalHeight:Number;
+		public var tilepixelwidth:int;
+		public var tilepixelheight:int;
+		public var finalWidth:int;
+		public var finalHeight:int;
 		
 		public var nn:int;	// IS THIS EVEN USED?
 
@@ -159,24 +161,17 @@ package graphdata
 			lightRect 		= new Rectangle(0, 0, lightX, lightY);
 
 
-			resIsLoad 		= false;  
+			
 			progressLoad 	= 0;
-
-			spriteLists 	
-			texUrl			
-
-			tilepixelwidth 	= -1;
-			tilepixelheight = -1;
-			finalWidth 		= -1;
-			finalHeight 	= -1;
-
+			resourcesLoaded = false; 
+			
 			nn = 0;  // ????????
 
-			//Precalculated for performance.
 			tilepixelwidth = Tile.tilePixelWidth;
 			tilepixelheight = Tile.tilePixelHeight;
-			finalWidth = mapTileWidth * tilepixelwidth;
+			finalWidth 	= mapTileWidth * tilepixelwidth;
 			finalHeight = mapTileHeight * tilepixelheight;
+
 			bitmapCachingOption = false;
 
 
@@ -263,35 +258,43 @@ package graphdata
 			visual.addChild(ramR);
 			visual.addChild(ramL);
 
+			//loader array setup
 			grLoaderArray = new Array();
-			for (var j in texUrl)
+			//Resource array setup
+			arrFront = new Array();
+			arrBack  = new Array();
+			//for each material in AllData
+			for each (var p:XML in AllData.d.mat)
 			{
-				var textureURL:String = texUrl[j];
-				grLoaderArray[j] = new GrLoader(j, textureURL, this);
+				// Populates front and back arrays with materials from MaterialData.XML
+				if (p.@vid.length() == 0)
+				{
+					if (p.@ed == '2') arrBack[p.@id] = new Material(p);
+					else arrFront[p.@id] = new Material(p);
+				}
 			}
-			
+
+
+			//Resource URL list setup.
+			for (var j:int = 0; j < resourceURLArray.length; j++)
+			{
+				//Populates the array with texture URLs.
+				var resourceURL:String = resourceURLArray[j];
+
+				//Instantiates a graphics loader for each URL in the array to load it's contents.
+				grLoaderArray[j] = new GrLoader(j, resourceURL, this);
+			}
+
 			createCursors();
 		}
 		
-
-		public function checkLoaded(id:int) //GrLoader calls this function when it finishes loading. n is the ID of the loader that called it.
+		//Check if all instances of GrLoader have finished.
+		public function checkLoaded() 
 		{
-			if (id == 0) //What to do if the loader is the first one.
+			if (grLoaderArray.length > 0 && grLoaderArray[grLoaderArray.length - 1].isLoad) 
 			{
-				// Populates front and back arrays with materials from MaterialData.XML
-				arrFront = new Array();
-				arrBack = new Array();
-
-				for each (var p:XML in AllData.d.mat)
-				{
-					if (p.@vid.length() == 0)
-					{
-						if (p.@ed == '2') arrBack[p.@id] = new Material(p);
-						else arrFront[p.@id] = new Material(p);
-					}
-				}
+				resourcesLoaded = true;
 			}
-			resIsLoad = (GrLoader.completedInstances >= GrLoader.instanceCount);
 		}
 		
 		//Determine progress of loading.
@@ -302,6 +305,7 @@ package graphdata
 			{
 				progressLoad += grLoaderArray[i].progressLoad; //Add the progress of the loader to the total progress.
 			}
+			
 			progressLoad /= GrLoader.instanceCount;
 		}
 		
@@ -311,8 +315,6 @@ package graphdata
 			createCursor(visCurTarget, 'target', 13, 13);
 			createCursor(visCurTarget1, 'combat', 13, 13);
 			createCursor(visCurTarget2, 'action', 13, 13);
-			//if (!World.w.sysCur) Mouse.cursor = 'arrow';
-			//Mouse.unregisterCursor('arrow');
 		}
 		
 		public function createCursor(vcur:Class, nazv:String, nx:int = 0, ny:int = 0)
@@ -347,8 +349,8 @@ package graphdata
 			if (visFon && vfon.contains(visFon)) vfon.removeChild(visFon);
 			
 			
-			visFon = getObj(tex);	//Set the background to the specified texture.
-			if (visFon) vfon.addChild(visFon); //If the background exists, add it to the background sprite.
+			visFon = getObj(tex);				//Set the background to the specified texture.
+			if (visFon) vfon.addChild(visFon); 	//If the background exists, add it to the background sprite.
 		}
 		
 		public function setFonSize(nx:Number, ny:Number)
@@ -374,14 +376,14 @@ package graphdata
 					else 
 					{
 						visFon.height = ny;
-						visFon.width = ny*koef;
+						visFon.width  = ny * koef;
 					}
 				}
 			}
 		}
 		
 		//Fog of war
-		public function warShadow()
+		public function warShadow():void
 		{
 			if (World.w.pers.infravis)
 			{
@@ -405,7 +407,7 @@ package graphdata
 		//                  BACKGROUND RENDERING 
 		// ##########################################################
 
-		public function drawLoc(currentLocation:Location) 
+		public function drawLoc(currentLocation:Location):void 
 		{
 			try 
 			{
@@ -1046,8 +1048,8 @@ package graphdata
 			if (!isDraw) return; //If the tile's material should not be drawn, return.
 
 			baseSprite.mask = maska; 
-			border.mask = bmaska; 
-			floor.mask = fmaska;
+			border.mask 	= bmaska; 
+			floor.mask 		= fmaska;
 
 			baseSprite.cacheAsBitmap = bitmapCachingOption; 
 			maska.cacheAsBitmap		 = bitmapCachingOption; 
@@ -1060,7 +1062,6 @@ package graphdata
 			{
 				tileSprite.filters = material.appliedFilters;  // Apply them to the sprite.
 			}
-			//trace(material.id, material.appliedFilters);
 
 			if (toFront) 
 			{
