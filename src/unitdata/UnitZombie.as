@@ -340,7 +340,7 @@ package unitdata
 			for (var i=Math.floor((X1)/Tile.tilePixelWidth); i<=Math.floor((X2)/Tile.tilePixelWidth); i++) {
 				for (var j=Math.floor((Y1)/Tile.tilePixelHeight); j<=Math.floor((Y2)/Tile.tilePixelHeight); j++) {
 					if (i<0 || i>=location.spaceX || j<0 || j>=location.spaceY) continue;
-					if (collisionTile(location.space[i][j])) location.dieTile(location.space[i][j]);
+					if (collisionTile(location.roomTileArray[i][j])) location.dieTile(location.roomTileArray[i][j]);
 				}
 			}
 		}

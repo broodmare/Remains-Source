@@ -407,19 +407,19 @@ package unitdata
 				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
 				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
 				if (j>=location.spaceY) j=location.spaceY-1;
-				if (location.space[i][j].phis>=1) {
+				if (location.roomTileArray[i][j].phis>=1) {
 					isLaz=0;
 					return false;
 				}
-				if ((location.space[i][j] as Tile).stair) {
-					isLaz=(location.space[i][j] as Tile).stair;
+				if ((location.roomTileArray[i][j] as Tile).stair) {
+					isLaz=(location.roomTileArray[i][j] as Tile).stair;
 				} else if (location.getTile(i+storona,j).phis) {
 					isLaz=storona;
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) X=(location.space[i][j] as Tile).phX1+scX/2;
-					else X=(location.space[i][j] as Tile).phX2-scX/2;
+					if (isLaz==-1) X=(location.roomTileArray[i][j] as Tile).phX1+scX/2;
+					else X=(location.roomTileArray[i][j] as Tile).phX2-scX/2;
 					X1=X-scX/2, X2=X+scX/2;
 					stay=false;
 					return true;

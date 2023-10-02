@@ -13,13 +13,13 @@ package
 		
 <!-- ============================================== LOCATIONS ============================================== -->
 			<land1 id='test' autolevel='1' file='rooms' locx='0' locy='0' stage='4' limit='1' test='1' list='-11' tip='test'>
-				<options  music='music_cat_1' skybox='backgroundRuins'/>
+				<options  music='music_cat_1' skybox='skyboxRuins'/>
 				<scr eve='take' item='captive'>
 					<s act="quest" val="freeCaptive"/>
 				</scr>
 			</land1>
 			<land1 id='test2' dif='0' file='rooms2' locx='0' locy='0' stage='4' limit='1' test='1' list='-10' tip='test' fin='0'>
-				<options backwall='sky' skybox='backgroundFinalB'  music='music_encl_1' xp='500' color='blue' border='S'/>
+				<options backwall='sky' skybox='skyboxFinalB'  music='music_encl_1' xp='500' color='blue' border='S'/>
 				<scr eve='take' item='diary'>
 					<s act="dialog" val="velvetDial6"/>
 					<s act="stage" val="storyFind" n="2"/>
@@ -53,11 +53,11 @@ package
 			</land>
 			
 			<land id='surf' dif='0' file='rooms_surf' locx='0' locy='1' stage='2' limit='1' list='3' tip='story'>
-				<options backwall='sky' skybox='backgroundDarkClouds' color='blue' vis='10' music='music_surf'/>
+				<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_surf'/>
 			</land>
 			
 			<land id='rbl' autolevel='1' dif='0' file='rooms_rbl' locx='0' locy='0' stage='1' list='1' tip='base' fin='0'>
-				<options backwall="tStConcrete" skybox='backgroundWay' music='music_base'/>
+				<options backwall="tStConcrete" skybox='skyboxWay' music='music_base'/>
 				<prob id='bossraider1' level='0' tip='2' close='1'>
 					<con tip='unit' uid='bossraider1F1'/>
 				</prob>
@@ -84,7 +84,7 @@ package
 			</land>
 			
 			<land id='random_plant' tip='rnd' rnd='1' dif='0' biom='0' conf='0' file='rooms_plant' stage='3' exit='exit_plant' mx='4' my='6' locx='0' locy='0' list='4' loadscr='1'>
-				<options backwall="tBackWall" music='music_plant_1' skybox='backgroundDarkClouds' xp='100'/>
+				<options backwall="tBackWall" music='music_plant_1' skybox='skyboxDarkClouds' xp='100'/>
 				<!-- 13 -->
 				<prob id='labirint' prize='1' tip='1'>
 					<con tip='box' uid='labirintF1'/>
@@ -234,7 +234,7 @@ package
 			</land>
 			
 			<land id='raiders' dif='10' file='rooms_raiders' locx='0' locy='1' stage='3' list='5' tip='story' loadscr='2'>
-				<options backwall='sky' skybox='backgroundDarkClouds' color='blue' vis='10' music='music_raiders'/>
+				<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_raiders'/>
 				<scr eve='take' item='sl_note1'>
 					<s act="control off"/>
 					<s act="dial" val="surfDialNote" n="0"/>
@@ -367,11 +367,11 @@ package
 			</land>
 			
 			<land id='garages' dif='15' file='rooms_garages' locx='0' locy='0' stage='6' list='5' tip='story'>
-				<options backwall='sky' skybox='backgroundDarkClouds' color='blue' vis='10' music='music_surf'/>
+				<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_surf'/>
 			</land>
 			
 			<land id='random_mane' tip='rnd' rnd='1' dif='15' biom='3' conf='3' file='rooms_mane' exit='exit_mane' stage='7' mx='5' my='5' locx='0' locy='4' list='9' loadscr='4'>
-				<options backwall="tWindows" skybox='backgroundRuins' music='music_mane_1' vis='2' xp='300' border='N' darkness="-20"/>
+				<options backwall="tWindows" skybox='skyboxRuins' music='music_mane_1' vis='2' xp='300' border='N' darkness="-20"/>
 				<!-- 10 -->
 				<prob id='away' level='0' prize='1' tip='1'><!-- фокусирующий кристалл -->
 					<con tip='box' uid='awayF1'/>
@@ -441,7 +441,7 @@ package
 			</land>
 			
 			<land id='mtn' dif='17' file='rooms_mtn' locx='0' locy='8' stage='8' biom='3' list='5' tip='story'>
-				<options backwall="tTower" skybox='backgroundRuins' music='music_mane_2' vis='2' xp='300' border='N'/>
+				<options backwall="tTower" skybox='skyboxRuins' music='music_mane_2' vis='2' xp='300' border='N'/>
 				<scr eve='take' item='amul_al'>
 					<s act="control off"/>
 					<s act="stage" val="storyMane" n="5"/>
@@ -456,17 +456,17 @@ package
 			</land>
 			
 			<land id='way' dif='0' file='rooms_way' locx='0' locy='0' stage='8' tip='base'>
-				<options backwall='sky' skybox='backgroundWay' vis='10' music='music_surf'/>
+				<options backwall='sky' skybox='skyboxWay' vis='10' music='music_surf'/>
 			</land>
 			<land id='covert' dif='0' file='rooms_covert' locx='-1' locy='0' tip='base' fin='0'>
-				<options backwall='sky' skybox='backgroundWay' vis='10' music='music_covert'/>
+				<options backwall='sky' skybox='skyboxWay' vis='10' music='music_covert'/>
 			</land>
 			<land id='src' dif='0' file='rooms_src' locx='0' locy='0' tip='base' fin='0'>
-				<options backwall='tRustPlates' skybox='backgroundWay' vis='10' music='music_base'/>
+				<options backwall='tRustPlates' skybox='skyboxWay' vis='10' music='music_base'/>
 			</land>
 			
 			<land id='random_canter' tip='rnd' rnd='1' dif='18' biom='5' conf='5' file='rooms_canter' exit='exit_canter' stage='9' mx='8' my='3' locx='0' locy='0' list='10' loadscr='5'>
-				<options backwall="tConRough" skybox='backgroundCanterlot' music='music_cat_1' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
+				<options backwall="tConRough" skybox='skyboxCanterlot' music='music_cat_1' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
 				<!-- 9 -->
 				<prob id='buttons6' level='0' tip='1'>
 					<con tip='box' uid='buttons6F1'/>
@@ -550,7 +550,7 @@ package
 			</land>
 			
 			<land id='minst' dif='20' file='rooms_minst' locx='0' locy='0' stage='9' biom='5' list='5' tip='story'>
-				<options backwall="tConRough" skybox='backgroundCanterlot' music='music_minst' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
+				<options backwall="tConRough" skybox='skyboxCanterlot' music='music_minst' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
 				<scr eve='take' item='blackbook'>
 					<s act="control off"/>
 					<s act="stage" val="storyCanter" n="4"/>
@@ -564,7 +564,7 @@ package
 			</land>
 			
 			<land id='random_mbase' tip='story' rnd='1' dif='22' biom='4' conf='4' file='rooms_mbase' stage='10' mx='5' my='3' locx='0' locy='0' list='10' loadscr='6'>
-				<options backwall="tMbase" skybox='backgroundWay' music='music_mbase' xp='500' color='red' border='O'/>
+				<options backwall="tMbase" skybox='skyboxWay' music='music_mbase' xp='500' color='red' border='O'/>
 			</land>
 			<land id='bunker' tip='hard' rnd='1' dif='24' biom='4' conf='7' file='rooms_mbase' stage='10' mx='6' my='3' locx='0' locy='0' list='10'>
 				<options backwall="tMbase" music='music_mbase' xp='500' color='green' border='O'/>
@@ -575,15 +575,15 @@ package
 			</land>
 			
 			<land id='hql' dif='26' file='rooms_hql' stage='10' locx='0' locy='0' tip='story'>
-				<options backwall='sky' skybox='backgroundWay' color='blue' vis='10' music='music_hql'/>
+				<options backwall='sky' skybox='skyboxWay' color='blue' vis='10' music='music_hql'/>
 			</land>
 			
 			<land id='post' dif='27' file='rooms_post' stage='11' locx='0' locy='0' tip='story'>
-				<options backwall='sky' skybox='backgroundWay' color='sky' vis='10' music='music_encl_1'/>
+				<options backwall='sky' skybox='skyboxWay' color='sky' vis='10' music='music_encl_1'/>
 			</land>
 			
 			<land id='random_encl' tip='rnd' rnd='1' dif='27' biom='6' conf='6' file='rooms_encl' exit='exit_encl' stage='11' mx='3' my='8' locx='0' locy='7' list='10' loadscr='7'>
-				<options backwall="tEncl3" skybox='backgroundEnclave' music='music_encl_1' postmusic='1' xp='500' color='sky' border='S' darkness="-30"/>
+				<options backwall="tEncl3" skybox='skyboxEnclave' music='music_encl_1' postmusic='1' xp='500' color='sky' border='S' darkness="-30"/>
 				<prob id='buttons7' level='0' tip='1'>
 					<con tip='box' uid='buttons7F1'/>
 					<con tip='box' uid='buttons7F2'/>
@@ -640,11 +640,11 @@ package
 			</land>
 			
 			<land id='comm' dif='29' file='rooms_comm' stage='11' locx='0' locy='0' tip='story'>
-				<options backwall="tEncl3" skybox='backgroundEnclave' music='music_encl_1' xp='500' color='sky' border='S' darkness="-30"/>
+				<options backwall="tEncl3" skybox='skyboxEnclave' music='music_encl_1' xp='500' color='sky' border='S' darkness="-30"/>
 			</land>
 			
 			<land id='art' dif='30' file='rooms_art' stage='12' locx='0' locy='0' tip='story' fin='1'>
-				<options backwall="tMbase" skybox='backgroundDarkClouds' music='music_red' postmusic='1' xp='500' color='red' border='O' art='art_trigger'/>
+				<options backwall="tMbase" skybox='skyboxDarkClouds' music='music_red' postmusic='1' xp='500' color='red' border='O' art='art_trigger'/>
 			</land>
 			
 			<land id='stable_pi' tip='base' rnd='1' conf='10' biom='10' file='rooms_pi' mx='4' my='6' locx='3' locy='5' fin='2'>
@@ -655,15 +655,15 @@ package
 			</land>
 			
 			<land id='stable_pi_surf' tip='story' biom='11' file='rooms_pis' stage='12' locx='1' locy='7'>
-				<options backwall='sky' skybox='backgroundFire' vis='3' music='music_encl_2' postmusic='1' color='fire'/>
+				<options backwall='sky' skybox='skyboxFire' vis='3' music='music_encl_2' postmusic='1' color='fire'/>
 			</land>
 			
 			<land id='thunder' tip='story' biom='11' file='rooms_thunder' stage='12' locx='0' locy='0'>
-				<options backwall='sky' skybox='backgroundFinalB' vis='3' music='music_encl_2' postmusic='1' color='blue'/>
+				<options backwall='sky' skybox='skyboxFinalB' vis='3' music='music_encl_2' postmusic='1' color='blue'/>
 			</land>
 			
 			<land id='grave' tip='story' file='rooms_grave' locx='0' locy='0'>
-				<options backwall='sky' skybox='backgroundClear' vis='10' music='music_end' darkness="-50"/>
+				<options backwall='sky' skybox='skyboxClear' vis='10' music='music_end' darkness="-50"/>
 			</land>
 			
 			<land id='prob' tip='prob' prob='1' file='rooms_prob'>

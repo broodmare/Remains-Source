@@ -145,7 +145,7 @@ package locdata
 					opt.water=null;
 					opt.ramka=null;
 					opt.backform=0;
-					opt.transpFon=false;
+					opt.transparentBackground=false;
 					//Flooded rooms
 					if (act.conf==2) 
 					{
@@ -175,13 +175,13 @@ package locdata
 						{
 							opt.ramka=3;
 							opt.backform=3;
-							opt.transpFon=true;
+							opt.transparentBackground=true;
 						}
 						loc1=newTipLoc('beg0',i,j,opt);	
 					} 
 					else if (act.conf==3) 
 					{ //Manehattan
-						opt.transpFon=true;
+						opt.transparentBackground=true;
 						if (i==2) {
 							if (j==0) 
 							{
@@ -263,7 +263,7 @@ package locdata
 						{
 							opt.ramka=3;
 							opt.backform=3;
-							opt.transpFon=true;
+							opt.transparentBackground=true;
 							loc1=newRandomLoc(act.landStage,i,j,opt,'surf');
 							loc1.visMult=2;
 						} 
@@ -489,7 +489,7 @@ package locdata
 					//enclave base configuration
 					if (act.conf==6) 
 					{
-						opt.transpFon=true;
+						opt.transparentBackground=true;
 						if (j==0) {
 							if (i==0 || i==2) 
 							{
@@ -837,7 +837,7 @@ package locdata
 		
 		public function createMap() 
 		{
-			map=new BitmapData(World.cellsX*(maxLocX-minLocX), World.cellsY*(maxLocY-minLocY),true,0);
+			map=new BitmapData(World.roomTileWidth*(maxLocX-minLocX), World.roomTileHeight*(maxLocY-minLocY),true,0);
 		}
 		
 //==============================================================================================================================		
@@ -1137,8 +1137,8 @@ package locdata
 					if (locs[i][j][0]!=null && (World.world.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
 				}
 			}
-			ggX=(location.landX-minLocX)*World.cellsX*World.tilePixelWidth+gg.X;
-			ggY=(location.landY-minLocY)*World.cellsY*World.tilePixelHeight+gg.Y-gg.scY/2;
+			ggX=(location.landX-minLocX)*World.roomTileWidth*World.tilePixelWidth+gg.X;
+			ggY=(location.landY-minLocY)*World.roomTileHeight*World.tilePixelHeight+gg.Y-gg.scY/2;
 			return map;
 		}
 		

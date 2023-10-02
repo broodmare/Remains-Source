@@ -117,7 +117,7 @@ package weapondata
 			inWater=0;
 			try 
 			{
-				if ((location.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((location.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
 				{
 					inWater=1;
 				}

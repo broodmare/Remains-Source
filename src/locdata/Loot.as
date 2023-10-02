@@ -398,7 +398,7 @@ package locdata
 			isPlav=false;
 			try 
 			{
-				if ((location.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((location.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
 				{
 					isPlav=true;
 				}

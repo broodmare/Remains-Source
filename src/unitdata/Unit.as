@@ -1157,8 +1157,8 @@ package unitdata
 						var x1Floor:int = Math.floor(X1 / Tile.tilePixelWidth);
 						var y1Floor:int = Math.floor(Y1 / Tile.tilePixelHeight);
 
-						t = location.space[x1Floor][y1Floor];
-						t2 = location.space[x1Floor][y1Floor + 1];
+						t = location.roomTileArray[x1Floor][y1Floor];
+						t2 = location.roomTileArray[x1Floor][y1Floor + 1];
 						
 						if ((t.phis == 0 || t.phis == 3) && !(t2.phis == 0 || t2.phis == 3) && t2.zForm == 0) 
 						{
@@ -1172,7 +1172,7 @@ package unitdata
 					{
 						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) 
 						{
-							t=location.space[Math.floor(X1/Tile.tilePixelWidth)][i];
+							t=location.roomTileArray[Math.floor(X1/Tile.tilePixelWidth)][i];
 							if (collisionTile(t)) 
 							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
@@ -1222,8 +1222,8 @@ package unitdata
 					}
 					if (player && isUp && stay && !isSit) 
 					{
-						t=location.space[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)];
-						t2=location.space[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)+1];
+						t=location.roomTileArray[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)];
+						t2=location.roomTileArray[Math.floor(X2/Tile.tilePixelWidth)][Math.floor(Y1/Tile.tilePixelHeight)+1];
 						if ((t.phis==0 || t.phis==3) && !(t2.phis==0 || t2.phis==3) && t2.zForm==0) 
 						{
 							Y=Y2=t2.phY1;
@@ -1235,7 +1235,7 @@ package unitdata
 					{
 						for (i=Math.floor(Y1/Tile.tilePixelHeight); i<=Math.floor(Y2/Tile.tilePixelHeight); i++) 
 						{
-							t=location.space[Math.floor(X2/Tile.tilePixelWidth)][i];
+							t=location.roomTileArray[Math.floor(X2/Tile.tilePixelWidth)][i];
 							if (collisionTile(t)) 
 							{
 								if (t.door && t.door.inter) pumpObj=t.door.inter;
@@ -1297,7 +1297,7 @@ package unitdata
 					{
 						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
 						{
-							t=location.space[i][Math.floor(Y2/Tile.tilePixelHeight)];
+							t=location.roomTileArray[i][Math.floor(Y2/Tile.tilePixelHeight)];
 							if (collisionTile(t)) 
 							{
 								Y=t.phY1;
@@ -1315,7 +1315,7 @@ package unitdata
 					{
 						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
 						{
-							t=location.space[i][Math.floor((Y2+dy/div)/Tile.tilePixelHeight)];
+							t=location.roomTileArray[i][Math.floor((Y2+dy/div)/Tile.tilePixelHeight)];
 							if (collisionTile(t,0,dy/div)) 
 							{
 								if (-(X1-t.phX1)/scX<shX1) shX1=-(X1-t.phX1)/scX;
@@ -1344,7 +1344,7 @@ package unitdata
 						Y1=newmy-scY;
 						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
 						{
-							t=location.space[i][Math.floor((newmy-scY)/Tile.tilePixelHeight)];
+							t=location.roomTileArray[i][Math.floor((newmy-scY)/Tile.tilePixelHeight)];
 							if (collisionTile(t)) newmy=0;
 						}
 					}
@@ -1422,7 +1422,7 @@ package unitdata
 				{
 					for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
 					{
-						t=location.space[i][Math.floor(Y1/Tile.tilePixelHeight)];
+						t=location.roomTileArray[i][Math.floor(Y1/Tile.tilePixelHeight)];
 						if (collisionTile(t)) 
 						{
 							if (t_throw>0 && dy<-damWallSpeed && damWall) damageWall(4);
@@ -1508,7 +1508,7 @@ package unitdata
 				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) 
 				{
 					if (i<0 || i>=location.spaceX || j<0 || j>=location.spaceY) continue;
-					if (collisionTile(location.space[i][j],gx,gy)) return true;
+					if (collisionTile(location.roomTileArray[i][j],gx,gy)) return true;
 				}
 			}
 			return false;
@@ -1535,16 +1535,16 @@ package unitdata
 				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
 				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
 				if (j>=location.spaceY) j=location.spaceY-1;
-				if (location.space[i][j].phis>=1 && !(transT&&location.space[i][j].phis==3)) 
+				if (location.roomTileArray[i][j].phis>=1 && !(transT&&location.roomTileArray[i][j].phis==3)) 
 				{
 					isLaz=0;
 					return false;
 				}
-				if ((location.space[i][j] as Tile).stair) 
+				if ((location.roomTileArray[i][j] as Tile).stair) 
 				{
-					isLaz=storona=(location.space[i][j] as Tile).stair;
-					if (isLaz==-1) X=(location.space[i][j] as Tile).phX1+scX/2;
-					else X=(location.space[i][j] as Tile).phX2-scX/2;
+					isLaz=storona=(location.roomTileArray[i][j] as Tile).stair;
+					if (isLaz==-1) X=(location.roomTileArray[i][j] as Tile).phX1+scX/2;
+					else X=(location.roomTileArray[i][j] as Tile).phX2-scX/2;
 					X1=X-scX/2, X2=X+scX/2;
 					stay=false;
 					sit(false);
@@ -1559,7 +1559,7 @@ package unitdata
 		{
 			var pla=inWater;
 			try {
-				if ((location.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.75)/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((location.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.75)/Tile.tilePixelHeight)] as Tile).water>0) 
 				{
 					isPlav=true;
 					inWater=true;
@@ -1576,7 +1576,7 @@ package unitdata
 					{
 						inWater=false;
 					} 
-					else if ((location.space[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.25)/Tile.tilePixelHeight)] as Tile).water>0) 
+					else if ((location.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor((Y-scY*0.25)/Tile.tilePixelHeight)] as Tile).water>0) 
 					{
 						inWater=true;
 					} 

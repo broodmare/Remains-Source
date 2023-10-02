@@ -29,8 +29,9 @@ Emitter
 	
 Form --
 	Fixed loop in setForms().
-	
-	
+	fForms -> tileForms.
+	oForms -> otherForms.
+	tip -> formType.
 	
 Grafon --
 	Moved initializers into the constructor instead of in the class definition.
@@ -38,6 +39,10 @@ Grafon --
 	Fixed 'i' being defined twice in constructor.
 	Fixed for loop in drawAllObjs().
 	Rewrote checkLoaded() to avoid a situation where a resource loader could finish before an array was created to hold the data.
+	setBackgroundSize() -> setSkyboxSize.
+	transpFon -> transparentBackground.
+	drawBackWall() -> drawDecorativeBackground().
+	(currentLocation.backwall, currentLocation.backform)
 	
 	vfon -> background.
 	numbObj -> canvasLayerCount.
@@ -53,14 +58,24 @@ Grafon --
 	visLight -> layerLighting.
 	visSats -> layerSats.
 	sloy -> layer.
+	ram* -> border*
+
 
 	numbMat 	-> materialCount
 	numbFon 	-> skyboxCount
 	numbBack 	-> bgObjectCount
 	numbObj 	-> objectCount
 	numbSprite  -> spriteCount
+	back - what backwall is behind a tile.
+	drawlayer - normal staircases '3', all other climbables '4'.
+	vid - only climbables.
+	1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+	rear - should be drawn behind normal staircases? only normal staircasese don't have this.
+	lurk - only mechanism and pipes.
 	
 	
+Location --
+	space -> roomTileArray
 	
 MainMenu --
 	MainMenu()
@@ -77,6 +92,9 @@ Stand --
 
 Sats --
 	concatenating strings method changed from '+=' to '.appendText()' for performance.
+
+Tile --
+	dec() -> parseLevelXML().
 
 Pipbuck --
 	Fixed for loop in constructor.
@@ -105,21 +123,21 @@ Unit --
 		
 World --
 	vfon -> skybox.
-	main -> screenSpace
+	main -> mainDisplay
 	visual -> mainCanvas
 	vWait -> loadingScreen
 	w -> world
 	
 Texture.fla --
-	fonCanter -> backgroundCanterlot
-	fonClear -> backgroundClear
-	fonDarkClouds -> backgroundDarkClouds
-	fonDefault -> backgroundDefault
-	fonEnclave -> backgroundEnclave
-	fonFinalb -> backgroundFinalB
-	fonFire -> backgroundFire
-	fonRuins -> backgroundRuins
-	fonWay -> backgroundWay
+	fonCanter -> skyboxCanterlot
+	fonClear -> skyboxClear
+	fonDarkClouds -> skyboxDarkClouds
+	fonDefault -> skyboxDefault
+	fonEnclave -> skyboxEnclave
+	fonFinalb -> skyboxFinalB
+	fonFire -> skyboxFire
+	fonRuins -> skyboxRuins
+	fonWay -> skyboxWay
 
 
 

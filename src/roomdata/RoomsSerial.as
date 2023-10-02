@@ -4509,7 +4509,7 @@ package roomdata {
     <back id="blood1" x="21" y="16"/>
     <back id="blood1" x="41" y="16"/>
     <back id="blood1" x="22" y="15"/>
-    <options bezdna="1" transpfon="1" dark="-40"/>
+    <options bezdna="1" transparentBackground="1" dark="-40"/>
   </room>
   <room name="room_2_2" x="2" y="2">
     <a>N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N._._._._._._._._._._._._._._.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N</a>
@@ -4615,7 +4615,7 @@ package roomdata {
     <obj id="safe" code="okOybIhNSUOJgv88" x="13" y="15">
       <item id="s_owl_armor" imp="1"/>
     </obj>
-    <options bezdna="1" transpfon="1" dark="-20"/>
+    <options bezdna="1" transparentBackground="1" dark="-20"/>
   </room>
   <room name="room_2_6" x="2" y="6">
     <a>N._._._._Б._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._.N</a>
@@ -4704,7 +4704,7 @@ package roomdata {
     <back id="heap3" x="32" y="23"/>
     <back id="heap3" x="39" y="23"/>
     <back id="heap3" x="22" y="15"/>
-    <options bezdna="1" transpfon="1" dark="-20"/>
+    <options bezdna="1" transparentBackground="1" dark="-20"/>
   </room>
   <room name="room_2_5" x="2" y="5">
     <a>N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N._._._._._._._Б._._._._._._._.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N</a>
@@ -4755,7 +4755,7 @@ package roomdata {
     <back id="hole3" x="6" y="2"/>
     <back id="hole4" x="3" y="16"/>
     <back id="hole5" x="18" y="15"/>
-    <options bezdna="1" transpfon="1" dark="-20"/>
+    <options bezdna="1" transparentBackground="1" dark="-20"/>
   </room>
   <room name="room_1_8" x="1" y="8">
     <a>_._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._.C.C.CE.CE.CE.CE.CE.CE.CE.CE.CE.CE.CE.CE.CE</a>
@@ -4890,7 +4890,7 @@ package roomdata {
     <back id="hole1" x="36" y="7"/>
     <back id="hole2" x="0" y="2"/>
     <back id="hole3" x="2" y="13"/>
-    <options bezdna="1" transpfon="1" dark="-20"/>
+    <options bezdna="1" transparentBackground="1" dark="-20"/>
   </room>
   <room name="room_2_0" x="2" y="0">
     <a>N._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._.N</a>
@@ -4940,7 +4940,7 @@ package roomdata {
     <obj id="chest" code="YnAoBK6gl3JOko1a" x="44" y="23"/>
     <back id="musor1" x="25" y="15"/>
     <back id="light5" x="29" y="17"/>
-    <options backwall="tWindows" backform="1" transpfon="1"/>
+    <options backwall="tWindows" backform="1" transparentBackground="1"/>
   </room>
   <room name="room_2_7" x="2" y="7">
     <a>N.N._Б._.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N</a>
@@ -5016,7 +5016,7 @@ package roomdata {
     <back id="potek" x="7" y="1"/>
     <back id="poster" x="34" y="9" fr="4"/>
     <back id="poster" x="21" y="9" fr="4"/>
-    <options bezdna="1" transpfon="1" dark="-20"/>
+    <options bezdna="1" transparentBackground="1" dark="-20"/>
   </room>
   <room name="room_2_1" x="2" y="1">
     <a>N.N.N.N.N.N.N.N._Б._.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N</a>
@@ -5095,7 +5095,7 @@ package roomdata {
     <back id="musor1" x="38" y="7"/>
     <back id="musor1" x="3" y="7"/>
     <back id="plesen" x="19" y="23"/>
-    <options bezdna="1" transpfon="1" dark="-20"/>
+    <options bezdna="1" transparentBackground="1" dark="-20"/>
   </room>
   <room name="room_2_3" x="2" y="3">
     <a>A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A._._._._._._._._._._._._._._.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N.N</a>
@@ -5189,7 +5189,7 @@ package roomdata {
     <back id="vkonstr" x="1" y="1"/>
     <back id="musor1" x="39" y="15"/>
     <back id="musor1" x="39" y="19"/>
-    <options bezdna="1" transpfon="1" dark="-20"/>
+    <options bezdna="1" transparentBackground="1" dark="-20"/>
   </room>
   <room name="bossalicorn" x="2" y="0" z="1">
     <a>N._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._.N</a>
@@ -5255,7 +5255,7 @@ package roomdata {
     <back id="vkonstr" x="14" y="21"/>
     <back id="vkonstr" x="5" y="21"/>
     <back id="lcyan" x="44" y="17" h="3" w="3"/>
-    <options backwall="tWindows" transpfon="1" backform="1" color="blood" colorfon="blood2" vis="2"/>
+    <options backwall="tWindows" transparentBackground="1" backform="1" color="blood" colorfon="blood2" vis="2"/>
   </room>
 </all>
 		

@@ -19,18 +19,18 @@ package locdata
 		
 		public var land:Land;
 		
-		public var id:String;
-		public var room:Room;		 // Linked template
+		public var id:String;		
+		public var room:Room;		// Linked room template
 		public var prob:Probation;	// Linked trial
 		
 		//Dimensions and Position
-		public var spaceX:int;	// Size of the location in blocks
-		public var spaceY:int;
-		public var limX:int;	// Size of the location in pixels
-		public var limY:int;
-		public var landX:int=0;	// Location position on the terrain
-		public var landY:int=0;
-		public var landZ:int=0;
+		public var roomWidth:int;			// Size of the room in tiles.
+		public var roomHeight:int;			// Size of the room in tiles.
+		public var roomPixelWidth:int;		// Size of the room in pixels.
+		public var roomPixelHeight:int;		// Size of the room in pixels.
+		public var roomCoordinateX:int = 0;	
+		public var roomCoordinateY:int = 0;
+		public var roomCoordinateZ:int = 0;
 		public var landProb:String='';
 		public var bindLoc:Location;	// Bound by coordinate z ???
 		public var base:Boolean=false;	// Base camp
@@ -40,19 +40,20 @@ package locdata
 		
 		// Objects
 		public var grafon:Grafon;
-		public var space:Array;			 // Screen tile array
+		public var roomTileArray:Array;		// Room tile array
 		public var otstoy:Tile;			// Empty tile
-		public var units:Array;			// Units
+		public var units:Array;			// Array of Units
 		public var ups:Array;			// Spawn random units
-		public var objs:Array;			// Boxes
-		public var bonuses:Array;		// Bonuses
-		public var areas:Array;			// Areas
-		public var acts:Array;			// Active objects (displayed on the map)
-		public var saves:Array;			// Objects subject to saving
-		public var backobjs:Array;		// Background objects
-		public var grenades:Array;		 // Active grenades
+		public var objs:Array;			// Array of active objects
+		public var bonuses:Array;		// Array of Bonuses
+		public var areas:Array;			// Array of Areas
+		public var acts:Array;			// Array of Active objects (displayed on the map)
+		public var saves:Array;			// Array of Objects subject to saving
+		public var backobjs:Array;		// Array of Background objects
+		public var grenades:Array;		// Array of Active grenades
 		public var gg:UnitPlayer;
-		public var celObj:Obj, celDist:Number=-1;	// Target object and distance to it
+		public var celObj:Obj = -1;
+		public var celDist:Number =- 1;	// Target object and distance to it
 		public var unitCoord;			// Object for unit coordination
 		
 		// Entrances and Visits
@@ -98,7 +99,7 @@ package locdata
 		public var waterLevel:int=100;			// Water level
 		public var backwall:String='';			// Background wall
 		public var backform:int=0;				// Background wall shape: 0 - filled, 1 - side parts, 2 - bottom part
-		public var transpFon:Boolean=false;		// Transparent background
+		public var transparentBackground:Boolean=false;		// Transparent background
 		public var cTransform:ColorTransform;
 		public var cTransformFon:ColorTransform;
 		//public var fonTransform:Boolean=false;
@@ -170,10 +171,10 @@ package locdata
 		public function Location(nland:Land, nroom:XML, rnd:Boolean, opt:Object=null) 
 		{
 			land = nland;
-			spaceX = World.cellsX;
-			spaceY = World.cellsY;
-			limX = spaceX*World.tilePixelWidth;
-			limY = spaceY*World.tilePixelHeight;
+			roomWidth = World.roomTileWidth;
+			roomHeight = World.roomTileHeight;
+			roomPixelWidth = roomWidth * World.tilePixelWidth;
+			roomPixelHeight = roomHeight * World.tilePixelHeight;
 			otstoy=new Tile(-1,-1);
 
 			units=new Array();
@@ -184,7 +185,7 @@ package locdata
 			saves=new Array();
 			enspawn=new Array();
 			backobjs=new Array();
-			space=new Array();
+			roomTileArray=new Array();
 			signposts=new Array();
 			recalcTiles=new Array();
 			spawnPoints=new Array();
@@ -202,7 +203,7 @@ package locdata
 				if (ramka==5) backform=1;
 				if (ramka==6) backform=2;
 				if (opt.backform) backform=opt.backform;
-				if (opt.transpFon) transpFon=opt.transpFon;
+				if (opt.transparentBackground) transparentBackground=opt.transparentBackground;
 				if (opt.home) homeStable=true;
 				if (opt.atk) homeAtk=true;
 			}
@@ -225,12 +226,12 @@ package locdata
 		public function buildLoc(nroom:XML) 
 		{
 			// Create an array of tiles
-			for (var i=0; i<spaceX; i++) 
+			for (var i=0; i<roomWidth; i++) 
 			{
-				space[i]=new Array();
-				for (var j=0; j<spaceY; j++) 
+				roomTileArray[i]=new Array();
+				for (var j=0; j<roomHeight; j++) 
 				{
-					space[i][j]=new Tile(i,j);
+					roomTileArray[i][j]=new Tile(i,j);
 				}
 			}
 
@@ -251,7 +252,7 @@ package locdata
 			{
 				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
 				if (nroom.options.@backform.length()) backform=nroom.options.@backform;
-				if (nroom.options.@transpfon.length()) transpFon=true;
+				if (nroom.options.@transparentBackground.length()) transparentBackground=true;
 				if (nroom.options.@music.length()) sndMusic=nroom.options.@music;
 				if (nroom.options.@rad.length()) rad=nroom.options.@rad;
 				if (nroom.options.@wrad.length()) wrad=nroom.options.@wrad;
@@ -289,11 +290,11 @@ package locdata
 				if (nroom.options.@trus.length()) trus=nroom.options.@trus;
 				if (!black) 
 				{
-					for (i=0; i<spaceX; i++) 
+					for (i=0; i<roomWidth; i++) 
 					{
-						for (j=0; j<spaceY; j++) 
+						for (j=0; j<roomHeight; j++) 
 						{
-							(space[i][j] as Tile).visi=1;
+							(roomTileArray[i][j] as Tile).visi=1;
 						}
 					}
 				}
@@ -311,44 +312,44 @@ package locdata
 			}
 
 			// Create a room. (I think this part works correctly.)
-			for (j=0; j<spaceY; j++) //Build the room from XML Data.
+			for (j = 0; j < roomHeight; j++) //Build the room from XML Data.
 			{ 
 				var js:String=''; //XML data as string
 				js = nroom.a[j];
 				var arri:Array=js.split('.'); //Demarcates the room into tiles.
-				for (i=0; i<spaceX; i++) 
+				for (i=0; i<roomWidth; i++) 
 				{
 					var jis:String;
 					if (mirror) {
-						jis=arri[spaceX-i-1];
+						jis=arri[roomWidth-i-1];
 					} 
 					else 
 					{
 						jis=arri[i];
 					}
 					if (jis==null) jis='';
-					space[i][j].dec(jis,mirror);
-					if (space[i][j].stair!=0) {  // Shelf on top of the ladder
-						if (j>0 && space[i][j].phis==0 && !space[i][j].shelf && space[i][j].stair!=space[i][j-1].stair) 
+					roomTileArray[i][j].parseLevelXML(jis,mirror);
+					if (roomTileArray[i][j].stair!=0) {  // Shelf on top of the ladder
+						if (j>0 && roomTileArray[i][j].phis==0 && !roomTileArray[i][j].shelf && roomTileArray[i][j].stair!=roomTileArray[i][j-1].stair) 
 						{
-							space[i][j].shelf=true;
-							space[i][j].vid++;
+							roomTileArray[i][j].shelf=true;
+							roomTileArray[i][j].vid++;
 						}
 					}
 					// Water line
-					if (j>=waterLevel) space[i][j].water=1;
+					if (j>=waterLevel) roomTileArray[i][j].water=1;
 					// Frame
-					if (i==0 || i==spaceX-1 || j==0 || j==spaceY-1) 
+					if (i==0 || i==roomWidth-1 || j==0 || j==roomHeight-1) 
 					{
 						if (ramka==1
-							|| (ramka==2 || ramka==4) && (i==0 || i==spaceX-1)
-							|| (ramka==3 || ramka==4) && (j==spaceY-1)
+							|| (ramka==2 || ramka==4) && (i==0 || i==roomWidth-1)
+							|| (ramka==3 || ramka==4) && (j==roomHeight-1)
 							|| ramka==5 && (i<=10 || i>=37)
 							|| ramka==6 && j>=16
 							|| ramka==7 && (i<=10 || i>=37) && j>=16
-							|| ramka==8 && (i==spaceX-1)
-						) space[i][j].phis=1;
-						else if (space[i][j].phis>=1) space[i][j].indestruct=true;
+							|| ramka==8 && (i==roomWidth-1)
+						) roomTileArray[i][j].phis=1;
+						else if (roomTileArray[i][j].phis>=1) roomTileArray[i][j].indestruct=true;
 					}
 				}
 			}
@@ -405,7 +406,7 @@ package locdata
 				if (size<=0) size=1;
 				var nx:int=obj.@x;
 				var ny:int=obj.@y;
-				if (mirror) nx=spaceX-nx-size;
+				if (mirror) nx=roomWidth-nx-size;
 				if (xmll.@tip=='spawnpoint') spawnPoints.push({x:nx, y:ny});
 				else if (xmll.@tip=='enspawn') addEnSpawn(nx, ny, xmll);
 				else if (xmll.@tip=='up') 
@@ -423,10 +424,10 @@ package locdata
 				backobjs.push(new BackObj(this, obj.@id,obj.@x*Tile.tilePixelWidth,obj.@y*Tile.tilePixelHeight, obj));
 			}
 
-			if (zoom>1) 
+			if (zoom > 1) 
 			{
-				limX*=zoom;
-				limY*=zoom;
+				roomPixelWidth  *= zoom;
+				roomPixelHeight *= zoom;
 			}
 		}
 		
@@ -551,18 +552,18 @@ package locdata
 			else if (n>=17) 
 			{
 				q=(n-17)*9+4;
-				dyr=space[q+1][0].hole() || dyr;
-				dyr=space[q+2][0].hole() || dyr;
-				space[q+1][1].hole();
-				space[q+2][1].hole();
+				dyr=roomTileArray[q+1][0].hole() || dyr;
+				dyr=roomTileArray[q+2][0].hole() || dyr;
+				roomTileArray[q+1][1].hole();
+				roomTileArray[q+2][1].hole();
 				setNoObj(q+1,0,0,2);
 				setNoObj(q+2,0,0,2);
 				if (fak>2) 
 				{
-					dyr=space[q][0].hole() || dyr;
-					dyr=space[q+3][0].hole() || dyr;
-					space[q][1].hole();
-					space[q+3][1].hole();
+					dyr=roomTileArray[q][0].hole() || dyr;
+					dyr=roomTileArray[q+3][0].hole() || dyr;
+					roomTileArray[q][1].hole();
+					roomTileArray[q+3][1].hole();
 					setNoObj(q,0,0,2);
 					setNoObj(q+3,0,0,2);
 				}
@@ -571,16 +572,16 @@ package locdata
 			else if (n>=11) 
 			{
 				q=(n-11)*4+3;
-				dyr=space[0][q].hole() || dyr;
-				dyr=space[0][q-1].hole() || dyr;
-				space[1][q].hole();
-				space[1][q-1].hole();
+				dyr=roomTileArray[0][q].hole() || dyr;
+				dyr=roomTileArray[0][q-1].hole() || dyr;
+				roomTileArray[1][q].hole();
+				roomTileArray[1][q-1].hole();
 				setNoObj(0,q,5,0);
 				setNoObj(0,q-1,5,0);
 				if (fak>2) 
 				{
-					dyr=space[0][q-2].hole() || dyr;
-					space[1][q-2].hole();
+					dyr=roomTileArray[0][q-2].hole() || dyr;
+					roomTileArray[1][q-2].hole();
 				} 
 				if (dyr) addSignPost(0,q,180);
 				addEnSpawn(Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
@@ -588,39 +589,39 @@ package locdata
 			else if (n>=6) 
 			{
 				q=(n-6)*9+4;
-				dyr=space[q+1][spaceY-1].hole() || dyr;
-				dyr=space[q+2][spaceY-1].hole() || dyr;
-				space[q+1][spaceY-2].hole();
-				space[q+2][spaceY-2].hole();
-				setNoObj(q+1,spaceY-1,0,-2);
-				setNoObj(q+2,spaceY-1,0,-2);
+				dyr=roomTileArray[q+1][roomHeight-1].hole() || dyr;
+				dyr=roomTileArray[q+2][roomHeight-1].hole() || dyr;
+				roomTileArray[q+1][roomHeight-2].hole();
+				roomTileArray[q+2][roomHeight-2].hole();
+				setNoObj(q+1,roomHeight-1,0,-2);
+				setNoObj(q+2,roomHeight-1,0,-2);
 				if (fak>2) 
 				{
-					dyr=space[q][spaceY-1].hole() || dyr;
-					dyr=space[q+3][spaceY-1].hole() || dyr;
-					space[q][spaceY-2].hole();
-					space[q+3][spaceY-2].hole();
-					setNoObj(q,spaceY-1,0,-2);
-					setNoObj(q+3,spaceY-1,0,-2);
+					dyr=roomTileArray[q][roomHeight-1].hole() || dyr;
+					dyr=roomTileArray[q+3][roomHeight-1].hole() || dyr;
+					roomTileArray[q][roomHeight-2].hole();
+					roomTileArray[q+3][roomHeight-2].hole();
+					setNoObj(q,roomHeight-1,0,-2);
+					setNoObj(q+3,roomHeight-1,0,-2);
 				} 
-				if (dyr) addSignPost(q+2,spaceY,90);
+				if (dyr) addSignPost(q+2,roomHeight,90);
 			} 
 			else if (n>=0) 
 			{
 				q=(n)*4+3;
-				dyr=space[spaceX-1][q].hole() || dyr;
-				dyr=space[spaceX-1][q-1].hole() || dyr;
-				space[spaceX-2][q].hole();
-				space[spaceX-2][q-1].hole();
-				setNoObj(spaceX-1,q,-5,0);
-				setNoObj(spaceX-1,q-1,-5,0);
+				dyr=roomTileArray[roomWidth-1][q].hole() || dyr;
+				dyr=roomTileArray[roomWidth-1][q-1].hole() || dyr;
+				roomTileArray[roomWidth-2][q].hole();
+				roomTileArray[roomWidth-2][q-1].hole();
+				setNoObj(roomWidth-1,q,-5,0);
+				setNoObj(roomWidth-1,q-1,-5,0);
 				if (fak>2) 
 				{
-					dyr=space[spaceX-1][q-2].hole() || dyr;
-					space[spaceX-2][q-2].hole();
+					dyr=roomTileArray[roomWidth-1][q-2].hole() || dyr;
+					roomTileArray[roomWidth-2][q-2].hole();
 				} 
-				if (dyr) addSignPost(spaceX,q,0);
-				addEnSpawn((spaceX-1)*Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
+				if (dyr) addSignPost(roomWidth,q,0);
+				addEnSpawn((roomWidth-1)*Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
 			} 
 			else return;
 		}
@@ -655,10 +656,10 @@ package locdata
 		private function setNoObj(nx:int, ny:int, dx:int, dy:int) 
 		{
 			var i:int;
-			if (dx>0) for (i=nx; i<=nx+dx; i++) space[i][ny].place=false;
-			if (dx<0) for (i=nx+dx; i<=nx; i++) space[i][ny].place=false;
-			if (dy>0) for (i=ny; i<=ny+dy; i++) space[nx][i].place=false;
-			if (dy<0) for (i=ny+dy; i<=ny; i++) space[nx][i].place=false;
+			if (dx>0) for (i=nx; i<=nx+dx; i++) roomTileArray[i][ny].place=false;
+			if (dx<0) for (i=nx+dx; i<=nx; i++) roomTileArray[i][ny].place=false;
+			if (dy>0) for (i=ny; i<=ny+dy; i++) roomTileArray[nx][i].place=false;
+			if (dy<0) for (i=ny+dy; i<=ny; i++) roomTileArray[nx][i].place=false;
 		}
 		
 		
@@ -667,15 +668,15 @@ package locdata
 		{
 			var border:String='A';
 			if (land && land.act) border=land.act.border;
-			for (var j=0; j<spaceX; j++) 
+			for (var j=0; j<roomWidth; j++) 
 			{
-				if (space[j][0].phis>=1) space[j][0].mainFrame(border);
-				if (space[j][spaceY-1].phis>=1) space[j][spaceY-1].mainFrame(border);
+				if (roomTileArray[j][0].phis>=1) roomTileArray[j][0].mainFrame(border);
+				if (roomTileArray[j][roomHeight-1].phis>=1) roomTileArray[j][roomHeight-1].mainFrame(border);
 			}
-			for (j=0; j<spaceY; j++) 
+			for (j=0; j<roomHeight; j++) 
 			{
-				if (space[0][j].phis>=1) space[0][j].mainFrame(border);
-				if (space[spaceX-1][j].phis>=1) space[spaceX-1][j].mainFrame(border);
+				if (roomTileArray[0][j].phis>=1) roomTileArray[0][j].mainFrame(border);
+				if (roomTileArray[roomWidth-1][j].phis>=1) roomTileArray[roomWidth-1][j].mainFrame(border);
 			}
 		}
 		
@@ -684,7 +685,7 @@ package locdata
 		{
 			for each (var obj in objsT) 
 			{
-				if (noHolesPlace && obj.rem>0 && !space[obj.x][obj.y].place) continue;	/// Do not place boxes near passages
+				if (noHolesPlace && obj.rem>0 && !roomTileArray[obj.x][obj.y].place) continue;	/// Do not place boxes near passages
 				if (obj.tip=='unit') createUnit(obj.id,obj.x,obj.y, false, obj.xml);
 				else createObj(obj.id, obj.tip, obj.x,obj.y, obj.xml);
 			}
@@ -719,7 +720,7 @@ package locdata
 					{
 						for (var j=0; j<ups[i].length; j++) 
 						{
-							if (!space[ups[i][j].x][ups[i][j].y].place) 
+							if (!roomTileArray[ups[i][j].x][ups[i][j].y].place) 
 							{
 								ups[i].splice(j,1);
 								j--;
@@ -758,9 +759,9 @@ package locdata
 		// Create random loot
 		public function putRandomLoot() 
 		{
-			var nx:int=Math.floor(Math.random()*(spaceX-2)+1);
-			var ny:int=Math.floor(Math.random()*(spaceY-2)+1);
-			if (space[nx][ny].phis==0) 
+			var nx:int=Math.floor(Math.random()*(roomWidth-2)+1);
+			var ny:int=Math.floor(Math.random()*(roomHeight-2)+1);
+			if (roomTileArray[nx][ny].phis==0) 
 			{
 				LootGen.lootCont(this,(nx+0.5)*Tile.tilePixelWidth,(ny+0.8)*Tile.tilePixelHeight,'metal');
 			}
@@ -884,7 +885,7 @@ package locdata
 			units.push(un);
 			kol_phoenix++;
 			land.kol_phoenix++;
-			//trace('Феникс',landX, landY);
+			//trace('Феникс',roomCoordinateX, roomCoordinateY);
 			return true;
 		}
 		//создать передатчик на ящике
@@ -957,8 +958,8 @@ package locdata
 				}
 				for (var i=0; i<kol; i++) 
 				{
-					var nx:int=Math.floor(Math.random()*(spaceX-4)+2);
-					var ny:int=Math.floor(Math.random()*(spaceY-4)+2);
+					var nx:int=Math.floor(Math.random()*(roomWidth-4)+2);
+					var ny:int=Math.floor(Math.random()*(roomHeight-4)+2);
 					if (cp) 
 					{
 						var dnx=cp.X-(nx*World.tilePixelWidth+20);
@@ -1038,7 +1039,7 @@ package locdata
 					} 
 					else if (tipEnemy==2 && locDifLevel>=4 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10) 
 					{
-						if ((landX+landY)%2==0) s='roller';
+						if ((roomCoordinateX+roomCoordinateY)%2==0) s='roller';
 						else s='msp';
 					} 
 					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) 
@@ -1047,7 +1048,7 @@ package locdata
 						{
 							s='scorp';
 						} 
-						else if ((landX+landY)%2==0) s='slime';
+						else if ((roomCoordinateX+roomCoordinateY)%2==0) s='slime';
 						else s='ant';
 						if (biom==1 && Math.random()<0.25) s='rat';
 					} 
@@ -1066,7 +1067,7 @@ package locdata
 					} 
 					else if (biom==5) 
 					{
-						if ((landX+landY)%2==0) s='bloodwing';
+						if ((roomCoordinateX+roomCoordinateY)%2==0) s='bloodwing';
 						else s='slime';
 					} 
 					else if (biom==6 || biom==4) 
@@ -1102,16 +1103,16 @@ package locdata
 						s='slmine';
 					} else if (tipEnemy==0) 
 					{
-						if ((landX+landY)%2==0) s='slmine';
+						if ((roomCoordinateX+roomCoordinateY)%2==0) s='slmine';
 						else s='trap';
 					} 
-					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6)&&(landX+landY)%2==0) 
+					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6)&&(roomCoordinateX+roomCoordinateY)%2==0) 
 					{
 						if (locDifLevel>=10 && Math.random()<0.5) s='trridge';
 						else if (Math.random()<0.5) s='trplate';
 						else s='trcans';
 					} 
-					else if ((biom==2 && tipEnemy==2 || tipEnemy==7 || tipEnemy==9) &&(landX+landY)%2==0) 
+					else if ((biom==2 && tipEnemy==2 || tipEnemy==7 || tipEnemy==9) &&(roomCoordinateX+roomCoordinateY)%2==0) 
 					{
 						s='trlaser';
 					} 
@@ -1149,7 +1150,7 @@ package locdata
 				'ranger': function()
 				{
 					if (land.act.conf == 7) return Math.floor(randNum * 3 + 1);
-					if (landY == 0) return 1;
+					if (roomCoordinateY == 0) return 1;
 					return Math.floor(randNum * 2 + 1);
 				},		
 				'merc': function()
@@ -1401,26 +1402,26 @@ package locdata
 			maxXp=kol;
 			for (var i=1; i<=100; i++) 
 			{
-				x1=2, y1=2, x2=spaceX-2, y2=spaceY-2;
+				x1=2, y1=2, x2=roomWidth-2, y2=roomHeight-2;
 				if (mesto==4) 
 				{
-					x2=spaceX/2;
-					y2=spaceY/2;
+					x2=roomWidth/2;
+					y2=roomHeight/2;
 				} 
 				else if (mesto==3) 
 				{
-					x1=spaceX/2;
-					y2=spaceY/2;
+					x1=roomWidth/2;
+					y2=roomHeight/2;
 				} 
 				else if (mesto==2) 
 				{
-					x2=spaceX/2;
-					y1=spaceY/2;
+					x2=roomWidth/2;
+					y1=roomHeight/2;
 				} 
 				else if (mesto==1) 
 				{
-					x1=spaceX/2;
-					y1=spaceY/2;
+					x1=roomWidth/2;
+					y1=roomHeight/2;
 				}
 				nx=Math.floor(x1+Math.random()*(x2-x1));
 				ny=Math.floor(y1+Math.random()*(y2-y1));
@@ -1560,23 +1561,23 @@ package locdata
 //**************************************************************************************************************************
 
 		// Checks if a tile is in bounds of Space, if so returns otstoy (an empty tile).
-		// Otherwise, it attempts to retrieve the tile from the space array using the provided coordinates and returns it.
+		// Otherwise, it attempts to retrieve the tile from the roomTileArray using the provided coordinates and returns it.
 
 		//input coordinates and return the tile at that location.
 		public function getTile(nx:int, ny:int):Tile 
 		{
-			if (nx < 0 || nx >= spaceX || ny < 0 || ny >= spaceY) return otstoy;
-			return space[nx][ny] as Tile;
+			if (nx < 0 || nx >= roomWidth || ny < 0 || ny >= roomHeight) return otstoy;
+			return roomTileArray[nx][ny] as Tile;
 		}
 
 		public function getAbsTile(nx:int, ny:int):Tile 
 		{
-			if (nx < 0 || nx >= spaceX * Tile.tilePixelWidth || ny < 0 || ny >= spaceY * Tile.tilePixelHeight) return otstoy;
+			if (nx < 0 || nx >= roomWidth * Tile.tilePixelWidth || ny < 0 || ny >= roomHeight * Tile.tilePixelHeight) return otstoy;
 			
 			var xIndex:int = nx / Tile.tilePixelWidth | 0;
 			var yIndex:int = ny / Tile.tilePixelHeight | 0;
 			
-			return space[xIndex][yIndex] as Tile;
+			return roomTileArray[xIndex][yIndex] as Tile;
 		}
 
 		public function collisionUnit(X:Number, Y:Number, scX:Number=0, scY:Number=0):Boolean 
@@ -1592,8 +1593,8 @@ package locdata
 			{
 				for (var j:int = startY; j <= endY; j++) 
 				{
-					if (i < 0 || i >= spaceX || j < 0 || j >= spaceY) continue;
-					if (space[i][j].phis > 0) return true;
+					if (i < 0 || i >= roomWidth || j < 0 || j >= roomHeight) continue;
+					if (roomTileArray[i][j].phis > 0) return true;
 				}
 			}
 			return false;
@@ -1679,22 +1680,22 @@ package locdata
 		// Front contours
 		private function uslKontur(nx:int,ny:int):Boolean 
 		{
-			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
-			return (space[nx][ny].phis==1 || space[nx][ny].door!=null);
+			if (nx<0 || nx>=roomWidth || ny<0 || ny>=roomHeight) return true;
+			return (roomTileArray[nx][ny].phis==1 || roomTileArray[nx][ny].door!=null);
 		}
 
 		// Back contours with a wall
 		private function uslPontur(nx:int,ny:int):Boolean 
 		{
-			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
-			return (space[nx][ny].back!='' || space[nx][ny].shelf>0);
+			if (nx<0 || nx>=roomWidth || ny<0 || ny>=roomHeight) return true;
+			return (roomTileArray[nx][ny].back!='' || roomTileArray[nx][ny].shelf>0);
 		}
 
 		// Back contours without a wall
 		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean 
 		{
-			if (nx<0 || nx>=spaceX || ny<0 || ny>=spaceY) return true;
-			return (space[nx][ny].back==b || vse && space[nx][ny].back!='' || space[nx][ny].phis==1 || space[nx][ny].shelf>0);
+			if (nx<0 || nx>=roomWidth || ny<0 || ny>=roomHeight) return true;
+			return (roomTileArray[nx][ny].back==b || vse && roomTileArray[nx][ny].back!='' || roomTileArray[nx][ny].phis==1 || roomTileArray[nx][ny].shelf>0);
 		}
 		
 		// Tile damage
@@ -1768,7 +1769,7 @@ package locdata
 		}
 		
 		
-		// Called on any change in the block space configuration
+		// Called on any change in the roomTileArray
 		private function rebuild() 
 		{
 			recalcWater();
@@ -1850,12 +1851,12 @@ package locdata
 		{
 			//m.fillRect(m.rect,0xFF000000);
 			var vid:Number=1;
-			for (var i=0; i<spaceX; i++)
+			for (var i=0; i<roomWidth; i++)
 			 {
-				for (var j=0; j<spaceY; j++) 
+				for (var j=0; j<roomHeight; j++) 
 				{
 					var color:uint=0x003323;
-					var t:Tile=space[i][j];
+					var t:Tile=roomTileArray[i][j];
 					if (t.water) color=0x0066FF;
 					if (t.shelf || t.diagon!=0) color=0x7B482F;
 					if (t.stair!=0) color=0x666666;
@@ -1869,22 +1870,22 @@ package locdata
 					if (t.phis==2) color=0x01995A; 
 					if (!World.world.drawAllMap) 
 					{
-						vid=space[i][j].visi;
-						if (i<spaceX-1) 
+						vid=roomTileArray[i][j].visi;
+						if (i<roomWidth-1) 
 						{
-							if (space[i+1][j].visi>vid) vid=space[i+1][j].visi;
-							if (j<spaceY-1) 
+							if (roomTileArray[i+1][j].visi>vid) vid=roomTileArray[i+1][j].visi;
+							if (j<roomHeight-1) 
 							{
-								if (space[i+1][j+1].visi>vid) vid=space[i+1][j+1].visi;
+								if (roomTileArray[i+1][j+1].visi>vid) vid=roomTileArray[i+1][j+1].visi;
 							}
 						}
-						if (j<spaceY-1) 
+						if (j<roomHeight-1) 
 						{
-							if (space[i][j+1].visi>vid) vid=space[i][j+1].visi;
+							if (roomTileArray[i][j+1].visi>vid) vid=roomTileArray[i][j+1].visi;
 						}
 					}
 					color+=Math.floor(vid*255)*0x1000000;
-					m.setPixel32((landX-land.minLocX)*World.cellsX+i,(landY-land.minLocY)*World.cellsY+j,color);
+					m.setPixel32((roomCoordinateX-land.minLocX)*World.cellsX+i,(roomCoordinateY-land.minLocY)*World.cellsY+j,color);
 				}
 			}
 			for each (var obj:Obj in objs) 
@@ -1892,7 +1893,7 @@ package locdata
 				if (obj.inter && obj.inter.cont!='' && obj.inter.active) 
 				{
 					drawMapObj(m, obj, 0xFFCC00);
-					//m.setPixel(landX*World.cellsX+Math.floor(obj.X/World.tilePixelWidth),landY*World.cellsY+Math.floor((obj.Y-obj.scY/2)/World.tilePixelHeight),color);
+					//m.setPixel(roomCoordinateX*World.cellsX+Math.floor(obj.X/World.tilePixelWidth),roomCoordinateY*World.cellsY+Math.floor((obj.Y-obj.scY/2)/World.tilePixelHeight),color);
 				}
 				if (obj.inter && obj.inter.prob!='' && obj.inter.prob!=null) 
 				{
@@ -1917,9 +1918,9 @@ package locdata
 		
 		function drawMapObj(m, obj:Obj, color:uint) 
 		{
-			for (var i=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tilePixelWidth+0.5); i<=(landX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tilePixelWidth-0.5); i++) 
+			for (var i=(roomCoordinateX-land.minLocX)*World.cellsX+Math.floor(obj.X1/World.tilePixelWidth+0.5); i<=(roomCoordinateX-land.minLocX)*World.cellsX+Math.floor(obj.X2/World.tilePixelWidth-0.5); i++) 
 			{
-				for (var j=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tilePixelHeight+0.4); j<=(landY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tilePixelHeight-0.5); j++) 
+				for (var j=(roomCoordinateY-land.minLocY)*World.cellsY+Math.floor(obj.Y1/World.tilePixelHeight+0.4); j<=(roomCoordinateY-land.minLocY)*World.cellsY+Math.floor(obj.Y2/World.tilePixelHeight-0.5); j++) 
 				{
 					m.setPixel(i,j,color);
 				}
@@ -2106,11 +2107,11 @@ package locdata
 		{
 			var est=false;
 			var t:Tile;
-			for (var i=0; i<spaceX; i++) 
+			for (var i=0; i<roomWidth; i++) 
 			{
-				for (var j=0; j<spaceY; j++) 
+				for (var j=0; j<roomHeight; j++) 
 				{
-					t=space[i][j];
+					t=roomTileArray[i][j];
 					if (t.phis==3) 
 					{
 						if (locationActive) 
@@ -2158,22 +2159,22 @@ package locdata
 			var n1:Number, n2:Number;
 			relight_t=10;
 //			trace(opacWater);
-			for (var i=1; i<spaceX; i++) 
+			for (var i=1; i<roomWidth; i++) 
 			{
-				for (var j=1; j<spaceY; j++) 
+				for (var j=1; j<roomHeight; j++) 
 				{
-					n1=space[i][j].visi;
+					n1=roomTileArray[i][j].visi;
 					if (!retDark && n1>=1) continue;
 					var dx:int=i*Tile.tilePixelWidth-nx;
 					var dy:int=j*Tile.tilePixelHeight-ny;
 					var rasst=dx*dx+dy*dy;
 					if (rasst>=dist2*dist2) 
 					{
-						if (retDark && space[i][j].t_visi>0) 
+						if (retDark && roomTileArray[i][j].t_visi>0) 
 						{
-							space[i][j].t_visi-=0.025;
-							if (space[i][j].t_visi<0) space[i][j].t_visi=0;
-							grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
+							roomTileArray[i][j].t_visi-=0.025;
+							if (roomTileArray[i][j].t_visi<0) roomTileArray[i][j].t_visi=0;
+							grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
 						}
 						continue;
 					}
@@ -2232,14 +2233,14 @@ package locdata
 					if (n2>1) n2=1;
 					if (n2>n1+0.01) 
 					{
-						space[i][j].t_visi=n2;
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
+						roomTileArray[i][j].t_visi=n2;
+						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
 					} 
 					else if (retDark && n2<n1-0.01) 
 					{
-						space[i][j].t_visi-=0.025;
-						if (space[i][j].t_visi<n2) space[i][j].t_visi=n2;
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
+						roomTileArray[i][j].t_visi-=0.025;
+						if (roomTileArray[i][j].t_visi<n2) roomTileArray[i][j].t_visi=n2;
+						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
 					}
 				}
 			}
@@ -2249,13 +2250,13 @@ package locdata
 		{
 			if (!locationActive) return;
 			relight_t--;
-			for (var i=1; i<spaceX; i++) 
+			for (var i=1; i<roomWidth; i++) 
 			{
-				for (var j=1; j<spaceY; j++) 
+				for (var j=1; j<roomHeight; j++) 
 				{
-					if (space[i][j].visi!=space[i][j].t_visi) 
+					if (roomTileArray[i][j].visi!=roomTileArray[i][j].t_visi) 
 					{
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-space[i][j].updVisi())*255)*0x1000000);
+						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
 					}
 				}
 			}
@@ -2352,7 +2353,7 @@ package locdata
 			}
 			isRelight=false;
 			getDist();
-			// If needed, rebuild the space
+			// If needed, rebuild the room
 			if (isRebuild) rebuild();
 			if (isRecalc) recalcWater();
 			if (t_gwall==1) gwalls();

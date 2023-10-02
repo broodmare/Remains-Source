@@ -41,7 +41,7 @@ package
 		public var urle:String;						//URL from which the game was launched
 
 		//Visual components
-		public var screenSpace:Sprite;				//Main game sprite
+		public var mainDisplay:Sprite;				//Main game sprite
 		public var swfStage:Stage;	
 		
 		public var loadingScreen:MovieClip;			//Loading image
@@ -158,8 +158,8 @@ package
 		public var actionDist = 200*200;
 		public static const tilePixelWidth = 40;	//Tile Width
 		public static const tilePixelHeight = 40;	//Tile Height
-		public static const cellsX:int = 48; 		//Room Width
-		public static const cellsY:int = 25;		//Room Height
+		public static const roomTileWidth:int = 48; //Room Width
+		public static const roomTileHeight:int = 25;//Room Height
 		public static const fps = 30;
 		public static const ddy = 1;
 		public static const maxdy = 20;
@@ -249,9 +249,9 @@ package
 			langURL = 'lang.xml';
 			landPath = 'Rooms/';
 			
-			screenSpace = nmain;
+			mainDisplay = nmain;
 
-			swfStage = screenSpace.stage;
+			swfStage = mainDisplay.stage;
 			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
 
@@ -302,17 +302,17 @@ package
 			vgui.visible=vpip.visible=vconsol.visible=skybox.visible=mainCanvas.visible=vsats.visible=loadingScreen.visible=vblack.visible=verror.visible=vscene.visible= false;
 			vscene.stop();
 
-			screenSpace.addChild(loadingScreen);
-			screenSpace.addChild(skybox);
-			screenSpace.addChild(mainCanvas);
-			screenSpace.addChild(vscene);
-			screenSpace.addChild(vblack);
-			screenSpace.addChild(vpip);
-			screenSpace.addChild(vsats);
-			screenSpace.addChild(vgui);
-			screenSpace.addChild(vstand);
-			screenSpace.addChild(verror);
-			screenSpace.addChild(vconsol);
+			mainDisplay.addChild(loadingScreen);
+			mainDisplay.addChild(skybox);
+			mainDisplay.addChild(mainCanvas);
+			mainDisplay.addChild(vscene);
+			mainDisplay.addChild(vblack);
+			mainDisplay.addChild(vpip);
+			mainDisplay.addChild(vsats);
+			mainDisplay.addChild(vgui);
+			mainDisplay.addChild(vstand);
+			mainDisplay.addChild(verror);
+			mainDisplay.addChild(vconsol);
 
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function () {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
 			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible= false;});
@@ -559,7 +559,7 @@ package
 			} 
 			if (gui) gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			grafon.setBackgroundSize(swfStage.stageWidth,swfStage.stageHeight);
+			grafon.setSkyboxSize(swfStage.stageWidth,swfStage.stageHeight);
 			if (stand) stand.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			vblack.width = swfStage.stageWidth;
 			vblack.height = swfStage.stageHeight;
@@ -827,7 +827,7 @@ package
 				location = nloc; //Set the desired area as the current area
 				grafon.drawLoc(location); //Draw the current area
 				cam.setLoc(location);
-				grafon.setBackgroundSize(swfStage.stageWidth, swfStage.stageHeight);
+				grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
 				gui.setAll();
 				currentMusic = location.sndMusic;
 				Snd.playMusic(currentMusic);

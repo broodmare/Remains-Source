@@ -2909,7 +2909,7 @@ package roomdata {
     <back id="enclbanner" x="36" y="1"/>
     <back id="enclbanner" x="30" y="1"/>
     <back id="enclbanner" x="33" y="1"/>
-    <options noblack="1" transpfon="1"/>
+    <options noblack="1" transparentBackground="1"/>
   </room>
   <room name="room_0_0" x="0" y="0">
     <a>S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S</a>
@@ -3032,7 +3032,7 @@ package roomdata {
     <obj id="term" code="Glx162L36zXra3Da" x="5" y="6">
       <scr act="dialog" val="termText18"/>
     </obj>
-    <options spawn="encl" transpfon="1"/>
+    <options spawn="encl" transparentBackground="1"/>
   </room>
   <room name="room_2_0" x="2" y="0">
     <a>SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF.SF</a>
@@ -3151,7 +3151,7 @@ package roomdata {
     <back id="light7" x="45" y="6"/>
     <back id="light7" x="45" y="8"/>
     <back id="light7" x="45" y="10"/>
-    <options backwall="tSteklo" noblack="1" transpfon="1"/>
+    <options backwall="tSteklo" noblack="1" transparentBackground="1"/>
   </room>
   <room name="room_1_0" x="1" y="0">
     <a>S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.A.S.S.A.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S</a>
@@ -3258,7 +3258,7 @@ package roomdata {
     <back id="light7" x="15" y="3"/>
     <back id="light7" x="15" y="19"/>
     <back id="light7" x="17" y="10"/>
-    <options transpfon="1"/>
+    <options transparentBackground="1"/>
   </room>
   <room name="room_3_0" x="3" y="0">
     <a>S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S</a>

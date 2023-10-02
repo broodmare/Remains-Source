@@ -15,29 +15,29 @@ package  locdata
 		public var phis:int = 0;				//Physics enable
 		public var shelf:Boolean = false;		//Can the tile be stood on?
 		public var hp:int = 1000;				//Tile Hitpoints
-		public var damageThreshold:int = 0;				//???
+		public var damageThreshold:int = 0;		//Damage below this amount is ignored.
 		public var phX1:Number;					//???
 		public var phX2:Number;					//???
 		public var phY1:Number;					//???
 		public var phY2:Number;					//???
 		
-		public var zForm:int = 0;					//???
+		public var zForm:int  = 0;				//???
 		public var diagon:int = 0;				//is this tile a diagonal block?
-		public var stair:int = 0;					//is this tile a stair?
-		public var water:int = 0;					//is this tile water?
+		public var stair:int  = 0;				//is this tile a stair?
+		public var water:int  = 0;				//is this tile water?
 		
 		public var fake:Boolean = false;
-		public var t_ghost:int = 0;
+		public var t_ghost:int  = 0;
 		
-		public var recalc:Boolean=false;
+		public var recalc:Boolean = false;
 		
-		public var vid:int = 0;
-		public var vid2:int = 0; 
-		public var front:String='';
-		public var back:String='';
-		public var zad:String='';
-		public var fRear:Boolean = false;
-		public var vRear:Boolean = false;
+		public var vid:int 		  = 0;
+		public var vid2:int 	  = 0; 
+		public var tileTexture:String   ='';
+		public var tileRearTexture:String 	  ='';
+		public var zad:String	  ='';
+		public var fRear:Boolean  = false;
+		public var vRear:Boolean  = false;
 		public var v2Rear:Boolean = false;
 		
 		public var visi:Number = 0;
@@ -61,10 +61,17 @@ package  locdata
 		public var kontur:int = 0;
 		public var konturRot:int=  0;
 		public var floor:int = 0;
-		public var place:Boolean = true;	// is there space for objects here?
+		public var place:Boolean = true;	// Objects can be placed inside this tile.
 		
-		public var kont1:int=0, kont2:int=0, kont3:int=0, kont4:int=0;
-		public var pont1:int=0, pont2:int=0, pont3:int=0, pont4:int=0;
+		public var kont1:int = 0;
+		public var kont2:int = 0;
+		public var kont3:int = 0;
+		public var kont4:int = 0;
+
+		public var pont1:int = 0;
+		public var pont2:int = 0;
+		public var pont3:int = 0;
+		public var pont4:int = 0;
 		
 		public var door:Box;
 		public var trap:Obj;
@@ -81,110 +88,112 @@ package  locdata
 		
 
 		//Block type
-		function inForm(f:Form) 
+		public function inForm(f:Form):void  
 		{
+			var form:Form = f;
 
-			if (f == null) return; //If it has no type, exit.
-			if (f.tip == 2) 
+			if (form == null) return; //If there's no form, return.
+
+			if (form.formType == 2)  //if this is a backwall.
 			{
-				if (f.front) back = f.front;
-				
+				if (form.tileTexture) tileRearTexture = form.tileTexture;
 			} 
 			else 
 			{
-				if (f.front) 
+				if (form.tileTexture) 
 				{
-					front=f.front;
-					if (f.rear) fRear=true;
+					tileTexture = form.tileTexture;
+					if (form.rear) fRear=true;
 				}
-				if (f.back) zad=f.back;
+				if (form.tileRearTexture) zad=fform.tileRearTexture;
 			}
 
-			if (f.vid>0) 
+			if (form.vid > 0) 
 			{
-				if (vid==0)	
+				if (vid == 0)	
 				{
-					vid=f.vid;
-					if (f.rear) vRear=true;
+					vid = form.vid;
+					if (form.rear) vRear=true;
 				} 
 				else 
 				{
-					vid2=f.vid;
-					if (f.rear) v2Rear=true;
+					vid2 = form.vid;
+					if (form.rear) v2Rear=true;
 				}
 			}
 
-			if (f.mat) mat = f.mat;
+			if (form.mat) mat = form.mat;
 			
-			if (f.hp) hp=f.hp;
-			if (f.damageThreshold) damageThreshold = f.damageThreshold;
-			if (f.indestruct) indestruct=true;
+			if (form.hp) hp=form.hp;
+			if (form.damageThreshold) damageThreshold = form.damageThreshold;
+			if (form.indestruct) indestruct=true;
 			
-			if (f.lurk) lurk=f.lurk; 
-			if (f.phis) phis=f.phis;
-			if (f.shelf) shelf=true; 
-			if (f.diagon) diagon = f.diagon;
-			if (f.stair) stair = f.stair;
+			if (form.lurk) lurk=form.lurk; 
+			if (form.phis) phis=form.phis;
+			if (form.shelf) shelf=true; 
+			if (form.diagon) diagon = form.diagon;
+			if (form.stair) stair = form.stair;
 			if (phis >0 ) opac = 1; 
 		}
 		
-		public function dec(s:String, mirror:Boolean=false) 
+		public function parseLevelXML(s:String, mirror:Boolean=false):void  
 		{
-			phis = 0;
-			vid = 0;
-			vid2 = 0;
-			diagon = 0;
-			stair = 0;
-			water = 0;
-			front = '';
-			back = '';
-			zad = '';
-			shelf = false;
-			indestruct = false;
+			phis 	= 0;
+			vid 	= 0;
+			vid2 	= 0;
+			diagon 	= 0;
+			stair 	= 0;
+			water 	= 0;
+			tileTexture 	= '';
+			tileRearTexture = '';
+			zad 			= '';
+			shelf 			= false;
+			indestruct 		= false;
 
 			setZForm(0);
 
 			var fr:int = s.charCodeAt(0);
+
 			if (fr > 64 && fr != 95) 
 			{
-				inForm(Form.fForms[s.charAt(0)]);
+				inForm(Form.tileForms[s.charAt(0)]);
 			}
 			if (s.length > 1) 
 			{
-				for (var i=1; i<s.length; i++) 
+				for (var i = 1; i < s.length; i++) 
 				{
 					fr = s.charCodeAt(i);
-					var sym:String=s.charAt(i);
-					if (sym=='*') 
+					var tileSymbol:String=s.charAt(i);
+					if (tileSymbol == '*') //water
 					{
 						water = 1;
 					} 
-					else if (sym==',') 
+					else if (tileSymbol==',') //???
 					{
 						setZForm(1);
 					} 
-					else if (sym==';') 
+					else if (tileSymbol==';') //???
 					{
 						setZForm(2);
 					} 
-					else if (sym==':') 
+					else if (tileSymbol==':') //???
 					{
 						setZForm(3);
 					} 
-					else 
+					else // All other tiles.
 					{
-						if (mirror && Form.oForms[sym].idMirror) 
+						if (mirror && Form.otherForms[tileSymbol].idMirror) 
 						{
-							inForm(Form.oForms[Form.oForms[sym].idMirror]);
+							inForm(Form.otherForms[Form.otherForms[tileSymbol].idMirror]);
 						}
-						else inForm(Form.oForms[sym]);
+						else inForm(Form.otherForms[tileSymbol]);
 					}
 				}
 			}
 
 			if (zForm == 0 && zad != '') 
 			{
-				back = zad;
+				tileRearTexture = zad;
 			}
 		}
 		
@@ -207,7 +216,7 @@ package  locdata
 			return visi;
 		}
 
-		public function setZForm(n:int) 
+		public function setZForm(n:int):void  
 		{
 			if (n < 0) n = 0;
 			if (n > 3) n = 3;
@@ -216,13 +225,17 @@ package  locdata
 			if (n > 0) opac = 0;
 		}
 
-		public function mainFrame(nfront:String = 'A') //Why is this defining the string?
+		public function mainFrame(s:String = 'A'):void // 'A' is a failsafe.
 		{
-			phis = 1;
-			vid = vid2=diagon=stair=0;
-			mat = Form.fForms[nfront].mat;
-			front = nfront;
-			back = Form.fForms[nfront].back;
+			var frontTexture:String = s;
+			phis 	= 1;
+			vid 	= 0;
+			vid2 	= 0;
+			diagon 	= 0;
+			stair 	= 0;
+			mat 	= Form.tileForms[frontTexture].mat;
+			tileTexture = frontTexture;
+			tileRearTexture = Form.tileForms[frontTexture].tileRearTexture;
 			indestruct = true;
 			hp = 10000;
 			opac = 1;
@@ -263,15 +276,13 @@ package  locdata
 		}
 		
 		// Destroy the block
-		public function die() 
+		public function die():void  
 		{
-			//phis=diagon=floor=stair=0;
-			if (phis!=3) front='';
+			if (phis!=3) tileTexture='';
 			phis = 0;
 			opac = 0;
 			vid = 0;
 			vid2 = 0;
-			
 			t_ghost = 0;
 			if (trap) trap.die();	// Destroy associated traps
 		}

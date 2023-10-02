@@ -87,25 +87,24 @@ package interdata
 				scaleV=1;
 			}
 			scaleS=Math.min(screenX/1920, screenY/1000);
-			//scaleV*=0.5;
 			if (scaleV>0.98) scaleV=1;
 			maxvx=maxsx*scaleV-screenX;
 			maxvy=maxsy*scaleV-screenY;
 			world.mainCanvas.scaleX=world.sats.vis.scaleX=world.mainCanvas.scaleY=world.sats.vis.scaleY=scaleV;
 			world.vscene.scaleX=world.vscene.scaleY=scaleS;
 			if (screenY>maxsy*scaleV) {
-				World.world.grafon.ramT.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
-				World.world.grafon.ramB.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
+				World.world.grafon.borderTop.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
+				World.world.grafon.borderBottom.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
 			} else {
-				World.world.grafon.ramT.scaleY=-0.5/scaleV;
-				World.world.grafon.ramB.scaleY=0.6/scaleV;
+				World.world.grafon.borderTop.scaleY=-0.5/scaleV;
+				World.world.grafon.borderBottom.scaleY=0.6/scaleV;
 			}
 			if (screenX>maxsx*scaleV) {
-				World.world.grafon.ramL.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
-				World.world.grafon.ramR.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
+				World.world.grafon.borderLeft.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
+				World.world.grafon.borderRight.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
 			} else {
-				World.world.grafon.ramL.scaleX=-0.5/scaleV;
-				World.world.grafon.ramR.scaleX=0.5/scaleV;
+				World.world.grafon.borderLeft.scaleX=-0.5/scaleV;
+				World.world.grafon.borderRight.scaleX=0.5/scaleV;
 			}
 		}
 		

@@ -601,7 +601,7 @@ package locdata
 			}
 			for (var i = Math.floor(X1 / Tile.tilePixelWidth); i <= Math.floor(X2 / Tile.tilePixelWidth); i++) 
 			{
-				var t = location.space[i][Math.floor((Y2 + 1) / Tile.tilePixelHeight)];
+				var t = location.roomTileArray[i][Math.floor((Y2 + 1) / Tile.tilePixelHeight)];
 				if (collisionTile(t, 0, 1)) 
 				{
 					return true;
@@ -657,7 +657,7 @@ package locdata
 				{
 					for (i = y1Floor; i <= y2Floor; i++) 
 					{
-						t = location.space[x1Floor][i];
+						t = location.roomTileArray[x1Floor][i];
 						if (collisionTile(t)) 
 						{
 								X = t.phX2 + halfscX;
@@ -674,7 +674,7 @@ package locdata
 				{
 					for (i = y1Floor; i <= y2Floor; i++) 
 					{
-						t = location.space[x2Floor][i];
+						t = location.roomTileArray[x2Floor][i];
 						if (collisionTile(t)) 
 						{
 								X = t.phX1 - halfscX;
@@ -696,7 +696,7 @@ package locdata
 				stay = false;
 				for (i = x1Floor; i <= x2Floor; i++) 
 				{
-					t = location.space[i][Math.floor((Y2 + dy / div) / tilepixelheight)];
+					t = location.roomTileArray[i][Math.floor((Y2 + dy / div) / tilepixelheight)];
 					if (collisionTile(t, 0, dy / div)) 
 					{
 						newmy = t.phY1;
@@ -757,7 +757,7 @@ package locdata
 				if (Y - scY < 0) Y = scY;
 				for (i = x1Floor; i <= x2Floor; i++) 
 				{
-					t = location.space[i][y1Floor];
+					t = location.roomTileArray[i][y1Floor];
 					if (collisionTile(t)) 
 					{
 						Y = t.phY2 + scY;
@@ -789,11 +789,11 @@ package locdata
 
 			try 
 			{
-				if ((location.space[xFloor][Math.floor((Y - scY * 0.45) / tilepixelheight)] as Tile).water > 0) 
+				if ((location.roomTileArray[xFloor][Math.floor((Y - scY * 0.45) / tilepixelheight)] as Tile).water > 0) 
 				{
 					isPlav = true;
 				}
-				if ((location.space[xFloor][Math.floor((Y - scY * 0.55) / tilepixelheight)] as Tile).water > 0) 
+				if ((location.roomTileArray[xFloor][Math.floor((Y - scY * 0.55) / tilepixelheight)] as Tile).water > 0) 
 				{
 					isPlav2 = true;
 				}
@@ -831,7 +831,7 @@ package locdata
 			{
 				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) 
 				{
-					if (collisionTile(location.space[i][j], gx, gy)) return true;
+					if (collisionTile(location.roomTileArray[i][j], gx, gy)) return true;
 				}
 			}
 			return false;
