@@ -1142,8 +1142,8 @@ package
 				<dial id='dialEnd_askari'/>
 			</npc>
 			
-<!-- ============================================== СКРИПТЫ ============================================== -->
-		<!-- приручить феникса -->
+<!-- ============================================== SCRIPTS ============================================== -->
+		<!-- tame the phoenix -->
 			<scr id='tamePhoenix'>
 				<s act="dialog" val="dialTamePhoenix"/>
 				<s targ="this" act="tame"/>
@@ -1151,7 +1151,7 @@ package
 				<s t="3" act="take" val="whistle" n="1"/>
 				<s act="dialog" val="dialTakeWhistle"/>
 			</scr>
-		<!-- выкурить косяк -->
+		<!-- smoke a joint -->
 			<scr id='smokeRollup'>
 				<s act="control off"/>
 				<s act="dial" val="dialSmoke" n="0"/>
@@ -1178,7 +1178,7 @@ package
 				<s act="control on"/>
 				<s act="xp" val="500"/>
 			</scr>
-		<!-- починка генератора -->
+		<!-- repair the generator -->
 			<scr id='fixGenerator'>
 				<s act="control off"/>
 				<s act="dblack" val="2" t="3"/>
@@ -1188,7 +1188,7 @@ package
 				<s act="black" val="0"/>
 			</scr>
 			
-		<!-- самое начало игры -->
+		<!-- the very beginning of the game -->
 			<scr id='beginBeg'>
 				<s act="black" val="1"/>
 				<s act="gui off"/>
@@ -1204,7 +1204,7 @@ package
 				<s act="off" targ="this"/>
 				<s act="mess" val="trWalk"/>
 			</scr>
-		<!-- контакт с терминалом мтн -->
+		<!-- contact with mountain terminal -->
 			<scr id='beginMtn'>
 				<s act="control off"/>
 				<s act="music" val="music_strange"/>
@@ -1222,7 +1222,7 @@ package
 				<s act="off" targ="this"/>
 				<s act="control on" t="1"/>
 			</scr>
-		<!-- получение перка самолевитации -->
+		<!-- acquiring the self levitation perk -->
 			<scr id='beginLevit'>
 				<s act="control off"/>
 				<s act="dial" val="begDialLevit" n="0" t="2"/>
@@ -1234,7 +1234,7 @@ package
 				<s act="on" targ="trLevit"/>
 				<s act="control on" t="0.2"/>
 			</scr>
-		<!-- Добраться до точки выхода, получить левелап -->
+		<!-- reach the exit point, get a level-up -->
 			<scr id='beginUp'>
 				<s act="control off"/>
 				<s act="dial" val="begDialExit" n="0"/>
@@ -1248,7 +1248,7 @@ package
 				<s act="pip" val="1" n="2"/>
 				<s act="on" targ="trCrossroad"/>
 			</scr>
-		<!-- разговор с Наставником через пипбак -->
+		<!-- conversation with the mentor through pip-buck -->
 			<scr id='beginStory'>
 				<s act="control off"/>
 				<s act="dialog" val="storyDial1"/>
@@ -1257,7 +1257,7 @@ package
 				<s act="quest" val="storyMain"/>
 				<s act="control on"/>
 			</scr>
-		<!-- встреча с Каламити -->
+		<!-- meeting with calamity -->
 			<scr id='surfStory'>
 				<s act="control off"/>
 				<s act="dial" val="dialCalam1" n="0"/>
@@ -1274,14 +1274,14 @@ package
 				<s act="off" targ="this"/>
 				<s act="control on"/>
 			</scr>
-		<!-- первое появление в лагере -->
+		<!-- first appearance in the camp -->
 			<scr id='rblVisit'>
 				<s act="dialog" val="rblDialM"/>
 				<s act="trigger" val="rbl_visited" n="1"/>
 				<s act="stage" val="storyContact" n="1"/>
 				<s act="off" targ="this"/>
 			</scr>
-		<!-- разговор с Наставником через пипбак в лагере, если не было в обучении -->
+		<!-- conversation with the mentor through pip-buck in the camp, if not during training -->
 			<scr id='rblStory'>
 				<s act="control off"/>
 				<s act="music" val="music_strange"/>
@@ -1291,14 +1291,14 @@ package
 				<s act="quest" val="storyMain"/>
 				<s act="control on"/>
 			</scr>
-		<!-- на переходе между 1 и 2 уровнями завода -->
+		<!-- at the transition between levels 1 and 2 of the factory -->
 			<scr id='plantStory1'>
 				<s act="stage" val="storyMain" n="2"/>
 				<s act="showstage" val="storyMain" n="3"/>
 				<s act="showstage" val="storyMain" n="4"/>
 				<s act="dialog" val="plantNextLevel"/>
 			</scr>
-		<!-- вход в отдел особых исседований -->
+		<!-- Entry to the department of special research -->
 			<scr id='plantStory2'>
 				<s act="dialog" val="nioDial1"/>
 				<s act="stage" val="storyMain" n="4"/>
@@ -1309,18 +1309,18 @@ package
 				<s act="quest" val="freeCaptive"/>
 				<s act="off" targ="this"/>
 			</scr>
-		<!-- вход в стойло -->
+		<!-- entry to the stable -->
 			<scr id='stableStory'>
 				<s act="stage" val="storyStable" n="2"/>
 				<s act="gotoland" val="random_stable"/>
 				<s act="passed"/>
 			</scr>
-		<!-- явиться к гаражам -->
+		<!-- go to the garages -->
 			<scr id='garages'>
 				<s act="stage" val="storyMeet" n="1"/>
 				<s act="off" targ="this"/>
 			</scr>
-		<!-- осмотр обломков спрайт-бота -->
+		<!-- inspection of sprite-bot wreckage -->
 			<scr id='brspr'>
 				<s act="dialog" val="meetDial2"/>
 				<s act="stage" val="storyMeet" n="3"/>
@@ -1329,13 +1329,13 @@ package
 				<s act="trigger" val="story_mane" n="1"/>
 				<s act="passed"/>
 			</scr>
-		<!-- осмотр с крыши высотки -->
+		<!-- view from the rooftop of a high-rise building -->
 			<scr id='maneStory0'>
 				<s act="dialog" val="maneNextLevel"/>
 				<s act="stage" val="storyMane" n="2"/>
 				<s act="showstage" val="storyMane" n="3"/>
 			</scr>
-		<!-- встреча с аликорнами -->
+		<!-- meeting with alicorns -->
 			<scr id='maneStory1'>
 				<s act="control off"/>
 				<s act="music" val="pre_1"/>
