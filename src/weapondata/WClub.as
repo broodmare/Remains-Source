@@ -99,7 +99,7 @@ package weapondata
 		public override function addVisual() 
 		{
 			super.addVisual();
-			if (visvzz) World.w.grafon.visObjs[sloy].addChild(visvzz);
+			if (visvzz) World.w.grafon.canvasLayerArray[layer].addChild(visvzz);
 		}
 
 		public override function remVisual() 

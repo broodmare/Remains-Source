@@ -25,7 +25,7 @@ package locdata
 		public function Trap(nloc:Location, nid:String, nx:int=0, ny:int=0) 
 		{
 			location=nloc;
-			sloy=0;
+			layer=0;
 			prior=1;
 			id=nid;
 			X=nx, Y=ny;
@@ -73,7 +73,7 @@ package locdata
 		public override function addVisual() 
 		{
 			if (vis) {
-				World.w.grafon.visObjs[sloy].addChild(vis);
+				World.w.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform) 
 				{
 					vis.transform.colorTransform=cTransform;
@@ -81,7 +81,7 @@ package locdata
 			}
 			if (vis2) 
 			{
-				World.w.grafon.visObjs[3].addChild(vis2);
+				World.w.grafon.canvasLayerArray[3].addChild(vis2);
 				if (cTransform) 
 				{
 					vis2.transform.colorTransform=cTransform;

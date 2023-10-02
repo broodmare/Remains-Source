@@ -9,7 +9,7 @@ Exported audio changed from Mono to Stereo.
 Exported audio set at 128kbs mp3.
 Flash version 30 -> 32.
 
-
+vfon = background
 
 
 Renamed all 'loc' variables to avoid compiler ambigiuity with the loc folder.
@@ -38,6 +38,21 @@ Grafon --
 	Fixed 'i' being defined twice in constructor.
 	Fixed for loop in drawAllObjs().
 	Rewrote checkLoaded() to avoid a situation where a resource loader could finish before an array was created to hold the data.
+	
+	vfon -> background.
+	visObjs -> canvasLayerArray
+	drawFon -> drawSkybox().
+	setFonSize -> setBackgroundSize
+	
+	visBack -> layerBackground_1.
+	visBack2 -> layerBackground_2.
+	visVoda -> layerWater.
+	visaFront -> vis
+	visLight -> layerLighting.
+	visSats -> layerSats.
+	sloy -> layer.
+
+	
 	
 	
 	
@@ -83,8 +98,16 @@ Unit --
 		Fixed loop.
 		
 
-
-
+Texture.fla
+fonCanter -> backgroundCanterlot
+fonClear -> backgroundClear
+fonDarkClouds -> backgroundDarkClouds
+fonDefault -> backgroundDefault
+fonEnclave -> backgroundEnclave
+fonFinalb -> backgroundFinalB
+fonFire -> backgroundFire
+fonRuins -> backgroundRuins
+fonWay -> backgroundWay
 
 
 

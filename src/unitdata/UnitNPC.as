@@ -78,7 +78,7 @@ package unitdata
 				if (npcXML.@silent.length()) silent=true;
 				if (npcXML.@weap.length()) weap=npcXML.@weap;
 				if (npcXML.@weap2.length()) weap2=npcXML.@weap2;
-				if (npcXML.@sloy.length()) sloy=npcXML.@sloy;
+				if (npcXML.@layer.length()) layer=npcXML.@layer;
 			} else {	//и если нет
 				if (id=='doctor') {
 					visClass=visualDoctor;

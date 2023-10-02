@@ -206,7 +206,7 @@ package weapondata
 
 		public function Weapon(own:Unit, nid:String, nvar:int=0) 
 		{
-			sloy=2;
+			layer=2;
 			owner=own;
 			id=nid;
 			variant=nvar;
@@ -525,7 +525,7 @@ package weapondata
 		}
 		public function addVisual2() 
 		{
-			if (tip==5 && vis) World.w.grafon.visObjs[sloy].addChild(vis);
+			if (tip==5 && vis) World.w.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
 		public override function setNull(f:Boolean=false) 

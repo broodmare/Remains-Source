@@ -37,7 +37,7 @@ package locdata
 			location=nloc;
 			item=nitem;
 			if (location.cTransform) cTransform=location.cTransform;
-			sloy=2, prior=3;
+			layer=2, prior=3;
 			X=nx, Y=ny;
 			krit=nkrit;
 			if (nx<Tile.tilePixelWidth) nx=Tile.tilePixelWidth;

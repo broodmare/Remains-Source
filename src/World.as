@@ -559,7 +559,7 @@ package
 			} 
 			if (gui) gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			grafon.setFonSize(swfStage.stageWidth,swfStage.stageHeight);
+			grafon.setBackgroundSize(swfStage.stageWidth,swfStage.stageHeight);
 			if (stand) stand.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			vblack.width = swfStage.stageWidth;
 			vblack.height = swfStage.stageHeight;
@@ -805,7 +805,7 @@ package
 			try 
 			{
 				land = nland;
-				grafon.drawFon(vfon,land.act.fon);
+				grafon.drawSkybox(vfon,land.act.fon);
 			} 
 			catch (err) 
 			{
@@ -827,7 +827,7 @@ package
 				location = nloc; //Set the desired area as the current area
 				grafon.drawLoc(location); //Draw the current area
 				cam.setLoc(location);
-				grafon.setFonSize(swfStage.stageWidth, swfStage.stageHeight);
+				grafon.setBackgroundSize(swfStage.stageWidth, swfStage.stageHeight);
 				gui.setAll();
 				currentMusic = location.sndMusic;
 				Snd.playMusic(currentMusic);

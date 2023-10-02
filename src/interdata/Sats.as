@@ -111,7 +111,6 @@ package interdata
 				if (que.length>0) clearAll();
 				World.w.grafon.drawSats();
 				World.w.grafon.onSats(true);
-				//World.w.grafon.visSats.x=10;
 				getUnits();
 				World.w.gui.offCelObj();
 				odv=od;
@@ -125,7 +124,7 @@ package interdata
 				World.w.ctr.clearAll();
 				World.w.gui.setTopText('');
 			}
-			vis.visible=active; //World.w.grafon.visObjs[5].visible=
+			vis.visible=active;
 			World.w.gui.setSats(active);
 		}
 		

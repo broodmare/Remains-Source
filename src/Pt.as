@@ -17,7 +17,7 @@ package
 		public var stay:Boolean=false;
 		public var X:Number;
 		public var Y:Number;
-		public var sloy:int=0;
+		public var layer:int=0;
 		
 		//Movement
 		public var dx:Number=0, dy:Number=0;
@@ -32,7 +32,7 @@ package
 		{
 			if (vis && location && location.locationActive) 
 			{
-				World.w.grafon.visObjs[sloy].addChild(vis);
+				World.w.grafon.canvasLayerArray[layer].addChild(vis);
 			}
 		}
 		

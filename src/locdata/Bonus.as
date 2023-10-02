@@ -26,7 +26,7 @@ package locdata
 				sost=loadObj.sost;
 			}
 			levitPoss=false;
-			sloy=3;
+			layer=3;
 			if (sost==1) 
 			{
 				if (id=='heal') vis=new visualHealBonus();

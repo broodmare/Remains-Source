@@ -298,7 +298,7 @@ package unitdata
 			for (var i=0; i<kolVulners; i++) vulner[i]=1;
 			vulner[D_EMP]=0;
 			effects=new Array();
-			sloy=2, prior=1, warn=1;
+			layer=2, prior=1, warn=1;
 			numbEmit=Emitter.arr['numb'];
 			if (xml) {
 				if (xml.@turn.length()) {
@@ -1820,7 +1820,7 @@ package unitdata
 				if (invis) hpbar.visible = false;
 				visDetails();
 			}
-			if (hpbar && location && location.locationActive) World.w.grafon.visObjs[3].addChild(hpbar);
+			if (hpbar && location && location.locationActive) World.w.grafon.canvasLayerArray[3].addChild(hpbar);
 			if (cTransform && ctrans) vis.transform.colorTransform=cTransform;
 			if (childObjs) {
 				for (var i in childObjs) 

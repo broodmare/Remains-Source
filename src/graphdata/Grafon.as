@@ -32,17 +32,17 @@ package graphdata
 		
 		public var location:Location;
 		
-		public var visual:Sprite;
-		public var visBack:Sprite;
-		public var visBack2:Sprite;
-		public var visVoda:Sprite;
+		public var mainCanvas:Sprite;
+		public var layerBackground_1:Sprite;
+		public var layerBackground_2:Sprite;
+		public var layerWater:Sprite;
 		public var visFront:Sprite;
-		public var visLight:Sprite;
-		public var visSats:Sprite;
+		public var layerLighting:Sprite;
+		public var layerSats:Sprite;
 		
 
-		public var visObjs:Array;
-		public var visFon:MovieClip;
+		public var canvasLayerArray:Array;
+		public var skyboxLayer:MovieClip;
 		
 		public var resX:int;
 		public var resY:int;
@@ -116,13 +116,14 @@ package graphdata
 		public static var resourceURLArray:Array = ['texture.swf', 'texture1.swf', 'sprite.swf', 'sprite1.swf']; //URLs of the files to load
 		
 		
-		public static const objCount:int = 6;
+		
+		public static const renderLayers:int = 6; //Layers need to be rendered on the mainCanvas.
 
 		public static const numbMat:int 	  = 0;		// Materials
 		public static const numbFon:int 	  = 0;		// Backgrounds
 		public static const numbBack:int   	  = 1;		// Decorations
 		public static const numbObj:int 	  = 1;		// Objects
-		public static const numbSprite:int 	  = 2;		// Starting number for sprite files
+		public static const numbSprite:int 	  = 2;		// Starting number for sprite files (might be two because of the Main and MainMenu being called before Grafon - check this.)
 
 		public var tilepixelwidth:int;
 		public var tilepixelheight:int;
@@ -175,41 +176,48 @@ package graphdata
 			bitmapCachingOption = false;
 
 
-			visual 			= nvis;
-			visBack 		= new Sprite();
-			visBack2 		= new Sprite();
-			visVoda 		= new Sprite();
-			visVoda.alpha 	= 0.6;
-			visFront 		= new Sprite();
-			visLight 		= new Sprite();
-			visSats 		= new Sprite();
-			visSats.visible = false;
-			visSats.filters = [new BlurFilter(3, 3, 1)];
+			mainCanvas 			= nvis;
+			layerBackground_1 	= new Sprite();
+			layerBackground_2 	= new Sprite();
+			layerWater 			= new Sprite();
+			layerWater.alpha 	= 0.6;
+			visFront 			= new Sprite();
+			layerLighting 		= new Sprite();
+			layerSats 			= new Sprite();
+
+			//Array of all sprites to display in order from back to front.
+			canvasLayerArray 	= new Array();
+
+
+			layerSats.visible 	= false;
+			layerSats.filters 	= [new BlurFilter(3, 3, 1)];
 			
-			//Array of all sprites to display.
-			visObjs 		= new Array();
-			for (var i = 0; i < objCount; i++) 
+			
+			for (var i = 0; i < renderLayers; i++) 
 			{
-				visObjs.push(new Sprite());
+				canvasLayerArray .push(new Sprite());
 			}
+
+
 			
-			visual.addChild(visBack);		//0 
-			visual.addChild(visBack2);		//0
-			visual.addChild(visObjs[0]);	//1
-			visual.addChild(visObjs[1]);	//2
-			visual.addChild(visObjs[2]);	//3
-			visual.addChild(visFront);		//4
-			visual.addChild(visObjs[3]);	//6
-			visual.addChild(visVoda);		//5
-			visual.addChild(visLight);		//7
-			visual.addChild(visObjs[4]);	//8
-			visual.addChild(visSats);		//9
-			visual.addChild(visObjs[5]);	//10
+
+			mainCanvas.addChild(layerBackground_1);		//0 
+			mainCanvas.addChild(layerBackground_2);		//0
+			mainCanvas.addChild(canvasLayerArray [0]);	//1
+			mainCanvas.addChild(canvasLayerArray [1]);	//2
+			mainCanvas.addChild(canvasLayerArray [2]);	//3
+			mainCanvas.addChild(visFront);		//4
+			mainCanvas.addChild(canvasLayerArray [3]);	//6 
+			mainCanvas.addChild(layerWater);		//5 
+			mainCanvas.addChild(layerLighting);		//7
+			mainCanvas.addChild(canvasLayerArray [4]);	//8
+			mainCanvas.addChild(layerSats);		//9
+			mainCanvas.addChild(canvasLayerArray [5]);	//10
 			
-			visLight.x = -tilepixelwidth / 2;
-			visLight.y = -tilepixelheight / 2 - tilepixelheight;
-			visLight.scaleX = tilepixelwidth;
-			visLight.scaleY = tilepixelheight;
+			layerLighting.x = -tilepixelwidth / 2;
+			layerLighting.y = -tilepixelheight / 2 - tilepixelheight;
+			layerLighting.scaleX = tilepixelwidth;
+			layerLighting.scaleY = tilepixelheight;
 			
 
 
@@ -219,26 +227,26 @@ package graphdata
 			
 			backBmp		= new BitmapData(rectX, rectY, true, 0x0)
 			backBitmap 	=  new Bitmap(backBmp);
-			visBack.addChild(backBitmap);
+			layerBackground_1.addChild(backBitmap);
 			
 			backBmp2 	= new BitmapData(rectX, rectY, true, 0x0)
 			backBitmap2 =  new Bitmap(backBmp2);
-			visBack2.addChild(backBitmap2);
+			layerBackground_2.addChild(backBitmap2);
 
 			vodaBmp 	= new BitmapData(rectX, rectY, true, 0x0)
 			vodaBitmap  =  new Bitmap(vodaBmp);
-			visVoda.addChild(vodaBitmap);
+			layerWater.addChild(vodaBitmap);
 			
 			satsBmp 	= new BitmapData(rectX, rectY, true, 0);
 			satsBitmap  =  new Bitmap(satsBmp, 'auto', true);
-			visSats.addChild(satsBitmap);
+			layerSats.addChild(satsBitmap);
 			
 			colorBmp 	= new BitmapData(rectX, rectY, true, 0);
 			shadBmp 	= new BitmapData(rectX, rectY, true, 0);
 			
 			lightBmp 	= new BitmapData(lightX, lightY, true, 0xFF000000);
 			lightBitmap =  new Bitmap(lightBmp, 'auto', true);
-			visLight.addChild(lightBitmap);
+			layerLighting.addChild(lightBitmap);
 
 
 
@@ -248,15 +256,15 @@ package graphdata
 			ramR = new visBlack();
 			ramL = new visBlack();
 
-			ramT.cacheAsBitmap = true;
-			ramB.cacheAsBitmap = true;
-			ramR.cacheAsBitmap = true;
-			ramL.cacheAsBitmap = true;
+			ramT.cacheAsBitmap = bitmapCachingOption;
+			ramB.cacheAsBitmap = bitmapCachingOption;
+			ramR.cacheAsBitmap = bitmapCachingOption;
+			ramL.cacheAsBitmap = bitmapCachingOption;
 
-			visual.addChild(ramT);
-			visual.addChild(ramB);
-			visual.addChild(ramR);
-			visual.addChild(ramL);
+			mainCanvas.addChild(ramT);
+			mainCanvas.addChild(ramB);
+			mainCanvas.addChild(ramR);
+			mainCanvas.addChild(ramL);
 
 			//loader array setup
 			grLoaderArray = new Array();
@@ -342,41 +350,41 @@ package graphdata
 			// The grLoader.resource will then (hopefully?) return the result.
 		}
 		
-		// Draw the background
-		public function drawFon(vfon:MovieClip, tex:String)
+		// Draw the skybox texture.
+		public function drawSkybox(background:MovieClip, tex:String)
 		{
-			if (tex == '' || tex == null) tex = 'fonDefault';
-			if (visFon && vfon.contains(visFon)) vfon.removeChild(visFon);
+			if (tex == '' || tex == null) tex = 'backgroundDefault';
+			if (skyboxLayer && background.contains(skyboxLayer)) background.removeChild(skyboxLayer);
 			
 			
-			visFon = getObj(tex);				//Set the background to the specified texture.
-			if (visFon) vfon.addChild(visFon); 	//If the background exists, add it to the background sprite.
+			skyboxLayer = getObj(tex);						//Set the background to the specified texture.
+			if (skyboxLayer) background.addChild(skyboxLayer); 	//If the background exists, add it to the background sprite.
 		}
 		
-		public function setFonSize(nx:Number, ny:Number)
+		public function setBackgroundSize(nx:Number, ny:Number)
 		{
-			if (visFon)
+			if (skyboxLayer)
 			{
 				if (nx>rectX && ny>rectY)
 				{
-					visFon.x = visual.x;
-					visFon.y = visual.y;
-					visFon.width = rectX;
-					visFon.height = rectY;
+					skyboxLayer.x = mainCanvas.x;
+					skyboxLayer.y = mainCanvas.y;
+					skyboxLayer.width = rectX;
+					skyboxLayer.height = rectY;
 				} 
 				else 
 				{
-					var koef = visFon.width/visFon.height;
-					visFon.x = visFon.y = 0;
+					var koef = skyboxLayer.width/skyboxLayer.height;
+					skyboxLayer.x = skyboxLayer.y = 0;
 					if (nx >= ny*koef)
 					{
-						visFon.width = nx;
-						visFon.height = nx/koef;
+						skyboxLayer.width = nx;
+						skyboxLayer.height = nx/koef;
 					} 
 					else 
 					{
-						visFon.height = ny;
-						visFon.width  = ny * koef;
+						skyboxLayer.height = ny;
+						skyboxLayer.width  = ny * koef;
 					}
 				}
 			}
@@ -387,13 +395,13 @@ package graphdata
 		{
 			if (World.w.pers.infravis)
 			{
-				visLight.transform.colorTransform = infraTransform;
-				visLight.blendMode = 'multiply';
+				layerLighting.transform.colorTransform = infraTransform;
+				layerLighting.blendMode = 'multiply';
 			} 
 			else 
 			{
-				visLight.transform.colorTransform = defTransform
-				visLight.blendMode = 'normal';
+				layerLighting.transform.colorTransform = defTransform
+				layerLighting.blendMode = 'normal';
 			}
 		}
 
@@ -464,7 +472,7 @@ package graphdata
 				
 				lightBmp.fillRect(lightRect, 0xFF000000);
 				setLight();
-				visLight.visible = location.black&&World.w.black;
+				layerLighting.visible = location.black&&World.w.black;
 				warShadow();
 				
 				var darkness:int = 0xAA+location.darkness;
@@ -562,14 +570,14 @@ package graphdata
 				
 				
 				//####################
-				//      STAGE 7  
+				//      STAGE 7  		// DECORATIVE BACKGROUND LAYER.
 				//####################
 				World.w.gr_stage = 7;
-				drawBackWall(currentLocation.backwall, currentLocation.backform);	// Back wall	
+				drawBackWall(currentLocation.backwall, currentLocation.backform);	
 
 
 				//####################
-				//      STAGE 8  
+				//      STAGE 8  		// INTERACTIVE BACKGROUND LAYER. THIS IS BROKE
 				//####################
 				World.w.gr_stage = 8;  //Draw Background items in arrBack.
 
@@ -577,7 +585,7 @@ package graphdata
 				{
 					try 
 					{
-						drawTileSprite(mat, false, false);		// Background
+						drawTileSprite(mat, false, false);
 					} catch (err)
 					{
 						World.w.showError(err, 'Error, Stage 8. Back Layer drawing matterial: '+mat.id);
@@ -587,14 +595,14 @@ package graphdata
 
 
 				//####################
-				//      STAGE 9   
+				//      STAGE 9   		// CLIMBABLE LAYER
 				//####################
 				World.w.gr_stage = 9;  
-				for each (mat in arrFront) //For every material in the fron array, draw the tile sprite.
+				for each (mat in arrFront) 
 				{
 					try 
 					{
-						drawTileSprite(mat, true, false);	// Front layer (THIS IS PROBABLY THE BUG)
+						drawTileSprite(mat, true, false);
 					} 
 					catch (err) 
 					{
@@ -631,7 +639,7 @@ package graphdata
 					if (j == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 					for each(var backObject:BackObj in location.backobjs) 
 					{	
-						if (backObject.sloy == j && !backObject.er || j == -2 && backObject.er) 
+						if (backObject.layer == j && !backObject.er || j == -2 && backObject.er) 
 						{
 							var backgroundMatrix = new Matrix(); //New matrix to hold the translation data for the objects in the background.
 
@@ -717,7 +725,6 @@ package graphdata
 				World.w.gr_stage = 14;  
 
 				backBmp2.draw(back, null, currentLocation.cTransform, null, null, false);
-				//backBmp2.colorTransform(backBmp2.rect, ct);
 				
 				//####################
 				//      STAGE 15
@@ -745,7 +752,6 @@ package graphdata
 					var backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
 					backgroundMatrix.ty = 520;
 					backBmp2.draw(getObj('back_pink_t', numbBack), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
-					//vodaBmp 
 				}
 				
 				//####################
@@ -753,7 +759,7 @@ package graphdata
 				//####################
 				World.w.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 
-				for each (mat in arrFront) drawTileSprite(mat, false, true);	//For each material in arrFront, draw the tile sprite.
+				for each (mat in arrFront) drawTileSprite(mat, false, true);	//For each material in arrFront, draw the tile sprite. THIS IS WORKING.
 
 				backBmp2.draw(back2, null, currentLocation.cTransform, null, null, false); 
 				
@@ -765,11 +771,11 @@ package graphdata
 				
 				if (currentLocation.cTransform && currentLocation.cTransformFon) 
 				{
-					visFon.transform.colorTransform = currentLocation.cTransformFon;
+					skyboxLayer.transform.colorTransform = currentLocation.cTransformFon;
 				} 
-				else if (visFon.transform.colorTransform != defTransform) 
+				else if (skyboxLayer.transform.colorTransform != defTransform) 
 				{
-					visFon.transform.colorTransform = defTransform;
+					skyboxLayer.transform.colorTransform = defTransform;
 				}
 				
 			} 
@@ -829,12 +835,12 @@ package graphdata
 		// Drawing all visible (physical?) objects
 		public function drawAllObjs() 
 		{
-			for (var i:int = 0; i < objCount; i++) 
+			for (var i:int = 0; i < renderLayers; i++) 
 			{
-				var n = visual.getChildIndex(visObjs[i]);
-				visual.removeChild(visObjs[i]);
-				visObjs[i] = new Sprite();
-				visual.addChildAt(visObjs[i], n);
+				var n = mainCanvas.getChildIndex(canvasLayerArray[i]);
+				mainCanvas.removeChild(canvasLayerArray[i]);
+				canvasLayerArray[i] = new Sprite();
+				mainCanvas.addChildAt(canvasLayerArray[i], n);
 			}
 
 			var obj:Pt = location.firstObj;
@@ -849,7 +855,7 @@ package graphdata
 
 			for (var i = 0; i < location.signposts.length; i++)
 			{
-				visObjs[3].addChild(location.signposts[i]);
+				canvasLayerArray[3].addChild(location.signposts[i]);
 			}
 		}
 		
@@ -878,7 +884,7 @@ package graphdata
 				baseSprite.graphics.drawRect(37 * tilepixelwidth + 10, 0, finalWidth, finalHeight);
 			} 
 
-			else if (sposob == 2) 
+			else if (sposob == 2) //DECORATIVE BACKGROUND LAYER 
 			{
 				baseSprite.graphics.drawRect(0, 16 * tilepixelheight + 10, finalWidth, finalHeight);
 			} 
@@ -1116,14 +1122,14 @@ package graphdata
 		public function drawSats():void
 		{
 			satsBmp.fillRect(satsBmp.rect, 0);
-			satsBmp.draw(visual, new Matrix);
+			satsBmp.draw(mainCanvas, new Matrix);
 		}
 
 		// Enable SATS overlay??	
 		public function onSats(on:Boolean):void
 		{
-			visSats.visible = on;
-			visObjs[2].visible =! on;
+			layerSats.visible = on;
+			canvasLayerArray[2].visible =! on;
 		}
 			
 		// Drawing water
@@ -1406,37 +1412,37 @@ package graphdata
 		{
 			if (n == 0)
 			{
-				visual.filters = [];
-				visFon.filters = []
+				mainCanvas.filters = [];
+				skyboxLayer.filters = [];
 			} 
 			else if (n == 1)
 			{
-				visual.filters = [new ColorMatrixFilter([2, -0.9, -0.1, 0, 0, -0.4, 1.5, -0.1, 0, 0, -0.4, -0.9, 2, 0, 0, 0, 0, 0, 1, 0])];
+				mainCanvas.filters = [new ColorMatrixFilter([2, -0.9, -0.1, 0, 0, -0.4, 1.5, -0.1, 0, 0, -0.4, -0.9, 2, 0, 0, 0, 0, 0, 1, 0])];
 			} 
 			else if (n == 2)
 			{
-				visual.filters = [new ColorMatrixFilter([-0.574, 1.43, 0.144, 0, 0, 0.426, 0.43, 0.144, 0, 0, 0.426, 1.430, -0.856, 0, 0, 0, 0, 0, 1, 0])];
+				mainCanvas.filters = [new ColorMatrixFilter([-0.574, 1.43, 0.144, 0, 0, 0.426, 0.43, 0.144, 0, 0, 0.426, 1.430, -0.856, 0, 0, 0, 0, 0, 1, 0])];
 			} 
 			else if (n == 3)
 			{
-				visual.filters = [new ColorMatrixFilter([0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -0.2, 0, 100, 0, 0, 0, 1, 0])];
+				mainCanvas.filters = [new ColorMatrixFilter([0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -0.2, 0, 100, 0, 0, 0, 1, 0])];
 			} 
 			else if (n == 4)
 			{
-				visual.filters = [new ColorMatrixFilter([0, -0.5, -0.5, 0, 255, -0.5, 0, -0.5, 0, 255, -0.5, -0.5, 0, 0, 255, 0, 0, 0, 1, 0])];
+				mainCanvas.filters = [new ColorMatrixFilter([0, -0.5, -0.5, 0, 255, -0.5, 0, -0.5, 0, 255, -0.5, -0.5, 0, 0, 255, 0, 0, 0, 1, 0])];
 			} 
 			else if (n == 5)
 			{
-				visual.filters = [new ColorMatrixFilter([3.4, 6.7, 0.9, 0, -635, 3.4, 6.75, 0.9, 0, -635, 3.4, 6.7, 0.9, 0, -635, 0, 0, 0, 1, 0])];
+				mainCanvas.filters = [new ColorMatrixFilter([3.4, 6.7, 0.9, 0, -635, 3.4, 6.75, 0.9, 0, -635, 3.4, 6.7, 0.9, 0, -635, 0, 0, 0, 1, 0])];
 			} 
 			else if (n == 6)
 			{
-				visual.filters = [new ColorMatrixFilter([0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0, 0, 0, 1, 0])];
+				mainCanvas.filters = [new ColorMatrixFilter([0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0, 0, 0, 1, 0])];
 			} 
 			else if (n>100)
 			{
-				visual.filters = [new BlurFilter(n-100, n-100)];
-				visFon.filters = [new BlurFilter(n-100, n-100)];
+				mainCanvas.filters 		= [new BlurFilter(n-100, n-100)];
+				skyboxLayer.filters  = [new BlurFilter(n-100, n-100)];
 			}
 		}
 	}

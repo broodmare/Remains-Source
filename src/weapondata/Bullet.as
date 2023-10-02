@@ -86,7 +86,7 @@ package weapondata
 			}
 			X=begx=nx;
 			Y=begy=ny;
-			sloy=2;
+			layer=2;
 			levitPoss=false;
 			if (visClass) 
 			{

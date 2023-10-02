@@ -50,7 +50,7 @@ package graphdata
 		
 		public var vis:String;
 		public var visClass:Class;
-		public var sloy=3;
+		public var layer=3;
 		
 		public var imp:int=0;	//1 - is important
 		
@@ -124,7 +124,7 @@ package graphdata
 				if (maxkol>0 && kols[maxkol]>=12) return p;
 				p=new Part();
 				p.location=location;
-				p.sloy=sloy;
+				p.layer=layer;
 				p.X=nx;
 				p.Y=ny;
 				if (rx) p.X+=(Math.random()-0.5)*rx;

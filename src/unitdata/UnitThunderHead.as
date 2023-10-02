@@ -108,7 +108,7 @@ package unitdata
 			
 			aiTCh=150;
 			aiState=0;
-			sloy=1;
+			layer=1;
 		}
 		
 		

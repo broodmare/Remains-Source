@@ -42,7 +42,7 @@ package unitdata
 			visibility=300;
 			showNumbs=levitPoss=isSats=false;
 			doop=true;
-			sloy=0;
+			layer=0;
 			noBox=true;
 			if (loadObj && loadObj.tr!=null) {
 				tr=loadObj.tr;

@@ -18,7 +18,7 @@ package graphdata
 		public var frameOff:int=0;
 		public var blend:String='normal';
 		public var alpha:Number=1;
-		public var sloy:int=0;
+		public var layer:int=0;
 		public var er:Boolean=false;	// erasure
 
 		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null) {
@@ -58,7 +58,7 @@ package graphdata
 			else if (nloc.lightOn<0 && node.@loff.length()) frame=node.@loff;
 			else if (vis) frame=Math.floor(Math.random()*vis.totalFrames+1);
 			else frame=1;
-			if (node.@s.length()) sloy=node.@s;
+			if (node.@s.length()) layer=node.@s;
 			if (node.@blend.length()) blend=node.@blend;
 			if (node.@alpha.length()) alpha=node.@alpha;
 			if (node.@er.length()) er=true;

@@ -210,10 +210,10 @@ package locdata
 			{
 				levitPoss=false;
 				stay=true;
-				sloy=0;
+				layer=0;
 			} 
-			else sloy = 1;
-			if (node.@sloy.length()) sloy = node.@sloy;
+			else layer = 1;
+			if (node.@layer.length()) layer = node.@layer;
 			
 			cTransform = location.cTransform;
 			
@@ -231,7 +231,7 @@ package locdata
 			}
 			if (xml && xml.@pokr.length()) 
 			{
-				sloy = 1;
+				layer = 1;
 				prior = 3;
 			}
 			
@@ -265,8 +265,8 @@ package locdata
 			if (invis) return;
 			if (vis && location && location.locationActive) 
 			{
-				if (shad) World.w.grafon.visObjs[0].addChild(shad);
-				World.w.grafon.visObjs[sloy].addChild(vis);
+				if (shad) World.w.grafon.canvasLayerArray[0].addChild(shad);
+				World.w.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform)
 				{
 					vis.transform.colorTransform=cTransform;

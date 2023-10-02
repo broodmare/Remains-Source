@@ -113,7 +113,7 @@ package graphdata
 				appliedFilters = filterArray[tempMaterial.filter.@f];
 			}
 			
-			if (tempMaterial.@rear > 0 || tempMaterial.@ed == '2') // If the material's 'rear' property is greater than 0, or if ed = 2? It should be drawin in the rear.
+			if (tempMaterial.@rear > 0 || tempMaterial.@ed == '2') // If the material's 'rear' property is greater than 0, or if ed = 2? It should be drawin on the decorative background layer.
 			{
 				rear = true;
 			}

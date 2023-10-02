@@ -1733,7 +1733,7 @@ package
 				<weapon id='dronpspark' tip='0'>
 					<char damage='12' rapid='5' prec='20' dkol='3' tipdam='9' knock='0' destroy='10' noise='400'/>
 					<phis speed='30'/>
-					<vis tipdec='17' vweap='vislightning' vbul='spark' bulanim='1' flare='spark'/> 
+					<vis tipdec='17' vweap='layerLighting' vbul='spark' bulanim='1' flare='spark'/> 
 					<snd shoot='spark_s'/>
 					<ammo holder='3' reload='60'/>
 				</weapon>
@@ -4917,8 +4917,8 @@ package
 			<obj ed='4' ico='but' id='knop2' nazv='knop' n='Кнопка, нажимается пулями' actdam='1' inter='4' tip='box' knop='1' wall='1' size='1' wid='1'/>
 			<obj ed='4' ico='but' id='knop3' nazv='knop' n='Кнопка, нуждается в ремонте' inter='4' lock='2' locktip='5' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
 			<obj ed='4' ico='but' id='knop4' nazv='knop' n='Кнопка с кодовым замком' inter='4' lock='2' locktip='2' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
-			<obj ed='4' ico='but' id='platform2' inter='0' tip='box' shelf='1' wall='1' sloy='1' mat='1' size='3' wid='1' scy='39' n='Платформа'/>
-			<obj ed='4' ico='but' id='platform3' inter='0' tip='box' shelf='1' wall='1' sloy='1' size='3' wid='1' scy='39' n='Платформа пл'/>
+			<obj ed='4' ico='but' id='platform2' inter='0' tip='box' shelf='1' wall='1' layer='1' mat='1' size='3' wid='1' scy='39' n='Платформа'/>
+			<obj ed='4' ico='but' id='platform3' inter='0' tip='box' shelf='1' wall='1' layer='1' size='3' wid='1' scy='39' n='Платформа пл'/>
 			<obj ed='4' ico='but' id='dsph' n='Тёмная сфера' inter='2' tip='box' knop='1' allact='bind' wall='1' size='1' wid='1' open='button' close='button'/>
 
 			<!-- двери z-->
@@ -5042,8 +5042,8 @@ package
 			<obj ed='4' ico='' id='alarm' inter='5' mine='1' minetip='6' allact='alarm' once='1' tip='box' wall='1' size='1' wid='2'/>
 			<obj ed='5' ico='' id='reactor' tip='box' size='8' wid='18' scy='220' massa='50000' n='Реактор' rad='25' radrad='400'/>
 			<obj ed='4' ico='' id='generat' tip='box' wall='1' size='6' wid='4'/>
-			<obj ed='1' ico='' id='tcloud1' tip='box' wall='2' size='1' wid='1' rad='5' radtip='1' radrad='200' n='Облако газа' sloy='3' scy='1' scx='1'/>
-			<obj ed='1' ico='' id='pcloud1' tip='box' wall='2' size='1' wid='1' rad='25' radtip='2' radrad='200' n='Розовое облако' sloy='3' scy='1' scx='1'/>
+			<obj ed='1' ico='' id='tcloud1' tip='box' wall='2' size='1' wid='1' rad='5' radtip='1' radrad='200' n='Облако газа' layer='3' scy='1' scx='1'/>
+			<obj ed='1' ico='' id='pcloud1' tip='box' wall='2' size='1' wid='1' rad='25' radtip='2' radrad='200' n='Розовое облако' layer='3' scy='1' scx='1'/>
 			<obj ed='6' ico='' id='alib1' inter='0' tip='door' door='1' phis='1' wall='2' opac='0.1' hp='10000' damageThreshold='1000' mat='7' size='1' wid='7' n='А-Поле верт' open='pole_off' die='pole_off'/>
 			<obj ed='6' ico='' id='alib2' inter='0' tip='door' door='1' phis='1' wall='2' opac='0.1' hp='10000' damageThreshold='1000' mat='7' size='7' wid='1' n='А-Поле гор' open='pole_off' die='pole_off'/>
 			<obj ed='8' ico='' id='door_st1' inter='8' tip='box' wall='2' size='6' wid='6' allact='comein' n='Дверь стойла снаружи'/>
@@ -5203,17 +5203,17 @@ package
 				<upd dark='0.2'/>
 			</armor>
 			
-	<!--       *******   Эффекты и скиллы   *******         -->
+	<!--       *******   Effects and Skills  *******         -->
 
-			<!-- скиллы -->
+			<!-- Skills -->
 			<!-- 
-				id - имя переменной или номер в массиве
-				tip - где находится переменная
-					по умолчанию - Pers или UnitPlayer
-					weap - массив оружейных навыков
-					res - массив сопротивлений
-					v1-v5 - значения
-					v0,vd - нулевое значение и дельта
+				id - id - variable name or number in the array
+				tip - tip - where the variable is located
+					By default - located in Pers or UnitPlayer
+					weap - array of weapon skills
+					res - array of resistances
+					V1-V5 - values
+					V0, Vd - zero value and delta
 			-->
 			<skill id='tele' sort='1'>
 				<sk id='teleMult' dop='1' v0='2.2' vd='-0.1'/>
@@ -6937,7 +6937,7 @@ package
 			<part id='gas' vis='visualGas' ctrans='1' alph='1' prealph='1' minliv='60' rr='6' rdy='1' rd='-2' rot='1' maxkol='1' imp='1'/>
 			<part id='pinkgas' vis='visualPinkGas' ctrans='1' alph='1' prealph='1' minliv='60' rr='6' rdy='1' rd='-2' rot='1' maxkol='1' imp='1'/>
 			<part id='miniexpl' vis='visualMiniexpl' minliv='5' anim='1' imp='1'/>
-			<part id='magsymbol' vis='visualMagSymbol' minliv='30' anim='1' sloy='2' imp='1'/>
+			<part id='magsymbol' vis='visualMagSymbol' minliv='30' anim='1' layer='2' imp='1'/>
 			<part id='throw' vis='visualThrow' minliv='5' anim='1' imp='1'/>
 			<part id='ttexpl' blit='sprExpl' blitx='240' blity='240' anim='1' minliv='15' scale='2' rsc='0.5' imp='1'/>
 			<part id='ttplaexpl' vis='visualPlaExpl' anim='1' minliv='25' scale='2' rsc='0.5' imp='1'/>
@@ -7011,7 +7011,7 @@ package
 			<part id='telered' blit='sprRSpark' blitx='9' blity='9' alph='1' minliv='10' rliv='20' rv='5' blend='screen'/>
 			<part id='radioblast' vis='visualRadioblast' anim='1' minliv='30' imp='1'/>
 			<part id='quake' vis='visualQuake' anim='1' minliv='10'/>
-			<part id='necronoise' vis='visualNecroNoise' minliv='9' anim='1' sloy='4'/>
+			<part id='necronoise' vis='visualNecroNoise' minliv='9' anim='1' layer='4'/>
 			<part id='zzz' vis='visualZzz' alph='1' ctrans='1' minliv='20' rliv='10' grav='-0.2' minv='0' rv='3' rsc='0.6' brake='0.95'/>
 			<part id='magrun' blit='sprKap' blitx='3' blity='3' alph='1' minliv='15' rliv='5'/>
 			<part id='redray' vis='visualRedRay' minliv='50' rot='1' rsc='0.7' anim='1' otklad='15'/>
@@ -7029,18 +7029,18 @@ package
 			<part id='blue_spark' vis='blue_spark' alph='1' ctrans='1' minliv='20' blend='screen' rliv='10' minv='8' rv='1' rsc='0.4' brake='0.92'/>
 			<part id='orange_spark' vis='orange_spark' alph='1' ctrans='1' minliv='20' blend='screen' rliv='10' minv='8' rv='1' rsc='0.4' brake='0.92'/>
 			<part id='electro' vis='visualElectro' minliv='5' blend='screen' alph='1' rot='1'/>
-			<part id='noise' vis='visualNoise' minliv='10' anim='1' sloy='4'/>
-			<part id='sign1' vis='visualSign1' minliv='20' anim='1' sloy='4'/>
+			<part id='noise' vis='visualNoise' minliv='10' anim='1' layer='4'/>
+			<part id='sign1' vis='visualSign1' minliv='20' anim='1' layer='4'/>
 			<part id='green' vis='flGreen' minliv='30' rliv='15' alph='1'/>
 			<part id='red' vis='flRed' minliv='30' rliv='15' alph='1'/>
-			<part id='marker' vis='visualMarker' minliv='10' sloy='4' camscale='1'/>
+			<part id='marker' vis='visualMarker' minliv='10' layer='4' camscale='1'/>
 			
 			<!-- Числа урона и надписи -->
-			<part id='numb' vis='visualNumb' minliv='60' dy='-1' brake='0.98' sloy='4' camscale='1'/>
-			<part id='replic' vis='visReplic' minliv='100' alph='1' sloy='4' camscale='1' imp='1'/>
-			<part id='replic2' vis='visReplic2' minliv='100' alph='1' sloy='4' camscale='1' imp='1'/>
-			<part id='gui' vis='visBulb' minliv='50' alph='1' sloy='5' camscale='1' imp='1'/>
-			<part id='take' vis='visBulb' minliv='50' alph='1' sloy='5' dy='-1' camscale='1' imp='1'/>
+			<part id='numb' vis='visualNumb' minliv='60' dy='-1' brake='0.98' layer='4' camscale='1'/>
+			<part id='replic' vis='visReplic' minliv='100' alph='1' layer='4' camscale='1' imp='1'/>
+			<part id='replic2' vis='visReplic2' minliv='100' alph='1' layer='4' camscale='1' imp='1'/>
+			<part id='gui' vis='visBulb' minliv='50' alph='1' layer='5' camscale='1' imp='1'/>
+			<part id='take' vis='visBulb' minliv='50' alph='1' layer='5' dy='-1' camscale='1' imp='1'/>
 			
 			
 			

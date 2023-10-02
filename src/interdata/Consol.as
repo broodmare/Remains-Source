@@ -293,7 +293,7 @@ package interdata
 				}
 				if (s[0]=='black') {
 					World.w.black=!World.w.black;
-					World.w.grafon.visLight.visible=World.w.black && World.w.location.black;
+					World.w.grafon.layerLighting.visible=World.w.black && World.w.location.black;
 				}
 				if (s[0]=='battle') {
 					World.w.testBattle=!World.w.testBattle;

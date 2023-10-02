@@ -25,7 +25,7 @@ package locdata
 		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
 			id=nid;
 			location=nloc;
-			sloy=0;
+			layer=0;
 			prior=1;
 			id=nid;
 			levitPoss=false;
@@ -105,7 +105,7 @@ package locdata
 		{
 			if (vis && !hide) 
 			{
-				World.w.grafon.visObjs[sloy].addChild(vis);
+				World.w.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform) {
 					vis.transform.colorTransform=cTransform;
 				}

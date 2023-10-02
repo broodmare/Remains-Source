@@ -11,7 +11,7 @@ package interdata
 
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1) 
 		{
-			sloy=5;
+			layer=5;
 			location=World.w.location;
 			var ramka:int=10;
 			if (nUn==null) 

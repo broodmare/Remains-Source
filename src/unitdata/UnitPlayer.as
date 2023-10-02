@@ -167,24 +167,21 @@ package unitdata
 		public var visSel:Boolean=false; //селектор оружия
 		public var animOff:Boolean=false;
 		
-		function testFunction() {
-			//trace(World.w.game.triggers['ouch']); return;
-			//World.w.gui.impMess(Res.itemNazv('stat_rd'),Res.itemMess('stat_rd'),'stat_rd');
-			//World.w.gui.dialog('surfDialHello3');
-			//addEffect('sacrifice');
-			//return;
-			if (World.w.chitOn) {
+		function testFunction() 
+		{
+
+			if (World.w.chitOn) 
+			{
 				World.w.godMode=true;
 				World.w.chit='port';
 				World.w.drawAllMap=true;
 				World.w.black=false;
 				World.w.showAddInfo=true;
-				World.w.grafon.visLight.visible=false;
+				World.w.grafon.layerLighting.visible=false;
 			}
 		}
 		
 		public function UnitPlayer(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			//sloy=3;
 			player=true; id='littlepip';
 			vis=new visualPlayer();
 			vis.osn.body.pip2.visible=false;
@@ -663,16 +660,16 @@ package unitdata
 			}
 			//перейти на нижний слой
 			if (work=='lurk' && t_work==10) {
-				if (sloy==2) {
-					if (lurkTip==1) chSloy(0);
-					else chSloy(1);
+				if (layer==2) {
+					if (lurkTip==1) chLayer(0);
+					else chLayer(1);
 				}
-				if (lurkBox && lurkBox.sloy==1 && sloy==1) {
+				if (lurkBox && lurkBox.layer==1 && layer==1) {
 					lurkBox.vis.parent.setChildIndex(lurkBox.vis,lurkBox.vis.parent.numChildren-1);
 				}
 			}
 			if (work=='unlurk' && t_work==5) {
-				if (sloy==1 || sloy==0) chSloy(2);
+				if (layer==1 || layer==0) chLayer(2);
 			}
 			if (work=='lurk') {
 				if (lurkX-X>3) dx=4;
@@ -684,7 +681,7 @@ package unitdata
 				if (lurkBox && lurkBox.wall==0 && !lurkBox.stay) lurked=false; 
 				if (work!='lurk' && (X-lurkX>10 || X-lurkX<-10)) lurked=false; 
 			}
-			if (!lurked && work!='unlurk' && (sloy==1 || sloy==0)) chSloy(2);
+			if (!lurked && work!='unlurk' && (layer==1 || layer==0)) chLayer(2);
 			
 			//рывок
 			f_dash=(dash_t>dash_maxt-20);
@@ -2590,10 +2587,10 @@ package unitdata
 			otherVisual();
 		}
 		
-		function chSloy(n:int) {
-			if (sloy==n) return;
+		function chLayer(n:int) {
+			if (layer==n) return;
 			remVisual();
-			sloy=n;
+			layer=n;
 			addVisual();
 		}
 		

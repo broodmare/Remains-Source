@@ -31,7 +31,7 @@ package unitdata
 		
 		public override function addVisual() {
 			if (disabled) return;
-			if (vis && location && location.locationActive) World.w.grafon.visObjs[sloy].addChild(vis);
+			if (vis && location && location.locationActive) World.w.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
 		public override function visDetails() {
