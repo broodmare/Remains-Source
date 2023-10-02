@@ -57,7 +57,7 @@ package unitdata
 			id='thunderhead';
 			
 			//взять параметры из xml
-			blitData=World.w.grafon.getSpriteList('sprThunderHead');
+			blitData=World.world.grafon.getSpriteList('sprThunderHead');
 			vis=new MovieClip();
 			var osn:Sprite=new Sprite();
 			visBmp=new Bitmap(blitData);
@@ -209,12 +209,12 @@ package unitdata
 		}
 		
 		public override function setLevel(nlevel:int=0) {
-			if (World.w.game.globalDif==3) {
+			if (World.world.game.globalDif==3) {
 				kol_emit=3;
 				max_emit=18;
 				hp=maxhp=hp*1.1;
 			}
-			if (World.w.game.globalDif==4) {
+			if (World.world.game.globalDif==4) {
 				kol_emit=1;
 				max_emit=21;
 				hp=maxhp=hp*1.2;
@@ -380,17 +380,17 @@ package unitdata
 		
 		public function vsos(n:Number=0, klob:Boolean=false) {
 			if (!location.locationActive) return;
-			p.x=X-World.w.gg.X;
-			p.y=Y-World.w.gg.Y;
+			p.x=X-World.world.gg.X;
+			p.y=Y-World.world.gg.Y;
 			if (n==0) {
 				norma(p,5);
-				World.w.gg.storona=(World.w.gg.dx>0)?1:-1;
+				World.world.gg.storona=(World.world.gg.dx>0)?1:-1;
 			} else {
 				norma(p,n);
 			}
-			if (klob && t_vsos%3==0) Emitter.emit('vsos',location,World.w.gg.X,World.w.gg.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
-			World.w.gg.dx+=p.x;
-			World.w.gg.dy+=p.y;
+			if (klob && t_vsos%3==0) Emitter.emit('vsos',location,World.world.gg.X,World.world.gg.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
+			World.world.gg.dx+=p.x;
+			World.world.gg.dy+=p.y;
 		}
 		
 	}

@@ -48,7 +48,7 @@ package unitdata
 		
 		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
 			super.putLoc(nloc,nx,ny);
-			cel=World.w.gg;
+			cel=World.world.gg;
 			getNapr();
 		}
 		

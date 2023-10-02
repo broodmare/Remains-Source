@@ -112,7 +112,7 @@ package unitdata
 				ddyPlav=-0.2;
 				return;
 			}
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -156,7 +156,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState<6) {
+			if (World.world.enemyAct>1 && aiTCh%10==1 && aiState<6) {
 				if (findCel() && celUnit && celUnit.inWater) {
 					aiSpok=maxSpok+10;
 					if (aiState<5) aiState=(hp<maxhp)?4:3;

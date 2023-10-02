@@ -82,24 +82,24 @@ package locdata
 				location.kolXp--;
 				if (location.kolXp==0 && location.maxXp>1)  //собрали все бонусы
 				{	
-					World.w.pers.expa(location.unXp*location.maxXp);
+					World.world.pers.expa(location.unXp*location.maxXp);
 					if (!location.detecting && location.summXp>0) 
 					{
-						location.takeXP(location.summXp,World.w.gg.X, World.w.gg.Y-100,true);
-						World.w.gui.infoText('sneakBonus');
+						location.takeXP(location.summXp,World.world.gg.X, World.world.gg.Y-100,true);
+						World.world.gui.infoText('sneakBonus');
 					}
 					Snd.ps('bonus2');
 				} 
 				else 
 				{
-					World.w.pers.expa(location.unXp);
+					World.world.pers.expa(location.unXp);
 					Snd.ps('bonus1');
 				}
 				
 			}
 			if (id=='heal') 
 			{
-				World.w.gg.heal(val);
+				World.world.gg.heal(val);
 				Snd.ps('bonus1');
 			}
 		}

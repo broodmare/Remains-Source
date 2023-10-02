@@ -100,7 +100,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -120,7 +120,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
 				} else {

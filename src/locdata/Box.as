@@ -88,8 +88,8 @@ package locdata
 				//trace(id, location.land.kolAll[id])
 			}
 			prior = 1;
-			vis = World.w.grafon.getObj('vis'+id, Grafon.numbObj);
-			shad = World.w.grafon.getObj('vis'+id, Grafon.numbObj);
+			vis = World.world.grafon.getObj('vis'+id, Grafon.objectCount);
+			shad = World.world.grafon.getObj('vis'+id, Grafon.objectCount);
 			if (vis == null) 
 			{
 				vis = new visbox0();
@@ -185,11 +185,11 @@ package locdata
 						scr.owner = this;
 					}
 				}
-				if (xml.@scr.length()) inter.scrAct=World.w.game.getScript(xml.@scr,this);
-				if (xml.@scropen.length()) inter.scrOpen=World.w.game.getScript(xml.@scropen,this);
-				if (xml.@scrclose.length()) inter.scrClose=World.w.game.getScript(xml.@scrclose,this);
-				if (xml.@scrtouch.length()) inter.scrTouch=World.w.game.getScript(xml.@scrtouch,this);
-				if (xml.@scrdie.length()) scrDie=World.w.game.getScript(xml.@scrdie,this);
+				if (xml.@scr.length()) inter.scrAct=World.world.game.getScript(xml.@scr,this);
+				if (xml.@scropen.length()) inter.scrOpen=World.world.game.getScript(xml.@scropen,this);
+				if (xml.@scrclose.length()) inter.scrClose=World.world.game.getScript(xml.@scrclose,this);
+				if (xml.@scrtouch.length()) inter.scrTouch=World.world.game.getScript(xml.@scrtouch,this);
+				if (xml.@scrdie.length()) scrDie=World.world.game.getScript(xml.@scrdie,this);
 				if (xml.@moln.length()) molnDam=xml.@moln;
 				if (xml.@period.length()) molnPeriod=xml.@period;
 				if (xml.@phase.length()) moln_t=xml.@phase;
@@ -265,8 +265,8 @@ package locdata
 			if (invis) return;
 			if (vis && location && location.locationActive) 
 			{
-				if (shad) World.w.grafon.canvasLayerArray[0].addChild(shad);
-				World.w.grafon.canvasLayerArray[layer].addChild(vis);
+				if (shad) World.world.grafon.canvasLayerArray[0].addChild(shad);
+				World.world.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform)
 				{
 					vis.transform.colorTransform=cTransform;
@@ -299,7 +299,7 @@ package locdata
 		
 		public override function setVisState(s:String) 
 		{
-			if ((s=='open' || s=='comein') && sndOpen!='' && !World.w.testLoot) Snd.ps(sndOpen,X,Y);
+			if ((s=='open' || s=='comein') && sndOpen!='' && !World.world.testLoot) Snd.ps(sndOpen,X,Y);
 			if (s=='close' && sndClose!='') Snd.ps(sndClose,X,Y);
 			try 
 			{
@@ -385,7 +385,7 @@ package locdata
 			}
 			cdx=X-stX, cdy=Y-stY;
 			if (t_throw>0) t_throw--;
-			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
+			onCursor=(X1<World.world.celX && X2>World.world.celX && Y1<World.world.celY && Y2>World.world.celY)?prior:0;
 		}
 		
 		public function initDoor() 
@@ -482,7 +482,7 @@ package locdata
 					if (sila > 3) sila = 3;
 					dx += bul.knockx * bul.otbros * sila;
 					dy += bul.knocky * bul.otbros * sila;
-					World.w.gg.otbrosTele(bul.otbros * sila);
+					World.world.gg.otbrosTele(bul.otbros * sila);
 					return mat;
 				}
 			}
@@ -716,7 +716,7 @@ package locdata
 					Y = newmy;
 					Y1 = Y - scY;
 					Y2 = Y;
-					if (location.locationActive && dy > 4 && dy * massa > 5) World.w.quake(0, dy*Math.sqrt(massa) / 2);
+					if (location.locationActive && dy > 4 && dy * massa > 5) World.world.quake(0, dy*Math.sqrt(massa) / 2);
 					if (dy > 5 && sndFall && sndOn) Snd.ps(sndFall, X, Y, 0, dy / 15);
 					if (dy>  5) 
 					{
@@ -900,8 +900,8 @@ package locdata
 		public function funGenerator() 
 		{
 			inter.active=false;
-			World.w.gui.infoText('unFixLock');
-			World.w.game.runScript('fixGenerator',this);
+			World.world.gui.infoText('unFixLock');
+			World.world.game.runScript('fixGenerator',this);
 		}
 	}
 }

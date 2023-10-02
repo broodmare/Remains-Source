@@ -78,7 +78,7 @@ package locdata
 					vis=Res.getVis('vis'+xml.@vis,visArea);
 				} 
 
-				if (World.w.showArea) //If the world.showArea toggle is true;
+				if (World.world.showArea) //If the world.showArea toggle is true;
 				{
 					vis = new visArea(); 
 				}
@@ -100,8 +100,8 @@ package locdata
 						if (scr.eve == 'out') scrOut = scr;
 					}
 				}
-				if (xml.@scr.length()) scrOver = World.w.game.getScript(xml.@scr, this);
-				if (xml.@scrout.length()) scrOut = World.w.game.getScript(xml.@scrout, this);
+				if (xml.@scr.length()) scrOver = World.world.game.getScript(xml.@scr, this);
+				if (xml.@scrout.length()) scrOut = World.world.game.getScript(xml.@scrout, this);
 
 				// Change Walls
 				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@damageThreshold.length())  //If the tile has a HP value, tileop(?), or damageThreshold property
@@ -241,7 +241,7 @@ package locdata
 					}
 				}
 			}
-			if (active && mess) World.w.gui.messText(mess, '', messDown);
+			if (active && mess) World.world.gui.messText(mess, '', messDown);
 			if (active && run) run();
 			if (active && !preactive && allact) location.allAct(this,allact,allid);
 			if (active && !preactive && over) over();
@@ -251,9 +251,9 @@ package locdata
 			{
 				if (trig && uid) 
 				{
-					if (World.w.game.triggers[uid] != 1) 
+					if (World.world.game.triggers[uid] != 1) 
 					{
-						World.w.game.triggers[uid] = 1;
+						World.world.game.triggers[uid] = 1;
 						scrOver.start();
 					}
 				} 

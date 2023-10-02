@@ -66,16 +66,16 @@ package graphdata
 			var tempMaterial:XML = material;
 
 			id = tempMaterial.@id; //id of the material is the id of the material in the XML file.
-			texture = World.w.grafon.getObj(tempMaterial.main.@tex,Grafon.numbMat);
+			texture = World.world.grafon.getObj(tempMaterial.main.@tex,Grafon.materialCount);
 
 			//If the material has an alternate texture, set alttexture as alternate texture ID.?
 			if (tempMaterial.main.@alt.length())
 			{
-				alttexture = World.w.grafon.getObj(tempMaterial.main.@alt,Grafon.numbMat);
+				alttexture = World.world.grafon.getObj(tempMaterial.main.@alt,Grafon.materialCount);
 			}
 
-			border = World.w.grafon.getObj(tempMaterial.border.@tex,Grafon.numbMat);
-			floor = World.w.grafon.getObj(tempMaterial.floor.@tex,Grafon.numbMat);
+			border = World.world.grafon.getObj(tempMaterial.border.@tex,Grafon.materialCount);
+			floor = World.world.grafon.getObj(tempMaterial.floor.@tex,Grafon.materialCount);
 
 			if (tempMaterial.main.@mask.length()) //If a material has a mask property...
 			{

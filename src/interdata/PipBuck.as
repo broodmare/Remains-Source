@@ -25,7 +25,7 @@ package interdata
 		var vissetkey:MovieClip;
 		var vishelp:MovieClip;
 		public var active:Boolean=false;
-		public var noAct:Boolean=false;
+		public var gamePause:Boolean=false;
 		var noAct2:Boolean=false;
 		public var ArmorId:String;
 		public var hideMane:int=0;
@@ -149,15 +149,15 @@ package interdata
 		}
 		
 		public function pageClick(event:MouseEvent) {
-			if (World.w.ctr.setkeyOn) return;
-			if (World.w.gg && World.w.gg.pipOff) return;
+			if (World.world.ctr.setkeyOn) return;
+			if (World.world.gg && World.world.gg.pipOff) return;
 			page=int(event.currentTarget.id.text);
 			setPage();
 			setButtons();
 			snd(2);
 		}
 		public function pipClose(event:MouseEvent) {
-			if (World.w.ctr.setkeyOn) return;
+			if (World.world.ctr.setkeyOn) return;
 			onoff(-1);
 		}
 		function setButtons() {
@@ -192,7 +192,7 @@ package interdata
 				if (active) snd(3);
 				active=false;
 			}
-			if (!light && World.w.location && World.w.location.base) travel=true;
+			if (!light && World.world.location && World.world.location.base) travel=true;
 			vis.but4.visible=false;
 			if (turn==4 || (turn>=6 && turn<=9)) {
 				vis.but4.id.text=turn;
@@ -201,50 +201,50 @@ package interdata
 			}
 			vis.visible=active;
 			if (active) {
-				World.w.cur();
+				World.world.cur();
 				showHidden=false;
 				if (vendor) vendor.reset();
-				World.w.ctr.clearAll();
-				if (World.w.stand) World.w.stand.onoff(-1);
+				World.world.ctr.clearAll();
+				if (World.world.stand) World.world.stand.onoff(-1);
 				setPage(p2);
 				if (!light) {
-					World.w.gui.offCelObj();
-					if (World.w.gui.t_mess>30) World.w.gui.t_mess=30;
-					//World.w.gui.infoAlpha=World.w.gui.vis.info.alpha=1;
+					World.world.gui.offCelObj();
+					if (World.world.gui.t_mess>30) World.world.gui.t_mess=30;
+					//World.world.gui.infoAlpha=World.world.gui.vis.info.alpha=1;
 				}
-				if (World.w.gui) {
-					World.w.gui.dial.alpha=World.w.gui.inform.alpha=0;
+				if (World.world.gui) {
+					World.world.gui.dial.alpha=World.world.gui.inform.alpha=0;
 				}
-				if (World.w.gg && World.w.gg.rat>0 || World.w.catPause) {
-					noAct2=noAct;
-					noAct=true;
+				if (World.world.gg && World.world.gg.rat>0 || World.world.catPause) {
+					noAct2=gamePause;
+					gamePause=true;
 				}
-				World.w.gc();
+				World.world.gc();
 			} else {
 				if (isSaveConf) {
-					World.w.saveConfig();
+					World.world.saveConfig();
 					isSaveConf=false;
 				}
 				vendor=null;
 				npcId='';
-				World.w.ctr.clearAll();
-				World.w.app.detach();
-				if (World.w.gui) {
-					World.w.gui.dial.alpha=World.w.gui.inform.alpha=1;
+				World.world.ctr.clearAll();
+				World.world.app.detach();
+				if (World.world.gui) {
+					World.world.gui.dial.alpha=World.world.gui.inform.alpha=1;
 				}
-				if (World.w.gg && World.w.gg.rat>0) {
-					noAct=noAct2;
+				if (World.world.gg && World.world.gg.rat>0) {
+					gamePause=noAct2;
 				}
 			}
 			if (!light) {
-				World.w.gui.setEffects();
+				World.world.gui.setEffects();
 				vis.pr.visible=true;
 			}
 			setButtons();
-			if (!light && World.w.location && !World.w.location.base) travel=false;
-			if (World.w && World.w.gg && World.w.gg.pipOff) supply(-1);
+			if (!light && World.world.location && !World.world.location.base) travel=false;
+			if (World.world && World.world.gg && World.world.gg.pipOff) supply(-1);
 			else supply(1);
-			World.w.ctr.keyPressed=false;
+			World.world.ctr.keyPressed=false;
 		}
 		
 		//коррекция размеров
@@ -284,11 +284,11 @@ package interdata
 		//режим показа
 		public function setPage(p2:int=0) {
 			if (!light) {
-				gg=World.w.gg;
-				inv=World.w.invent;
+				gg=World.world.gg;
+				inv=World.world.invent;
 				money=inv.money.kol;
 				if (vendor) {
-					vendor.multPrice=World.w.pers.barterMult;
+					vendor.multPrice=World.world.pers.barterMult;
 				}
 			}
 			for (var i in pages) {
@@ -344,23 +344,23 @@ package interdata
 		
 		public function setRPanel() {
 			if (light || !active) return;
-			var gg:UnitPlayer=World.w.gg;
-			var pers:Pers=World.w.pers;
+			var gg:UnitPlayer=World.world.gg;
+			var pers:Pers=World.world.pers;
 			ritem1(0,gg.hp,gg.maxhp);
-			ritem1(1,pers.headHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(2,pers.torsHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(3,pers.legsHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(4,pers.bloodHP,pers.inMaxHP,!World.w.game.triggers['nomed']);
-			ritem1(5,pers.manaHP,pers.inMaxMana,!World.w.game.triggers['nomed']);
+			ritem1(1,pers.headHP,pers.inMaxHP,!World.world.game.triggers['nomed']);
+			ritem1(2,pers.torsHP,pers.inMaxHP,!World.world.game.triggers['nomed']);
+			ritem1(3,pers.legsHP,pers.inMaxHP,!World.world.game.triggers['nomed']);
+			ritem1(4,pers.bloodHP,pers.inMaxHP,!World.world.game.triggers['nomed']);
+			ritem1(5,pers.manaHP,pers.inMaxMana,!World.world.game.triggers['nomed']);
 			if (gg.pet) ritem1(6,gg.pet.hp,gg.pet.maxhp); else ritem1(6,0,0,false);
 			if (gg.currentWeapon && gg.currentWeapon.tip<=3) ritem2(7,gg.currentWeapon.hp,gg.currentWeapon.maxhp); else ritem1(7,0,0,false);
 			if (gg.currentArmor) ritem2(8,gg.currentArmor.hp,gg.currentArmor.maxhp); else ritem1(8,0,0,false);
 			ritems[9].txt.htmlText="<span class = 'yel'>"+gg.invent.money.kol+"</span>"
-			ritem3(10,inv.massW,pers.maxmW,World.w.hardInv);
-			ritem3(11,inv.massM,pers.maxmM,World.w.hardInv);
-			ritem3(12,inv.mass[1],pers.maxm1,World.w.hardInv);
-			ritem3(13,inv.mass[2],pers.maxm2,World.w.hardInv);
-			ritem3(14,inv.mass[3],pers.maxm3,World.w.hardInv);
+			ritem3(10,inv.massW,pers.maxmW,World.world.hardInv);
+			ritem3(11,inv.massM,pers.maxmM,World.world.hardInv);
+			ritem3(12,inv.mass[1],pers.maxm1,World.world.hardInv);
+			ritem3(13,inv.mass[2],pers.maxm2,World.world.hardInv);
+			ritem3(14,inv.mass[3],pers.maxm3,World.world.hardInv);
 		}
 		
 		function ritem1(n:int, hp:Number, maxhp:Number, usl=true) {

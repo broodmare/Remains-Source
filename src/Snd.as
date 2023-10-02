@@ -406,14 +406,14 @@ package
 			if (inited || !onSnd) return;
 			var req:URLRequest;
 			var s:Sound;
-			req = new URLRequest(World.w.musicPath+"mainmenu.mp3");
+			req = new URLRequest(World.world.musicPath+"mainmenu.mp3");
 			s = new Sound(req);
 			s.addEventListener(IOErrorEvent.IO_ERROR, onIOError); 
 			snd['mainmenu']=s;
 			s.addEventListener(Event.COMPLETE, mmLoaded);  
 			for each (var i in d.res) {
 				resSnd = new Loader();
-				var fileSound:String=World.w.soundPath+i.@id;
+				var fileSound:String=World.world.soundPath+i.@id;
 				var urlReq:URLRequest = new URLRequest(fileSound);
 				resSnd.load(urlReq);
 				resSnd.contentLoaderInfo.addEventListener(Event.COMPLETE, resLoaded);  
@@ -428,12 +428,12 @@ package
 			for each (var j in d.music.s) {
 				var id:String=j.@id;
 				try {
-					req = new URLRequest(World.w.musicPath+id+".mp3");
+					req = new URLRequest(World.world.musicPath+id+".mp3");
 					s = new Sound(req);
 					s.addEventListener(IOErrorEvent.IO_ERROR, onIOError); 
 					s.addEventListener(Event.COMPLETE, musicLoaded);  
 					snd[id]=s;
-					World.w.musicKol++;
+					World.world.musicKol++;
 				} catch (err) {
 					trace('music load err', req.url);
 				}
@@ -446,7 +446,7 @@ package
 			if (musicVol>0) playMusic('mainmenu');
 		}
 		static function musicLoaded(event:Event):void {
-			World.w.musicLoaded++;
+			World.world.musicLoaded++;
 			event.currentTarget.removeEventListener(Event.COMPLETE, musicLoaded);  
 			event.currentTarget.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 		}
@@ -577,9 +577,9 @@ package
 			if (t_combat>0) {
 				if (t_combat==1) {
 					currentMusicPrior=0;
-					playMusic(World.w.currentMusic);
+					playMusic(World.world.currentMusic);
 				}
-				if (World.w.pip==null || !World.w.pip.active && !World.w.sats.active) t_combat--;
+				if (World.world.pip==null || !World.world.pip.active && !World.world.sats.active) t_combat--;
 			}
 			//if (shumArr.length) {
 				t_shum--;

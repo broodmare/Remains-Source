@@ -32,7 +32,7 @@ package unitdata
 
 		public function Effect(nid:String, own:Unit=null, nval:Number=0) 
 		{
-			if (own==null) owner=World.w.gg;
+			if (own==null) owner=World.world.gg;
 			else owner=own;
 			player=owner.player;
 			id=nid;
@@ -54,7 +54,7 @@ package unitdata
 			{
 				tip=node.@tip;
 				t=node.@t*30;
-				if (World.w.testEff) t=node.@t*3;
+				if (World.world.testEff) t=node.@t*3;
 				if (val==0) val=node.@val;
 				if (node.sk.length()) params=true;
 				if (node.@post.length()) post=node.@post;
@@ -119,7 +119,7 @@ package unitdata
 			}
 			if (id=='potion_infra') 
 			{
-				World.w.grafon.warShadow();
+				World.world.grafon.warShadow();
 			}
 			if (id=='reanim' && player) 
 			{
@@ -145,7 +145,7 @@ package unitdata
 				(owner as UnitPlayer).setFilters();
 				owner.newPart('blood',30);
 			}
-			if (id=='curse') World.w.game.triggers['curse']=1;
+			if (id=='curse') World.world.game.triggers['curse']=1;
 			visEff();
 		}
 		
@@ -205,8 +205,8 @@ package unitdata
 			}
 			vse=true;
 			if (player && inf && se) {
-				if (tip==3) World.w.gui.infoText('endFoodEffect',Res.txt('e',id));
-				else World.w.gui.infoText('endEffect',Res.txt('e',id));
+				if (tip==3) World.world.gui.infoText('endFoodEffect',Res.txt('e',id));
+				else World.world.gui.infoText('endEffect',Res.txt('e',id));
 			}
 			if (post && onPost) 		// Replacement of the effect with a post-effect
 			{
@@ -215,14 +215,14 @@ package unitdata
 					getXmlParam();
 					if (isBad) 
 					{
-						var proc=World.w.pers.addictions[id];
-						if (proc>=World.w.pers.ad1) 
+						var proc=World.world.pers.addictions[id];
+						if (proc>=World.world.pers.ad1) 
 						{
 							forever=true;
 							ad=true;
 						}
-						if (proc>=World.w.pers.ad2) lvl=2;
-						if (proc>=World.w.pers.ad3) lvl=3;
+						if (proc>=World.world.pers.ad2) lvl=2;
+						if (proc>=World.world.pers.ad3) lvl=3;
 					}
 					vse=false;
 			}
@@ -250,7 +250,7 @@ package unitdata
 			}
 			if (id=='potion_infra') 
 			{
-				World.w.grafon.warShadow();
+				World.world.grafon.warShadow();
 			}
 			if (id=='reanim' && player) 
 			{

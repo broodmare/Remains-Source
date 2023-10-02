@@ -105,7 +105,7 @@ package locdata
 		{
 			if (vis && !hide) 
 			{
-				World.w.grafon.canvasLayerArray[layer].addChild(vis);
+				World.world.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform) {
 					vis.transform.colorTransform=cTransform;
 				}
@@ -142,29 +142,29 @@ package locdata
 
 			if (active==0 && first==false) 
 			{
-				if (World.w.pers.manaCPres) World.w.pers.heal(World.w.pers.manaCPres,6);
-				if (World.w.pers.xpCPadd) World.w.pers.expa(location.unXp*3);
+				if (World.world.pers.manaCPres) World.world.pers.heal(World.world.pers.manaCPres,6);
+				if (World.world.pers.xpCPadd) World.world.pers.expa(location.unXp*3);
 			}
 			active=2;
-			World.w.pers.currentCP=this;
-			World.w.pers.currentCPCode=code;
+			World.world.pers.currentCP=this;
+			World.world.pers.currentCPCode=code;
 			if (code) 
 			{
-				World.w.pers.prevCPCode=code;
+				World.world.pers.prevCPCode=code;
 				location.land.act.lastCpCode=code;
 			}
 			location.land.currentCP=this;
 			if (first) 
 			{
 				vis.osn.gotoAndStop('open');
-				if (World.w.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
+				if (World.world.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
 			} else {
 				vis.osn.play();
-				if (World.w.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
+				if (World.world.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
 			}
 			if (used) vis.fiol.gotoAndStop(1);
-			//trace(World.w.game.mReturn)
-			if (World.w.game.mReturn && teleOn && !used) 
+			//trace(World.world.game.mReturn)
+			if (World.world.game.mReturn && teleOn && !used) 
 			{
 				inter.actFun=teleport;
 				inter.userAction='returnb';
@@ -174,16 +174,16 @@ package locdata
 				inter.active=false;
 				inter.actionText='';
 			}
-			World.w.gui.infoText('checkPoint');
-			World.w.saveGame();
+			World.world.gui.infoText('checkPoint');
+			World.world.saveGame();
 		}
 		
 		public function teleport() 
 		{
 			if (!main) 
 			{
-				World.w.game.gotoLand(World.w.game.baseId);
-				if (World.w.hardInv && World.w.land.rnd) 
+				World.world.game.gotoLand(World.world.game.baseId);
+				if (World.world.hardInv && World.world.land.rnd) 
 				{
 					used=true;
 					inter.active=false;
@@ -191,8 +191,8 @@ package locdata
 					vis.fiol.gotoAndStop(1);
 				}
 			} 
-			else if (World.w.game.missionId!='rbl') World.w.game.gotoLand(World.w.game.missionId);
-			//trace('GOTO '+World.w.game.curLandId);
+			else if (World.world.game.missionId!='rbl') World.world.game.gotoLand(World.world.game.missionId);
+			//trace('GOTO '+World.world.game.curLandId);
 		}
 		
 		public function areaActivate() 
@@ -215,11 +215,11 @@ package locdata
 		
 		public override function step() 
 		{
-			onCursor=(X1<World.w.celX && X2>World.w.celX && Y1<World.w.celY && Y2>World.w.celY)?prior:0;
+			onCursor=(X1<World.world.celX && X2>World.world.celX && Y1<World.world.celY && Y2>World.world.celY)?prior:0;
 			if (inter) inter.step();
 			if (main) 
 			{
-				if (World.w.game.missionId && World.w.game.lands[World.w.game.missionId] && World.w.game.lands[World.w.game.missionId].tip!='base') inter.active=true;
+				if (World.world.game.missionId && World.world.game.lands[World.world.game.missionId] && World.world.game.lands[World.world.game.missionId].tip!='base') inter.active=true;
 				else inter.active=false;
 				return;
 			}
@@ -231,7 +231,7 @@ package locdata
 			}
 			
 			if (area) area.step();
-			if (active==2 && World.w.pers.currentCP!=this) deactivate();
+			if (active==2 && World.world.pers.currentCP!=this) deactivate();
 		}
 		
 	}

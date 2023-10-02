@@ -170,14 +170,14 @@ package unitdata
 		function testFunction() 
 		{
 
-			if (World.w.chitOn) 
+			if (World.world.chitOn) 
 			{
-				World.w.godMode=true;
-				World.w.chit='port';
-				World.w.drawAllMap=true;
-				World.w.black=false;
-				World.w.showAddInfo=true;
-				World.w.grafon.layerLighting.visible=false;
+				World.world.godMode=true;
+				World.world.chit='port';
+				World.world.drawAllMap=true;
+				World.world.black=false;
+				World.world.showAddInfo=true;
+				World.world.grafon.layerLighting.visible=false;
 			}
 		}
 		
@@ -206,13 +206,13 @@ package unitdata
 			
 			brake=2;
 			maxjumpp=8, plavdy=accel*0.5, levidy=accel*0.25;
-			if (World.w.alicorn) levidy=accel*0.5;
+			if (World.world.alicorn) levidy=accel*0.5;
 			hp=maxhp;
 			reloadbar.y=-scY-10;
 			
 			weaponKrep=0;	//0 - левитация оружия, 1 - держать
 			
-			teleColor=World.w.app.cMagic;
+			teleColor=World.world.app.cMagic;
 			//levitFilter=new GradientGlowFilter(0,0,[teleColor,teleColor,teleColor],[0,1,0],[0,100,255],6,6,1,3,"outer");
 			levitFilter1=new GlowFilter(teleColor,0,6,6,2,3);
 			teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
@@ -234,15 +234,15 @@ package unitdata
 		}
 		
 		public function attach() {
-			invent = World.w.invent;
+			invent = World.world.invent;
 			invent.gg=this;
 			invent.owner=this;
 			invent.addAllSpells();
-			pers=World.w.pers;
+			pers=World.world.pers;
 			pers.gg=this;
 			
 			hp=maxhp=pers.begHP;
-			if (invent.cArmorId!='' && invent.cArmorId!=null && !World.w.alicorn) changeArmor(invent.cArmorId,true);
+			if (invent.cArmorId!='' && invent.cArmorId!=null && !World.world.alicorn) changeArmor(invent.cArmorId,true);
 			else pers.setParameters();
 			if (invent.cAmulId!='' && invent.cAmulId!=null) changeArmor(invent.cAmulId,true);
 			if (!pers.dead && invent.cWeaponId!='' && invent.cWeaponId!=null) changeWeapon(invent.cWeaponId);
@@ -304,9 +304,9 @@ package unitdata
 				invent.nextItem(1);
 				weaponLevit();
 			}
-			World.w.calcMassW=World.w.calcMass=true;
+			World.world.calcMassW=World.world.calcMass=true;
 			setAddictions();
-			if (World.w.alicorn) alicornOn(false);
+			if (World.world.alicorn) alicornOn(false);
 			else pers.setParameters();
 		}
 		
@@ -349,19 +349,19 @@ package unitdata
 			if (teleObj || actionObj || t_work>0 || isFetter>0 || location.sky) return false;
 			
 			//не давать выйти, пока гг под атакой
-			var po:int=World.w.possiblyOut();
+			var po:int=World.world.possiblyOut();
 			if (po>0 && !(napr==3 && location.bezdna) && rat==0) 
 			{
 				if (napr==3 && !location.bezdna) {
 					dy=-jumpdy;
 					dx=maxSpeed*storona;
 				}
-				if (po==2) World.w.gui.infoText('noOutLoc',null,null,false);
+				if (po==2) World.world.gui.infoText('noOutLoc',null,null,false);
 				return false;
 			}
 			
 			var laz=isLaz, lev=levit;
-			var outP:Object=World.w.land.gotoLoc(napr, portX, portY);
+			var outP:Object=World.world.land.gotoLoc(napr, portX, portY);
 			if (outP!=null) 
 			{
 				if (outP.die) {						//смерть от падения в бездну (переход на кт)
@@ -404,7 +404,7 @@ package unitdata
 			{
 				if (!nloc.petOn && location.petOn) 
 				{
-					World.w.gui.infoText('noPetFollow');
+					World.world.gui.infoText('noPetFollow');
 					pet.vis.alpha=0;
 					if (pet.hpbar) pet.hpbar.alpha=pet.vis.alpha;
 				} 
@@ -440,7 +440,7 @@ package unitdata
 			if (!location.levitOn && isFly) isFly = false;
 			if (location.electroDam > 0) 
 			{
-				World.w.gui.infoText('electroOn',null,null,true);
+				World.world.gui.infoText('electroOn',null,null,true);
 				isStayDam=45;
 			}
 			vis.svet.visible = location.sky;
@@ -593,7 +593,7 @@ package unitdata
 				}
 			}*/
 			
-			inBattle=World.w.t_battle>0 || World.w.testBattle;
+			inBattle=World.world.t_battle>0 || World.world.testBattle;
 			
 			//захват лута
 			if (isTake>0) isTake--;
@@ -609,21 +609,21 @@ package unitdata
 				drad2-=0.1;
 			}
 			if (drad>0) {
-				if (radX>0 && !invulner && !World.w.godMode) {
+				if (radX>0 && !invulner && !World.world.godMode) {
 					rad+=drad/30*radX;
 					if (pers.radChild>0 && rad>maxhp*(1-pers.radChild)) rad=maxhp*(1-pers.radChild);
 					if (hp>maxhp-rad) {
 						hp=maxhp-rad;
 						if (hp<=0) die();
 					}
-					World.w.gui.setHp();
+					World.world.gui.setHp();
 				}
 				var ver:Number=Math.min(0.5, drad/10);
 				if (drad>0.1 && isrnd (ver)) sound('geiger');
 				if (pet) pet.heal(drad/15,1);
 				drad=0;
 			} else if (drad==0){
-				World.w.gui.setHp();
+				World.world.gui.setHp();
 				drad=-0.0001;
 			}
 			//лечение
@@ -631,22 +631,22 @@ package unitdata
 				healhp-=pers.healMult/5*pers.metaMult;
 				hp+=pers.healMult/5*pers.metaMult;
 				if (hp>maxhp-rad) hp=maxhp-rad;
-				World.w.gui.setHp();
+				World.world.gui.setHp();
 			}
 			if (pers.regenFew>0 && hp<Math.min(maxhp*pers.regenMax,maxhp-rad) && hp>0) {
 				hp+=pers.regenFew;
-				World.w.gui.setHp();
+				World.world.gui.setHp();
 			}
-			if (World.w.alicorn && sost==1) {
+			if (World.world.alicorn && sost==1) {
 				if (hp<maxhp) {
 					hp+=pers.alicornHeal;
 					if (hp>maxhp) hp=maxhp;
-					World.w.gui.setHp();
+					World.world.gui.setHp();
 				}
 				if (pers.manaHP<pers.inMaxMana) {
 					pers.manaHP+=pers.alicornManaHeal;
 					if (pers.manaHP>pers.inMaxMana) pers.manaHP=pers.inMaxMana;
-					World.w.gui.setMana();
+					World.world.gui.setMana();
 				}				
 			}
 			//различные действия
@@ -738,7 +738,7 @@ package unitdata
 			if (currentWeapon && currentWeapon.is_shoot) {
 				if (sats.que.length>0) {
 					sats.act();
-					World.w.gui.setWeapon();
+					World.world.gui.setWeapon();
 				}
 				currentWeapon.is_shoot=false;
 			}
@@ -758,14 +758,14 @@ package unitdata
 				}
 			} else if (attackForever) {
 				if (isrnd(0.05)) {
-					//celX=World.w.celX+Math.random()*600-300;
-					//celY=World.w.celY+Math.random()*600-300;
+					//celX=World.world.celX+Math.random()*600-300;
+					//celY=World.world.celY+Math.random()*600-300;
 					celX=Math.random()*location.limX;
 					celY=Math.random()*location.limY;
 				}
 			} else {
-				celX=World.w.celX;
-				celY=World.w.celY;
+				celX=World.world.celX;
+				celY=World.world.celY;
 			}
 			//модификатор точности precMult, только если стрельба не через зпс
 			precMult=pers.allPrecMult, mazil=pers.mazilAdd;
@@ -841,7 +841,7 @@ package unitdata
 					if (levit==1) pers.manaDamage(-dmana*pers.teleMana*pers.teleManaMult);
 					else pers.manaDamage(-dmana/3*pers.teleMana*pers.teleManaMult);
 				}
-			} else if (World.w.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
+			} else if (World.world.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
 				dmana=-pers.alicornRunMana;
 				if (!location.sky) Emitter.emit('magrun',location,X,Y-scY/2,{dx:(dx*0.5+Math.random()*4-2), dy:(dy*0.5+Math.random()*4-2)});
 			} else {
@@ -852,7 +852,7 @@ package unitdata
 			if (mana>maxmana) mana=maxmana;
 			if (pers.manaHP<pers.manaMin) {
 				pers.manaHP+=pers.manaHPRes;
-				World.w.gui.setMana();
+				World.world.gui.setMana();
 			}
 			//воздух
 			if (isPlav) {
@@ -922,14 +922,14 @@ package unitdata
 			//спутник
 			if (noPet>0) {
 				noPet--;
-				World.w.gui.setPet();
+				World.world.gui.setPet();
 			}
 			if (noPet2>0) noPet2--;
 			if (pet && pet.sost==4 && noPet<=0 && pet.optAutores) pet.resurrect();
 			//удары ап стену
 			//if (stay) damWall=0;
 			//откл. пипбака
-			if (pipOff==1) World.w.gui.allOn();
+			if (pipOff==1) World.world.gui.allOn();
 			if (pipOff>0) pipOff--;
 			//неконтролируемая атака
 			if (attackForever) {
@@ -1000,11 +1000,11 @@ package unitdata
 		function actPort() {
 			if (!location.portOn) return;
 			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
-				World.w.gui.infoText('overMana',null,null,false);
-				World.w.gui.bulb(X,Y-20);
+				World.world.gui.infoText('overMana',null,null,false);
+				World.world.gui.bulb(X,Y-20);
 			} else {
-				var nx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
-				var ny=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
+				var nx=Math.round(World.world.celX/World.tilePixelWidth)*World.tilePixelWidth
+				var ny=Math.round(World.world.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
 				if (checkPort()) {
 					teleport(nx, ny, 1);
 					sound('teleport');
@@ -1022,16 +1022,16 @@ package unitdata
 		
 		function alicornPort() {
 			if (mana<pers.alicornPortMana && mana<maxmana*0.99) {
-				World.w.gui.infoText('overMana',null,null,false);
-				World.w.gui.bulb(X,Y-20);
+				World.world.gui.infoText('overMana',null,null,false);
+				World.world.gui.bulb(X,Y-20);
 				return;
 			}
 			if (!location.sky) {
-				var t:Tile=location.getAbsTile(World.w.celX,World.w.celY);
+				var t:Tile=location.getAbsTile(World.world.celX,World.world.celY);
 				if (t.visi<0.8) return;
 			}
-			var tx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
-			var ty=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
+			var tx=Math.round(World.world.celX/World.tilePixelWidth)*World.tilePixelWidth
+			var ty=Math.round(World.world.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
 			if (location.sky || !location.collisionUnit(tx,ty,stayX,stayY))	{
 				teleport(tx, ty, 1);
 				if (teleObj) dropTeleObj();
@@ -1044,9 +1044,9 @@ package unitdata
 		public function checkPort():Boolean {
 			if (mana<pers.portMana*pers.allDManaMult) return false;
 			if (location.sky) return true;
-			var nx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
-			var ny=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
-			var t:Tile=location.getAbsTile(World.w.celX,World.w.celY);
+			var nx=Math.round(World.world.celX/World.tilePixelWidth)*World.tilePixelWidth
+			var ny=Math.round(World.world.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
+			var t:Tile=location.getAbsTile(World.world.celX,World.world.celY);
 			//if (!location.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			if (t.visi>=0.8 && !location.collisionUnit(nx, ny,stayX,stayY)) return true;
 			//if (t.visi>=0.8 && !collisionAll(nx-X, ny-Y)) return true;
@@ -1088,14 +1088,14 @@ package unitdata
 			//найти ближайший подходящий объект, если курсор не указывает прямо на цель
 			if (mana<200) return;
 			if (location.celObj==null) {
-				var dist=(X-World.w.celX)*(X-World.w.celX)+(Y-scY/2-World.w.celY)*(Y-scY/2-World.w.celY);
+				var dist=(X-World.world.celX)*(X-World.world.celX)+(Y-scY/2-World.world.celY)*(Y-scY/2-World.world.celY);
 				if (dist>pers.teleDist) return;
-				if (!location.isLine(X,Y-scY*0.75, World.w.celX, World.w.celY)) return;
+				if (!location.isLine(X,Y-scY*0.75, World.world.celX, World.world.celY)) return;
 				var pt:Pt=location.firstObj;
 				var mindist=50*50;
 				while (pt) {
 					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
-						dist=(World.w.celX-pt.X)*(World.w.celX-pt.X)+(World.w.celY-pt.Y+(pt as Obj).scY/2)*(World.w.celY-pt.Y+(pt as Obj).scY/2);
+						dist=(World.world.celX-pt.X)*(World.world.celX-pt.X)+(World.world.celY-pt.Y+(pt as Obj).scY/2)*(World.world.celY-pt.Y+(pt as Obj).scY/2);
 						if (dist<mindist) {
 							location.celObj=(pt as Obj);
 							mindist=dist;
@@ -1110,7 +1110,7 @@ package unitdata
 			}
 			if (location.celObj && location.celObj.levitPoss && location.celObj.onCursor && location.celDist<=pers.teleDist && location.celObj.massa<=pers.maxTeleMassa){
 				if ((pers.telemaster==0 || !location.portOn) && !location.isLine(X,Y-scY*0.75,location.celObj.X, location.celObj.Y-location.celObj.scY/2)) {
-					World.w.gui.infoText('noVisible',null,null,false);
+					World.world.gui.infoText('noVisible',null,null,false);
 					return;
 				}
 				if (location.electroDam && (location.celObj is Box) && (location.celObj as Box).mat==1) {
@@ -1161,7 +1161,7 @@ package unitdata
 				if (teleObj is Unit) {
 					(teleObj as Unit).t_throw=45;
 				}
-				World.w.gui.setMana();
+				World.world.gui.setMana();
 				teleObj.dx+=p.x;
 				teleObj.dy+=p.y;
 				if (pers.throwForce>0) {
@@ -1191,7 +1191,7 @@ package unitdata
 				}
 				teleObj.levit=0;
 				teleObj=null;
-				World.w.gui.setMana();
+				World.world.gui.setMana();
 			}
 		}
 		
@@ -1202,17 +1202,17 @@ package unitdata
 			if (actionObj) 
 			{
 
-				if ((X-actionObj.X)*(X-actionObj.X)+(Y-actionObj.Y)*(Y-actionObj.Y)>World.w.actionDist) 
+				if ((X-actionObj.X)*(X-actionObj.X)+(Y-actionObj.Y)*(Y-actionObj.Y)>World.world.actionDist) 
 				{
 					actionObj = null;
 				}
 			} 
-			else if (actionReady && location.celObj && location.celObj.onCursor && location.celDist<=World.w.actionDist)
+			else if (actionReady && location.celObj && location.celObj.onCursor && location.celDist<=World.world.actionDist)
 			{
 				actionReady=false;
 				if ((pers.telemaster==0 || !location.portOn || (location.celObj is Loot) || (location.celObj.inter && location.celObj.inter.allact=='comein')) && !location.isLine(X, Y - scY * 0.75, location.celObj.X, location.celObj.Y - location.celObj.scY / 2, location.celObj)) 
 				{
-					World.w.gui.infoText('noVisible',null,null,false);
+					World.world.gui.infoText('noVisible',null,null,false);
 					return;
 				}
 				if (location.electroDam && (location.celObj is Box) && (location.celObj as Box).mat == 1) 
@@ -1270,7 +1270,7 @@ package unitdata
 		
 		function crackAction() 
 		{
-			if (actionReady && location.celObj && location.celObj.onCursor && location.celDist<=World.w.actionDist)
+			if (actionReady && location.celObj && location.celObj.onCursor && location.celDist<=World.world.actionDist)
 			{
 				if (location.celObj.inter &&  location.celObj.inter.needRuna(this)) 
 				{
@@ -1279,14 +1279,14 @@ package unitdata
 			}
 		}
 		function chit() {
-			if (World.w.chit=='fly') isFly=!isFly;
-			if (World.w.chit=='port') {
-				var tx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth
-				var ty=Math.round(World.w.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
+			if (World.world.chit=='fly') isFly=!isFly;
+			if (World.world.chit=='port') {
+				var tx=Math.round(World.world.celX/World.tilePixelWidth)*World.tilePixelWidth
+				var ty=Math.round(World.world.celY/World.tilePixelHeight+1)*World.tilePixelHeight-1;
 				if (!location.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			}
-			if (World.w.chit=='emit') {
-				Emitter.emit(World.w.chitX,location,World.w.celX, World.w.celY);
+			if (World.world.chit=='emit') {
+				Emitter.emit(World.world.chitX,location,World.world.celX, World.world.celY);
 			}
 		}
 		
@@ -1300,7 +1300,7 @@ package unitdata
 			isRun=false;
 			walk=0;
 			if (currentWeapon) currentWeapon.vis.visible=false;
-			World.w.pip.noAct=true;
+			World.world.pip.gamePause=true;
 		}
 		
 		//вернуть обычный режим
@@ -1309,7 +1309,7 @@ package unitdata
 			invulner=false;
 			ggControl=true;
 			if (currentWeapon) currentWeapon.vis.visible=true;
-			World.w.pip.noAct=false;
+			World.world.pip.gamePause=false;
 		}
 		
 		public override function sit(turn:Boolean) {
@@ -1368,11 +1368,11 @@ package unitdata
 				if (!teleReady) 
 				{
 					if (sats.que.length>0) sats.clearAll();
-					if (visSel) World.w.gui.unshowSelector(0);
+					if (visSel) World.world.gui.unshowSelector(0);
 					else actTele();
 					teleReady=true;
 				}
-				if (t_culd<=0 && pers.portPoss && pers.spellsPoss && !World.w.alicorn) t_port++;
+				if (t_culd<=0 && pers.portPoss && pers.spellsPoss && !World.world.alicorn) t_port++;
 			} else {
 				if (teleReady) {
 					if (t_port>=pers.portTime && pers.portPoss && pers.spellsPoss && location.portOn) {
@@ -1413,9 +1413,9 @@ package unitdata
 			//заклинание
 			if (ctr.keyDef && rat==0) { //&& !location.base
 				if (sats.que.length>0) sats.clearAll();
-				if (World.w.alicorn) currentSpell=invent.spells['sp_mshit'];
+				if (World.world.alicorn) currentSpell=invent.spells['sp_mshit'];
 				if (currentSpell) {
-					if (!currentSpell.cast(World.w.celX, World.w.celY)) ctr.keyDef=false;
+					if (!currentSpell.cast(World.world.celX, World.world.celY)) ctr.keyDef=false;
 					if (!currentSpell.prod) ctr.keyDef=false;
 				} else ctr.keyDef=false;
 			} //else if (currentSpell) currentSpell.active=false;
@@ -1425,7 +1425,7 @@ package unitdata
 						if (sats.que.length>0) sats.clearAll();
 						var sp:Spell=invent.spells[invent.fav[World.kolHK*2+i]];
 						if (sp) {
-							if (!sp.cast(World.w.celX, World.w.celY)) ctr['keySpell'+i]=false;
+							if (!sp.cast(World.world.celX, World.world.celY)) ctr['keySpell'+i]=false;
 							if (!sp.prod) ctr['keySpell'+i]=false;
 						} else ctr['keySpell'+i]=false;
 					} else ctr['keySpell'+i]=false;
@@ -1453,7 +1453,7 @@ package unitdata
 			//атака
 			if ((ctr.keyAttack || autoAttack) && (!location.base || visSel) && atkPoss && (atkWeapon==0 || atkWeapon==1)) {
 				if (visSel) {
-					World.w.gui.unshowSelector(1);
+					World.world.gui.unshowSelector(1);
 					ctr.keyAttack=false;
 				} else if (ctr.keyTele) {
 					ctr.keyTele=false;
@@ -1467,7 +1467,7 @@ package unitdata
 					} else {
 						weaponSkill=pers.weaponSkills[currentWeapon.skill];
 						if (!currentWeapon.attack()) ctr.keyAttack=false;
-						World.w.gui.setWeapon();
+						World.world.gui.setWeapon();
 						spellDisact();
 					}
 				}
@@ -1486,11 +1486,11 @@ package unitdata
 				t_reload=0;
 			}
 			//пинок
-			if (ctr.keyPunch && World.w.alicorn) {
+			if (ctr.keyPunch && World.world.alicorn) {
 				ctr.keyPunch=false;
 				alicornPort();
 			}
-			if (ctr.keyPunch && !World.w.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !location.base && !lurked && attackForever<=0 && atkPoss) {
+			if (ctr.keyPunch && !World.world.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !location.base && !lurked && attackForever<=0 && atkPoss) {
 				(punchWeapon as WKick).kick=ctr.keyRun;
 				punchWeapon.attack();
 				spellDisact();
@@ -1509,18 +1509,18 @@ package unitdata
 						if (ctr['keyWeapon'+i]) {
 							ctr['keyWeapon'+i]=false;
 							invent.useFav(i+(ctr.keyRun?World.kolHK:0));
-							if (visSel) World.w.gui.unshowSelector(0);
+							if (visSel) World.world.gui.unshowSelector(0);
 							if (currentSpell) currentSpell.active=false;
 							ctr.keyDef=ctr.keyAttack=false;
 						}
 					}
 				}
 				if (ctr.keyScrDown && !autoAttack) {
-					World.w.gui.showSelector(1, ctr.keyRun?1:0);
+					World.world.gui.showSelector(1, ctr.keyRun?1:0);
 					ctr.keyScrDown=ctr.keyScrUp=false;
 				}
 				if (ctr.keyScrUp && !autoAttack) {
-					World.w.gui.showSelector(-1, ctr.keyRun?1:0);
+					World.world.gui.showSelector(-1, ctr.keyRun?1:0);
 					ctr.keyScrDown=ctr.keyScrUp=false;
 				}
 				//вещи
@@ -1572,7 +1572,7 @@ package unitdata
 			if (isPlav) accel1=0.3*accel*pers.speedPlavMult;
 			if (isFly) {
 				maxSpeed*=1.3;
-				if (World.w.alicorn && ctr.keyRun && mana>20) {
+				if (World.world.alicorn && ctr.keyRun && mana>20) {
 					accel1=accel;
 					maxSpeed=runSpeed*pers.alicornFlyMult;
 					if (location.sky) maxSpeed*=2;
@@ -1695,7 +1695,7 @@ package unitdata
 					isJump=true;
 					jumpNumb++;
 				}
-				if (stay && World.w.hardInv) invent.damageItems(0,false);
+				if (stay && World.world.hardInv) invent.damageItems(0,false);
 				if (isPlav) {
 					dy-=plavdy*pers.speedPlavMult;
 				} else if (jumpp>0) { //&& !isSit
@@ -1863,7 +1863,7 @@ package unitdata
 			for (var i=1; i<div; i++) {
 				var nx=X+ndx*i/div;
 				var ny=Y-scY/2+ndy*i/div;
-				var t:Tile=World.w.location.getAbsTile(Math.floor(nx),Math.floor(ny));
+				var t:Tile=World.world.location.getAbsTile(Math.floor(nx),Math.floor(ny));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					celX=nx;
 					celY=ny;
@@ -1945,7 +1945,7 @@ package unitdata
 					eff.forever=true;
 				}
 			}
-			if (World.w.game.triggers['curse']>0) addEffect('curse');
+			if (World.world.game.triggers['curse']>0) addEffect('curse');
 		}
 
 		function endAllEffect() {
@@ -2019,7 +2019,7 @@ package unitdata
 				}
 			}
 			if (ismess && (sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(location,X,Y-scY/2,{txt:((tip==2)?'-':'+')+Math.round(hl), frame:((tip==2)?7:4), rx:20, ry:20});
-			World.w.gui.setHp();
+			World.world.gui.setHp();
 		}
 		
 		public override function udarUnit(un:Unit, mult:Number=1):Boolean {
@@ -2034,7 +2034,7 @@ package unitdata
 		public function raddamage(koef:Number, dam:Number, tip:int=0) {
 			if (t_nogas>0) return;
 			if (tip==0) {
-				World.w.gg.drad+=dam*koef;
+				World.world.gg.drad+=dam*koef;
 			} else if (this['ddam'+tip]!=null) {
 				if (koef<0.25) koef=koef*4;
 				else koef=1;
@@ -2053,7 +2053,7 @@ package unitdata
 			if (tip==Unit.D_EMP && dam>30 && pers.pipEmpVulner>0) {
 				pipOff+=Math.round(dam*pers.pipEmpVulner);
 				if (sats.que.length>0) sats.clearAll();
-				World.w.gui.allOff();
+				World.world.gui.allOff();
 			}
 			if (cryst && tip!=Unit.D_BLEED && tip!=Unit.D_POISON && tip!=Unit.D_INSIDE) {
 				dam*=5/spellPower;
@@ -2066,11 +2066,11 @@ package unitdata
 				dmana=0;
 				return 0;
 			}
-			if (currentArmor && !World.w.godMode) currentArmor.damage(dam*pers.armorVulner, tip);
+			if (currentArmor && !World.world.godMode) currentArmor.damage(dam*pers.armorVulner, tip);
 			if (tip!=Unit.D_BLEED && tip!=Unit.D_POISON && tip!=Unit.D_INSIDE && tip!=Unit.D_PINK) {
 				pinok+=dam/maxhp*200*knocked;
 				//повреждение инвентаря
-				if (!tt && World.w.hardInv && !World.w.alicorn) invent.damageItems(dam);
+				if (!tt && World.world.hardInv && !World.world.alicorn) invent.damageItems(dam);
 			}
 			if (pinok>100) pinok=100;
 			if (pinok>60 && levit==1) {
@@ -2080,13 +2080,13 @@ package unitdata
 			if (pinok>60 && teleObj) dropTeleObj();
 			if (pinok>30) isLaz=0;
 			var pdam:Number=super.damage(dam, tip, bul, tt);
-			if (dhp/maxhp>=0.2 && hp/maxhp<0.2) World.w.gui.critHP();
+			if (dhp/maxhp>=0.2 && hp/maxhp<0.2) World.world.gui.critHP();
 			if (pdam/maxhp>0.1 && isrnd(pdam/maxhp)) {
 				replic('dam');
 			}
-			if (World.w.godMode) {
+			if (World.world.godMode) {
 				hp=dhp;
-			} else if (!World.w.alicorn) {
+			} else if (!World.world.alicorn) {
 				pers.damage(pdam, tip);
 				pers.bloodDamage(pdam, tip);
 			}
@@ -2115,7 +2115,7 @@ package unitdata
 
 		public override function die(sposob:int=0) {
 			//реанимация
-			if (sost>1 || World.w.godMode && sposob>=0) return;
+			if (sost>1 || World.world.godMode && sposob>=0) return;
 			if (sposob>=0) {
 				if (pers.lastCh>0) {
 					hp=1;
@@ -2134,7 +2134,7 @@ package unitdata
 				if (sposob<10 && sost==1) pers.damage(0,0,true);
 			}
 			controlOff();
-			World.w.gui.unshowSelector();
+			World.world.gui.unshowSelector();
 			if (sost<3) sost=2;
 			if (sposob>=10) sost=3;
 			isLaz=0;
@@ -2151,12 +2151,12 @@ package unitdata
 			work='die';
 			if (pers.hardcoreMode && sposob>=0) {
 				pers.dead=true;
-				World.w.saveGame(-2);
-				if (sposob==10) World.w.gui.messText('hardDie2', pers.persName, false, false, 10000);
-				else World.w.gui.messText('hardDie', pers.persName, false, false, 10000);
+				World.world.saveGame(-2);
+				if (sposob==10) World.world.gui.messText('hardDie2', pers.persName, false, false, 10000);
+				else World.world.gui.messText('hardDie', pers.persName, false, false, 10000);
 				Snd.playMusic('harddie',1);
 			} else {
-				World.w.t_die=300;
+				World.world.t_die=300;
 			}
 		}
 		
@@ -2182,7 +2182,7 @@ package unitdata
 			drad2=0;
 			possRun=true;
 			if (pipOff>0) {
-				World.w.gui.allOn();
+				World.world.gui.allOn();
 				pipOff=0;
 			}
 			endAllEffect();
@@ -2258,9 +2258,9 @@ package unitdata
 				}
 			}
 			if (nw is Weapon) {
-				if (nw.respect==1 || nw.alicorn && !World.w.alicorn) {
-					if (nw.tip==5) World.w.gui.infoText('disSpell',null,null,false);
-					else World.w.gui.infoText('disWeapon',null,null,false);
+				if (nw.respect==1 || nw.alicorn && !World.world.alicorn) {
+					if (nw.tip==5) World.world.gui.infoText('disSpell',null,null,false);
+					else World.world.gui.infoText('disWeapon',null,null,false);
 					return;
 				}
 				if (nw.spell) {
@@ -2268,9 +2268,9 @@ package unitdata
 					invent.useItem(nid);
 					return;
 				}
-				if (World.w.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
+				if (World.world.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
 					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) {
-						World.w.gui.infoText('weaponSkillLevel',null,null,false);
+						World.world.gui.infoText('weaponSkillLevel',null,null,false);
 						//return false;
 					}
 				}
@@ -2319,7 +2319,7 @@ package unitdata
 				}
 			}
 			if (currentWeapon) vision=currentWeapon.visionMult;
-			World.w.gui.setWeapon();
+			World.world.gui.setWeapon();
 		}
 		
 		//вернуть нужное количество боеприпасов из инвентаря, или сколько есть
@@ -2339,12 +2339,12 @@ package unitdata
 		}
 		
 		public function changeArmor (nid:String='', forced:Boolean=false):Boolean {
-			if (World.w.alicorn && nid!='' && !forced) {
-				World.w.gui.infoText('alicornNot',null,null,false);
+			if (World.world.alicorn && nid!='' && !forced) {
+				World.world.gui.infoText('alicornNot',null,null,false);
 				return false;
 			}
-			if (World.w.t_battle>0 && nid!='off') {
-				World.w.gui.infoText('noChArmor',null,null,false);
+			if (World.world.t_battle>0 && nid!='off') {
+				World.world.gui.infoText('noChArmor',null,null,false);
 				return false;
 			}
 			var tipArmor=1;
@@ -2353,14 +2353,14 @@ package unitdata
 				tipArmor=invent.armors[nid].tip;
 				clo=invent.armors[nid].clo;
 			}
-			if (World.w.hardInv && !forced && nid!='off' && !(location && location.base) && tipArmor==1) {
+			if (World.world.hardInv && !forced && nid!='off' && !(location && location.base) && tipArmor==1) {
 				if (clo==0 && nid!=prevArmor) {
-					World.w.gui.infoText('noChArmor2',null,null,false);
+					World.world.gui.infoText('noChArmor2',null,null,false);
 					return false;
 				}
 			}
 			if (nid=='off') {
-				World.w.gui.infoText('brokenArmor');
+				World.world.gui.infoText('brokenArmor');
 				nid='';
 			}
 			if (tipArmor==1) {		//броня
@@ -2373,7 +2373,7 @@ package unitdata
 				if (nid=='' ||  currentArmor && currentArmor.id==invent.armors[nid].id) currentArmor=null;
 				else if (invent.armors[nid]) {
 					if (invent.armors[nid].hp>0) currentArmor=invent.armors[nid];
-					else World.w.gui.infoText('brokenArmor');
+					else World.world.gui.infoText('brokenArmor');
 				}
 				if (currentArmor) {
 					Appear.ggArmorId=currentArmor.id;
@@ -2409,7 +2409,7 @@ package unitdata
 			//if (invent.spells[nid]==null) invent.addSpell(nid);
 			if (currentSpell==invent.spells[nid]) currentSpell=null;
 			else currentSpell=invent.spells[nid];
-			if (inf && currentSpell) World.w.gui.infoText('usedSpell',currentSpell.nazv);
+			if (inf && currentSpell) World.world.gui.infoText('usedSpell',currentSpell.nazv);
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch) {
@@ -2437,20 +2437,20 @@ package unitdata
 		//призыв и отзыв спутника, f=true - принудительно
 		public function callPet(npet:String, f:Boolean=false) {
 			if (noPet>0 && !f) {
-				World.w.gui.infoText('petNot',null,null,false);
+				World.world.gui.infoText('petNot',null,null,false);
 				return;
 			}
-			if (noPet2>0 && !f || !atkPoss || World.w.alicorn) {
-				World.w.gui.infoText('petNot2',null,null,false);
+			if (noPet2>0 && !f || !atkPoss || World.world.alicorn) {
+				World.world.gui.infoText('petNot2',null,null,false);
 				return;
 			}
 			if (npet=='owl' && currentPet=='owl' && pets[npet] && pets[npet].hp<=0 && !f) {
-				World.w.gui.infoText('petNot3',null,null,false);
+				World.world.gui.infoText('petNot3',null,null,false);
 				return;
 			}
 			noPet2=5*30;
 			if (pet) {
-				World.w.gui.infoText('petRecall',pet.nazv);
+				World.world.gui.infoText('petRecall',pet.nazv);
 				pet.recall();
 				pet=null;
 				childObjs[2]=null;
@@ -2460,7 +2460,7 @@ package unitdata
 				currentPet='';
 			} else {
 				if (!location.petOn) {
-					World.w.gui.infoText('noPetCall',null,null,false);
+					World.world.gui.infoText('noPetCall',null,null,false);
 				} else {
 					currentPet=npet;
 					pet=pets[currentPet];
@@ -2468,26 +2468,26 @@ package unitdata
 					pet.X=X, pet.Y=Y-20;
 					pet.location=location;
 					pet.call();
-					World.w.gui.infoText('petCall',pet.nazv);
+					World.world.gui.infoText('petCall',pet.nazv);
 				}
 			}
-			World.w.gui.setPet();
+			World.world.gui.setPet();
 		}
 		
 		public function uncallPet(ret:Boolean=false) {
 			if (pet) {
 				if (ret && currentPet!='moon') retPet=currentPet;
-				World.w.gui.infoText('petRecall',pet.nazv);
+				World.world.gui.infoText('petRecall',pet.nazv);
 				pet.recall();
 				pet=null;
 				childObjs[2]=null;
 				currentPet='';
 			}
-			World.w.gui.setPet();
+			World.world.gui.setPet();
 		}
 		
 		public function alicornOn(eff:Boolean=true) {
-			World.w.alicorn=true;
+			World.world.alicorn=true;
 			if (armorEffect) {
 				armorEffect.unsetEff(true,false,true);
 			}
@@ -2512,7 +2512,7 @@ package unitdata
 		}
 		
 		public function alicornOff() {
-			World.w.alicorn=false;
+			World.world.alicorn=false;
 			isFly=false;
 			changeWeapon('not',true);
 			pers.setParameters();
@@ -2617,7 +2617,7 @@ package unitdata
 			vis.osn.rotation=0;
 			if (t_work && work=='die') {
 				reloadbar.visible=false;
-				if (!World.w.alicorn) {
+				if (!World.world.alicorn) {
 					if (animState!='die') {
 						vis.osn.gotoAndStop('die');
 						animState='die';
@@ -3035,7 +3035,7 @@ package unitdata
 			if (currentWeapon && currentWeapon.t_reload>1) {
 				if (!reloadbar.visible) reloadbar.visible=true;
 				reloadbar.gotoAndStop(Math.floor(currentWeapon.t_reload/(currentWeapon.reload*currentWeapon.reloadMult)*11)+1)
-				World.w.gui.setHolder();
+				World.world.gui.setHolder();
 			} else {
 				if (reloadbar.visible) reloadbar.visible=false;
 			}
@@ -3082,7 +3082,7 @@ package unitdata
 			if (pers.ableFly) {
 				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=true;
 				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=true;
-				if (World.w.alicorn || currentArmor && currentArmor.ableFly) {
+				if (World.world.alicorn || currentArmor && currentArmor.ableFly) {
 					try {
 						if (vis.osn.body.rwing.currentFrame!=11) vis.osn.body.rwing.gotoAndStop(11);
 						if (vis.osn.body.lwing.currentFrame!=11) vis.osn.body.lwing.gotoAndStop(11);
@@ -3126,13 +3126,13 @@ package unitdata
 			var dez=vis.osn.currentFrameLabel;
 			vis.osn.gotoAndStop('nope');
 			vis.osn.gotoAndStop(dez);
-			teleColor=World.w.app.cMagic;
+			teleColor=World.world.app.cMagic;
 			levitFilter1.color=teleColor;
 			teleFilter.color=teleColor;
 		}
 		
 		public override function visDetails() {
-			World.w.gui.setHp();
+			World.world.gui.setHp();
 		}
 		
 		public function showElectroBlock() {

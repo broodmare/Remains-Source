@@ -86,19 +86,19 @@ package unitdata
 			if (cf==null) return false;
 			if (player) 
 			{
-				if (World.w.alicorn && id!='sp_mshit') return false;
+				if (World.world.alicorn && id!='sp_mshit') return false;
 				if (gg.rat>0) return false;
 				if (gg.invent.weapons[id] && gg.invent.weapons[id].respect==1) 
 				{
-					World.w.gui.infoText('disSpell',null,null,false);
+					World.world.gui.infoText('disSpell',null,null,false);
 					Snd.ps('nomagic');
 					return false;
 				}
-				if (World.w.pers.spellsPoss==0 || atk && !gg.atkPoss) 
+				if (World.world.pers.spellsPoss==0 || atk && !gg.atkPoss) 
 				{
-					World.w.gui.infoText('noSpells',null,null,false);
+					World.world.gui.infoText('noSpells',null,null,false);
 					Snd.ps('nomagic');
-					World.w.gui.bulb(owner.X,owner.Y);
+					World.world.gui.bulb(owner.X,owner.Y);
 					return false;
 				}
 				if (t_culd>0) 
@@ -107,26 +107,26 @@ package unitdata
 					{
 						if (culd>=100) 
 						{
-							World.w.gui.infoText('spellCuld',Math.ceil(t_culd/World.fps),null,false);
-							World.w.gui.bulb(owner.X,owner.Y-20);
+							World.world.gui.infoText('spellCuld',Math.ceil(t_culd/World.fps),null,false);
+							World.world.gui.bulb(owner.X,owner.Y-20);
 						}
 						Snd.ps('nomagic');
 					}
 					return false;
 				}
-				dmagic=magic*World.w.pers.allDManaMult;
-				dmana=mana*World.w.pers.allDManaMult;
+				dmagic=magic*World.world.pers.allDManaMult;
+				dmana=mana*World.world.pers.allDManaMult;
 				if (dmagic>999) dmagic=999;
 				if (owner.mana<dmagic) 
 				{
-					World.w.gui.infoText('overMana',null,null,false);
+					World.world.gui.infoText('overMana',null,null,false);
 					Snd.ps('nomagic');
-					World.w.gui.bulb(owner.X,owner.Y-20);
+					World.world.gui.bulb(owner.X,owner.Y-20);
 					return false;
 				}
-				if (dmana>World.w.pers.manaHP) 
+				if (dmana>World.world.pers.manaHP) 
 				{
-					World.w.gui.infoText('noMana',null,null,false);
+					World.world.gui.infoText('noMana',null,null,false);
 					Snd.ps('nomagic');
 					return false;
 				}
@@ -144,14 +144,14 @@ package unitdata
 			} 
 			else 
 			{
-				location=World.w.location;
+				location=World.world.location;
 			}
 			//координаты цели
 			cx=nx, cy=ny;
 			//проверка видимости точки цели, если это нужно
 			if (line==1 && owner && !owner.location.isLine(X,Y, cx, cy)) 
 			{
-				if (player) World.w.gui.infoText('noVisible',null,null,false);
+				if (player) World.world.gui.infoText('noVisible',null,null,false);
 				return false;
 			}
 			//проверка и коррекция дистанции
@@ -196,7 +196,7 @@ package unitdata
 		//магический щит
 		function cast_mshit() 
 		{
-			if (owner.player && World.w.alicorn) owner.shithp=World.w.pers.alicornShitHP;
+			if (owner.player && World.world.alicorn) owner.shithp=World.world.pers.alicornShitHP;
 			else owner.shithp=hp*power;
 		}
 		//магический щит
@@ -259,7 +259,7 @@ package unitdata
 			if (owner.player) location.budilo(X,Y,500);
 			if (location.locationActive) Emitter.emit('blast',location,X,Y);
 			
-			if (location.locationActive) World.w.quake(Math.random()*30-10,Math.random()*10-5);
+			if (location.locationActive) World.world.quake(Math.random()*30-10,Math.random()*10-5);
 		}
 		
 		//замедляющее поле
@@ -288,7 +288,7 @@ package unitdata
 				t.hp=Math.round(hp*power);
 				t.mat=7;
 				t.t_ghost=Math.round(dam*power);
-				World.w.grafon.gwall(t.X,t.Y);
+				World.world.grafon.gwall(t.X,t.Y);
 				est=1;
 			}
 			Emitter.emit('gwall',location,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight);

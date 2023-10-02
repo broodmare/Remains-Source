@@ -42,7 +42,7 @@ package interdata
 			statHead.cat.visible=false;
 			statHead.rid.visible=false;
 			pip.vis.butHelp.visible=true;
-			pip.vis.butMass.visible=World.w.hardInv;
+			pip.vis.butMass.visible=World.world.hardInv;
 			setIco();
 			setCats();
 			assId=null;
@@ -65,14 +65,14 @@ package interdata
 					if (obj is Weapon) {
 						var w:Weapon=obj as Weapon;
 						if (w.respect==3) continue;
-						if (w.spell && World.w.alicorn) continue;
+						if (w.spell && World.world.alicorn) continue;
 						if (w.spell && (inv.items[w.id]==null || inv.items[w.id].kol<=0)) continue;
 						w.setPers(gg, gg.pers);
 						if (w.respect==1) {	//скрытый
-							if (!World.w.hardInv || World.w.location.base || World.w.location.train) vis.butOk.visible=true;
+							if (!World.world.hardInv || World.world.location.base || World.world.location.train) vis.butOk.visible=true;
 							if (!pip.showHidden) continue;
 						}
-						if (w.alicorn && !World.w.alicorn) continue;
+						if (w.alicorn && !World.world.alicorn) continue;
 						var trol:String='w'+w.skill;
 						if (trol=='w7') trol='w6';
 						if (curTip!='' && curTip!=null && curTip!=trol) continue;	//категория
@@ -107,7 +107,7 @@ package interdata
 				//if (arr.length) arr.sortOn('fav');
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv1',0,true);
 			} else if (page2==2) {	//броня
-				//if (World.w.alicorn) return;
+				//if (World.world.alicorn) return;
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
@@ -126,14 +126,14 @@ package interdata
 				if (arr.length) arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv2',0,true);
 			} else if (page2==3 || page2==4 || page2==5) {	//снаряжение
-				//if (page2!=5 && World.w.alicorn) return;
+				//if (page2!=5 && World.world.alicorn) return;
 				assArr=new Array();
 				statHead.fav.text=Res.pipText('ii1');
 				statHead.nazv.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii5');
 				statHead.ammotip.text=Res.pipText('ii6');
 				statHead.ammo.text='';
-				if (World.w.hardInv) statHead.mass.text=Res.pipText('ii8');
+				if (World.world.hardInv) statHead.mass.text=Res.pipText('ii8');
 				for (s in inv.items) {
 					if (s=='' || inv.items[s].kol<=0 || inv.items[s].invis) continue;
 					var node:XML=inv.items[s].xml;
@@ -184,7 +184,7 @@ package interdata
 		
 		function showBottext() {
 			vis.bottext.htmlText=Res.pipText('caps')+': '+yel(pip.money);
-			if (World.w.hardInv) {
+			if (World.world.hardInv) {
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
 				else if (page2==3) vis.bottext.htmlText+='    '+inv.retMass(1);
 				else if (page2==4) vis.bottext.htmlText+='    '+inv.retMass(3);
@@ -201,11 +201,11 @@ package interdata
 			item.nazv.alpha=1;
 			item.mass.text='';
 			if (inv.favIds[obj.id]) {
-				if (inv.favIds[obj.id]==29) item.fav.text=World.w.ctr.retKey('keyGrenad');
-				else if (inv.favIds[obj.id]==30) item.fav.text=World.w.ctr.retKey('keyMagic');
-				else if (inv.favIds[obj.id]>World.kolHK*2) item.fav.text=World.w.ctr.retKey('keySpell'+(inv.favIds[obj.id]-World.kolHK*2));
-				else if (inv.favIds[obj.id]>World.kolHK) item.fav.text='^'+World.w.ctr.retKey('keyWeapon'+(inv.favIds[obj.id]-World.kolHK));
-				else item.fav.text=World.w.ctr.retKey('keyWeapon'+inv.favIds[obj.id]);
+				if (inv.favIds[obj.id]==29) item.fav.text=World.world.ctr.retKey('keyGrenad');
+				else if (inv.favIds[obj.id]==30) item.fav.text=World.world.ctr.retKey('keyMagic');
+				else if (inv.favIds[obj.id]>World.kolHK*2) item.fav.text=World.world.ctr.retKey('keySpell'+(inv.favIds[obj.id]-World.kolHK*2));
+				else if (inv.favIds[obj.id]>World.kolHK) item.fav.text='^'+World.world.ctr.retKey('keyWeapon'+(inv.favIds[obj.id]-World.kolHK));
+				else item.fav.text=World.world.ctr.retKey('keyWeapon'+inv.favIds[obj.id]);
 			}
 			else item.fav.text='';
 
@@ -215,7 +215,7 @@ package interdata
 				item.trol.gotoAndStop(1);
 			}
 			if (page2==1) {
-				item.ramka.visible=(World.w.gg.newWeapon && World.w.gg.newWeapon.id==obj.id) || (World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
+				item.ramka.visible=(World.world.gg.newWeapon && World.world.gg.newWeapon.id==obj.id) || (World.world.gg.currentSpell && World.world.gg.currentSpell.id==obj.id);
 				if (item.ramka.visible) selItem=item;
 				item.nazv.htmlText=obj.nazv;
 				//if (obj.respect==0) item.nazv.text='('+Res.pipText('new')+') '+item.nazv.text;
@@ -233,13 +233,13 @@ package interdata
 				else item.rid.text=obj.id;
 			} else if (page2==2) {
 				item.ramka.visible=false;
-				if (World.w.hardInv && !World.w.location.base && obj.trol=='armor1' && World.w.gg.prevArmor!=obj.id && obj.clo==0) item.alpha=0.4;
-				if (World.w.gg.currentArmor && World.w.gg.currentArmor.id==obj.id) {
+				if (World.world.hardInv && !World.world.location.base && obj.trol=='armor1' && World.world.gg.prevArmor!=obj.id && obj.clo==0) item.alpha=0.4;
+				if (World.world.gg.currentArmor && World.world.gg.currentArmor.id==obj.id) {
 					item.ramka.visible=true;
 					item.alpha=1;
 					selItem=item;
 				}
-				if (World.w.gg.currentAmul && World.w.gg.currentAmul.id==obj.id) {
+				if (World.world.gg.currentAmul && World.world.gg.currentAmul.id==obj.id) {
 					item.ramka.visible=true;
 				}
 				item.nazv.text=obj.nazv;
@@ -248,10 +248,10 @@ package interdata
 				item.ammo.text='';
 				item.ammotip.text='';
 			} else  {
-				item.ramka.visible=(World.w.gg.currentSpell && World.w.gg.currentSpell.id==obj.id);
+				item.ramka.visible=(World.world.gg.currentSpell && World.world.gg.currentSpell.id==obj.id);
 				item.nazv.text=obj.nazv;
 				item.hp.text=obj.kol;
-				if (World.w.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);
+				if (World.world.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);
 				if (obj.price && obj.tip=='valuables') item.ammo.text=obj.price;
 				else item.ammo.text='';
 				if (item.fav.text=='') {
@@ -292,8 +292,8 @@ package interdata
 		}
 		
 		override function itemClick(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
 			if (event.ctrlKey) {
@@ -302,15 +302,15 @@ package interdata
 			}
 			var ci:String=event.currentTarget.id.text;
 			if (page2==1) {
-				World.w.gg.changeWeapon(ci);
+				World.world.gg.changeWeapon(ci);
 				selItem=event.currentTarget as MovieClip;
 				setStatus(false);
 				pip.snd(1);
 			} else if (page2==2) {
-				if (World.w.gg.changeArmor(ci)) {
+				if (World.world.gg.changeArmor(ci)) {
 					setStatus(false);
 					/*if (selItem) selItem.ramka.visible=false;
-					if (World.w.gg.currentArmor) {
+					if (World.world.gg.currentArmor) {
 						selItem=event.currentTarget as MovieClip;
 						selItem.ramka.visible=true;
 					}*/
@@ -318,31 +318,31 @@ package interdata
 				pip.snd(1);
 			} else if (page2==3) {
 				if (ci=='retr') {
-					if (World.w.alicorn) {
-						World.w.gui.infoText('alicornNot',null,null,false);
+					if (World.world.alicorn) {
+						World.world.gui.infoText('alicornNot',null,null,false);
 						return false;
 					}
-					if (World.w.game.curLandId==World.w.game.baseId) return;
-					else if (World.w.possiblyOut()>=2) World.w.gui.infoText('noUseCombat'); 
+					if (World.world.game.curLandId==World.world.game.baseId) return;
+					else if (World.world.possiblyOut()>=2) World.world.gui.infoText('noUseCombat'); 
 					else buttonOk('retr');
 				} else if (ci=='mworkbench' || ci=='mworkexpl' || ci=='mworklab') {
-					if (World.w.t_battle>0) {
-						World.w.gui.infoText('noUseCombat',null,null,false);
+					if (World.world.t_battle>0) {
+						World.world.gui.infoText('noUseCombat',null,null,false);
 					} else {
 						pip.workTip=ci;
 						pip.onoff(7);
 					}
 				} else {
-					World.w.invent.useItem(ci);
+					World.world.invent.useItem(ci);
 					setStatus(false);
-					World.w.gui.setHp();
+					World.world.gui.setHp();
 				}
 				pip.snd(1);
 				over_t=2;
 			} else if (page2==5) {
 				if (gg.invent.weapons[ci]) {
 					gg.invent.weapons[ci].respect=2;
-					World.w.gg.changeWeapon(ci);
+					World.world.gg.changeWeapon(ci);
 				} else if (gg.currentWeapon && gg.currentWeapon.tip<=3 && gg.currentWeapon.holder>0) gg.currentWeapon.initReload(ci);
 			}
 			pip.setRPanel();
@@ -350,21 +350,21 @@ package interdata
 		}
 		
 		override function itemRightClick(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==1) {
 				var obj=assArr[event.currentTarget.id.text];
-				obj.respect=World.w.invent.respectWeapon(event.currentTarget.id.text);
+				obj.respect=World.world.invent.respectWeapon(event.currentTarget.id.text);
 				setStatItem(event.currentTarget as MovieClip, obj);
 				pip.setRPanel();
 				showBottext();
 				pip.snd(1);
 			}
 			if (page2>=3) {
-				if (World.w.location.base) {
-					World.w.gui.infoText('noDrop1',null,null,false);
+				if (World.world.location.base) {
+					World.world.gui.infoText('noDrop1',null,null,false);
 					return;
 				}
 				var obj=assArr[event.currentTarget.id.text];
@@ -374,7 +374,7 @@ package interdata
 					setStatItem(event.currentTarget as MovieClip, obj);
 					buttonOk('drop');
 				} else {
-					World.w.gui.infoText('noDrop2',null,null,false);
+					World.world.gui.infoText('noDrop2',null,null,false);
 				}
 			}
 		}
@@ -384,7 +384,7 @@ package interdata
 			pip.snd(1);
 			var temp=assId;
 			if (page2<=3 && assId!=null) {
-				World.w.invent.favItem(assId, num);
+				World.world.invent.favItem(assId, num);
 				setStatus(false);
 			}
 			assId=temp;
@@ -396,9 +396,9 @@ package interdata
 				setStatus();
 				pip.snd(2);
 			} else if (actCurrent=='retr') {		//Возврат на базу
-				if (inv.items['retr'].kol>0 && World.w.game.triggers['noreturn']!=1) {
+				if (inv.items['retr'].kol>0 && World.world.game.triggers['noreturn']!=1) {
 					inv.minusItem('retr');
-					World.w.game.gotoLand(World.w.game.baseId);
+					World.world.game.gotoLand(World.world.game.baseId);
 				}
 				vis.butOk.visible=false;
 				pip.onoff(-1);

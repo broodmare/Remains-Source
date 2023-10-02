@@ -52,7 +52,7 @@ package unitdata
 			
 			//взять данные об npc
 			if (xml && xml.@npc.length()) {
-				targNPC=World.w.game.npcs[xml.@npc];
+				targNPC=World.world.game.npcs[xml.@npc];
 			}
 			if (targNPC) {
 				if (loadObj && loadObj.rep!=null) targNPC.rep=loadObj.rep;	//старый формат сохранения
@@ -194,7 +194,7 @@ package unitdata
 			if (zanyato || t_ref>0) return;
 			t_ref=16;
 			if (!noTurn) {
-				if (X>World.w.gg.X) storona=-1;
+				if (X>World.world.gg.X) storona=-1;
 				else storona=1;
 			}
 			if (targNPC) targNPC.activate();
@@ -226,7 +226,7 @@ package unitdata
 			} else if (com=='sign') {
 				if (ico.sign) {
 					if (aiTip=='fly') ico.sign.visible=false;
-					else ico.sign.visible=World.w.helpMess;
+					else ico.sign.visible=World.world.helpMess;
 				}
 			//попрощаться
 			} else if (com=='replicVse') {
@@ -293,7 +293,7 @@ package unitdata
 		
 		public override function control() {
 			if (t_ref>0) t_ref--;
-			if (World.w.gui.dialScript.running) {
+			if (World.world.gui.dialScript.running) {
 			} else {
 				t_replic--;
 				if (t_replic<=0) {
@@ -371,7 +371,7 @@ package unitdata
 					targNPC.landing();
 					inter.active=true;
 					if (ico.sign) {
-						ico.sign.visible=World.w.helpMess;
+						ico.sign.visible=World.world.helpMess;
 					}
 				}
 			}

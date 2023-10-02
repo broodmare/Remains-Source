@@ -308,8 +308,8 @@ package unitdata
 		}
 		
 		public override function findCel(over:Boolean=false):Boolean {
-			if (absVis && location==World.w.location && !reprog && !sleep) {
-				setCel(World.w.gg);
+			if (absVis && location==World.world.location && !reprog && !sleep) {
+				setCel(World.world.gg);
 				return true;
 			}
 			if (!reprog) return super.findCel(over);
@@ -345,7 +345,7 @@ package unitdata
 				}
 			}
 			levitPoss=!hidden;
-			if (World.w.enemyAct<=0 || sleep) {
+			if (World.world.enemyAct<=0 || sleep) {
 				return;
 			}
 			if (aiTCh>0) aiTCh--;
@@ -383,7 +383,7 @@ package unitdata
 					aiSpok=maxSpok+10;
 				}
 			}
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
 				if (!noTurn) vAngle=currentWeapon.rot;
 				if (osnova && osnova.phis==0) die();
 				if (!stun && findCel()) {
@@ -433,10 +433,10 @@ package unitdata
 				}
 			}
 			//атака
-			if (World.w.enemyAct>=3 && aiState==3 && !stun) {
+			if (World.world.enemyAct>=3 && aiState==3 && !stun) {
 				currentWeapon.attack();
 			}
-			if (World.w.enemyAct>=3 && celUnit && dam>0 && oduplenie<=0) {	//атака корпусом
+			if (World.world.enemyAct>=3 && celUnit && dam>0 && oduplenie<=0) {	//атака корпусом
 				attKorp(celUnit,1);
 			}
 		}

@@ -117,13 +117,13 @@ package graphdata
 		
 		
 		
-		public static const renderLayers:int = 6; //Layers need to be rendered on the mainCanvas.
+		public static const canvasLayerCount:int = 6; //Layers need to be rendered on the mainCanvas.
 
-		public static const numbMat:int 	  = 0;		// Materials
-		public static const numbFon:int 	  = 0;		// Backgrounds
-		public static const numbBack:int   	  = 1;		// Decorations
-		public static const numbObj:int 	  = 1;		// Objects
-		public static const numbSprite:int 	  = 2;		// Starting number for sprite files (might be two because of the Main and MainMenu being called before Grafon - check this.)
+		public static const materialCount:int = 0;		// Active Materials
+		public static const skyboxCount:int = 0;	// Active background textures?
+		public static const bgObjectCount:int = 1;		// Active Background Objects
+		public static const objectCount:int = 1;		// Active Objects
+		public static const spriteCount:int 	= 2;		// Active Sprites (starts at 2 because of Main and MainMenu)
 
 		public var tilepixelwidth:int;
 		public var tilepixelheight:int;
@@ -193,7 +193,7 @@ package graphdata
 			layerSats.filters 	= [new BlurFilter(3, 3, 1)];
 			
 			
-			for (var i = 0; i < renderLayers; i++) 
+			for (var i = 0; i < canvasLayerCount; i++) 
 			{
 				canvasLayerArray .push(new Sprite());
 			}
@@ -351,14 +351,14 @@ package graphdata
 		}
 		
 		// Draw the skybox texture.
-		public function drawSkybox(background:MovieClip, tex:String)
+		public function drawSkybox(skybox:MovieClip, tex:String)
 		{
 			if (tex == '' || tex == null) tex = 'backgroundDefault';
-			if (skyboxLayer && background.contains(skyboxLayer)) background.removeChild(skyboxLayer);
+			if (skyboxLayer && skybox.contains(skyboxLayer)) skybox.removeChild(skyboxLayer);
 			
 			
 			skyboxLayer = getObj(tex);						//Set the background to the specified texture.
-			if (skyboxLayer) background.addChild(skyboxLayer); 	//If the background exists, add it to the background sprite.
+			if (skyboxLayer) skybox.addChild(skyboxLayer); 	//If the background exists, add it to the background sprite.
 		}
 		
 		public function setBackgroundSize(nx:Number, ny:Number)
@@ -393,7 +393,7 @@ package graphdata
 		//Fog of war
 		public function warShadow():void
 		{
-			if (World.w.pers.infravis)
+			if (World.world.pers.infravis)
 			{
 				layerLighting.transform.colorTransform = infraTransform;
 				layerLighting.blendMode = 'multiply';
@@ -424,7 +424,7 @@ package graphdata
 				//####################
 				//      STAGE 1   
 				//####################
-				World.w.gr_stage = 1; 
+				World.world.gr_stage = 1; 
 
 				location = currentLocation; 
 				location.grafon = this;
@@ -438,7 +438,7 @@ package graphdata
 				//####################
 				//      STAGE 2  
 				//####################
-				World.w.gr_stage = 2;
+				World.world.gr_stage = 2;
 
 				// Borders
 				ramT.x = ramB.x = -50;
@@ -458,7 +458,7 @@ package graphdata
 				//####################
 				//      STAGE 3   
 				//####################
-				World.w.gr_stage = 3;
+				World.world.gr_stage = 3;
 				frontBmp.lock();
 				backBmp.lock();
 				backBmp2.lock();
@@ -472,7 +472,7 @@ package graphdata
 				
 				lightBmp.fillRect(lightRect, 0xFF000000);
 				setLight();
-				layerLighting.visible = location.black&&World.w.black;
+				layerLighting.visible = location.black&&World.world.black;
 				warShadow();
 				
 				var darkness:int = 0xAA+location.darkness;
@@ -485,7 +485,7 @@ package graphdata
 				//####################
 				//      STAGE 4   
 				//####################
-				World.w.gr_stage = 4; 
+				World.world.gr_stage = 4; 
 
 				var front:Sprite = new Sprite();	
 				var back:Sprite = new Sprite();	
@@ -507,7 +507,7 @@ package graphdata
 				//####################
 				//      STAGE 5   
 				//####################
-				World.w.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
+				World.world.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
 
 				var tile:Tile; 		//Define a tile as an object to hold the current tile's properties in the grid.
 				var tileMovieClip:MovieClip; 	//Define a tileMovieClip as an object to hold the current tile's sprite.
@@ -564,7 +564,7 @@ package graphdata
 				//####################
 				//      STAGE 6   
 				//####################
-				World.w.gr_stage = 6;
+				World.world.gr_stage = 6;
 				vodaBmp.draw(voda, null, null, null, null, false);
 				frontBmp.draw(front, null, null, null, null, false);
 				
@@ -572,14 +572,14 @@ package graphdata
 				//####################
 				//      STAGE 7  		// DECORATIVE BACKGROUND LAYER.
 				//####################
-				World.w.gr_stage = 7;
+				World.world.gr_stage = 7;
 				drawBackWall(currentLocation.backwall, currentLocation.backform);	
 
 
 				//####################
 				//      STAGE 8  		// INTERACTIVE BACKGROUND LAYER. THIS IS BROKE
 				//####################
-				World.w.gr_stage = 8;  //Draw Background items in arrBack.
+				World.world.gr_stage = 8;  //Draw Background items in arrBack.
 
 				for each (mat in arrBack)
 				{
@@ -588,7 +588,7 @@ package graphdata
 						drawTileSprite(mat, false, false);
 					} catch (err)
 					{
-						World.w.showError(err, 'Error, Stage 8. Back Layer drawing matterial: '+mat.id);
+						World.world.showError(err, 'Error, Stage 8. Back Layer drawing matterial: '+mat.id);
 					}
 				}
 
@@ -597,7 +597,7 @@ package graphdata
 				//####################
 				//      STAGE 9   		// CLIMBABLE LAYER
 				//####################
-				World.w.gr_stage = 9;  
+				World.world.gr_stage = 9;  
 				for each (mat in arrFront) 
 				{
 					try 
@@ -606,7 +606,7 @@ package graphdata
 					} 
 					catch (err) 
 					{
-						World.w.showError(err, 'Error, Stage 9. Front Layer drawing matterial: '+mat.id );
+						World.world.showError(err, 'Error, Stage 9. Front Layer drawing matterial: '+mat.id );
 					}
 				}
 
@@ -615,7 +615,7 @@ package graphdata
 				//####################
 				//      STAGE 10
 				//####################
-				World.w.gr_stage = 10; 
+				World.world.gr_stage = 10; 
 				satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 				var darkness2 = 1 - (255 - darkness) /150;
 				//ct = new ColorTransform(darkness2, darkness2, darkness2);
@@ -633,7 +633,7 @@ package graphdata
 				//####################
 				//      STAGE 11  
 				//####################
-				World.w.gr_stage = 11; // Drawing background object sprites. 
+				World.world.gr_stage = 11; // Drawing background object sprites. 
 				for (j = -2; j <= 3; j++) 
 				{
 					if (j == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -681,7 +681,7 @@ package graphdata
 				//####################
 				//      STAGE 12   - Apply Stage color transforms.
 				//####################
-				World.w.gr_stage = 12;    
+				World.world.gr_stage = 12;    
 
 				if (currentLocation.cTransform) //If the current location has a color transform, apply it to the front and water bitmaps.
 				{
@@ -695,7 +695,7 @@ package graphdata
 				//####################
 				//      STAGE 13  - Apply Stage lighting as color transforms.
 				//####################
-				World.w.gr_stage = 13;
+				World.world.gr_stage = 13;
 				
 				// Darkening the background
 				
@@ -722,14 +722,14 @@ package graphdata
 				//####################
 				//      STAGE 14  
 				//####################
-				World.w.gr_stage = 14;  
+				World.world.gr_stage = 14;  
 
 				backBmp2.draw(back, null, currentLocation.cTransform, null, null, false);
 				
 				//####################
 				//      STAGE 15
 				//####################
-				World.w.gr_stage = 15; 
+				World.world.gr_stage = 15; 
 				if (transpFon) 
 				{
 					satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -746,18 +746,18 @@ package graphdata
 				//####################
 				//      STAGE 16 - Render Pink Cloud if it exists.
 				//####################
-				World.w.gr_stage = 16;  
+				World.world.gr_stage = 16;  
 				if (location.gas > 0)
 				{
 					var backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
 					backgroundMatrix.ty = 520;
-					backBmp2.draw(getObj('back_pink_t', numbBack), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
+					backBmp2.draw(getObj('back_pink_t', bgObjectCount), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
 				}
 				
 				//####################
 				//      STAGE 17
 				//####################
-				World.w.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
+				World.world.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 
 				for each (mat in arrFront) drawTileSprite(mat, false, true);	//For each material in arrFront, draw the tile sprite. THIS IS WORKING.
 
@@ -766,7 +766,7 @@ package graphdata
 				//####################
 				//      STAGE 18   
 				//####################
-				World.w.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
+				World.world.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
 
 				
 				if (currentLocation.cTransform && currentLocation.cTransformFon) 
@@ -781,7 +781,7 @@ package graphdata
 			} 
 			catch (err) 
 			{
-				World.w.showError(err)
+				World.world.showError(err)
 			}
 
 			finally //Make sure to unlock all bitmaps, even if an error occurs.
@@ -799,7 +799,7 @@ package graphdata
 			//      STAGE 19
 			//####################
 
-			World.w.gr_stage = 19;  //Render all game objects.
+			World.world.gr_stage = 19;  //Render all game objects.
 			drawAllObjs();  //Draw all active objects
 
 
@@ -807,7 +807,7 @@ package graphdata
 			//      STAGE 20 FINISHED
 			//####################
 
-			World.w.gr_stage = 0;  //Screen is now rendered.
+			World.world.gr_stage = 0;  //Screen is now rendered.
 		}
 		
 
@@ -835,7 +835,7 @@ package graphdata
 		// Drawing all visible (physical?) objects
 		public function drawAllObjs() 
 		{
-			for (var i:int = 0; i < renderLayers; i++) 
+			for (var i:int = 0; i < canvasLayerCount; i++) 
 			{
 				var n = mainCanvas.getChildIndex(canvasLayerArray[i]);
 				mainCanvas.removeChild(canvasLayerArray[i]);
@@ -1108,11 +1108,11 @@ package graphdata
 		{
 			if (spriteLists[id] == null)
 			{
-				if (n > 0) spriteLists[id] = getObj(id, numbSprite + n);
+				if (n > 0) spriteLists[id] = getObj(id, spriteCount + n);
 				else 
 				{
-					spriteLists[id] = getObj(id, numbSprite);
-					if (spriteLists[id] == null) spriteLists[id] = getObj(id, numbSprite+1);
+					spriteLists[id] = getObj(id, spriteCount);
+					if (spriteLists[id] == null) spriteLists[id] = getObj(id, spriteCount+1);
 				}
 			}
 			if (spriteLists[id] == null) trace('No sprites', id)
@@ -1347,7 +1347,7 @@ package graphdata
 				var rect:Rectangle  =  new Rectangle(nx-dyrx/2+rdx, ny-dyry/2+rdy, nx+dyrx/2+rdx, ny+dyry/2+rdy);
 				var pt:Point  =  new Point(0, 0);
 				res2.copyChannel(frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
-				frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal')?World.w.location.cTransform:null, bl, null, true);
+				frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal')?World.world.location.cTransform:null, bl, null, true);
 				rect  =  new Rectangle(0, 0, dyrx, dyry);
 				pt = new Point(nx-dyrx/2+rdx, ny-dyry/2+rdy);
 				frontBmp.copyChannel(res2, rect, pt, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);

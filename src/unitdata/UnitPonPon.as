@@ -85,10 +85,10 @@ package unitdata
 		public override function control() {
 			if (novoi || !act) return;
 			t_replic--;
-			if (location!=World.w.location) return;
+			if (location!=World.world.location) return;
 			if (privet && t_replic%60==3) {
-				var nx=World.w.gg.X-X;
-				var ny=World.w.gg.Y-Y;
+				var nx=World.world.gg.X-X;
+				var ny=World.world.gg.Y-Y;
 				if (Math.abs(nx)<200 && Math.abs(ny)<60) {
 					t_replic=0;
 					replic('hi');

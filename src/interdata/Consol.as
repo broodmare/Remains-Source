@@ -84,7 +84,7 @@ package interdata
 				analis();
 			}
 			if (event.keyCode==Keyboard.END || event.keyCode==Keyboard.ESCAPE) {
-				World.w.consolOnOff();
+				World.world.consolOnOff();
 			}
 			if (event.keyCode==Keyboard.UP) {
 				if (istN>0) istN--;
@@ -102,7 +102,7 @@ package interdata
 			event.stopPropagation();
 		}
 		public function onButClose(event:MouseEvent):void {
-			World.w.consolOnOff();
+			World.world.consolOnOff();
 			event.stopPropagation();
 		}
 		
@@ -117,54 +117,54 @@ package interdata
 		{
 			var str:String=vis.input.text;
 			ist.push(str);
-			World.w.lastCom=str;
-			World.w.saveConfig();
+			World.world.lastCom=str;
+			World.world.saveConfig();
 			istN=ist.length;
 			vis.input.text='';
 			var s:Array=str.split(' ');
 			//try {
 				if (s[0]=='clear') {
 					try {
-						World.w.cam.dblack=0;
-						World.w.gg.controlOn();
-						World.w.gg.vis.visible=true;
-						World.w.vblack.alpha=0;
-						World.w.vblack.visible=false;
-						World.w.t_exit=World.w.t_die=0;
-						World.w.vgui.visible=World.w.vfon.visible=World.w.visual.visible=true;
+						World.world.cam.dblack=0;
+						World.world.gg.controlOn();
+						World.world.gg.vis.visible=true;
+						World.world.vblack.alpha=0;
+						World.world.vblack.visible=false;
+						World.world.t_exit=World.world.t_die=0;
+						World.world.vgui.visible=World.world.skybox.visible=World.world.mainCanvas.visible=true;
 						Snd.off=false;
-						World.w.pip.noAct=false;
+						World.world.pip.gamePause=false;
 
 					} catch (err) {
 					}
 				}
 				if (s[0]=='redraw') {
-					World.w.redrawLoc();
+					World.world.redrawLoc();
 				}
 				if (s[0]=='hud') {
-					World.w.gui.vis.visible=!World.w.gui.vis.visible;
+					World.world.gui.vis.visible=!World.world.gui.vis.visible;
 				}
 				if (s[0]=='die') {
-					World.w.gg.damage(10000,Unit.D_INSIDE);
+					World.world.gg.damage(10000,Unit.D_INSIDE);
 				}
-				if (s[0]=='hardreset' && World.w.pers.dead) {
-					World.w.pers.dead=false;
-					World.w.t_die=210;
-					World.w.gg.anim('die',true);
+				if (s[0]=='hardreset' && World.world.pers.dead) {
+					World.world.pers.dead=false;
+					World.world.t_die=210;
+					World.world.gg.anim('die',true);
 					off();
 				}
 				if (s[0]=='hardinv') {
-					World.w.hardInv=!World.w.hardInv;
+					World.world.hardInv=!World.world.hardInv;
 				}
 				if (s[0]=='res_watcher') {	//исправление бага с наблюдателем
-					World.w.game.triggers['observer']=1;
+					World.world.game.triggers['observer']=1;
 				}
 				if (s[0]=='mqt') {
-					World.w.chitOn=!World.w.chitOn;
-					World.w.saveConfig();
+					World.world.chitOn=!World.world.chitOn;
+					World.world.saveConfig();
 					return;
 				}
-				if (!World.w.chitOn) {
+				if (!World.world.chitOn) {
 					off();
 					return;
 				}
@@ -174,180 +174,180 @@ package interdata
 				}
 				if (s[0]=='hardcoreMode') //Toggle Hardcore mode.
 				{
-					World.w.pers.hardcoreMode =! World.w.pers.hardcoreMode;
+					World.world.pers.hardcoreMode =! World.world.pers.hardcoreMode;
 				}
 				if (s[0]=='testmode') //Toggle debug testing mode.
 				{
-					World.w.testMode =! World.w.testMode;
+					World.world.testMode =! World.world.testMode;
 				}
 				if (s[0]=='dif') {
-					World.w.game.globalDif=s[1];
-					if (World.w.game.globalDif<0) World.w.game.globalDif=0;
-					if (World.w.game.globalDif>4) World.w.game.globalDif=4;
-					World.w.pers.setGlobalDif(World.w.game.globalDif);
-					World.w.pers.setParameters();
+					World.world.game.globalDif=s[1];
+					if (World.world.game.globalDif<0) World.world.game.globalDif=0;
+					if (World.world.game.globalDif>4) World.world.game.globalDif=4;
+					World.world.pers.setGlobalDif(World.world.game.globalDif);
+					World.world.pers.setParameters();
 				}
 				if (s[0]=='all') {
 					if (s.length==1) {
-						World.w.invent.addAll();
-						World.w.pers.addSkillPoint(10);
+						World.world.invent.addAll();
+						World.world.pers.addSkillPoint(10);
 					}
-					else if (s[1]=='weapon') World.w.invent.addAllWeapon();
-					else if (s[1]=='ammo') World.w.invent.addAllAmmo();
-					else if (s[1]=='item') World.w.invent.addAllItem();
-					else if (s[1]=='armor') World.w.invent.addAllArmor();
+					else if (s[1]=='weapon') World.world.invent.addAllWeapon();
+					else if (s[1]=='ammo') World.world.invent.addAllAmmo();
+					else if (s[1]=='item') World.world.invent.addAllItem();
+					else if (s[1]=='armor') World.world.invent.addAllArmor();
 					off();
 				}
 				if (s[0]=='min') {
-					World.w.invent.addMin();
+					World.world.invent.addMin();
 					off();
 				}
 				if (s[0]=='god') {
-					World.w.godMode=!World.w.godMode;
+					World.world.godMode=!World.world.godMode;
 				}
 				if (s[0]=='lvl' || s[0]=='level') {
-					World.w.pers.setForcLevel(s[1]);
+					World.world.pers.setForcLevel(s[1]);
 				}
 				if (s[0]=='xp') {
-					World.w.pers.expa(s[1]);
+					World.world.pers.expa(s[1]);
 				}
 				if (s[0]=='sp') {
-					if (s.length==1) World.w.pers.addSkillPoint();
-					else World.w.pers.addSkillPoint(int(s[1]));
+					if (s.length==1) World.world.pers.addSkillPoint();
+					else World.world.pers.addSkillPoint(int(s[1]));
 				}
 				if (s[0]=='pp') {
-					if (s.length==1) World.w.pers.perkPoint++;
-					else  World.w.pers.perkPoint+=int(s[1]);
+					if (s.length==1) World.world.pers.perkPoint++;
+					else  World.world.pers.perkPoint+=int(s[1]);
 				}
 				if (s[0]=='weapon') {
-					if (s.length==2) World.w.invent.addWeapon(s[1]);
-					else if (s.length>2) World.w.invent.updWeapon(s[1],1)
+					if (s.length==2) World.world.invent.addWeapon(s[1]);
+					else if (s.length>2) World.world.invent.updWeapon(s[1],1)
 				}
 				if (s[0]=='remw') {
-					if (s.length==2) World.w.invent.remWeapon(s[1]);
+					if (s.length==2) World.world.invent.remWeapon(s[1]);
 				}
 				if (s[0]=='armor') {
-					if (s.length==2) World.w.invent.addArmor(s[1]);
+					if (s.length==2) World.world.invent.addArmor(s[1]);
 				}
 				if (s[0]=='money') {
-					if (s.length==2) World.w.invent.items['money'].kol=int(s[1]);
+					if (s.length==2) World.world.invent.items['money'].kol=int(s[1]);
 				}
 				if (s[0]=='item') {
-					if (World.w.invent.items[s[1]]==null) return;
-					if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
-					else if (s.length==2) World.w.invent.items[s[1]].kol++;
-					World.w.game.checkQuests(s[1]);
-					World.w.pers.setParameters();
+					if (World.world.invent.items[s[1]]==null) return;
+					if (s.length==3) World.world.invent.items[s[1]].kol=int(s[2]);
+					else if (s.length==2) World.world.invent.items[s[1]].kol++;
+					World.world.game.checkQuests(s[1]);
+					World.world.pers.setParameters();
 				}
 				if (s[0]=='ammo') {
-					if (s.length==3) World.w.invent.items[s[1]].kol=int(s[2]);
+					if (s.length==3) World.world.invent.items[s[1]].kol=int(s[2]);
 				}
 				if (s[0]=='perk') {
-					if (s.length==2) World.w.pers.addPerk(s[1]);
+					if (s.length==2) World.world.pers.addPerk(s[1]);
 				}
 				if (s[0]=='skill') {
-					if (s.length==3) World.w.pers.setSkill(s[1], s[2]);
+					if (s.length==3) World.world.pers.setSkill(s[1], s[2]);
 				}
 				if (s[0]=='eff') {
-					if (s.length==2) World.w.gg.addEffect(s[1]);
+					if (s.length==2) World.world.gg.addEffect(s[1]);
 				}
 				if (s[0]=='res') {
-					if (World.w.gg.effects.length>0) {
-						for each (var eff in World.w.gg.effects) eff.unsetEff();
+					if (World.world.gg.effects.length>0) {
+						for each (var eff in World.world.gg.effects) eff.unsetEff();
 					}
 				}
 				if (s[0]=='repair') {
-					World.w.gg.currentWeapon.repair(1000000);
+					World.world.gg.currentWeapon.repair(1000000);
 				}
 				if (s[0]=='refill') {
-					World.w.game.refillVendors();
+					World.world.game.refillVendors();
 				}
 				if (s[0]=='rep') {
-					if (s.length==2) World.w.pers.rep=int(s[1]);
+					if (s.length==2) World.world.pers.rep=int(s[1]);
 				}
 				if (s[0]=='crack') {
-					if (s.length==2 && World.w.gg.currentWeapon) World.w.gg.currentWeapon.hp=Math.round(World.w.gg.currentWeapon.maxhp*Number(s[1])/100);
+					if (s.length==2 && World.world.gg.currentWeapon) World.world.gg.currentWeapon.hp=Math.round(World.world.gg.currentWeapon.maxhp*Number(s[1])/100);
 				}
 				if (s[0]=='break') {
-					if (s.length==2 && World.w.gg.currentArmor) World.w.gg.currentArmor.hp=Math.round(World.w.gg.currentArmor.maxhp*Number(s[1])/100);
+					if (s.length==2 && World.world.gg.currentArmor) World.world.gg.currentArmor.hp=Math.round(World.world.gg.currentArmor.maxhp*Number(s[1])/100);
 				}
 				if (s[0]=='heal') {
-					World.w.gg.heal(10000);
+					World.world.gg.heal(10000);
 				}
 				if (s[0]=='rad') {
-					World.w.gg.rad=s[1];
-					World.w.gui.setAll();
+					World.world.gg.rad=s[1];
+					World.world.gui.setAll();
 				}
 				if (s[0]=='mana') {
-					World.w.pers.manaHP=int(s[1]);
-					World.w.pers.setParameters();
+					World.world.pers.manaHP=int(s[1]);
+					World.world.pers.setParameters();
 				}
 				if (s[0]=='check') {
-					World.w.land.gotoCheckPoint();
+					World.world.land.gotoCheckPoint();
 				}
 				if (s[0]=='goto') {
-					if (s.length==3) World.w.land.gotoXY(s[1],s[2]);
+					if (s.length==3) World.world.land.gotoXY(s[1],s[2]);
 				}
 				if (s[0]=='map') {
-					World.w.drawAllMap=!World.w.drawAllMap;
+					World.world.drawAllMap=!World.world.drawAllMap;
 				}
 				if (s[0]=='black') {
-					World.w.black=!World.w.black;
-					World.w.grafon.layerLighting.visible=World.w.black && World.w.location.black;
+					World.world.black=!World.world.black;
+					World.world.grafon.layerLighting.visible=World.world.black && World.world.location.black;
 				}
 				if (s[0]=='battle') {
-					World.w.testBattle=!World.w.testBattle;
+					World.world.testBattle=!World.world.testBattle;
 				}
 				if (s[0]=='testeff') {
-					World.w.testEff=!World.w.testEff;
+					World.world.testEff=!World.world.testEff;
 				}
 				if (s[0]=='testdam') {
-					World.w.testDam=!World.w.testDam;
+					World.world.testDam=!World.world.testDam;
 				}
 				if (s[0]=='enemy') {
-					if (World.w.enemyAct==3) World.w.enemyAct=0;
-					else World.w.enemyAct=3;
+					if (World.world.enemyAct==3) World.world.enemyAct=0;
+					else World.world.enemyAct=3;
 				}
 				if (s[0]=='lim') {
-					if (s.length==2) World.w.land.lootLimit=Number(s[1]);
+					if (s.length==2) World.world.land.lootLimit=Number(s[1]);
 				}
 				if (s[0]=='fly' || s[0]=='port' || s[0]=='emit') {
-					World.w.chit=s[0];
-					World.w.chitX=s[1];
+					World.world.chit=s[0];
+					World.world.chitX=s[1];
 				}
 				if (s[0]=='getroom') {
-					World.w.testLoot=true;
-					trace('получено опыта', World.w.location.getAll());
-					World.w.testLoot=false;
+					World.world.testLoot=true;
+					trace('получено опыта', World.world.location.getAll());
+					World.world.testLoot=false;
 				}
 				if (s[0]=='err') {
-					World.w.landError=!World.w.landError;
+					World.world.landError=!World.world.landError;
 				}
 				if (s[0]=='getloc') {
-					World.w.testLoot=true;
-					trace('получено опыта', World.w.land.getAll());
-					World.w.testLoot=false;
-					//World.w.game.gotoNextLevel();			
+					World.world.testLoot=true;
+					trace('получено опыта', World.world.land.getAll());
+					World.world.testLoot=false;
+					//World.world.game.gotoNextLevel();			
 				}
 				if (s[0]=='alicorn') {
-					if (World.w.alicorn) World.w.gg.alicornOff();
-					else World.w.gg.alicornOn();
+					if (World.world.alicorn) World.world.gg.alicornOff();
+					else World.world.gg.alicornOn();
 				}
 				if (s[0]=='st') {
-					if (s.length==3) World.w.game.triggers[s[1]]=s[2];
+					if (s.length==3) World.world.game.triggers[s[1]]=s[2];
 				}
 				if (s[0]=='trigger') {
-					if (s.length==2) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
+					if (s.length==2) World.world.gui.infoText('trigger',s[1],World.world.game.triggers[s[1]]);
 				}
 				if (s[0]=='triggers') {
-					if (s.length>1) World.w.gui.infoText('trigger',s[1],World.w.game.triggers[s[1]]);
+					if (s.length>1) World.world.gui.infoText('trigger',s[1],World.world.game.triggers[s[1]]);
 					else {
-						for (var i in World.w.game.triggers)  World.w.gui.infoText('trigger',i,World.w.game.triggers[i]);
+						for (var i in World.world.game.triggers)  World.world.gui.infoText('trigger',i,World.world.game.triggers[i]);
 					}
 				}
 				
 			//}
-			World.w.gui.setAll();
+			World.world.gui.setAll();
 		}
 
 	}

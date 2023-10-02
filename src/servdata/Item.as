@@ -171,33 +171,33 @@ package servdata {
 		}
 		
 		public function checkAuto(m:Boolean=false):Boolean {
-			var inv:Invent=World.w.invent;
+			var inv:Invent=World.world.invent;
 			if (tip==L_WEAPON) {
 				var w=inv.weapons[id];
-				if (w!=null && (World.w.vsWeaponRep || m)) {		//если включен автоподбор для ремонта или принудительный вызов
-					if (w.hp<=w.maxhp && (w.respect==0 || w.respect==2 || !World.w.hardInv)) {	//подбирать автоматом если оружие есть, оно неисправно и (оно выбрано или инвентарь бесконечный)
+				if (w!=null && (World.world.vsWeaponRep || m)) {		//если включен автоподбор для ремонта или принудительный вызов
+					if (w.hp<=w.maxhp && (w.respect==0 || w.respect==2 || !World.world.hardInv)) {	//подбирать автоматом если оружие есть, оно неисправно и (оно выбрано или инвентарь бесконечный)
 						return true;
-					} else if (m && World.w.hardInv) {	//если было принудительное взятие при конечном инвентаре, то активировать взятое оружие
+					} else if (m && World.world.hardInv) {	//если было принудительное взятие при конечном инвентаре, то активировать взятое оружие
 						shpun=2;
 					}
 					return false; 
 				}
-				if (w==null && World.w.vsWeaponNew) {	//если включен автоподбор нового и оружия ещё нет
-					if (World.w.hardInv) {		//если инвентарь ограниченный, то проверять вес
+				if (w==null && World.world.vsWeaponNew) {	//если включен автоподбор нового и оружия ещё нет
+					if (World.world.hardInv) {		//если инвентарь ограниченный, то проверять вес
 						if (mass==0) return true;
 						if (xml.@tip<=3) {
-							if (inv.massW<=World.w.pers.maxmW-mass) {
+							if (inv.massW<=World.world.pers.maxmW-mass) {
 								return true;
 							} else {
-								if (m) World.w.gui.infoText('fullWeap');
+								if (m) World.world.gui.infoText('fullWeap');
 								return false;
 							}
 						}
 						if (xml.@tip==5) {
-							if (inv.massM<=World.w.pers.maxmM-mass) {
+							if (inv.massM<=World.world.pers.maxmM-mass) {
 								return true;
 							} else {
-								if (m) World.w.gui.infoText('fullMagic');
+								if (m) World.world.gui.infoText('fullMagic');
 								return false;
 							}
 						}
@@ -208,30 +208,30 @@ package servdata {
 				return false;
 			}
 			if (tip==L_SPELL) {
-				if (inv.massM>=World.w.pers.maxmM) World.w.gui.infoText('fullMagic');
+				if (inv.massM>=World.world.pers.maxmM) World.world.gui.infoText('fullMagic');
 				return true;
 			}
 			if (tip==L_ARMOR) return true;
 			if (mass==0) return true;
-			if (World.w.hardInv) {
-				if (inv.mass[invCat]+mass*kol>World.w.pers['maxm'+invCat]) return false;
+			if (World.world.hardInv) {
+				if (inv.mass[invCat]+mass*kol>World.world.pers['maxm'+invCat]) return false;
 			}
-			if (World.w.vsAmmoAll && tip==L_AMMO) return true;
-			if (World.w.vsAmmoTek && xml && tip==L_AMMO) {
+			if (World.world.vsAmmoAll && tip==L_AMMO) return true;
+			if (World.world.vsAmmoTek && xml && tip==L_AMMO) {
 				for each (w in inv.weapons) {
 					if (w.tip<=3 && (w.respect==0 || w.respect==2) && w.ammoBase!='' && (w.ammoBase==xml.@id || w.ammoBase==xml.@base)) return true;
 				}
 			}
-			if (World.w.vsExplAll && tip==L_EXPL) return true;
-			if (World.w.vsMedAll && (tip==L_MED || tip==L_POT)) return true;
-			if (World.w.vsHimAll && tip==L_HIM) return true;
-			if (World.w.vsEqipAll && tip=='equip') return true;
-			if (World.w.vsStuffAll && invCat==3) return true;
-			if (World.w.vsVal && tip=='valuables') return true;
-			if (World.w.vsBook && (tip=='book' || tip=='sphera')) return true;
-			if (World.w.vsFood && (tip=='food' || tip=='eda')) return true;
-			if (World.w.vsComp && (tip=='stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
-			if (World.w.vsIngr && tip=='compp') return true;
+			if (World.world.vsExplAll && tip==L_EXPL) return true;
+			if (World.world.vsMedAll && (tip==L_MED || tip==L_POT)) return true;
+			if (World.world.vsHimAll && tip==L_HIM) return true;
+			if (World.world.vsEqipAll && tip=='equip') return true;
+			if (World.world.vsStuffAll && invCat==3) return true;
+			if (World.world.vsVal && tip=='valuables') return true;
+			if (World.world.vsBook && (tip=='book' || tip=='sphera')) return true;
+			if (World.world.vsFood && (tip=='food' || tip=='eda')) return true;
+			if (World.world.vsComp && (tip=='stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
+			if (World.world.vsIngr && tip=='compp') return true;
 			return false;
 		}
 		

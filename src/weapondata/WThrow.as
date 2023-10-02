@@ -41,19 +41,19 @@ package weapondata
 
 		public override function attack(waitReady:Boolean=false):Boolean 
 		{
-			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) 
+			if (!waitReady && !World.world.alicorn && !auto && t_auto>0) 
 			{
 				t_auto=3;
 				return false;
 			}
 			skillConf=1;
-			if (owner.player && World.w.weaponsLevelsOff) 
+			if (owner.player && World.world.weaponsLevelsOff) 
 			{
 				if (lvlNoUse) 
 				{
 					if ((owner as UnitPlayer).pers.getWeapLevel(skill)<lvl) 
 					{
-						World.w.gui.infoText('weaponSkillLevel');
+						World.world.gui.infoText('weaponSkillLevel');
 						return false;
 					}
 				} 
@@ -64,7 +64,7 @@ package weapondata
 					else if (razn==2) skillConf=0.5;
 					else if (razn>2) 
 					{
-						World.w.gui.infoText('weaponSkillLevel');
+						World.world.gui.infoText('weaponSkillLevel');
 						return false;
 					}
 				}
@@ -103,7 +103,7 @@ package weapondata
 			{
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
-				un.putLoc(World.w.location,X,Y);
+				un.putLoc(World.world.location,X,Y);
 				un.location.addObj(un);
 				un.location.units.push(un);
 				un.fraction=owner.fraction;
@@ -117,8 +117,8 @@ package weapondata
 				un.inter.mine=1;
 				if (un.collisionAll()) un.setPos(owner.X,owner.Y);
 				if (un.collisionAll()) un.fixed=true;
-				if (owner && owner.player && World.w.pers.sapper>1) {
-					un.damage1*=World.w.pers.sapper;
+				if (owner && owner.player && World.world.pers.sapper>1) {
+					un.damage1*=World.world.pers.sapper;
 					un.vulner[Unit.D_EXPL]=un.vulner[Unit.D_PLASMA]=0;
 				}
 			} 
@@ -146,7 +146,7 @@ package weapondata
 				(b as PhisBullet).sndHit=sndFall;
 				if (owner.player) 
 				{
-					if (World.w.pers.grenader && !World.w.ctr.keyRun) (b as PhisBullet).isSensor=true;
+					if (World.world.pers.grenader && !World.world.ctr.keyRun) (b as PhisBullet).isSensor=true;
 				}
 				location.newGrenade(b);
 			}
@@ -156,8 +156,8 @@ package weapondata
 			hold=0;
 			if (owner.player && location.train) 
 			{
-				World.w.invent.items[ammo].kol++;
-				World.w.invent.mass[2]+=World.w.invent.items[ammo].mass;
+				World.world.invent.items[ammo].kol++;
+				World.world.invent.mass[2]+=World.world.invent.items[ammo].mass;
 			}
 			t_auto=3;
 			return b;
@@ -166,13 +166,13 @@ package weapondata
 		public override function setTrass(gr:Graphics) 
 		{
 			skillConf=1;
-			var razn=lvl-World.w.pers.getWeapLevel(skill);
+			var razn=lvl-World.world.pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.75;
 			else if (razn>=2) skillConf=0.5;
-			var rot3=Math.atan2(World.w.celY-Y, World.w.celX-X);
+			var rot3=Math.atan2(World.world.celY-Y, World.world.celX-X);
 			trasser.location=owner.location;
-			var rasstx=World.w.celX-X;
-			var rassty=World.w.celY-Y;
+			var rasstx=World.world.celX-X;
+			var rassty=World.world.celY-Y;
 			trasser.X=trasser.begx=X;
 			trasser.Y=trasser.begy=Y;
 			trasser.ddy=World.ddy;

@@ -46,7 +46,7 @@ package locdata
 		public var color:String;
 		public var sndMusic:String;
 		public var postMusic:Boolean=false;		 // Music doesn't switch to combat
-		public var fon:String;				// Static background
+		public var skybox:String;				// Static background
 		public var backwall:String;			// Back wall background
 		public var border:String='A';			// Border material
 		public var visMult:Number=1;		// Visibility
@@ -64,11 +64,10 @@ package locdata
 		public var passed:Boolean=false;
 
 		
-		public function LandAct(land:XML) {
+		public function LandAct(land:XML) 
+		{
 			xmlland=land;
 			id=land.@id;
-			//nazv=Res.mapText(id);
-			//info=Res.mapInfo(id);
 			if (land.@tip.length()) tip=land.@tip;
 			if (land.@dif.length()) dif=land.@dif;
 			if (land.@biom.length()) biom=land.@biom;
@@ -94,7 +93,7 @@ package locdata
 				if (land.options.@color.length()) color=land.options.@color;
 				if (land.options.@backwall.length()) backwall=land.options.@backwall;
 				if (land.options.@border.length()) border=land.options.@border;
-				if (land.options.@fon.length()) fon=land.options.@fon;
+				if (land.options.@skybox.length()) skybox=land.options.@skybox;
 				if (land.options.@music.length()) sndMusic=land.options.@music;
 				if (land.options.@postmusic.length()) postMusic=true;
 				if (land.options.@rad.length()) rad=land.options.@rad;
@@ -117,7 +116,7 @@ package locdata
 			for each(var xml in xmlland.prob) 
 			{
 				kolAllProb++;
-				if (World.w.game.triggers['prob_'+xml.@id]!=null) kolClosedProb++
+				if (World.world.game.triggers['prob_'+xml.@id]!=null) kolClosedProb++
 			}
 		}
 		

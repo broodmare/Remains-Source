@@ -9,7 +9,7 @@ package interdata
 	public class Camera 
 	{
 		
-		public var w:World;
+		public var world:World;
 		public var moved:Boolean;
 		public var screenX:int=1280; // Screen dimensions
 		public var screenY:int=800;
@@ -37,14 +37,16 @@ package interdata
 		public var showX:Number=-1;
 		public var showY:Number=0;
 		
-		public function Camera(nw:World) {
-			w=nw;
+		public function Camera(nw:World) 
+		{
+			world = nw;
 		}
 		
-		public function setLoc(location:Location) {
-			if (location==null) return;
-			screenX=w.swfStage.stageWidth;
-			screenY=w.swfStage.stageHeight;
+		public function setLoc(location:Location) 
+		{
+			if (location == null) return;
+			screenX=world.swfStage.stageWidth;
+			screenY=world.swfStage.stageHeight;
 			maxsx=location.limX;
 			maxsy=location.limY;
 			maxvx=maxsx-screenX;
@@ -54,8 +56,8 @@ package interdata
 				moved=false;
 				vx=-maxvx/2;
 				vy=-maxvy/2;
-				w.visual.x=w.sats.vis.x=vx;
-				w.visual.y=w.sats.vis.y=vy;
+				world.mainCanvas.x=world.sats.vis.x=vx;
+				world.mainCanvas.y=world.sats.vis.y=vy;
 			} else {
 				moved=true;
 			}
@@ -72,7 +74,7 @@ package interdata
 			if (turn==1000) {
 				isZoom++;
 				if (isZoom>2) isZoom=0;
-				World.w.gui.infoText('zoom'+isZoom);
+				World.world.gui.infoText('zoom'+isZoom);
 			} else if (turn>=0) {
 				isZoom=turn;
 			}
@@ -89,43 +91,43 @@ package interdata
 			if (scaleV>0.98) scaleV=1;
 			maxvx=maxsx*scaleV-screenX;
 			maxvy=maxsy*scaleV-screenY;
-			w.visual.scaleX=w.sats.vis.scaleX=w.visual.scaleY=w.sats.vis.scaleY=scaleV;
-			w.vscene.scaleX=w.vscene.scaleY=scaleS;
+			world.mainCanvas.scaleX=world.sats.vis.scaleX=world.mainCanvas.scaleY=world.sats.vis.scaleY=scaleV;
+			world.vscene.scaleX=world.vscene.scaleY=scaleS;
 			if (screenY>maxsy*scaleV) {
-				World.w.grafon.ramT.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
-				World.w.grafon.ramB.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
+				World.world.grafon.ramT.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
+				World.world.grafon.ramB.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
 			} else {
-				World.w.grafon.ramT.scaleY=-0.5/scaleV;
-				World.w.grafon.ramB.scaleY=0.6/scaleV;
+				World.world.grafon.ramT.scaleY=-0.5/scaleV;
+				World.world.grafon.ramB.scaleY=0.6/scaleV;
 			}
 			if (screenX>maxsx*scaleV) {
-				World.w.grafon.ramL.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
-				World.w.grafon.ramR.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
+				World.world.grafon.ramL.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
+				World.world.grafon.ramR.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
 			} else {
-				World.w.grafon.ramL.scaleX=-0.5/scaleV;
-				World.w.grafon.ramR.scaleX=0.5/scaleV;
+				World.world.grafon.ramL.scaleX=-0.5/scaleV;
+				World.world.grafon.ramR.scaleX=0.5/scaleV;
 			}
 		}
 		
 		public function calc(un:Unit) {
-			if (w.ctr.keyZoom) {
-				if (World.w.location && World.w.location.sky) {
+			if (world.ctr.keyZoom) {
+				if (World.world.location && World.world.location.sky) {
 					setZoom(2);
 				} else {
 					setZoom(1000);
 				}
-				w.ctr.keyZoom=false;
+				world.ctr.keyZoom=false;
 			}
 			if (moved) {
-				if ((w.ctr.keyLook || showOn) && otryv<1) {
+				if ((world.ctr.keyLook || showOn) && otryv<1) {
 					if (showOn) otryv+=0.2;
 					else otryv+=0.05;
 				}
-				if (!w.ctr.keyLook && !showOn && otryv>0) {
+				if (!world.ctr.keyLook && !showOn && otryv>0) {
 					otryv-=0.2;
 					if (otryv<0) otryv=0;
 				}
-				if (w.ctr.keyLook) {
+				if (world.ctr.keyLook) {
 					showX=-1;
 				}
 				if (!camRun) {
@@ -168,24 +170,24 @@ package interdata
 				if (Math.random()>0.2) quakeY*=-(Math.random()*0.3+0.5);
 				if (quakeY<1 && quakeY>-1) quakeY=0;
 			}
-			w.visual.x=w.sats.vis.x=vx+quakeX;
-			w.visual.y=w.sats.vis.y=vy+quakeY;
+			world.mainCanvas.x=world.sats.vis.x=vx+quakeX;
+			world.mainCanvas.y=world.sats.vis.y=vy+quakeY;
 			Snd.centrX=X, Snd.centrY=Y;
 			
-			w.celX=(celX-vx)/scaleV;
-			w.celY=(celY-vy)/scaleV;
+			world.celX=(celX-vx)/scaleV;
+			world.celY=(celY-vy)/scaleV;
 			if (dblack>0) {
-				w.vblack.visible=true;
-				w.vblack.alpha+=dblack/100;
-				if (w.vblack.alpha>=1) {
+				world.vblack.visible=true;
+				world.vblack.alpha+=dblack/100;
+				if (world.vblack.alpha>=1) {
 					dblack=0;
 				}
 			}
 			if (dblack<0) {
-				w.vblack.alpha+=dblack/100;
-				if (w.vblack.alpha<=0) {
+				world.vblack.alpha+=dblack/100;
+				if (world.vblack.alpha<=0) {
 					dblack=0;
-					w.vblack.visible=false;
+					world.vblack.visible=false;
 				}
 			}
 		}

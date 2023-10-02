@@ -80,8 +80,8 @@ package unitdata
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
+			if (World.world.game.globalDif==3) dMult=1.2;
+			if (World.world.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
 			if (currentWeapon) {
@@ -152,7 +152,7 @@ package unitdata
 		
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
 			var td:Number=super.damage(dam, tip, bul,tt);
-			if (tr==2 && World.w.game.globalDif>1) {
+			if (tr==2 && World.world.game.globalDif>1) {
 				var tc:int=Math.floor((maxhp-hp)/maxhp*4);
 				if (tc>called) {
 					location.enemySpawn(true,true);
@@ -208,7 +208,7 @@ package unitdata
 		
 		public override function control() {
 			var t:Tile;
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (stun) {
@@ -220,7 +220,7 @@ package unitdata
 			//return;
 			
 			if (location.gg.invulner) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;

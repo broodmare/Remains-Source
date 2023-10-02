@@ -132,7 +132,7 @@ package unitdata
 		
 		public override function control() {
 			if (sost>=3) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -155,7 +155,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					stuk=0;
 					aiSpok=maxSpok+10;
@@ -203,7 +203,7 @@ package unitdata
 				turnY=0;
 			}
 			//атака
-			if (World.w.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
+			if (World.world.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
 				critCh=0;
 				if (celUnit && (atkRasst>atkDist*atkDist)) currentWeapon.attack();
 				if (attKorp(celUnit,1)) {
@@ -230,7 +230,7 @@ package unitdata
 				norma(p,maxSpeed*3);
 				dx+=p.x;
 				dy+=p.y;
-				if (World.w.showHit==1 || World.w.showHit==2 && t_hitPart==0) {
+				if (World.world.showHit==1 || World.world.showHit==2 && t_hitPart==0) {
 					visDamDY-=15;
 					t_hitPart=10;
 					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(location,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});

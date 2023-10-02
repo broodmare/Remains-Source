@@ -47,8 +47,8 @@ package interdata
 			statHead.nazv.text=Res.pipText('ii2');
 			statHead.kol.text=Res.pipText('ii7');
 			statHead.kol.width=170;
-			statHead.mass.text=World.w.hardInv?Res.pipText('ii8'):'';
-			statHead.mass2.text=World.w.hardInv?Res.pipText('ii9'):'';
+			statHead.mass.text=World.world.hardInv?Res.pipText('ii8'):'';
+			statHead.mass2.text=World.world.hardInv?Res.pipText('ii9'):'';
 			setTopText('vaultupr');
 			vis.butOk.visible=false;
 			inv.calcMass();
@@ -92,7 +92,7 @@ package interdata
 		}
 		
 		function showBottext() {
-			if (World.w.hardInv) vis.bottext.text=inv.retMass(page2);
+			if (World.world.hardInv) vis.bottext.text=inv.retMass(page2);
 			else vis.bottext.text='';
 		}
 		
@@ -112,8 +112,8 @@ package interdata
 			item.nazv.alpha=1;
 			if (obj.kol==0) item.nazv.alpha=0.5;
 			item.cat.text=obj.tip;
-			item.mass.text=World.w.hardInv?obj.mass:'';
-			item.mass2.text=World.w.hardInv?Res.numb(obj.mass*obj.kol):'';
+			item.mass.text=World.world.hardInv?obj.mass:'';
+			item.mass2.text=World.world.hardInv?Res.numb(obj.mass*obj.kol):'';
 			item.kol.text=obj.kol;
 			item.ns.maximum=obj.kol+obj.vault;
 			item.ns.value=obj.vault;
@@ -144,7 +144,7 @@ package interdata
 				else mc.nazv.alpha=1;
 				mc.kol.text=obj.kol;
 				mc.ns.value=obj.vault;
-				mc.mass2.text=World.w.hardInv?Res.numb(obj.mass*obj.kol):'';
+				mc.mass2.text=World.world.hardInv?Res.numb(obj.mass*obj.kol):'';
 			}
 		}
 		

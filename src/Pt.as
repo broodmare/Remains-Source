@@ -32,7 +32,7 @@ package
 		{
 			if (vis && location && location.locationActive) 
 			{
-				World.w.grafon.canvasLayerArray[layer].addChild(vis);
+				World.world.grafon.canvasLayerArray[layer].addChild(vis);
 			}
 		}
 		

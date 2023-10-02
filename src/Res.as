@@ -88,7 +88,7 @@ package
 			if (xl.@m=='1')	
 			{						// Contains material
 				var spl:Array=s.split('|');
-				if (spl.length>=2) s=spl[World.w.matFilter?1:0];
+				if (spl.length>=2) s=spl[World.world.matFilter?1:0];
 			}
 			if (razd>=1 || dop) 
 			{
@@ -165,7 +165,7 @@ package
 								var sar:Array=s1.split('|');
 								if (sar) 
 								{
-									if (World.w.matFilter && sar.length>1) s1=sar[1];
+									if (World.world.matFilter && sar.length>1) s1=sar[1];
 									else s1=sar[0];
 								}
 							}
@@ -173,7 +173,7 @@ package
 							{
 								for (var i=1; i<=5; i++) 
 								{
-									if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span classData='yel'>"+World.w.ctr.retKey(node.attribute('s'+i))+"</span>");
+									if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span classData='yel'>"+World.world.ctr.retKey(node.attribute('s'+i))+"</span>");
 								}
 							}
 
@@ -201,7 +201,7 @@ package
 				{
 					for (var i=1; i<=5; i++) 
 					{
-						if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span classData='r2'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
+						if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span classData='r2'>"+World.world.ctr.retKey(xml.attribute('s'+i))+"</span>");
 					}
 				}
 			} 
@@ -233,7 +233,7 @@ package
 
 			var num:int=Math.floor(Math.random()*n);
 
-			if (World.w.matFilter && xl[num].@m.length) return '';
+			if (World.world.matFilter && xl[num].@m.length) return '';
 
 			var s:String=xl[num];
 			var n1=s.indexOf('#');
@@ -244,7 +244,7 @@ package
 				var ss:String=s.substring(n1+1,n2);
 				s=s.substring(0,n1)+ss.split('|')[msex?0:1]+s.substring(n2+1);
 			}
-			s=s.replace('@lp',World.w.pers.persName);
+			s=s.replace('@lp',World.world.pers.persName);
 			return s;
 		}
 		
@@ -264,7 +264,7 @@ package
 
 		public static function lpName(s:String):String 
 		{
-			return s.replace(/@lp/g,World.w.pers.persName);
+			return s.replace(/@lp/g,World.world.pers.persName);
 		}
 		
 
@@ -292,7 +292,7 @@ package
 			if (s==null) return '';
 			for (var i=1; i<=5; i++) 
 			{
-				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span classData='imp'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
+				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span classData='imp'>"+World.world.ctr.retKey(xml.attribute('s'+i))+"</span>");
 			}
 			
 			return s;

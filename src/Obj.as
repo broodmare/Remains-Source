@@ -60,10 +60,10 @@ package
 		}
 		
 		public function getRasst2(obj:Obj=null):Number {
-			if (obj==null) obj=World.w.gg;
+			if (obj==null) obj=World.world.gg;
 			var nx=obj.X-X;
 			var ny=obj.Y-obj.scY/2-Y+scY/2;
-			if (obj==World.w.gg) ny=obj.Y-obj.scY*0.75-Y+scY/2;
+			if (obj==World.world.gg) ny=obj.Y-obj.scY*0.75-Y+scY/2;
 			rasst2=nx*nx+ny*ny;
 			if (isNaN(rasst2)) rasst2=-1;
 			return rasst2;
@@ -76,16 +76,16 @@ package
 		//script command
 		public function command(com:String, val:String=null) {
 			if (com=='show') {
-				World.w.cam.showOn=true;
-				World.w.cam.showX=X;
-				World.w.cam.showY=Y;
+				World.world.cam.showOn=true;
+				World.world.cam.showX=X;
+				World.world.cam.showY=Y;
 			}
 		}
 		
 		//affecting the main character
 		public function ggModum() {
-			if (location==World.w.gg.location && radioactiv && rasst2>=0 && rasst2<radrad*radrad) {
-				World.w.gg.raddamage((radrad-Math.sqrt(rasst2))/radrad,radioactiv,radtip);
+			if (location==World.world.gg.location && radioactiv && rasst2>=0 && rasst2<radrad*radrad) {
+				World.world.gg.raddamage((radrad-Math.sqrt(rasst2))/radrad,radioactiv,radtip);
 			}
 		}
 		
@@ -135,10 +135,10 @@ package
 		
 		public static function setArmor(m:MovieClip) {
 			var aid:String='';
-			if (World.w) {
-				if (World.w.pip && World.w.pip.active || World.w.mmArmor && World.w.allStat==0) aid=World.w.pip.ArmorId;
-				else if (World.w.armorWork!='') aid=World.w.armorWork;
-				else if (World.w.alicorn) aid='ali';
+			if (World.world) {
+				if (World.world.pip && World.world.pip.active || World.world.mmArmor && World.world.allStat==0) aid=World.world.pip.ArmorId;
+				else if (World.world.armorWork!='') aid=World.world.armorWork;
+				else if (World.world.alicorn) aid='ali';
 				else aid=Appear.ggArmorId;
 			}
 			if (aid=='') {
@@ -153,7 +153,7 @@ package
 		}
 		
 		public static function setMorda(m:MovieClip, c:int) {
-			if (World.w && World.w.gg) m.gotoAndStop(World.w.gg.mordaN);
+			if (World.world && World.world.gg) m.gotoAndStop(World.world.gg.mordaN);
 			else m.gotoAndStop(1);
 		}
 		
@@ -177,7 +177,7 @@ package
 		
 		public static function setVisible(m:MovieClip) {
 			var h:int=0;
-			if (World.w && World.w.pip && World.w.pip.active) h=World.w.pip.hideMane;
+			if (World.world && World.world.pip && World.world.pip.active) h=World.world.pip.hideMane;
 			else h=Appear.hideMane;
 			m.visible=(h==0);
 		}

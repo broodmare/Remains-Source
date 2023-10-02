@@ -270,7 +270,7 @@ package unitdata
 				if (currentWeapon) currentWeapon.attack();
 			}
 			if (aiN%10==0 && !isVis) {
-				isVis=World.w.gg.lookInvis(this);
+				isVis=World.world.gg.lookInvis(this);
 				if (isVis) {
 					setVis(true);
 				}

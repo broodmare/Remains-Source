@@ -36,17 +36,17 @@ package
 	
 	public class World 
 	{
-		public static var w:World;
+		public static var world:World;
 		
 		public var urle:String;						//URL from which the game was launched
 
 		//Visual components
-		public var main:Sprite;						//Main game sprite
+		public var screenSpace:Sprite;				//Main game sprite
 		public var swfStage:Stage;	
 		
-		public var vwait:MovieClip;					//Loading image
-		public var vfon:MovieClip;					//Static background
-		public var visual:Sprite;					//Active area
+		public var loadingScreen:MovieClip;			//Loading image
+		public var skybox:MovieClip;				//Static background
+		public var mainCanvas:Sprite;					//Active area
 		public var vscene:MovieClip;				//Scene
 		public var vblack:MovieClip;				//Darkness
 		public var vpip:MovieClip;					//Pipbuck
@@ -74,7 +74,7 @@ package
 		
 		//Location components
 		public var land:Land;						//Current terrain
-		public var location:Location;					//Current location
+		public var location:Location;				//Current location
 		public var rooms:Rooms;
 		
 		//Working variables
@@ -97,7 +97,7 @@ package
 		
 		public var testLoot:Boolean = false;		//Loot and experience testing
 		public var summxp:int = 0;
-		var ccur:String;
+		public var ccur:String;
 		
 		public var currentMusic:String='';
 		
@@ -105,7 +105,7 @@ package
 		//Settings variables
 		public var enemyAct:int = 3;				//enemy activity, should be 3. If 0, enemies will not be active
 		public var roomsLoad:int = 1;  				//1-load from file
-		var langLoad = 1;  							//1-load from file
+		public var langLoad = 1;  					//1-load from file
 		public var addCheckSP:Boolean = false;		//add skill points when visiting checkpoints
 		public var weaponsLevelsOff:Boolean = true;	//disable using weapons of incorrect level
 		public var drawAllMap:Boolean = false;		//display the whole map without fog of war
@@ -178,13 +178,13 @@ package
 		public var lang:String = 'en';
 		public var langDef:String = 'ru';
 		public var languageList:Array;
-		public var kolLangs:int = 0;
+		public var languageCount:int = 0;
 		public var tl:TextLoader;
 		public var tld:TextLoader;
 		public var textLoaded:Boolean = false;
 		public var textLoadErr:Boolean = false;
-		var loader_lang:URLLoader; 
-		var request_lang:URLRequest;
+		public var loader_lang:URLLoader; 
+		public var request_lang:URLRequest;
 		public var langsXML:XML;
 		public var textProgressLoad:Number = 0;
 		
@@ -203,11 +203,11 @@ package
 		
 		//Loading, saves, config
 		public var configObj:SharedObject;
-		var saveObj:SharedObject;
-		var saveArr:Array;
+		public var saveObj:SharedObject;
+		public var saveArr:Array;
 		public var saveCount:int = 10;
-		var savePath:String = null;
-		var t_save:int = 0;
+		public var savePath:String = null;
+		public var t_save:int = 0;
 		public var loaddata:Object;					//data loaded from file
 		public var nadv:int = 0, koladv:int = 10;	//advice number
 		public var load_log:String='';
@@ -226,17 +226,17 @@ package
 		public var autoSaveN:int = 0;				//autosave slot number
 		public var log:String='';
 		
-		var fc:int=0;
+		public var fc:int=0;
 
 		//var date:Date,
-		var d1:int, d2:int;
+		public var d1:int, d2:int;
 		
 		public var landError:Boolean= false;
 
 
 		public function World(nmain:Sprite) 
 		{
-			World.w=this;
+			World.world=this;
 
 			// Technical part
 			
@@ -249,9 +249,9 @@ package
 			langURL = 'lang.xml';
 			landPath = 'Rooms/';
 			
-			main = nmain;
+			screenSpace = nmain;
 
-			swfStage = main.stage;
+			swfStage = screenSpace.stage;
 			swfStage.tabChildren = false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
 
@@ -280,15 +280,15 @@ package
 			}
 			
 			//Creating graphic elements
-			vwait = new visualWait();
-			vwait.cacheAsBitmap = true;
+			loadingScreen = new visualWait();
+			loadingScreen.cacheAsBitmap = true;
 			
 			//Appearance configurator
 			app = new Appear();
 			
-			visual = new Sprite();
+			mainCanvas = new Sprite();
 			vgui =   new visualGUI();
-			vfon =   new MovieClip();
+			skybox = new MovieClip();
 			vpip =   new visPipBuck();
 			vstand = new visualStand();
 			vsats =  new MovieClip();
@@ -299,27 +299,27 @@ package
 			verror = new visError();
 
 			setLoadScreen();
-			vgui.visible=vpip.visible=vconsol.visible=vfon.visible=visual.visible=vsats.visible=vwait.visible=vblack.visible=verror.visible=vscene.visible= false;
+			vgui.visible=vpip.visible=vconsol.visible=skybox.visible=mainCanvas.visible=vsats.visible=loadingScreen.visible=vblack.visible=verror.visible=vscene.visible= false;
 			vscene.stop();
 
-			main.addChild(vwait);
-			main.addChild(vfon);
-			main.addChild(visual);
-			main.addChild(vscene);
-			main.addChild(vblack);
-			main.addChild(vpip);
-			main.addChild(vsats);
-			main.addChild(vgui);
-			main.addChild(vstand);
-			main.addChild(verror);
-			main.addChild(vconsol);
+			screenSpace.addChild(loadingScreen);
+			screenSpace.addChild(skybox);
+			screenSpace.addChild(mainCanvas);
+			screenSpace.addChild(vscene);
+			screenSpace.addChild(vblack);
+			screenSpace.addChild(vpip);
+			screenSpace.addChild(vsats);
+			screenSpace.addChild(vgui);
+			screenSpace.addChild(vstand);
+			screenSpace.addChild(verror);
+			screenSpace.addChild(vconsol);
 
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function () {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
 			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible= false;});
 			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {errorShow= false; verror.visible= false;});
 			vstand.visible= false;
 
-			grafon = new Grafon(visual);
+			grafon = new Grafon(mainCanvas);
 			cam = new Camera(this);
 
 			load_log += 'Stage 1 Ok\n';
@@ -386,7 +386,7 @@ package
 				{
 					var obj={file:xmlFile.@file, nazv:xmlFile[0]};
 					languageList[xmlFile.@id]=obj;
-					kolLangs++;
+					languageCount++;
 				}
 			}
 			if (languageList[lang] == null) lang = langDef;
@@ -565,8 +565,8 @@ package
 			vblack.height = swfStage.stageHeight;
 			if (loadScreen<0) 
 			{
-				vwait.x=swfStage.stageWidth/2;
-				vwait.y=swfStage.stageHeight/2;
+				loadingScreen.x=swfStage.stageWidth/2;
+				loadingScreen.y=swfStage.stageHeight/2;
 			}
 			if (allStat == 1 && !testMode) pip.onoff(11);
 		}
@@ -596,7 +596,7 @@ package
 		{
 			if (testMode && !chitOn) 
 			{
-				vwait.progres.text='error';
+				loadingScreen.progres.text='error';
 				return;
 			}
 			try
@@ -704,7 +704,7 @@ package
 				//visual part
 				resizeScreen();
 				offLoadScreen();
-				vgui.visible=vfon.visible=visual.visible = true;
+				vgui.visible=skybox.visible=mainCanvas.visible = true;
 				vblack.alpha=1;
 				cam.dblack=-10;
 				pip.onoff(-1);
@@ -777,7 +777,7 @@ package
 				if (data.n != null) autoSaveN=data.n;
 				
 				offLoadScreen();
-				vgui.visible=vfon.visible=visual.visible=true;
+				vgui.visible=skybox.visible=mainCanvas.visible=true;
 				vblack.alpha=1;
 				cam.dblack=-10;
 				pip.onoff(-1);
@@ -805,7 +805,7 @@ package
 			try 
 			{
 				land = nland;
-				grafon.drawSkybox(vfon,land.act.fon);
+				grafon.drawSkybox(skybox,land.act.skybox);
 			} 
 			catch (err) 
 			{
@@ -832,7 +832,7 @@ package
 				currentMusic = location.sndMusic;
 				Snd.playMusic(currentMusic);
 				gui.hpBarBoss();
-				if (t_die <= 0) World.w.gg.controlOn();
+				if (t_die <= 0) World.world.gg.controlOn();
 				gui.dialText();
 				pers.invMassParam();
 				gc();
@@ -861,7 +861,7 @@ package
 		{
 			if (t_exit > 0) return;
 			gg.controlOff();
-			pip.noAct=true;
+			pip.gamePause=true;
 			if (fast) 
 			{
 				t_exit = 21;
@@ -899,11 +899,11 @@ package
 					Mouse.show();
 					Snd.off = false;
 					offLoadScreen();
-					vgui.visible=vfon.visible=visual.visible = true;
+					vgui.visible=skybox.visible=mainCanvas.visible = true;
 					vblack.alpha=1;
 					cam.dblack = -10;
 					gg.controlOn();
-					pip.noAct = false;
+					pip.gamePause = false;
 				}
 				if (t_exit == 1) 
 				{
@@ -1181,45 +1181,45 @@ package
 		public function setLoadScreen(n:int = -1) 
 		{
 			loadScreen = n;
-			vwait.story.lmb.stop();
-			vwait.story.lmb.visible = false;
+			loadingScreen.story.lmb.stop();
+			loadingScreen.story.lmb.visible = false;
 			vgui.visible = false;
-			vfon.visible = false;
-			visual.visible = false;
+			skybox.visible = false;
+			mainCanvas.visible = false;
 			vscene.visible = false;
-			vwait.visible = true;
+			loadingScreen.visible = true;
 			catPause = false;
-			vwait.progres.text = Res.guiText('loading');
+			loadingScreen.progres.text = Res.guiText('loading');
 
 			if (n < 0) 
 			{
-				vwait.x = swfStage.stageWidth / 2;
-				vwait.y = swfStage.stageHeight / 2;
-				vwait.skill.gotoAndStop(Math.floor(Math.random()*vwait.skill.totalFrames+1));
-				vwait.skill.visible = vwait.progres.visible=true;
-				vwait.story.visible = false;
+				loadingScreen.x = swfStage.stageWidth / 2;
+				loadingScreen.y = swfStage.stageHeight / 2;
+				loadingScreen.skill.gotoAndStop(Math.floor(Math.random()*loadingScreen.skill.totalFrames+1));
+				loadingScreen.skill.visible = loadingScreen.progres.visible=true;
+				loadingScreen.story.visible = false;
 				clickReq=0;
 			} 
 			else 
 			{
-				vwait.x=vwait.y = 0;
-				vwait.story.visible = true;
-				vwait.skill.visible = vwait.progres.visible= false;
+				loadingScreen.x=loadingScreen.y = 0;
+				loadingScreen.story.visible = true;
+				loadingScreen.skill.visible = loadingScreen.progres.visible= false;
 
 				if (n == 0) 
 				{
-					vwait.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
+					loadingScreen.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
 				} 
 				else 
 				{
-					vwait.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
+					loadingScreen.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
 				}
 
 				clickReq = 1;
 			}
 
-			vwait.cacheAsBitmap= false;
-			vwait.cacheAsBitmap=true;
+			loadingScreen.cacheAsBitmap= false;
+			loadingScreen.cacheAsBitmap=true;
 		}
 		
 		// Determine which loading screen to display
@@ -1245,18 +1245,18 @@ package
 		// Enable waiting for a click
 		function waitLoadClick() 
 		{
-			vwait.story.lmb.play();
-			vwait.story.lmb.visible = true;
+			loadingScreen.story.lmb.play();
+			loadingScreen.story.lmb.visible = true;
 		}
 		
 		// Remove the loading screen
 		function offLoadScreen() 
 		{
-			vwait.visible = false;
-			vwait.story.visible = false;
-			vwait.skill.visible=vwait.progres.visible = true;
-			vwait.story.lmb.stop();
-			vwait.story.lmb.visible = false;
+			loadingScreen.visible = false;
+			loadingScreen.story.visible = false;
+			loadingScreen.skill.visible=loadingScreen.progres.visible = true;
+			loadingScreen.story.lmb.stop();
+			loadingScreen.story.lmb.visible = false;
 			clickReq=0;
 		}
 
@@ -1264,7 +1264,7 @@ package
 		public function showScene(sc:String, n:int=0) 
 		{
 			catPause = true;
-			visual.visible = false;
+			mainCanvas.visible = false;
 			gui.allOff();
 			gui.offCelObj();
 
@@ -1300,7 +1300,7 @@ package
 		public function unshowScene() 
 		{
 			catPause = false;
-			visual.visible = true;
+			mainCanvas.visible = true;
 			gui.allOn();
 			vscene.gotoAndStop(1);
 			vscene.visible = false;
@@ -1309,7 +1309,7 @@ package
 		// Final credits or game over
 		public function endgame(n:int=0) 
 		{
-			vwait.visible=vfon.visible = false;
+			loadingScreen.visible=skybox.visible = false;
 			var s:String;
 			if (n == 1) 
 			{
@@ -1366,7 +1366,7 @@ package
 				return;
 			}
 			if (t_save < 100 && n == -1 && !pers.hardcoreMode) return;
-			if (pip.noAct) return;
+			if (pip.gamePause) return;
 			if (n == -1) n=autoSaveN;
 			var save=saveArr[n];
 			if (save is SharedObject) 

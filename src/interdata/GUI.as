@@ -247,7 +247,7 @@ package interdata
 			}
 			selMode=mode;
 			wSelN=0;
-			var inv:Invent=World.w.invent;
+			var inv:Invent=World.world.invent;
 			inv.getKolAmmos();
 			arr=new Array();
 			arrfav=new Array();
@@ -268,7 +268,7 @@ package interdata
 						if (n.fav>0) arrfav[n.fav]=n;
 						if (w.respect==1 || w.respect==3 || w.spell)  continue;
 						if (w.avail()<=0 && w!=gg.currentWeapon) continue;
-						if (w.alicorn && !World.w.alicorn) continue;
+						if (w.alicorn && !World.world.alicorn) continue;
 						arr.push(n);
 					}
 				}
@@ -354,14 +354,14 @@ package interdata
 					mc.nazv.text=arrfav[i].nazv;
 					if (arrfav[i].ammo!=null) mc.ammo.text=arrfav[i].ammo;
 					else mc.ammo.text='';
-					if (i<=World.kolHK) mc.fav.text=World.w.ctr.retKey('keyWeapon'+arrfav[i].fav);
+					if (i<=World.kolHK) mc.fav.text=World.world.ctr.retKey('keyWeapon'+arrfav[i].fav);
 					else if (i<=World.kolHK*2+4) {
-						if (i<=World.kolHK*2) mc.fav.text='^'+World.w.ctr.retKey('keyWeapon'+(arrfav[i].fav-World.kolHK));
-						else mc.fav.text=World.w.ctr.retKey('keySpell'+(arrfav[i].fav-World.kolHK*2));
+						if (i<=World.kolHK*2) mc.fav.text='^'+World.world.ctr.retKey('keyWeapon'+(arrfav[i].fav-World.kolHK));
+						else mc.fav.text=World.world.ctr.retKey('keySpell'+(arrfav[i].fav-World.kolHK*2));
 						mc.x=screenX-400;
-					} else if (i==World.kolHK*2+5) mc.fav.text=World.w.ctr.retKey('keyGrenad');
-					else if (i==World.kolHK*2+6) mc.fav.text=World.w.ctr.retKey('keyMagic');
-					else if (i==World.kolHK*2+7) mc.fav.text=World.w.ctr.retKey('keyDef');
+					} else if (i==World.kolHK*2+5) mc.fav.text=World.world.ctr.retKey('keyGrenad');
+					else if (i==World.kolHK*2+6) mc.fav.text=World.world.ctr.retKey('keyMagic');
+					else if (i==World.kolHK*2+7) mc.fav.text=World.world.ctr.retKey('keyDef');
 					try {
 						mc.trol.gotoAndStop('w'+arrfav[i].skill);
 					} catch (err) {
@@ -374,7 +374,7 @@ package interdata
 		}
 		
 		public function setStatus() {
-			if (World.w.game && World.w.game.triggers['nomed']) return;
+			if (World.world.game && World.world.game.triggers['nomed']) return;
 			vis.status.visible=active;
 		}
 		
@@ -390,8 +390,8 @@ package interdata
 				mc.nazv.text=arr[n].nazv;
 				if (arr[n].ammo!=null) mc.ammo.text=arr[n].ammo;
 				else mc.ammo.text='';
-				if (arr[n].fav>World.kolHK && arr[n].fav<=World.kolHK*2) mc.fav.text='^'+World.w.ctr.retKey('keyWeapon'+(arr[n].fav-World.kolHK));
-				else if (arr[n].fav>0 && arr[n].fav<=World.kolHK) mc.fav.text=World.w.ctr.retKey('keyWeapon'+arr[n].fav);
+				if (arr[n].fav>World.kolHK && arr[n].fav<=World.kolHK*2) mc.fav.text='^'+World.world.ctr.retKey('keyWeapon'+(arr[n].fav-World.kolHK));
+				else if (arr[n].fav>0 && arr[n].fav<=World.kolHK) mc.fav.text=World.world.ctr.retKey('keyWeapon'+arr[n].fav);
 				else mc.fav.text='';
 				try {
 					mc.trol.gotoAndStop('w'+arr[n].skill);
@@ -441,7 +441,7 @@ package interdata
 				var w:Weapon=gg.currentWeapon;
 				if (w.ammo) {
 					var n='';
-					var k=World.w.invent.items[w.ammo].kol;
+					var k=World.world.invent.items[w.ammo].kol;
 					var s:String;
 					if (w.tip!=4) {
 						if (w.hold<w.holder/4) n=2;
@@ -476,7 +476,7 @@ package interdata
 				s+="</span>";
 				weapon.htmlText=s;
 				vis.textWeapon.x=20+weapon.textWidth;
-				if (w.ammo!='' && w.tip!=4) ammo.text=World.w.invent.items[w.ammo].nazv;
+				if (w.ammo!='' && w.tip!=4) ammo.text=World.world.invent.items[w.ammo].nazv;
 				else if (w.id=='paint') ammo.text=(w as WPaint).paintNazv;
 				else ammo.text='';
 			} else {
@@ -490,8 +490,8 @@ package interdata
 			if (gg.currentWeapon==null || gg.currentWeapon.noSats) vis.odBar.visible=false;
 			else vis.odBar.visible=active;
 			t_od=200;
-			vis.odBar.bar.scaleX=World.w.sats.odv/50;
-			vis.odBar.bar2.scaleX=World.w.sats.od/50;
+			vis.odBar.bar.scaleX=World.world.sats.odv/50;
+			vis.odBar.bar2.scaleX=World.world.sats.od/50;
 		}
 		
 		public function setItems(turn:int=0) {
@@ -501,20 +501,20 @@ package interdata
 				item.text='';
 				return;
 			}
-			if (World.w.invent.cItem<0) {
+			if (World.world.invent.cItem<0) {
 				vitem.visible=item.visible=false;
 				vitem.gotoAndStop(1);
 				item.text='';
 			} else {
 				t_item=200;
-				var ci:String=World.w.invent.itemsId[World.w.invent.cItem];
+				var ci:String=World.world.invent.itemsId[World.world.invent.cItem];
 				vitem.visible=item.visible=active;
 				try {
 					vitem.gotoAndStop(ci);
 				} catch(err) {
 					vitem.gotoAndStop(1);
 				}
-				item.text=Res.txt('i',ci)+' ('+World.w.invent.items[ci].kol+')';
+				item.text=Res.txt('i',ci)+' ('+World.world.invent.items[ci].kol+')';
 			}
 			setOtstup();
 		}
@@ -539,13 +539,13 @@ package interdata
 		}
 		
 		public function setVisibility() {
-			if (World.w.pip.active || !gg.showObsInd || gg.obs<3) {
+			if (World.world.pip.active || !gg.showObsInd || gg.obs<3) {
 				vis.visibility.visible=false;
 			} else {
 				vis.visibility.visible=true;
 				//vis.visibility.txt.text=Math.round(gg.obs/gg.maxObs*100)+'%';
 				vis.visibility.gotoAndStop(Math.floor(gg.obs/gg.maxObs*40+1));
-				World.w.cam.setKoord(vis.visibility,gg.X,gg.Y-80);
+				World.world.cam.setKoord(vis.visibility,gg.X,gg.Y-80);
 			}
 		}
 		
@@ -561,7 +561,7 @@ package interdata
 				if (gg.h2o<10) mana.text+=txtH2oOver;
 				else mana.text+=txtH2o+' '+Math.round(gg.h2o/10)+'%';
 			}
-			if (gg.stam<500 || World.w.testBattle && gg.stam<980) {
+			if (gg.stam<500 || World.world.testBattle && gg.stam<980) {
 				if (mana.text!='') mana.text+='\n';
 				if (gg.stam<10) mana.text+=txtStam+' 0%';
 				else mana.text+=txtStam+' '+Math.round(gg.stam/10)+'%';
@@ -615,7 +615,7 @@ package interdata
 		}
 		
 		public function offCelObj() {
-			celObj=World.w.location.celObj=null;
+			celObj=World.world.location.celObj=null;
 			celobj.visible=false;
 			unshowSelector();
 		}
@@ -638,7 +638,7 @@ package interdata
 			var t1:Boolean=false, t2:Boolean=false, t3:Boolean=false, t4:Boolean=false;
 			effIsVis=false;
 			for (var i=0; i<kolEff; i++) {
-				if (World.w.pip.active) veff[i].alpha=0.2;
+				if (World.world.pip.active) veff[i].alpha=0.2;
 				else veff[i].alpha=1;
 				if (!t1 && gg.cut>0) {
 					veff[i].visible=effIsVis=true;
@@ -680,27 +680,27 @@ package interdata
 		}
 		
 		public function setCelObj() {
-			celObj=World.w.location.celObj;
+			celObj=World.world.location.celObj;
 			if (celObj!=prevObj) {
-				if (World.w.shineObjs && prevObj && prevObj.vis && prevObj.levit==0) {
+				if (World.world.shineObjs && prevObj && prevObj.vis && prevObj.levit==0) {
 					prevObj.vis.transform.colorTransform=prevObj.cTransform;
 				}
 			}
 			var warn='r';
 			levit_poss.visible=false;
-			if (World.w.pip.active) return;
+			if (World.world.pip.active) return;
 			var s:String;
 			pr_bar.visible=false;
 			if (gg.teleObj) {
-				World.w.cur('action');
+				World.world.cur('action');
 				celobj.visible=true;
 				if (gg.teleObj.warn>0)  warn='warn';
 				s="<span class = '"+warn+"'>"+gg.teleObj.nazv+"</span>"
-				if (World.w.hintTele) s+='\n'+World.w.ctr.retKey('keyTele')+' - '+txtDrop;
+				if (World.world.hintTele) s+='\n'+World.world.ctr.retKey('keyTele')+' - '+txtDrop;
 				celobj.text=s;
-				World.w.cam.setKoord(celobj,gg.teleObj.X,gg.teleObj.Y);
+				World.world.cam.setKoord(celobj,gg.teleObj.X,gg.teleObj.Y);
 			} else if (gg.actionObj!=null && gg.actionObj.owner) {
-				World.w.cur('action');
+				World.world.cur('action');
 				try {
 					celobj.visible=true;
 					s=gg.actionObj.owner.nazv;
@@ -710,8 +710,8 @@ package interdata
 					pr_bar.pr.scaleX=perc;
 					s+='\n'+gg.actionObj.actionText;//+' '+gg.t_action;
 					celobj.text=s;
-					World.w.cam.setKoord(celobj,gg.actionObj.owner.X,gg.actionObj.owner.Y);
-					World.w.cam.setKoord(pr_bar,gg.actionObj.owner.X,gg.actionObj.owner.Y);
+					World.world.cam.setKoord(celobj,gg.actionObj.owner.X,gg.actionObj.owner.Y);
+					World.world.cam.setKoord(pr_bar,gg.actionObj.owner.X,gg.actionObj.owner.Y);
 				} catch (err) {
 					celobj.visible=false;
 				}
@@ -727,7 +727,7 @@ package interdata
 				}
 				s="<span class = '"+warn+"'>"+celObj.nazv+"</span>";
 				//!!!!!!!!!!!! Additionally
-				/*if (World.w.showAddInfo) {
+				/*if (World.world.showAddInfo) {
 					if (celObj is Unit) {
 						s+=' ('+(celObj as Unit).level+'/'+Math.round((celObj as Unit).observ)+')';
 					}
@@ -735,24 +735,24 @@ package interdata
 				//Add object status
 				if (celObj.inter && celObj.inter.stateText!='') s+=' ['+celObj.inter.stateText+']';
 				//Telekinesis
-				if (!World.w.location.base && celObj.stay && celObj.levitPoss && World.w.location.celDist<=World.w.pers.teleDist && celObj.massa<=World.w.pers.maxTeleMassa) {
-					if (World.w.hintTele) s+='\n'+World.w.ctr.retKey('keyTele')+' - '+txtTele;
+				if (!World.world.location.base && celObj.stay && celObj.levitPoss && World.world.location.celDist<=World.world.pers.teleDist && celObj.massa<=World.world.pers.maxTeleMassa) {
+					if (World.world.hintTele) s+='\n'+World.world.ctr.retKey('keyTele')+' - '+txtTele;
 					//Glow
-					if (World.w.shineObjs && celObj.vis) {
+					if (World.world.shineObjs && celObj.vis) {
 						celObj.vis.transform.colorTransform=gg.shineTransform;
 					}
 					levit_poss.visible=true;
-					World.w.cam.setKoord(levit_poss,celObj.X,celObj.Y-5);
+					World.world.cam.setKoord(levit_poss,celObj.X,celObj.Y-5);
 				}
 				// Add a line about an action
-				if (celObj.inter && celObj.inter.active && celObj.inter.action && World.w.location.celDist<=World.w.actionDist && World.w.gg.rat==0) {
-					World.w.cur('action');
-					if (!World.w.location.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
+				if (celObj.inter && celObj.inter.active && celObj.inter.action && World.world.location.celDist<=World.world.actionDist && World.world.gg.rat==0) {
+					World.world.cur('action');
+					if (!World.world.location.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
 						// Locked and has a key
-						//if (World.w.showAddInfo) s+='\nзамок '+celObj.inter.lock+';'+celObj.inter.lockLevel+', мина '+celObj.inter.mine+', уровень['+celObj.inter.allDif+']';
+						//if (World.world.showAddInfo) s+='\nзамок '+celObj.inter.lock+';'+celObj.inter.lockLevel+', мина '+celObj.inter.mine+', уровень['+celObj.inter.allDif+']';
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
-							if (World.w.hintKeys) s+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
+							if (World.world.hintKeys) s+=World.world.ctr.retKey('keyAction')+' ('+txtHold+') - ';
 							s+=Res.guiText('usekey');
 						 // Locked, key needed, but not available
 						} else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
@@ -764,38 +764,38 @@ package interdata
 							s+="\n(<span class = 'r3'>"+txtUndef0+"</span>)"; 
 						} else if (celObj.inter.actionText!='') {
 							var acts:String ='\n';
-							if (World.w.hintKeys) acts+=World.w.ctr.retKey('keyAction')+' ('+txtHold+') - ';
+							if (World.world.hintKeys) acts+=World.world.ctr.retKey('keyAction')+' ('+txtHold+') - ';
 							acts+=celObj.inter.actionText;
 							if (celObj.inter.mine>0) {			//есть минирование
 								s+=acts+dif(celObj.inter.mine, celObj.inter.mineTip);		
 							} else if (celObj.inter.lock>0) { 	//есть замок
 								if (celObj.inter.lockTip==1 || celObj.inter.lockTip==2) {
-									if (World.w.pers.getLockMaster(celObj.inter.lockTip)<celObj.inter.lockLevel) {
+									if (World.world.pers.getLockMaster(celObj.inter.lockTip)<celObj.inter.lockLevel) {
 										s+="\n(<span class = 'r3'>"+this['txtUndef'+celObj.inter.lockTip]+"</span>)"; 
 									} else {
-										s+=acts+'\n'+diflock(celObj.inter.getChance(celObj.inter.lock-World.w.pers.getLockTip(celObj.inter.lockTip)));
+										s+=acts+'\n'+diflock(celObj.inter.getChance(celObj.inter.lock-World.world.pers.getLockTip(celObj.inter.lockTip)));
 									}
 								} else s+=acts+dif(celObj.inter.lock, celObj.inter.lockTip);
 							} else {
 								s+=acts;
 							}
 							//заколки
-							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.w.invent && World.w.invent.pin.kol>0) s+=" {<span class = 'r2'>"+World.w.invent.pin.kol+"</span>}";
+							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.world.invent && World.world.invent.pin.kol>0) s+=" {<span class = 'r2'>"+World.world.invent.pin.kol+"</span>}";
 							if (celObj.inter.cons) s+='\n('+Res.guiText('required')+': '+Res.txt('i',celObj.inter.cons)+')';
 						}
 					} else {
 						s+='\n';
-						if (World.w.hintKeys) s+=World.w.ctr.retKey('keyAction')+' - ';
+						if (World.world.hintKeys) s+=World.world.ctr.retKey('keyAction')+' - ';
 						s+=celObj.inter.actionText;
 					}
 				} else if (celObj.warn>0)  {
-					World.w.cur('combat');
+					World.world.cur('combat');
 				} else {
-					World.w.cur('target');
+					World.world.cur('target');
 				}
-				if (celObj.inter && World.w.location.celDist<=World.w.actionDist) {
+				if (celObj.inter && World.world.location.celDist<=World.world.actionDist) {
 					acts="\n<span class = 'r3'>";
-					if (World.w.hintKeys) acts+=World.w.ctr.retKey('keyCrack')+' - ';
+					if (World.world.hintKeys) acts+=World.world.ctr.retKey('keyCrack')+' - ';
 					if (celObj.inter.mineTip==6 && celObj.inter.mine>0) {
 						s+=acts+Res.guiText('actalarm')+"</span>";
 					} else if (celObj.inter.lockTip==1 && celObj.inter.needRuna(gg)) {
@@ -808,21 +808,21 @@ package interdata
 					s+=" <span class = 'r1'>(ʘ)</span>";
 				}
 				celobj.htmlText=s;
-				World.w.cam.setKoord(celobj,celObj.X,celObj.Y);
+				World.world.cam.setKoord(celobj,celObj.X,celObj.Y);
 			} else {
 				celobj.visible=false;
-				World.w.cur('target');
+				World.world.cur('target');
 			}
-			//if (World.w.t_battle>0) World.w.cur('combat');
+			//if (World.world.t_battle>0) World.world.cur('combat');
 			if (celobj.visible) {
 				celobj.x-=celobj.width/2;
-				if (celobj.y>World.w.cam.screenY-40-celobj.height) celobj.y=pr_bar.y=World.w.cam.screenY-40-celobj.height;
+				if (celobj.y>World.world.cam.screenY-40-celobj.height) celobj.y=pr_bar.y=World.world.cam.screenY-40-celobj.height;
 			}
 			prevObj=celObj;
 		}
 		
 		function dif(lock:int, lockTip:int):String {
-			var pick=World.w.pers.getLockTip(lockTip);
+			var pick=World.world.pers.getLockTip(lockTip);
 			var s:String='';
 			if (lock < pick) s=txtSoft; 
 			else if (lock > pick+2) s="<span class = 'warn'>"+txtUnreal+"</span>"; 
@@ -855,9 +855,9 @@ package interdata
 		
 		function showPortCel() {
 			vis.portCel.visible=true;
-			var nx=Math.round(World.w.celX/World.tilePixelWidth)*World.tilePixelWidth;
-			var ny=Math.round(World.w.celY/World.tilePixelHeight)*World.tilePixelHeight;
-			World.w.cam.setKoord(vis.portCel,nx,ny);
+			var nx=Math.round(World.world.celX/World.tilePixelWidth)*World.tilePixelWidth;
+			var ny=Math.round(World.world.celY/World.tilePixelHeight)*World.tilePixelHeight;
+			World.world.cam.setKoord(vis.portCel,nx,ny);
 			if (gg.checkPort()) {
 				if (gg.t_port<gg.pers.portTime) vis.portCel.gotoAndStop(1);
 				else vis.portCel.gotoAndStop(2);
@@ -873,7 +873,7 @@ package interdata
 				//bulbText="<span class = 'r"+Res.d.info.(@id==id).@st+"'>"+s+"</span>";
 				bulbText=s;
 				info.htmlText+=bulbText+"<br>";
-				if (addlog) World.w.log+=bulbText+"<br>";
+				if (addlog) World.world.log+=bulbText+"<br>";
 				kolStr++, t_info=150;
 				if (kolStr>6) remStr();
 			}
@@ -891,7 +891,7 @@ package interdata
 		
 		public function bulb(nx:int, ny:int) {
 			if (t_bulb>0) return
-			Emitter.emit('gui',World.w.location,nx,ny-110,{txt:bulbText, ry:50});
+			Emitter.emit('gui',World.world.location,nx,ny-110,{txt:bulbText, ry:50});
 			t_bulb=20;
 		}
 		
@@ -908,8 +908,8 @@ package interdata
 			ny=ny-80+float_dy;
 			if (ny<40) ny-=100;
 			if (nx<50) nx=50;
-			if (nx>World.w.location.limX-50) nx=World.w.location.limX-50;
-			Emitter.emit('take',World.w.location,nx,ny,{txt:bulbText});
+			if (nx>World.world.location.limX-50) nx=World.world.location.limX-50;
+			Emitter.emit('take',World.world.location,nx,ny,{txt:bulbText});
 			t_bulb=10;
 		}
 		
@@ -932,10 +932,10 @@ package interdata
 				if (id!='') s=Res.messText(id);
 				/*s=s.replace(/\[br\]/g,'<br>');
 				for (var i=1; i<=5; i++) {
-					if (xml.attribute('s'+i).length())  s=s.replace('&'+i,"<span class='r2'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
+					if (xml.attribute('s'+i).length())  s=s.replace('&'+i,"<span class='r2'>"+World.world.ctr.retKey(xml.attribute('s'+i))+"</span>");
 				}*/
 				id_mess=id+'_'+str;
-				//World.w.game.addNote(id);
+				//World.world.game.addNote(id);
 			}
 			if (str!='') s+=' '+str;
 			if (s!='') {
@@ -967,14 +967,14 @@ package interdata
 		}
 		
 		public function showHelp(event:MouseEvent) {
-			World.w.ctr.active=false;
-			World.w.ctr.keyPressed=false;
-			if (World.w.location.prob) informText(World.w.location.prob.info+'<br><br>'+World.w.location.prob.help);
+			World.world.ctr.active=false;
+			World.world.ctr.keyPressed=false;
+			if (World.world.location.prob) informText(World.world.location.prob.info+'<br><br>'+World.world.location.prob.help);
 			event.stopPropagation();
 		}
 		public function scrollClick(event:MouseEvent) {
-			World.w.ctr.active=false;
-			World.w.ctr.keyPressed=false;
+			World.world.ctr.active=false;
+			World.world.ctr.keyPressed=false;
 			event.stopPropagation();
 		}
 		
@@ -997,7 +997,7 @@ package interdata
 					xml=xml.r[n];
 					if (xml==null) return false;
 				}
-				World.w.game.addNote(id);
+				World.world.game.addNote(id);
 			} else if (id is XML) xml=id;
 			var reg:int=0;
 			if (xml.@mod.length()) reg=xml.@mod;
@@ -1008,12 +1008,12 @@ package interdata
 			if (xml && xml.@m.length()) {
 				var sar:Array=s.split('|');
 				if (sar) {
-					if (World.w.matFilter && sar.length>1) s=sar[1];
+					if (World.world.matFilter && sar.length>1) s=sar[1];
 					else s=sar[0];
 				}
 			}
 			for (var i=1; i<=5; i++) {
-				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+World.w.ctr.retKey(xml.attribute('s'+i))+"</span>");
+				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+World.world.ctr.retKey(xml.attribute('s'+i))+"</span>");
 			}
 			s=s.replace(/\[/g,"<span class='yel'>");
 			s=s.replace(/\]/g,"</span>");
@@ -1024,7 +1024,7 @@ package interdata
 				dial.portret.gotoAndStop(1);
 				if (xml.@p.length()) {
 					var sp:String=xml.@p;
-					if (sp.substr(0,2)=='lp' && World.w.alicorn) {
+					if (sp.substr(0,2)=='lp' && World.world.alicorn) {
 						sp='lpa';
 						s="<span class='crim'>"+s+"</span>";
 					}
@@ -1061,9 +1061,9 @@ package interdata
 		
 		// Important message, pauses the game
 		public function impMess(ntitle:String, ntext:String, nico:String='') {
-			World.w.ctr.active=false;
-			World.w.ctr.keyPressed=false;
-			//World.w.pip.onoff(-1);
+			World.world.ctr.active=false;
+			World.world.ctr.keyPressed=false;
+			//World.world.pip.onoff(-1);
 			imp.ico.gotoAndStop(1);
 			if (nico!='') {
 				try {
@@ -1114,7 +1114,7 @@ package interdata
 				vis.portCel.visible=false;
 			}
 			if (Math.abs(vis.info.alpha-realAlpha)>0.05) vis.info.alpha=realAlpha;
-			if (gg.h2o<500 || gg.stam<500 || gg.mana<1000 || gg.teleObj || gg.t_culd>0 || gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana || World.w.testBattle && gg.stam<980 || gg.currentSpell && gg.currentSpell.t_culd>0) setMana();
+			if (gg.h2o<500 || gg.stam<500 || gg.mana<1000 || gg.teleObj || gg.t_culd>0 || gg.currentArmor && gg.currentArmor.mana<gg.currentArmor.maxmana || World.world.testBattle && gg.stam<980 || gg.currentSpell && gg.currentSpell.t_culd>0) setMana();
 			else if (mana.text!='') mana.text='';
 			if (gg.effects.length || gg.poison>0 || gg.cut>0 || gg.shithp>0 || effIsVis) setEffects();
 			//mana.text=Math.round(gg.X)+' ' +Math.round(gg.Y)+' ' +gg.isLaz;
@@ -1139,29 +1139,29 @@ package interdata
 			}
 			if (informScript.running) informScript.step();
 			if (dialScript.running) dialScript.step();
-			if (World.w.ctr.active && guiPause) {
+			if (World.world.ctr.active && guiPause) {
 				if (t_bulb<=0) {
 					guiPause=false;
 					imp.visible=false;
 				} else {
-					World.w.ctr.active=false;
+					World.world.ctr.active=false;
 				}
 			}
 			if (gg.teleObj && gg.pers.throwForce>0 && gg.teleObj.massa>0.1) {
 				tharrow.visible=true;
 				var ndx=gg.teleObj.X-gg.X
 				var ndy=gg.teleObj.Y-gg.teleObj.scY/2-gg.Y+gg.scY/2-10;
-				World.w.cam.setKoord(tharrow,World.w.gg.teleObj.X,World.w.gg.teleObj.Y-World.w.gg.teleObj.scY/2);
+				World.world.cam.setKoord(tharrow,World.world.gg.teleObj.X,World.world.gg.teleObj.Y-World.world.gg.teleObj.scY/2);
 				tharrow.rotation=Math.atan2(ndy,ndx)/Math.PI*180;
 				var alph:Number=gg.throwForceRelat();
 				tharrow.alpha=alph;
 				if (alph>=0.99) tharrow.gotoAndStop(1);
 				else  tharrow.gotoAndStop(2);
 			} else tharrow.visible=false;
-			if (showDop&&!World.w.sats.active && !vis.fav.visible && !World.w.catPause) {
+			if (showDop&&!World.world.sats.active && !vis.fav.visible && !World.world.catPause) {
 				showSelector();
 			}
-			vis.fav.visible=vis.status.visible=(showFav || showDop)&&!World.w.sats.active && !World.w.catPause;
+			vis.fav.visible=vis.status.visible=(showFav || showDop)&&!World.world.sats.active && !World.world.catPause;
 		}
 		
 		public function setSats(turn:Boolean) {

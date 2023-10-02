@@ -77,7 +77,7 @@ package servdata
 			a=arr[tip];
 			if (a==null) return null;
 			var gameStage:int=0
-			if (World.w.land) gameStage=World.w.land.gameStage;
+			if (World.world.land) gameStage=World.world.land.gameStage;
 			if (tip!=Item.L_BOOK && (maxlvl>0 || worth>0 || gameStage>0)) {
 				res=new Array();
 				for each(var i in a) {
@@ -149,26 +149,26 @@ package servdata
 			item.multHP=mn;
 			item.imp=imp;
 			item.cont=cont;
-			if (item.id=='money') item.kol*=World.w.pers.capsMult*World.w.pers.difCapsMult;	//множитель крышек
-			if (item.id=='bit') item.kol*=World.w.pers.bitsMult*World.w.pers.difCapsMult;	//множитель крышек
+			if (item.id=='money') item.kol*=World.world.pers.capsMult*World.world.pers.difCapsMult;	//множитель крышек
+			if (item.id=='bit') item.kol*=World.world.pers.bitsMult*World.world.pers.difCapsMult;	//множитель крышек
 			if (lootBroken && (item.id=='money' || item.id=='bit')) item.kol*=0.5;
 			if (lootBroken && (item.tip==Item.L_AMMO || item.tip==Item.L_EXPL) && Math.random()<0.5) return false;
 			//проверить лимиты
 			if (imp==0 && item.xml.@limit.length()) {
-				var lim:int=World.w.game.getLimit(item.xml.@limit);
-				var itemLimit:Number=World.w.land.lootLimit;
+				var lim:int=World.world.game.getLimit(item.xml.@limit);
+				var itemLimit:Number=World.world.land.lootLimit;
 				if (item.xml.@mlim.length()) itemLimit*=item.xml.@mlim;
 				if (item.xml.@maxlim.length() && lim>=item.xml.@maxlim) {
-					if (!World.w.testLoot) trace('Достигнут максимум:', id, lim);
+					if (!World.world.testLoot) trace('Достигнут максимум:', id, lim);
 					return false;
 				}
 				if (lim>=itemLimit) {
-					if (!World.w.testLoot) trace('Превышен лимит:', id, lim, itemLimit);
+					if (!World.world.testLoot) trace('Превышен лимит:', id, lim, itemLimit);
 					return false;
 				}
-				World.w.game.addLimit(item.xml.@limit,1);
+				World.world.game.addLimit(item.xml.@limit,1);
 			}
-			if (World.w.testLoot) World.w.invent.take(item);
+			if (World.world.testLoot) World.world.invent.take(item);
 			else new Loot(location,item,nx,ny,true);
 			is_loot++;
 			return true;
@@ -197,7 +197,7 @@ package servdata
 				newLoot(0.7,Item.L_AMMO);
 				newLoot(0.25, Item.L_AMMO);
 				newLoot(0.15, Item.L_AMMO);
-				if (World.w.pers.freel) newLoot(0.7,Item.L_AMMO);
+				if (World.world.pers.freel) newLoot(0.7,Item.L_AMMO);
 			} else if (cont=='metal') {		//металлоискатель
 				if (!newLoot(0.5, Item.L_ITEM,'money',Math.random()*30*(locdif*0.15+1)+5)) newLoot(1,Item.L_AMMO);
 			} else if (cont=='bomb') {
@@ -207,11 +207,11 @@ package servdata
 				kol=Math.floor(Math.random()*4-1);
 				for (var i=0; i<=kol; i++) newLoot(1, Item.L_EXPL);
 				newLoot(0.5, Item.L_COMPE);
-				if (World.w.pers.freel) newLoot(0.5,Item.L_EXPL);
+				if (World.world.pers.freel) newLoot(0.5,Item.L_EXPL);
 			} else if (cont=='bigexpl') {
 				kol=Math.floor(Math.random()*4+2);
 				for (var i=0; i<=kol; i++) newLoot(1, Item.L_EXPL);
-				if (World.w.pers.freel) newLoot(0.5,Item.L_EXPL);
+				if (World.world.pers.freel) newLoot(0.5,Item.L_EXPL);
 				newLoot(0.5, Item.L_COMPE);
 			} else if (cont=='wbattle') {
 				if (!newLoot(0.04, Item.L_UNIQ)) {
@@ -219,9 +219,9 @@ package servdata
 					else newLoot(1, Item.L_WEAPON,'3',1);
 				}
 				newLoot(0.8, Item.L_AMMO);
-				if (World.w.pers.freel) newLoot(0.5,Item.L_AMMO);
+				if (World.world.pers.freel) newLoot(0.5,Item.L_AMMO);
 				newLoot(0.1,Item.L_ITEM,'stealth');
-				if (World.w.pers.barahlo) newLoot(0.1, Item.L_COMPA, 'intel_comp');
+				if (World.world.pers.barahlo) newLoot(0.1, Item.L_COMPA, 'intel_comp');
 			} else if (cont=='case') {
 				//newLoot(1, Item.L_UNIQ);	//!!!!!!!!!!!!!!!!!!!!
 				newLoot(0.9, Item.L_ITEM,'money',Math.random()*20*(locdif*0.11+1)+5);
@@ -232,8 +232,8 @@ package servdata
 				}
 				newLoot(0.5,Item.L_EXPL,'',Math.floor(Math.random()*4));
 				newLoot(0.5,Item.L_AMMO,'',Math.floor(Math.random()*4));
-				if (World.w.pers.freel) newLoot(0.5,Item.L_AMMO);
-				if (World.w.pers.barahlo) newLoot(0.5, Item.L_COMPA, 'intel_comp');
+				if (World.world.pers.freel) newLoot(0.5,Item.L_AMMO);
+				if (World.world.pers.barahlo) newLoot(0.5, Item.L_COMPA, 'intel_comp');
 			} else if (cont=='robocell') {
 				newLoot(1, Item.L_COMPM);
 			} else if (cont=='instr') {
@@ -244,7 +244,7 @@ package servdata
 				newLoot(0.1, Item.L_COMPE);
 				newLoot(0.5, Item.L_COMPM);
 				newLoot(0.5, Item.L_PAINT);
-				if (World.w.pers.barahlo) {
+				if (World.world.pers.barahlo) {
 					newLoot(0.85, Item.L_COMPA);
 					newLoot(0.7, Item.L_COMPW);
 					newLoot(0.1, Item.L_COMPE);
@@ -258,7 +258,7 @@ package servdata
 				newLoot(0.4, Item.L_COMPW);
 				newLoot(0.5, Item.L_COMPM);
 				newLoot(0.2, Item.L_PAINT);
-				if (World.w.pers.barahlo) {
+				if (World.world.pers.barahlo) {
 					newLoot(0.75, Item.L_COMPA);
 					newLoot(0.4, Item.L_COMPW);
 					newLoot(0.1, Item.L_COMPE);
@@ -271,7 +271,7 @@ package servdata
 					else location.createUnit('rat',nx,ny,true);
 				} else {
 					kol=Math.floor(Math.random()*2);
-					if (World.w.pers.barahlo) kol+=2;
+					if (World.world.pers.barahlo) kol+=2;
 					for (i=0; i<=kol; i++) newLoot(1, Item.L_STUFF);
 					newLoot(0.4, Item.L_ITEM,'money',Math.random()*10*(locdif*0.1+1)+5);
 				}
@@ -370,7 +370,7 @@ package servdata
 				if (is_loot>5) replic('full');
 				if (is_loot<2) replic('empty');
 			} else if (cont=='safe') {
-				if (World.w.land.rnd && nloc.prob==null && Math.random()<0.05) {
+				if (World.world.land.rnd && nloc.prob==null && Math.random()<0.05) {
 					for (i=0; i<4; i++) location.createUnit('bloat',nx,ny,true);
 				} else {
 					//dif - 0..50
@@ -396,10 +396,10 @@ package servdata
 			} else if (cont=='specweap') {
 				kol=Math.floor(Math.random()*4);
 				var vars:Array=new Array();
-				if (World.w.invent.weapons['lsword']==null || World.w.invent.weapons['lsword'].variant==0) vars.push('lsword^1');
-				if (World.w.invent.weapons['antidrak']==null || World.w.invent.weapons['antidrak'].variant==0) vars.push('antidrak^1');
-				if (World.w.invent.weapons['quick']==null || World.w.invent.weapons['quick'].variant==0) vars.push('quick^1');
-				if (World.w.invent.weapons['mlau']==null || World.w.invent.weapons['mlau'].variant==0) vars.push('mlau^1');
+				if (World.world.invent.weapons['lsword']==null || World.world.invent.weapons['lsword'].variant==0) vars.push('lsword^1');
+				if (World.world.invent.weapons['antidrak']==null || World.world.invent.weapons['antidrak'].variant==0) vars.push('antidrak^1');
+				if (World.world.invent.weapons['quick']==null || World.world.invent.weapons['quick'].variant==0) vars.push('quick^1');
+				if (World.world.invent.weapons['mlau']==null || World.world.invent.weapons['mlau'].variant==0) vars.push('mlau^1');
 				if (vars.length) newLoot(1, Item.L_WEAPON, vars[Math.floor(Math.random()*vars.length)]);
 				else newLoot(1, Item.L_UNIQ);
 			} else if (cont=='specalc') {
@@ -581,7 +581,7 @@ package servdata
 		}
 		
 		public static function replic(s:String) {
-			if (isrnd()) World.w.gg.replic(s);
+			if (isrnd()) World.world.gg.replic(s);
 		}	
 		
 		protected static function isrnd(n:Number=0.5):Boolean {

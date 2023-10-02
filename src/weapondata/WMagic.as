@@ -17,23 +17,23 @@ package weapondata
 		public override function attack(waitReady:Boolean=false):Boolean 
 		{
 			//trace('atk');
-			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) 
+			if (!waitReady && !World.world.alicorn && !auto && t_auto>0) 
 			{
 				t_auto=3;
 				return false;
 			}
 			skillConf=1;
 			if (t_rel>0) return false;
-			if (owner.player && (World.w.pers.spellsPoss==0 || alicorn && !World.w.alicorn)) 
+			if (owner.player && (World.world.pers.spellsPoss==0 || alicorn && !World.world.alicorn)) 
 			{
-				World.w.gui.infoText('noSpells');
-				World.w.gui.bulb(X,Y);
+				World.world.gui.infoText('noSpells');
+				World.world.gui.bulb(X,Y);
 				Snd.ps('nomagic');
 				return false;
 			}
 			if (owner.player && respect==1) 
 			{
-				World.w.gui.infoText('disSpell',null,null,false);
+				World.world.gui.infoText('disSpell',null,null,false);
 				Snd.ps('nomagic');
 				return false;
 			}
@@ -45,11 +45,11 @@ package weapondata
 			if (t_prep<prep+10) t_prep+=2;
 			if (t_prep>=prep && t_attack<=0) 
 			{
-				if (owner.player && dmana>World.w.pers.manaHP) 
+				if (owner.player && dmana>World.world.pers.manaHP) 
 				{
 					t_rel=t_prep*3;
-					World.w.gui.infoText('noMana');
-					World.w.gui.bulb(X,Y);
+					World.world.gui.infoText('noMana');
+					World.world.gui.bulb(X,Y);
 					Snd.ps('nomagic');
 				} 
 				else if (dmagic<=owner.mana || owner.mana>=owner.maxmana*0.99) 
@@ -62,8 +62,8 @@ package weapondata
 					t_rel=t_prep*3;
 					if (owner.player) 
 					{
-						World.w.gui.infoText('noMana');
-						World.w.gui.bulb(X,Y);
+						World.world.gui.infoText('noMana');
+						World.world.gui.bulb(X,Y);
 						Snd.ps('nomagic');
 					}
 				}
@@ -97,7 +97,7 @@ package weapondata
 				owner.dmana=0;
 				if (owner.player) 
 				{
-					World.w.pers.manaDamage(dmana);
+					World.world.pers.manaDamage(dmana);
 				}
 			}
 			return b;

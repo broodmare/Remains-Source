@@ -40,10 +40,12 @@ Grafon --
 	Rewrote checkLoaded() to avoid a situation where a resource loader could finish before an array was created to hold the data.
 	
 	vfon -> background.
-	visObjs -> canvasLayerArray
+	numbObj -> canvasLayerCount.
+	visObjs -> canvasLayerArray.
 	drawFon -> drawSkybox().
 	setFonSize -> setBackgroundSize
 	
+	visual -> mainCanvas
 	visBack -> layerBackground_1.
 	visBack2 -> layerBackground_2.
 	visVoda -> layerWater.
@@ -52,7 +54,11 @@ Grafon --
 	visSats -> layerSats.
 	sloy -> layer.
 
-	
+	numbMat 	-> materialCount
+	numbFon 	-> skyboxCount
+	numbBack 	-> bgObjectCount
+	numbObj 	-> objectCount
+	numbSprite  -> spriteCount
 	
 	
 	
@@ -97,17 +103,23 @@ Unit --
 	step()
 		Fixed loop.
 		
-
-Texture.fla
-fonCanter -> backgroundCanterlot
-fonClear -> backgroundClear
-fonDarkClouds -> backgroundDarkClouds
-fonDefault -> backgroundDefault
-fonEnclave -> backgroundEnclave
-fonFinalb -> backgroundFinalB
-fonFire -> backgroundFire
-fonRuins -> backgroundRuins
-fonWay -> backgroundWay
+World --
+	vfon -> skybox.
+	main -> screenSpace
+	visual -> mainCanvas
+	vWait -> loadingScreen
+	w -> world
+	
+Texture.fla --
+	fonCanter -> backgroundCanterlot
+	fonClear -> backgroundClear
+	fonDarkClouds -> backgroundDarkClouds
+	fonDefault -> backgroundDefault
+	fonEnclave -> backgroundEnclave
+	fonFinalb -> backgroundFinalB
+	fonFire -> backgroundFire
+	fonRuins -> backgroundRuins
+	fonWay -> backgroundWay
 
 
 

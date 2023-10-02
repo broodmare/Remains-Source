@@ -65,8 +65,8 @@ package unitdata
 			shadowFilter=new DropShadowFilter(0,90,0,0.5,3,3,1,3,false,false,true);
 			ghostFilter=new GlowFilter(0x9999FF,1,6,6,2,3);
 			timerDie=90;
-			if (World.w.game.globalDif==3) summonAtkMult=0.65;
-			if (World.w.game.globalDif==4) summonAtkMult=0.8;
+			if (World.world.game.globalDif==3) summonAtkMult=0.65;
+			if (World.world.game.globalDif==4) summonAtkMult=0.8;
 		}
 		
 
@@ -75,8 +75,8 @@ package unitdata
 			var wMult=(1+level*0.08);
 			var dMult=1;
 			healHp=maxhp/10;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
+			if (World.world.game.globalDif==3) dMult=1.2;
+			if (World.world.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
 			if (currentWeapon) {
@@ -133,13 +133,13 @@ package unitdata
 					vis.osn.body.gotoAndStop(cframe);
 				}
 			} 
-			if (superInvis && World.w.pers.infravis==0) {
+			if (superInvis && World.world.pers.infravis==0) {
 				celA=0;
 			} else celA=100;
 			if (curA>celA) curA-=5;
 			if (curA<celA) curA+=5;
 			vis.alpha=curA/100;
-			//World.w.gui.vis.hpbarboss.hpNum.text='('+aiState+') '+aiTCh+' '+atk_t;
+			//World.world.gui.vis.hpbarboss.hpNum.text='('+aiState+') '+aiTCh+' '+atk_t;
 		}
 		
 		public override function setWeaponPos(tip:int=0) {
@@ -208,7 +208,7 @@ package unitdata
 			//return;
 			
 			if (location.gg.invulner) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;

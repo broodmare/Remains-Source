@@ -85,11 +85,11 @@ package unitdata
 			id='cage';
 			nazv=Res.txt('u',id);
 			npc=false;
-			location.takeXP(500,World.w.gg.X, World.w.gg.Y-100,true);
+			location.takeXP(500,World.world.gg.X, World.world.gg.Y-100,true);
 			fraction=0;
 			if (questId) {
 				if (location.land.itemScripts[questId]) location.land.itemScripts[questId].start();
-				World.w.game.incQuests(questId);
+				World.world.game.incQuests(questId);
 			}
 			statusCapt=1;
 		}

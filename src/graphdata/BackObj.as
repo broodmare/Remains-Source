@@ -50,9 +50,9 @@ package graphdata
 				X=nx+wid;
 				scX=-1;
 			} 
-			vis=World.w.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_t',Grafon.numbBack);
-			erase=World.w.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_e',Grafon.numbBack);
-			light=World.w.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_l',Grafon.numbBack);
+			vis=World.world.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_t',Grafon.bgObjectCount);
+			erase=World.world.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_e',Grafon.bgObjectCount);
+			light=World.world.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_l',Grafon.bgObjectCount);
 			if (node.@fr.length()) frame=node.@fr;
 			else if (nloc.lightOn>0 && node.@lon.length()) frame=node.@lon;
 			else if (nloc.lightOn<0 && node.@loff.length()) frame=node.@loff;

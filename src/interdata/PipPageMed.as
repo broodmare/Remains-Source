@@ -46,7 +46,7 @@ package interdata
 				plata=inv.money;
 			}
 			
-			pers=World.w.pers;
+			pers=World.world.pers;
 			priceHP=pers.priceHP;
 			priceBlood=pers.priceBlood;
 			priceRad=pers.priceRad;
@@ -123,7 +123,7 @@ package interdata
 		}
 		
 		public override function page2Click(event:MouseEvent) {
-			if (World.w.ctr.setkeyOn) return;
+			if (World.world.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			pip.snd(2);
 			if (page2==2) {
@@ -143,8 +143,8 @@ package interdata
 		}
 		
 		override function itemClick(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
 			//if (plata.kol<=0) return;

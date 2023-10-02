@@ -73,7 +73,7 @@ package locdata
 		public override function addVisual() 
 		{
 			if (vis) {
-				World.w.grafon.canvasLayerArray[layer].addChild(vis);
+				World.world.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform) 
 				{
 					vis.transform.colorTransform=cTransform;
@@ -81,7 +81,7 @@ package locdata
 			}
 			if (vis2) 
 			{
-				World.w.grafon.canvasLayerArray[3].addChild(vis2);
+				World.world.grafon.canvasLayerArray[3].addChild(vis2);
 				if (cTransform) 
 				{
 					vis2.transform.colorTransform=cTransform;

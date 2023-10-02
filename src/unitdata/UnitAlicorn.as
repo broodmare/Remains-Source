@@ -110,7 +110,7 @@ package unitdata
 				t_shit=45;
 				osob=(Math.random()<0.4);
 			}
-			if (World.w.game.globalDif==4) osob=true;
+			if (World.world.game.globalDif==4) osob=true;
 			mana=maxmana=2000;
 			dmana=5;
 			walkSpeed=maxSpeed;
@@ -248,7 +248,7 @@ package unitdata
 				Emitter.emit('pole',location,X,Y-50,{kol:12,rx:100, ry:100});
 			}
 			//невидимость
-			if (superInvis && World.w.pers.infravis==0) {
+			if (superInvis && World.world.pers.infravis==0) {
 				if (isShoot) {
 					curA=50;
 					isShoot=false;
@@ -397,10 +397,10 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			invis=superInvis;
-			if (World.w.pers.infravis==0) dexter=2-curA/100;
+			if (World.world.pers.infravis==0) dexter=2-curA/100;
 			else dexter=1;
 			if (mana<maxmana) mana+=resmana;
-			if (World.w.enemyAct<=0) return;
+			if (World.world.enemyAct<=0) return;
 			if (aiSpok>0 || tr==3 && osob || t_shit>150) t_shit--;
 			if (shithp<=0 && t_shit<=0) castShit();
 			if (aiState==2 && t_alarm>=0) {
@@ -434,7 +434,7 @@ package unitdata
 				else aiTCh=Math.floor(Math.random()*100)+100;
 			}
 			//trace(aiState)
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
 				//установить точку зрения
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
 				eyeX=X+(obj.x+visBmp.x)*storona;
@@ -763,7 +763,7 @@ package unitdata
 				teleObj.vis.filters=[teleFilter];
 			}
 			teleObj.fracLevit=fraction;
-			if (teleObj is UnitPlayer) teleObj.levit=(tr==2)?World.w.pers.teleEnemy:World.w.pers.teleEnemy*0.5;
+			if (teleObj is UnitPlayer) teleObj.levit=(tr==2)?World.world.pers.teleEnemy:World.world.pers.teleEnemy*0.5;
 			else teleObj.levit=2;
 		}
 		
@@ -806,7 +806,7 @@ package unitdata
 		}
 		
 		public function actPort(rnd:Boolean=false) {
-			var cel:Unit=World.w.gg;
+			var cel:Unit=World.world.gg;
 			//var dx:Number=0, dy:Number=0;
 			var nx:Number=0;
 			var ny:Number=0;

@@ -381,7 +381,7 @@ package unitdata
 			//if (hpbar) trace(hpbar.visible, hpbar.x, hpbar.y);
 		
 			var t:Tile;
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -414,7 +414,7 @@ package unitdata
 			dexter=isFly?baseDexter*1.5:baseDexter
 			
 			if (!controlOn) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -467,7 +467,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState!=6) {
+			if (World.world.enemyAct>1 && aiTCh%10==1 && aiState!=6) {
 				if (findCel()) {
 					//увидели
 					if (celUnit) {
@@ -493,7 +493,7 @@ package unitdata
 						replic('ear');
 						aiSpok=maxSpok-1;
 					}
-					if (celUnit==World.w.gg) {
+					if (celUnit==World.world.gg) {
 						aiVKurse=true;
 					}
 				} else if (t_chCel>0) {
@@ -837,7 +837,7 @@ package unitdata
 			if (aiState==3 || aiState==4 || aiState==6 || aiState==8) aiAttack=1;
 			else aiAttack=0;
 			
-			if (aiAttack && World.w.enemyAct>=3) {
+			if (aiAttack && World.world.enemyAct>=3) {
 				attack();
 			}
 

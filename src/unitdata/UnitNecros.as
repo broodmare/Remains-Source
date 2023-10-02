@@ -61,7 +61,7 @@ package unitdata
 		
 		public override function control() {
 			if (sost>=3) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				return;
 			}
 			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
@@ -88,7 +88,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					aiState=1;
@@ -107,7 +107,7 @@ package unitdata
 			else maxSpeed=runSpeed;
 	
 			//атака
-			if (World.w.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
+			if (World.world.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
 				attKorp(celUnit,1);
 			}
 		}

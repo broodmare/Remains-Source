@@ -38,7 +38,7 @@ package weapondata
 			{
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
-				var t:Tile=World.w.location.getAbsTile(Math.floor(celX),Math.floor(celY));
+				var t:Tile=World.world.location.getAbsTile(Math.floor(celX),Math.floor(celY));
 				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) 
 				{
 					return 0
@@ -76,7 +76,7 @@ package weapondata
 		
 		public override function attack(waitReady:Boolean=false):Boolean 
 		{
-			World.w.grafon.paint(pX,pY,X,Y,World.w.ctr.keyRun);
+			World.world.grafon.paint(pX,pY,X,Y,World.world.ctr.keyRun);
 			return true;
 		}
 
@@ -84,7 +84,7 @@ package weapondata
 		{
 			paintId=npaint;
 			paintNazv=Res.txt('i',paintId);
-			World.w.grafon.brTrans.color=ncolor
+			World.world.grafon.brTrans.color=ncolor
 
 		}
 		

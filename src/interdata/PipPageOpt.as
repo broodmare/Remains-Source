@@ -56,42 +56,42 @@ package interdata
 			if (page2==3) {
 				statHead.nazv.text=statHead.numb.text='';
 				arr.push({id:'fullscreen'});
-				arr.push({id:'zoom100', check:World.w.zoom100});
-				arr.push({id:'quake', check:World.w.quakeCam});
+				arr.push({id:'zoom100', check:World.world.zoom100});
+				arr.push({id:'quake', check:World.world.quakeCam});
 				arr.push({id:'opt1_1', numb:Math.round(Snd.globalVol*100)});
 				arr.push({id:'opt1_2', numb:Math.round(Snd.musicVol*100)});
 				arr.push({id:'opt1_3', numb:Math.round(Snd.stepVol*100)});
-				arr.push({id:'help_mess', check:World.w.helpMess});
-				arr.push({id:'dial_on', check:World.w.dialOn});
-				arr.push({id:'show_hit1', check:World.w.showHit>0});
-				arr.push({id:'show_hit2', check:World.w.showHit==2});
-				arr.push({id:'hint_tele', check:World.w.hintTele});
-				arr.push({id:'sys_cur', check:World.w.sysCur});
-				arr.push({id:'show_favs', check:World.w.showFavs});
-				arr.push({id:'mat_filter', check:World.w.matFilter});
-				arr.push({id:'err_show', check:World.w.errorShowOpt});
+				arr.push({id:'help_mess', check:World.world.helpMess});
+				arr.push({id:'dial_on', check:World.world.dialOn});
+				arr.push({id:'show_hit1', check:World.world.showHit>0});
+				arr.push({id:'show_hit2', check:World.world.showHit==2});
+				arr.push({id:'hint_tele', check:World.world.hintTele});
+				arr.push({id:'sys_cur', check:World.world.sysCur});
+				arr.push({id:'show_favs', check:World.world.showFavs});
+				arr.push({id:'mat_filter', check:World.world.matFilter});
+				arr.push({id:'err_show', check:World.world.errorShowOpt});
 				arr.push({id:'autotake'});
 			}
 			if (page2==6) {
-				arr.push({id:'vsWeaponNew', check:World.w.vsWeaponNew});
-				arr.push({id:'vsWeaponRep', check:World.w.vsWeaponRep});
-				arr.push({id:'vsAmmoAll', check:World.w.vsAmmoAll});
-				arr.push({id:'vsAmmoTek', check:World.w.vsAmmoTek});
-				arr.push({id:'vsExplAll', check:World.w.vsExplAll});
-				arr.push({id:'vsMedAll', check:World.w.vsMedAll});
-				arr.push({id:'vsHimAll', check:World.w.vsHimAll});
-				arr.push({id:'vsEqipAll', check:World.w.vsEqipAll});
-				arr.push({id:'vsStuffAll', check:World.w.vsStuffAll});
-				arr.push({id:'vsVal', check:World.w.vsVal});
-				arr.push({id:'vsBook', check:World.w.vsBook});
-				arr.push({id:'vsFood', check:World.w.vsFood});
-				arr.push({id:'vsComp', check:World.w.vsComp});
-				arr.push({id:'vsIngr', check:World.w.vsIngr});
+				arr.push({id:'vsWeaponNew', check:World.world.vsWeaponNew});
+				arr.push({id:'vsWeaponRep', check:World.world.vsWeaponRep});
+				arr.push({id:'vsAmmoAll', check:World.world.vsAmmoAll});
+				arr.push({id:'vsAmmoTek', check:World.world.vsAmmoTek});
+				arr.push({id:'vsExplAll', check:World.world.vsExplAll});
+				arr.push({id:'vsMedAll', check:World.world.vsMedAll});
+				arr.push({id:'vsHimAll', check:World.world.vsHimAll});
+				arr.push({id:'vsEqipAll', check:World.world.vsEqipAll});
+				arr.push({id:'vsStuffAll', check:World.world.vsStuffAll});
+				arr.push({id:'vsVal', check:World.world.vsVal});
+				arr.push({id:'vsBook', check:World.world.vsBook});
+				arr.push({id:'vsFood', check:World.world.vsFood});
+				arr.push({id:'vsComp', check:World.world.vsComp});
+				arr.push({id:'vsIngr', check:World.world.vsIngr});
 			}
 			if (page2==4) {
 				setTopText('infokeys');
-				for (i in World.w.ctr.keyObj) {
-					var key:Object=World.w.ctr.keyObj[i];
+				for (i in World.world.ctr.keyObj) {
+					var key:Object=World.world.ctr.keyObj[i];
 					obj={id:key.id, nazv:Res.txt('k',key.id), a1:key.a1, a2:key.a2};
 					arr.push(obj);
 				}
@@ -102,34 +102,34 @@ package interdata
 			if (page2==5) {
 				if (pip.light) return;
 				info.visible=true;
-				info.styleSheet=World.w.gui.style;
-				info.htmlText=World.w.log;
+				info.styleSheet=World.world.gui.style;
+				info.htmlText=World.world.log;
 				info.scrollV=info.maxScrollV;
 			}
 			if (page2==1 || page2==2) {
 				if (pip.light) return;
 				vis.butDef.visible=true;
-				World.w.app.saveOst();
+				World.world.app.saveOst();
 				if (page2==1) {
 					setTopText('infoload');
 					vis.butOk.text.text=Res.pipText('opt1');
 					vis.butDef.text.text=Res.pipText('loadfile');
 				} else {
 					setTopText('infosave');
-					if (World.w.pers.hardcoreMode) {
-						nSave=World.w.autoSaveN;
+					if (World.world.pers.hardcoreMode) {
+						nSave=World.world.autoSaveN;
 						vis.butOk.visible=true;
 					}
 					vis.butOk.text.text=Res.pipText('opt2');
 					if (gg.pers.hardcoreMode) vis.butDef.visible=false;
 					vis.butDef.text.text=Res.pipText('savefile');
 				}
-				for (var i=0; i<=World.w.saveCount; i++) {
-					var save:Object=World.w.getSave(i);
+				for (var i=0; i<=World.world.saveCount; i++) {
+					var save:Object=World.world.getSave(i);
 					var obj:Object=saveObj(save,i);
 					arr.push(obj);
 				}
-				if (page2==2 && World.w.pers.hardcoreMode) {
+				if (page2==2 && World.world.pers.hardcoreMode) {
 					showSaveInfo(arr[nSave],vis);
 				}
 				pip.vis.butHelp.visible=true;
@@ -218,7 +218,7 @@ package interdata
 			vis.gotoAndStop(1);
 			if (n==null) return;
 			try {
-				vis.txt.text=World.w.ctr.keyNames[n];
+				vis.txt.text=World.world.ctr.keyNames[n];
 			} catch(err) {
 				vis.gotoAndStop(n);
 			}
@@ -229,11 +229,11 @@ package interdata
 		function showSetKey() {
 			pip.vissetkey.visible=true;
 			pip.vissetkey.txt.htmlText=Res.guiText('setkeyinfo')+'\n\n<b>'+Res.txt('k',setkeyAction)+'</b>\n'+setkeyCell;
-			World.w.ctr.requestKey(unshowSetKey);
+			World.world.ctr.requestKey(unshowSetKey);
 		}
 		
 		function unshowSetKey() {
-			var newkey=World.w.ctr.setkeyRequest;
+			var newkey=World.world.ctr.setkeyRequest;
 			pip.vissetkey.visible=false;
 			if (newkey!=-1) {
 				for (var i in arr) {
@@ -288,42 +288,42 @@ package interdata
 		public function optCheck(event:Event) {
 			var id=event.currentTarget.parent.id.text;
 			var sel:Boolean=(event.target as CheckBox).selected;
-			if (id=='dial_on') World.w.dialOn=sel;
-			if (id=='mat_filter') World.w.matFilter=sel;
-			if (id=='help_mess') World.w.helpMess=sel;
-			hit1=World.w.showHit>0;
-			hit2=World.w.showHit==2;
+			if (id=='dial_on') World.world.dialOn=sel;
+			if (id=='mat_filter') World.world.matFilter=sel;
+			if (id=='help_mess') World.world.helpMess=sel;
+			hit1=World.world.showHit>0;
+			hit2=World.world.showHit==2;
 			if (id=='show_hit1') hit1=sel;
 			if (id=='show_hit2') hit2=sel;
-			World.w.showHit=hit1?(hit2?2:1):0;
-			if (id=='sys_cur') World.w.sysCur=sel
-			if (id=='hint_tele') World.w.hintTele=sel;
-			if (id=='show_favs') World.w.showFavs=sel;
-			if (id=='quake') World.w.quakeCam=sel;
-			if (id=='err_show') World.w.errorShowOpt=sel;
+			World.world.showHit=hit1?(hit2?2:1):0;
+			if (id=='sys_cur') World.world.sysCur=sel
+			if (id=='hint_tele') World.world.hintTele=sel;
+			if (id=='show_favs') World.world.showFavs=sel;
+			if (id=='quake') World.world.quakeCam=sel;
+			if (id=='err_show') World.world.errorShowOpt=sel;
 			if (id=='zoom100') {
-				World.w.zoom100=sel;
+				World.world.zoom100=sel;
 				if (!pip.light) {
-					if (sel) World.w.cam.setZoom(0);
-					else World.w.cam.setZoom(2);
+					if (sel) World.world.cam.setZoom(0);
+					else World.world.cam.setZoom(2);
 				} else {
-					if (sel) World.w.cam.isZoom=0;
-					else World.w.cam.isZoom=2;
+					if (sel) World.world.cam.isZoom=0;
+					else World.world.cam.isZoom=2;
 				}
 			}
 			if (page2==6) {
-				World.w[id]=sel;
-				World.w.checkLoot=true;
+				World.world[id]=sel;
+				World.world.checkLoot=true;
 			}
 			pip.isSaveConf=true;
 		}
 		
 		
 		override function itemClick(event:MouseEvent) {
-			if (World.w.ctr.setkeyOn) return;
+			if (World.world.ctr.setkeyOn) return;
 			if (page2==3) {
 				if (event.currentTarget.id.text=='fullscreen') {
-					World.w.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+					World.world.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				}
 				if (event.currentTarget.id.text=='autotake') {
 					page2=6;
@@ -337,8 +337,8 @@ package interdata
 				setkeyAction=event.currentTarget.id.text;
 				showSetKey();
 			} else if (page2==1 || page2==2) {
-				if (pip.noAct && page2==2) {
-					World.w.gui.infoText('noAct');
+				if (pip.gamePause && page2==2) {
+					World.world.gui.infoText('gamePause');
 					return;
 				}
 				if (page2==2 && gg.pers.hardcoreMode) return;
@@ -355,28 +355,28 @@ package interdata
 		function transOk(event:MouseEvent) {
 			if (page2==4) {
 				for (var i in arr) {
-					var obj=World.w.ctr.keyIds[arr[i].id];
+					var obj=World.world.ctr.keyIds[arr[i].id];
 					obj.a1=arr[i].a1;
 					obj.a2=arr[i].a2;
 				}
 				vis.butOk.visible=false;
-				World.w.ctr.updateKeys();
-				World.w.saveConfig();
+				World.world.ctr.updateKeys();
+				World.world.saveConfig();
 			} else if (page2==1) {
-				World.w.comLoad=nSave;
+				World.world.comLoad=nSave;
 			} else if (page2==2) {
-				if (pip.noAct) {
-					World.w.gui.infoText('noAct');
+				if (pip.gamePause) {
+					World.world.gui.infoText('gamePause');
 					return;
 				}
 					try {
-						World.w.saveGame(nSave);
-						World.w.gui.infoText('SaveGame');
+						World.world.saveGame(nSave);
+						World.world.gui.infoText('SaveGame');
 						nSave=-1;
 						vis.butOk.visible=false;
 						setStatus();
 					} catch (err) {
-						World.w.gui.infoText('noSaveGame');
+						World.world.gui.infoText('noSaveGame');
 					}
 			}
 		}
@@ -388,32 +388,32 @@ package interdata
 			try {
 				var obj:Object=file.data.readObject();
 				if (obj && obj.est==1) {
-					World.w.comLoad=99;
-					World.w.loaddata=obj;
+					World.world.comLoad=99;
+					World.world.loaddata=obj;
 					return;
 				}
 			} catch(err) {}
-			World.w.gui.infoText('noLoadGame');
+			World.world.gui.infoText('noLoadGame');
 			trace('Error load');
        }		
 		
 		function gotoDef(event:MouseEvent) {
 			if (page2==4) {
-				World.w.ctr.gotoDef();
-				World.w.ctr.updateKeys();
-				World.w.saveConfig();
+				World.world.ctr.gotoDef();
+				World.world.ctr.updateKeys();
+				World.world.saveConfig();
 				setStatus();
 			} else if (page2==1) {
 				ffil=[new FileFilter(Res.pipText('gamesaves')+" (*.sav)", "*.sav")];
 				file.browse(ffil);
 			} else if (page2==2) {
-				if (pip.noAct) {
-					World.w.gui.infoText('noAct');
+				if (pip.gamePause) {
+					World.world.gui.infoText('gamePause');
 					return;
 				}
 				//сохранить в файл
 				var obj:Object=new Object();
-				World.w.saveToObj(obj);
+				World.world.saveToObj(obj);
 				var ba:ByteArray=new ByteArray();
 				ba.writeObject(obj);
 				var sfile = new FileReference();
@@ -422,7 +422,7 @@ package interdata
 				} catch(err) {
 					sfile.save(ba,'Name('+gg.pers.level+').sav');
 				}
-				//World.w.gui.infoText('SaveGame');
+				//World.world.gui.infoText('SaveGame');
 			}
 		}
 		
@@ -431,8 +431,8 @@ package interdata
 			vis.info.htmlText='';
 			if (obj && obj.gg!='') {
 				vis.nazv.text=obj.gg;
-				World.w.app.load(obj.app);
-				World.w.pip.setArmor(obj.armor);
+				World.world.app.load(obj.app);
+				World.world.pip.setArmor(obj.armor);
 				vis.pers.gotoAndStop(2);
 				vis.pers.gotoAndStop(1);
 				vis.pers.head.morda.magic.visible=false;

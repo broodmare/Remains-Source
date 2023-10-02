@@ -22,7 +22,7 @@ package weapondata
 			if (own==null) 
 			{
 				owner=new Unit();
-				location=World.w.location;
+				location=World.world.location;
 			} 
 			else 
 			{
@@ -51,7 +51,7 @@ package weapondata
 		
 		public function spellCast() 
 		{
-			var cel:Unit=World.w.gg;
+			var cel:Unit=World.world.gg;
 			if (cel.location==location && !cel.invulner && cel.sost<=2) 
 			{
 				if (getRasst2(cel)<rad*rad) 

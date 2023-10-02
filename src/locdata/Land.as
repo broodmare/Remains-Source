@@ -127,7 +127,7 @@ package locdata
 		
 		public function buildRandomLand() 
 		{
-			if (World.w.landError) 
+			if (World.world.landError) 
 			{
 				locs=null;
 				locs[0];
@@ -212,7 +212,7 @@ package locdata
 						{
 							if (j==0) 
 							{
-								if (!(World.w.game.triggers['mbase_visited']>0)) 
+								if (!(World.world.game.triggers['mbase_visited']>0)) 
 								{
 									opt.mirror=false;
 									opt.ramka=8;
@@ -597,7 +597,7 @@ package locdata
 		{
 			if (probs[nprob] != null) return false;
 			//create a single room
-			var arrr:XML=World.w.game.probs['prob'].allroom;
+			var arrr:XML=World.world.game.probs['prob'].allroom;
 			for each(var xml in arrr.room) 
 			{
 				if (xml.@name==nprob) 
@@ -628,7 +628,7 @@ package locdata
 			var impProb;
 			for each(var xml in act.xmlland.prob) 
 			{
-				if (probs[xml.@id]==null && World.w.game.triggers['prob_'+xml.@id]==null && (xml.@level.length==0 || xml.@level<=maxlevel)) 
+				if (probs[xml.@id]==null && World.world.game.triggers['prob_'+xml.@id]==null && (xml.@level.length==0 || xml.@level<=maxlevel)) 
 				{
 					rndRoom.push(xml.@id);
 					if (xml.@imp.length()) impProb=xml.@id;
@@ -754,8 +754,8 @@ package locdata
 			location.enemyLevel=ml;		// level of enemies
 
 			// influence of difficulty settings
-			if (World.w.game.globalDif<2) location.earMult*=0.5;
-			if (World.w.game.globalDif>2) location.enemyLevel+=(World.w.game.globalDif-2)*2;	// level of enemies based on difficulty
+			if (World.world.game.globalDif<2) location.earMult*=0.5;
+			if (World.world.game.globalDif>2) location.enemyLevel+=(World.world.game.globalDif-2)*2;	// level of enemies based on difficulty
 			// type of enemies
 			if (act.biom==0 && Math.random()<0.25) location.tipEnemy=1;
 			if (location.tipEnemy<0) location.tipEnemy=Math.floor(Math.random()*3);
@@ -861,7 +861,7 @@ package locdata
 			} 
 			else if (currentCP && !first) 
 			{
-				World.w.pers.currentCP=currentCP;
+				World.world.pers.currentCP=currentCP;
 				//trace('currentCP', currentCP);
 				gotoCheckPoint();
 				currentCP.activate();
@@ -931,12 +931,12 @@ package locdata
 			location = nloc; //Set the current location as the location being loaded.
 			gg.inLoc(location);
 			location.reactivate(locN);
-			World.w.ativateLoc(location);
+			World.world.ativateLoc(location);
 			if (location.sky) 
 			{
 				gg.isFly=true;
 				gg.stay=false;
-				World.w.cam.setZoom(2);
+				World.world.cam.setZoom(2);
 			}
 			location.lightAll();
 			return true;
@@ -1061,7 +1061,7 @@ package locdata
 		
 		public function gotoCheckPoint() 
 		{
-			var cp:CheckPoint=World.w.pers.currentCP;
+			var cp:CheckPoint=World.world.pers.currentCP;
 			if (cp==null) 
 			{
 				gg.setNull();
@@ -1070,7 +1070,7 @@ package locdata
 			if (cp.location.land!=this && currentCP)	
 			{
 				cp=currentCP;
-				World.w.pers.currentCP=currentCP;
+				World.world.pers.currentCP=currentCP;
 				currentCP.activate();
 			}
 			if (cp.location.land!=this) 
@@ -1099,7 +1099,7 @@ package locdata
 			if (isRefill) return;
 			if (summXp*10>allXp || !rnd) 
 			{
-				World.w.game.refillVendors();
+				World.world.game.refillVendors();
 				isRefill=true;
 			} 
 			else 
@@ -1111,7 +1111,7 @@ package locdata
 		public function artBabah() 
 		{
 			Snd.ps('artfire');
-			World.w.quake(10,3);
+			World.world.quake(10,3);
 		}
 		
 		public function artStep() 
@@ -1120,7 +1120,7 @@ package locdata
 			if (art_t<=0) 
 			{
 				art_t=Math.floor(Math.random()*1000+20);
-				if (act.artFire!=null && World.w.game.triggers[act.artFire]!=1) 
+				if (act.artFire!=null && World.world.game.triggers[act.artFire]!=1) 
 				{
 					artBabah();
 				}
@@ -1134,7 +1134,7 @@ package locdata
 			{
 				for (var j=minLocY; j<maxLocY; j++) 
 				{
-					if (locs[i][j][0]!=null && (World.w.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
+					if (locs[i][j][0]!=null && (World.world.drawAllMap || locs[i][j][0].visited)) locs[i][j][0].drawMap(map);
 				}
 			}
 			ggX=(location.landX-minLocX)*World.cellsX*World.tilePixelWidth+gg.X;
@@ -1162,7 +1162,7 @@ package locdata
 		
 		public function step() 
 		{
-			if (!World.w.catPause) 
+			if (!World.world.catPause) 
 			{
 				location.step();
 				if (loc_t>0) 

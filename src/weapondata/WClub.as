@@ -99,7 +99,7 @@ package weapondata
 		public override function addVisual() 
 		{
 			super.addVisual();
-			if (visvzz) World.w.grafon.canvasLayerArray[layer].addChild(visvzz);
+			if (visvzz) World.world.grafon.canvasLayerArray[layer].addChild(visvzz);
 		}
 
 		public override function remVisual() 
@@ -127,7 +127,7 @@ package weapondata
 			{
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
-				var t:Tile=World.w.location.getAbsTile(Math.floor(celX),Math.floor(celY));
+				var t:Tile=World.world.location.getAbsTile(Math.floor(celX),Math.floor(celY));
 				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) 
 				{
 					return 0
@@ -139,7 +139,7 @@ package weapondata
 		public override function actions() 
 		{
 			var ds=40*owner.storona;
-			meleeR=World.w.pers.meleeR;
+			meleeR=World.world.pers.meleeR;
 			if (location && location.sky) meleeR*=10;
 			if (owner.player) 
 			{
@@ -454,7 +454,7 @@ package weapondata
 			if (holder>0 && hold>0) 
 			{
 				hold-=rashod;
-				if (owner.player && location.train && ammo!='recharg') World.w.invent.items[ammo].kol+=rashod;
+				if (owner.player && location.train && ammo!='recharg') World.world.invent.items[ammo].kol+=rashod;
 			}
 			t_auto=3;
 			return b;
@@ -501,13 +501,13 @@ package weapondata
 		{
 			if (owner.player) 
 			{
-				if (!location.train && !World.w.alicorn) hp-=dam+ammoHP;
+				if (!location.train && !World.world.alicorn) hp-=dam+ammoHP;
 				if (hp<0) hp=0;
-				World.w.gui.setWeapon();
+				World.world.gui.setWeapon();
 			}
 			if (otbros>5) 
 			{
-				World.w.quake(otbros*b.dx/b.vel, otbros*b.dy/b.vel);
+				World.world.quake(otbros*b.dx/b.vel, otbros*b.dy/b.vel);
 			}
 			if (mtip==0 || mtip==1) 
 			{

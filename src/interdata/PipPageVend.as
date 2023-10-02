@@ -74,7 +74,7 @@ package interdata
 			if (vend) {
 				vend.kolBou=0;
 			}
-			inbase=World.w.location.base;
+			inbase=World.world.location.base;
 			npcInter=pip.npcInter;
 			vis.but3.visible=true;
 			vis.but4.visible=true;
@@ -118,8 +118,8 @@ package interdata
 					if (b.tip!=Item.L_WEAPON && b.xml && b.xml.@price.length()==0)  continue;
 					if ((b.tip==Item.L_ART || b.tip==Item.L_IMPL) && inv.items[b.id].kol>0) continue;
 					if (b.lvl>gg.pers.level || b.barter>gg.pers.barterLvl) continue;
-					if (b.trig && World.w.game.triggers[b.trig]!=1) continue;
-					if (b.hardinv && !World.w.hardInv) continue;
+					if (b.trig && World.world.game.triggers[b.trig]!=1) continue;
+					if (b.hardinv && !World.world.hardInv) continue;
 					if (!checkCat(b.tip)) continue;
 					b.getPrice();
 					var mp=b.getMultPrice();
@@ -209,8 +209,8 @@ package interdata
 				//statHead.bou.text='';
 				statHead.cat.visible=false;
 				if (inv.items['owl'] && inv.items['owl'].kol) {
-					World.w.pers.setRoboowl();
-					n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.w.pers.owlhp*World.w.pers.owlhpProc, maxhp:World.w.pers.owlhp, price:World.w.pers.owlhp*repOwl};
+					World.world.pers.setRoboowl();
+					n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, price:World.world.pers.owlhp*repOwl};
 					arr.push(n);
 					assArr[n.id]=n;
 					
@@ -257,9 +257,9 @@ package interdata
 						n.skilln=task.@skilln;
 					}
 					n.nazv=Res.messText(task.@id);
-					if (World.w.game.quests[task.@id]) {
-						var quest:Quest=World.w.game.quests[task.@id];
-						n.state=World.w.game.quests[task.@id].state;
+					if (World.world.game.quests[task.@id]) {
+						var quest:Quest=World.world.game.quests[task.@id];
+						n.state=World.world.game.quests[task.@id].state;
 						if (n.state==1 && quest.chReport(npcId, false)) n.state=3;
 						if (n.state==1 && quest.chGive(npcId, false)) n.state=4;
 					}
@@ -286,9 +286,9 @@ package interdata
 			if (vis.but4.visible && vend.xml) {
 				for each(var task in vend.xml.task) {
 					if (!checkQuest(task)) continue;
-					if (World.w.game.quests[task.@id]) {
-						var quest:Quest=World.w.game.quests[task.@id];
-						var nstate=World.w.game.quests[task.@id].state;
+					if (World.world.game.quests[task.@id]) {
+						var quest:Quest=World.world.game.quests[task.@id];
+						var nstate=World.world.game.quests[task.@id].state;
 						if (nstate==0 || nstate==1 && quest.chReport(npcId, false) || nstate==1 && quest.chGive(npcId, false)) {
 							signs[4]=1;
 							break;
@@ -302,7 +302,7 @@ package interdata
 		}
 		
 		public override function page2Click(event:MouseEvent) {
-			if (World.w.ctr.setkeyOn) return;
+			if (World.world.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			pip.snd(2);
 			if (page2==3 && npcInter=='doc') {
@@ -445,7 +445,7 @@ package interdata
 				n=Math.floor((pip.money-vend.kolBou)/(buy.price*buy.mp));
 				trace(n);
 				if (n<=0) {
-					World.w.gui.infoText('noMoney',Math.round(buy.price*buy.mp-(pip.money-vend.kolBou)));
+					World.world.gui.infoText('noMoney',Math.round(buy.price*buy.mp-(pip.money-vend.kolBou)));
 					return;
 				}
 			}
@@ -468,7 +468,7 @@ package interdata
 			if (Math.round(buy.price*vend.multPrice*n)>pip.money-vend.kolBou) {
 				n=Math.floor((pip.money-vend.kolBou)/buy.price*vend.multPrice);
 				if (n<=0) {
-					World.w.gui.infoText('noMoney',Math.round(buy.price*vend.multPrice-(pip.money-vend.kolBou)));
+					World.world.gui.infoText('noMoney',Math.round(buy.price*vend.multPrice-(pip.money-vend.kolBou)));
 					return;
 				}
 			}
@@ -535,16 +535,16 @@ package interdata
 				inv.money.kol-=price;
 				pip.vendor.money+=price;
 				setStatItem(event.currentTarget as MovieClip, obj);
-				World.w.gui.setWeapon();
+				World.world.gui.setWeapon();
 				pip.setRPanel();
 			}
 			if (page2==4) {
 				try {
-					if (World.w.game.quests[event.currentTarget.id.text]) {
-						var quest:Quest=World.w.game.quests[event.currentTarget.id.text];
+					if (World.world.game.quests[event.currentTarget.id.text]) {
+						var quest:Quest=World.world.game.quests[event.currentTarget.id.text];
 						quest.chGive(npcId, true);
 						quest.chReport(npcId, true);
-					} else World.w.game.addQuest(event.currentTarget.id.text);
+					} else World.world.game.addQuest(event.currentTarget.id.text);
 				} catch(err) {}
 				setStatus(false);
 			}
@@ -599,7 +599,7 @@ package interdata
 		
 		public function sell(arr:Array) {
 			if (!inbase && Math.ceil(vend.kolSell)>vend.money) {
-				World.w.gui.infoText('noSell');
+				World.world.gui.infoText('noSell');
 				return;
 			}
 			for (var s in inv.items) {

@@ -131,7 +131,7 @@ package unitdata
 		
 		public override function control() {
 			if (sost>=3) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -164,7 +164,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
 				findCel();
 			}
 			if (isPlav) {
@@ -200,7 +200,7 @@ package unitdata
 			}
 			
 			//атака
-			if (World.w.enemyAct>=3 && celUnit && shok<=0) {
+			if (World.world.enemyAct>=3 && celUnit && shok<=0) {
 				if (aiState==1 && currentWeapon) if (isrnd(shootCh)) currentWeapon.attack();
 				var atk=attKorp(celUnit);
 				if (atk && gryz) isGryz=true;

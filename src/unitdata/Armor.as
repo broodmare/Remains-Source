@@ -136,7 +136,7 @@ package unitdata
 				hp-=dam;
 				if (hp<0) {
 					hp=0;
-					World.w.gg.changeArmor('off');
+					World.world.gg.changeArmor('off');
 				}
 			}
 			setArmor();

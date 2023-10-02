@@ -129,7 +129,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -164,7 +164,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
 				if (findCel(aiState>1)) {
 					//увидели
 					if (celUnit) {
@@ -302,12 +302,12 @@ package unitdata
 			
 			if (Y>location.spaceY*World.tilePixelHeight-80) throu=false;
 			
-			if ((aiState==3 || aiState==4) && World.w.enemyAct>=3) attack();
+			if ((aiState==3 || aiState==4) && World.world.enemyAct>=3) attack();
 
 		}
 		
 		public function actPort(rnd:Boolean=false) {
-			var cel:Unit=World.w.gg;
+			var cel:Unit=World.world.gg;
 			//var dx:Number=0, dy:Number=0;
 			var nx:Number=0;
 			var ny:Number=0;

@@ -141,7 +141,7 @@ package interdata
 		// Press the OK button
 		public function buttonOk(event:MouseEvent) {
 			if (funOk) funOk();
-			World.w.saveConfig();
+			World.world.saveConfig();
 		}
 		// Press the Cancel button
 		public function buttonCancel(event:MouseEvent) {

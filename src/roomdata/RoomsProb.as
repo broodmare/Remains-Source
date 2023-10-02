@@ -1120,7 +1120,7 @@ package roomdata {
     <back id="railing" x="7" y="11"/>
     <back id="railing" x="11" y="11"/>
     <doors>0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0</doors>
-    <options color="green" vis="2" entip="1" kolspawn="3" backwall="tBackWall" music="music_plant_1" fon="fonDarkClouds"/>
+    <options color="green" vis="2" entip="1" kolspawn="3" backwall="tBackWall" music="music_plant_1" skybox="fonDarkClouds"/>
   </room>
   <room name="dressing">
     <a>S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S.S</a>
@@ -6212,7 +6212,7 @@ package roomdata {
     <back id="stenka3" x="37" y="21"/>
     <back id="konstr" x="13" y="14"/>
     <doors>0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.4.4.4.4.4</doors>
-    <options music="" entip="1" backwall="sky" fon="backgroundDarkClouds" color="blue" colorfon="blue" vis="10"/>
+    <options music="" entip="1" backwall="sky" skybox="backgroundDarkClouds" color="blue" colorfon="blue" vis="10"/>
   </room>
   <room name="exit_plant1">
     <a>B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B.B</a>
@@ -6424,7 +6424,7 @@ package roomdata {
     <back id="vkonstr" x="14" y="21"/>
     <back id="vkonstr" x="5" y="21"/>
     <doors>0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.4.4.4.4.4</doors>
-    <options backwall="tWindows" backform="1" color="blood" colorfon="blood2" vis="2" fon="backgroundRuins" music="music_mane_1"/>
+    <options backwall="tWindows" backform="1" color="blood" colorfon="blood2" vis="2" skybox="backgroundRuins" music="music_mane_1"/>
   </room>
   <room name="doors">
     <a>A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>

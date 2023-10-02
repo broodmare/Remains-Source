@@ -489,15 +489,15 @@ package weapondata
 		{
 			if (uniq<0) return;
 			variant=nvar;
-			if (owner.player && World.w.gg.currentWeapon==this) 
+			if (owner.player && World.world.gg.currentWeapon==this) 
 			{
 				remVisual();
 			}
 			getXmlParam();			
-			if (owner.player && World.w.gg.currentWeapon==this) 
+			if (owner.player && World.world.gg.currentWeapon==this) 
 			{
 				addVisual();
-				World.w.gg.weaponLevit();
+				World.world.gg.weaponLevit();
 			}
 		}
 		
@@ -515,7 +515,7 @@ package weapondata
 			} 
 			else 
 			{
-				location=World.w.location;
+				location=World.world.location;
 			}
 			super.addVisual();
 			if (owner && tip!=5 && owner.cTransform) 
@@ -525,7 +525,7 @@ package weapondata
 		}
 		public function addVisual2() 
 		{
-			if (tip==5 && vis) World.w.grafon.canvasLayerArray[layer].addChild(vis);
+			if (tip==5 && vis) World.world.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
 		public override function setNull(f:Boolean=false) 
@@ -734,7 +734,7 @@ package weapondata
 				{
 					hold++;
 					t_rech=recharg;
-					if (owner.player) World.w.gui.setWeapon();
+					if (owner.player) World.world.gui.setWeapon();
 				}
 			}
 			if (t_attack==0 && t_reload>0) t_reload--;
@@ -746,18 +746,18 @@ package weapondata
 		public function attack(waitReady:Boolean=false):Boolean 
 		{
 			if (waitReady && !ready) return false;
-			if (hp<=0 && owner==World.w.gg) 
+			if (hp<=0 && owner==World.world.gg) 
 			{
-				World.w.gui.infoText('brokenWeapon',nazv,null,false);
-				World.w.gui.bulb(X,Y);
+				World.world.gui.infoText('brokenWeapon',nazv,null,false);
+				World.world.gui.bulb(X,Y);
 				return false;
 			}
-			if (owner.player && (respect==1 || alicorn && !World.w.alicorn)) 
+			if (owner.player && (respect==1 || alicorn && !World.world.alicorn)) 
 			{
-				World.w.gui.infoText('disWeapon',null,null,false);
+				World.world.gui.infoText('disWeapon',null,null,false);
 				return false;
 			}
-			if (!waitReady && !World.w.alicorn && !auto && t_auto>0) 
+			if (!waitReady && !World.world.alicorn && !auto && t_auto>0) 
 			{
 				t_auto=3;
 				pow++;
@@ -789,8 +789,8 @@ package weapondata
 		{
 			if (jammed) 
 			{
-				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) World.w.gui.infoText('weaponCircuit',null,null,false);
-				else World.w.gui.infoText('weaponJammed',null,null,false);
+				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) World.world.gui.infoText('weaponCircuit',null,null,false);
+				else World.world.gui.infoText('weaponJammed',null,null,false);
 				Snd.ps('no_ammo',X,Y);
 				initReload();
 				return false;
@@ -805,12 +805,12 @@ package weapondata
 			else if (razn==2) skillConf=0.6;
 			else if (razn>2) 
 			{
-				World.w.gui.infoText('weaponSkillLevel',null,null,false);
+				World.world.gui.infoText('weaponSkillLevel',null,null,false);
 				return false;
 			}
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) 
 			{
-				World.w.gui.infoText('persLevel',null,null,false);
+				World.world.gui.infoText('persLevel',null,null,false);
 				return false;
 			}
 			return true;
@@ -860,7 +860,7 @@ package weapondata
 				else if (rnd<breaking/5*jm) 
 				{
 					t_ret=2;
-					if (rapid>5) World.w.gui.infoText('misfire',null,null,false);
+					if (rapid>5) World.world.gui.infoText('misfire',null,null,false);
 					Snd.ps('no_ammo',X,Y);
 					return null;
 				}
@@ -879,7 +879,7 @@ package weapondata
 				if (navod) 
 				{
 					b = new SmartBullet(owner,bulX,bulY,vBullet);
-					(b as SmartBullet).setCel(World.w.gg,navod);
+					(b as SmartBullet).setCel(World.world.gg,navod);
 				} 
 				else 
 				{
@@ -968,12 +968,12 @@ package weapondata
 					//восполнение на полигоне
 					if (owner.player && (location.train) && ammo!='recharg' && ammo!='not')
 					{
-						World.w.invent.items[ammo].kol+=rashod;
-						World.w.invent.mass[2]+=World.w.invent.items[ammo].mass*rashod;
+						World.world.invent.items[ammo].kol+=rashod;
+						World.world.invent.mass[2]+=World.world.invent.items[ammo].mass*rashod;
 					}
 				}
 			}
-			if (owner.player && tip<4 && tip!=0 && !(location.train || World.w.alicorn)) hp-=(1+ammoHP);
+			if (owner.player && tip<4 && tip!=0 && !(location.train || World.world.alicorn)) hp-=(1+ammoHP);
 			if (animated && t_shoot<=1) 
 			{
 				try 
@@ -1015,7 +1015,7 @@ package weapondata
 		
 		public function setTrass(gr:Graphics) 
 		{
-			var rot3=Math.atan2(World.w.celY-Y, World.w.celX-X);
+			var rot3=Math.atan2(World.world.celY-Y, World.world.celX-X);
 			trasser.location=owner.location;
 			trasser.X=trasser.begx=X;
 			trasser.Y=trasser.begy=Y;
@@ -1080,17 +1080,17 @@ package weapondata
 				{
 					if (hold>0) 
 					{
-						World.w.invent.items[ammo].kol+=hold;
-						World.w.invent.mass[2]+=World.w.invent.items[ammo].mass*hold;
+						World.world.invent.items[ammo].kol+=hold;
+						World.world.invent.mass[2]+=World.world.invent.items[ammo].mass*hold;
 						hold=0;
 					}
 					setAmmo(ammoTarg);
 				}
-				var kol:int=World.w.invent.items[ammo].kol;
+				var kol:int=World.world.invent.items[ammo].kol;
 				if (kol>holder-hold) kol=holder-hold;
 				hold+=kol;
-				World.w.invent.items[ammo].kol-=kol;
-				World.w.invent.mass[2]-=World.w.invent.items[ammo].mass*kol;
+				World.world.invent.items[ammo].kol-=kol;
+				World.world.invent.mass[2]-=World.world.invent.items[ammo].mass*kol;
 			} 
 			else 
 			{
@@ -1105,8 +1105,8 @@ package weapondata
 			if (nammo!=null) ammo=nammo;
 			if (node==null) 
 			{
-				node=World.w.invent.items[ammo].xml;
-				if (owner && owner.player && World.w.gui) World.w.gui.setWeapon();
+				node=World.world.invent.items[ammo].xml;
+				if (owner && owner.player && World.world.gui) World.world.gui.setWeapon();
 			}
 			if (node==null) 
 			{
@@ -1138,9 +1138,9 @@ package weapondata
 		{
 			if (owner && owner.player && holder && hold && ammo!='' && ammo!='recharg' && ammo!='not') 
 			{
-				World.w.gui.infoText('unloadWeapon',nazv,null,false);
+				World.world.gui.infoText('unloadWeapon',nazv,null,false);
 				(owner as UnitPlayer).invent.items[ammo].kol+=hold;
-				World.w.invent.mass[2]+=World.w.invent.items[ammo].mass*hold;
+				World.world.invent.mass[2]+=World.world.invent.items[ammo].mass*hold;
 				hold=0;
 				if (sndReload!='') Snd.ps(sndReload,X,Y);
 			}
@@ -1153,7 +1153,7 @@ package weapondata
 			if (jammed) return 2;
 			if (ammo!='recharg' && ammo!='not' && holder>0 && hold<rashod) 
 			{
-				if (World.w.invent.items[ammo].kol<rashod) return 4;
+				if (World.world.invent.items[ammo].kol<rashod) return 4;
 				else return 2;
 			}
 			if (dmagic>owner.mana && owner.mana<owner.maxmana*0.99) return 6;
@@ -1168,8 +1168,8 @@ package weapondata
 			if (hp<=0) return -2;
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) return -1; 
 			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
-			if (World.w.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) return -1;
-			if (ammo!='recharg' && ammo!='not' && holder>0 && World.w.invent.items[ammo].kol<rashod) return 0;
+			if (World.world.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) return -1;
+			if (ammo!='recharg' && ammo!='not' && holder>0 && World.world.invent.items[ammo].kol<rashod) return 0;
 			return 1;
 		}
 		
@@ -1196,8 +1196,8 @@ package weapondata
 					var am=AllData.d.item.(@id==nammo);
 					if (am.length()==0) return;
 					if (am.@base!=ammoBase) {
-						World.w.gui.infoText('imprAmmo',World.w.invent.items[nammo].nazv,null,false);
-						World.w.gui.bulb(X,Y);
+						World.world.gui.infoText('imprAmmo',World.world.invent.items[nammo].nazv,null,false);
+						World.world.gui.bulb(X,Y);
 						return;
 					}
 					ammoTarg=nammo;
@@ -1206,9 +1206,9 @@ package weapondata
 				{
 					ammoTarg=nammo;
 				}
-				if (!jammed && ammo!='not' && World.w.invent.items[ammoTarg].kol<rashod) {
-					World.w.gui.infoText('noAmmo',World.w.invent.items[ammoTarg].nazv,null,false);
-					World.w.gui.bulb(X,Y);
+				if (!jammed && ammo!='not' && World.world.invent.items[ammoTarg].kol<rashod) {
+					World.world.gui.infoText('noAmmo',World.world.invent.items[ammoTarg].nazv,null,false);
+					World.world.gui.bulb(X,Y);
 					return;
 				}
 			}
@@ -1216,7 +1216,7 @@ package weapondata
 			{
 				if (reload>0) 
 				{
-					//if (owner==World.w.gg && holder>rashod) World.w.gui.infoText('reloadWeapon',nazv);
+					//if (owner==World.world.gg && holder>rashod) World.world.gui.infoText('reloadWeapon',nazv);
 					t_reload=Math.round(reload*reloadMult);
 					if (animated) 
 					{

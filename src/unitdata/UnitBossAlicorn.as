@@ -102,8 +102,8 @@ package unitdata
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
-			if (World.w.game.globalDif==3) dMult=1.2;
-			if (World.w.game.globalDif==4) dMult=1.5;
+			if (World.world.game.globalDif==3) dMult=1.2;
+			if (World.world.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
 			if (weaps[1]) {
@@ -176,7 +176,7 @@ package unitdata
 			}
 			anims[animState].step();
 			//невидимость
-			if (superInvis && World.w.pers.infravis==0) {
+			if (superInvis && World.world.pers.infravis==0) {
 				celA=0;
 			} else celA=100;
 			if (curA>celA) curA-=5;
@@ -249,7 +249,7 @@ package unitdata
 		
 		public override function control() {
 
-			//World.w.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
@@ -263,7 +263,7 @@ package unitdata
 			//return;
 			
 			if (location.gg.invulner) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -288,7 +288,7 @@ package unitdata
 					mp=nmp;
 					teleport(movePoints[mp].x*40+20, movePoints[mp].y*40+40, (attState==4)?0:1);
 					aiTCh=30;
-					if (World.w.game.globalDif==4 && isrnd(0.2) || World.w.game.globalDif==3 && isrnd(0.1))	attState=5;
+					if (World.world.game.globalDif==4 && isrnd(0.2) || World.world.game.globalDif==3 && isrnd(0.1))	attState=5;
 					if (attState<=2) currentWeapon=weaps[attState]
 					if (attState==4) {
 						superInvis=true;
@@ -409,7 +409,7 @@ package unitdata
 				teleObj.vis.filters=[teleFilter];
 			}
 			teleObj.fracLevit=fraction;
-			if (teleObj is UnitPlayer) teleObj.levit=World.w.pers.teleEnemy;
+			if (teleObj is UnitPlayer) teleObj.levit=World.world.pers.teleEnemy;
 			else teleObj.levit=2;
 		}
 		

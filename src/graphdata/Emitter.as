@@ -114,7 +114,7 @@ package graphdata
 		
 		public function cast(location:Location, nx:Number, ny:Number, param:Object=null):Part {
 			if (location==null || !location.locationActive) return null;
-			if (kol2>World.w.maxParts && imp==0) return null;
+			if (kol2>World.world.maxParts && imp==0) return null;
 			var kol:int=1;
 			if (param && param.kol) kol=param.kol;
 			if (kol>50) kol=50;
@@ -216,11 +216,11 @@ package graphdata
 						p.vis.text.text.text=param.txt;
 					}
 					if ((id=='gui' || id=='take') && param.txt) {
-						p.vis.text.text.styleSheet=World.w.gui.style;
+						p.vis.text.text.styleSheet=World.world.gui.style;
 						p.vis.text.text.htmlText=param.txt;
 					}
 					if (camscale) {
-						p.vis.scaleX=p.vis.scaleY=1/World.w.cam.scaleV;
+						p.vis.scaleX=p.vis.scaleY=1/World.world.cam.scaleV;
 						if (param && param.scale) {
 							p.vis.scaleX*=param.scale;
 							p.vis.scaleY*=param.scale;

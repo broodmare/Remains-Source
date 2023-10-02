@@ -55,31 +55,31 @@ package interdata
 			else if (turn>0) active=true;
 			else active=false;
 			if (active) {
-				if (World.w.location.base || World.w.alicorn) {
+				if (World.world.location.base || World.world.alicorn) {
 					active=false;
 					return;
 				}
-				gg=World.w.gg;
+				gg=World.world.gg;
 				weapon=gg.currentWeapon;
 				if (weapon==null) {
-					World.w.gui.infoText('noSats');
+					World.world.gui.infoText('noSats');
 					active=false;
 				} else {
 					if (weapon.noSats) {
-						World.w.gui.infoText('noSats');
+						World.world.gui.infoText('noSats');
 						active=false;
 					} else {
 						var st=weapon.status();
 						if (st==4) {
-							World.w.gui.infoText('noAmmo','');
+							World.world.gui.infoText('noAmmo','');
 							active=false;
 						}
 						if (st==5) {
-							World.w.gui.infoText('brokenWeapon','');
+							World.world.gui.infoText('brokenWeapon','');
 							active=false;
 						}
 						if (st==6) {
-							World.w.gui.infoText('noMana','');
+							World.world.gui.infoText('noMana','');
 							active=false;
 						}
 					}
@@ -97,66 +97,66 @@ package interdata
 					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
 				}
 				skillConf=1;
-				if (World.w.weaponsLevelsOff) {
+				if (World.world.weaponsLevelsOff) {
 					var razn=weapon.lvl-gg.pers.getWeapLevel(weapon.skill);
 					if (razn==1) skillConf=0.8;
 					else if (razn==2) skillConf=0.6;
 					else if (razn>2) {
 						skillConf=0;
-						World.w.gui.infoText('weaponSkillLevel');
+						World.world.gui.infoText('weaponSkillLevel');
 						active=false;
 						return;
 					}
 				}
 				if (que.length>0) clearAll();
-				World.w.grafon.drawSats();
-				World.w.grafon.onSats(true);
+				World.world.grafon.drawSats();
+				World.world.grafon.onSats(true);
 				getUnits();
-				World.w.gui.offCelObj();
+				World.world.gui.offCelObj();
 				odv=od;
-				World.w.gui.setOd();
-				World.w.swfStage.addEventListener(MouseEvent.MOUSE_MOVE,mMove);
-				World.w.gui.setTopText('infosats');
+				World.world.gui.setOd();
+				World.world.swfStage.addEventListener(MouseEvent.MOUSE_MOVE,mMove);
+				World.world.gui.setTopText('infosats');
 			} else {
-				World.w.grafon.onSats(false);
+				World.world.grafon.onSats(false);
 				offUnits();
-				World.w.swfStage.removeEventListener(MouseEvent.MOUSE_MOVE,mMove);
-				World.w.ctr.clearAll();
-				World.w.gui.setTopText('');
+				World.world.swfStage.removeEventListener(MouseEvent.MOUSE_MOVE,mMove);
+				World.world.ctr.clearAll();
+				World.world.gui.setTopText('');
 			}
 			vis.visible=active;
-			World.w.gui.setSats(active);
+			World.world.gui.setSats(active);
 		}
 		
 		//когда на паузе
 		public function step() {
 			if (active) {
-				if (World.w.ctr.keyAttack) {
+				if (World.world.ctr.keyAttack) {
 					setCel();
-					World.w.ctr.keyAttack=false;
+					World.world.ctr.keyAttack=false;
 				}
-				if (World.w.ctr.keyTele) {
+				if (World.world.ctr.keyTele) {
 					unsetCel();
-					World.w.ctr.keyTele=false;
+					World.world.ctr.keyTele=false;
 				}
-				if (World.w.ctr.keyAction) {
+				if (World.world.ctr.keyAction) {
 					onoff(-1);
-					World.w.ctr.keyAction=false;
+					World.world.ctr.keyAction=false;
 				}
 			}
 		}
 		
 		//когда не на паузе
 		public function step2() {
-			if (que.length>0 && World.w.ctr.keyAttack) clearAll();
+			if (que.length>0 && World.world.ctr.keyAttack) clearAll();
 			if (que.length>0 && weapon.satsCons*weapon.consMult*weapon.consMult/skillConf*gg.pers.satsMult/weapon.satsQue>od) {
-				World.w.gui.infoText('noOd');
+				World.world.gui.infoText('noOd');
 				clearAll();
 			}
 			if (que.length==0 && od<gg.pers.maxOd) {
 				od+=odd;
 				odv=od;
-				World.w.gui.setOd();
+				World.world.gui.setOd();
 			}
 		}
 		
@@ -167,13 +167,13 @@ package interdata
 				cel.remove();
 			}
 			odv=od;
-			World.w.gui.setOd();
+			World.world.gui.setOd();
 			//trace('cl all');
 		}
 		
 		public function setCel() {
 			if (weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult>odv) {
-				World.w.gui.infoText('noOd');
+				World.world.gui.infoText('noOd');
 				return;
 			}
 			var cel:SatsCel;
@@ -186,12 +186,12 @@ package interdata
 					}
 				}
 			}
-			if (cel==null) cel=new SatsCel(null, World.w.celX,World.w.celY,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
+			if (cel==null) cel=new SatsCel(null, World.world.celX,World.world.celY,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
 			//if (cel.un!=null) trace ('set '+cel.un.u);
 			//else trace ('set *');
 			weapon.ready=false;
 			odv-=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
-			World.w.gui.setOd();
+			World.world.gui.setOd();
 			que.push(cel);
 		}
 		public function unsetCel(q:Boolean=false) {
@@ -211,7 +211,7 @@ package interdata
 				onoff(-1);
 				odv=od;
 			}
-			World.w.gui.setOd();
+			World.world.gui.setOd();
 		}
 		
 		public function getReady():Boolean {
@@ -222,7 +222,7 @@ package interdata
 		//действие выполнено
 		public function act() {
 			od-=que[0].cons;
-			World.w.gui.setOd();
+			World.world.gui.setOd();
 			if (que[0].kol>1 && weapon.status()<=1) {
 				que[0].kol--;
 				que[0].begined=true;
@@ -311,7 +311,7 @@ package interdata
 		}
 		
 		public function getUnits() {
-			for each (var un:Unit in World.w.location.units) {
+			for each (var un:Unit in World.world.location.units) {
 				if (!gg.isMeet(un) || !un.isSats || un.sost>=3 || un.invis) continue;
 				if (weapon.satsMelee) {
 					if (gg.look(un,false,0,gg.pers.meleeR*1.2+100)<=0) continue;
@@ -323,7 +323,7 @@ package interdata
 				var du:MovieClip=drawUnit(un);
 				var su:MovieClip=new satsUnit();
 				su.filters=[fShad];
-				su.scaleX=su.scaleY=1/World.w.cam.scaleV;
+				su.scaleX=su.scaleY=1/World.world.cam.scaleV;
 				var txt:TextField=su.txt;
 				var info:TextField=su.info;
 				txt.y=3;
@@ -339,7 +339,7 @@ package interdata
 				info.text='';
 				
 				//расширенная информация о враге
-				if (World.w.pers && World.w.pers.modAnalis) {
+				if (World.world.pers && World.world.pers.modAnalis) {
 					info.text+='\n'+Res.pipText('level')+': '+(un.level+1);
 					info.text+='\n'+Res.pipText('hp')+': '+Math.ceil(un.hp)+'/'+Math.ceil(un.maxhp);
 					if (un.skin>0) info.text+='\n'+Res.pipText('skin')+': '+Math.ceil(un.skin);
@@ -356,7 +356,7 @@ package interdata
 		}
 		
 		public function mMove(event:MouseEvent):void {
-			//trace(World.w.celX, World.w.celY);
+			//trace(World.world.celX, World.world.celY);
 			trass();
 		}
 		

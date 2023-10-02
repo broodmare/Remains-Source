@@ -36,14 +36,14 @@ package weapondata
 				b.knockx=storona;
 				b.parr=null;
 				b.dist=0;
-				b.damage=damage*World.w.pers.punchDamMult;
-				b.otbros=otbros*World.w.pers.punchDamMult;
+				b.damage=damage*World.world.pers.punchDamMult;
+				b.otbros=otbros*World.world.pers.punchDamMult;
 				b.destroy=destroy;
 				b.probiv=1;
 				var vverh:Boolean=false;
-				if (World.w.pers.punchDamMult>1) 
+				if (World.world.pers.punchDamMult>1) 
 				{
-					dopCh=(World.w.pers.punchDamMult-1);
+					dopCh=(World.world.pers.punchDamMult-1);
 					dopDamage=30;
 				}
 				if (kick) 
@@ -55,7 +55,7 @@ package weapondata
 					b.knockx=storona;
 					b.damage*=2;
 					b.otbros*=1.5;
-					b.destroy=World.w.pers.kickDestroy;
+					b.destroy=World.world.pers.kickDestroy;
 					dopDamage=60;
 					if (vverh) 
 					{

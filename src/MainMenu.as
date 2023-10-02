@@ -25,41 +25,41 @@ package
 	public class MainMenu 
 	{
 
-		var version:String='1.0.3b (woons)';
-		var mainMenu:MovieClip; // Create MovieClip object for MainMenu
+		public var version:String='1.0.3b (woons)';
+		public var mainMenu:MovieClip; // Create MovieClip object for MainMenu
 		public var main:Sprite;
-		var world:World;
+		public var world:World;
 		public var active:Boolean=true;
 		public var loaded:Boolean=false;
-		var newGameMode:int = 2;
-		var newGameDif:int = 2;
-		var loadCell:int = -1;
-		var loadReg:int = 0;	// loading mode, 0 - loading, 1 - slot selection for autosave
-		var command:int = 0; //What should the main menu be doing?
-		var com:String='';
-		var mmp:MovieClip; // Create MovieClip object for PipBuck
-		var pip:PipBuck;
-		var displ:Displ;
-		var animOn:Boolean=true;
-		var langReload:Boolean=false;
+		public var newGameMode:int = 2;
+		public var newGameDif:int = 2;
+		public var loadCell:int = -1;
+		public var loadReg:int = 0;	// loading mode, 0 - loading, 1 - slot selection for autosave
+		public var command:int = 0; //What should the main menu be doing?
+		public var com:String='';
+		public var mmp:MovieClip; // Create MovieClip object for PipBuck
+		public var pip:PipBuck;
+		public var displ:Displ;
+		public var animOn:Boolean=true;
+		public var langReload:Boolean=false;
 		
-		var kolDifs:int = 5;
-		var kolOpts:int = 6;
+		public var kolDifs:int = 5;
+		public var kolOpts:int = 6;
 		
-		var butsLang:Array;
+		public var butsLang:Array;
 		
-		var stn:int = 0;
+		public var stn:int = 0;
 		
 		public var style:StyleSheet = new StyleSheet(); 
-		var styleObj:Object = new Object(); 
+		public var styleObj:Object = new Object(); 
 		
-		var format:TextFormat = new TextFormat();
+		public var format:TextFormat = new TextFormat();
 		
-		var file:FileReference = new FileReference();
-		var ffil:Array;
-		var arr:Array=new Array();
+		public var file:FileReference = new FileReference();
+		public var ffil:Array;
+		public var arr:Array=new Array();
 		
-		var mainTimer:Timer;
+		public var mainTimer:Timer;
 			
 		public function MainMenu(nmain:MovieClip) 
 		{
@@ -163,8 +163,8 @@ package
 				if (m) m.removeEventListener(MouseEvent.CLICK, funLang);
 			}
 			if (main.contains(mainMenu)) main.removeChild(mainMenu);
-			world.vwait.visible=true;
-			world.vwait.progres.text=Res.guiText('loading');
+			world.loadingScreen.visible=true;
+			world.loadingScreen.progres.text=Res.guiText('loading');
 		}
 
 		public function funNewGame(event:MouseEvent) 
@@ -189,7 +189,7 @@ package
 			var maxDate:Number = 0;
 			for (var i = 0; i <= world.saveCount; i++) 
 			{
-				var save:Object=World.w.getSave(i);
+				var save:Object=World.world.getSave(i);
 				if (save && save.est && save.date > maxDate) 
 				{
 					n = i;
@@ -197,7 +197,7 @@ package
 				}
 			}
 
-			save=World.w.getSave(n);
+			save=World.world.getSave(n);
 
 			if (save && save.est) 
 			{
@@ -226,9 +226,9 @@ package
 		public function setLangButtons() 
 		{
 			butsLang=new Array();
-			if (world.kolLangs>1) 
+			if (world.languageCount>1) 
 			{
-				var i=world.kolLangs;
+				var i=world.languageCount;
 				for each(var l in world.langsXML.lang) 
 				{
 					i--;
@@ -283,7 +283,7 @@ package
 			setScrollInfo();
 		}
 		
-		function setMainButton(but:MovieClip, txt:String) 
+		public function setMainButton(but:MovieClip, txt:String) 
 		{
 			but.txt.text=txt;
 			but.glow.text=txt;
@@ -305,7 +305,7 @@ package
 			setScrollInfo();
 		}
 		
-		function setScrollInfo() 
+		public function setScrollInfo() 
 		{
 			if (mainMenu.info.txt.height<mainMenu.info.txt.textHeight) 
 			{
@@ -334,7 +334,7 @@ package
 			for (var i = 0; i <= world.saveCount; i++) 
 			{
 				var slot:MovieClip = mainMenu.dialLoad['slot'+i];
-				var save:Object = World.w.getSave(i);
+				var save:Object = World.world.getSave(i);
 				var obj:Object = interdata.PipPageOpt.saveObj(save,i);
 				arr.push(obj);
 				slot.id.text = i;
@@ -538,7 +538,7 @@ package
 			if (event.currentTarget==mainMenu.dialNew.dif4) newGameDif=4;
 			updNewMode();
 		}
-		function updNewMode() 
+		public function updNewMode() 
 		{
 			mainMenu.dialNew.dif0.fon.gotoAndStop(1);
 			mainMenu.dialNew.dif1.fon.gotoAndStop(1);
@@ -551,11 +551,11 @@ package
 			if (newGameDif==3) mainMenu.dialNew.dif3.fon.gotoAndStop(2);
 			if (newGameDif==4) mainMenu.dialNew.dif4.fon.gotoAndStop(2);
 		}
-		function infoMode(event:MouseEvent) 
+		public function infoMode(event:MouseEvent) 
 		{
 			mainMenu.dialNew.modeinfo.htmlText=event.currentTarget.modeinfo.text;
 		}
-		function infoOpt(event:MouseEvent) 
+		public function infoOpt(event:MouseEvent) 
 		{
 			var n=int(event.currentTarget.name.substr(event.currentTarget.name.length-1));
 			mainMenu.dialNew.modeinfo.htmlText=Res.formatText(Res.txt('g','opt'+n,1));
@@ -585,7 +585,7 @@ package
 			}
 		}
 		
-		function showButtons(n:Boolean) 
+		public function showButtons(n:Boolean) 
 		{
 			mainMenu.lang.visible=mainMenu.butNewGame.visible=mainMenu.butLoadGame.visible=mainMenu.butContGame.visible=mainMenu.butOpt.visible=mainMenu.butAbout.visible=n;
 		}
@@ -610,7 +610,7 @@ package
 			mainMenu.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
 		}
 		
-		function step() 
+		public function step() 
 		{
 			if (langReload) 
 			{

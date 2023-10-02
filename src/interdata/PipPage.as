@@ -154,7 +154,7 @@ package interdata
 		}
 
 		public function page2Click(event:MouseEvent) {
-			if (World.w.ctr.setkeyOn) return;
+			if (World.world.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			setStatus();
 			pip.snd(2);
@@ -390,7 +390,7 @@ package interdata
 			dp=dp[0];
 			//определение текущего уровня
 			var lvl=1;
-			var pers=World.w.pers;
+			var pers=World.world.pers;
 			if (tip=='perk') {
 				lvl=pers.perks[id];
 				if (lvl==null) lvl=0;
@@ -414,7 +414,7 @@ package interdata
 				}
 			}
 			//добавление эффектов веса
-			if (World.w.hardInv && dp.sk.length()) 
+			if (World.world.hardInv && dp.sk.length()) 
 			{
 				s+='<br>';
 				for each(var sk in dp.sk) 
@@ -466,9 +466,9 @@ package interdata
 		
 		public static function infoStr(tip:String, id:String):String {
 			var s:String='';
-			var pip=World.w.pip;
-			var gg=World.w.gg;
-			var inv:Invent=World.w.invent;
+			var pip=World.world.pip;
+			var gg=World.world.gg;
+			var inv:Invent=World.world.invent;
 			if (tip==Item.L_ARMOR && inv.armors[id]==null && pip.arrArmor[id]==null) tip=Item.L_ITEM;
 			if (tip==Item.L_WEAPON && inv.weapons[id] && inv.weapons[id].spell) tip=Item.L_ITEM;
 			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
@@ -554,8 +554,8 @@ package interdata
 				}
 				var sinf=Res.txt('w',id,1);
 				if (sinf=='') sinf=Res.txt('w',w.id,1);
-				if (World.w.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
-				if (World.w.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
+				if (World.world.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
+				if (World.world.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				s+='\n\n'+sinf;
 			} else if (tip==Item.L_ARMOR) {
 				var a:Armor=inv.armors[id];
@@ -602,7 +602,7 @@ package interdata
 				if (ammo.@armor.length()) s+='\n'+Res.pipText('tarmor')+': x'+yel(ammo.@armor);
 				if (ammo.@prec.length()) s+='\n'+Res.pipText('prec')+': x'+yel(ammo.@prec);
 				if (ammo.@det>0) s+='\n'+Res.pipText('det');
-				if (World.w.hardInv && ammo.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
+				if (World.world.hardInv && ammo.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				if (ammo.@sell>0) s+='\n'+Res.pipText('sell')+": "+yel(ammo.@sell);
 			} else {
 				var hhp:Number=0;
@@ -614,15 +614,15 @@ package interdata
 				}
 				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') {
 					if (pot.@hhp.length() || pot.@hhplong.length())
-					s+='\n'+Res.pipText('healhp')+': '+yel(Math.round(pot.@hhp*World.w.pers.healMult));
-					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*World.w.pers.healMult));
-					if (pot.@hrad.length()) s+='\n'+Res.pipText('healrad')+': '+yel(Math.round(pot.@hrad*World.w.pers.healMult));
+					s+='\n'+Res.pipText('healhp')+': '+yel(Math.round(pot.@hhp*World.world.pers.healMult));
+					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*World.world.pers.healMult));
+					if (pot.@hrad.length()) s+='\n'+Res.pipText('healrad')+': '+yel(Math.round(pot.@hrad*World.world.pers.healMult));
 					if (pot.@hcut.length()) s+='\n'+Res.pipText('healcut')+': '+yel(Math.round(pot.@hcut));
 					if (pot.@hpoison.length()) s+='\n'+Res.pipText('healpoison')+': '+yel(Math.round(pot.@hpoison));
 					if (pot.@horgan.length()) s+='\n'+Res.pipText('healorgan')+': '+yel(Math.round(pot.@horgan));
 					if (pot.@horgans.length()) s+='\n'+Res.pipText('healorgans')+': '+yel(Math.round(pot.@horgans));
 					if (pot.@hblood.length()) s+='\n'+Res.pipText('healblood')+': '+yel(Math.round(pot.@hblood));
-					if (pot.@hmana.length()) s+='\n'+Res.pipText('healmana')+': '+yel(Math.round(pot.@hmana*World.w.pers.healManaMult));
+					if (pot.@hmana.length()) s+='\n'+Res.pipText('healmana')+': '+yel(Math.round(pot.@hmana*World.world.pers.healManaMult));
 					if (pot.@alc.length()) s+='\n'+Res.pipText('alcohol')+': '+yel(Math.round(pot.@alc));
 					if (pot.@rad.length()) s+='\n'+Res.pipText('rad')+': '+yel(Math.round(pot.@rad));
 					if (pot.@effect.length()) {
@@ -630,15 +630,15 @@ package interdata
 						//if (tip=='him' && gg.pers.himLevel>1) s+=effStr('eff',pot.@effect,gg.pers.himLevel-1);
 						//else s+=;
 					}
-					if (pot.@perk.length()) s+='\n'+pink(Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.w.pers.perks[pot.@perk]>0?World.w.pers.perks[pot.@perk]:'0');
+					if (pot.@perk.length()) s+='\n'+pink(Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.world.pers.perks[pot.@perk]>0?World.world.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
 				if (tip=='book') {
-					if (World.w.pers.skills[id]!=null) s+='\n'+Res.pipText('skillup')+': '+pink(Res.txt('e',id));
+					if (World.world.pers.skills[id]!=null) s+='\n'+Res.pipText('skillup')+': '+pink(Res.txt('e',id));
 				}
 				if (tip=='spell') {
-					s+='\n'+Res.pipText('dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*World.w.pers.allDManaMult))+')';
-					s+='\n'+Res.pipText('culd')+': '+yel(pot.@culd+Res.guiText('sec'))+' ('+yel(Math.round(pot.@culd*World.w.pers.spellDown)+Res.guiText('sec'))+')';
+					s+='\n'+Res.pipText('dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*World.world.pers.allDManaMult))+')';
+					s+='\n'+Res.pipText('culd')+': '+yel(pot.@culd+Res.guiText('sec'))+' ('+yel(Math.round(pot.@culd*World.world.pers.spellDown)+Res.guiText('sec'))+')';
 					s+='\n'+Res.pipText('is1')+': '+pink((pot.@tele>0)?Res.txt('e','tele'):Res.txt('e','magic'));
 				}
 				if (id=='rep') {
@@ -655,7 +655,7 @@ package interdata
 					}
 				}
 				if (tip=='paint') s=Res.txt('p','paint',1);
-				if (World.w.hardInv && pot.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
+				if (World.world.hardInv && pot.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				if (pot.@sell>0) s+='\n'+Res.pipText('sell')+": "+yel(pot.@sell);
 			}
 			return s;
@@ -689,9 +689,9 @@ package interdata
 					var cid:String=a.idComp;
 					var kolcomp:int=a.needComp();
 					s+="\n\n<span class = 'or'>"+Res.txt('i',cid)+ " - "+kolcomp+" <span ";
-					if (!World.w.location.base && kolcomp>inv.items[cid].kol || World.w.location.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
+					if (!World.world.location.base && kolcomp>inv.items[cid].kol || World.world.location.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
 					s+="> ("+inv.items[cid].kol;
-					if (World.w.location.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
+					if (World.world.location.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
 					s+=")</span></span>";
 				}
 				if (craft==1) s+=craftInfo(id);
@@ -740,10 +740,10 @@ package interdata
 			}
 			for each(var c in sch.craft) {
 				s+="\n<span class = 'or'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
-				if (!World.w.location.base && c.@kol>inv.items[c.@id].kol
-				  || World.w.location.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
+				if (!World.world.location.base && c.@kol>inv.items[c.@id].kol
+				  || World.world.location.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
 				s+=">("+inv.items[c.@id].kol;
-				if (World.w.location.base && inv.items[c.@id].vault>0) s+=' +'+inv.items[c.@id].vault;
+				if (World.world.location.base && inv.items[c.@id].vault>0) s+=' +'+inv.items[c.@id].vault;
 				s+=")</span></span>";
 			}
 			return s;
@@ -751,7 +751,7 @@ package interdata
 		
 		public function infoQuest(id:String):String 
 		{
-				var q:Quest=World.w.game.quests[id];
+				var q:Quest=World.world.game.quests[id];
 				if (q==null) return '';
 				vis.nazv.text=q.nazv;
 				var s:String=q.info;
@@ -787,10 +787,10 @@ package interdata
 			var xml = AllData.d.param.(@v==id);
 			var xmlTip:String = xml.@tip;
 			
-			if (World.w.pers.factor[id] is Array) {
+			if (World.world.pers.factor[id] is Array) {
 				if (xmlTip == '4') lines.push('- ' + Res.pipText('begvulner') + ': ' + yel('100%'));
 				
-				for each (var obj in World.w.pers.factor[id]) {
+				for each (var obj in World.world.pers.factor[id]) {
 					var line:String = '- ';
 					
 					if (obj.id == 'beg') {
@@ -915,19 +915,19 @@ package interdata
 			//проверка на доступ к местности
 			if (task.@land.length()) 
 			{
-				var land:LandAct=World.w.game.lands[task.@land];
+				var land:LandAct=World.world.game.lands[task.@land];
 				if (land==null) return false;
-				if (!land.access && !land.visited && World.w.pers.level<land.dif) return false;
+				if (!land.access && !land.visited && World.world.pers.level<land.dif) return false;
 			}
 			//проверка триггера
 			if (task.@trigger.length()) 
 			{
-				if (World.w.game.triggers[task.@trigger]!=1) return false;
+				if (World.world.game.triggers[task.@trigger]!=1) return false;
 			}
 			//проверка скилла
 			if (task.@skill.length() && task.@skilln.length()) 
 			{
-				if (World.w.pers.skills[task.@skill]<task.@skilln) return false;
+				if (World.world.pers.skills[task.@skill]<task.@skilln) return false;
 			}
 			return true;
 		}
@@ -1011,7 +1011,7 @@ package interdata
 		}
 		function onMouseWheel1(event:MouseEvent):void 
 		{
-			if (World.w.ctr.setkeyOn) return;
+			if (World.world.ctr.setkeyOn) return;
 			try 
 			{
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;

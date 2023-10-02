@@ -18,7 +18,7 @@ package interdata
 		
 		//принять настройки внешности
 		public function funVidOk() {
-			World.w.gg.refreshVis();
+			World.world.gg.refreshVis();
 			pip.onoff(-1);
 		}
 		//принять настройки внешности
@@ -34,10 +34,10 @@ package interdata
 			setTopText();
 			if (page2==1) {
 				pip.ArmorId='';
-				World.w.app.attach(vis,funVidOk,funVidCancel);
-				World.w.app.vis.y=400;
-				World.w.app.vis.x=444;
-				World.w.app.vis.fon.visible=false;
+				World.world.app.attach(vis,funVidOk,funVidCancel);
+				World.world.app.vis.y=400;
+				World.world.app.vis.x=444;
+				World.world.app.vis.fon.visible=false;
 			}
 		}
 		

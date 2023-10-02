@@ -227,17 +227,17 @@ package interdata
 			updateKeys();
 			
 			
-			World.w.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN,onMiddleMouseDown1);
-			World.w.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,onMiddleMouseUp1);
-			World.w.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,onRightMouseDown1);
-			World.w.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_UP,onRightMouseUp1);
-			World.w.swfStage.addEventListener(MouseEvent.RIGHT_CLICK, onRightMouse);
-			World.w.swfStage.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown1);
-			World.w.swfStage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp1);
-			World.w.swfStage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove1);
-			World.w.swfStage.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
-			World.w.swfStage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyboardDownEvent);
-			World.w.swfStage.addEventListener(KeyboardEvent.KEY_UP,onKeyboardUpEvent);
+			World.world.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN,onMiddleMouseDown1);
+			World.world.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,onMiddleMouseUp1);
+			World.world.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,onRightMouseDown1);
+			World.world.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_UP,onRightMouseUp1);
+			World.world.swfStage.addEventListener(MouseEvent.RIGHT_CLICK, onRightMouse);
+			World.world.swfStage.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown1);
+			World.world.swfStage.addEventListener(MouseEvent.MOUSE_UP,onMouseUp1);
+			World.world.swfStage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove1);
+			World.world.swfStage.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
+			World.world.swfStage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyboardDownEvent);
+			World.world.swfStage.addEventListener(KeyboardEvent.KEY_UP,onKeyboardUpEvent);
 		}
 		
 		public function step() {
@@ -335,18 +335,18 @@ package interdata
 		}
 
 		public function onMouseMove1(event:MouseEvent):void {
-			World.w.cam.celX=event.stageX;
-			World.w.cam.celY=event.stageY;
-			if (World.w.gui) {
-				if (event.stageY<100 && event.stageX>World.w.swfStage.stageWidth-400) World.w.gui.infoAlpha=0.2;
-				else World.w.gui.infoAlpha=1;
-				World.w.gui.showDop=World.w.showFavs && (event.stageY>World.w.swfStage.stageHeight-15);
+			World.world.cam.celX=event.stageX;
+			World.world.cam.celY=event.stageY;
+			if (World.world.gui) {
+				if (event.stageY<100 && event.stageX>World.world.swfStage.stageWidth-400) World.world.gui.infoAlpha=0.2;
+				else World.world.gui.infoAlpha=1;
+				World.world.gui.showDop=World.world.showFavs && (event.stageY>World.world.swfStage.stageHeight-15);
 			}
 		}
 		public function onMouseDown1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
-			if (World.w.clickReq==1) {
-				World.w.clickReq=2;
+			if (World.world.onConsol) return;
+			if (World.world.clickReq==1) {
+				World.world.clickReq=2;
 				return;
 			}
 			keyPressed=true;
@@ -368,7 +368,7 @@ package interdata
             // Disable the menu
         }
 		public function onRightMouseDown1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
+			if (World.world.onConsol) return;
 			keyPressed=true;
 			keyPressed2=true;
 			if (setkeyOn) {
@@ -382,7 +382,7 @@ package interdata
 			if (keys['rmb']) this[keys['rmb'].id]=false;
 		}
 		public function onMiddleMouseDown1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
+			if (World.world.onConsol) return;
 			if (setkeyOn) {
 				requestOk('mmb');
 				return;
@@ -393,15 +393,15 @@ package interdata
 			if (keys['mmb']) this[keys['mmb'].id]=false;
 		}
 		public function onMouseWheel1(event:MouseEvent):void {
-			if (World.w.onConsol) return;
+			if (World.world.onConsol) return;
 			if (setkeyOn) {
 				if (event.delta<0) requestOk('scrd');
 				if (event.delta>0) requestOk('scru');
 				return;
 			}
 			try {
-				if (World.w.gui.inform.visible && World.w.gui.inform.scText.visible) {
-					World.w.gui.inform.txt.scrollV-=event.delta;
+				if (World.world.gui.inform.visible && World.world.gui.inform.scText.visible) {
+					World.world.gui.inform.txt.scrollV-=event.delta;
 					event.stopPropagation();
 					return;
 				}
@@ -419,7 +419,7 @@ package interdata
 				else if (event.keyCode==Keyboard.TAB || event.keyCode==Keyboard.ESCAPE) requestOk(-1);
 				return;
 			}
-			if (!World.w.onConsol) {
+			if (!World.world.onConsol) {
 				if (event.keyCode<256 && !keyDowns[event.keyCode]) {
 					if (keys[event.keyCode]) {
 						this[keys[event.keyCode].id]=true;
@@ -429,47 +429,47 @@ package interdata
 					}
 				}
 				if (event.keyCode<256) keyDowns[event.keyCode]=true;
-				if (World.w.pip && World.w.pip.reqKey) {
+				if (World.world.pip && World.world.pip.reqKey) {
 					for (var i=1; i<=12; i++) {
 						if (this['keyWeapon'+i]) {
 							this['keyWeapon'+i]=false;
-							World.w.pip.assignKey(i+(keyRun?12:0));
+							World.world.pip.assignKey(i+(keyRun?12:0));
 						}
 					}
 					for (var i=1; i<=4; i++) {
 						if (this['keySpell'+i]) {
 							this['keySpell'+i]=false;
-							World.w.pip.assignKey(24+i);
+							World.world.pip.assignKey(24+i);
 						}
 					}
 					if (keyGrenad) {
 						keyGrenad=false;
-						World.w.pip.assignKey(29);
+						World.world.pip.assignKey(29);
 					}
 					if (keyMagic) {
 						keyMagic=false;
-						World.w.pip.assignKey(30);
+						World.world.pip.assignKey(30);
 					}
 				}
 			}
 			if (event.keyCode==Keyboard.END) {
-				World.w.consolOnOff()
+				World.world.consolOnOff()
 			}
-			if (World.w.chitOn && event.keyCode==Keyboard.HOME) {
+			if (World.world.chitOn && event.keyCode==Keyboard.HOME) {
 				keyTest1=true;
 			}
-			if (event.keyCode==Keyboard.DELETE && World.w.testMode) {
-				World.w.onPause=!World.w.onPause;
+			if (event.keyCode==Keyboard.DELETE && World.world.testMode) {
+				World.world.onPause=!World.world.onPause;
 			}
 			if (event.keyCode==Keyboard.INSERT) {
-				World.w.redrawLoc();
+				World.world.redrawLoc();
 			}
 			if (event.keyCode==Keyboard.BACKQUOTE) keyFly=true;
-			if (World.w.chitOn) {
+			if (World.world.chitOn) {
 				if (event.keyCode==Keyboard.INSERT) keyTest2=true;
 			}
 			if (keyFull) {// Only works in the event handler
-				if (!World.w.onConsol) World.w.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				if (!World.world.onConsol) World.world.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				keyFull=false;
 			}
 		}

@@ -40,7 +40,7 @@ package
 		function onCompleteLoadText(event:Event):void  
 		{
 			loaded=true;
-			World.w.load_log+='Text '+textFile+' loaded\n';
+			World.world.load_log+='Text '+textFile+' loaded\n';
 			try {
 				d = new XML(loader_text.data);
 				if (def) Res.e = d;
@@ -48,10 +48,10 @@ package
 			} 
 			catch(err) 
 			{
-				World.w.load_log+='Text file error '+textFile+'\n';
+				World.world.load_log+='Text file error '+textFile+'\n';
 				errLoad=true;
 			}
-			World.w.textsLoadOk();
+			World.world.textsLoadOk();
 			loader_text.removeEventListener(Event.COMPLETE, onCompleteLoadText);
 			loader_text.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
 		}
@@ -59,8 +59,8 @@ package
 		private function onErrorLoadText(event:IOErrorEvent):void 
 		{
 			errLoad=true;
-			World.w.load_log+='File not found '+textFile+'\n';
-			World.w.textsLoadOk();
+			World.world.load_log+='File not found '+textFile+'\n';
+			World.world.textsLoadOk();
 			loader_text.removeEventListener(Event.COMPLETE, onCompleteLoadText);
 			loader_text.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadText);
 			loader_text.removeEventListener(ProgressEvent.PROGRESS, funProgress);
@@ -69,7 +69,7 @@ package
 		function funProgress(event:ProgressEvent):void 
 		{
 			progressLoad=event.bytesLoaded/event.bytesTotal;
-			World.w.textProgressLoad=progressLoad;
+			World.world.textProgressLoad=progressLoad;
         }
 		
 	}

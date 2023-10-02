@@ -39,8 +39,8 @@ package unitdata
 			expl();
 			exterminate();
 			runScript();
-			if (World.w.game) {
-				World.w.game.triggers['frag_'+id]=0;
+			if (World.world.game) {
+				World.world.game.triggers['frag_'+id]=0;
 			}
 		}
 		
@@ -64,43 +64,43 @@ package unitdata
 		public override function command(com:String, val:String=null) {
 			if (com=='tame') {
 				die();
-				var pet:UnitPet=World.w.gg.pets['phoenix'];
-				World.w.gg.callPet('phoenix');
+				var pet:UnitPet=World.world.gg.pets['phoenix'];
+				World.world.gg.callPet('phoenix');
 				pet.oduplenie=0;
 				pet.setPos(X,Y);
 			}
 		}
 		
 		public override function setNull(f:Boolean=false) {
-			if (World.w.game.triggers['tame']>=5) die();
+			if (World.world.game.triggers['tame']>=5) die();
 		}
 		
 		function tame() {
-			if (!questOk) World.w.game.addQuest('tamePhoenix');
-			storona=(X>World.w.gg.X)?-1:1;
-			if (World.w.invent.items['radcookie'].kol>0) {
-				World.w.game.incQuests('tame_ph');
-				World.w.invent.minusItem('radcookie');
-				if (World.w.game.triggers['tame']) World.w.game.triggers['tame']++;
-				else World.w.game.triggers['tame']=1;
-				if (World.w.game.triggers['tame']>=5 && !World.w.game.triggers['pet_phoenix']) {	//приручить
-					if (World.w.game.runScript('tamePhoenix',this)) World.w.game.triggers['pet_phoenix']=1;
+			if (!questOk) World.world.game.addQuest('tamePhoenix');
+			storona=(X>World.world.gg.X)?-1:1;
+			if (World.world.invent.items['radcookie'].kol>0) {
+				World.world.game.incQuests('tame_ph');
+				World.world.invent.minusItem('radcookie');
+				if (World.world.game.triggers['tame']) World.world.game.triggers['tame']++;
+				else World.world.game.triggers['tame']=1;
+				if (World.world.game.triggers['tame']>=5 && !World.world.game.triggers['pet_phoenix']) {	//приручить
+					if (World.world.game.runScript('tamePhoenix',this)) World.world.game.triggers['pet_phoenix']=1;
 					/*var xml1=GameData.d.script.(@id==)
 					if (xml1.length()) {
 						xml1=xml1[0];
 						tameScr=new Script(xml1,location.land,this);
 						tameScr.start();
-						World.w.game.triggers['pet_phoenix']=1;
+						World.world.game.triggers['pet_phoenix']=1;
 					}*/
 				} else {
 					die();
-					World.w.gui.messText('phoenixFeed2','',Y<300);
+					World.world.gui.messText('phoenixFeed2','',Y<300);
 				}
 			} else {
-				World.w.gui.messText('phoenixFeed1','',Y<300);
+				World.world.gui.messText('phoenixFeed1','',Y<300);
 			}
-			if (World.w.game) {
-				World.w.game.triggers['frag_'+id]=0;
+			if (World.world.game) {
+				World.world.game.triggers['frag_'+id]=0;
 			}
 		}
 		
@@ -108,8 +108,8 @@ package unitdata
 			if (!stay) t_fall++;
 			if (t_fall>=3 || dx>1 || dx<-1) die();
 			if (!questOk && location.celObj==this) {
-				World.w.game.triggers['frag_'+id]=0;
-				World.w.game.addQuest('tamePhoenix');
+				World.world.game.triggers['frag_'+id]=0;
+				World.world.game.addQuest('tamePhoenix');
 				questOk=true;
 			}
 		}

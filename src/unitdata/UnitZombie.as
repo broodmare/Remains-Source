@@ -389,7 +389,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -441,7 +441,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.w.enemyAct>1 && aiTCh%10==1 && aiState!=7 && !(aiState==5 && digger==2)) {
+			if (World.world.enemyAct>1 && aiTCh%10==1 && aiState!=7 && !(aiState==5 && digger==2)) {
 				if (findCel()) {
 					//увидели
 					if (celUnit) {
@@ -601,7 +601,7 @@ package unitdata
 				}
 				if (superSilaTip==7 && isrnd(0.1)) currentWeapon.attack();
 			} 
-				//World.w.gui.vis.sist.text=teleUnit+' '+celUnit+' '+aiZlo;
+				//World.world.gui.vis.sist.text=teleUnit+' '+celUnit+' '+aiZlo;
 		}
 		
 		function setSuper() {

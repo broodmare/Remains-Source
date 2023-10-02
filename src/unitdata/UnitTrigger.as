@@ -222,7 +222,7 @@ package unitdata
 		function disarm() {
 			status=2;
 			setStatus();
-			World.w.gui.infoText('trapDisarm')
+			World.world.gui.infoText('trapDisarm')
 		}
 		
 		//реактивировать
@@ -263,7 +263,7 @@ package unitdata
 			}
 			if (sndAct) sound(sndAct);
 			setStatus();
-			if (act) World.w.gui.infoText('trapActivate')
+			if (act) World.world.gui.infoText('trapActivate')
 		}
 		
 		var aiN:int=Math.floor(Math.random()*5);
@@ -283,7 +283,7 @@ package unitdata
 				isAct=act;
 			}
 			if (aiN%10==0 && !isVis) {
-				isVis=World.w.gg.lookInvis(this);
+				isVis=World.world.gg.lookInvis(this);
 				if (isVis) {
 					setVis(true);
 				}

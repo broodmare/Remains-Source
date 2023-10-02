@@ -33,7 +33,7 @@ package interdata
 		//подготовка страниц
 		override function setSubPages() {
 			setIco();
-			pers=World.w.pers;
+			pers=World.world.pers;
 			maxSkLvl=Pers.maxSkLvl;
 			statHead.progress.visible=false;
 			statHead.hpbar.visible=statHead.cat.visible=false;
@@ -45,7 +45,7 @@ package interdata
 				arr.push({nazv:Res.pipText('name'), lvl:gg.pers.persName});
 				arr.push({nazv:Res.pipText('level'), lvl:gg.pers.level});
 				arr.push({nazv:Res.pipText('expa'), lvl:gg.pers.xpCur+' ('+(gg.pers.xpNext-gg.pers.xpCur)+')'});
-				arr.push({id:'diff', nazv:Res.pipText('diff'), lvl:Res.guiText('dif'+World.w.game.globalDif)});
+				arr.push({id:'diff', nazv:Res.pipText('diff'), lvl:Res.guiText('dif'+World.world.game.globalDif)});
 				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 				
@@ -53,7 +53,7 @@ package interdata
 					var xml=AllData.d.param[i];
 					if (xml.@show>0) {
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
-						if (xml.@show=='3' && (!World.w.game.triggers['story_canter']>0)) continue;
+						if (xml.@show=='3' && (!World.world.game.triggers['story_canter']>0)) continue;
 						var nazv=Res.pipText(xml.@id);
 						if (xml.@v!='') nazv='-  '+nazv;
 						else {
@@ -72,7 +72,7 @@ package interdata
 							if (param>0) arr.push({id:xml.@id, nazv:nazv, lvl:Res.numb(param)});
 						}
 						if (xml.@tip=='1') {
-							if (param!=1 || World.w.pers.factor[xml.@v] && World.w.pers.factor[xml.@v].length>1) arr.push({id:xml.@id, nazv:nazv, lvl:((param>=1?'+':'')+Res.numb((param-1)*100)+'%')});
+							if (param!=1 || World.world.pers.factor[xml.@v] && World.world.pers.factor[xml.@v].length>1) arr.push({id:xml.@id, nazv:nazv, lvl:((param>=1?'+':'')+Res.numb((param-1)*100)+'%')});
 						}
 						if (xml.@tip=='2') {
 							arr.push({id:xml.@id, nazv:nazv, lvl:(Res.numb(param*100)+'%')});
@@ -85,7 +85,7 @@ package interdata
 			} 
 			else if (page2==5) 
 			{
-				if (World.w.game.triggers['nomed']>0) {
+				if (World.world.game.triggers['nomed']>0) {
 					vis.emptytext.text=Res.pipText('emptymed');
 					statHead.visible=false;
 					return;
@@ -109,7 +109,7 @@ package interdata
 				arr.push({id:'resbleeding', nazv:Res.pipText('resbleeding'), lvl:Math.round((1-gg.vulner[Unit.D_BLEED])*100)+'%'});
 				arr.push({id:'poison', nazv:Res.pipText('poison'), lvl:Math.round(gg.poison*10)/10});
 				arr.push({id:'respoison', nazv:Res.pipText('respoison'), lvl:Math.round((1-gg.vulner[Unit.D_POISON])*100)+'%'});
-				if (gg.pets['phoenix'] && World.w.game.triggers['pet_phoenix']) {
+				if (gg.pets['phoenix'] && World.world.game.triggers['pet_phoenix']) {
 					arr.push({id:'phoenix', nazv:gg.pets['phoenix'].nazv, lvl:Math.round(gg.pets['phoenix'].hp)+'/'+Math.round(gg.pets['phoenix'].maxhp)});
 				}
 				for (var i in pers.addictions) {
@@ -278,7 +278,7 @@ package interdata
 					if (id=='diff') 
 					{
 						vis.nazv.text=Res.txt('p',id);
-						vis.info.htmlText=Res.txt('g','dif'+World.w.game.globalDif,1);
+						vis.info.htmlText=Res.txt('g','dif'+World.world.game.globalDif,1);
 					} 
 					else 
 					{
@@ -360,7 +360,7 @@ package interdata
 					} 
 					else if (page2==2) 
 					{
-						if (World.w.alicorn && Res.istxt('e',id+'_al')) 
+						if (World.world.alicorn && Res.istxt('e',id+'_al')) 
 						{
 							vis.info.htmlText=Res.rainbow(Res.txt('e',id+'_al'));
 							vis.info.htmlText+='<br><br>'+effStr('skill',id+'_al');
@@ -393,7 +393,7 @@ package interdata
 					skillPoint--;
 					vis.butOk.visible=true;
 				} else {
-					World.w.gui.infoText('noSkillPoint');
+					World.world.gui.infoText('noSkillPoint');
 				}
 			}
 		}
@@ -406,7 +406,7 @@ package interdata
 		
 		function showBottext() {
 			vis.bottext.text='';
-			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.w.game.gameTime();
+			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.world.game.gameTime();
 			if (page2==2) vis.bottext.htmlText=Res.pipText('skillpoint')+': '+pink(skillPoint);
 			if (page2==3) vis.bottext.htmlText=Res.pipText('perkpoint')+': '+pink(perkPoint);
 			if (page2==6) {
@@ -446,8 +446,8 @@ package interdata
 		}
 		
 		override function itemClick(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==2) {
@@ -500,8 +500,8 @@ package interdata
 			showBottext();
 		}
 		override function itemRightClick(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==2) {
@@ -513,8 +513,8 @@ package interdata
 			showBottext();
 		}
 		function transOk(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==2) {
@@ -527,10 +527,10 @@ package interdata
 						pers.addSkill(skills[i].id, skills[i].lvl-skills[i].minlvl, true);
 					}
 					pers.setParameters();
-					World.w.gui.setAll();
+					World.world.gui.setAll();
 				}
 				pip.snd(3);
-				World.w.saveGame();
+				World.world.saveGame();
 			} else if (page2==3) {
 				page2=6;
 				pip.snd(2);
@@ -540,7 +540,7 @@ package interdata
 				page2=3;
 				pip.snd(3);
 				pip.setRPanel();
-				World.w.saveGame();
+				World.world.saveGame();
 			}
 			setStatus();
 		}

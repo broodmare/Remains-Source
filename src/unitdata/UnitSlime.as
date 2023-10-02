@@ -126,7 +126,7 @@ package unitdata
 		
 		public override function control() {
 			if (sost>=3) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				return;
 			}
 			aiN++;
@@ -156,10 +156,10 @@ package unitdata
 				}
 			} else if (aiState==2) {
 				if (oduplenie<=0 && aiN%4==0) {
-					if (location==World.w.gg.location && rasst2>0 && rasst2<explDist*explDist) activate();
+					if (location==World.world.gg.location && rasst2>0 && rasst2<explDist*explDist) activate();
 				}
 				if (aiN%10==0 && !isVis) {
-					isVis=World.w.gg.lookInvis(this,1);
+					isVis=World.world.gg.lookInvis(this,1);
 					if (isVis) {
 						setVis(true);
 					}
@@ -168,7 +168,7 @@ package unitdata
 			//if (d)dx+=storona*(accel+Math.random());
 			
 			//атака
-			if (World.w.enemyAct>=3 && oduplenie<=0) {
+			if (World.world.enemyAct>=3 && oduplenie<=0) {
 				if (aiN%5==0) {
 					for each (var un:Unit in location.units) {
 						if (un.activateTrap<2 && !un.player || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;

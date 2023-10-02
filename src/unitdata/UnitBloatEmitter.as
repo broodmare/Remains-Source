@@ -66,12 +66,12 @@ package unitdata
 		}
 		
 		public override function control() {
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				return;
 			}
 			//поиск цели
 			if (aiTCh>0) aiTCh--;
-			if (World.w.enemyAct>1 && aiTCh==0) {
+			if (World.world.enemyAct>1 && aiTCh==0) {
 				aiTCh=10;
 				if (findCel()) {
 					aiState=2;
@@ -87,7 +87,7 @@ package unitdata
 				}
 			}
 			//атака
-			if (World.w.enemyAct>=3 && celUnit) {
+			if (World.world.enemyAct>=3 && celUnit) {
 				attKorp(celUnit);
 			}
 		}

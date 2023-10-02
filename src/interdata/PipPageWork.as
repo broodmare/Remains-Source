@@ -133,9 +133,9 @@ package interdata
 				statHead.ammotip.text=Res.pipText('repairto');
 				setTopText('inforepair');
 				if (inv.items['owl'] && inv.items['owl'].kol) {
-					World.w.pers.setRoboowl();
-					if (World.w.pers.owlhpProc<1) {
-						n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.w.pers.owlhp*World.w.pers.owlhpProc, maxhp:World.w.pers.owlhp, rep:owlRep/World.w.pers.owlhp};
+					World.world.pers.setRoboowl();
+					if (World.world.pers.owlhpProc<1) {
+						n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, rep:owlRep/World.world.pers.owlhp};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
@@ -221,7 +221,7 @@ package interdata
 		function showBottext(cid) {
 			if (inv.items[cid]) {
 				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+yel(inv.items[cid].kol);
-				if (World.w.location.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.pipText('invault')+')';
+				if (World.world.location.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.pipText('invault')+')';
 			} else {
 				vis.bottext.htmlText='';
 			}
@@ -229,12 +229,12 @@ package interdata
 		
 		function checkScheme(sch:XML):Boolean {
 			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
-				World.w.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
+				World.world.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
 			}
 			for each(var c in sch.craft) {
 				if (inv.items[c.@id]==null || (inv.items[c.@id].kol+inv.items[c.@id].vault)<c.@kol) {
-					World.w.gui.infoText('noMaterials');
+					World.world.gui.infoText('noMaterials');
 					return false;
 				}
 			}
@@ -249,8 +249,8 @@ package interdata
 		}
 		
 		override function itemClick(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
 			var w:Weapon;
@@ -273,12 +273,12 @@ package interdata
 					if (w.tip!=4) {
 						w.respect=0;
 						w.hold=w.holder;
-						World.w.gui.infoText('created',cnazv);
+						World.world.gui.infoText('created',cnazv);
 						setStatus();
 					} else {
 						inv.plusItem(w.id,kol);
 						obj.kol=inv.items[w.id].kol;
-						World.w.gui.infoText('created2',cnazv,inv.items[cid].kol);
+						World.world.gui.infoText('created2',cnazv,inv.items[cid].kol);
 						infoItem(ccat,cid,cnazv, 1);
 						setStatItem(event.currentTarget as MovieClip, obj);
 					}
@@ -288,13 +288,13 @@ package interdata
 					if (arm.lvl>=0) return;
 					minusCraftComp(sch);
 					arm.lvl=0;
-					World.w.gui.infoText('created3',cnazv);
+					World.world.gui.infoText('created3',cnazv);
 					setStatus();
 				} else if (ccat==Item.L_IMPL) {
 					minusCraftComp(sch);
 					inv.plusItem(cid,1);
 					inv.takeScript(cid);
-					World.w.gui.infoText('created4',cnazv);
+					World.world.gui.infoText('created4',cnazv);
 					gg.pers.setParameters();
 					setStatus();
 				} else if (ccat==Item.L_ITEM) {
@@ -302,18 +302,18 @@ package interdata
 					minusCraftComp(sch);
 					inv.plusItem(cid,kol);
 					obj.kol=inv.items[cid].kol;
-					World.w.gui.infoText('created2',cnazv,inv.items[cid].kol);
+					World.world.gui.infoText('created2',cnazv,inv.items[cid].kol);
 					infoItem(ccat,cid,cnazv, 1);
 					if (inv.items[cid].xml && inv.items[cid].xml.@one=='1') setStatus();
 					//setStatus(false);
 					setStatItem(event.currentTarget as MovieClip, obj);
 				}
-				World.w.game.checkQuests(cid);
-				if (World.w.helpMess && inv.items[cid]) {
+				World.world.game.checkQuests(cid);
+				if (World.world.helpMess && inv.items[cid]) {
 					var lmess:String=inv.items[cid].mess;
-					if (lmess!=null && !(World.w.game.triggers['mess_'+lmess]>0)) {
-						World.w.game.triggers['mess_'+lmess]=1;
-						World.w.gui.impMess(Res.txt('i',lmess),Res.txt('i',lmess,2),lmess);
+					if (lmess!=null && !(World.world.game.triggers['mess_'+lmess]>0)) {
+						World.world.game.triggers['mess_'+lmess]=1;
+						World.world.gui.impMess(Res.txt('i',lmess),Res.txt('i',lmess,2),lmess);
 						pip.onoff(-1);
 					}
 				}
@@ -326,10 +326,10 @@ package interdata
 						inv.minusItem(arm.idComp,kol,false);
 						arm.upgrade();
 						gg.pers.setParameters();
-						World.w.gui.infoText('upArmor');
+						World.world.gui.infoText('upArmor');
 						setStatus();
 					} else {
-						World.w.gui.infoText('noMaterials');
+						World.world.gui.infoText('noMaterials');
 					}
 				} else if (ccat==Item.L_WEAPON) {
 					var sch=AllData.d.item.(@id=='s_'+cid);
@@ -337,7 +337,7 @@ package interdata
 					if (!checkScheme(sch)) return;
 					minusCraftComp(sch);
 					inv.updWeapon(cid,1);
-					World.w.gui.infoText('created',cnazv+Weapon.variant2);
+					World.world.gui.infoText('created',cnazv+Weapon.variant2);
 					setStatus();
 				}
 			} else if (page2==3) {
@@ -345,7 +345,7 @@ package interdata
 				if (ccat==Item.L_ARMOR) {
 					arm=inv.armors[cid];
 					if (arm.hp>=arm.maxhp) {
-						World.w.gui.infoText('noRepair');
+						World.world.gui.infoText('noRepair');
 						return;
 					}
 					var cid2:String=inv.armors[cid].idComp;
@@ -355,7 +355,7 @@ package interdata
 						obj.hp=arm.hp;
 						showBottext(cid2);
 					} else {
-						World.w.gui.infoText('noMaterials');
+						World.world.gui.infoText('noMaterials');
 					}
 				} else if (ccat==Item.L_WEAPON) {
 					if (inv.checkKol('frag')) {
@@ -366,7 +366,7 @@ package interdata
 							showBottext('frag');
 						}
 					} else {
-						World.w.gui.infoText('noMaterials');
+						World.world.gui.infoText('noMaterials');
 					}
 				} else if (ccat==Item.L_INSTR) {
 					if (inv.checkKol('scrap')) {
@@ -377,7 +377,7 @@ package interdata
 							showBottext('scrap');
 						}
 					} else {
-						World.w.gui.infoText('noMaterials');
+						World.world.gui.infoText('noMaterials');
 					}
 				}
 				setStatItem(event.currentTarget as MovieClip, obj);

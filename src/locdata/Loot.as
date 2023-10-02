@@ -186,12 +186,12 @@ package locdata
 		//попробовать взять
 		public function take(prinud:Boolean=false) 
 		{
-			if ((ttake>0 || World.w.gg.location!=location || World.w.gg.rat>0) && !prinud) return;
-			var rx=World.w.gg.X-X, ry=World.w.gg.Y-World.w.gg.scY/2-Y;
+			if ((ttake>0 || World.world.gg.location!=location || World.world.gg.rat>0) && !prinud) return;
+			var rx=World.world.gg.X-X, ry=World.world.gg.Y-World.world.gg.scY/2-Y;
 			//взять
-			if (prinud || (World.w.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) 
+			if (prinud || (World.world.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) 
 			{
-				if (World.w.hardInv && !actTake) 
+				if (World.world.hardInv && !actTake) 
 				{
 					auto2=item.checkAuto();
 					if (!auto2) 
@@ -205,14 +205,14 @@ package locdata
 				}
 				levitPoss=false;
 				location.remObj(this);
-				if (!isTake) World.w.invent.take(item);
+				if (!isTake) World.world.invent.take(item);
 				isTake=true;
 				onCursor=0;
 				return;
 			}
 
 			//притяжение
-			if ((World.w.gg.isTake>=20 || actTake) && rx<takeR && rx>-takeR && ry<takeR &&ry>-takeR && tvsos<45) 
+			if ((World.world.gg.isTake>=20 || actTake) && rx<takeR && rx>-takeR && ry<takeR &&ry>-takeR && tvsos<45) 
 			{
 				levitPoss=false;
 				stay=false;
@@ -268,8 +268,8 @@ package locdata
 				}
 			}
 			if (inter) inter.step();
-			onCursor=(X-scX/2<World.w.celX && X+scX/2>World.w.celX && Y-scY<World.w.celY && Y>World.w.celY)?prior:0;
-			if (World.w.checkLoot) auto2=item.checkAuto();
+			onCursor=(X-scX/2<World.world.celX && X+scX/2>World.world.celX && Y-scY<World.world.celY && Y>World.world.celY)?prior:0;
+			if (World.world.checkLoot) auto2=item.checkAuto();
 			if (auto && auto2 || actTake) take();
 		}
 		

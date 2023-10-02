@@ -70,17 +70,17 @@ package interdata
 			pip.vis.butHelp.visible=false;
 			targetLand='';
 			setTopText();
-			game=World.w.game;
+			game=World.world.game;
 			if (page2==1) 
 			{		//карта
-				if (World.w.location.noMap) 
+				if (World.world.location.noMap) 
 				{
 					vis.emptytext.text=Res.pipText('emptymap');
 				} 
 				else 
 				{
 					vis.emptytext.text='';
-					map.bitmapData=World.w.land.drawMap();
+					map.bitmapData=World.world.land.drawMap();
 					setMapSize();
 					visMap.visible=true;
 				}
@@ -96,7 +96,7 @@ package interdata
 					}
 				}
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
-				if (World.w.location && World.w.location.base) {
+				if (World.world.location && World.world.location.base) {
 					for each (var task in GameData.d.vendor.task) 
 					{
 						if (checkQuest(task)) 
@@ -143,16 +143,16 @@ package interdata
 						{
 							sim.sim.gotoAndStop(1);
 						}
-						//trace(land.id, World.w.testMode);
-						if (land.test && !World.w.testMode) continue;
+						//trace(land.id, World.world.testMode);
+						if (land.test && !World.world.testMode) continue;
 						if (!game.checkTravel(land.id)) sim.alpha=0.5;
-						if (World.w.testMode && !land.visited && !land.access) sim.alpha=0.3;
-						if (World.w.helpMess && !land.visited && land.access) 
+						if (World.world.testMode && !land.visited && !land.access) sim.alpha=0.3;
+						if (World.world.helpMess && !land.visited && land.access) 
 						{
 							sim.sign.play();
 							sim.sign.visible=true;
 						}
-						if (World.w.testMode || land.visited || land.access) sim.visible=true;
+						if (World.world.testMode || land.visited || land.access) sim.visible=true;
 					}
 				}
 				vis.butOk.text.text=Res.pipText('trans');
@@ -175,7 +175,7 @@ package interdata
 					var title:String;
 					if (xml.n.t.length()) title=xml.n.t[0];
 					else title=xml.n.r[0];
-					title=title.replace(/&lp/g,World.w.pers.persName);
+					title=title.replace(/&lp/g,World.world.pers.persName);
 					var n:Object={id:note, nazv:title, ico:nico};
 					if (nico==3) doparr.push(n);
 					else arr.push(n);
@@ -197,7 +197,7 @@ package interdata
 					if (xml && xml.@cat.length()) 
 					{
 						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
-						if (xml.@cat=='3' && World.w.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.w.game.triggers['frag_'+xml.@id]);
+						if (xml.@cat=='3' && World.world.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.world.game.triggers['frag_'+xml.@id]);
 						if (xml.@cat=='2') 
 						{
 							prevObj=n;
@@ -295,20 +295,20 @@ package interdata
 					s+="\n<span class ='yel'>"+Res.pipText('kolProb')+': '+l.kolClosedProb+'/'+l.kolAllProb+"</span>";
 				}
 				if (l.dif>0) s+='\n\n'+Res.pipText('recLevel')+' '+Math.round(l.dif);
-				if (l.dif>World.w.pers.level) s+='\n\n'+Res.pipText('wrLevel');
-				if (World.w.pers.speedShtr>=3) {
+				if (l.dif>World.world.pers.level) s+='\n\n'+Res.pipText('wrLevel');
+				if (World.world.pers.speedShtr>=3) {
 					s+='\n\n'+red(Res.pipText('speedshtr3'));
-				} else if (World.w.pers.speedShtr==2) {
+				} else if (World.world.pers.speedShtr==2) {
 					s+='\n\n'+red(Res.pipText('speedshtr2'));
-				} else if (World.w.pers.speedShtr==1) {
+				} else if (World.world.pers.speedShtr==1) {
 					s+='\n\n'+red(Res.pipText('speedshtr1'));
 				}
-				if (World.w.pers.speedShtr>=1) s+='\n'+Res.pipText('speedshtr0');
+				if (World.world.pers.speedShtr>=1) s+='\n'+Res.pipText('speedshtr0');
 				vis.info.htmlText=s;
 			} else if (page2==4) {
 				vis.info.y=vis.nazv.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
-				s=s.replace(/&lp/g,World.w.pers.persName);
+				s=s.replace(/&lp/g,World.world.pers.persName);
 				s=s.replace(/\[/g,"<span class='yel'>");
 				s=s.replace(/\]/g,"</span>");
 				vis.info.htmlText=s;
@@ -446,11 +446,11 @@ package interdata
 		
 		
 		override function itemClick(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.w.testMode)) {
+			if (page2==3 && (pip.travel || World.world.testMode)) {
 				if (targetLand!='' && visWMap[targetLand]) {
 					visWMap[targetLand].zad.gotoAndStop(1);
 				}
@@ -464,18 +464,18 @@ package interdata
 					}
 				} else {
 					vis.butOk.visible=false;
-					World.w.gui.infoText('noTravel');
+					World.world.gui.infoText('noTravel');
 				}
 				pip.snd(1);
 			}
 		}
 		
 		function transOk(event:MouseEvent) {
-			if (pip.noAct) {
-				World.w.gui.infoText('noAct');
+			if (pip.gamePause) {
+				World.world.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.w.testMode)) {
+			if (page2==3 && (pip.travel || World.world.testMode)) {
 				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
 					game.beginMission(targetLand);
 					pip.onoff(-1);
@@ -531,8 +531,8 @@ package interdata
 			var ty=(visMap.vmap.y-cy)*mapScale/ms;
 			visMap.vmap.x=tx+cx;
 			visMap.vmap.y=ty+cy;
-			plTag.x=World.w.land.ggX/World.tilePixelWidth*mapScale;
-			plTag.y=World.w.land.ggY/World.tilePixelHeight*mapScale;
+			plTag.x=World.world.land.ggX/World.tilePixelWidth*mapScale;
+			plTag.y=World.world.land.ggY/World.tilePixelHeight*mapScale;
 			ms=mapScale;
 		}
 		

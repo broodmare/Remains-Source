@@ -77,7 +77,7 @@ package weapondata
 			if (own==null) 
 			{
 				owner=new Unit();
-				location=World.w.location;
+				location=World.world.location;
 			} 
 			else 
 			{
@@ -90,7 +90,7 @@ package weapondata
 			levitPoss=false;
 			if (visClass) 
 			{
-				if (World.w.alicorn && own.player && visClass == visualBullet) visClass=visualRainbow;
+				if (World.world.alicorn && own.player && visClass == visualBullet) visClass=visualRainbow;
 				vis=new visClass();
 				vis.stop();
 				vis.x=X;
@@ -213,7 +213,7 @@ package weapondata
 				{	
 					if (vis) vis.gotoAndPlay(2);
 					var koliskr:int=Math.floor(Math.random()*5+damage/5);
-					if (World.w.alicorn) koliskr*=0.2;
+					if (World.world.alicorn) koliskr*=0.2;
 					if (koliskr>20) koliskr=20;
 					Emitter.emit('iskr_bul',location,X,Y,{dx:-dx/vel*10, dy:-dy/vel*10, kol:koliskr});
 					if (flare!=null && flare!='') Emitter.emit(flare,location,X,Y);
@@ -389,9 +389,9 @@ package weapondata
 					if (box.dead && weap) weap.crash(box.montdam);
 				}
 			}
-			if (World.w.gg.location==location && World.w.gg.teleObj && (World.w.gg.teleObj is Box) && owner!=World.w.gg) 
+			if (World.world.gg.location==location && World.world.gg.teleObj && (World.world.gg.teleObj is Box) && owner!=World.world.gg) 
 			{
-				box=World.w.gg.teleObj as Box;
+				box=World.world.gg.teleObj as Box;
 				if (X>=box.X1 && X<=box.X2 && Y>=box.Y1 && Y<=box.Y2 && udar(box)) 
 				{
 					res=box.udarBullet(this,0);
@@ -515,7 +515,7 @@ package weapondata
 					if (rasst>explRadius*0.5) dam*=(2-rasst*2/explRadius);
 					if (weap!=null) un.dieWeap=weap.id;
 					if (weapId!=null) un.dieWeap=weapId;
-					if (weap && weap.owner.fraction==Unit.F_PLAYER && un.player)  un.damage(dam*World.w.pers.autoExpl,tipDamage);
+					if (weap && weap.owner.fraction==Unit.F_PLAYER && un.player)  un.damage(dam*World.world.pers.autoExpl,tipDamage);
 					else un.damage(dam,tipDamage);
 				}
 			}
@@ -543,7 +543,7 @@ package weapondata
 					// Fire on oneself
 					if (un.player) 
 					{
-						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage *= World.w.pers.autoExpl;
+						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage *= World.world.pers.autoExpl;
 						var p={x:b.knockx, y:b.knocky};
 						norma(p, 10);
 						b.knockx = p.x;
@@ -697,7 +697,7 @@ package weapondata
 					explLiquid('fire',-33);
 				}
 			}
-			if (otbros>0)	World.w.quake((Math.random()*8-4)*otbros,otbros*0.8);
+			if (otbros>0)	World.world.quake((Math.random()*8-4)*otbros,otbros*0.8);
 		}
 
 		function explLiquid(liq:String, ndy:int=0) 

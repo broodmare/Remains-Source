@@ -29,10 +29,10 @@ package locdata
 			roomsFile=GameData.d.land.(@id==id).@file;
 			test=GameData.d.land.(@id==id).@test>0;
 			// Source of location templates
-			if (World.w.roomsLoad) 
+			if (World.world.roomsLoad) 
 			{
 				loader_rooms = new URLLoader();
-				var roomsURL=World.w.landPath+roomsFile+".xml";
+				var roomsURL=World.world.landPath+roomsFile+".xml";
 				request = new URLRequest(roomsURL); 
 				try 
 				{
@@ -42,31 +42,31 @@ package locdata
 				{
 					errLoad=true;
 					trace('no load '+roomsFile);
-					World.w.load_log+='Load error '+roomsFile+'\n';
+					World.world.load_log+='Load error '+roomsFile+'\n';
 				}
 				loader_rooms.addEventListener(Event.COMPLETE, onCompleteLoadRooms); 
 				loader_rooms.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
 			} 
 			else 
 			{
-				allroom=World.w.rooms.rooms[roomsFile];
+				allroom=World.world.rooms.rooms[roomsFile];
 				loaded=true;
-				World.w.load_log+='Land '+roomsFile+' loaded\n';
-				if (!test) World.w.roomsLoadOk();
+				World.world.load_log+='Land '+roomsFile+' loaded\n';
+				if (!test) World.world.roomsLoadOk();
 			}
 		}
 
 		function onCompleteLoadRooms(event:Event):void  
 		{
 			loaded=true;
-			World.w.load_log+='Land '+roomsFile+' loaded\n';
+			World.world.load_log+='Land '+roomsFile+' loaded\n';
 			allroom = new XML(loader_rooms.data);
-			if (!test) World.w.roomsLoadOk();
+			if (!test) World.world.roomsLoadOk();
 		}
 		
 		private function ioErrorHandler(event:IOErrorEvent):void 
 		{
-			World.w.load_log+='IOerror '+roomsFile+'\n';
+			World.world.load_log+='IOerror '+roomsFile+'\n';
         }
 		
 	}

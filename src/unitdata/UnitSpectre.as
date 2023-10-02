@@ -71,25 +71,25 @@ package unitdata
 		
 		public override function control() {
 			if (sost>=3) return;
-			if (World.w.enemyAct<=0) {
+			if (World.world.enemyAct<=0) {
 				return;
 			}
 			aiTCh++;
 			//поиск цели
-			if (World.w.enemyAct>1 && aiTCh%10==1) {
-				if (findCel() && !World.w.gg.invulner) {
+			if (World.world.enemyAct>1 && aiTCh%10==1) {
+				if (findCel() && !World.world.gg.invulner) {
 					aiSpok=maxSpok+10;
 					aiState=1;
 					vis.visible=true;
 					if (maxSpeed<runSpeed) maxSpeed+=0.01;
 				} else {
-					celX=World.w.gg.X
-					celY=World.w.gg.Y-World.w.gg.scY/2;
+					celX=World.world.gg.X
+					celY=World.world.gg.Y-World.world.gg.scY/2;
 				}
 				storona=(celX>X)?1:-1;
 			}
 			
-			if (aiState==1 && World.w.gg.location==location) {
+			if (aiState==1 && World.world.gg.location==location) {
 				spd.x=celX-X;
 				spd.y=celY-(Y-scY/2);
 				norma(spd,accel);
@@ -108,7 +108,7 @@ package unitdata
 				turnY=0;
 			}
 			//атака
-			if (World.w.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
+			if (World.world.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
 				if (attKorp(celUnit,1)) celUnit.addEffect('curse');
 			}
 		}

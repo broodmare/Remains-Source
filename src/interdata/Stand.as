@@ -219,7 +219,7 @@ package interdata
 				pages[n].addChild(item);
 				armors[arm.@id]=item;
 				if (n==6) {
-					World.w.armorWork=arm.@id;
+					World.world.armorWork=arm.@id;
 					dvis.gotoAndStop(2);
 					dvis.gotoAndStop(1);
 					var sprX:int=dvis.width*sc+2;
@@ -243,7 +243,7 @@ package interdata
 				}
 			}
 			Appear.transp=false;
-			World.w.armorWork='';
+			World.world.armorWork='';
 		}
 		
 		function showMass() {
@@ -259,7 +259,7 @@ package interdata
 			for (var i=0; i<kolPages; i++) {
 				pages[i].visible=false;
 			}
-			if (World.w.hardInv) showMass();
+			if (World.world.hardInv) showMass();
 			pages[n].visible=true;
 			if (n<5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
@@ -355,7 +355,7 @@ package interdata
 			if (inv.weapons[id]==null || inv.weapons[id].respect==3) return;
 			var resp=inv.respectWeapon(id);
 			showWeapon(event.currentTarget as MovieClip,-1,resp);
-			if (World.w.hardInv) showMass();
+			if (World.world.hardInv) showMass();
 		}
 		public function itemOver(event:MouseEvent) {
 			if (inv.weapons[event.currentTarget.id.text]==null) {
@@ -369,8 +369,8 @@ package interdata
 			info.fon.height=info.info.height+info.info.y+8;
 			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
 			var ny=event.currentTarget.y+event.currentTarget.parent.y-50;
-			if (ny+vis.y+info.height>World.w.cam.screenY-10) ny=World.w.cam.screenY-vis.y-info.height-10;
-			if (nx+vis.x+info.width>World.w.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
+			if (ny+vis.y+info.height>World.world.cam.screenY-10) ny=World.world.cam.screenY-vis.y-info.height-10;
+			if (nx+vis.x+info.width>World.world.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
 			info.x=nx;
 			info.y=ny;
 		}
@@ -382,8 +382,8 @@ package interdata
 			info.fon.height=info.info.height+info.info.y+8;
 			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
 			var ny=event.currentTarget.y+event.currentTarget.parent.y+20;
-			if (ny+vis.y+info.height>World.w.cam.screenY-10) ny=World.w.cam.screenY-vis.y-info.height-10;
-			if (nx+vis.x+info.width>World.w.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
+			if (ny+vis.y+info.height>World.world.cam.screenY-10) ny=World.world.cam.screenY-vis.y-info.height-10;
+			if (nx+vis.x+info.width>World.world.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
 			info.x=nx;
 			info.y=ny;
 		}
@@ -396,14 +396,14 @@ package interdata
 				active=!active;
 			} else if (turn>0) {
 				active=true;
-				World.w.pip.onoff(-1);
-				World.w.ctr.clearAll();
+				World.world.pip.onoff(-1);
+				World.world.ctr.clearAll();
 			} else {
 				active=false;
 			}
 			vis.visible=active;
 			if (active) {
-				World.w.cur();
+				World.world.cur();
 				setButtons();
 				showWeaponList(page);
 				for each (var item in weapons) {

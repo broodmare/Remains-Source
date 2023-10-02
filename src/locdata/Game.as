@@ -51,9 +51,9 @@ package locdata
 			for each(var xl in GameData.d.land) 
 			{
 				var land:LandAct=new LandAct(xl);
-				if (World.w.landData[xl.@id] && World.w.landData[xl.@id].allroom) 
+				if (World.world.landData[xl.@id] && World.world.landData[xl.@id].allroom) 
 				{
-					land.allroom=World.w.landData[xl.@id].allroom;
+					land.allroom=World.world.landData[xl.@id].allroom;
 					land.loaded=true;
 				}
 				if (land.prob==0) lands[land.id]=land;
@@ -66,7 +66,7 @@ package locdata
 			var obj:Object=new Object;
 			obj.dif=globalDif;
 			obj.land=curLandId;
-			World.w.land.saveObjs(objs);	//Save an array of objects with IDs
+			World.world.land.saveObjs(objs);	//Save an array of objects with IDs
 			obj.objs=new Array();
 			for (var uid in objs) 
 			{
@@ -217,15 +217,15 @@ package locdata
 			globalDif=ndif;
 			if (globalDif<0) globalDif=0;
 			if (globalDif>4) globalDif=4;
-			World.w.pers.setGlobalDif(globalDif);
-			World.w.pers.setParameters();
+			World.world.pers.setGlobalDif(globalDif);
+			World.world.pers.setParameters();
 			return true;
 		}
 		
 		public function enterToCurLand() 
 		{
 			Land.locN+=5;
-			if (World.w.land && objs) World.w.land.saveObjs(objs);
+			if (World.world.land && objs) World.world.land.saveObjs(objs);
 
 			///Transition to a random encounter
 			Encounter();
@@ -240,14 +240,14 @@ package locdata
 				if (triggers['firstroom']>0) 
 				{
 					n=1;
-					if (World.w.pers.level>1) n=World.w.pers.level-1;
+					if (World.world.pers.level>1) n=World.world.pers.level-1;
 				}
-				curLand.land=new Land(World.w.gg, curLand, n);
+				curLand.land=new Land(World.world.gg, curLand, n);
 			}
 			if (!first) triggers['firstroom']=1;
 			crea=false;
-			World.w.ativateLand(curLand.land);
-			World.w.land.enterLand(first, curCoord);
+			World.world.ativateLand(curLand.land);
+			World.world.land.enterLand(first, curCoord);
 			curCoord=null;
 
 			if (curLand.id=='rbl') 
@@ -264,8 +264,8 @@ package locdata
 					trace(curLand.tip=='base')
 				}
 			}
-			World.w.gg.remEffect('potion_fly');
-			World.w.gui.messText('', Res.txt('m',curLand.id)+(curLand.rnd?(' - '+(curLand.landStage+1)):''), World.w.gg.Y<300);
+			World.world.gg.remEffect('potion_fly');
+			World.world.gui.messText('', Res.txt('m',curLand.id)+(curLand.rnd?(' - '+(curLand.landStage+1)):''), World.world.gg.Y<300);
 			if (!curLand.rnd) curLand.visited=true;
 			if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
 			if (curLand.upStage) 
@@ -285,28 +285,28 @@ package locdata
 		
 		/*Transition to a new location
 			gotoLand(nland:String)
-			World.w.exitLand();
+			World.world.exitLand();
 			enterToCurLand();
-			World.w.ativateLand(curLand.land);
-			World.w.land.enterLand(first);
+			World.world.ativateLand(curLand.land);
+			World.world.land.enterLand(first);
 			ativateLoc();
 		*/
 		
 		public function gotoLand(nland:String, coord:String=null, fast:Boolean=false) 
 		{
-			if (nland!=baseId && !World.w.pers.dopusk()) 
+			if (nland!=baseId && !World.world.pers.dopusk()) 
 			{
-				World.w.gui.messText('nocont');
+				World.world.gui.messText('nocont');
 			} 
-			else if (nland!=baseId && World.w.pers.speedShtr>=3) 
+			else if (nland!=baseId && World.world.pers.speedShtr>=3) 
 			{
-				World.w.gui.messText('nocont2');
+				World.world.gui.messText('nocont2');
 			} 
 			else 
 			{
 				curLandId=nland;
 				curCoord=coord;
-				World.w.exitLand(fast);
+				World.world.exitLand(fast);
 			}
 		}
 		
@@ -331,8 +331,8 @@ package locdata
 		
 		public function gotoNextLevel() 
 		{
-			World.w.pers.prevCPCode=null;
-			World.w.pers.currentCPCode=null;
+			World.world.pers.prevCPCode=null;
+			World.world.pers.currentCPCode=null;
 			curLand.land.currentCP=null;
 			crea=true;
 			curLand.land.refill();
@@ -363,8 +363,8 @@ package locdata
 			{
 				if (triggers[tr]=='wait') triggers[tr]=1;
 			}
-			World.w.invent.good.kol=World.w.pers.goodHp;
-			World.w.gui.infoText('refill');
+			World.world.invent.good.kol=World.world.pers.goodHp;
+			World.world.gui.infoText('refill');
 		}
 		
 		public function addQuest(id:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest 
@@ -376,12 +376,12 @@ package locdata
 				if (quests[id].state==0) 
 				{
 					quests[id].state=1;
-					World.w.gui.infoText('addTask',quests[id].nazv);
+					World.world.gui.infoText('addTask',quests[id].nazv);
 					Snd.ps('quest');
 					// Check stages, if all are completed, close it immediately
 					quests[id].isClosed();
 					quests[id].deposit();
-					if (quests[id].state==2) World.w.gui.infoText('doneTask',quests[id].nazv);
+					if (quests[id].state==2) World.world.gui.infoText('doneTask',quests[id].nazv);
 				}
 				return quests[id];
 			}
@@ -397,14 +397,14 @@ package locdata
 			if (noVis && !q.auto) q.state=0;
 			if (loadObj==null && q.state>0) 
 			{
-				World.w.gui.infoText('addTask',q.nazv);
+				World.world.gui.infoText('addTask',q.nazv);
 				quests[id].deposit();
 				if (snd) Snd.ps('quest');
 			}
-			if (loadObj==null && showDial && q.begDial && World.w.dialOn && World.w.location.prob==null) 
+			if (loadObj==null && showDial && q.begDial && World.world.dialOn && World.world.location.prob==null) 
 			{
-				World.w.pip.onoff(-1);
-				World.w.gui.dialog(q.begDial);
+				World.world.pip.onoff(-1);
+				World.world.gui.dialog(q.begDial);
 			}
 			return q;
 		}
@@ -427,7 +427,7 @@ package locdata
 				{
 					if (q1.id==sid) 
 					{
-						World.w.gui.infoText('addTask2',q1.nazv);
+						World.world.gui.infoText('addTask2',q1.nazv);
 						Snd.ps('quest');
 						break;
 					}
@@ -530,7 +530,7 @@ package locdata
 			if (xml1.length()) 
 			{
 				xml1=xml1[0];
-				var	runScr:Script=new Script(xml1,World.w.land,own);
+				var	runScr:Script=new Script(xml1,World.world.land,own);
 				runScr.start();
 				return true;
 			}
@@ -545,7 +545,7 @@ package locdata
 			if (xml1.length()) 
 			{
 				xml1=xml1[0];
-				return new Script(xml1,(own==null)?World.w.land:own.location.land,own);
+				return new Script(xml1,(own==null)?World.world.land:own.location.land,own);
 			}
 			return null;
 		}

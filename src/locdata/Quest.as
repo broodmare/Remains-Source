@@ -119,7 +119,7 @@ package locdata
 				trigger=xml.@trigger;
 				if (xml.@triggerset.length()) triggerSet=xml.@triggerset;
 				else triggerSet='1';
-				if (state==2 && World.w.game.triggers[trigger]==null) World.w.game.triggers[trigger]=triggerSet;
+				if (state==2 && World.world.game.triggers[trigger]==null) World.world.game.triggers[trigger]=triggerSet;
 			}
 			if (loadObj && loadObj.invis!=undefined) 
 			{
@@ -195,12 +195,12 @@ package locdata
 						var item:Item;
 						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
 						else item=new Item('', rew.@id);
-						World.w.invent.take(item,2);
+						World.world.invent.take(item,2);
 					}
 					if (rew.@trigger.length()) 
 					{
-						if (rew.@set.length()) World.w.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.w.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) World.world.game.triggers[rew.@trigger]=rew.@set.toString();
+						else World.world.game.triggers[rew.@trigger]=1;
 					}
 				}
 			}
@@ -215,7 +215,7 @@ package locdata
 			{
 				if (collect && colTip==0 && gived<kol) 
 				{
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol+gived;
+					if (World.world.invent.items[collect]) est=World.world.invent.items[collect].kol+gived;
 					if (est>kol) est=kol;
 					if (give==null) {
 						if (est>=kol) 
@@ -235,11 +235,11 @@ package locdata
 						
 					}
 					if (cid!=null && collect==cid) res=nazv+' '+est+'/'+kol;
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol;
+					if (World.world.invent.items[collect]) est=World.world.invent.items[collect].kol;
 				}
 				if (collect && colTip==1) 
 				{
-					if (World.w.invent.weapons[collect]!=null && World.w.invent.weapons[collect].respect!=3) 
+					if (World.world.invent.weapons[collect]!=null && World.world.invent.weapons[collect].respect!=3) 
 					{
 						state=2;
 						if (par.result) par.isResult();
@@ -277,20 +277,20 @@ package locdata
 				if (give==null) return false;
 				if (collect) 
 				{
-					if (World.w.invent.items[collect]) est=World.w.invent.items[collect].kol;
+					if (World.world.invent.items[collect]) est=World.world.invent.items[collect].kol;
 					if (est>0 && (kol-gived)>0) 
 					{
 						if (est>kol-gived) est=kol-gived;
 						if (us) 
 						{
-							World.w.invent.minusItem(collect,est);
+							World.world.invent.minusItem(collect,est);
 							gived+=est;
 							if (pay>0) 
 							{
-								World.w.invent.money.kol+=est*pay;
-								World.w.gui.infoText('reward',Res.txt('i','money'),est*pay);
+								World.world.invent.money.kol+=est*pay;
+								World.world.gui.infoText('reward',Res.txt('i','money'),est*pay);
 							}
-							World.w.gui.infoText('withdraw',World.w.invent.items[collect].nazv, est);
+							World.world.gui.infoText('withdraw',World.world.invent.items[collect].nazv, est);
 							est=0;
 							if (gived>=kol) close();
 						}
@@ -394,32 +394,32 @@ package locdata
 					{
 						if (q.colTip==0) 
 						{
-							World.w.invent.minusItem(q.collect, q.kol);
+							World.world.invent.minusItem(q.collect, q.kol);
 							try 
 							{
-								World.w.gui.infoText('withdraw',World.w.invent.items[q.collect].nazv, q.kol);
+								World.world.gui.infoText('withdraw',World.world.invent.items[q.collect].nazv, q.kol);
 							} catch (err) {}
 						} 
 						else if (q.colTip==1) 
 						{
 							try 
 							{
-								World.w.gui.infoText('withdraw',World.w.invent.weapons[q.collect].nazv, 1);
+								World.world.gui.infoText('withdraw',World.world.invent.weapons[q.collect].nazv, 1);
 							} 
 							catch (err) 
 							{
 
 							}
-							World.w.invent.remWeapon(q.collect);
+							World.world.invent.remWeapon(q.collect);
 						}
 					}
 				}
 			}
 			//выдать награды
-			if (sp) World.w.pers.addSkillPoint(sp);
-			if (xp) World.w.pers.expa(xp);
-			if (rep) World.w.pers.rep+=rep;
-			if (trigger) World.w.game.triggers[trigger]=triggerSet;
+			if (sp) World.world.pers.addSkillPoint(sp);
+			if (xp) World.world.pers.expa(xp);
+			if (rep) World.world.pers.rep+=rep;
+			if (trigger) World.world.game.triggers[trigger]=triggerSet;
 			if (xml.reward.length()) 
 			{
 				for each(var rew in xml.reward) 
@@ -429,35 +429,35 @@ package locdata
 						var item:Item;
 						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
 						else item=new Item('', rew.@id);
-						World.w.invent.take(item,2);
+						World.world.invent.take(item,2);
 					}
 					if (rew.@trigger.length()) 
 					{
-						if (rew.@set.length()) World.w.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.w.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) World.world.game.triggers[rew.@trigger]=rew.@set.toString();
+						else World.world.game.triggers[rew.@trigger]=1;
 					}
 				}
 			}
 			//сообщение и звук
 			if (!sub) 
 			{
-				World.w.gui.infoText('doneTask',nazv);
+				World.world.gui.infoText('doneTask',nazv);
 				Snd.ps('quest_ok');
 			} 
 			else 
 			{
-				World.w.gui.infoText('doneStage',nazv);
+				World.world.gui.infoText('doneStage',nazv);
 			}
 			//завершающий диалог
-			if (endDial && World.w.dialOn) 
+			if (endDial && World.world.dialOn) 
 			{
-				World.w.pip.onoff(-1);
-				World.w.gui.dialog(endDial);
+				World.world.pip.onoff(-1);
+				World.world.gui.dialog(endDial);
 			}
 			//завершающий скрипт
 			if (endScript!=null) 
 			{
-				World.w.game.runScript(endScript);
+				World.world.game.runScript(endScript);
 			}
 		}
 
