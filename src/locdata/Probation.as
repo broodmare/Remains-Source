@@ -5,13 +5,15 @@ package locdata
 	import unitdata.Unit;
 	import servdata.Script;
 	
+	import components.Settings;
+	
 	//Класс представляет собой набор условий для испытания
 	
 	public class Probation 
 	{
 		
 		public var xml:XML;
-		public var location:Location;
+		public var room:Room;
 		public var id:String;
 		public var roomId:String;
 		public var tip:int=0;
@@ -47,29 +49,29 @@ package locdata
 		var beg_t:int=90;
 		var next_t:int=300;
 
-		public function Probation(nxml:XML, nloc:Location) 
+		public function Probation(nxml:XML, newRoom:Room) 
 		{
 			xml=nxml;
-			location=nloc;
+			room=newRoom;
 			id=xml.@id;
 			nazv=Res.txt('m',id);
 			info='<b>'+nazv+'</b><br><br>'+Res.txt('m',id,1)+'<br>';
 			if (Res.txt('m',id,3)!='') help="<span class = 'r3'>"+Res.txt('m',id,3)+"</span>";
-			if (!location.levitOn) info+='<br>'+Res.guiText('restr_levit');
-			if (!location.portOn) info+='<br>'+Res.guiText('restr_port');
-			if (!location.destroyOn) info+='<br>'+Res.guiText('restr_des');
+			if (!room.levitOn) info+='<br>'+Res.guiText('restr_levit');
+			if (!room.portOn) info+='<br>'+Res.guiText('restr_port');
+			if (!room.destroyOn) info+='<br>'+Res.guiText('restr_des');
 			if (xml.@prize.length()) prizeActive=true;
 			if (xml.@tip.length()) tip=xml.@tip;
 			if (xml.@close.length()) isClose=true;
-			if (tip!=2) location.petOn=false;
+			if (tip!=2) room.petOn=false;
 			if (xml.scr.length()) 
 			{
 				for each(var xl in xml.scr) 
 				{
-					if (xl.@eve=='alarm') alarmScript=new Script(xl,location.land);
-					if (xl.@eve=='out') outScript=new Script(xl,location.land);
-					if (xl.@eve=='in') inScript=new Script(xl,location.land);
-					if (xl.@eve=='close') closeScript=new Script(xl,location.land);
+					if (xl.@eve=='alarm') alarmScript=new Script(xl,room.level);
+					if (xl.@eve=='out') outScript=new Script(xl,room.level);
+					if (xl.@eve=='in') inScript=new Script(xl,room.level);
+					if (xl.@eve=='close') closeScript=new Script(xl,room.level);
 				}
 			}			
 			if (xml.wave.length()) maxwave=xml.wave.length();
@@ -78,7 +80,7 @@ package locdata
 		//начальная подготовка (один раз)
 		public function prepare() 
 		{
-			for each (var b:Box in location.objs) 
+			for each (var b:Box in room.objs) 
 			{
 				if (b.inter && (b.inter.prize && prizeActive)) 
 				{
@@ -106,16 +108,16 @@ package locdata
 			{
 				if ((node.@tip=='box' || node.@tip.length()==0) && node.@uid.length())  //проверка боксов на открытость
 				{
-					for each (var b:Box in location.objs) 
+					for each (var b:Box in room.objs) 
 					{
 						if (b.uid==node.@uid && b.inter && (!b.inter.open && b.inter.cont!='empty')) return false;
 					}
 				} 
 				else if (node.@tip=='unit') //проверка юнитов на смерть
 				{
-					for each (var un:Unit in location.units) 
+					for each (var un:Unit in room.units) 
 					{
-						if ((node.@uid.length() && un.uid==node.@uid || node.@qid.length() && un.questId==node.@qid) && un.sost<3) return false;
+						if ((node.@uid.length && un.uid==node.@uid || node.@qid.length && un.questId==node.@qid) && un.sost<3) return false;
 					}
 				} 
 				else if (node.@tip=='wave') //проверка волны
@@ -139,7 +141,7 @@ package locdata
 			//окрыть коробки с призами
 			if (!prizeActive) 
 			{
-				for each (var b:Box in location.objs) 
+				for each (var b:Box in room.objs) 
 				{
 					if (b.inter && b.inter.prize) 
 					{
@@ -163,15 +165,15 @@ package locdata
 				inScript.start();
 			}
 			if (isClose) activateProb();
-			location.broom=false;
+			room.broom=false;
 		}
 		//выйти из комнаты
 		public function out() 
 		{
 			if (closed) 
 			{
-				location.openAllPrize();
-				location.broom=true;
+				room.openAllPrize();
+				room.broom=true;
 			} 
 			else 
 			{
@@ -189,7 +191,7 @@ package locdata
 		//активировать испытание
 		public function activateProb() 
 		{
-			if (closed || active || !location.locationActive) return;
+			if (closed || active || !room.roomActive) return;
 			active=true;
 			doorsOnOff(-1);
 		}
@@ -204,7 +206,7 @@ package locdata
 		//-1 - отключить все выходы, 0 - отключить все выходы, кроме основного, 1-включить все выходы
 		function doorsOnOff(turn:int) 
 		{
-			for each (var b:Box in location.objs) 
+			for each (var b:Box in room.objs) 
 			{
 				if (b.id=='doorout') 
 				{
@@ -243,11 +245,11 @@ package locdata
 			if (w==null) return;
 			for each (var un in w.obj) 
 			{
-				location.waveSpawn(un,nspawn);
+				room.waveSpawn(un,nspawn);
 				kolEn++;
 				nspawn++;
 			}
-			if (w.@t.length()) t_wave=int(w.@t)*World.fps;
+			if (w.@t.length()) t_wave=int(w.@t)*Settings.fps;
 			nwave++;
 		}
 		
@@ -266,7 +268,7 @@ package locdata
 		function resetWave() 
 		{
 			onWave=false;
-			for each (var un:Unit in location.units) 
+			for each (var un:Unit in room.units) 
 			{
 				if (un.wave) 
 				{

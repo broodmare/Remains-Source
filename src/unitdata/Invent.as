@@ -10,6 +10,8 @@ package unitdata
 	import servdata.Script;
 	import locdata.Loot;
 	
+	import components.Settings;
+	
 	public class Invent 
 	{
 		public var gg:UnitPlayer;
@@ -207,7 +209,7 @@ package unitdata
 			pot=AllData.d.item.(@id==ci);
 			if (pot.length()==0) return false;
 			
-			if (World.world.alicorn) 
+			if (Settings.alicorn) 
 			{
 				if (pot.@tip=='pot' || pot.@tip=='him' || pot.@tip=='food') 
 				{
@@ -250,7 +252,7 @@ package unitdata
 				}
 			}
 			//проверить соответствие уровню навыка
-			if (pot.@minmed.length() && pot.@minmed>gg.pers.medic) 
+			if (pot.@minmed.length && pot.@minmed>gg.pers.medic) 
 			{
 				 World.world.gui.infoText('needSkill',Res.txt('e','medic'),pot.@minmed);
 				  return false;
@@ -295,7 +297,7 @@ package unitdata
 			if (pot.@hhplong.length()) hhplong=pot.@hhplong*gg.pers.healMult;
 			gg.heal(hhp,0,false);
 			gg.heal(hhplong,1,false);
-			if (hhp+hhplong>0) gg.numbEmit.cast(gg.location,gg.X,gg.Y-gg.scY/2,{txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
+			if (hhp+hhplong>0) gg.numbEmit.cast(gg.room,gg.X,gg.Y-gg.scY/2,{txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
 			
 			if (pot.@hrad.length()) gg.heal(pot.@hrad*gg.pers.healMult,2);
 			if (pot.@hpoison.length()) gg.heal(pot.@hpoison, 4, false);
@@ -433,7 +435,7 @@ package unitdata
 			} 
 			else if (tip=='food') 
 			{
-				if (World.world.alicorn) 
+				if (Settings.alicorn) 
 				{
 					World.world.gui.infoText('alicornNot',null,null,false);
 					return false;
@@ -447,7 +449,7 @@ package unitdata
 			} 
 			else if (tip=='spell') 
 			{
-				if (World.world.alicorn) 
+				if (Settings.alicorn) 
 				{
 					World.world.gui.infoText('alicornNot',null,null,false);
 					return false;
@@ -462,7 +464,7 @@ package unitdata
 					World.world.gui.infoText('noUseCombat',null,null,false);
 					return false;
 				}
-				if (World.world.hardInv && !World.world.location.base) 
+				if (Settings.hardInv && !World.world.room.base) 
 				{
 					World.world.gui.infoText('noBase');
 					return false;
@@ -484,7 +486,7 @@ package unitdata
 					World.world.gui.infoText('noUseCombat',null,null,false);
 					return false;
 				}
-				if (World.world.hardInv && !World.world.location.base) 
+				if (Settings.hardInv && !World.world.room.base) 
 				{
 					World.world.gui.infoText('noBase');
 					return false;
@@ -501,7 +503,7 @@ package unitdata
 			} 
 			else if (ci=='stealth') 
 			{
-				if (World.world.alicorn) 
+				if (Settings.alicorn) 
 				{
 					World.world.gui.infoText('alicornNot',null,null,false);
 					return false;
@@ -510,7 +512,7 @@ package unitdata
 			} 
 			else if (item.@pet.length()) 
 			{
-				if (World.world.alicorn) 
+				if (Settings.alicorn) 
 				{
 					World.world.gui.infoText('alicornNot',null,null,false);
 					return false;
@@ -889,7 +891,7 @@ package unitdata
 					World.world.gui.floatText(l.nazv+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
 				}
 				//информационное окно для важных предметов
-				if (World.world.helpMess || l.tip=='art') 
+				if (Settings.helpMess || l.tip=='art') 
 				{
 					if (l.mess!=null && !(World.world.game.triggers['mess_'+l.mess]>0)) 
 					{
@@ -908,7 +910,7 @@ package unitdata
 			{
 				World.world.showError(err, 'Loot error. tip:' + l.tip + ' id:' + l.id);
 			}
-			if (World.world.hardInv) mass[l.invCat]+=l.mass*l.kol;
+			if (Settings.hardInv) mass[l.invCat]+=l.mass*l.kol;
 			World.world.calcMass=true;
 		}
 		
@@ -976,7 +978,7 @@ package unitdata
 		
 		public function checkKol(ci:String, n:int=1):Boolean 
 		{
-			if (World.world.location && World.world.location.base) 
+			if (World.world.room && World.world.room.base) 
 			{
 				if (items[ci].kol+items[ci].vault>=n) return true;
 				else return false;
@@ -1016,7 +1018,7 @@ package unitdata
 		//уничтожение экипировки
 		public function damageItems(dam:Number, destr:Boolean=true) 
 		{
-			if (!destr && !World.world.location.base && !World.world.alicorn) dam=5;
+			if (!destr && !World.world.room.base && !Settings.alicorn) dam=5;
 			if (mass[1]<=World.world.pers.maxm1 || dam<=0) return;
 			var kol=dam*(mass[1]-World.world.pers.maxm1)/800;
 			if (kol>=1 || Math.random()<kol) 
@@ -1076,23 +1078,23 @@ package unitdata
 		//выкинуть вещи
 		public function drop(nid:String, kol:int=1) 
 		{
-			if (World.world.location.base || World.world.alicorn) 
+			if (World.world.room.base || Settings.alicorn) 
 			{
 				return;
 			}
 			if (kol>items[nid].kol) kol=items[nid].kol;
 			if (kol<=0) return;
 			var item:Item=new Item(null,nid,kol);
-			var loot:Loot=new Loot(World.world.location,item,owner.X,owner.Y-owner.scY/2,true,false,false);
+			var loot:Loot=new Loot(World.world.room,item,owner.X,owner.Y-owner.scY/2,true,false,false);
 			minusItem(nid,kol,false);
 		}
 		
 		//вызвать прикреплённый скрипт
 		public function takeScript(id:String) 
 		{
-			if (World.world.land.itemScripts[id]) 
+			if (World.world.level.itemScripts[id]) 
 			{
-				World.world.land.itemScripts[id].start();
+				World.world.level.itemScripts[id].start();
 			}
 		}
 		
@@ -1109,7 +1111,7 @@ package unitdata
 		//выкурить косяк
 		function useRollup():Boolean 
 		{
-			if (!World.world.location.base) 
+			if (!World.world.room.base) 
 			{
 				World.world.gui.infoText('noBase');
 				return false;
@@ -1121,7 +1123,7 @@ package unitdata
 				if (xml1.length()) 
 				{
 					xml1=xml1[0];
-					var smokeScr:Script=new Script(xml1,World.world.location.land, gg);
+					var smokeScr:Script=new Script(xml1,World.world.room.level, gg);
 					smokeScr.start();
 					World.world.game.triggers['rollup']=1;
 				}

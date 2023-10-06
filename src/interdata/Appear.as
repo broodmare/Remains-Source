@@ -14,20 +14,21 @@ package interdata
 	import fl.motion.Color;
 	// Character Appearance Settings
 	
-	public class Appear {
-		
+	public class Appear 
+	{
+
 		public var vis:MovieClip;
-		var col:Color=new Color;
+		var col:Color = new Color;
 		
 		public var funOk:Function;
 		public var funCancel:Function;
 		
-		public var cFur:uint=0xA3A3A3;
-		public var cHair:uint=0x854609;
-		public var cHair1:uint=0xFFFFFF;
-		public var cEye:uint=0x16F343;
-		public var cMagic:uint=0x00FF00;
-		var tFur:uint, tHair:uint, tHair1:uint, tEye:uint, tMagic:uint;
+		public var cFur:uint = 0xA3A3A3;
+		public var cHair:uint = 0x854609;
+		public var cHair1:uint = 0xFFFFFF;
+		public var cEye:uint = 0x16F343;
+		public var cMagic:uint = 0x00FF00;
+		public var tFur:uint, tHair:uint, tHair1:uint, tEye:uint, tMagic:uint;
 
 		public static var trFur:ColorTransform = new ColorTransform(0.8,0.8,0.8);
 		public static var trHair:ColorTransform = new ColorTransform(0xA3/0xFF,0x56/0xFF,0x0B/0xFF);
@@ -42,12 +43,12 @@ package interdata
 		public static var fHair:int=1, maxHair:int=5;
 
 		public static var ggArmorId:String='';	//надетая броня
-		public static var hideMane:int=0;	//скрыть волосы
+		public static var hideMane:int = 0;	//скрыть волосы
 		public static var transp:Boolean=false;
 
-		var clist:Array=['Fur','Hair','Hair1','Eye','Magic'];
+		var clist:Array = ['Fur','Hair','Hair1','Eye','Magic'];
 		
-		var tek:String='Fur';
+		var tek:String = 'Fur';
 		
 		var temp:Object;
 		var def:Object;
@@ -56,7 +57,8 @@ package interdata
 		
 		public var saved:Object;
 
-		public function Appear() {
+		public function Appear() 
+		{
 			vis=new dialVid();
 			for each(var l in clist) this['t'+l]=this['c'+l];
 			def=save();
@@ -66,8 +68,9 @@ package interdata
 		}
 		
 		//надписи
-		public function setLang() {
-			vis.butOk.text.text='OK';
+		public function setLang()
+		{
+			vis.butOk.text.text = 'OK';
 			vis.butCancel.text.text=Res.guiText('cancel');
 			vis.butDef.text.text=Res.pipText('default');
 			vis.title.text=Res.guiText('butvid');
@@ -79,7 +82,8 @@ package interdata
 		}
 		
 		//присоединить диалоговое окно
-		public function attach(mm:MovieClip, fo:Function, fc:Function) {
+		public function attach(mm:MovieClip, fo:Function, fc:Function)
+		{
 			mm.addChild(vis);
 			vis.fon.visible=true;
 			temp=save();
@@ -91,22 +95,26 @@ package interdata
 			vis.pers.gotoAndStop(1);
 		}
 		//отсоединить диалоговое окно
-		public function detach() {
+		public function detach()
+		{
 			if (vis.parent) vis.parent.removeChild(vis);
 			funcOff();
 			funOk=null;
 			funCancel=null;
-			if (saved!=null) {
+			if (saved!=null) 
+			{
 				load(saved);
-				saved=null;
+				saved = null;
 			}
 		}
 		
-		public function funcOn() {
+		public function funcOn()
+		{
 			vis.butOk.addEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.addEventListener(MouseEvent.CLICK, buttonCancel);
 			vis.butDef.addEventListener(MouseEvent.CLICK, buttonDef);
-			for each(var l in clist) {
+			for each(var l in clist) 
+			{
 				vis['color'+l].addEventListener(ColorPickerEvent.CHANGE, changeHandler);
 				vis['color'+l].addEventListener(Event.OPEN, openHandler);
 			}
@@ -119,12 +127,14 @@ package interdata
 			vis.b1Hair.addEventListener(MouseEvent.CLICK, chBut);
 			vis.b2Hair.addEventListener(MouseEvent.CLICK, chBut);
 		}
-		public function funcOff() {
+		public function funcOff()
+		{
 			if (!vis.butOk.hasEventListener(MouseEvent.CLICK)) return;
 			vis.butOk.removeEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.removeEventListener(MouseEvent.CLICK, buttonCancel);
 			vis.butDef.removeEventListener(MouseEvent.CLICK, buttonDef);
-			for each(var l in clist) {
+			for each(var l in clist) 
+			{
 				vis['color'+l].removeEventListener(ColorPickerEvent.CHANGE, changeHandler);
 				vis['color'+l].removeEventListener(Event.OPEN, openHandler);
 			}
@@ -139,12 +149,14 @@ package interdata
 		}
 		
 		// Press the OK button
-		public function buttonOk(event:MouseEvent) {
+		public function buttonOk(event:MouseEvent)
+		{
 			if (funOk) funOk();
 			World.world.saveConfig();
 		}
 		// Press the Cancel button
-		public function buttonCancel(event:MouseEvent) {
+		public function buttonCancel(event:MouseEvent)
+		{
 			load(temp);
 			setTransforms();
 			setColors();
@@ -153,7 +165,8 @@ package interdata
 			if (funCancel) funCancel();
 		}
 		// Press the def button
-		public function buttonDef(event:MouseEvent) {
+		public function buttonDef(event:MouseEvent)
+		{
 			load(def);
 			setTransforms();
 			setColors();
@@ -162,13 +175,14 @@ package interdata
 		}
 		
 		// Set all color pickers to match the colors
-		function setColors() {
+		function setColors()
+		{
 			for each(var l in clist) vis['color'+l].selectedColor=this['c'+l];
 			vis.checkHair1.selected=visHair1;
 		}
 
 		// Convert all colors to transforms
-		public function setTransforms() 
+		public function setTransforms()
 		{
 			for each(var i in clist) colorToTransform(this['c'+i],Appear['tr'+i]);
 		}
@@ -176,11 +190,13 @@ package interdata
 		
 		public function save():Object 
 		{
-			if (saved!=null) {
+			if (saved!=null) 
+			{
 				load(saved);
 			}
 			var obj:Object=new Object;
-			for each(var l in clist) {
+			for each(var l in clist) 
+			{
 				obj['c'+l]=this['c'+l];
 			}
 			obj.visHair1=visHair1;
@@ -190,12 +206,12 @@ package interdata
 		}
 		
 		// Save when calling the save or load page
-		public function saveOst() 
+		public function saveOst()
 		{
 			if (saved==null) saved=save();
 		}
 		
-		public function load(obj:Object) 
+		public function load(obj:Object)
 		{
 			if (obj == null) 
 			{
@@ -215,7 +231,8 @@ package interdata
 		}
 		
 		// Convert color to transform
-		function colorToTransform(c:uint, ct:ColorTransform) {
+		function colorToTransform(c:uint, ct:ColorTransform)
+		{
 			var colMax:int=290, colSd:Number=(290-255)/255;
 			col.tintMultiplier=1;
 			col.tintColor=c;
@@ -229,14 +246,15 @@ package interdata
 		}
 		
 		//надписи
-		function setRGB() {
+		function setRGB()
+		{
 			vis.nRed.text='R:'+col.redOffset;
 			vis.nGreen.text='G:'+col.greenOffset;
 			vis.nBlue.text='B:'+col.blueOffset;
 		}
 		
 		//событие ползунков
-		function chColor(event:SliderEvent):void 
+		function chColor(event:SliderEvent):void
 		{
 			col.redOffset=vis.slRed.value;
 			col.greenOffset=vis.slGreen.value;
@@ -246,14 +264,16 @@ package interdata
 		}
 		
 		//события колорпикеров
-		function changeHandler(event:ColorPickerEvent):void {
+		function changeHandler(event:ColorPickerEvent):void
+		{
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var myCT:ColorTransform;
 			var nam=myCP.name.substr(5);
 			tek=nam;
 			setColor(nam,myCP.selectedColor);
 		}
-		function openHandler(event:Event):void {
+		function openHandler(event:Event):void
+		{
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var nam=myCP.name.substr(5);
 			tek=nam;
@@ -261,27 +281,33 @@ package interdata
 		}
 		
 		//вкл/выкл второй цвет
-		function changeHair1(e:Event):void {
+		function changeHair1(e:Event):void
+		{
 			visHair1=vis.checkHair1.selected;
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}
 		//кнопки выбора вариантов
-		public function chBut(event:MouseEvent) {
+		public function chBut(event:MouseEvent) 
+		{
 			var nam:String=(event.currentTarget as flash.display.DisplayObject).name;
-			if (nam=='b1Eye') {
+			if (nam=='b1Eye') 
+			{
 				fEye--;
 				if (fEye<=0) fEye=maxEye;
 			}
-			if (nam=='b2Eye') {
+			if (nam=='b2Eye') 
+			{
 				fEye++;
 				if (fEye>maxEye) fEye=1;
 			}
-			if (nam=='b1Hair') {
+			if (nam=='b1Hair') 
+			{
 				fHair--;
 				if (fHair<=0) fHair=maxHair;
 			}
-			if (nam=='b2Hair') {
+			if (nam=='b2Hair') 
+			{
 				fHair++;
 				if (fHair>maxHair) fHair=1;
 			}
@@ -290,20 +316,14 @@ package interdata
 		}
 		
 		//установить цвет модельки
-		function setColor(nam:String, c:uint) {
+		function setColor(nam:String, c:uint)
+		{
 			this['c'+nam]=c;
 			colorToTransform(this['c'+nam],Appear['tr'+nam]);
 			vis['color'+nam].selectedColor=c;
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}
-		
-		/*function encode():String {
-			return cFur+'|'+cHair+'|'+cHair1+'|'+cEye+'|'+cMagic+'|'+fEye+'|'+(visHair1?1:0);
-		}
-		function decode(s:String) {
-			return cFur+'|'+cHair+'|'+cHair1+'|'+cEye+'|'+cMagic+'|'+fEye+'|'+(visHair1?1:0);
-		}*/
 		
 	}
 	

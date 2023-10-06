@@ -8,7 +8,7 @@ package unitdata
 	import flash.geom.ColorTransform;
 	
 	import weapondata.*;
-	import locdata.Location;
+	import locdata.Room;
 	import servdata.LootGen;
 	import graphdata.Emitter;
 	
@@ -30,7 +30,7 @@ package unitdata
 		var speedBonus:Number=1;
 		var t_doptest=20;
 		
-		var limX:int=1920*3;
+		var roomPixelWidth:int=1920*3;
 		var limY:int=3000;
 		
 		var moln1_x=500;
@@ -112,8 +112,9 @@ package unitdata
 		}
 		
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
 			createTurret(1,-850,-340,0);
 			createTurret(1,-770,-340,0);
 			createTurret(1,-690,-340,0);
@@ -154,7 +155,8 @@ package unitdata
 			setUgolPos();
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
 			}
@@ -162,7 +164,7 @@ package unitdata
 		}
 
 		function createTurret(n:int,bindX:Number, bindY:Number, rot:int=0, mega:Boolean=false) {
-			var un:Unit=location.createUnit('ttur',0,0,true,null,n.toString());
+			var un:Unit=room.createUnit('ttur',0,0,true,null,n.toString());
 			(un as UnitThunderTurret).head=this;
 			(un as UnitThunderTurret).bindX=bindX*3;
 			(un as UnitThunderTurret).bindY=bindY*3;
@@ -176,39 +178,33 @@ package unitdata
 			reloadDiv+=0.1;
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
 			}
 		}
 		
-		public override function run(div:int=1) {
-			/*X+=dx/div;
-			Y+=dy/div;*/
+		public override function run(div:int=1)
+		{
 			X1=X-scX/2+300*3, X2=X1+1370*3;
 			Y1=Y-scY/2+170*3, Y2=Y1+580*3;
 		}
-		
-		/*public override function forces() {
-			if (dx>maxSpeed) dx=maxSpeed;
-			if (dx<-maxSpeed) dx=-maxSpeed;
-			if (dy>maxSpeed) dy=maxSpeed;
-			if (dy<-maxSpeed) dy=-maxSpeed;
-		}*/
 		
 		function setUgolPos() {
 			var def:Number=Math.sin(ugol/45*Math.PI);
 			var dif:Number=Math.sin(ugol/90*Math.PI);
 			var ugol2:Number=-def*12+ugol;
 			var distanc2:Number=distanc+dif*dif*dif*dif*1000;
-			X=limX/2+Math.sin(ugol2/180*Math.PI)*distanc2;
+			X=roomPixelWidth/2+Math.sin(ugol2/180*Math.PI)*distanc2;
 			Y=limY/2+Math.cos(ugol2/180*Math.PI)*distanc2/1.6;
 			for each (var un:Unit in turrets) {
 				un.run();
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			if (World.world.game.globalDif==3) {
 				kol_emit=3;
 				max_emit=18;
@@ -221,7 +217,8 @@ package unitdata
 			}
 		}
 		
-		public override function dopTest(bul:Bullet):Boolean {
+		public override function dopTest(bul:Bullet):Boolean
+		{
 			if (bul.targetObj==this) return true;
 			t_doptest--;
 			if (t_doptest>0) return false;
@@ -244,7 +241,8 @@ package unitdata
 		var distanc:Number=6000;
 		
 		
-		public override function control() {
+		public override function control()
+		{
 			if (vsosOn) vsos();
 			if (sost==3) return;
 			if (sost>1) {
@@ -269,7 +267,7 @@ package unitdata
 				}
 			}
 			if (aiTCh%10==1) {
-				setCel(location.gg);
+				setCel(room.gg);
 			}
 			attTur--;
 			celDX=celX-X;
@@ -308,7 +306,8 @@ package unitdata
 		}
 		
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (sost>1 && t_die<150) {
 				t_die++;
 				vzdrzhne(t_die)
@@ -340,9 +339,13 @@ package unitdata
 			}
 		}
 		
-		public override function makeNoise(n:int, hlup:Boolean=false) {}
+		public override function makeNoise(n:int, hlup:Boolean=false)
+		{
+
+		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='off') {
 				walk=0;
 				controlOn=false;
@@ -358,10 +361,10 @@ package unitdata
 			var nx:Number=X;
 			var ny:Number=Y;
 			if (nx<200) nx=200;
-			if (nx>location.limX-200) nx=location.limX-200;
+			if (nx>room.roomPixelWidth-200) nx=room.roomPixelWidth-200;
 			if (ny<200) ny=200;
-			if (ny>location.limY-200) ny=location.limY-200;
-			var un:Unit=location.createUnit('dron',nx,ny,true,null,'100');
+			if (ny>room.roomPixelHeight-200) ny=room.roomPixelHeight-200;
+			var un:Unit=room.createUnit('dron',nx,ny,true,null,'100');
 			un.fraction=fraction;
 			un.inter.cont='';
 			un.mother=this;
@@ -379,7 +382,7 @@ package unitdata
 		}
 		
 		public function vsos(n:Number=0, klob:Boolean=false) {
-			if (!location.locationActive) return;
+			if (!room.roomActive) return;
 			p.x=X-World.world.gg.X;
 			p.y=Y-World.world.gg.Y;
 			if (n==0) {
@@ -388,7 +391,7 @@ package unitdata
 			} else {
 				norma(p,n);
 			}
-			if (klob && t_vsos%3==0) Emitter.emit('vsos',location,World.world.gg.X,World.world.gg.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
+			if (klob && t_vsos%3==0) Emitter.emit('vsos',room,World.world.gg.X,World.world.gg.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
 			World.world.gg.dx+=p.x;
 			World.world.gg.dy+=p.y;
 		}

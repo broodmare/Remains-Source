@@ -30,7 +30,8 @@ package unitdata
 			}
 		}
 		
-		public override function addVisual() {
+		public override function addVisual()
+		{
 			if (disabled) return;
 			trigDis=!checkTrig();
 			if (trigDis) return;
@@ -42,13 +43,15 @@ package unitdata
 				currentWeapon.recoilUp*=0.25;
 			}
 		}
-		public override function remVisual() {
+		public override function remVisual()
+		{
 			super.remVisual();
 			try {
 				World.world.grafon.canvasLayerArray[layer].removeChild(arm);
 			} catch (err) {}
 		}
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
 				vis.scaleX=storona;
@@ -59,7 +62,8 @@ package unitdata
 			}
 		}
 		//Set weapon position
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			if (arm==null || arm.parent==null) {
 				super.setWeaponPos(tip);
 				return;
@@ -72,13 +76,15 @@ package unitdata
 			weaponY=p1.y;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			budilo(2000);
 			arm.visible = false;
 			super.dropLoot();
 		}
 		
-		public override function attack() {
+		public override function attack()
+		{
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
 			if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
@@ -96,7 +102,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			var revers:Boolean=false;
 			//поворот

@@ -1,5 +1,6 @@
 package unitdata 
 {
+	import components.Settings;
 	
 	public class UnitBat extends Unit
 	{
@@ -26,7 +27,8 @@ package unitdata
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
@@ -34,7 +36,8 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f) {
 				aiState=aiSpok=0;
@@ -42,7 +45,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 				if (sost==2 || sost==3) { //сдох
 					if (animState!='die') {
 						vis.osn.gotoAndStop('die');
@@ -66,7 +70,8 @@ package unitdata
 				}
 			//vis.gotoAndStop(aiState+1);
 		}
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			super.alarma(nx,ny);
 			if (sost==1 && aiState<=1) {
 				aiSpok=maxSpok-1;
@@ -85,9 +90,10 @@ package unitdata
 		//5 - готовится к рывку
 		//6 - рывок
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -128,7 +134,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1 && aiState<6) {
+			if (Settings.enemyAct>1 && aiTCh%10==1 && aiState<6) {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					if (aiState<5) aiState=(hp<maxhp)?4:3;
@@ -150,11 +156,6 @@ package unitdata
 				turnY=-1;
 				aiState=1;
 			}
-			
-			/*if (disabled) {
-				aiState=0;
-				return;
-			}*/
 			vision=(aiState==0)?0.4:1;
 			ear=(aiState==0)?0.6:1;
 	
@@ -190,7 +191,7 @@ package unitdata
 				dy+=aiDy*accel*3;
 			}
 			
-			if (World.world.enemyAct>=3) {
+			if (Settings.enemyAct>=3) {
 				if (aiState==3 && shok<=0 && isrnd(0.1)) attKorp(celUnit);
 				if (aiState==4 && shok<=0) attKorp(celUnit);
 				if (aiState==6) {

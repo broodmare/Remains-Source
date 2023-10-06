@@ -25,12 +25,12 @@ package graphdata
 	import fl.motion.Color;
 
 	import locdata.*;
-
+	import components.Settings;
 
 	public class Grafon 
 	{
 		
-		public var location:Location;	//current Location.
+		public var room:Room;	//current Room.
 		
 		public var mainCanvas:Sprite;			// Sprite that all 6 layers are drawn onto (Screenspace?)
 		public var layerBackground_1:Sprite;	// Layer 1
@@ -73,7 +73,7 @@ package graphdata
 
 
 
-		public var bitmapCachingOption:Boolean; 			//Export this to some kind of user settings. This might save on memory usage which is a premium for flash.
+		 			//Export this to some kind of user settings. This might save on memory usage which is a premium for flash.
 
 		public var dsFilter:DropShadowFilter;				// Adds a drop shadow to objects. (What objects?)
 		public var infraTransform:ColorTransform;			// Fog of war stuff.
@@ -134,7 +134,8 @@ package graphdata
 
 		public function Grafon(nvis:Sprite)
 		{
-
+			
+			trace('Grafon.as/Grafon() - Grafon initializing...');
 			mapTileWidth 	= 48; 
 			mapTileHeight 	= 25;
 
@@ -173,8 +174,6 @@ package graphdata
 			finalWidth 	= mapTileWidth * tilepixelwidth;
 			finalHeight = mapTileHeight * tilepixelheight;
 
-			bitmapCachingOption = false;
-
 
 			mainCanvas 			= nvis;
 			layerBackground_1 	= new Sprite();
@@ -191,10 +190,10 @@ package graphdata
 			layerSats.visible 	= false;
 			layerSats.filters 	= [new BlurFilter(3, 3, 1)];
 			
-			
-			for (var i = 0; i < canvasLayerCount; i++) 
+			trace('Grafon.as/Grafon() - Adding sprites to main canvas...');
+			for (var i:int = 0; i < canvasLayerCount; i++) 
 			{
-				canvasLayerArray .push(new Sprite());
+				canvasLayerArray.push(new Sprite());
 			}
 
 
@@ -205,7 +204,7 @@ package graphdata
 			mainCanvas.addChild(canvasLayerArray [0]);	//1
 			mainCanvas.addChild(canvasLayerArray [1]);	//2
 			mainCanvas.addChild(canvasLayerArray [2]);	//3
-			mainCanvas.addChild(visFront);				//4   Ghost walls, Decals, Color transform, dropShadow (toFront) indicates this.
+			mainCanvas.addChild(visFront);				//4   Ghost walls, Decals, Color transform, dropShadow (isTopLayer) indicates this.
 			mainCanvas.addChild(canvasLayerArray [3]);	//6 
 			mainCanvas.addChild(layerWater);			//5  water bitmap is applied to this
 			mainCanvas.addChild(layerLighting);			//7
@@ -219,7 +218,7 @@ package graphdata
 			layerLighting.scaleY = tilepixelheight;
 			
 
-
+			trace('Grafon.as/Grafon() - Creating bitmaps...');
 			frontBmp 	= new BitmapData(screenResX, screenResY, true, 0x0)
 			frontBitmap =  new Bitmap(frontBmp);
 			visFront.addChild(frontBitmap);
@@ -255,10 +254,10 @@ package graphdata
 			borderRight = new visBlack();
 			borderLeft = new visBlack();
 
-			borderTop.cacheAsBitmap = bitmapCachingOption;
-			borderBottom.cacheAsBitmap = bitmapCachingOption;
-			borderRight.cacheAsBitmap = bitmapCachingOption;
-			borderLeft.cacheAsBitmap = bitmapCachingOption;
+			borderTop.cacheAsBitmap 	= Settings.bitmapCachingOption;
+			borderBottom.cacheAsBitmap 	= Settings.bitmapCachingOption;
+			borderRight.cacheAsBitmap 	= Settings.bitmapCachingOption;
+			borderLeft.cacheAsBitmap 	= Settings.bitmapCachingOption;
 
 			mainCanvas.addChild(borderTop);
 			mainCanvas.addChild(borderBottom);
@@ -271,18 +270,19 @@ package graphdata
 			tileArray = new Array(); //TILE ARRAY
 			backwallArray  = new Array();
 
+			trace('Grafon.as/Grafon() - Setting up materials...');
 			//for each material in AllData
 			for each (var p:XML in AllData.d.mat)
 			{
 				// Populates front and back arrays with materials from MaterialData.XML
-				if (p.@vid.length() == 0)
+				if (p.@vid.length == 0)
 				{
 					if (p.@ed == '2') backwallArray[p.@id] = new Material(p); // ALL BACKWALLS GO INTO backwallArray
 					else tileArray[p.@id] = new Material(p);	// TILES AND CLIMBABLES GO HERE
 				}
 			}
 
-
+			
 			//Resource URL list setup.
 			for (var j:int = 0; j < resourceURLArray.length; j++)
 			{
@@ -293,11 +293,14 @@ package graphdata
 				grLoaderArray[j] = new GrLoader(j, resourceURL, this);
 			}
 
+
+			trace('Grafon.as/Grafon() - Adding mouse cursor...');
 			createCursors();
+			trace('Grafon.as/Grafon() - Grafon intitialized. ');
 		}
 		
 		//Check if all instances of GrLoader have finished.
-		public function checkLoaded() 
+		public function checkLoaded()
 		{
 			if (grLoaderArray.length > 0 && grLoaderArray[grLoaderArray.length - 1].isLoad) 
 			{
@@ -338,7 +341,7 @@ package graphdata
 		}
 		
 		//================================================================================================		
-		//							Initial Location Drawing
+		//							Initial Room Drawing
 		//================================================================================================		
 		
 		public function getObj(textureName:String, loaderID:int = 0):* 
@@ -351,13 +354,13 @@ package graphdata
 		}
 		
 		// Draw the skybox texture.
-		public function drawSkybox(skybox:MovieClip, tex:String)
+		public function drawSkybox(skybox:MovieClip, textureID:String)
 		{
-			if (tex == '' || tex == null) tex = 'skyboxDefault';
+			if (textureID == '' || textureID == null) textureID = 'skyboxDefault';
 			if (skyboxLayer && skybox.contains(skyboxLayer)) skybox.removeChild(skyboxLayer);
 			
 			
-			skyboxLayer = getObj(tex);						//Set the background to the specified texture.
+			skyboxLayer = getObj(textureID);						//Set the background to the specified texture.
 			if (skyboxLayer) skybox.addChild(skyboxLayer); 	//If the background exists, add it to the background sprite.
 		}
 		
@@ -374,7 +377,7 @@ package graphdata
 				} 
 				else 
 				{
-					var koef = skyboxLayer.width/skyboxLayer.height;
+					var koef:Number = skyboxLayer.width/skyboxLayer.height;
 					skyboxLayer.x = skyboxLayer.y = 0;
 					if (nx >= ny*koef)
 					{
@@ -415,7 +418,7 @@ package graphdata
 		//                  BACKGROUND RENDERING 
 		// ##########################################################
 
-		public function drawLoc(currentLocation:Location):void 
+		public function drawLoc(currentLocation:Room):void 
 		{
 			try 
 			{
@@ -426,14 +429,14 @@ package graphdata
 				//####################
 				World.world.gr_stage = 1; 
 
-				location = currentLocation;
-				location.grafon = this;
+				room = currentLocation;
+				room.grafon = this;
 
-				resX = location.spaceX * tilepixelwidth;
-				resY = location.spaceY * tilepixelheight;
+				resX = room.roomWidth * tilepixelwidth;
+				resY = room.roomHeight * tilepixelheight;
 				
-				var transparentBackground:Boolean = location.transparentBackground;
-				if (location.backwall == 'sky') transparentBackground = true;	//If the decorative background layer is sky, set traansparentBackground to true.
+				var transparentBackground:Boolean = room.transparentBackground;
+				if (room.backwall == 'sky') transparentBackground = true;	//If the decorative background layer is sky, set traansparentBackground to true.
 				
 				//####################
 				//      STAGE 2  
@@ -445,11 +448,11 @@ package graphdata
 				borderRight.y = borderLeft.y = 0;
 				borderTop.y = 0;
 				borderLeft.x = 0;
-				borderBottom.y = location.limY - 1;
-				borderRight.x = location.limX - 1;
-				borderTop.scaleX = borderBottom.scaleX = location.limX / 100+1;
+				borderBottom.y = room.roomPixelHeight - 1;
+				borderRight.x = room.roomPixelWidth - 1;
+				borderTop.scaleX = borderBottom.scaleX = room.roomPixelWidth / 100+1;
 				borderTop.scaleY = borderBottom.scaleY = 2;
-				borderRight.scaleY = borderLeft.scaleY = location.limY / 100;
+				borderRight.scaleY = borderLeft.scaleY = room.roomPixelHeight / 100;
 				borderRight.scaleX = borderLeft.scaleX = 2;
 			
 				//Lock all 
@@ -472,10 +475,10 @@ package graphdata
 				
 				lightBmp.fillRect(lightRect, 0xFF000000); //White
 				setLight();
-				layerLighting.visible = location.black && World.world.black;
+				layerLighting.visible = room.black && Settings.black;
 				warShadow();
 				
-				var darkness:int = 0xAA+location.darkness;
+				var darkness:int = 0xAA + room.darkness;
 				if (darkness > 0xFF) darkness = 0xFF;
 				if (darkness < 0) darkness = 0;
 				colorBmp.fillRect(screenArea, darkness*0x1000000); //Black
@@ -495,14 +498,16 @@ package graphdata
 
 				var mat:Material;
 
-				for each (mat in tileArray)
+				for (var i:int = 0; i < tileArray.length; i++)
 				{
-					mat.used = false;
+					tileArray[i].used = false;
 				}
-				for each (mat in backwallArray) 
+
+				for (var j:int = 0; j < backwallArray.length; j++)
 				{
-					mat.used = false;
+					backwallArray[j].used = false;
 				}
+
 
 				//####################
 				//      STAGE 5   
@@ -516,24 +521,24 @@ package graphdata
 
 
 
-				for (var i:int = 0; i < location.spaceX; i++) //for each tile in theroom's horizontal rows...
+				for (var k:int = 0; k < room.roomWidth; k++) //for each tile in theroom's horizontal rows...
 				{
-					for (var j:int = 0; j < location.spaceY; j++) //for each tile in the room's vertical columns...
+					for (var l:int = 0; l < room.roomHeight; l++) //for each tile in the room's vertical columns...
 					{
 
-						tile = location.getTile(i, j); //Set the tile to modify as the current tile in the grid.
+						tile = room.getTile(k, l); //Set the tile to modify as the current tile in the grid.
 
 						
-						location.tileKontur(i, j, tile);
+						room.tileKontur(k, l, tile);
 
-						if (tileArray[tile.front]) tileArray[tile.front].used = true;
-						if (backwallArray[tile.back]) backwallArray[tile.back].used = true;
+						if (tileArray[tile.tileTexture]) tileArray[tile.tileTexture].used = true;
+						if (backwallArray[tile.tileRearTexture]) backwallArray[tile.tileRearTexture].used = true;
 
 
 						if (tile.vid > 0 || tile.vid2 > 0 || tile.water)
 						{
-							var spriteWidth:int = i * tilepixelwidth;
-							var spriteHeight:int = j * tilepixelheight;
+							var spriteWidth:int = k * tilepixelwidth;
+							var spriteHeight:int = l * tilepixelheight;
 
 							if (tile.vid > 0) 
 							{				
@@ -556,8 +561,8 @@ package graphdata
 							if (tile.water) 
 							{				
 								tileSprite = new tileVoda();
-								tileSprite.gotoAndStop(location.tipWater+1);
-								if (location.getTile(i, j-1).water == 0 && location.getTile(i, j-1).phis == 0) tileSprite.voda.gotoAndStop(2);
+								tileSprite.gotoAndStop(room.tipWater+1);
+								if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) tileSprite.voda.gotoAndStop(2);
 								tileSprite.x = spriteWidth;
 								tileSprite.y = spriteHeight;
 								voda.addChild(tileSprite);
@@ -588,32 +593,35 @@ package graphdata
 				//####################
 				World.world.gr_stage = 8;  //Draw Background items in backwallArray.
 
-				for each (mat in backwallArray)
+
+				for (var m:int = 0; m < backwallArray.length; m++)
 				{
 					try 
 					{
-						drawTileSprite(mat, false, false);
-					} catch (err)
+						drawTileSprite(backwallArray[m], false, false);
+					} 
+					catch (err)
 					{
-						World.world.showError(err, 'Error, Stage 8. Back Layer drawing matterial: '+mat.id);
+						World.world.showError(err, 'Error, Stage 8. Back Layer drawing matterial: ' + backwallArray[m].id);
 					}
 				}
-
 
 
 				//####################
 				//      STAGE 9   		// CLIMBABLE LAYER
 				//####################
 				World.world.gr_stage = 9;  
-				for each (mat in tileArray) 
+
+
+				for (var n:int = 0; n < backwallArray.length; n++)
 				{
 					try 
 					{
-						drawTileSprite(mat, true, false);
+						drawTileSprite(backwallArray[n], true, false);
 					} 
-					catch (err) 
+					catch (err)
 					{
-						World.world.showError(err, 'Error, Stage 9. Front Layer drawing matterial: '+mat.id );
+						World.world.showError(err, 'Error, Stage 9. Front Layer drawing matterial: ' + backwallArray[n].id);
 					}
 				}
 
@@ -624,7 +632,7 @@ package graphdata
 				//####################
 				World.world.gr_stage = 10; 
 				satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-				var darkness2 = 1 - (255 - darkness) /150;
+				var darkness2:Number = 1 - (255 - darkness) /150;
 
 				//background objects
 				var ct:ColorTransform = new ColorTransform();
@@ -639,45 +647,47 @@ package graphdata
 				//      STAGE 11  
 				//####################
 				World.world.gr_stage = 11; // Drawing background object sprites. 
-				for (j = -2; j <= 3; j++) 
+				for (var o:int = -2; o <= 3; o++) 
 				{
-					if (j == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-					for each(var backObject:BackObj in location.backobjs) 
+					if (o == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
+
+
+					for (var p:int = 0; p > room.backobjs.length; p++)
 					{	
-						if (backObject.layer == j && !backObject.er || j == -2 && backObject.er) 
+						if (room.backobjs[p].layer == o && !room.backobjs[p].er || o == -2 && room.backobjs[p].er) 
 						{
-							var backgroundMatrix = new Matrix(); //New matrix to hold the translation data for the objects in the background.
+							var backgroundMatrix:Matrix = new Matrix(); //New matrix to hold the translation data for the objects in the background.
 
-							backgroundMatrix.scale(backObject.scX, backObject.scY);
+							backgroundMatrix.scale(room.backobjs[p].scX, room.backobjs[p].scY);
 
-							backgroundMatrix.tx = backObject.X; // Object sprite's X offset
-							backgroundMatrix.ty = backObject.Y; // Object sprite's Y offset
-							ct.alphaMultiplier = backObject.alpha;
+							backgroundMatrix.tx = room.backobjs[p].X; // Object sprite's X offset
+							backgroundMatrix.ty = room.backobjs[p].Y; // Object sprite's Y offset
+							ct.alphaMultiplier = room.backobjs[p].alpha;
 
 
-							if (backObject.vis) 
+							if (room.backobjs[p].vis) 
 							{
-								if (j <= 0) 
+								if (o <= 0) 
 								{
 									ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
-									backBmp.draw(backObject.vis, backgroundMatrix, ct, backObject.blend, null, true);
+									backBmp.draw(room.backobjs[p].vis, backgroundMatrix, ct, room.backobjs[p].blend, null, true);
 								} 
 								else 
 								{
-									if (backObject.light) 
+									if (room.backobjs[p].light) 
 									{
 										if (darkness2 >= 0.43) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
 										else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 0.55+darkness2;
 									} 
 									else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
-									backBmp2.draw(backObject.vis, backgroundMatrix, ct, backObject.blend, null, true);
-									if (backObject.light) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
+									backBmp2.draw(room.backobjs[p].vis, backgroundMatrix, ct, room.backobjs[p].blend, null, true);
+									if (room.backobjs[p].light) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
 									else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
 								}
 							}
 							
-							if (backObject.erase) satsBmp.draw(backObject.erase, backgroundMatrix, null, 'erase', null, true);
-							if (backObject.light) colorBmp.draw(backObject.light, backgroundMatrix, ct, 'normal', null, true);
+							if (room.backobjs[p].erase) satsBmp.draw(room.backobjs[p].erase, backgroundMatrix, null, 'erase', null, true);
+							if (room.backobjs[p].light) colorBmp.draw(room.backobjs[p].light, backgroundMatrix, ct, 'normal', null, true);
 						}
 					}
 				}
@@ -688,7 +698,7 @@ package graphdata
 				//####################
 				World.world.gr_stage = 12;    
 
-				if (currentLocation.cTransform) //If the current location has a color transform, apply it to the front and water bitmaps.
+				if (currentLocation.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
 				{
 					frontBmp.colorTransform(frontBmp.rect, currentLocation.cTransform);
 					vodaBmp.colorTransform(vodaBmp.rect, currentLocation.cTransform);
@@ -751,9 +761,9 @@ package graphdata
 				//      STAGE 16 - Render Pink Cloud if it exists.
 				//####################
 				World.world.gr_stage = 16;  
-				if (location.gas > 0)
+				if (room.gas > 0)
 				{
-					var backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
+					var backgroundMatrix:Matrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
 					backgroundMatrix.ty = 520;
 					backBmp2.draw(getObj('back_pink_t', bgObjectCount), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
 				}
@@ -763,7 +773,10 @@ package graphdata
 				//####################
 				World.world.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 
-				for each (mat in tileArray) drawTileSprite(mat, false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
+				for (var q:int = 0; q > tileArray.length; q++)
+				{
+					drawTileSprite(tileArray[q], false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
+				}
 
 				backBmp2.draw(back2, null, currentLocation.cTransform, null, null, false); 
 				
@@ -826,28 +839,28 @@ package graphdata
 		public function setLight() 
 		{
 			lightBmp.lock();
-			for (var i = 1; i < location.spaceX; i++) 
+			for (var i:int = 1; i < room.roomWidth; i++) 
 			{
-				for (var j = 1; j < location.spaceY; j++) 
+				for (var j:int = 1; j < room.roomHeight; j++) 
 				{
-					lightBmp.setPixel32(i, j + 1, Math.floor((1-location.roomTileArray[i][j].visi)*255)*0x1000000);
+					lightBmp.setPixel32(i, j + 1, Math.floor((1-room.roomTileArray[i][j].visi)*255)*0x1000000);
 				}
 			}
 			lightBmp.unlock();
 		}
 		
 		// Drawing all visible (physical?) objects
-		public function drawAllObjs() 
+		public function drawAllObjs()
 		{
 			for (var i:int = 0; i < canvasLayerCount; i++) 
 			{
-				var n = mainCanvas.getChildIndex(canvasLayerArray[i]);
+				var n:int = mainCanvas.getChildIndex(canvasLayerArray[i]);
 				mainCanvas.removeChild(canvasLayerArray[i]);
 				canvasLayerArray[i] = new Sprite();
 				mainCanvas.addChildAt(canvasLayerArray[i], n);
 			}
 
-			var obj:Pt = location.firstObj;
+			var obj:Pt = room.firstObj;
 
 			while (obj) 
 			{
@@ -855,11 +868,11 @@ package graphdata
 				obj = obj.nobj;
 			}
 
-			location.gg.addVisual();
+			room.gg.addVisual();
 
-			for (var i = 0; i < location.signposts.length; i++)
+			for (var i:int = 0; i < room.signposts.length; i++)
 			{
-				canvasLayerArray[3].addChild(location.signposts[i]);
+				canvasLayerArray[3].addChild(room.signposts[i]);
 			}
 		}
 		
@@ -868,7 +881,7 @@ package graphdata
 		{
 			
 			if (tex == 'sky') return;
-			var backgroundMatrix = new Matrix();
+			var backgroundMatrix:Matrix = new Matrix();
 			var fill:BitmapData = getObj(tex);
 			if (fill == null) fill = getObj('tBackWall')
 			var baseSprite:Sprite = new Sprite();
@@ -903,43 +916,37 @@ package graphdata
 		
 
 		//Identify this function
-		public function setMCT(mc:MovieClip, tile:Tile, toFront:Boolean)
+		public function setMCT(spriteContainer:MovieClip, tile:Tile, isTopLayer:Boolean):void
 		{
-			if (mc.c1)
+			if (spriteContainer.c1)
 			{
 
-				if (toFront) 
+				if (isTopLayer) 
 				{
-					mc.c1.gotoAndStop(tile.kont1+1);
-					mc.c2.gotoAndStop(tile.kont2+1);
-					mc.c3.gotoAndStop(tile.kont3+1);
-					mc.c4.gotoAndStop(tile.kont4+1);
+					spriteContainer.c1.gotoAndStop(tile.kont1+1);
+					spriteContainer.c2.gotoAndStop(tile.kont2+1);
+					spriteContainer.c3.gotoAndStop(tile.kont3+1);
+					spriteContainer.c4.gotoAndStop(tile.kont4+1);
 				} 
 
 				else 
 				{
-					mc.c1.gotoAndStop(tile.pont1+1);
-					mc.c2.gotoAndStop(tile.pont2+1);
-					mc.c3.gotoAndStop(tile.pont3+1);
-					mc.c4.gotoAndStop(tile.pont4+1);
+					spriteContainer.c1.gotoAndStop(tile.pont1+1);
+					spriteContainer.c2.gotoAndStop(tile.pont2+1);
+					spriteContainer.c3.gotoAndStop(tile.pont3+1);
+					spriteContainer.c4.gotoAndStop(tile.pont4+1);
 				}
 			}
 		}
-		
-
-
-		//###################################################
-		//							vvv BUGGED vvv
-		//###################################################
 
 
 		// Drawing textured materials
 		// Material: Material class.
-		// toFront If the material is drawn in front.
-		// veryFront If the material is a beam/stairs/etc.
+		// isTopLayer If the material is drawn in front.
+		// isClimbable If the material is a beam/stairs/etc.
 
 		// m must be instantiated for this function!
-		public function drawTileSprite(material:Material, toFront:Boolean, veryFront:Boolean = false):void 
+		public function drawTileSprite(material:Material, isTopLayer:Boolean = false, isClimbable:Boolean = false)
 		{
 			
 
@@ -947,49 +954,49 @@ package graphdata
 
 
 			// If the material should be at the rear and we're drawing to the front, then return, and vice versa
-			if (material.rear == toFront) return;
+			if (isTopLayer == material.isBackwall) return;
 
 
-			var tile:Tile;
-			var mc:MovieClip;
+			var thisTile:Tile;
+			var spriteContainer:MovieClip;
 
-			var tileSprite:Sprite = new Sprite();
-			var baseSprite:Sprite = new Sprite();
-			var maska:Sprite = new Sprite();
-			var border:Sprite = new Sprite();
-			var bmaska:Sprite = new Sprite();
-			var floor:Sprite = new Sprite();
-			var fmaska:Sprite = new Sprite();
+			var tileCanvas:Sprite 	= new Sprite();
+			var tileTexture:Sprite 	= new Sprite();
+			var maska:Sprite 		= new Sprite();
+			var border:Sprite 		= new Sprite();
+			var bmaska:Sprite 		= new Sprite();
+			var floor:Sprite 		= new Sprite();
+			var fmaska:Sprite 		= new Sprite();
 			
 
 
 
 			
 			
-			if (material.texture == null) baseSprite.graphics.beginFill(0x666666);
-			else if (location.homeStable && material.alttexture != null) 
+			if (material.texture == null) tileTexture.graphics.beginFill(0x666666);
+			else if (room.homeStable && material.alttexture != null) 
 			{
-				baseSprite.graphics.beginBitmapFill(material.alttexture);
+				tileTexture.graphics.beginBitmapFill(material.alttexture);
 			}
-			else baseSprite.graphics.beginBitmapFill(material.texture);
+			else tileTexture.graphics.beginBitmapFill(material.texture);
 
-			baseSprite.graphics.drawRect(0, 0, finalWidth, finalHeight);
-			tileSprite.addChild(baseSprite);
-			tileSprite.addChild(maska);
+			tileTexture.graphics.drawRect(0, 0, finalWidth, finalHeight);
+			tileCanvas.addChild(tileTexture);
+			tileCanvas.addChild(maska);
 
 			if (material.border) 
 			{
 				border.graphics.beginBitmapFill(material.border);
 				border.graphics.drawRect(0, 0, finalWidth, finalHeight);
-				tileSprite.addChild(border);
-				tileSprite.addChild(bmaska);
+				tileCanvas.addChild(border);
+				tileCanvas.addChild(bmaska);
 			}
 			if (material.floor) 
 			{
 				floor.graphics.beginBitmapFill(material.floor);
 				floor.graphics.drawRect(0, 0, finalWidth, finalHeight);
-				tileSprite.addChild(floor);
-				tileSprite.addChild(fmaska);
+				tileCanvas.addChild(floor);
+				tileCanvas.addChild(fmaska);
 			}
 			
 
@@ -997,13 +1004,13 @@ package graphdata
 			var isDraw:Boolean = false;
 
 			//Loop for drawing tiles. Draws all tiles in an X axis, then increments the Y axis by 1.
-			for (var i:int = 0; i < location.spaceX; i++) //X axis
+			for (var i:int = 0; i < room.roomWidth; i++) //X axis
 			{
-				for (var j:int = 0; j < location.spaceY; j++) //Y axis
+				for (var j:int = 0; j < room.roomHeight; j++) //Y axis
 				{
-					var thisTile:Tile = location.getTile(i, j); //What tile to draw.
+					thisTile = room.getTile(i, j); //What tile to draw.
 
-					if (thisTile.front == material.id && (toFront || veryFront) || thisTile.back == material.id && !toFront) 
+					if (thisTile.tileTexture == material.id && (isTopLayer || isClimbable) || thisTile.tileRearTexture == material.id && !isTopLayer) 
 					{
 						isDraw = true;
 
@@ -1011,7 +1018,7 @@ package graphdata
 						{
 							try
 							{
-								setMask(mc, material.textureMask, thisTile, i, j, toFront, maska);
+								setMask(spriteContainer, material.textureMask, thisTile, i, j, isTopLayer, maska);
 							}
 							catch(err)
 							{
@@ -1023,7 +1030,7 @@ package graphdata
 						{
 							try
 							{
-								setMask(mc, material.borderMask, thisTile, i, j, toFront, bmaska);
+								setMask(spriteContainer, material.borderMask, thisTile, i, j, isTopLayer, bmaska);
 							}
 							catch(err)
 							{
@@ -1035,15 +1042,15 @@ package graphdata
 						{ 
 							try
 							{
-								mc = new material.floorMask();
-								if (mc.c1) 
+								spriteContainer = new material.floorMask();
+								if (spriteContainer.c1) 
 								{
-									mc.c1.gotoAndStop(thisTile.kont1 + 1);
-									mc.c2.gotoAndStop(thisTile.kont2 + 1);
+									spriteContainer.c1.gotoAndStop(thisTile.kont1 + 1);
+									spriteContainer.c2.gotoAndStop(thisTile.kont2 + 1);
 								}
-								fmaska.addChild(mc);
-								mc.x = (i + 0.5) * tilepixelwidth;
-								mc.y = (j + 0.5 + thisTile.zForm / 4) * tilepixelheight;
+								fmaska.addChild(spriteContainer);
+								spriteContainer.x = (i + 0.5) * tilepixelwidth;
+								spriteContainer.y = (j + 0.5 + thisTile.zForm / 4) * tilepixelheight;
 							}
 							catch(err)
 							{
@@ -1057,47 +1064,47 @@ package graphdata
 
 			if (!isDraw) return; //If the tile's material should not be drawn, return.
 
-			baseSprite.mask = maska; 
+			tileTexture.mask = maska; 
 			border.mask 	= bmaska; 
 			floor.mask 		= fmaska;
 
-			baseSprite.cacheAsBitmap = bitmapCachingOption; 
-			maska.cacheAsBitmap		 = bitmapCachingOption; 
-			border.cacheAsBitmap	 = bitmapCachingOption; 
-			bmaska.cacheAsBitmap 	 = bitmapCachingOption; 
-			floor.cacheAsBitmap 	 = bitmapCachingOption; 
-			fmaska.cacheAsBitmap 	 = bitmapCachingOption; 
+			tileTexture.cacheAsBitmap 	= Settings.bitmapCachingOption; 
+			maska.cacheAsBitmap		 	= Settings.bitmapCachingOption; 
+			border.cacheAsBitmap	 	= Settings.bitmapCachingOption; 
+			bmaska.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
+			floor.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
+			fmaska.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
 
 			if (material.appliedFilters) //If the material has any filters...
 			{
-				tileSprite.filters = material.appliedFilters;  // Apply them to the sprite.
+				tileCanvas.filters = material.appliedFilters;  // Apply them to the sprite.
 			}
 
-			if (toFront)
+			if (isTopLayer)
 			{
-				frontBmp.draw(tileSprite, null, null, null, null, false);
+				frontBmp.draw(tileCanvas, null, null, null, null, false);
 			}
-			else if (veryFront) 
+			else if (isClimbable) 
 			{
-				backBmp2.draw(tileSprite, null, location.cTransform, null, null, false);
+				backBmp2.draw(tileCanvas, null, room.cTransform, null, null, false);
 			}
 			else 
 			{
-				backBmp.draw(tileSprite, null, null, null, null, false);
+				backBmp.draw(tileCanvas, null, null, null, null, false);
 			}
 
 
-			function setMask(mc:MovieClip, materialMask:Class, tile:Tile, k:int, l:int, toFront:Boolean, parent:Sprite):void 
+			function setMask(spriteContainer:MovieClip, materialMask:Class, tile:Tile, k:int, l:int, isTopLayer:Boolean, parent:Sprite):void 
 			{
-				mc = new materialMask();
-				setMCT(mc, tile, toFront);
-				mc.x = (k + 0.5) * tilepixelwidth;
-				mc.y = (l + 0.5) * tilepixelheight;
-				parent.addChild(mc);
-				if (tile.zForm && toFront) 
+				spriteContainer = new materialMask();
+				setMCT(spriteContainer, tile, isTopLayer);
+				spriteContainer.x = (k + 0.5) * tilepixelwidth;
+				spriteContainer.y = (l + 0.5) * tilepixelheight;
+				parent.addChild(spriteContainer);
+				if (tile.zForm && isTopLayer) 
 				{
-					mc.scaleY = (tile.phY2 - tile.phY1) / tilepixelheight;
-					mc.y = (tile.phY2 + tile.phY1) / 2;
+					spriteContainer.scaleY = (tile.phY2 - tile.phY1) / tilepixelheight;
+					spriteContainer.y = (tile.phY2 + tile.phY1) / 2;
 				}
 			}
 		}
@@ -1139,64 +1146,64 @@ package graphdata
 		// Drawing water
 		public function drawWater(tile:Tile, recurs:Boolean = true):void
 		{
-			var backgroundMatrix = new Matrix();
+			var backgroundMatrix:Matrix = new Matrix();
 			backgroundMatrix.tx = tile.X * tilepixelwidth;
 			backgroundMatrix.ty = tile.Y * tilepixelheight;
-			voda.gotoAndStop(location.tipWater+1);
-			if (location.getTile(tile.X, tile.Y-1).water == 0 && location.getTile(tile.X, tile.Y-1).phis == 0 ) voda.voda.gotoAndStop(2);
+			voda.gotoAndStop(room.tipWater+1);
+			if (room.getTile(tile.X, tile.Y-1).water == 0 && room.getTile(tile.X, tile.Y-1).phis == 0 ) voda.voda.gotoAndStop(2);
 			else voda.voda.gotoAndStop(1);
-			vodaBmp.draw(voda, backgroundMatrix, location.cTransform, (tile.water>0)?'normal':'erase', null, false);
-			if (recurs) drawWater(location.getTile(tile.X, tile.Y+1), false);
+			vodaBmp.draw(voda, backgroundMatrix, room.cTransform, (tile.water>0)?'normal':'erase', null, false);
+			if (recurs) drawWater(room.getTile(tile.X, tile.Y+1), false);
 		}
 			
 		public function tileDie(tile:Tile, tip:int):void
 		{
 			var erC:Class = block_dyr, drC:Class = block_tre;
-			var nx = (tile.X + 0.5) * tilepixelwidth;
-			var ny = (tile.Y + 0.5) * tilepixelheight;
+			var nx:Number = (tile.X + 0.5) * tilepixelwidth;
+			var ny:Number = (tile.Y + 0.5) * tilepixelheight;
 			if (tile.fake)
 			{
-				Emitter.emit('fake', location, nx, ny);
+				Emitter.emit('fake', room, nx, ny);
 				drC = block_bur;
 			} 
-			else if (tile.mat == 7)
+			else if (tile.tileMaterial == 7)
 			{
-				Emitter.emit('fake', location, nx, ny);
-				Emitter.emit('pole', location, nx, ny, {kol:10, rx:tilepixelwidth, ry:tilepixelheight});
+				Emitter.emit('fake', room, nx, ny);
+				Emitter.emit('pole', room, nx, ny, {kol:10, rx:tilepixelwidth, ry:tilepixelheight});
 				erC = TileMask; // what is erC and why is it being set as a class?
 				drC = null;
 			} 
 			else if (tip < 10) //tips 7, 8, 9 are not handled.
 			{
-				if (tile.mat == 1) Emitter.emit('metal', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
-				else if (tile.mat == 2) Emitter.emit('tileSprite', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
-				else if (tile.mat == 3) Emitter.emit('schep', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
-				else if (tile.mat == 4) Emitter.emit('kusokB', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
-				else if (tile.mat == 5) Emitter.emit('steklo', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
-				else if (tile.mat == 6) Emitter.emit('kusokD', location, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+				if (tile.tileMaterial == 1) Emitter.emit('metal', room, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+				else if (tile.tileMaterial == 2) Emitter.emit('tileSprite', room, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+				else if (tile.tileMaterial == 3) Emitter.emit('schep', room, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+				else if (tile.tileMaterial == 4) Emitter.emit('kusokB', room, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+				else if (tile.tileMaterial == 5) Emitter.emit('steklo', room, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
+				else if (tile.tileMaterial == 6) Emitter.emit('kusokD', room, nx, ny, {kol:6, rx:tilepixelwidth, ry:tilepixelheight});
 			} 
 			else if (tip >= 15)
 			{
-				Emitter.emit('plav', location, nx, ny);
+				Emitter.emit('plav', room, nx, ny);
 				erC = block_plav;
 				drC = block_pla;
 			} 
 			else if (tip >= 11 && tip <= 13)
 			{
-				Emitter.emit('bur', location, nx, ny);
+				Emitter.emit('bur', room, nx, ny);
 				drC = block_bur;
 			}
 			decal(erC, drC, nx, ny, 1, 0, 'hardlight');
 		}
 			
 		// Bullet holes
-		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1):void
+		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1)
 		{
 			var erC:Class, drC:Class;
 			var bl:String = 'normal';
 			var centr:Boolean = false;
-			var sc = Math.random()*0.5+0.5;
-			var rc = Math.random()*360
+			var sc:Number = Math.random()*0.5+0.5;
+			var rc:Number = Math.random()*360
 			if (tip == 0 || mat == 0) return;
 			if (mat == 1) //metal
 			{ 			
@@ -1229,8 +1236,8 @@ package graphdata
 				}
 				if (tip<10 && !soft)
 				{
-					if (mat == 2) Emitter.emit('kusoch', location, nx, ny, {kol:3});
-					else Emitter.emit('kusochB', location, nx, ny, {kol:3});
+					if (mat == 2) Emitter.emit('kusoch', room, nx, ny, {kol:3});
+					else Emitter.emit('kusochB', room, nx, ny, {kol:3});
 				}
 			} else if (mat == 3) //wood
 			{	
@@ -1255,12 +1262,12 @@ package graphdata
 				}
 				if (tip<10 && !soft)
 				{
-					Emitter.emit('schepoch', location, nx, ny, {kol:3});
+					Emitter.emit('schepoch', room, nx, ny, {kol:3});
 				}
 			} 
 			else if (mat == 7) // field
 			{	
-				Emitter.emit('pole', location, nx, ny, {kol:5});
+				Emitter.emit('pole', room, nx, ny, {kol:5});
 			}
 			if (tip == 11) // fire
 			{					
@@ -1326,7 +1333,7 @@ package graphdata
 			
 		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number = 1, rc:Number = 0, bl:String = 'normal'):void
 		{
-			var backgroundMatrix = new Matrix();
+			var backgroundMatrix:Matrix = new Matrix();
 			if (sc != 1) backgroundMatrix.scale(sc, sc);
 			if (rc != 0) backgroundMatrix.rotate(rc);
 			backgroundMatrix.tx = nx;
@@ -1343,15 +1350,15 @@ package graphdata
 				if (nagar.totalFrames > 1) nagar.gotoAndStop(Math.floor(Math.random()*nagar.totalFrames+1));
 				nagar.scaleX = nagar.scaleY = sc;
 				nagar.rotation = rc;
-				var dyrx = Math.round(nagar.width/2+2)*2, dyry = Math.round(nagar.height/2+2)*2;
+				var dyrx:Number = Math.round(nagar.width/2+2)*2, dyry = Math.round(nagar.height/2+2)*2;
 				var res2:BitmapData  =  new BitmapData(dyrx, dyry, false, 0x0);
-				var rdx = 0, rdy = 0;
+				var rdx:Number = 0, rdy:Number = 0;
 				if (nx-dyrx/2<0) rdx = -(nx-dyrx/2);
 				if (ny-dyry/2<0) rdy = -(ny-dyry/2);
 				var rect:Rectangle  =  new Rectangle(nx-dyrx/2+rdx, ny-dyry/2+rdy, nx+dyrx/2+rdx, ny+dyry/2+rdy);
 				var pt:Point  =  new Point(0, 0);
 				res2.copyChannel(frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
-				frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal')?World.world.location.cTransform:null, bl, null, true);
+				frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal')?World.world.room.cTransform:null, bl, null, true);
 				rect  =  new Rectangle(0, 0, dyrx, dyry);
 				pt = new Point(nx-dyrx/2+rdx, ny-dyry/2+rdy);
 				frontBmp.copyChannel(res2, rect, pt, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
@@ -1360,7 +1367,7 @@ package graphdata
 			
 		public function gwall(nx:int, ny:int):void
 		{
-			var backgroundMatrix = new Matrix();
+			var backgroundMatrix:Matrix = new Matrix();
 			backgroundMatrix.tx = nx * tilepixelwidth;
 			backgroundMatrix.ty = ny * tilepixelwidth;
 			var wall:MovieClip = new tileGwall();
@@ -1445,7 +1452,7 @@ package graphdata
 			} 
 			else if (n>100)
 			{
-				mainCanvas.filters 		= [new BlurFilter(n-100, n-100)];
+				mainCanvas.filters 	= [new BlurFilter(n-100, n-100)];
 				skyboxLayer.filters  = [new BlurFilter(n-100, n-100)];
 			}
 		}

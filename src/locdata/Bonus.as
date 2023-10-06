@@ -15,8 +15,8 @@ package locdata
 		public var val:Number=100;
 		public var liv:int=1000000;
 
-		public function Bonus(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
-			location=nloc;
+		public function Bonus(newRoom:Room, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
+			room=newRoom;
 			id=nid;
 			X=nx;
 			Y=ny;
@@ -39,7 +39,7 @@ package locdata
 			}
 		}
 		
-		function setSize() 
+		function setSize()
 		{
 			scX=scY=40;
 			X1=X-scX/2;
@@ -55,44 +55,44 @@ package locdata
 			return obj;
 		}
 		
-		public override function step() 
+		public override function step()
 		{
 			if (liv<1000000) 
 			{
 				liv--;
-				if (!location.locationActive || liv==0) 
+				if (!room.roomActive || liv==0) 
 				{
 					liv=0;
 					sost=2;
 					vis.gotoAndPlay(22);
 				}
 			}
-			if (liv<-25) location.remObj(this);
-			if (sost!=1 || !location.locationActive) return;
-			if (areaTest(location.gg)) take();
+			if (liv<-25) room.remObj(this);
+			if (sost!=1 || !room.roomActive) return;
+			if (areaTest(room.gg)) take();
 		}
 		
-		public function take() 
+		public function take()
 		{
 			sost=2;
 			liv=0;
 			vis.gotoAndPlay(2);
 			if (id=='xp') 
 			{
-				location.kolXp--;
-				if (location.kolXp==0 && location.maxXp>1)  //собрали все бонусы
+				room.kolXp--;
+				if (room.kolXp==0 && room.maxXp>1)  //собрали все бонусы
 				{	
-					World.world.pers.expa(location.unXp*location.maxXp);
-					if (!location.detecting && location.summXp>0) 
+					World.world.pers.expa(room.unXp*room.maxXp);
+					if (!room.detecting && room.summXp>0) 
 					{
-						location.takeXP(location.summXp,World.world.gg.X, World.world.gg.Y-100,true);
+						room.takeXP(room.summXp,World.world.gg.X, World.world.gg.Y-100,true);
 						World.world.gui.infoText('sneakBonus');
 					}
 					Snd.ps('bonus2');
 				} 
 				else 
 				{
-					World.world.pers.expa(location.unXp);
+					World.world.pers.expa(room.unXp);
 					Snd.ps('bonus1');
 				}
 				

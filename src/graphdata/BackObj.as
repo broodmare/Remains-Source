@@ -3,8 +3,8 @@ package graphdata
 	import flash.display.MovieClip;
 	import flash.utils.*;
 
-	import locdata.Location;
-	
+	import locdata.Room;
+	import components.Settings;
 	public class BackObj 
 	{
 		public var id:String;
@@ -21,28 +21,28 @@ package graphdata
 		public var layer:int=0;
 		public var er:Boolean=false;	// erasure
 
-		public function BackObj(nloc:Location, nid:String, nx:Number, ny:Number, xml:XML=null) {
+		public function BackObj(newRoom:Room, nid:String, nx:Number, ny:Number, xml:XML=null) {
 			id=nid;
 			X=nx, Y=ny;
 			var node:XML=AllData.d.back.(@id==id)[0];
-			var wid=node.@x2*World.tilePixelWidth;
-			if (xml && xml.@w.length()) wid=xml.@w*World.tilePixelWidth
-			if (!(wid>0)) wid=World.tilePixelWidth;
-			if (nloc && nloc.mirror) 
+			var wid=node.@x2*Settings.tilePixelWidth;
+			if (xml && xml.@w.length()) wid=xml.@w*Settings.tilePixelWidth
+			if (!(wid>0)) wid=Settings.tilePixelWidth;
+			if (newRoom && newRoom.mirror) 
 			{
 				if (node.@mirr=='2' && Math.random()<0.5) 
 				{
-					X=nloc.limX-X;
+					X=newRoom.roomPixelWidth-X;
 					scX=-1;
 				} 
 				else if (node.@mirr=='1') 
 				{
-					X=nloc.limX-X;
+					X=newRoom.roomPixelWidth-X;
 					scX=-1;
 				} 
 				else 
 				{
-					X=nloc.limX-X-wid;
+					X=newRoom.roomPixelWidth-X-wid;
 				}
 			} 
 			else if (node.@mirr=='2' && Math.random()<0.5) 
@@ -54,8 +54,8 @@ package graphdata
 			erase=World.world.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_e',Grafon.bgObjectCount);
 			light=World.world.grafon.getObj('back_'+ (node.@tid.length()?node.@tid:id) +'_l',Grafon.bgObjectCount);
 			if (node.@fr.length()) frame=node.@fr;
-			else if (nloc.lightOn>0 && node.@lon.length()) frame=node.@lon;
-			else if (nloc.lightOn<0 && node.@loff.length()) frame=node.@loff;
+			else if (newRoom.lightOn>0 && node.@lon.length()) frame=node.@lon;
+			else if (newRoom.lightOn<0 && node.@loff.length()) frame=node.@loff;
 			else if (vis) frame=Math.floor(Math.random()*vis.totalFrames+1);
 			else frame=1;
 			if (node.@s.length()) layer=node.@s;
@@ -68,8 +68,8 @@ package graphdata
 				if (xml.@h.length()) scY=xml.@h;
 				if (xml.@a.length()) alpha=xml.@a;
 				if (xml.@fr.length()) frame=xml.@fr;
-				if (xml.@lon.length() && xml.@lon>1 && node.@lon.length()) frame=node.@lon;
-				if (xml.@lon.length() && xml.@lon<1 && node.@loff.length()) frame=node.@loff;
+				if (xml.@lon.length && xml.@lon>1 && node.@lon.length()) frame=node.@lon;
+				if (xml.@lon.length && xml.@lon<1 && node.@loff.length()) frame=node.@loff;
 			}
 			if (frame>0) 
 			{

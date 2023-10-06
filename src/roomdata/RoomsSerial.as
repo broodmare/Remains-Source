@@ -7,7 +7,7 @@ package roomdata {
 		
 		
 		public var rooms_nio:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_2_1" x="2" y="1">
     <a>A.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF.AF._F._F.AF.AF.AF.AF.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>
     <a>A._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F._F.A._._._._._._._._._._._._._._._._._._</a>
@@ -1752,7 +1752,7 @@ package roomdata {
 		
 		
 		public var rooms_raiders:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_0_2" x="0" y="2">
     <a>D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D._T._TА.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D</a>
     <a>D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D._T._TА.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D.D</a>
@@ -3548,7 +3548,7 @@ package roomdata {
 		
 		
 		public var rooms_core:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_5_0" x="5" y="0">
     <a>J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J</a>
     <a>J._G._G._G._G.J._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._Q._Q._Q._Q._Q._Q._Q._G._G._G._G._G.J</a>
@@ -4398,7 +4398,7 @@ package roomdata {
 		
 		
 		public var rooms_mtn:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_0_8" x="0" y="8">
     <a>_._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._</a>
     <a>_._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._</a>
@@ -5263,7 +5263,7 @@ package roomdata {
 		
 		
 		public var rooms_minst:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_1_0" x="1" y="0">
     <a>QW.QW.QW.QW.QW.QW.QW.QW.QW.QW.QW.QW.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q.Q</a>
     <a>QW._W._W._W._W._W._W._W._W._W._W._W.Q._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._W._W._W._W.QW</a>

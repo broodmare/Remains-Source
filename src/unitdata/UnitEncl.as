@@ -43,7 +43,8 @@ package unitdata
 			currentWeapon.damage*=1.2;
 		}
 		
-		public override function addVisual() {
+		public override function addVisual()
+		{
 			if (disabled) return;
 			trigDis=!checkTrig();
 			if (trigDis) return;
@@ -54,14 +55,16 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			if (currentWeapon) {
 				currentWeapon.damage*=1.25;
 			}			
 		}
 		
-		public override function attack() {
+		public override function attack()
+		{
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
 			if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
@@ -79,7 +82,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			var revers:Boolean=false;
 			//поворот

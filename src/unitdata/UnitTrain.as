@@ -29,20 +29,26 @@ package unitdata
 			//dodge=0.2;
 		}
 
-		public override function control() {
+		public override function control()
+		{
 			hp=maxhp;
 		}
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			armor_hp=armor_maxhp;
 		}
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			hp=maxhp;
 		}
-		public override function visDetails() {
+		public override function visDetails()
+		{
 			if (hpbar) hpbar.visible=false;
 		}
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
+			
 		}
 	}
 	

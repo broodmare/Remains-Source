@@ -25,12 +25,14 @@ package unitdata
 			isPort=true;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			var revers:Boolean=false;
 			if (sost==2 || sost==3) { //сдох
@@ -73,7 +75,8 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-40;
 		}

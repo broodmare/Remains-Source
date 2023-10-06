@@ -5,6 +5,8 @@ package unitdata
 	import graphdata.Emitter;
 	import locdata.Tile;
 	
+	import components.Settings;
+	
 	public class UnitNecros extends Unit{
 		
 		var spd:Object;
@@ -31,7 +33,8 @@ package unitdata
 			vulner[D_NECRO]=0;
 		}
 
-		public override function forces() {
+		public override function forces()
+		{
 			if (isFly) {
 				if (dx*dx+dy*dy>maxSpeed*maxSpeed || rasst2<100*100) {
 					dx*=0.8;
@@ -44,12 +47,14 @@ package unitdata
 			} else super.forces();
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('black',24);
 			isFly=true;
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			vis.scaleX=1;
 			blit(anims[animState].id,Math.floor(anims[animState].f));
 			anims['stay'].step();
@@ -59,9 +64,10 @@ package unitdata
 		//0 - ничего не делает
 		//1 - летит к цели
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
@@ -78,17 +84,17 @@ package unitdata
 					if (aiTip!='stay' && isrnd()) {
 						celX=X+(Math.random()*300+400)*(isrnd()?1:-1);
 						if (celX<0) celX=200;
-						if (celX>location.limX) celX=location.limX-200;
+						if (celX>room.roomPixelWidth) celX=room.roomPixelWidth-200;
 						celY=Y+Math.random()*200-100;
 						if (celY<0) celX=200;
-						if (celY>location.limY) celY=location.limY-200;
+						if (celY>room.roomPixelHeight) celY=room.roomPixelHeight-200;
 					} else {
 						celX=X, celY=Y-scY/2;
 					}
 				}
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					aiState=1;
@@ -107,7 +113,7 @@ package unitdata
 			else maxSpeed=runSpeed;
 	
 			//атака
-			if (World.world.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
+			if (Settings.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
 				attKorp(celUnit,1);
 			}
 		}

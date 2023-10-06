@@ -3,6 +3,8 @@ package servdata {
 	//Элемент инвентаря
 	import unitdata.Invent;
 	
+	import components.Settings;
+	
 	public class Item 
 	{
 
@@ -119,7 +121,7 @@ package servdata {
 			if (xml && xml.@us>0 && tip!=L_FOOD && tip!='eda' && tip!=L_BOOK) invCat=1;
 			if (tip==L_WEAPON && xml) {
 				if (xml.@tip!=4) mass=1;
-				if (xml.phis.length() && xml.phis.@m.length()) mass=xml.phis.@m;
+				if (xml.phis.length && xml.phis.@m.length()) mass=xml.phis.@m;
 			}
 			if (xml) {
 				if (xml.@invcat.length()) invCat=xml.@invcat;
@@ -154,7 +156,7 @@ package servdata {
 		
 		public function getPrice() {
 			if (xml) {
-				if (xml.com.length() && xml.com.@price.length()) {
+				if (xml.com.length && xml.com.@price.length()) {
 					price=xml.com[0].@price*sost*multHP*pmult;
 					if (variant>0) {
 						if (xml.com[1]) price=xml.com[1].@price*sost*multHP*pmult;
@@ -174,16 +176,16 @@ package servdata {
 			var inv:Invent=World.world.invent;
 			if (tip==L_WEAPON) {
 				var w=inv.weapons[id];
-				if (w!=null && (World.world.vsWeaponRep || m)) {		//если включен автоподбор для ремонта или принудительный вызов
-					if (w.hp<=w.maxhp && (w.respect==0 || w.respect==2 || !World.world.hardInv)) {	//подбирать автоматом если оружие есть, оно неисправно и (оно выбрано или инвентарь бесконечный)
+				if (w!=null && (Settings.vsWeaponRep || m)) {		//если включен автоподбор для ремонта или принудительный вызов
+					if (w.hp<=w.maxhp && (w.respect==0 || w.respect==2 || !Settings.hardInv)) {	//подбирать автоматом если оружие есть, оно неисправно и (оно выбрано или инвентарь бесконечный)
 						return true;
-					} else if (m && World.world.hardInv) {	//если было принудительное взятие при конечном инвентаре, то активировать взятое оружие
+					} else if (m && Settings.hardInv) {	//если было принудительное взятие при конечном инвентаре, то активировать взятое оружие
 						shpun=2;
 					}
 					return false; 
 				}
-				if (w==null && World.world.vsWeaponNew) {	//если включен автоподбор нового и оружия ещё нет
-					if (World.world.hardInv) {		//если инвентарь ограниченный, то проверять вес
+				if (w==null && Settings.vsWeaponNew) {	//если включен автоподбор нового и оружия ещё нет
+					if (Settings.hardInv) {		//если инвентарь ограниченный, то проверять вес
 						if (mass==0) return true;
 						if (xml.@tip<=3) {
 							if (inv.massW<=World.world.pers.maxmW-mass) {
@@ -213,25 +215,25 @@ package servdata {
 			}
 			if (tip==L_ARMOR) return true;
 			if (mass==0) return true;
-			if (World.world.hardInv) {
+			if (Settings.hardInv) {
 				if (inv.mass[invCat]+mass*kol>World.world.pers['maxm'+invCat]) return false;
 			}
-			if (World.world.vsAmmoAll && tip==L_AMMO) return true;
-			if (World.world.vsAmmoTek && xml && tip==L_AMMO) {
+			if (Settings.vsAmmoAll && tip==L_AMMO) return true;
+			if (Settings.vsAmmoTek && xml && tip==L_AMMO) {
 				for each (w in inv.weapons) {
 					if (w.tip<=3 && (w.respect==0 || w.respect==2) && w.ammoBase!='' && (w.ammoBase==xml.@id || w.ammoBase==xml.@base)) return true;
 				}
 			}
-			if (World.world.vsExplAll && tip==L_EXPL) return true;
-			if (World.world.vsMedAll && (tip==L_MED || tip==L_POT)) return true;
-			if (World.world.vsHimAll && tip==L_HIM) return true;
-			if (World.world.vsEqipAll && tip=='equip') return true;
-			if (World.world.vsStuffAll && invCat==3) return true;
-			if (World.world.vsVal && tip=='valuables') return true;
-			if (World.world.vsBook && (tip=='book' || tip=='sphera')) return true;
-			if (World.world.vsFood && (tip=='food' || tip=='eda')) return true;
-			if (World.world.vsComp && (tip=='stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
-			if (World.world.vsIngr && tip=='compp') return true;
+			if (Settings.vsExplAll && tip==L_EXPL) return true;
+			if (Settings.vsMedAll && (tip==L_MED || tip==L_POT)) return true;
+			if (Settings.vsHimAll && tip==L_HIM) return true;
+			if (Settings.vsEqipAll && tip=='equip') return true;
+			if (Settings.vsStuffAll && invCat==3) return true;
+			if (Settings.vsVal && tip=='valuables') return true;
+			if (Settings.vsBook && (tip=='book' || tip=='sphera')) return true;
+			if (Settings.vsFood && (tip=='food' || tip=='eda')) return true;
+			if (Settings.vsComp && (tip=='stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
+			if (Settings.vsIngr && tip=='compp') return true;
 			return false;
 		}
 		

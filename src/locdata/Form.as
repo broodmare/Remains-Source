@@ -4,15 +4,15 @@ package locdata
 	public class Form 
 	{
 		
-		public var id:String;				// Tile ID
-		public var idMirror:String; 		// ID of the tile's mirror version.
-		public var formType:int = 0;		// 1 - Tile, 2 - Backwall
+		public var formID:String;				// Tile ID
+		public var formMirrorID:String; 		// ID of the tile's mirror version.
+		public var formLayer:int = 0;		// 1 - Tile, 2 - Backwall
 		
-		public var formTexture:String; 		// Texture for Tile or Backwall.
-		public var tileRearTexture:String;	// Texture behind tile.
+		public var formTextureID:String; 		// Texture for Tile or Backwall.
+		public var formRearTextureID:String;	// Texture behind tile.
 		public var vid:int;					// vid?
-		public var rear:Boolean = false;	//rear?
-		public var mat:int = 0;				// Form material
+		public var formHasRearTexture:Boolean = false;	//Has a different texture for the backwall behind the texture for the sprite.
+		public var formMaterial:int = 0;				// Form material
 		
 		public var hp:int = 0;				// Form HP
 		public var damageThreshold:int=0;	// Damage below this amount is ignored.
@@ -28,14 +28,14 @@ package locdata
 		{
 			if (node != null) 
 			{
-				id = node.@id; // Tile ID (string).
-				if (node.@m.length()) idMirror = node.@m; // Mirrored Tile ID if applicable (string).
-				formType = node.@ed; //What layer this tile is on.
+				formID = node.@formID; // Tile ID (string).
+				if (node.@m.length()) formMirrorID = node.@m; // Mirrored Tile ID if applicable (string).
+				formLayer = node.@ed; //What layer this tile is on.
 				if (node.@vid > 0) vid = node.@vid;
-				else frontTexture = node.@id; // If vid does not exist, front = Tile ID.
-				if (node.@back.length()) tileRearTexture=node.@back;
-				if (node.@mat.length()) mat=node.@mat;
-				if (node.@rear.length()) rear=true;
+				else formTextureID = node.@id; // If vid does not exist, front = Tile ID.
+				if (node.@back.length()) formRearTextureID=node.@back;
+				if (node.@mat.length()) formMaterial=node.@mat;
+				if (node.@rear.length()) formHasRearTexture=true;
 				if (node.@lurk.length()) lurk=node.@lurk;
 				
 				if (node.@hp>0) hp=node.@hp;

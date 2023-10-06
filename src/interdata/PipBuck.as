@@ -18,6 +18,8 @@ package interdata
 	import servdata.Vendor;
 	import unitdata.Pers;
 	
+	import components.Settings;
+
 	public class PipBuck 
 	{
 		public var light:Boolean=false;	//простая версия
@@ -64,16 +66,19 @@ package interdata
 		public var ritems:Array;
 		var ritemsNazv=['hp','head','tors','legs','blood','mana','pet','inv1','inv1','caps']
 
-		public function PipBuck(vpip:MovieClip) {
+		public function PipBuck(vpip:MovieClip) 
+		{
 			light=true;
 			vis=vpip;
 			vis.visible=false;
-			if (light) {
+			if (light) 
+			{
 				vis.skin.visible=false;
 				vis.fon.visible=false;
 			}
 			//кнопки
-			for (var i=0; i<=kolPages; i++) {
+			for (var i=0; i<=kolPages; i++) 
+			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				item.id.visible=false;
 				item.visible=false;
@@ -113,7 +118,8 @@ package interdata
 			
 			vis.pr.visible=false;
 			ritems=new Array();
-			for (var i=0; i<kolRItems; i++) {
+			for (var i=0; i<kolRItems; i++) 
+			{
 				item=new visPipRItem();
 				ritems[i]=item;
 				vis.pr.addChild(item);
@@ -122,17 +128,18 @@ package interdata
 				PipPage.setStyle(item.txt);
 				item.trol.gotoAndStop(i+1);
 				item.nazv.visible=false;
-				//item.nazv.text=Res.pipText(ritemsNazv[i]);
 			}
 		}
 		
-		public function updateLang() {
+		public function updateLang()
+		{
 			vis.but0.text.text=Res.pipText('mainclose');
 			for each(var p in pages) if (p is PipPage) p.updateLang();
 			currentPage.setStatus();
 		}
 		
-		public function toNormalMode() {
+		public function toNormalMode()
+		{
 			light=false;
 			vis.skin.visible=true;
 			vis.fon.visible=true;
@@ -148,7 +155,8 @@ package interdata
 			allItems();
 		}
 		
-		public function pageClick(event:MouseEvent) {
+		public function pageClick(event:MouseEvent)
+		{
 			if (World.world.ctr.setkeyOn) return;
 			if (World.world.gg && World.world.gg.pipOff) return;
 			page=int(event.currentTarget.id.text);
@@ -156,12 +164,15 @@ package interdata
 			setButtons();
 			snd(2);
 		}
-		public function pipClose(event:MouseEvent) {
+		public function pipClose(event:MouseEvent)
+		{
 			if (World.world.ctr.setkeyOn) return;
 			onoff(-1);
 		}
-		function setButtons() {
-			for (var i=0; i<=kolPages; i++) {
+		public function setButtons()
+		{
+			for (var i=0; i<=kolPages; i++) 
+			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				if (page==i) item.gotoAndStop(2);
 				else item.gotoAndStop(1);
@@ -169,53 +180,66 @@ package interdata
 			}
 		}
 		
-		public function snd(n:int) {
+		public function snd(n:int)
+		{
 			Snd.ps('pip'+n,-1000,-1000,0,pipVol);
 		}
 		
 		//0 - сменить вкл на выкл
 		//11 - принудительно включить
 		//Показать/скрыть
-		public function onoff(turn:int=0, p2:int=0) {
+		public function onoff(turn:int=0, p2:int=0)
+		{
 			reqKey=false;
-			if (active && turn==11) {
+			if (active && turn==11) 
+			{
 				return;
-			} else if (turn==0) {
+			} 
+			else if (turn==0) 
+			{
 				active=!active;
 				if (page>=4 && !light) page=1;
 				snd(3);
-			} else if (turn>0) {
+			} 
+			else if (turn>0) 
+			{
 				if (turn<10) page=turn;
 				else if (page>=4) page=1;
 				active=true;
-			} else {
+			} 
+			else 
+			{
 				if (active) snd(3);
 				active=false;
 			}
-			if (!light && World.world.location && World.world.location.base) travel=true;
+			if (!light && World.world.room && World.world.room.base) travel=true;
 			vis.but4.visible=false;
-			if (turn==4 || (turn>=6 && turn<=9)) {
+			if (turn==4 || (turn>=6 && turn<=9)) 
+			{
 				vis.but4.id.text=turn;
 				vis.but4.text.text=Res.pipText('main'+turn);
 				vis.but4.visible=true;
 			}
 			vis.visible=active;
-			if (active) {
+			if (active) 
+			{
 				World.world.cur();
 				showHidden=false;
 				if (vendor) vendor.reset();
 				World.world.ctr.clearAll();
 				if (World.world.stand) World.world.stand.onoff(-1);
 				setPage(p2);
-				if (!light) {
+				if (!light) 
+				{
 					World.world.gui.offCelObj();
 					if (World.world.gui.t_mess>30) World.world.gui.t_mess=30;
-					//World.world.gui.infoAlpha=World.world.gui.vis.info.alpha=1;
 				}
-				if (World.world.gui) {
+				if (World.world.gui) 
+				{
 					World.world.gui.dial.alpha=World.world.gui.inform.alpha=0;
 				}
-				if (World.world.gg && World.world.gg.rat>0 || World.world.catPause) {
+				if (World.world.gg && World.world.gg.rat>0 || World.world.catPause) 
+				{
 					noAct2=gamePause;
 					gamePause=true;
 				}
@@ -241,14 +265,15 @@ package interdata
 				vis.pr.visible=true;
 			}
 			setButtons();
-			if (!light && World.world.location && !World.world.location.base) travel=false;
+			if (!light && World.world.room && !World.world.room.base) travel=false;
 			if (World.world && World.world.gg && World.world.gg.pipOff) supply(-1);
 			else supply(1);
 			World.world.ctr.keyPressed=false;
 		}
 		
 		//коррекция размеров
-		public function resizeScreen(nx:int, ny:int) {
+		public function resizeScreen(nx:int, ny:int)
+		{
 			if (nx>=1200 && ny>=800) {
 				if (nx>1320) {
 					vis.x=(nx-visX)/2-60;
@@ -268,7 +293,8 @@ package interdata
 		}
 		
 		//питание
-		public function supply(turn:int=-1) {
+		public function supply(turn:int=-1)
+		{
 			if (turn<0) {
 				currentPage.vis.visible=false;
 				vis.toptext.visible=false;
@@ -282,7 +308,8 @@ package interdata
 		}
 		
 		//режим показа
-		public function setPage(p2:int=0) {
+		public function setPage(p2:int=0)
+		{
 			if (!light) {
 				gg=World.world.gg;
 				inv=World.world.invent;
@@ -303,32 +330,39 @@ package interdata
 			vishelp.visible=false;
 		}
 		
-		public function assignKey(num:int) {
+		public function assignKey(num:int)
+		{
 			if (!active) return;
 			if (currentPage is PipPageInv) (currentPage as PipPageInv).assignKey(num);
 		}
 		
-		public function helpShow(event:MouseEvent) {
+		public function helpShow(event:MouseEvent)
+		{
 			vishelp.txt.htmlText=helpText;
 			vishelp.visible=true;
 		}
-		public function helpUnshow(event:MouseEvent) {
+		public function helpUnshow(event:MouseEvent)
+		{
 			vishelp.visible=false;
 		}
-		public function massShow(event:MouseEvent) {
+		public function massShow(event:MouseEvent)
+		{
 			vishelp.txt.htmlText=massText;
 			vishelp.visible=true;
 		}
-		public function massUnshow(event:MouseEvent) {
+		public function massUnshow(event:MouseEvent)
+		{
 			vishelp.visible=false;
 		}
 		
-		public function allItems() {
+		public function allItems()
+		{
 			arrWeapon=new Array();
 			arrArmor=new Array();
 			var owner:Unit=new Unit();
 			var w:Weapon, a:Armor;
-			for each (var weap in AllData.d.weapon.(@tip>0)) {
+			for each (var weap in AllData.d.weapon.(@tip>0))
+			{
 				w=Weapon.create(owner,weap.@id,0);
 				arrWeapon[weap.@id]=w;
 				if (weap.char.length()>1) {
@@ -336,13 +370,15 @@ package interdata
 					arrWeapon[weap.@id+'^'+1]=w;
 				}
 			}
-			for each (var armor in AllData.d.armor) {
+			for each (var armor in AllData.d.armor)
+			{
 				a=new Armor(armor.@id);
 				arrArmor[armor.@id]=a;
 			}
 		}
 		
-		public function setRPanel() {
+		public function setRPanel()
+		{
 			if (light || !active) return;
 			var gg:UnitPlayer=World.world.gg;
 			var pers:Pers=World.world.pers;
@@ -356,45 +392,59 @@ package interdata
 			if (gg.currentWeapon && gg.currentWeapon.tip<=3) ritem2(7,gg.currentWeapon.hp,gg.currentWeapon.maxhp); else ritem1(7,0,0,false);
 			if (gg.currentArmor) ritem2(8,gg.currentArmor.hp,gg.currentArmor.maxhp); else ritem1(8,0,0,false);
 			ritems[9].txt.htmlText="<span class = 'yel'>"+gg.invent.money.kol+"</span>"
-			ritem3(10,inv.massW,pers.maxmW,World.world.hardInv);
-			ritem3(11,inv.massM,pers.maxmM,World.world.hardInv);
-			ritem3(12,inv.mass[1],pers.maxm1,World.world.hardInv);
-			ritem3(13,inv.mass[2],pers.maxm2,World.world.hardInv);
-			ritem3(14,inv.mass[3],pers.maxm3,World.world.hardInv);
+			ritem3(10,inv.massW,pers.maxmW, Settings.hardInv);
+			ritem3(11,inv.massM,pers.maxmM, Settings.hardInv);
+			ritem3(12,inv.mass[1],pers.maxm1, Settings.hardInv);
+			ritem3(13,inv.mass[2],pers.maxm2, Settings.hardInv);
+			ritem3(14,inv.mass[3],pers.maxm3, Settings.hardInv);
 		}
 		
-		function ritem1(n:int, hp:Number, maxhp:Number, usl=true) {
+		function ritem1(n:int, hp:Number, maxhp:Number, usl=true)
+		{
 			ritems[n].visible=usl;
-			if (usl) {
+			if (usl) 
+			{
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp);
-			} else {
+			} 
+			else 
+			{
 				ritems[n].txt.htmlText='';
 			}
 		}
-		function ritem2(n:int, hp:Number, maxhp:Number, usl=true) {
+		function ritem2(n:int, hp:Number, maxhp:Number, usl=true)
+		{
 			ritems[n].visible=usl;
-			if (usl) {
+			if (usl) 
+			{
 				ritems[n].txt.htmlText="<span class = '"+med(hp,maxhp)+"'>"+Math.round(hp/maxhp*100)+"%</span>";
-			} else {
+			} 
+			else 
+			{
 				ritems[n].txt.htmlText='';
 			}
 		}
-		function ritem3(n:int, hp:Number, maxhp:Number, usl=true) {
+		function ritem3(n:int, hp:Number, maxhp:Number, usl=true)
+		{
 			ritems[n].visible=usl;
-			if (usl) {
+			if (usl) 
+			{
 				ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
-			} else {
+			} 
+			else 
+			{
 				ritems[n].txt.htmlText='';
 			}
 		}
 		
-		function med(hp:Number, maxhp:Number):String {
+		function med(hp:Number, maxhp:Number):String
+		{
 			if (hp<maxhp*0.25) return 'red';
 			else if (hp<maxhp*0.5) return 'or';
 			return '';
 		}
 		
-		public function setArmor(aid:String) {
+		public function setArmor(aid:String)
+		{
 			ArmorId=aid;
 			try {
 				hideMane = AllData.d.armor.(@id==aid).@hide;
@@ -403,61 +453,9 @@ package interdata
 			}
 		}
 		
-		/*public function trade(arr:Array) {
-			if (vendor.kolBou>inv.money.kol) return;
-			for each(var buy:Item in vendor.buys) {
-				var rid:String=buy.id;
-				if (buy.variant>0) rid+='^'+buy.variant;
-				if (arr[rid] && arr[rid].bou>0) {
-					buy.bou=arr[rid].bou;
-					inv.take(buy,1);
-				}
-			}
-			inv.money.kol-=Math.ceil(vendor.kolBou);
-			money=inv.money.kol;
-			vendor.kolBou=0;
-		}
 		
-		public function sell(arr:Array) {
-			for (var s in inv.items) {
-				if (s=='' || inv.items[s].kol<=0) continue;
-				var node=inv.items[s].xml;
-				if (node==null) continue;
-				if (arr[s] && arr[s].bou>0) {
-					//if (inv.items[s]<arr[s].bou) arr[s].bou=inv.items[s];
-					var buy:Item=vendor.buys2[s];
-					if (buy==null) {
-						buy=new Item(null,s,0);
-						buy.kol=0;
-						vendor.buys.push(buy);
-						vendor.buys2[s]=buy;
-					}
-					buy.kol+=arr[s].bou;
-					inv.items[s].kol-=arr[s].bou;
-					//inv.items['money']+=arr[s].bou*arr[s].price;
-				}
-			}
-			inv.money.kol+=Math.floor(vendor.kolSell);
-			money=inv.money.kol;
-			vendor.kolSell=0;
-		}
-		
-		public function sellAll() {
-			for (var s in inv.items) {
-				if (s=='' || inv.items[s].kol<=0) continue;
-				var node=inv.items[s].xml;
-				if (node==null) continue;
-				if (node.@tip=='valuables') {
-					var sto:int=inv.items[s].kol*node.@price;
-					inv.money.kol+=sto;
-					inv.items[s].kol=0;
-				}
-			}
-			money=inv.money.kol;
-			vendor.kolSell=0;
-		}*/
-		
-		public function step() {
+		public function step()
+		{
 			if (currentPage) currentPage.step();
 		}
 

@@ -30,7 +30,8 @@ package servdata
 		
 		public var vse:Boolean=false;
 
-		public function Desintegr(own:Obj, sposob:int) {
+		public function Desintegr(own:Obj, sposob:int) 
+		{
 			owner=own;
 			burnTip=sposob;
 			burnBmp=new BitmapData(owner.vis.width,owner.vis.height,true,0);
@@ -91,7 +92,7 @@ package servdata
 	   			burnBmp.pixelDissolve(burnBmp, burnBmp.rect, new Point(0,0), burnRnd, burnKolPix*(burnN-burnTime1)/burnTime2, 0x00FF0000);
 				if (owner.massa>=0.25 || Math.random() < owner.massa * 4)
 				{
-					Emitter.emit(burnPart, owner.location, owner.X, owner.Y - owner.scY / 2, {rx:owner.scX * 0.75, ry:owner.scY * 0.5}); 
+					Emitter.emit(burnPart, owner.room, owner.X, owner.Y - owner.scY / 2, {rx:owner.scX * 0.75, ry:owner.scY * 0.5}); 
 				} 
 			} 
 			else if (burnN>=burnTime2+burnTime1) 

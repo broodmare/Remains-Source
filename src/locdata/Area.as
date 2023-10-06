@@ -5,7 +5,9 @@ package locdata
 	import graphdata.Emitter;
 	import unitdata.Unit;
 	
-	// Active Area
+	import components.Settings;
+	
+	// area inside of a room?
 	
 	public class Area extends Obj
 	{
@@ -44,9 +46,9 @@ package locdata
 		public var t_frec:Number = 0;
 		public var trig:Boolean;	// Disable and set trigger on first activation
 
-		public function Area(nloc:Location, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) 
+		public function Area(newRoom:Room, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) 
 		{
-			location = nloc;
+			room = newRoom;
 			if (xml) 
 			{
 				bx = xml.@x;
@@ -57,19 +59,19 @@ package locdata
 				}
 				if (mirror) 
 				{
-					bx=location.spaceX - bx - rx;
+					bx=room.roomWidth - bx - rx;
 				}
-				scX = rx * World.tilePixelWidth;
-				X = bx * World.tilePixelWidth;
-				X1 = bx * World.tilePixelWidth;
-				Y = by * World.tilePixelHeight + World.tilePixelHeight;
-				Y2 = by * World.tilePixelHeight + World.tilePixelHeight;
+				scX = rx * Settings.tilePixelWidth;
+				X = bx * Settings.tilePixelWidth;
+				X1 = bx * Settings.tilePixelWidth;
+				Y = by * Settings.tilePixelHeight + Settings.tilePixelHeight;
+				Y2 = by * Settings.tilePixelHeight + Settings.tilePixelHeight;
 				X2 = X1 + scX;
 				if (xml.@h.length()) 
 				{
 					ry = xml.@h;
 				}
-				scY = ry * World.tilePixelHeight;
+				scY = ry * Settings.tilePixelHeight;
 				Y1 = Y2 - scY;
 
 				// Visual
@@ -78,7 +80,7 @@ package locdata
 					vis=Res.getVis('vis'+xml.@vis,visArea);
 				} 
 
-				if (World.world.showArea) //If the world.showArea toggle is true;
+				if (Settings.showArea) //If the Settings.showArea toggle is true;
 				{
 					vis = new visArea(); 
 				}
@@ -95,7 +97,7 @@ package locdata
 				{
 					for each (var xscr in xml.scr) 
 					{
-						var scr:Script = new Script(xscr, location.land, this);
+						var scr:Script = new Script(xscr, room.level, this);
 						if (scr.eve == null || scr.eve == 'over') scrOver = scr;
 						if (scr.eve == 'out') scrOut = scr;
 					}
@@ -104,13 +106,13 @@ package locdata
 				if (xml.@scrout.length()) scrOut = World.world.game.getScript(xml.@scrout, this);
 
 				// Change Walls
-				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@damageThreshold.length())  //If the tile has a HP value, tileop(?), or damageThreshold property
+				if (xml.@tilehp.length || xml.@tileop.length || xml.@damageThreshold.length())  //If the tile has a HP value, tileop(?), or damageThreshold property
 				{
-					for (var i = bx; i < bx + rx; i++) 
+					for (var i:int = bx; i < bx + rx; i++) 
 					{
-						for (var j = by - ry + 1; j <= by; j++) 
+						for (var j:int = by - ry + 1; j <= by; j++) 
 						{
-							var tile:Tile = location.getTile(i, j);
+							var tile:Tile = room.getTile(i, j);
 
 							if (xml.@tilehp.length()) 
 							{
@@ -196,7 +198,7 @@ package locdata
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) 
+		public override function command(com:String, val:String=null)
 		{
 			if (com == 'onoff') enabled =! enabled;
 			if (com == 'off') enabled = false;
@@ -206,9 +208,9 @@ package locdata
 			if (com == 'dam') damTiles(int(val));
 		}
 		
-		public override function step() 
+		public override function step()
 		{
-			if (!enabled || !location.locationActive || tip == '') return;
+			if (!enabled || !room.roomActive || tip == '') return;
 			if (emit)
 			{
 				t_frec += frec;
@@ -216,7 +218,7 @@ package locdata
 				{
 					var kol:int = Math.floor(t_frec);
 					t_frec -= kol;
-					emit.cast(location,(X1 + X2) / 2,(Y1 + Y2) / 2, {rx:scX, ry:scY, kol:kol});
+					emit.cast(room,(X1 + X2) / 2,(Y1 + Y2) / 2, {rx:scX, ry:scY, kol:kol});
 				}
 			}
 
@@ -224,14 +226,14 @@ package locdata
 
 			if (tip == 'gg') 
 			{
-				active = areaTest(location.gg);
-				if (active && noRad) location.gg.noRad = true;
-				activator = location.gg;
+				active = areaTest(room.gg);
+				if (active && noRad) room.gg.noRad = true;
+				activator = room.gg;
 			}
 			else 
 			{
 				active = false;
-				for each(var un:Unit in location.units) 
+				for each(var un:Unit in room.units) 
 				{
 					if (!un.disabled && un.sost<3 && un.areaTestTip==tip && areaTest(un)) 
 					{
@@ -243,7 +245,7 @@ package locdata
 			}
 			if (active && mess) World.world.gui.messText(mess, '', messDown);
 			if (active && run) run();
-			if (active && !preactive && allact) location.allAct(this,allact,allid);
+			if (active && !preactive && allact) room.allAct(this,allact,allid);
 			if (active && !preactive && over) over();
 			if (active && !preactive && onPort) teleport(activator);
 			if (!active && preactive && out) out();
@@ -263,7 +265,7 @@ package locdata
 			preactive = active;
 		}
 		
-		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number) 
+		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number)
 		{
 			X = x1;
 			X1 = x1;
@@ -275,34 +277,34 @@ package locdata
 			scY = Y2 - Y1;
 		}
 		
-		public function setLift() 
+		public function setLift()
 		{
-			for (var i=bx; i<bx+rx; i++) 
+			for (var i:int = bx; i<bx+rx; i++) 
 			{
-				for (var j = by - ry + 1; j <= by; j++) 
+				for (var j:int = by - ry + 1; j <= by; j++) 
 				{
-					location.getTile(i, j).grav = enabled? lift:1;
+					room.getTile(i, j).grav = enabled? lift:1;
 				}
 			}
 		}
 		
-		public function damTiles(destroy:int,tipDam:int=11) 
+		public function damTiles(destroy:int,tipDam:int=11)
 		{
-			for (var i = bx; i < bx + rx; i++) 
+			for (var i:int = bx; i < bx + rx; i++) 
 			{
-				for (var j = by - ry + 1; j <= by; j++) 
+				for (var j:int = by - ry + 1; j <= by; j++) 
 				{
-					location.hitTile(location.getTile(i, j), destroy, (i + 0.5) * Tile.tilePixelWidth, (j + 0.5) * Tile.tilePixelHeight, tipDam);
+					room.hitTile(room.getTile(i, j), destroy, (i + 0.5) * Tile.tilePixelWidth, (j + 0.5) * Tile.tilePixelHeight, tipDam);
 				}
 			}
 		}
 		
-		public function teleport(un:Unit) 
+		public function teleport(un:Unit)
 		{
 			if (un == null) return;
-			if (!location.collisionUnit((portX+1) * World.tilePixelWidth, (portY + 1) * World.tilePixelHeight - 1, un.scX, un.scY)) 
+			if (!room.collisionUnit((portX+1) * Settings.tilePixelWidth, (portY + 1) * Settings.tilePixelHeight - 1, un.scX, un.scY)) 
 			{
-				un.teleport((portX + 1) * World.tilePixelWidth, (portY + 1) * World.tilePixelHeight - 1);
+				un.teleport((portX + 1) * Settings.tilePixelWidth, (portY + 1) * Settings.tilePixelHeight - 1);
 			}
 		}
 	}

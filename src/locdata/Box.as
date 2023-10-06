@@ -14,7 +14,9 @@ package locdata
 	import servdata.Script;
 	import weapondata.Bullet;
 	import unitdata.Mine;
-
+	
+	import components.Settings;
+	
 	public class Box extends Obj
 	{
 		
@@ -77,15 +79,15 @@ package locdata
 		
 		public var un:VirtualUnit;	// virtual unit for interaction with bullets;
 		
-		public function Box(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) 
+		public function Box(newRoom:Room, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) 
 		{
-			location = nloc;
+			room = newRoom;
 			id = nid;
-			if (location.land.kolAll) 
+			if (room.level.kolAll) 
 			{
-				if (location.land.kolAll[id] > 0) location.land.kolAll[id]++;
-				else location.land.kolAll[id] = 1;
-				//trace(id, location.land.kolAll[id])
+				if (room.level.kolAll[id] > 0) room.level.kolAll[id]++;
+				else room.level.kolAll[id] = 1;
+				//trace(id, room.level.kolAll[id])
 			}
 			prior = 1;
 			vis = World.world.grafon.getObj('vis'+id, Grafon.objectCount);
@@ -164,7 +166,7 @@ package locdata
 			}
 
 			// Interactivity
-			if (node.@inter.length() || (xml && (xml.@inter.length() || xml.scr.length() || xml.@scr.length()))) inter=new Interact(this,node,xml,loadObj);
+			if (node.@inter.length || (xml && (xml.@inter.length || xml.scr.length || xml.@scr.length()))) inter=new Interact(this,node,xml,loadObj);
 			if (inter && inter.cont!='' && inter.cont!='empty' && inter.lock && inter.lockTip<=1) bulPlayer=true;
 			
 			// Individual parameters from the XML map
@@ -176,7 +178,7 @@ package locdata
 				{
 					for each (var xscr in xml.scr) 
 					{
-						var scr:Script = new Script(xscr,location.land);
+						var scr:Script = new Script(xscr,room.level);
 						if (inter && scr.eve == null) inter.scrAct=scr;
 						if (inter && scr.eve == 'open') inter.scrOpen=scr;
 						if (inter && scr.eve == 'close') inter.scrClose=scr;
@@ -194,7 +196,7 @@ package locdata
 				if (xml.@period.length()) molnPeriod=xml.@period;
 				if (xml.@phase.length()) moln_t=xml.@phase;
 				
-				if (xml.@prob.length() && id!='exit') 
+				if (xml.@prob.length && id!='exit') 
 				{
 					nazv=Res.txt('m',xml.@prob);
 				}
@@ -215,7 +217,7 @@ package locdata
 			else layer = 1;
 			if (node.@layer.length()) layer = node.@layer;
 			
-			cTransform = location.cTransform;
+			cTransform = room.cTransform;
 			
 			
 			vis.cacheAsBitmap = true;
@@ -249,7 +251,7 @@ package locdata
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null) 
+		public override function command(com:String, val:String=null)
 		{
 			super.command(com,val);
 			if (com == 'die') 
@@ -260,10 +262,10 @@ package locdata
 			if (inter) inter.command(com,val);
 		}
 		
-		public override function addVisual() 
+		public override function addVisual()
 		{
 			if (invis) return;
-			if (vis && location && location.locationActive) 
+			if (vis && room && room.roomActive) 
 			{
 				if (shad) World.world.grafon.canvasLayerArray[0].addChild(shad);
 				World.world.grafon.canvasLayerArray[layer].addChild(vis);
@@ -291,13 +293,13 @@ package locdata
 			}
 		}
 		
-		public override function remVisual() 
+		public override function remVisual()
 		{
 			if (vis && vis.parent) vis.parent.removeChild(vis);
 			if (shad && shad.parent) shad.parent.removeChild(shad);
 		}
 		
-		public override function setVisState(s:String) 
+		public override function setVisState(s:String)
 		{
 			if ((s=='open' || s=='comein') && sndOpen!='' && !World.world.testLoot) Snd.ps(sndOpen,X,Y);
 			if (s=='close' && sndClose!='') Snd.ps(sndClose,X,Y);
@@ -309,7 +311,7 @@ package locdata
 			catch (err) {}
 		}
 		
-		public override function step() 
+		public override function step()
 		{
 			if (dead && invis) 
 			{
@@ -367,10 +369,10 @@ package locdata
 			if (wall==0 && !(stay && dx==0) && !fixPlav) 
 			{
 				if (wall == 0) forces();		//внешние силы, влияющие на ускорение
-				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
+				if (Math.abs(dx)<Settings.maxdelta && Math.abs(dy)<Settings.maxdelta)	run();
 				else 
 				{
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
 					for (var i=0; i<div; i++) run(div);
 				}
 				checkWater();
@@ -388,26 +390,26 @@ package locdata
 			onCursor=(X1<World.world.celX && X2>World.world.celX && Y1<World.world.celY && Y2>World.world.celY)?prior:0;
 		}
 		
-		public function initDoor() 
+		public function initDoor()
 		{
 			tiles = new Array();
 			for (var i=Math.floor(X1/Tile.tilePixelWidth+0.5); i<=Math.floor(X2/Tile.tilePixelWidth-0.5); i++) 
 			{
 				for (var j=Math.floor(Y1/Tile.tilePixelHeight+0.5); j<=Math.floor(Y2/Tile.tilePixelHeight-0.5); j++) 
 				{
-					 var t:Tile=location.getTile(i,j);
-					 t.front='';
+					 var t:Tile=room.getTile(i,j);
+					 t.tileTexture='';
 					 t.phis=phis;
 					 t.opac=door_opac;
 					 t.door=this;
-					 t.mat=mat;
+					 t.tileMaterial=mat;
 					 t.hp=hp;
 					 t.damageThreshold = damageThreshold;
 					 tiles.push(t);
 				}
 			}
 		}
-		public function setDoor(open:Boolean) 
+		public function setDoor(open:Boolean)
 		{
 			for (var i in tiles) 
 			{
@@ -417,15 +419,15 @@ package locdata
 			setVisState(open?'open':'close');
 			if (open) 
 			{
-				location.isRelight = true;
-				location.isRebuild = true;
+				room.isRelight = true;
+				room.isRebuild = true;
 			}
 		}
 
 		// Striking a closing door
 		public function attDoor():Boolean 
 		{
-			for each (var cel in location.units) 
+			for each (var cel in room.units) 
 			{
 				if (cel == null || (cel as Unit).sost == 4) continue;
 				if (cel is unitdata.UnitMWall) continue;
@@ -441,7 +443,7 @@ package locdata
 					return true;
 				}
 			}
-			for each (cel in location.objs) 
+			for each (cel in room.objs) 
 			{
 				if ((cel as Box).wall>0) continue;
 				if (!(cel.X-cel.scX/2>=X2 || cel.X+cel.scX/2<=X1 || cel.Y-cel.scY>=Y2 || cel.Y<=Y1)) 
@@ -452,9 +454,9 @@ package locdata
 			return false;
 		}
 		
-		public function attMoln() 
+		public function attMoln()
 		{
-			for each (var cel in location.units) 
+			for each (var cel in room.units) 
 			{
 				if (cel == null || (cel as Unit).sost == 4) continue;
 				if (!(cel.X1 >= X2 || cel.X2 <= X1 || cel.Y1 >= Y2 || cel.Y2 <= Y1)) 
@@ -477,7 +479,7 @@ package locdata
 			{
 				if (Math.random()<bulChance) 
 				{
-					var sila = Math.random() * 0.4 + 0.8;
+					var sila:Number = Math.random() * 0.4 + 0.8;
 					sila /= massa;
 					if (sila > 3) sila = 3;
 					dx += bul.knockx * bul.otbros * sila;
@@ -489,14 +491,14 @@ package locdata
 			return -1;
 		}
 		
-		public function damage(dam:Number) 
+		public function damage(dam:Number)
 		{
 			dam -= damageThreshold;
 			if (dam > 0) hp -= dam;
 			if (hp <= 0) die();
 		}
 		
-		public override function die(sposob:int=0) 
+		public override function die(sposob:int=0)
 		{
 			if (dead) return;
 			if (inter && inter.prize) return;
@@ -526,10 +528,10 @@ package locdata
 					if (mat==3) kus = 'schep';
 					if (mat==5) kus = 'steklo';
 					if (mat==7) kus = 'pole';
-					Emitter.emit(kus, location, X, Y - scY / 2, {kol:12, rx:scX, ry:scY});
+					Emitter.emit(kus, room, X, Y - scY / 2, {kol:12, rx:scX, ry:scY});
 					if (sndDie!='') Snd.ps(sndDie, X, Y);
 				}
-				if (noiseDie) location.budilo(X, Y - scY / 2, noiseDie);
+				if (noiseDie) room.budilo(X, Y - scY / 2, noiseDie);
 				if (inter) inter.sign = 0;
 			} 
 			else if (un) 
@@ -552,12 +554,12 @@ package locdata
 		}
 		
 		
-		public function forces() 
+		public function forces()
 		{
 			if (!levit) 
 			{
-				if (!isPlav && dy < World.maxdy) dy += World.ddy;
-				if (isPlav && isPlav2) dy += World.ddy * ddyPlav;
+				if (!isPlav && dy < Settings.maxdy) dy += Settings.ddy;
+				if (isPlav && isPlav2) dy += Settings.ddy * ddyPlav;
 			}
 			if (isPlav) 
 			{
@@ -572,14 +574,14 @@ package locdata
 		}
 		
 		// Impact from falling
-		public function attDrop() 
+		public function attDrop()
 		{
 			vel2 = dx * dx + dy * dy;
 			if (vel2 < 50) return;
-			for each(var cel:Unit in location.units) 
+			for each(var cel:Unit in room.units) 
 			{
 				if (cel == null || fracLevit > 0 && cel.fraction == fracLevit) continue;
-				if (cel.sost == 4 || cel.neujaz > 0 || cel.location != location || cel.X1 > X2 || cel.X2 < X1 || cel.Y1 > Y2 || cel.Y2 < Y1) continue;
+				if (cel.sost == 4 || cel.neujaz > 0 || cel.room != room || cel.X1 > X2 || cel.X2 < X1 || cel.Y1 > Y2 || cel.Y2 < Y1) continue;
 				if (t_throw > 0) 
 				{
 					cel.neujaz = 12;
@@ -590,7 +592,7 @@ package locdata
 			}
 		}
 		
-		public override function checkStay() 
+		public override function checkStay()
 		{
 			if (osnova || wall>0) return true;
 			fixPlav = false;
@@ -601,7 +603,7 @@ package locdata
 			}
 			for (var i = Math.floor(X1 / Tile.tilePixelWidth); i <= Math.floor(X2 / Tile.tilePixelWidth); i++) 
 			{
-				var t = location.roomTileArray[i][Math.floor((Y2 + 1) / Tile.tilePixelHeight)];
+				var t = room.roomTileArray[i][Math.floor((Y2 + 1) / Tile.tilePixelHeight)];
 				if (collisionTile(t, 0, 1)) 
 				{
 					return true;
@@ -618,16 +620,16 @@ package locdata
 		//      MOVEMENT CONTROLLER
 		//#######################
 
-		public function run(div:int = 1) 
+		public function run(div:int = 1)
 		{
 			// Movement
 			var t:Tile;
 			var i:int;
 			var halfscX:Number = scX / 2;
-			var tilepixelheight = Tile.tilePixelHeight;
-			var tilepixelwidth = Tile.tilePixelWidth
-			var locspacex:Number = location.spaceX
-			var locspacey:Number = location.spaceY
+			var tilepixelheight:int = Tile.tilePixelHeight;
+			var tilepixelwidth:int = Tile.tilePixelWidth
+			var locspacex:Number = room.roomWidth
+			var locspacey:Number = room.roomHeight
 
 			// HORIZONTAL
 				X += dx / div;
@@ -657,7 +659,7 @@ package locdata
 				{
 					for (i = y1Floor; i <= y2Floor; i++) 
 					{
-						t = location.roomTileArray[x1Floor][i];
+						t = room.roomTileArray[x1Floor][i];
 						if (collisionTile(t)) 
 						{
 								X = t.phX2 + halfscX;
@@ -674,7 +676,7 @@ package locdata
 				{
 					for (i = y1Floor; i <= y2Floor; i++) 
 					{
-						t = location.roomTileArray[x2Floor][i];
+						t = room.roomTileArray[x2Floor][i];
 						if (collisionTile(t)) 
 						{
 								X = t.phX1 - halfscX;
@@ -696,7 +698,7 @@ package locdata
 				stay = false;
 				for (i = x1Floor; i <= x2Floor; i++) 
 				{
-					t = location.roomTileArray[i][Math.floor((Y2 + dy / div) / tilepixelheight)];
+					t = room.roomTileArray[i][Math.floor((Y2 + dy / div) / tilepixelheight)];
 					if (collisionTile(t, 0, dy / div)) 
 					{
 						newmy = t.phY1;
@@ -704,8 +706,8 @@ package locdata
 					}
 				}
 				if (newmy == 0 && !levit && !isThrow) newmy = checkShelf(dy / div);
-				if (Y >= (locspacey - 1) * tilepixelheight && !location.bezdna) newmy = (locspacey - 1) * tilepixelheight;
-				if (Y >= locspacey * tilepixelheight - 1 && location.bezdna) 
+				if (Y >= (locspacey - 1) * tilepixelheight && !room.bezdna) newmy = (locspacey - 1) * tilepixelheight;
+				if (Y >= locspacey * tilepixelheight - 1 && room.bezdna) 
 				{
 					invis = true;
 					if (vis) remVisual();
@@ -716,11 +718,11 @@ package locdata
 					Y = newmy;
 					Y1 = Y - scY;
 					Y2 = Y;
-					if (location.locationActive && dy > 4 && dy * massa > 5) World.world.quake(0, dy*Math.sqrt(massa) / 2);
+					if (room.roomActive && dy > 4 && dy * massa > 5) World.world.quake(0, dy*Math.sqrt(massa) / 2);
 					if (dy > 5 && sndFall && sndOn) Snd.ps(sndFall, X, Y, 0, dy / 15);
 					if (dy>  5) 
 					{
-						location.budilo(X, Y, dy * dy * massa);
+						room.budilo(X, Y, dy * dy * massa);
 					}
 					if (dy < 5 || massa > 1) dy = 0;
 					else dy *= -0.2;
@@ -728,7 +730,7 @@ package locdata
 					else 
 					{
 						dx *= 0.92;
-						if (mat ==1 )	Emitter.emit('iskr_wall', location, X+(Math.random() - 0.5) * scX, Y);
+						if (mat ==1 )	Emitter.emit('iskr_wall', room, X+(Math.random() - 0.5) * scX, Y);
 					}
 					if (!levit && (!isPlav || ddyPlav > 0)) 
 					{
@@ -757,7 +759,7 @@ package locdata
 				if (Y - scY < 0) Y = scY;
 				for (i = x1Floor; i <= x2Floor; i++) 
 				{
-					t = location.roomTileArray[i][y1Floor];
+					t = room.roomTileArray[i][y1Floor];
 					if (collisionTile(t)) 
 					{
 						Y = t.phY2 + scY;
@@ -782,18 +784,18 @@ package locdata
 			isPlav2 = false;
 
 			//Precalculating these to speed up loops...
-			var tilepixelheight = Tile.tilePixelHeight;
-			var tilepixelwidth = Tile.tilePixelWidth
+			var tilepixelheight:int = Tile.tilePixelHeight;
+			var tilepixelwidth:int = Tile.tilePixelWidth
 			var xFloor:Number = Math.floor(X / Tile.tilePixelWidth)
 
 
 			try 
 			{
-				if ((location.roomTileArray[xFloor][Math.floor((Y - scY * 0.45) / tilepixelheight)] as Tile).water > 0) 
+				if ((room.roomTileArray[xFloor][Math.floor((Y - scY * 0.45) / tilepixelheight)] as Tile).water > 0) 
 				{
 					isPlav = true;
 				}
-				if ((location.roomTileArray[xFloor][Math.floor((Y - scY * 0.55) / tilepixelheight)] as Tile).water > 0) 
+				if ((room.roomTileArray[xFloor][Math.floor((Y - scY * 0.55) / tilepixelheight)] as Tile).water > 0) 
 				{
 					isPlav2 = true;
 				}
@@ -802,7 +804,7 @@ package locdata
 				
 			}
 
-			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap',location,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
+			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap',room,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
 			if (pla!=isPlav && dy>5) 
 			{
 				if (massa>2) sound('fall_water0', 0, dy/10);
@@ -814,9 +816,9 @@ package locdata
 		}
 		public function checkShelf(dy):Number 
 		{
-			for (var i in location.objs) 
+			for (var i in room.objs) 
 			{
-				var b:Box = location.objs[i] as Box;
+				var b:Box = room.objs[i] as Box;
 				if (!b.invis && b.stay && b.shelf && !(X<b.X1 || X>b.X2) && Y2<=b.Y1 && Y2+dy>b.Y1) 
 				{
 					osnova=b;
@@ -827,33 +829,33 @@ package locdata
 		}
 		public function collisionAll(gx:Number=0, gy:Number=0):Boolean 
 		{
-			for (var i=Math.floor((X1+gx)/Tile.tilePixelWidth); i<=Math.floor((X2+gx)/Tile.tilePixelWidth); i++) 
+			for (var i:int = Math.floor((X1+gx)/Tile.tilePixelWidth); i<=Math.floor((X2+gx)/Tile.tilePixelWidth); i++) 
 			{
-				for (var j=Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) 
+				for (var j:int = Math.floor((Y1+gy)/Tile.tilePixelHeight); j<=Math.floor((Y2+gy)/Tile.tilePixelHeight); j++) 
 				{
-					if (collisionTile(location.roomTileArray[i][j], gx, gy)) return true;
+					if (collisionTile(room.roomTileArray[i][j], gx, gy)) return true;
 				}
 			}
 			return false;
 		}
 		
-		public function bindUnit(n:String='-1') 
+		public function bindUnit(n:String='-1')
 		{
 			un=new VirtualUnit(n);
 			copy(un);
 			un.owner=this;
-			un.location = location;
+			un.room = room;
 		}
 		
 		// forced movement
-		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1) 
+		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1)
 		{
 			super.bindMove(nx,ny);
 			if (this.un) un.bindMove(nx,ny);
 			if (vis) runVis();
 		}
 		
-		public function runVis() 
+		public function runVis()
 		{
 			vis.x=shad.x=X,vis.y=Y,shad.y=Y+(wall?2:6);
 		}
@@ -879,7 +881,7 @@ package locdata
 		
 		// special functions
 		
-		function initFun(fun:String) 
+		function initFun(fun:String)
 		{
 			if (fun=='generator') 
 			{
@@ -897,7 +899,7 @@ package locdata
 			}
 		}
 		
-		public function funGenerator() 
+		public function funGenerator()
 		{
 			inter.active=false;
 			World.world.gui.infoText('unFixLock');

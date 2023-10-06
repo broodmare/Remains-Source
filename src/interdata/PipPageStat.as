@@ -7,6 +7,8 @@ package interdata
 	import unitdata.Effect;
 	import unitdata.Pers;
 	
+	import components.Settings;
+	
 	public class PipPageStat extends PipPage
 	{
 		
@@ -20,7 +22,8 @@ package interdata
 		var n_food:String;
 		var drunk:int=0;
 
-		public function PipPageStat(npip:PipBuck, npp:String) {
+		public function PipPageStat(npip:PipBuck, npp:String) 
+		{
 			isLC=isRC=true;
 			itemClass=visPipStatItem;
 			skills=new Array();
@@ -31,7 +34,8 @@ package interdata
 		}
 		
 		//подготовка страниц
-		override function setSubPages() {
+		override function setSubPages()
+		{
 			setIco();
 			pers=World.world.pers;
 			maxSkLvl=Pers.maxSkLvl;
@@ -142,7 +146,7 @@ package interdata
 				for (var pid in pers.perks) {
 					var maxlvl=1;
 					var xperk=AllData.d.perk.(@id==pid);
-					if (xperk.length() && xperk.@lvl.length()) maxlvl=xperk.@lvl;
+					if (xperk.length && xperk.@lvl.length()) maxlvl=xperk.@lvl;
 					var numb=pers.perks[pid];
 					var n:Object={id:pid, nazv:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
 					arr.push(n);
@@ -214,7 +218,8 @@ package interdata
 			showBottext();
 		}
 		
-		override function setSigns() {
+		override function setSigns()
+		{
 			super.setSigns();
 			if (pers.skillPoint>0) signs[2]=1;
 			if (pers.perkPoint>0) signs[3]=1;
@@ -223,7 +228,8 @@ package interdata
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override function setStatItem(item:MovieClip, obj:Object)
+		{
 			if (obj.id!=null) item.id.text=obj.id; else item.id.text='';
 			if (obj.cat!=null) item.cat.text=obj.cat; else item.cat.text='';
 			item.id.visible=false;
@@ -236,16 +242,21 @@ package interdata
 			if (obj.maxlvl && obj.maxlvl>1 && obj.maxlvl<1000) item.numb.text+='/'+obj.maxlvl;
 			item.alpha=1;
 			if (page2==4) item.numb.x=500;
-			if (page2==2) {
-				if (obj.post>0) {
+			if (page2==2) 
+			{
+				if (obj.post>0) 
+				{
 					var sklvl=pers.getPostSkLevel(obj.lvl);
 					var nextN=100;
 					if (sklvl<pers.postSkTab.length) nextN=pers.postSkTab[sklvl];
 					item.numb.text=obj.lvl+ '  (+'+(nextN-obj.lvl)+')\t         '+Res.pipText('level')+': '+sklvl;
 					item.numb.x=215;
-				} else {
+				} 
+				else 
+				{
 					item.numb.text=pers.getSkLevel(obj.lvl);
-					for (var i=1; i<=maxSkLvl; i++) {
+					for (var i=1; i<=maxSkLvl; i++) 
+					{
 						if (i<=obj.minlvl) item.progress['p'+i].gotoAndStop(2);
 						else if (i<=obj.lvl) item.progress['p'+i].gotoAndStop(3);
 						else item.progress['p'+i].gotoAndStop(1);
@@ -254,17 +265,19 @@ package interdata
 					item.numb.x=525;
 				}
 			}
-			if (page2==6) {
+			if (page2==6) 
+			{
 				if (!obj.ok) item.alpha=0.4;
 			}
-			if (obj.bar!=null) {
+			if (obj.bar!=null) 
+			{
 				item.hpbar.visible=true;
 				item.hpbar.bar.scaleX=Math.max(0,obj.bar);
 			}
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) 
+		override function statInfo(event:MouseEvent)
 		{
 			var id:String=event.currentTarget.id.text;
 			var nazv:String=event.currentTarget.nazv.text;
@@ -287,7 +300,7 @@ package interdata
 					}
 					vis.info.htmlText+='<br><br>';
 					var xml=AllData.d.param.(@id==id);
-					if (xml.length() && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
+					if (xml.length && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
 				} 
 				else if (page2==5) 
 				{
@@ -360,7 +373,7 @@ package interdata
 					} 
 					else if (page2==2) 
 					{
-						if (World.world.alicorn && Res.istxt('e',id+'_al')) 
+						if (Settings.alicorn && Res.istxt('e',id+'_al')) 
 						{
 							vis.info.htmlText=Res.rainbow(Res.txt('e',id+'_al'));
 							vis.info.htmlText+='<br><br>'+effStr('skill',id+'_al');
@@ -386,7 +399,8 @@ package interdata
 			}
 		}
 		
-		function selSkill(id:String) {
+		function selSkill(id:String)
+		{
 			if (pers.skillIsPost(id) && skills[id].lvl<Pers.maxPostSkLvl || skills[id].lvl<maxSkLvl) {
 				if (skillPoint>0) {
 					skills[id].lvl++;
@@ -397,14 +411,16 @@ package interdata
 				}
 			}
 		}
-		function unselSkill(id:String) {
+		function unselSkill(id:String)
+		{
 			if (skills[id].lvl>skills[id].minlvl) {
 				skills[id].lvl--;
 				skillPoint++;
 			}
 		}
 		
-		function showBottext() {
+		function showBottext()
+		{
 			vis.bottext.text='';
 			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.world.game.gameTime();
 			if (page2==2) vis.bottext.htmlText=Res.pipText('skillpoint')+': '+pink(skillPoint);
@@ -445,7 +461,8 @@ package interdata
 			}
 		}
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent)
+		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
 				return;
@@ -499,7 +516,8 @@ package interdata
 			}
 			showBottext();
 		}
-		override function itemRightClick(event:MouseEvent) {
+		override function itemRightClick(event:MouseEvent)
+		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
 				return;
@@ -512,7 +530,8 @@ package interdata
 			}
 			showBottext();
 		}
-		function transOk(event:MouseEvent) {
+		function transOk(event:MouseEvent)
+		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
 				return;
@@ -544,7 +563,8 @@ package interdata
 			}
 			setStatus();
 		}
-		function gotoDef(event:MouseEvent) {
+		function gotoDef(event:MouseEvent)
+		{
 			if (page2==6) {
 				page2=3;
 				setStatus();

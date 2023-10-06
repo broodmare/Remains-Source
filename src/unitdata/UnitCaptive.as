@@ -59,7 +59,8 @@ package unitdata
 			
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
@@ -68,10 +69,12 @@ package unitdata
 			return obj;
 		}	
 	
-		public override function animate() {
+		public override function animate()
+		{
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			inter.command(com,val);
 		}
 		
@@ -85,16 +88,17 @@ package unitdata
 			id='cage';
 			nazv=Res.txt('u',id);
 			npc=false;
-			location.takeXP(500,World.world.gg.X, World.world.gg.Y-100,true);
+			room.takeXP(500,World.world.gg.X, World.world.gg.Y-100,true);
 			fraction=0;
 			if (questId) {
-				if (location.land.itemScripts[questId]) location.land.itemScripts[questId].start();
+				if (room.level.itemScripts[questId]) room.level.itemScripts[questId].start();
 				World.world.game.incQuests(questId);
 			}
 			statusCapt=1;
 		}
 		
-		public override function control() {
+		public override function control()
+		{
 			if (statusCapt>0 || novoi) return;
 			t_replic--;
 			if (t_replic<=0) {

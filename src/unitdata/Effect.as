@@ -5,6 +5,7 @@ package unitdata
 
 	import graphdata.Emitter;
 	
+	import components.Settings;
 	
 	public class Effect 
 	{
@@ -54,7 +55,7 @@ package unitdata
 			{
 				tip=node.@tip;
 				t=node.@t*30;
-				if (World.world.testEff) t=node.@t*3;
+				if (Settings.testEff) t=node.@t*3;
 				if (val==0) val=node.@val;
 				if (node.sk.length()) params=true;
 				if (node.@post.length()) post=node.@post;
@@ -294,7 +295,7 @@ package unitdata
 			}
 			if (id == 'blindness' && player) 
 			{
-				if (owner.sost<4) Emitter.emit('blind',owner.location,owner.X-300+Math.random()*600,owner.Y-200+Math.random()*400);
+				if (owner.sost<4) Emitter.emit('blind',owner.room,owner.X-300+Math.random()*600,owner.Y-200+Math.random()*400);
 			}
 			if (id == 'chemburn') 
 			{
@@ -303,11 +304,11 @@ package unitdata
 			if (id == 'drunk' && lvl>3) 
 			{
 				owner.damage(val,Unit.D_POISON,null,true);
-				Emitter.emit('poison',owner.location,owner.X+owner.storona*20,owner.Y-40);
+				Emitter.emit('poison',owner.room,owner.X+owner.storona*20,owner.Y-40);
 			}
 			if (id == 'namok') 
 			{
-				if (!owner.isPlav && owner.sost < 4) Emitter.emit('kap',owner.location,owner.X,owner.Y-owner.scY*0.25,{md:0.1});
+				if (!owner.isPlav && owner.sost < 4) Emitter.emit('kap',owner.room,owner.X,owner.Y-owner.scY*0.25,{md:0.1});
 			}
 			if (id == 'hydra' && owner.sost==1) 
 			{
@@ -321,14 +322,14 @@ package unitdata
 			}
 			if (id == 'inhibitor') 
 			{
-				for each (var un:Unit in owner.location.units) 
+				for each (var un:Unit in owner.room.units) 
 				{
 					if (owner.isMeet(un) && un.fraction != owner.fraction && un.rasst2 < val * val) un.slow = 40;
 				}
 			}
 			if (id == 'fetter') 
 			{
-				Emitter.emit('slow', owner.location, (owner as UnitPlayer).fetX, (owner as UnitPlayer).fetY);
+				Emitter.emit('slow', owner.room, (owner as UnitPlayer).fetX, (owner as UnitPlayer).fetY);
 			}
 		}
 
@@ -336,7 +337,7 @@ package unitdata
 		{
 			if (id == 'burning') 
 			{
-				if (owner.sost<4) Emitter.emit('flame', owner.location, owner.X, owner.Y - owner.scY / 2);
+				if (owner.sost<4) Emitter.emit('flame', owner.room, owner.X, owner.Y - owner.scY / 2);
 			}
 			if (id == 'sacrifice' && t == 5) 
 			{

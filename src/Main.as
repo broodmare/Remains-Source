@@ -23,14 +23,14 @@ package
 		public function Main() 
 		{
 			stage.scaleMode = "noScale";
-			stage.align=StageAlign.TOP_LEFT;
-			stage.color=0;
+			stage.align 	= StageAlign.TOP_LEFT;
+			stage.color 	= 0;
 
 			var myMenu:ContextMenu = new ContextMenu();
 			myMenu.hideBuiltInItems();
-			myMenu.builtInItems.quality=true;
+			myMenu.builtInItems.quality = true;
 			contextMenu = myMenu;
-			myMenu.customItems.push(new ContextMenuItem("Hello!",false,true,false));
+			myMenu.customItems.push(new ContextMenuItem("Hello!", false, true, false));
 
 			stop();
 
@@ -39,17 +39,20 @@ package
 		
 		public function onEnterFrameLoader(event:Event):void
 		{
-			var bLoaded:uint = loaderInfo.bytesLoaded;
-			var bTotal:uint = loaderInfo.bytesTotal;
+			var bLoaded:Number = loaderInfo.bytesLoaded;
+			var bTotal:Number = loaderInfo.bytesTotal;
 			zastavka.alpha = 1;
-			zastavka.progres.text = 'Loading '+Math.round(bLoaded / bTotal*100)+'%';
+			zastavka.progres.text = 'Loading '+Math.round(bLoaded / bTotal * 100)+'%';
 
 			if (bLoaded >= bTotal)
 			{
-				zastavka.visible=false;
+				zastavka.visible = false;
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 				nextFrame();
+
+				trace('Main.as/Main() - Creating new mainMenu...');
 				mainMenu = new MainMenu(this);
+				
 			}
 		}
 

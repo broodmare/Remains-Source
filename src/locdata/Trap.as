@@ -6,6 +6,8 @@ package locdata
 	
 	import unitdata.Unit;
 	
+	import components.Settings;
+	
 	public class Trap extends Obj
 	{
 
@@ -22,9 +24,9 @@ package locdata
 		var anim:Boolean=false;
 
 
-		public function Trap(nloc:Location, nid:String, nx:int=0, ny:int=0) 
+		public function Trap(newRoom:Room, nid:String, nx:int=0, ny:int=0) 
 		{
-			location=nloc;
+			room=newRoom;
 			layer=0;
 			prior=1;
 			id=nid;
@@ -48,20 +50,20 @@ package locdata
 			} 
 			else 
 			{
-				Y1=Y-World.tilePixelHeight, Y2=Y1+scY;
+				Y1=Y-Settings.tilePixelHeight, Y2=Y1+scY;
 			}
 			vis.x=X, vis.y=Y;
 			vis2.x=X, vis2.y=Y;
-			cTransform=location.cTransform;
+			cTransform=room.cTransform;
 			bindTile();
 		}
 		
-		public function getXmlParam() 
+		public function getXmlParam()
 		{
 			var node:XML=AllData.d.obj.(@id==id)[0];
 			nazv=Res.txt('u',id);
-			if (node.@sX>0) scX=node.@sX; else scX=node.@size*World.tilePixelWidth;
-			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*World.tilePixelHeight;
+			if (node.@sX>0) scX=node.@sX; else scX=node.@size*Settings.tilePixelWidth;
+			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*Settings.tilePixelHeight;
 			dam=node.@damage;
 			if (node.@tipdam.length()) tipDamage=node.@tipdam;
 			if (node.@anim.length()) anim=true;
@@ -70,7 +72,7 @@ package locdata
 			if (node.@bind.length()) spBind=node.@bind;
 		}
 		
-		public override function addVisual() 
+		public override function addVisual()
 		{
 			if (vis) {
 				World.world.grafon.canvasLayerArray[layer].addChild(vis);
@@ -88,36 +90,37 @@ package locdata
 				}
 			}
 		}
-		public override function remVisual() 
+		public override function remVisual()
 		{
 			super.remVisual();
 			if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
 		}
 		
-		public override function step() 
+		public override function step()
 		{
-			if(!location.locationActive) return;
-			for each (var un:Unit in location.units) 
+			if(!room.roomActive) return;
+			for each (var un:Unit in room.units) 
 			{
 				if (!un.activateTrap || un.sost==4) continue;
 				attKorp(un);
 			}
 		}
 		
-		public function bindTile() {
+		public function bindTile()
+		{
 			if (spBind==1) 	//прикрепление к полу
 			{
-				location.getAbsTile(X,Y+10).trap=this;
+				room.getAbsTile(X,Y+10).trap=this;
 			}
 			if (spBind==2) 	//прикрепление к потолку
 			{
-				location.getAbsTile(X,Y-50).trap=this;
+				room.getAbsTile(X,Y-50).trap=this;
 			}
 		}
 		
-		public override function die(sposob:int=0) 
+		public override function die(sposob:int=0)
 		{
-			location.remObj(this);
+			room.remObj(this);
 		}
 		
 		public function attKorp(cel:Unit):Boolean 
@@ -125,12 +128,12 @@ package locdata
 			if (cel==null || cel.neujaz) return false;
 			if (spDam==1 && !cel.isFly && cel.dy>8 && cel.X<=X2 && cel.X>=X1 && cel.Y<=Y2 && cel.Y>=Y1) 	//шипы
 			{
-				cel.damage(cel.massa*cel.dy/20*dam*(1+location.locDifLevel*0.1), tipDamage);
+				cel.damage(cel.massa*cel.dy/20*dam*(1+room.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
 			if (spDam==2 && !cel.isFly && (cel.dy+cel.osndy<0) && cel.X<=X2 && cel.X>=X1 && cel.Y1<=Y2 && cel.Y1>=Y1) 	//шипы
 			{	
-				cel.damage(cel.massa*dam*(1+location.locDifLevel*0.1), tipDamage);
+				cel.damage(cel.massa*dam*(1+room.locDifLevel*0.1), tipDamage);
 				cel.neujaz=cel.neujazMax;
 			}
 			return true;

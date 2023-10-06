@@ -4,7 +4,7 @@ package roomdata {
 		
 		public function RoomsStable() {
 		}
-		public var rooms:XML=<all>
+		public var roomContainer:XML=<all>
   <room name="лаборатория">
     <a>JP.JP.JP.JP.JP.JP.JP.JP.JP.JP.JP._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P</a>
     <a>JP._P._P._P._P._P._P._P._P._P.JP._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P._P</a>

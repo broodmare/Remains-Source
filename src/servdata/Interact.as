@@ -9,6 +9,8 @@ package servdata
 	import unitdata.UnitPlayer;
 	import graphdata.Emitter;
 	
+	import components.Settings;
+	
 	public class Interact 
 	{
 		
@@ -16,7 +18,7 @@ package servdata
 		
 		var inited:Boolean=false;
 		public var owner:Obj;
-		public var location:Location;
+		public var room:Room;
 		public var X:Number, Y:Number;
 		
 		public var active:Boolean=true;	// object is active
@@ -112,11 +114,9 @@ package servdata
 		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) 
 		{
 			owner=own;
-			location=owner.location;
+			room=owner.room;
 			X=own.X, Y=own.Y;
 			xml=nxml;
-			//var rnd:Boolean=false;
-			//if (location && location.land.rnd) 
 			var rnd=true;
 			if (xml && xml.@set.length()) rnd=false;	// if the set property is specified as '1', there won't be random parameters
 			// lock type
@@ -134,11 +134,11 @@ package servdata
 						if (node.@lockch.length()==0 || Math.random()<Number(node.@lockch)) 
 						{
 							if (lockTip==1 || lockTip==2) {
-								lock=Math.floor(lk+(0.3+Math.random())*location.locksLevel);
+								lock=Math.floor(lk+(0.3+Math.random())*room.locksLevel);
 							} 
 							else 
 							{
-								lock=Math.floor(lk+Math.random()*location.mechLevel);
+								lock=Math.floor(lk+Math.random()*room.mechLevel);
 							}
 						}
 						if (Math.random()<lk-Math.floor(lk)) lock+=1;
@@ -159,9 +159,9 @@ package servdata
 					{
 						if (node.@minech.length()) 
 						{
-							if (Math.random()<Number(node.@minech))	mine=Math.floor(Math.random()*(Number(node.@mine)+Math.random()*location.mechLevel+1));
+							if (Math.random()<Number(node.@minech))	mine=Math.floor(Math.random()*(Number(node.@mine)+Math.random()*room.mechLevel+1));
 						} 
-						else mine=Math.floor(Number(node.@mine)+Math.random()*location.mechLevel);
+						else mine=Math.floor(Number(node.@mine)+Math.random()*room.mechLevel);
 						if (mine>=2 && Math.random()<0.25) mine--;
 					} 
 					else 
@@ -233,28 +233,28 @@ package servdata
 					begX=X, begY=Y;
 					if (xml.move.@dx.length()) 
 					{
-						if (location && location.mirror) endX=X-xml.move.@dx*World.tilePixelWidth;
-						else endX=X+xml.move.@dx*World.tilePixelWidth;
+						if (room && room.mirror) endX=X-xml.move.@dx*Settings.tilePixelWidth;
+						else endX=X+xml.move.@dx*Settings.tilePixelWidth;
 					} else endX=endX2=X;
-					if (xml.move.@dy.length()) endY=Y+xml.move.@dy*World.tilePixelHeight;
+					if (xml.move.@dy.length()) endY=Y+xml.move.@dy*Settings.tilePixelHeight;
 					else endY=Y;
 					if (xml.move.@tstay.length()) tStay=xml.move.@tstay;
 					if (xml.move.@tmove.length()) tMove=xml.move.@tmove;
 					if (xml.move.@on.length()) moveSt=4;
 				}
 			}
-			if (location && location.base && cont!=null && !noBase) 
+			if (room && room.base && cont!=null && !noBase) 
 			{
 				cont=null;
 				lock=mine=saveMine=saveLock=0;
 				action=0;
 				active=false;
 			}
-			if (location && (location.homeStable) && !noBase) 
+			if (room && (room.homeStable) && !noBase) 
 			{
 				lock=mine=saveMine=saveLock=0;
 			}
-			if (location && (location.homeAtk) && !noBase) 
+			if (room && (room.homeAtk) && !noBase) 
 			{
 				lock=mine=saveMine=saveLock=0;
 				if (cont && own is Box) {
@@ -269,7 +269,7 @@ package servdata
 				{
 					if (low>0 && Math.random()<low) lock=Math.ceil(lock*0.5);
 					if (lock>maxLockLvl) lock=maxLockLvl;
-					if (lock>0 && low<=0 && own && own.location && own.location.land.rnd && own.location.prob==null && Math.random()<0.2) lock+=Math.floor(Math.random()*2)+2;
+					if (lock>0 && low<=0 && own && own.room && own.room.level.rnd && own.room.prob==null && Math.random()<0.2) lock+=Math.floor(Math.random()*2)+2;
 					//определить уровень замка
 					if (lock>2 && lockLevel==0) 
 					{
@@ -293,14 +293,14 @@ package servdata
 				} 
 				else 
 				{
-					damage=mine*50*(0.8+Math.random()*0.4)*(1+location.locDifLevel*0.1);
+					damage=mine*50*(0.8+Math.random()*0.4)*(1+room.locDifLevel*0.1);
 					fiascoRemine=explosion;
 				}
 				if (!difSet) allDif+=mine*2;
 			}
-			if (location) 
+			if (room) 
 			{
-				damdis=30+location.mechLevel*20;
+				damdis=30+room.mechLevel*20;
 			}
 			if (expl>0) 
 			{
@@ -317,7 +317,7 @@ package servdata
 				fiascoRemine=alarm2;
 				if (owner) 
 				{
-					area=new Area(location);
+					area=new Area(room);
 					owner.copy(area);
 					area.tip='raider';
 					area.over=alarm2;
@@ -362,8 +362,8 @@ package servdata
 			{
 				if (t_budilo%30==0) 
 				{
-					location.budilo(owner.X,owner.Y,1500);
-					Emitter.emit('laser2',location,owner.X,owner.Y-owner.scY+20);
+					room.budilo(owner.X,owner.Y,1500);
+					Emitter.emit('laser2',room,owner.X,owner.Y-owner.scY+20);
 					Snd.ps('alarm',X,Y);
 				}
 				t_budilo--;
@@ -373,7 +373,7 @@ package servdata
 				if (t_sign<=0) 
 				{
 					t_sign=30;
-					if (World.world.helpMess) Emitter.emit('sign'+sign,location,owner.X,owner.Y-owner.scY/2);
+					if (Settings.helpMess) Emitter.emit('sign'+sign,room,owner.X,owner.Y-owner.scY/2);
 				}
 				t_sign--;
 			}
@@ -531,7 +531,7 @@ package servdata
 					active=false;
 					owner.setVisState('open');
 				}
-				if (location && location.prob && location.locationActive) location.prob.check();
+				if (room && room.prob && room.roomActive) room.prob.check();
 			}
 			if (a=='expl') 
 			{
@@ -813,7 +813,7 @@ package servdata
 				{
 					World.world.invent.minusItem(cons);
 					World.world.gui.infoText('usedCons', Res.txt('i',cons));
-					if (cons=='empbomb') Emitter.emit('impexpl',location,owner.X, owner.Y-owner.scY/2);
+					if (cons=='empbomb') Emitter.emit('impexpl',room,owner.X, owner.Y-owner.scY/2);
 				} 
 				else 
 				{
@@ -845,7 +845,7 @@ package servdata
 				allAct();
 			}
 			
-			if (location && location.prob) location.prob.check();
+			if (room && room.prob) room.prob.check();
 			if (scrAct) scrAct.start();
 			update();
 		}
@@ -927,7 +927,7 @@ package servdata
 		{
 			if (saveExpl) return;
 			var un:Unit=new Unit();
-			un.location=location;
+			un.room=room;
 			var bul:Bullet=new Bullet(un,owner.X,owner.Y,null,false);
 			bul.iExpl(damage,destroy,explRadius);
 			setAct('expl',1);
@@ -942,7 +942,7 @@ package servdata
 		{
 			World.world.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
 			//damage(,Unit.D_SPARK);
-			//Emitter.emit('moln',location,owner.X,owner.Y-owner.scY/2,{celx:World.world.gg.X, cely:(World.world.gg.Y-World.world.gg.scY/2)});
+			//Emitter.emit('moln',room,owner.X,owner.Y-owner.scY/2,{celx:World.world.gg.X, cely:(World.world.gg.Y-World.world.gg.scY/2)});
 			//Snd.ps('electro',X,Y);
 			damdis+=50;
 			if (damdis>500) damdis=500;
@@ -954,8 +954,8 @@ package servdata
 			if (saveExpl) return;
 			t_budilo=240;
 			setAct('expl',1);
-			location.signal();
-			location.robocellActivate();
+			room.signal();
+			room.robocellActivate();
 		}
 		
 		// Unsuccessful attempt to disable the alarm button
@@ -963,7 +963,7 @@ package servdata
 		{
 			if (allact!='alarm') return;
 			t_budilo=240;
-			location.signal();
+			room.signal();
 			area=null;
 			active=false;
 			allact='';
@@ -974,14 +974,14 @@ package servdata
 		// Unsuccessful attempt to hack the robot cell - alarm
 		public function robocellFail() 
 		{
-			location.robocellActivate();
+			room.robocellActivate();
 		}
 		
 		// Create a robot
 		public function genRobot() 
 		{
 			if (allact!='robocell') return;
-			location.createUnit('robot',X,Y,true,null,null,30);
+			room.createUnit('robot',X,Y,true,null,null,30);
 			allact='';
 			update();
 			owner.setVisState('active');
@@ -1045,43 +1045,43 @@ package servdata
 					World.world.gui.infoText('noOutLoc',null,null,false);
 					return;
 				}
-				location.land.gotoProb(prob, owner.X, owner.Y);
+				room.level.gotoProb(prob, owner.X, owner.Y);
 			} 
 			else if (allact=='probreturn') 
 			{
-				if (location.landProb!='') 
+				if (room.levelProb!='') 
 				{
 					if (World.world.possiblyOut()==2) 
 					{
 						World.world.gui.infoText('noOutLoc',null,null,false);
 						return;
 					}
-					location.land.gotoProb('', owner.X, owner.Y);
+					room.level.gotoProb('', owner.X, owner.Y);
 				}
 			} 
 			else if (allact=='hack_robot') 
 			{
 				World.world.gui.infoText('term1Act');
 				World.world.gui.bulb(X,Y);
-				for each (var un:Unit in owner.location.units) un.hack(World.world.pers.security);				
+				for each (var un:Unit in owner.room.units) un.hack(World.world.pers.security);				
 			} 
 			else if (allact=='hack_lock') 
 			{
 				World.world.gui.infoText('term2Act');
 				World.world.gui.bulb(X,Y);
-				for each (var obj:Obj in owner.location.objs) 
+				for each (var obj:Obj in owner.room.objs) 
 				{
 					if (obj.inter) obj.inter.command('hack');
 				}
 			} 
 			else if (allact=='prob_help') 
 			{
-				if (location.prob) location.prob.showHelp();
+				if (room.prob) room.prob.showHelp();
 			} 
 			else if (allact=='electro_check') 
 			{
-				location.electroCheck();
-				if (location.electroDam<=0) World.world.gui.infoText('electroOff',null,null,true);
+				room.electroCheck();
+				if (room.electroDam<=0) World.world.gui.infoText('electroOff',null,null,true);
 				else World.world.gui.infoText('electroOn',null,null,true);
 			} 
 			else if (allact=='comein') 
@@ -1128,7 +1128,7 @@ package servdata
 			else if (allact=='vault') 
 			{
 				World.world.pip.onoff(9);
-			} else owner.location.allAct(owner,allact,allid);
+			} else owner.room.allAct(owner,allact,allid);
 		}
 		
 		// Start of prolonged action on the object
@@ -1142,12 +1142,12 @@ package servdata
 		
 		public function shine() 
 		{
-			Emitter.emit('unlock',location,owner.X,owner.Y-owner.scY/2,{kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
+			Emitter.emit('unlock',room,owner.X,owner.Y-owner.scY/2,{kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
 		}
 		
 		public function signal(n:String) 
 		{
-			Emitter.emit(n,location,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
+			Emitter.emit(n,room,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
 		}
 		
 		
@@ -1190,7 +1190,7 @@ package servdata
 				else if (knop && action==0) 
 				{
 					setAct('open',1);
-					if (location.prob) location.prob.check();
+					if (room.prob) room.prob.check();
 				} 
 				else actOsn();
 			}
@@ -1359,7 +1359,7 @@ package servdata
 		
 		public function loot(impOnly:Boolean=false) 
 		{
-			if (location==null || cont=='empty') return;
+			if (room==null || cont=='empty') return;
 			X=owner.X, Y=owner.Y-owner.scY/2;
 			var kol:int, imp:int;
 			var is_loot=false;
@@ -1377,7 +1377,7 @@ package servdata
 						imp_loot=2;
 					} 
 					else imp=1;
-					LootGen.lootId(location,X,Y,item.@id,kol,imp,this,lootBroken);
+					LootGen.lootId(room,X,Y,item.@id,kol,imp,this,lootBroken);
 					is_loot=true;
 				}
 			}
@@ -1386,15 +1386,15 @@ package servdata
 			{
 				if (owner is Unit) 
 				{
-					is_loot=LootGen.lootDrop(location,X,Y,cont,(owner as Unit).hero) || is_loot;
+					is_loot=LootGen.lootDrop(room,X,Y,cont,(owner as Unit).hero) || is_loot;
 				} 
 				else 
 				{
-					is_loot=LootGen.lootCont(location,X,Y,cont,lootBroken,prize?allDif:50) || is_loot;
+					is_loot=LootGen.lootCont(room,X,Y,cont,lootBroken,prize?allDif:50) || is_loot;
 					// Give experience points
 					if (!lootBroken && allDif>0 && xp>0) 
 					{
-						location.takeXP(Math.round(xp*(allDif+1)),X,Y);
+						room.takeXP(Math.round(xp*(allDif+1)),X,Y);
 					}
 				}
 			}

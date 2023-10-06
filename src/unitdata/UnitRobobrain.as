@@ -22,7 +22,8 @@ package unitdata
 			if (quiet) id_replic='';
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
@@ -41,7 +42,8 @@ package unitdata
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-40;
 		}

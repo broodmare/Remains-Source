@@ -4,10 +4,12 @@ package unitdata
 	import flash.display.MovieClip;
 	
 	import weapondata.*;
-	import locdata.Location;
+	import locdata.Room;
 	import servdata.BlitAnim;
 	import servdata.LootGen;
 	import graphdata.Emitter;
+	
+	import components.Settings;
 	
 	public class UnitBossEncl extends UnitPon{
 		
@@ -64,21 +66,24 @@ package unitdata
 			aiNapr=storona;
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			super.die(3);
 			coord['liv'+tr]=false;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
-			if (nloc.unitCoord==null) {
-				nloc.unitCoord=new Coord(nloc);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
+			if (newRoom.unitCoord==null) {
+				newRoom.unitCoord=new Coord(newRoom);
 			}
-			coord=nloc.unitCoord;
+			coord=newRoom.unitCoord;
 			coord['liv'+tr]=true;
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
@@ -91,7 +96,8 @@ package unitdata
 			} 
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			var revers:Boolean=false;
 			if (isFly) {
@@ -110,42 +116,33 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-scY*0.58;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			super.dropLoot();
 			if (currentWeapon) {
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
 				var cid:String=currentWeapon.id;
 				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-				LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,cid,0);
+				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,cid,0);
 			}
 		}
-		
-/*		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
-			var td:Number=super.damage(dam, tip, bul,tt);
-			if (tr==2 && World.world.game.globalDif>1) {
-				var tc:int=Math.floor((maxhp-hp)/maxhp*4);
-				if (tc>called) {
-					location.enemySpawn(true,true);
-					called++;
-				}
-			}
-			return td;
-		}*/
 
 		function emit() {
-			var un:Unit=location.createUnit('vortex',X,Y-scY/2,true);
+			var un:Unit=room.createUnit('vortex',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
 			kol_emit--;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			//вернуть в исходную точку
 			if (begX>0 && begY>0) setPos(begX, begY);
@@ -168,9 +165,8 @@ package unitdata
 		//1 - летает и атакует
 		//2 - меняет оружие
 		
-		public override function control() {
-
-			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+		public override function control()
+		{
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (stun) {
@@ -181,8 +177,8 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (location.gg.invulner) return;
-			if (World.world.enemyAct<=0) {
+			if (room.gg.invulner) return;
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -193,18 +189,12 @@ package unitdata
 			else {
 					aiState=1;
 					aiTCh=Math.floor(Math.random()*60+150);
-				/*if (aiState==0 || aiState==2) {
-				} else if (aiState==1) {
-					aiState=2;
-					aiTCh=45;
-					sinDX=Math.random()*0.1+0.02;
-				}*/
 			}
 			//поиск цели
 			//trace(aiState)
 			if (aiTCh%40==1) {
-				if (location.gg.pet && location.gg.pet.sost==1 && isrnd(0.4)) setCel(location.gg.pet);
-				else setCel(location.gg);
+				if (room.gg.pet && room.gg.pet.sost==1 && isrnd(0.4)) setCel(room.gg.pet);
+				else setCel(room.gg);
 			}
 			//направление
 			storona=(celDX>0)?1:-1;
@@ -250,7 +240,8 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

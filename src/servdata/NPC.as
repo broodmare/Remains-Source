@@ -2,7 +2,9 @@ package servdata
 {
 	
 	import unitdata.UnitNPC;
-
+	
+	import components.Settings;
+	
 	public class NPC 
 	{
 
@@ -145,8 +147,8 @@ package servdata
 			if (xml && xml.dial.length()) {
 				for each (var dial in xml.dial) {
 					if (trig('dial_'+dial.@id)) continue;
-					if (dial.@lvl.length() && dial.@lvl>World.world.pers.level) continue; 
-					if (dial.@barter.length() && dial.@barter>World.world.pers.getSkLevel(World.world.pers.skills['barter'])) continue; 
+					if (dial.@lvl.length && dial.@lvl>World.world.pers.level) continue; 
+					if (dial.@barter.length && dial.@barter>World.world.pers.getSkLevel(World.world.pers.skills['barter'])) continue; 
 					if (dial.@trigger.length()) {
 						if (dial.@n.length()) {
 							if (trig(dial.@trigger)!=dial.@n) continue;
@@ -154,10 +156,10 @@ package servdata
 							if (trig(dial.@trigger)!=1) continue;
 						}
 					}
-					if (dial.@prev.length() && trig('dial_'+dial.@prev)!=1) continue; 
-					if (dial.@land.length() && !World.world.game.lands[dial.@land].access) continue; 
-					if (dial.@armor.length() && (World.world.gg.currentArmor==null || World.world.gg.currentArmor.id!=dial.@armor)) continue; 
-					if (dial.@pet.length() && World.world.gg.currentPet!=dial.@pet) continue; 
+					if (dial.@prev.length && trig('dial_'+dial.@prev)!=1) continue; 
+					if (dial.@level.length && !World.world.game.levelArray[dial.@level].access) continue; 
+					if (dial.@armor.length && (World.world.gg.currentArmor==null || World.world.gg.currentArmor.id!=dial.@armor)) continue; 
+					if (dial.@pet.length && World.world.gg.currentPet!=dial.@pet) continue; 
 					if (dial.@quest.length()) {						 // If a quest is active
 						var quest=World.world.game.quests[dial.@quest];
 						if (quest==null || quest.state!=1) continue; 
@@ -167,17 +169,16 @@ package servdata
 					}
 					if (us) {
 						if (dial.scr.length()) {
-							var scr:Script=new Script(dial.scr[0],World.world.land,owner,true);
-							if (World.world.dialOn) {
+							var scr:Script=new Script(dial.scr[0],World.world.level,owner,true);
+							if (Settings.dialOn) {
 								var did:String=dial.@id;
 								scr.acts.unshift({act:'dialog', val:did, t:0, n:-1, opt1:0, opt2:0, targ:""});
 							}
 							scr.acts.push({act:'trigger', val:('dial_'+dial.@id), t:0, n:1, opt1:0, opt2:0, targ:""});
 							scr.acts.push({act:'checkall', val:0, t:0, n:1, opt1:0, opt2:0, targ:""});
-							//scr.acts.push({act:'check', val:0, t:0, n:1, opt1:0, opt2:0, targ:"this"});
 							scr.start();
 						} else {
-							if (World.world.dialOn) World.world.gui.dialog(dial.@id);
+							if (Settings.dialOn) World.world.gui.dialog(dial.@id);
 							World.world.game.setTrigger('dial_'+dial.@id);
 
 						}

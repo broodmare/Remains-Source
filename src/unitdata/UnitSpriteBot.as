@@ -3,6 +3,8 @@ package unitdata
 	
 	import weapondata.Weapon;
 	
+	import components.Settings;
+	
 	public class UnitSpriteBot extends Unit
 	{
 		
@@ -25,19 +27,22 @@ package unitdata
 			childObjs=new Array(currentWeapon);
 		}
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function forces() {
+		public override function forces()
+		{
 			if (isFly) {
 				dx*=0.95;
 				dy*=0.95;
 			} else super.forces();
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f) {
 				vis.osn.gotoAndStop(1);
@@ -47,12 +52,14 @@ package unitdata
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-1;
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			super.alarma(nx,ny);
 			if (sost==1) {
 				zlo();
@@ -60,7 +67,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 		}
 		
 		public function zlo() {
@@ -75,9 +83,10 @@ package unitdata
 		//0 - летает
 		//1 - видит цель, стреляет
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -113,7 +122,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					zlo();
 					storona=(celDX>0)?1:-1;
@@ -132,7 +141,7 @@ package unitdata
 				turnY=0;
 			}
 			//атака
-			if (World.world.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
+			if (Settings.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
 				if (isrnd(0.1)) currentWeapon.attack();
 			}
 		}

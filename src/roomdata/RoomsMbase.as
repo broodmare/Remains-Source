@@ -4,7 +4,7 @@ package roomdata {
 		
 		public function RoomsMbase() {
 		}
-		public var rooms:XML=<all>
+		public var roomContainer:XML=<all>
   <room name="конец1">
     <a>A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>
     <a>_._._.A._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._.A._G._G._G._G._G._G.A</a>

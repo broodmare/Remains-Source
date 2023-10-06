@@ -4,7 +4,7 @@ package roomdata {
 		
 		public function RoomsPi() {
 		}
-		public var rooms:XML=<all>
+		public var roomContainer:XML=<all>
   <room name="помещения4_1">
     <a>A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>
     <a>A._Q._Q._Q._Q._Q._Q._Q._Q._Q._Q._Q._Q._Q._Q._Q._Q._R._R._R._R._R._R._._I._I._I._I._I._I._I._I.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>

@@ -32,19 +32,21 @@ package unitdata
 			mat=1;
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 		}
 		
-		public override function control() {
+		public override function control()
+		{
 			if (tr==1) {
 				t_part--;
 				if (t_part==0) t_part=10;
 				if (sost==1) {
 					vis.osn.gotoAndStop(1);
-					Emitter.emit('lift',location,X+(Math.random()-0.5)*scX,Y-Math.random()*scY);
+					Emitter.emit('lift',room,X+(Math.random()-0.5)*scX,Y-Math.random()*scY);
 				} else {
 					vis.osn.gotoAndStop(2);
-					if (t_part==3) Emitter.emit('explw',location,X+(Math.random()-0.5)*scX,Y-Math.random()*scY);
+					if (t_part==3) Emitter.emit('explw',room,X+(Math.random()-0.5)*scX,Y-Math.random()*scY);
 				}
 			}
 		}

@@ -5,6 +5,8 @@ package weapondata
 	import unitdata.UnitPlayer;
 	import unitdata.Pers;
 	
+	import components.Settings;
+	
 	public class WMagic extends Weapon 
 	{
 		
@@ -17,14 +19,14 @@ package weapondata
 		public override function attack(waitReady:Boolean=false):Boolean 
 		{
 			//trace('atk');
-			if (!waitReady && !World.world.alicorn && !auto && t_auto>0) 
+			if (!waitReady && !Settings.alicorn && !auto && t_auto>0) 
 			{
 				t_auto=3;
 				return false;
 			}
 			skillConf=1;
 			if (t_rel>0) return false;
-			if (owner.player && (World.world.pers.spellsPoss==0 || alicorn && !World.world.alicorn)) 
+			if (owner.player && (World.world.pers.spellsPoss==0 || alicorn && !Settings.alicorn)) 
 			{
 				World.world.gui.infoText('noSpells');
 				World.world.gui.bulb(X,Y);
@@ -71,7 +73,7 @@ package weapondata
 			return true;
 		}
 		
-		public override function setPers(gg:UnitPlayer, pers:Pers) 
+		public override function setPers(gg:UnitPlayer, pers:Pers)
 		{
 			super.setPers(gg,pers);
 			dmana=mana*pers.allDManaMult*pers.warlockDManaMult;
@@ -103,7 +105,7 @@ package weapondata
 			return b;
 		}
 		
-		public override function animate() 
+		public override function animate()
 		{
 			
 			if (!vis) return;

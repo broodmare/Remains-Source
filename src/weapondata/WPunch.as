@@ -14,7 +14,7 @@ package weapondata
 			vBullet=visualPunch;
 		}
 		
-		public override function actions() 
+		public override function actions()
 		{
 			owner.setPunchWeaponPos(this);
 			if (t_attack>0) t_attack--;
@@ -62,7 +62,7 @@ package weapondata
 			return true;
 		}
 		
-		public override function animate() 
+		public override function animate()
 		{
 
 		}

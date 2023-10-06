@@ -10,31 +10,37 @@ package interdata
 	import servdata.Item;
 	import unitdata.UnitPet;
 	
+	import components.Settings;
+	
 	public class PipPageWork extends PipPage
 	{
 		
-		var assId:String=null;
+		var assId:String = null;
 		var assArr:Array;
 		
 		var owlRep:int=100;
 
-		public function PipPageWork(npip:PipBuck, npp:String) {
+		public function PipPageWork(npip:PipBuck, npp:String) 
+		{
 			isLC=true;
 			itemClass=visPipInvItem;
 			super(npip,npp);
 			vis.but4.visible=vis.but5.visible=false;
-			//vis.butOk.addEventListener(MouseEvent.CLICK,showH);
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override function setSubPages()
+		{
 			if (pip.workTip=='mworklab') pip.workTip='lab';
 			if (pip.workTip=='mworkexpl') pip.workTip='expl';
 			vis.but1.visible=vis.but2.visible=vis.but3.visible=true;
-			if (pip.workTip=='mworkbench') {
+			if (pip.workTip=='mworkbench') 
+			{
 				vis.but1.visible=vis.but2.visible=false;
 				page2=3;
-			} else if (pip.workTip=='stove' || pip.workTip=='lab' || pip.workTip=='expl') {
+			} 
+			else if (pip.workTip=='stove' || pip.workTip=='lab' || pip.workTip=='expl') 
+			{
 				vis.but2.visible=vis.but3.visible=false;
 				page2=1;
 			}
@@ -61,7 +67,7 @@ package interdata
 					if (node==null) continue;
 					if (node.@tip=='scheme' && (node.@work.length()==0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {//node.@work=='stove' && pip.workTip=='lab' ||
 						var ok:int=1;
-						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
+						if (node.@skill.length && node.@lvl.length && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
 						var wid:String=s.substr(2);
 						if (inv.weapons[wid]) {
 							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) {
@@ -168,7 +174,8 @@ package interdata
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override function setStatItem(item:MovieClip, obj:Object)
+		{
 			item.rid.visible=false;
 			item.id.text=obj.id;
 			item.cat.text=obj.tip;
@@ -192,7 +199,8 @@ package interdata
 		
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override function statInfo(event:MouseEvent)
+		{
 			assId=null;
 			if (page2==1) {
 				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text, 1);
@@ -218,17 +226,19 @@ package interdata
 			}
 		}
 		
-		function showBottext(cid) {
+		function showBottext(cid)
+		{
 			if (inv.items[cid]) {
 				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+yel(inv.items[cid].kol);
-				if (World.world.location.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.pipText('invault')+')';
+				if (World.world.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.pipText('invault')+')';
 			} else {
 				vis.bottext.htmlText='';
 			}
 		}
 		
-		function checkScheme(sch:XML):Boolean {
-			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
+		function checkScheme(sch:XML):Boolean
+		{
+			if (sch.@skill.length && sch.@lvl.length && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
 				World.world.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
 			}
@@ -242,13 +252,15 @@ package interdata
 		}
 		
 		//вычесть нужное для крафта количество компонентов
-		function minusCraftComp(sch) {
+		function minusCraftComp(sch)
+		{
 			for each(var c in sch.craft) {
 				inv.minusItem(c.@id,c.@kol,false);
 			}
 		}
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent)
+		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
 				return;
@@ -305,19 +317,21 @@ package interdata
 					World.world.gui.infoText('created2',cnazv,inv.items[cid].kol);
 					infoItem(ccat,cid,cnazv, 1);
 					if (inv.items[cid].xml && inv.items[cid].xml.@one=='1') setStatus();
-					//setStatus(false);
 					setStatItem(event.currentTarget as MovieClip, obj);
 				}
 				World.world.game.checkQuests(cid);
-				if (World.world.helpMess && inv.items[cid]) {
+				if (Settings.helpMess && inv.items[cid]) {
 					var lmess:String=inv.items[cid].mess;
-					if (lmess!=null && !(World.world.game.triggers['mess_'+lmess]>0)) {
+					if (lmess!=null && !(World.world.game.triggers['mess_'+lmess]>0)) 
+					{
 						World.world.game.triggers['mess_'+lmess]=1;
 						World.world.gui.impMess(Res.txt('i',lmess),Res.txt('i',lmess,2),lmess);
 						pip.onoff(-1);
 					}
 				}
-			} else if (page2==2) {
+			} 
+			else if (page2==2) 
+			{
 				if (ccat==Item.L_ARMOR) {
 					arm=inv.armors[cid];
 					if (arm==null) return;

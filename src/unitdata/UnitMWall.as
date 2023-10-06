@@ -25,29 +25,36 @@ package unitdata
 			transT=true;
 		}
 
-		public override function expl()	{
-			Emitter.emit('pole',location,X,Y-scY/2,{kol:12,rx:scX, ry:scY});
+		public override function expl()
+		{
+			Emitter.emit('pole',room,X,Y-scY/2,{kol:12,rx:scX, ry:scY});
 		}
 		
-		public override function addVisual() {
+		public override function addVisual()
+		{
 			if (disabled) return;
-			if (vis && location && location.locationActive) World.world.grafon.canvasLayerArray[layer].addChild(vis);
+			if (vis && room && room.roomActive) World.world.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
-		public override function visDetails() {
+		public override function visDetails()
+		{
+		
 		}
 		
-		public override function control() {
+		public override function control()
+		{
 			hp-=0.2;
 			if (hp<50) vis.alpha=hp/50;
 			if (hp<=0) exterminate();
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			exterminate();
 		}		
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			expl();
 			exterminate();
 		}

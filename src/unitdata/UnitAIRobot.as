@@ -6,6 +6,8 @@ package unitdata
 	import servdata.LootGen;
 	import graphdata.Emitter;
 
+	import components.Settings;
+	
 	public class UnitAIRobot extends UnitPon
 	{
 
@@ -42,7 +44,8 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				kol_port=20;
@@ -62,7 +65,8 @@ package unitdata
 			}
 		}
 		
-		public override function save():Object {
+		public override function save():Object 
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
@@ -70,25 +74,30 @@ package unitdata
 			return obj;
 		}	
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number 
+		{
 			if (sost==1) {
 				if (aiState<=1) budilo();
 			}
 			return super.damage(dam, tip, bul,tt);
 		}
 				
-		public override function budilo(rad:Number=500) {
+		public override function budilo(rad:Number=500)
+		{
 			super.budilo(rad);
-			location.robocellActivate();
+			room.robocellActivate();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
-			if (sost==1 && aiState<=1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
+			if (sost==1 && aiState<=1) 
+			{
 				super.alarma(nx,ny);
 				aiSpok=maxSpok+10;
 				aiState=3;
@@ -108,8 +117,8 @@ package unitdata
 		//4 - стоит на месте и стреляет
 		//5 - увидел цель, тупит какое-то время
 		
-		public override function control() {
-			//var t:Tile;
+		public override function control() 
+		{
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -129,7 +138,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -164,7 +173,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel(aiState>1)) {
 					//увидели
 					if (celUnit) {
@@ -300,9 +309,9 @@ package unitdata
 				storona=(celX>X)?1:-1;
 			}
 			
-			if (Y>location.spaceY*World.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
 			
-			if ((aiState==3 || aiState==4) && World.world.enemyAct>=3) attack();
+			if ((aiState==3 || aiState==4) && Settings.enemyAct>=3) attack();
 
 		}
 		
@@ -321,15 +330,15 @@ package unitdata
 					else  nx=cel.X+cel.storona*(Math.random()*800+200);
 					ny=cel.Y+Math.random()*160-80;
 				} else {
-					nx=Math.random()*location.limX;
-					ny=Math.random()*location.limY;
+					nx=Math.random()*room.roomPixelWidth;
+					ny=Math.random()*room.roomPixelHeight;
 				}
-				nx=Math.round(nx/World.tilePixelWidth)*World.tilePixelWidth
-				ny=Math.ceil(ny/World.tilePixelHeight)*World.tilePixelHeight-1;
+				nx=Math.round(nx/Settings.tilePixelWidth)*Settings.tilePixelWidth
+				ny=Math.ceil(ny/Settings.tilePixelHeight)*Settings.tilePixelHeight-1;
 				if (nx<scX) nx=scX;
 				if (ny<scY+40) ny=scY+40;
-				if (nx>location.limX-scX) nx=location.limX-scX;
-				if (ny>location.limY-40) ny=location.limY-40;
+				if (nx>room.roomPixelWidth-scX) nx=room.roomPixelWidth-scX;
+				if (ny>room.roomPixelHeight-40) ny=room.roomPixelHeight-40;
 				if (!collisionAll(nx-X, ny-Y)) {
 					teleport(nx,ny,1);
 					dx=dy=0;

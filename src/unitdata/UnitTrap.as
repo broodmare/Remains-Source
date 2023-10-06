@@ -20,11 +20,7 @@ package unitdata
 			getXmlParam();
 			visibility=300;
 			showNumbs=false;
-			//trup=false;
 			doop=true;
-			//knocked=0.1;
-			//activateTrap=0;
-			//brake=10;
 			if (loadObj && loadObj.rearm) {
 				rearm=true;
 				fraction=F_PLAYER;
@@ -43,10 +39,12 @@ package unitdata
 			inter.update();
 		}
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',3);
 		}
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean)
+		{
 			isVis=v;
 			levitPoss=v;
 			vis.visible=v;
@@ -69,7 +67,8 @@ package unitdata
 				inter.update();
 			}
 		}
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (rearm) {
 				if (obj==null) obj=new Object();
@@ -90,12 +89,13 @@ package unitdata
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control() {
+		public override function control()
+		{
 			aiN++;
 			if (sost>1) return;
 			if (aiState==1 && !levit) { //взведена, поиск целей
 				if (aiN%5==0) {
-					for each (var un:Unit in location.units) {
+					for each (var un:Unit in room.units) {
 						if (un==null || un.activateTrap<=1 || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;
 						if (attKorp(un)) {
 							klac();

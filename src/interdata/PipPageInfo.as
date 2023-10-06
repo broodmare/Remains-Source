@@ -9,8 +9,10 @@ package interdata
 
 	import locdata.Game;
 	import locdata.Quest;
-	import locdata.LandAct;
+	import locdata.LevelTemplate;
 	import unitdata.Unit;
+	
+	import components.Settings;
 	
 	public class PipPageInfo extends PipPage
 	{
@@ -55,7 +57,7 @@ package interdata
 		}
 		
 
-		override function setSubPages() 
+		override function setSubPages()
 		{
 			vis.bottext.visible=false;
 			vis.butOk.visible=false;
@@ -73,14 +75,14 @@ package interdata
 			game=World.world.game;
 			if (page2==1) 
 			{		//карта
-				if (World.world.location.noMap) 
+				if (World.world.room.noMap) 
 				{
 					vis.emptytext.text=Res.pipText('emptymap');
 				} 
 				else 
 				{
 					vis.emptytext.text='';
-					map.bitmapData=World.world.land.drawMap();
+					map.bitmapData=World.world.level.drawMap();
 					setMapSize();
 					visMap.visible=true;
 				}
@@ -96,7 +98,7 @@ package interdata
 					}
 				}
 				if (arr.length) arr.sortOn(['state','sort','nazv']);
-				if (World.world.location && World.world.location.base) {
+				if (World.world.room && World.world.room.base) {
 					for each (var task in GameData.d.vendor.task) 
 					{
 						if (checkQuest(task)) 
@@ -118,11 +120,11 @@ package interdata
 				vis.nazv.width=287;
 				vis.info.width=332;
 				if (pip.travel) setTopText('infotravel');
-				for each (var land:LandAct in game.lands) 
+				for each (var level:LevelTemplate in game.levelArray) 
 				{
-					if (land.prob) continue;
-					land.calcProbs();
-					var sim:MovieClip=visWMap[land.id];
+					if (level.prob) continue;
+					level.calcProbs();
+					var sim:MovieClip=visWMap[level.id];
 					if (sim) 
 					{
 						sim.alpha=1;
@@ -137,22 +139,22 @@ package interdata
 						}
 						try 
 						{
-							sim.sim.gotoAndStop(land.id);
+							sim.sim.gotoAndStop(level.id);
 						} 
 						catch (err) 
 						{
 							sim.sim.gotoAndStop(1);
 						}
-						//trace(land.id, World.world.testMode);
-						if (land.test && !World.world.testMode) continue;
-						if (!game.checkTravel(land.id)) sim.alpha=0.5;
-						if (World.world.testMode && !land.visited && !land.access) sim.alpha=0.3;
-						if (World.world.helpMess && !land.visited && land.access) 
+						//trace(level.id, Settings.testMode);
+						if (level.test && !Settings.testMode) continue;
+						if (!game.checkTravel(level.id)) sim.alpha=0.5;
+						if (Settings.testMode && !level.visited && !level.access) sim.alpha=0.3;
+						if (Settings.helpMess && !level.visited && level.access) 
 						{
 							sim.sign.play();
 							sim.sign.visible=true;
 						}
-						if (World.world.testMode || land.visited || land.access) sim.visible=true;
+						if (Settings.testMode || level.visited || level.access) sim.visible=true;
 					}
 				}
 				vis.butOk.text.text=Res.pipText('trans');
@@ -223,7 +225,7 @@ package interdata
             return (element.kol>=0 || element.cat=='1');
         }		
 		//один эемент списка
-		override function setStatItem(item:MovieClip, obj:Object) 
+		override function setStatItem(item:MovieClip, obj:Object)
 		{
 			item.id.text=obj.id;
 			item.id.visible=false;
@@ -276,14 +278,13 @@ package interdata
 		override function statInfo(event:MouseEvent) //информация об элементе
 		{
 			vis.info.y=vis.ico.y;
-			//vis.info.condenseWhite=false;
 			if (page2==2) 
 			{
 				vis.info.htmlText=infoQuest(event.currentTarget.id.text);
 			} 
 			else if (page2==3) 
 			{
-				var l:LandAct=game.lands[event.currentTarget.name];
+				var l:LevelTemplate=game.levelArray[event.currentTarget.name];
 				if (l==null) return;
 				vis.nazv.text=Res.txt('m',l.id);
 				var s:String=Res.txt('m',l.id,1);
@@ -305,14 +306,18 @@ package interdata
 				}
 				if (World.world.pers.speedShtr>=1) s+='\n'+Res.pipText('speedshtr0');
 				vis.info.htmlText=s;
-			} else if (page2==4) {
+			} 
+			else if (page2==4) 
+			{
 				vis.info.y=vis.nazv.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.world.pers.persName);
 				s=s.replace(/\[/g,"<span class='yel'>");
 				s=s.replace(/\]/g,"</span>");
 				vis.info.htmlText=s;
-			} else if (page2==5) {
+			} 
+			else if (page2==5) 
+			{
 				if (vis.ico.numChildren>0) vis.ico.removeChildAt(0);
 				Unit.initIco(event.currentTarget.id.text)
 				if (Unit.arrIcos[event.currentTarget.id.text]) vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
@@ -322,16 +327,16 @@ package interdata
 				vis.ico.x=685-vis.ico.width/2; //460 910
 			}
 			if (vis.scText) vis.scText.visible=false;
-			if (vis.info.height<vis.info.textHeight && vis.scText) {
+			if (vis.info.height<vis.info.textHeight && vis.scText) 
+			{
 				vis.scText.scrollPosition=0;
 				vis.scText.maxScrollPosition=vis.info.maxScrollV;
 				vis.scText.visible=true;
-				//vis.info.scaleX=vis.info.scaleY=0.8;
-				//vis.info.height=vis.info.textHeight+5;
 			}
 		}
 		
-		function getParam(un, pun, cat:String, param:String):* {
+		function getParam(un, pun, cat:String, param:String):* 
+		{
 			if (un.length()==0) return null;
 			if (un[cat].length() && un[cat].attribute(param).length()) return un[cat].attribute(param);
 			if (pun==null || pun.length()==0) return null;
@@ -339,7 +344,8 @@ package interdata
 			return null;
 		}
 		
-		function infoUnit(id:String, kol):String {
+		function infoUnit(id:String, kol):String 
+		{
 			var n:int=0, delta;
 			//юнит
 			var un=AllData.d.unit.(@id==id);
@@ -352,7 +358,6 @@ package interdata
 			if (delta==null) delta=5;
 			if (delta<=0) n=10;
 			else n=Math.floor(int(kol)/delta);
-			//n=10;
 			
 			var v_hp=getParam(un,pun,'comb','hp');
 			var v_skin=getParam(un,pun,'comb','skin');
@@ -369,44 +374,58 @@ package interdata
 			var v_stipdam=getParam(un,pun,'vis','stipdam');
 			
 			var s:String='\n';
-			if (un.comb.length()) {
+			if (un.comb.length()) 
+			{
 				var node=un.comb[0];
-				if (n>=1) {
+				if (n>=1) 
+				{
 					//ХП
 					s+=Res.pipText('hp')+': '+yel(v_hp)+'\n';
 					//порог урона и броня
 					if (v_skin) 	s+=Res.pipText('skin')+': '+yel(v_skin)+'\n';
-					if (v_aqual) {
+					if (v_aqual) 
+					{
 						if (v_armor) 	s+=Res.pipText('armor')+': '+yel(v_armor)+' ('+(v_aqual*100)+'%)  ';
 						if (v_marmor) 	s+=Res.pipText('marmor')+': '+yel(v_marmor)+' ('+(v_aqual*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
-				if (n>=2) {
-					if ((v_visdam==1 || v_visdam==3) && v_damage) {
+				if (n>=2) 
+				{
+					if ((v_visdam==1 || v_visdam==3) && v_damage) 
+					{
 						s+=Res.pipText('dam_melee')+': ';
 						if (v_tipdam) s+=blue(Res.pipText('tipdam'+v_tipdam)); else s+=blue(Res.pipText('tipdam2'));
 						s+=' ('+yel(v_damage)+')\n'
 					}
-					if ((v_visdam==2 || v_visdam==3) && v_sdamage) {
+					if ((v_visdam==2 || v_visdam==3) && v_sdamage) 
+					{
 						s+=Res.pipText('dam_shoot')+': ';
 						if (v_stipdam) s+=blue(Res.pipText('tipdam'+v_stipdam)); else s+=blue(Res.pipText('tipdam0'));
 						s+=' ('+yel(v_sdamage)+')\n'
 					}
-					if (un.w.length()) {
+					if (un.w.length()) 
+					{
 						var wk:Boolean=false;
-						for each (var weap in un.w) {
-							if (!(weap.@no>0)) {// && Res.istxt('w', weap.@id)) {
+						for each (var weap in un.w) 
+						{
+							if (!(weap.@no>0)) 
+							{
 								if (wk) s+=', ';
 								else s+=Res.pipText('enemy_weap')+': ';
 								s+=blue(Res.txt('w', weap.@id));
-								try {
+								try 
+								{
 									var w=AllData.d.weapon.(@id==weap.@id);
 									var dam=0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
 									s+=' ('+yel(Res.numb(dam))+')';
-								} catch (err) {};
+								} 
+								catch (err) 
+								{
+
+								};
 								wk=true;
 							}
 						}
@@ -440,29 +459,38 @@ package interdata
 			return s;
 		}
 		
-		function vulner(n:int, val:Number):String {
+		function vulner(n:int, val:Number):String 
+		{
 			return blue(Res.pipText('tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
 		}
 		
 		
-		override function itemClick(event:MouseEvent) {
-			if (pip.gamePause) {
+		override function itemClick(event:MouseEvent)
+		{
+			if (pip.gamePause) 
+			{
 				World.world.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.world.testMode)) {
-				if (targetLand!='' && visWMap[targetLand]) {
+			if (page2==3 && (pip.travel || Settings.testMode)) 
+			{
+				if (targetLand!='' && visWMap[targetLand]) 
+				{
 					visWMap[targetLand].zad.gotoAndStop(1);
 				}
 				var id=event.currentTarget.name;
-				if (game.checkTravel(id)) {
+				if (game.checkTravel(id)) 
+				{
 					targetLand=id;
 					setStatItems();
 					vis.butOk.visible=true;
-					if (targetLand!='' && visWMap[targetLand]) {
+					if (targetLand!='' && visWMap[targetLand]) 
+					{
 						visWMap[targetLand].zad.gotoAndStop(2);
 					}
-				} else {
+				} 
+				else 
+				{
 					vis.butOk.visible=false;
 					World.world.gui.infoText('noTravel');
 				}
@@ -470,21 +498,27 @@ package interdata
 			}
 		}
 		
-		function transOk(event:MouseEvent) {
+		function transOk(event:MouseEvent)
+		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==3 && (pip.travel || World.world.testMode)) {
-				if (game.lands[targetLand] && game.lands[targetLand].loaded) {
+			if (page2==3 && (pip.travel || Settings.testMode)) 
+			{
+				if (game.levelArray[targetLand] && game.levelArray[targetLand].loaded) {
 					game.beginMission(targetLand);
 					pip.onoff(-1);
-				} else {
+				} 
+				else 
+				{
 					
 				}
 			}
-			if (page2==2) {
-				for each (var task in GameData.d.vendor.task) {
+			if (page2==2) 
+			{
+				for each (var task in GameData.d.vendor.task)
+				 {
 					if (task.@man=='1') continue;
 					if (checkQuest(task)) {
 						var q:Quest=game.quests[task.@id];
@@ -495,35 +529,33 @@ package interdata
 			}
 		}
 		
-		public function onMouseDown(event:MouseEvent):void {
+		public function onMouseDown(event:MouseEvent):void 
+		{
 			visMap.vmap.startDrag();
 		}
-		public function onMouseUp(event:MouseEvent):void {
+		public function onMouseUp(event:MouseEvent):void 
+		{
 			visMap.vmap.stopDrag();
 			setMapSize();
 		}
-		public function funZoomP(event:MouseEvent):void {
+		public function funZoomP(event:MouseEvent):void 
+		{
 			mapScale++;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
-		public function funZoomM(event:MouseEvent):void {
+		public function funZoomM(event:MouseEvent):void 
+		{
 			mapScale--;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
-		public function funCenter(event:MouseEvent):void {
+		public function funCenter(event:MouseEvent):void 
+		{
 			visMap.vmap.x=visMap.fon.width/2-plTag.x;
 			visMap.vmap.y=visMap.fon.height/2-plTag.y;
 		}
 		
-		function setMapSize(cx:Number=350, cy:Number=285) {
-			/*if (isset) {
-				var s=Math.min(visPageX/map.bitmapData.width,visPageY/map.bitmapData.height);
-				if (s>=1) {
-					mapScale=Math.floor(s)
-				} else {
-					mapScale=1;
-				}
-			}*/
+		function setMapSize(cx:Number=350, cy:Number=285)
+		{
 			if (mapScale>6) mapScale=6;
 			if (mapScale<1) mapScale=1;
 			map.scaleX=map.scaleY=mapScale;
@@ -531,23 +563,27 @@ package interdata
 			var ty=(visMap.vmap.y-cy)*mapScale/ms;
 			visMap.vmap.x=tx+cx;
 			visMap.vmap.y=ty+cy;
-			plTag.x=World.world.land.ggX/World.tilePixelWidth*mapScale;
-			plTag.y=World.world.land.ggY/World.tilePixelHeight*mapScale;
+			plTag.x=World.world.level.ggX/Settings.tilePixelWidth*mapScale;
+			plTag.y=World.world.level.ggY/Settings.tilePixelHeight*mapScale;
 			ms=mapScale;
 		}
 		
-		public override function scroll(dn:int=0) {
-			if (page2==1) {
+		public override function scroll(dn:int=0)
+		{
+			if (page2==1) 
+			{
 				if (dn>0) mapScale++;
 				if (dn<0) mapScale--;
 				setMapSize(visMap.mouseX, visMap.mouseY);
 			}
 		}
 
-		function funWMapClick(event:MouseEvent) {
+		function funWMapClick(event:MouseEvent)
+		{
 			trace(event.currentTarget.name);
 		}
-		function funWMapOver(event:MouseEvent) {
+		function funWMapOver(event:MouseEvent)
+		{
 			//trace(event.currentTarget.name);
 		}
 		

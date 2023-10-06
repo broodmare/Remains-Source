@@ -8,6 +8,8 @@ package interdata
 
 	import unitdata.Unit;
 	
+	import components.Settings;
+	
 	public class Consol 
 	{
 		public var vis:MovieClip;
@@ -47,7 +49,7 @@ package interdata
 			<a>mana X - set mana to X</a>
 			<a>die - die</a>
 			<a>check - return to the checkpoint</a>
-			<a>goto X Y - move to location with coordinates X Y</a>
+			<a>goto X Y - move to room with coordinates X Y</a>
 			<a>clear - reset some variables</a>
 			<a>map - show the entire map</a>
 			<a>black - hide/show fog of war</a>
@@ -57,7 +59,7 @@ package interdata
 			<a>emit X - summon particle X with the ~ key</a>
 			<a>refill - restock items at traders</a>
 			<a>getroom - clear the room</a>
-			<a>getloc - clear the location</a>
+			<a>getloc - clear the room</a>
 			<a>dif X - change difficulty (0-4)</a>
 			<a>st X Y - set trigger X to value Y</a>
 			<a>trigger X - get the value of trigger X</a>
@@ -154,17 +156,17 @@ package interdata
 					off();
 				}
 				if (s[0]=='hardinv') {
-					World.world.hardInv=!World.world.hardInv;
+					Settings.hardInv=!Settings.hardInv;
 				}
 				if (s[0]=='res_watcher') {	//исправление бага с наблюдателем
 					World.world.game.triggers['observer']=1;
 				}
 				if (s[0]=='mqt') {
-					World.world.chitOn=!World.world.chitOn;
+					Settings.chitOn=!Settings.chitOn;
 					World.world.saveConfig();
 					return;
 				}
-				if (!World.world.chitOn) {
+				if (!Settings.chitOn) {
 					off();
 					return;
 				}
@@ -178,7 +180,7 @@ package interdata
 				}
 				if (s[0]=='testmode') //Toggle debug testing mode.
 				{
-					World.world.testMode =! World.world.testMode;
+					Settings.testMode =! Settings.testMode;
 				}
 				if (s[0]=='dif') {
 					World.world.game.globalDif=s[1];
@@ -203,7 +205,7 @@ package interdata
 					off();
 				}
 				if (s[0]=='god') {
-					World.world.godMode=!World.world.godMode;
+					Settings.godMode=!Settings.godMode;
 				}
 				if (s[0]=='lvl' || s[0]=='level') {
 					World.world.pers.setForcLevel(s[1]);
@@ -283,41 +285,41 @@ package interdata
 					World.world.pers.setParameters();
 				}
 				if (s[0]=='check') {
-					World.world.land.gotoCheckPoint();
+					World.world.level.gotoCheckPoint();
 				}
 				if (s[0]=='goto') {
-					if (s.length==3) World.world.land.gotoXY(s[1],s[2]);
+					if (s.length==3) World.world.level.gotoXY(s[1],s[2]);
 				}
 				if (s[0]=='map') {
-					World.world.drawAllMap=!World.world.drawAllMap;
+					Settings.drawAllMap=!Settings.drawAllMap;
 				}
 				if (s[0]=='black') {
-					World.world.black=!World.world.black;
-					World.world.grafon.layerLighting.visible=World.world.black && World.world.location.black;
+					Settings.black=!Settings.black;
+					World.world.grafon.layerLighting.visible=Settings.black && World.world.room.black;
 				}
 				if (s[0]=='battle') {
-					World.world.testBattle=!World.world.testBattle;
+					Settings.testBattle=!Settings.testBattle;
 				}
 				if (s[0]=='testeff') {
-					World.world.testEff=!World.world.testEff;
+					Settings.testEff=!Settings.testEff;
 				}
 				if (s[0]=='testdam') {
-					World.world.testDam=!World.world.testDam;
+					Settings.testDam=!Settings.testDam;
 				}
 				if (s[0]=='enemy') {
-					if (World.world.enemyAct==3) World.world.enemyAct=0;
-					else World.world.enemyAct=3;
+					if (Settings.enemyAct==3) Settings.enemyAct=0;
+					else Settings.enemyAct=3;
 				}
 				if (s[0]=='lim') {
-					if (s.length==2) World.world.land.lootLimit=Number(s[1]);
+					if (s.length==2) World.world.level.lootLimit=Number(s[1]);
 				}
 				if (s[0]=='fly' || s[0]=='port' || s[0]=='emit') {
-					World.world.chit=s[0];
-					World.world.chitX=s[1];
+					Settings.chit=s[0];
+					Settings.chitX=s[1];
 				}
 				if (s[0]=='getroom') {
 					World.world.testLoot=true;
-					trace('получено опыта', World.world.location.getAll());
+					trace('получено опыта', World.world.room.getAll());
 					World.world.testLoot=false;
 				}
 				if (s[0]=='err') {
@@ -325,12 +327,12 @@ package interdata
 				}
 				if (s[0]=='getloc') {
 					World.world.testLoot=true;
-					trace('получено опыта', World.world.land.getAll());
+					trace('получено опыта', World.world.level.getAll());
 					World.world.testLoot=false;
 					//World.world.game.gotoNextLevel();			
 				}
 				if (s[0]=='alicorn') {
-					if (World.world.alicorn) World.world.gg.alicornOff();
+					if (Settings.alicorn) World.world.gg.alicornOff();
 					else World.world.gg.alicornOn();
 				}
 				if (s[0]=='st') {

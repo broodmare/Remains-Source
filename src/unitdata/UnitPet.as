@@ -6,6 +6,8 @@ package unitdata
 	import locdata.Tile;
 	import locdata.Box;
 	
+	import components.Settings;
+	
 	public class UnitPet extends Unit{
 		
 		var spd:Object;
@@ -75,17 +77,20 @@ package unitdata
 			sost=4;
 		}
 
-		public override function expl()	{
+		public override function expl()
+		{
 			if (id=='phoenix')	newPart('green_spark',25);
 			if (id=='owl')	newPart('orange_spark',25);
 			if (id=='moon')	newPart('blue_spark',25);
 		}
 		
-		public override function step() {
-			if (World.world.location.petOn) super.step();
+		public override function step()
+		{
+			if (World.world.room.petOn) super.step();
 		}
 		
-		public override function forces() {
+		public override function forces()
+		{
 			if (isFly) {
 				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
 					dx*=0.8;
@@ -94,23 +99,25 @@ package unitdata
 				if (isPlav) {
 					dy*=0.9;
 					dx*=0.9;
-					if (mater) dy+=World.ddy*ddyPlav;
+					if (mater) dy+=Settings.ddy*ddyPlav;
 				}
 			} else super.forces();
 		}
 		
 		//лечение 0-предметами, 1-радиацией
-		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true) {
+		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true)
+		{
 			if (tip==1 && (id!='phoenix' || sost>=3)) return;
 			hp+=hl;
 			if (hp>maxhp) hp=maxhp;
 			if (hl>0) visDetails();
 			if ((tip==0 || hl>=10) && active && ismess) {
-				numbEmit.cast(location,X,Y-scY/2,{txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
+				numbEmit.cast(room,X,Y-scY/2,{txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			aiState=1;
 			getFlyPoint();
@@ -118,7 +125,8 @@ package unitdata
 		}
 		
 		//настройка силы спутника
-		public override function setLevel(nlevel:int=1) {
+		public override function setLevel(nlevel:int=1)
+		{
 			level = nlevel-1;
 			var koef=hp/maxhp;
 			if (id=='phoenix') {
@@ -141,7 +149,8 @@ package unitdata
 			hp=koef*maxhp;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			if (id=='phoenix') {
 				weaponX=X+15*storona;
 				weaponY=Y-20;
@@ -153,7 +162,8 @@ package unitdata
 			magicY=weaponY;
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (oduplenie>30) vis.alpha=0;
 			else if (oduplenie>0) vis.alpha=1-oduplenie/30;
 			else vis.alpha=1;
@@ -179,7 +189,8 @@ package unitdata
 			}
 			if (hpbar) hpbar.alpha=vis.alpha;
 		}
-		public override function visDetails() {
+		public override function visDetails()
+		{
 			super.visDetails();
 			World.world.gui.setPet();
 		}
@@ -193,11 +204,11 @@ package unitdata
 			flyX=gg.X+gg.storona*rx;
 			flyY=gg.Y+ry;
 			if (flyX<60) flyX=60;
-			if (flyX>location.limX-60) flyX=location.limX-60;
+			if (flyX>room.roomPixelWidth-60) flyX=room.roomPixelWidth-60;
 			if (flyY<80) flyY=80;
-			if (flyY>location.limY-40) flyY=location.limY-40;
+			if (flyY>room.roomPixelHeight-40) flyY=room.roomPixelHeight-40;
 			if (optSit) {
-				for each (var b:Box in location.objs) {
+				for each (var b:Box in room.objs) {
 					if (b.wall==0 && b.stay && !b.invis && b.X1<flyX && b.X2>flyX && flyY-b.Y1<80 &&  flyY-b.Y1>-40) {
 						flyY=b.Y1;
 						flyX=b.X;
@@ -206,29 +217,31 @@ package unitdata
 					}
 				}
 			}
-			if (!location.collisionUnit(flyX,flyY,scX,scY)) return;
+			if (!room.collisionUnit(flyX,flyY,scX,scY)) return;
 			flyX=Math.floor(flyX/40)*40+20;
 			flyY=Math.floor(flyY/40)*40+39;
-			if (location.getAbsTile(flyX,flyY).phis==0) return;
+			if (room.getAbsTile(flyX,flyY).phis==0) return;
 			flyX+=40*gg.storona;
 			flyY+=40;
-			if (location.getAbsTile(flyX,flyY).phis==0) return;
+			if (room.getAbsTile(flyX,flyY).phis==0) return;
 			flyY+=40;
-			if (location.getAbsTile(flyX,flyY).phis==0) return;
+			if (room.getAbsTile(flyX,flyY).phis==0) return;
 			flyX+=40*gg.storona;
-			if (location.getAbsTile(flyX,flyY).phis==0) return;
+			if (room.getAbsTile(flyX,flyY).phis==0) return;
 			flyX=gg.X;
 			flyY=gg.Y-1;
 		}
 		
-		function visCelUnit(un:Unit):Boolean {
-			return location.isLine(X,Y-30,un.X,un.Y-un.scY/2);
+		function visCelUnit(un:Unit):Boolean 
+		{
+			return room.isLine(X,Y-30,un.X,un.Y-un.scY/2);
 		}
 		
-		public override function findCel(over:Boolean=false):Boolean {
+		public override function findCel(over:Boolean=false):Boolean
+		{
 			celUnit=null;
 			if (gg.invulner) return null;
-			for each (var un:Unit in location.units) {
+			for each (var un:Unit in room.units) {
 				if (un.disabled || un.sost>=3 || un.fraction==fraction || un.doop || un.invis || un.invulner || un.noAgro || un.trigDis) continue;
 				if (un is UnitTurret && un.aiState<=1) continue;
 				var tx=un.X-X;
@@ -246,11 +259,12 @@ package unitdata
 		}
 		
 		//приказ двигаться
-		public function moveTo(nx:Number, ny:Number, unmat:Boolean=false) {
+		public function moveTo(nx:Number, ny:Number, unmat:Boolean=false)
+		{
 			if (sost==4 || oduplenie>0) return;
 			tempUnmat=unmat;
 			flyBox=null;
-			if (!location.base && location.getAbsTile(nx,ny).visi<0.5) 
+			if (!room.base && room.getAbsTile(nx,ny).visi<0.5) 
 			{
 				//не лететь в неразведанное место
 				return;
@@ -263,7 +277,8 @@ package unitdata
 		}
 		
 		//приказ атаковать
-		public function atk(un:Unit) {
+		public function atk(un:Unit)
+		{
 			tempUnmat=false;
 			if (visCelUnit(un)) {
 				setCel(un);
@@ -284,7 +299,7 @@ package unitdata
 			addVisual();
 			flyX=gg.X, flyY=gg.Y-20;
 			setLevel(gg.pers.level);
-			if (location && location.units) location.units[1]=this;
+			if (room && room.units) room.units[1]=this;
 			//damage(40,Unit.D_INSIDE);
 		}
 		
@@ -297,7 +312,8 @@ package unitdata
 			remVisual();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			if (sost>=3) return;
 			if (optAutores)	World.world.gui.infoText('petDie', nazv, World.world.pers.petRes);
 			else World.world.gui.infoText('petDie2',nazv);
@@ -365,7 +381,8 @@ package unitdata
 		//4 - атакует корпусом
 		//5 - после атаки корпусом
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3 || !active) return;
 			if (stun) {
 				return;
@@ -384,7 +401,6 @@ package unitdata
 						aiState=1;
 						getFlyPoint();
 						if (optTurn) storona=(flyX>X)?1:-1;
-						//Emitter.emit('laser',location,flyX,flyY);
 					} else {
 						if (optTurn) storona=(flyX>gg.X)?-1:1;
 					}

@@ -3,7 +3,9 @@ package unitdata
 	
 	import weapondata.Weapon;
 	import graphdata.Emitter;
-	import locdata.Location;
+	import locdata.Room;
+	
+	import components.Settings;
 	
 	public class UnitTransmitter extends Unit
 	{
@@ -12,8 +14,6 @@ package unitdata
 		var dist:Number=1000, distdam:Number=400;
 		var upKoef:Number=0;
 		var prevKoef:Number=0;
-		//var shum:SoundChannel;
-		//var shumT:SoundTransform;
 		var cep:int=-1;
 
 		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
@@ -28,20 +28,21 @@ package unitdata
 			aiState=1;
 		}
 		//поместить созданный юнит в локацию
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			if (cep<0 && nloc.getAbsTile(nx, ny+10).phis==0) {
-				if (nloc.getAbsTile(nx, ny-50).phis) {
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			if (cep<0 && newRoom.getAbsTile(nx, ny+10).phis==0) {
+				if (newRoom.getAbsTile(nx, ny-50).phis) {
 					cep=1;
 					ny-=10;
 					vis.osn.gotoAndStop(2);
 					vis.osn.rotation=90;
 					fixed=true;
-				} else if (nloc.getAbsTile(nx-40, ny-10).phis) {
+				} else if (newRoom.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
 					nx-=(40-scX)/2-1;
 					vis.osn.gotoAndStop(2);
 					fixed=true;
-				} else if (nloc.getAbsTile(nx+40, ny-10).phis) {
+				} else if (newRoom.getAbsTile(nx+40, ny-10).phis) {
 					cep=3;
 					nx+=(40-scX)/2-1;
 					vis.osn.gotoAndStop(2);
@@ -49,21 +50,24 @@ package unitdata
 					fixed=true;
 				}
 			}
-			super.putLoc(nloc, nx, ny);
+			super.putLoc(newRoom, nx, ny);
 		}
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			//if (shum) shum.stop();
 			//shum=null;
 		}
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
 			}
 		}
 		
-		public override function locout()	{
+		public override function locout()
+		{
 			super.locout();
 			//if (shum) shum.stop();
 			//shum=null;
@@ -74,13 +78,14 @@ package unitdata
 		//0 - ничего не делает
 		//1 - излучает
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			aiTCh++;
-			if (aiState==1 && oduplenie<=0 && aiTCh%3==1 && location==World.world.gg.location) {
+			if (aiState==1 && oduplenie<=0 && aiTCh%3==1 && room==World.world.gg.room) {
 				upKoef+=0.05;
 				if (rasst2<dist*dist) {
 					rasst=Math.sqrt(rasst2);
@@ -88,10 +93,10 @@ package unitdata
 					if (rkoef<0.5) rkoef*=2;
 					else rkoef=1;
 					if (rkoef>upKoef) rkoef=upKoef;
-					if (location.locationActive) {
+					if (room.roomActive) {
 						Snd.pshum(sndRun,rkoef);
 					}
-					if (aiTCh%15==1) Emitter.emit('necronoise',location,X,Y-10,{alpha:rkoef});
+					if (aiTCh%15==1) Emitter.emit('necronoise',room,X,Y-10,{alpha:rkoef});
 					if (!World.world.gg.invulner && aiTCh%30==1) {
 						if (rasst<distdam) {
 							rkoef=(distdam-rasst)/distdam;

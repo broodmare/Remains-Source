@@ -1,7 +1,6 @@
 package
 {
 	
-	//var ClassRef:Class = getDefinitionByName("int") as Class;
 	
 	public class AllData 
 	{
@@ -12,6 +11,9 @@ package
 		}
 		
 		public static var d:XML=
+
+
+		
 		<all>
 			
 			<unit id='training' fraction='1'>
@@ -4972,7 +4974,7 @@ package
 			<obj ed='15' ico='mon' tip='unit' id='eant' cid='eant' cl='UnitBloatEmitter' n='Муравейник' size='2' wid='2'/>
 			
 			<obj ed='16' ico='tur' tip='unit' id='turret' cl='UnitTurret' cid='floor' n='Потолочная турель' size='1' wid='1'/>
-			<obj ed='16' ico='tur' tip='unit' id='landturret' cl='UnitTurret' cid='land' n='Наземная турель' size='1' wid='2'/>
+			<obj ed='16' ico='tur' tip='unit' id='landturret' cl='UnitTurret' cid='level' n='Наземная турель' size='1' wid='2'/>
 			<obj ed='16' ico='tur' tip='unit' id='armturret' cl='UnitTurret' cid='arm' n='Усиленная турель' size='1' wid='2'/>
 			<obj ed='16' ico='tur' tip='unit' id='hturret' cl='UnitTurret' cid='hidden' n='Спрятанная турель' size='1' wid='1'/>
 			<obj ed='16' ico='tur' tip='unit' id='hturret2' cl='UnitTurret' cid='hidden2' n='Неактивная турель' size='1' wid='1'/>

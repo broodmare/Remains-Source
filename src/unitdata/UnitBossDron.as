@@ -4,9 +4,11 @@ package unitdata
 	import flash.display.MovieClip;
 	
 	import weapondata.*;
-	import locdata.Location;
+	import locdata.Room;
 	import servdata.LootGen;
 	import graphdata.Emitter;
+	
+	import components.Settings;
 	
 	public class UnitBossDron extends Unit{
 		
@@ -64,14 +66,16 @@ package unitdata
 			timerDie=150;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			newPart('baleblast');
 			Snd.ps('bale_e');
 			//currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -80,28 +84,27 @@ package unitdata
 			hp=maxhp=hp*dMult;
 			shitMaxHp*=(1+level*0.12)*dMult;
 			dam*=dMult;
-			/*if (dopWeapon) {
-				dopWeapon.damageExpl*=wMult*dMult;
-				dopWeapon.damage*=wMult*dMult;
-			}*/
 			if (thWeapon) {
 				thWeapon.damageExpl*=wMult*dMult;
 				thWeapon.damage*=wMult*dMult;
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',22);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
 			}
 			super.setNull(f);
 		}
 
-		public override function animate() {
+		public override function animate()
+		{
 			thWeapon.vis.visible=false;
 			//щит
 			if (visshit && !visshit.visible && shithp>0) {
@@ -111,18 +114,19 @@ package unitdata
 			if (visshit && visshit.visible && shithp<=0) {
 				visshit.visible=false;
 				visshit.gotoAndStop(1);
-				Emitter.emit('pole',location,X,Y-50,{kol:12,rx:100, ry:100});
+				Emitter.emit('pole',room,X,Y-50,{kol:12,rx:100, ry:100});
 			}
 			if (sost==2) {
 				if (isrnd(0.3-timerDie/500)) {
-					Emitter.emit('expl',location,X+Math.random()*120-60,Y-Math.random()*120);
+					Emitter.emit('expl',room,X+Math.random()*120-60,Y-Math.random()*120);
 					newPart('metal');
 					Snd.ps('expl_e');
 				}
 			}
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				if (sost==2) {
 					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
@@ -133,9 +137,9 @@ package unitdata
 			}
 		}
 		
-		function emit() {
+		public function emit() {
 			if (kolChild>=kol_emit) return;
-			var un:Unit=location.createUnit('dron',X,Y-scY/2,true);
+			var un:Unit=room.createUnit('dron',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.inter.cont='';
 			un.mother=this;
@@ -150,7 +154,8 @@ package unitdata
 		//0 - стоит на месте
 		//1 - движется
 		
-		public override function control() {
+		public override function control()
+		{
 
 			if (sost==3) return;
 			if (sost==2) {
@@ -159,19 +164,19 @@ package unitdata
 				return;
 			}
 			
-			if (location.gg.invulner) return;
-			if (World.world.enemyAct<=0) {
+			if (room.gg.invulner) return;
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (t_shit>0) t_shit--;
 			
-			if (location.locationActive) aiState=1;
+			if (room.roomActive) aiState=1;
 			else aiState=0;
 			
 			aiTCh++;
 			if (aiState==1 && aiTCh%10==1) {
-				if (location.gg.pet && location.gg.pet.sost==1 && isrnd(0.2)) setCel(location.gg.pet);
-				else setCel(location.gg);
+				if (room.gg.pet && room.gg.pet.sost==1 && isrnd(0.2)) setCel(room.gg.pet);
+				else setCel(room.gg);
 			}
 			if (World.world.gg.isFly) speedBonus=1.6;
 			else speedBonus=1;
@@ -184,8 +189,8 @@ package unitdata
 			if (aiState==0) {
 				walk=0;
 			} else if (aiState==1) {
-				moveX=location.gg.X;
-				moveY=location.gg.Y;
+				moveX=room.gg.X;
+				moveY=room.gg.Y;
 				spd.x=moveX-X;
 				spd.y=moveY-Y;
 				norma(spd,Math.min(accel,accel*dist/1000));
@@ -235,7 +240,8 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

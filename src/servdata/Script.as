@@ -1,12 +1,15 @@
 package servdata 
 {
 
-	import locdata.Land;
+	import locdata.Level;
 	import unitdata.Unit;
 	
-	public class Script {
+	import components.Settings;
+	
+	public class Script 
+	{
 		
-		var land:Land;
+		var level:Level;
 		public var owner:Obj;
 		
 		public var eve:String;	// Event that triggers the script
@@ -20,8 +23,9 @@ package servdata
 		var tcom:int=0;
 		var dial_n:int=-1;
 
-		public function Script(xml:XML, nland:Land=null, nowner:Obj=null, tt:Boolean=false) {
-			land=nland;
+		public function Script(xml:XML, newLevel:Level=null, nowner:Obj=null, tt:Boolean=false) 
+		{
+			level=newLevel;
 			owner=nowner;
 			acts=new Array();
 			if (xml.@eve.length()) eve=xml.@eve;
@@ -30,7 +34,7 @@ package servdata
 				for each(var s:XML in xml.s) analiz(s);
 			}
 			if (tt) onTimer=true;
-			if (land && onTimer) land.scripts.push(this);
+			if (level && onTimer) level.scripts.push(this);
 		}
 		
 		function analiz(xml:XML) {
@@ -42,7 +46,7 @@ package servdata
 			if (xml.@targ.length()) targ=xml.@targ;		// Target
 			if (xml.@val.length()) val=xml.@val;		// Value
 			if (xml.@t.length()) {						// Delay in seconds
-				t=Math.round(xml.@t*World.fps);
+				t=Math.round(xml.@t*Settings.fps);
 				if (t>0) onTimer=true;
 			}
 			if (xml.@n.length()) n=xml.@n;		// Option
@@ -112,8 +116,8 @@ package servdata
 			if (obj.targ) {
 				var target:Obj;
 				if (obj.targ=='this') target=owner;
-				else if (land) target=land.uidObjs[obj.targ];
-				else target=World.world.land.uidObjs[obj.targ];
+				else if (level) target=level.uidObjs[obj.targ];
+				else target=World.world.level.uidObjs[obj.targ];
 				if (target) target.command(obj.act, obj.val);
 			} else {
 				if (obj.act=='control off') World.world.gg.controlOff();
@@ -125,7 +129,7 @@ package servdata
 					World.world.gui.dialText(obj.val,obj.n,obj.opt1>0,wait);
 				}
 				if (obj.act=='dialog') {
-					if (World.world.dialOn) {
+					if (Settings.dialOn) {
 						World.world.gg.controlOff();
 						wait=true;
 						dial_n=0;
@@ -143,19 +147,19 @@ package servdata
 					World.world.gui.dialText(<r mod={actObj.opt2} push={(actObj.opt1>0)?'1':'0'}>{actObj.val}</r>,0,false,true);
 				}
 				if (obj.act=='landlevel') {
-					if (World.world.dialOn && World.world.game.lands[actObj.val]) {
+					if (Settings.dialOn && World.world.game.levelArray[actObj.val]) {
 						World.world.gg.controlOff();
 						wait=true;
 						World.world.ctr.active=false;
-						var str=Res.txt('m',actObj.val)+"\n"+Res.pipText('recLevel')+': ['+World.world.game.lands[actObj.val].dif+"]\n"+Res.pipText('isperslvl')+': ['+World.world.pers.level+']';
-						if (World.world.game.lands[actObj.val].dif>World.world.pers.level) {
+						var str=Res.txt('m',actObj.val)+"\n"+Res.pipText('recLevel')+': ['+World.world.game.levelArray[actObj.val].dif+"]\n"+Res.pipText('isperslvl')+': ['+World.world.pers.level+']';
+						if (World.world.game.levelArray[actObj.val].dif>World.world.pers.level) {
 							str+='\n\n'+Res.pipText('wrLevel');
 						}
 						World.world.gui.dialText(<r mod='1'>{str}</r>,0,false,true);
 					}
 				}
 				if (obj.act=='allact') {
-					World.world.location.allAct(null, obj.val, obj.n);
+					World.world.room.allAct(null, obj.val, obj.n);
 				}
 				if (obj.act=='take') {
 					if (obj.n<0) {
@@ -202,16 +206,16 @@ package servdata
 					World.world.gui.hpBarOnOff(true);
 				}
 				if (obj.act=='refill') {
-					World.world.land.refill();
+					World.world.level.refill();
 				}
 				if (obj.act=='upland') {
 					World.world.game.upLandLevel();
 				}
 				if (obj.act=='locon') {
-					World.world.location.allon();
+					World.world.room.allon();
 				}
 				if (obj.act=='locoff') {
-					World.world.location.alloff();
+					World.world.room.alloff();
 				}
 				if (obj.act=='quest') {
 					World.world.game.addQuest(obj.val);
@@ -231,7 +235,7 @@ package servdata
 				}
 				if (obj.act=='goto') {	//перейти в комнату
 					var distr:Array=obj.val.split(' ');
-					if (distr.length==2) land.gotoXY(distr[0],distr[1]);
+					if (distr.length==2) level.gotoXY(distr[0],distr[1]);
 				}
 				if (obj.act=='gotoland') {	//перейти в местность
 					if (obj.n==2) World.world.game.gotoLand(obj.val,null,true);
@@ -239,32 +243,32 @@ package servdata
 					else World.world.game.gotoLand(obj.val);
 				}
 				if (obj.act=='openland') {	//открыть местность на карте
-					if (World.world.game.lands[obj.val]) {
-						World.world.game.lands[obj.val].access=true;
+					if (World.world.game.levelArray[obj.val]) {
+						World.world.game.levelArray[obj.val].access=true;
 					} else {
-						trace('error land ',obj.val)
+						trace('error level ',obj.val)
 					}
 				}
 				if (obj.act=='passed') {		//местность пройдена
-					World.world.land.act.passed=true;
+					World.world.level.template.passed=true;
 				}
 				if (obj.act=='actprob') {
-					if (World.world.location.prob) World.world.location.prob.activateProb();
+					if (World.world.room.prob) World.world.room.prob.activateProb();
 				}
 				if (obj.act=='alarm') {
-					World.world.location.signal();
+					World.world.room.signal();
 				}
 				if (obj.act=='trus') {
-					if (owner && owner.location) owner.location.trus=Number(obj.val);
-					else World.world.location.trus=Number(obj.val);
+					if (owner && owner.room) owner.room.trus=Number(obj.val);
+					else World.world.room.trus=Number(obj.val);
 				}
 				if (obj.act=='checkall') {
-					for each (var un:Unit in World.world.location.units) {
+					for each (var un:Unit in World.world.room.units) {
 						un.command('check');
 					}
 				}
 				if (obj.act=='robots') {
-					World.world.location.robocellActivate();
+					World.world.room.robocellActivate();
 				}
 				if (obj.act=='weapch') {
 					World.world.gg.changeWeapon(obj.val);
@@ -274,7 +278,7 @@ package servdata
 					else World.world.gg.alicornOn();
 				}
 				if (obj.act=='wave') {
-					if (World.world.location.prob) World.world.location.prob.beginWave();
+					if (World.world.room.prob) World.world.room.prob.beginWave();
 				}
 				if (obj.act=='pip') {
 					World.world.pip.onoff(obj.val, obj.n);

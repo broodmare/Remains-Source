@@ -4,6 +4,8 @@ package unitdata
 	import servdata.BlitAnim;
 	import locdata.Tile;
 	
+	import components.Settings;
+	
 	public class UnitRoller extends Unit
 	{
 		
@@ -40,21 +42,25 @@ package unitdata
 			storona=1;
 		}
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			vis.x=X,vis.y=Y-scY/2;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			if (tr==2) explosion(dam*4,Unit.D_PLASMA,150,0,20,30,9);
 			super.dropLoot();
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (aiState==0) {
 				if (vis.osn.currentFrame!=1) {
 					vis.osn.gotoAndStop(1);
@@ -72,7 +78,8 @@ package unitdata
 			vis.osn.rotation+=rollDr;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;
 		}
@@ -92,7 +99,8 @@ package unitdata
 		//0 - стоит на месте
 		//1 - видит цель, катится к ней, атакует
 		
-		public override function control() {
+		public override function control()
+		{
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
@@ -100,7 +108,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -120,7 +128,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
 				} else {
@@ -183,7 +191,7 @@ package unitdata
 				}
 			} 
 			
-			if (Y>location.spaceY*World.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
 		}
 		
 		public function attack() {

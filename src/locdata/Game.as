@@ -6,16 +6,18 @@ package locdata
 	import servdata.Script;
 	import servdata.NPC;
 	
+	import components.Settings;
+	
 	public class Game 
 	{
 		
-		public var lands:Array;
+		public var levelArray:Array;
 		public var probs:Array;
 		public var vendors:Array;
 		public var npcs:Array;
-		public var curLandId:String='test';
-		public var curCoord:String=null;
-		public var curLand:LandAct;
+		public var curLevelID:String='test';
+		public var curCoord:String = null;
+		public var curLevel:LevelTemplate;
 		public var triggers:Array;
 		public var notes:Array;
 		public var limits:Array;
@@ -38,43 +40,43 @@ package locdata
 
 		public function Game() 
 		{
-			lands=new Array();
-			probs=new Array();
-			notes=new Array();
-			vendors=new Array();
-			npcs=new Array();
-			triggers=new Array();
-			limits=new Array();
-			quests=new Array();
-			names=new Array();
+			levelArray  = new Array();
+			probs 		= new Array();
+			notes 		= new Array();
+			vendors 	= new Array();
+			npcs 		= new Array();
+			triggers 	= new Array();
+			limits 		= new Array();
+			quests 		= new Array();
+			names 		= new Array();
 			
-			for each(var xl in GameData.d.land) 
+			for each(var xl in GameData.d.level) 
 			{
-				var land:LandAct=new LandAct(xl);
+				var level:LevelTemplate = new LevelTemplate(xl);
 				if (World.world.landData[xl.@id] && World.world.landData[xl.@id].allroom) 
 				{
-					land.allroom=World.world.landData[xl.@id].allroom;
-					land.loaded=true;
+					level.allroom = World.world.landData[xl.@id].allroom;
+					level.loaded = true;
 				}
-				if (land.prob==0) lands[land.id]=land;
-				else probs[land.id]=land;
+				if (level.prob == 0) levelArray[level.id] = level;
+				else probs[level.id] = level;
 			}
 		}
 
 		public function save():Object 
 		{
-			var obj:Object=new Object;
-			obj.dif=globalDif;
-			obj.land=curLandId;
-			World.world.land.saveObjs(objs);	//Save an array of objects with IDs
-			obj.objs=new Array();
+			var obj:Object = new Object;
+			obj.dif = globalDif;
+			obj.level = curLevelID;
+			World.world.level.saveObjs(objs);	//Save an array of objects with IDs
+			obj.objs = new Array();
 			for (var uid in objs) 
 			{
-				var obj1=objs[uid];
-				var nobj=new Object();
+				var obj1 = objs[uid];
+				var nobj = new Object();
 				for (var n in obj1) 
 				{
-					nobj[n]=obj1[n];
+					nobj[n] = obj1[n];
 				}
 				obj.objs[uid]=nobj;
 			}
@@ -82,12 +84,12 @@ package locdata
 			obj.npcs=new Array();
 			obj.notes=new Array();
 			obj.quests=new Array();
-			obj.lands=new Array();
+			obj.levelArray=new Array();
 			obj.triggers=new Array();
 			for (var i in vendors) 
 			{
-				var v=vendors[i].save();
-				if (v!=null) obj.vendors[i]=v;
+				var v = vendors[i].save();
+				if (v != null) obj.vendors[i] = v;
 			}
 			for (i in npcs) 
 			{
@@ -107,38 +109,38 @@ package locdata
 				var q:Object=quests[i].save();
 				if (q!=null) obj.quests[i]=q;
 			}
-			for (var i in lands) 
+			for (var i in levelArray) 
 			{
-				var l=lands[i].save();
-				if (l!=null) obj.lands[i]=l;
+				var l = levelArray[i].save();
+				if (l != null) obj.levelArray[i] = l;
 			}
-			var dNow:Date=new Date();
-			t_proshlo=dNow.getTime()-dBeg.getTime();
-			obj.t_save=t_save+t_proshlo;
+			var dNow:Date = new Date();
+			t_proshlo = dNow.getTime() - dBeg.getTime();
+			obj.t_save = t_save+t_proshlo;
 			return obj;
 		}
 		
-		public function init(loadObj:Object=null, opt:Object=null) 
+		public function init(loadObj:Object = null, opt:Object = null)
 		{
 			if (loadObj) 
 			{
-				if (loadObj.dif!=null) globalDif=loadObj.dif;
-				else globalDif=2;
+				if (loadObj.dif != null) globalDif = loadObj.dif;
+				else globalDif = 2;
 				if (loadObj.t_save) t_save=loadObj.t_save;
 			} 
 			else 
 			{
-				if (opt && opt.dif!=null) globalDif=opt.dif;
-				else globalDif=2;
-				triggers['noreturn']=1;
+				if (opt && opt.dif != null) globalDif = opt.dif;
+				else globalDif = 2;
+				triggers['noreturn'] = 1;
 			}
-			objs=new Array();
+			objs = new Array();
 			if (loadObj && loadObj.objs) 
 			{
 				for (var uid in loadObj.objs) 
 				{
-					var obj=loadObj.objs[uid];
-					var nobj=new Object();
+					var obj = loadObj.objs[uid];
+					var nobj = new Object();
 					for (var n in obj) 
 					{
 						nobj[n]=obj[n];
@@ -175,137 +177,137 @@ package locdata
 				{
 					addQuest(i,loadObj.quests[i]);
 				}
-				for (var i in loadObj.lands)  //!!!!!
+				for (var i in loadObj.levelArray)  //!!!!!
 				{
-					if (lands[i]) lands[i].load(loadObj.lands[i]);
+					if (levelArray[i]) levelArray[i].load(loadObj.levelArray[i]);
 				}
-				if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
+				if (triggers['noreturn'] > 0) mReturn = false; else mReturn = true;
 			}
-			baseId=curLandId='rbl';
+			baseId = curLevelID = 'rbl';
 			if (loadObj) 
 			{
-				curLandId=loadObj.land;
-				if (curLandId!='rbl') missionId=loadObj.land;
+				curLevelID = loadObj.level;
+				if (curLevelID != 'rbl') missionId = loadObj.level;
 			} 
-			else if (opt && opt.skipTraining==true) 	// Skip training
+			else if (opt && opt.skipTraining == true) 	// Skip training
 			{		
-				triggers['dial_dialCalam2']=1;
+				triggers['dial_dialCalam2'] = 1;
 			} 
 			else 									// Do not skip training
 			{									
-				curLandId='begin';
+				curLevelID = 'begin';
 			}
 			for each(var q in quests) 
 			{
-				if (q!=null && q.state==2 && q.xml.next.length()) 
+				if (q != null && q.state == 2 && q.xml.next.length()) 
 				{
 					for each (var nq in q.xml.next) addQuest(nq.@id);
 				}
 			}
 
-			if (lands[curLandId]==null || lands[curLandId].rnd) curLandId='rbl';
+			if (levelArray[curLevelID] == null || levelArray[curLevelID].rnd) curLevelID = 'rbl';
 			addNote('helpControl');
 			addNote('helpGl1');
 			addNote('helpGl2');
-			dBeg=new Date();
-			if (loadObj==null) triggers['nomed']=1;
+			dBeg = new Date();
+			if (loadObj == null) triggers['nomed'] = 1;
 		}
 		
-		public function changeDif(ndif):Boolean 
+		public function changeDif(ndif):Boolean
 		{
-			if (ndif==globalDif) return false;
+			if (ndif == globalDif) return false;
 			globalDif=ndif;
-			if (globalDif<0) globalDif=0;
-			if (globalDif>4) globalDif=4;
+			if (globalDif < 0) globalDif = 0;
+			if (globalDif > 4) globalDif = 4;
 			World.world.pers.setGlobalDif(globalDif);
 			World.world.pers.setParameters();
 			return true;
 		}
 		
-		public function enterToCurLand() 
+		public function enterToCurLand()
 		{
-			Land.locN+=5;
-			if (World.world.land && objs) World.world.land.saveObjs(objs);
+			Level.locN += 5;
+			if (World.world.level && objs) World.world.level.saveObjs(objs);
 
 			///Transition to a random encounter
 			Encounter();
-			curLand=lands[curLandId];
-			if (curLand==null) curLand=lands['rbl'];
-			var first=false;
-			if (!curLand.rnd && !curLand.visited) first=true;
+			curLevel = levelArray[curLevelID];
+			if (curLevel == null) curLevel = levelArray['rbl'];
+			var first = false;
+			if (!curLevel.rnd && !curLevel.visited) first = true;
 
-			if (curLand.land==null || crea) 
+			if (curLevel.level == null || crea) 
 			{
-				var n:int=0;
-				if (triggers['firstroom']>0) 
+				var n:int = 0;
+				if (triggers['firstroom'] > 0) 
 				{
-					n=1;
-					if (World.world.pers.level>1) n=World.world.pers.level-1;
+					n = 1;
+					if (World.world.pers.level > 1) n=World.world.pers.level - 1;
 				}
-				curLand.land=new Land(World.world.gg, curLand, n);
+				curLevel.level = new Level(World.world.gg, curLevel, n);
 			}
-			if (!first) triggers['firstroom']=1;
-			crea=false;
-			World.world.ativateLand(curLand.land);
-			World.world.land.enterLand(first, curCoord);
-			curCoord=null;
+			if (!first) triggers['firstroom'] = 1;
+			crea = false;
+			World.world.activateLevel(curLevel.level);
+			World.world.level.enterLevel(first, curCoord);
+			curCoord = null;
 
-			if (curLand.id=='rbl') 
+			if (curLevel.id == 'rbl') 
 			{
-				triggers['noreturn']=0;
-				triggers['nomed']=0;
-				triggers['rbl_visited']=1;
+				triggers['noreturn'] = 0;
+				triggers['nomed'] = 0;
+				triggers['rbl_visited'] = 1;
 			} 
 			else 
 			{
-				if (curLand.tip!='base') 
+				if (curLevel.tip != 'base') 
 				{
-					missionId=curLand.id;
-					trace(curLand.tip=='base')
+					missionId = curLevel.id;
+					trace(curLevel.tip == 'base')
 				}
 			}
 			World.world.gg.remEffect('potion_fly');
-			World.world.gui.messText('', Res.txt('m',curLand.id)+(curLand.rnd?(' - '+(curLand.landStage+1)):''), World.world.gg.Y<300);
-			if (!curLand.rnd) curLand.visited=true;
-			if (triggers['noreturn']>0) mReturn=false; else mReturn=true;
-			if (curLand.upStage) 
+			World.world.gui.messText('', Res.txt('m', curLevel.id) + (curLevel.rnd?(' - ' + (curLevel.landStage + 1)):''), World.world.gg.Y < 300);
+			if (!curLevel.rnd) curLevel.visited=true;
+			if (triggers['noreturn'] > 0) mReturn = false; else mReturn = true;
+			if (curLevel.upStage) 
 			{
-				curLand.upStage=false;
+				curLevel.upStage = false;
 			}
 		}
 		
-		// Redirect to another location
-		function Encounter() 
+		// Redirect to another room
+		function Encounter()
 		{
-			if (curLandId=='random_canter' && !(triggers['encounter_way']>0)) curLandId='way';
-			if (curLandId=='random_encl' && !(triggers['encounter_post']>0)) curLandId='post';
-			if (curLandId=='stable_pi' && triggers['storm']==4) curLandId='stable_pi_atk';
-			if (curLandId=='stable_pi' && triggers['storm']==5) curLandId='stable_pi_surf';
+			if (curLevelID == 'random_canter' && !(triggers['encounter_way'] > 0)) curLevelID = 'way';
+			if (curLevelID == 'random_encl' && !(triggers['encounter_post'] > 0)) curLevelID = 'post';
+			if (curLevelID == 'stable_pi' && triggers['storm'] == 4) curLevelID = 'stable_pi_atk';
+			if (curLevelID == 'stable_pi' && triggers['storm'] == 5) curLevelID = 'stable_pi_surf';
 		}
 		
-		/*Transition to a new location
-			gotoLand(nland:String)
+		/*Transition to a new room
+			gotoLand(newLand:String)
 			World.world.exitLand();
 			enterToCurLand();
-			World.world.ativateLand(curLand.land);
-			World.world.land.enterLand(first);
+			World.world.activateLevel(curLevel.level);
+			World.world.level.enterLevel(first);
 			ativateLoc();
 		*/
 		
-		public function gotoLand(nland:String, coord:String=null, fast:Boolean=false) 
+		public function gotoLand(newLevel:String, coord:String = null, fast:Boolean = false)
 		{
-			if (nland!=baseId && !World.world.pers.dopusk()) 
+			if (newLevel != baseId && !World.world.pers.dopusk()) 
 			{
 				World.world.gui.messText('nocont');
 			} 
-			else if (nland!=baseId && World.world.pers.speedShtr>=3) 
+			else if (newLevel != baseId && World.world.pers.speedShtr >= 3) 
 			{
 				World.world.gui.messText('nocont2');
 			} 
 			else 
 			{
-				curLandId=nland;
-				curCoord=coord;
+				curLevelID = newLevel;
+				curCoord = coord;
 				World.world.exitLand(fast);
 			}
 		}
@@ -317,13 +319,13 @@ package locdata
 		
 		public function beginMission(nid:String=null) 
 		{
-			if (nid==curLandId) return;
-			if (nid && lands[nid]) 
+			if (nid == curLevelID) return;
+			if (nid && levelArray[nid]) 
 			{
-				if (lands[nid].tip!='base') 
+				if (levelArray[nid].tip != 'base') 
 				{
-					missionId=nid;
-					crea=true;
+					missionId = nid;
+					crea = true;
 				}
 			}
 			gotoLand(nid);
@@ -331,28 +333,28 @@ package locdata
 		
 		public function gotoNextLevel() 
 		{
-			World.world.pers.prevCPCode=null;
-			World.world.pers.currentCPCode=null;
-			curLand.land.currentCP=null;
-			crea=true;
-			curLand.land.refill();
+			World.world.pers.prevCPCode = null;
+			World.world.pers.currentCPCode = null;
+			curLevel.level.currentCP = null;
+			crea = true;
+			curLevel.level.refill();
 			gotoLand(missionId);
 		}
 		
 		public function upLandLevel() 
 		{
-			if (!curLand.upStage) curLand.landStage++;
-			curLand.upStage=true;
+			if (!curLevel.upStage) curLevel.landStage++;
+			curLevel.upStage = true;
 		}
 		
 		// Check the possibility of traveling through the map
 		public function checkTravel(lid):Boolean 
 		{
-			if (this.curLandId=='grave') return false;
-			if (!triggers['fin']>0) return true;
-			if (triggers['fin']==1) return lands[lid].fin==0 || lands[lid].fin==1;
-			if (triggers['fin']==2) return lands[lid].fin==0 || lands[lid].fin==2;
-			if (triggers['fin']==3) return lands[lid].fin==2;
+			if (this.curLevelID == 'grave') return false;
+			if (!triggers['fin'] > 0) return true;
+			if (triggers['fin'] == 1) return levelArray[lid].fin == 0 || levelArray[lid].fin == 1;
+			if (triggers['fin'] == 2) return levelArray[lid].fin == 0 || levelArray[lid].fin == 2;
+			if (triggers['fin'] == 3) return levelArray[lid].fin == 2;
 			return true;
 		}
 		
@@ -361,9 +363,9 @@ package locdata
 			for each(var vend:Vendor in vendors) vend.refill();
 			for (var tr in triggers) 
 			{
-				if (triggers[tr]=='wait') triggers[tr]=1;
+				if (triggers[tr] == 'wait') triggers[tr] = 1;
 			}
-			World.world.invent.good.kol=World.world.pers.goodHp;
+			World.world.invent.good.kol = World.world.pers.goodHp;
 			World.world.gui.infoText('refill');
 		}
 		
@@ -401,7 +403,7 @@ package locdata
 				quests[id].deposit();
 				if (snd) Snd.ps('quest');
 			}
-			if (loadObj==null && showDial && q.begDial && World.world.dialOn && World.world.location.prob==null) 
+			if (loadObj==null && showDial && q.begDial && Settings.dialOn && World.world.room.prob==null) 
 			{
 				World.world.pip.onoff(-1);
 				World.world.gui.dialog(q.begDial);
@@ -411,8 +413,8 @@ package locdata
 		
 		public function showQuest(id:String, sid:String) 
 		{
-			var q:Quest=quests[id];
-			if (q==null) 
+			var q:Quest = quests[id];
+			if (q == null) 
 			{
 				q=addQuest(id,null,true);
 			}
@@ -432,22 +434,26 @@ package locdata
 						break;
 					}
 				}
-			} catch(err) {}
+			} 
+			catch(err) 
+			{
+
+			}
 		}
 		
 		public function closeQuest(id:String, sid:String=null) 
 		{
 			var q:Quest=quests[id];
 			// If the quest stage is completed, but the quest is not taken, add it as inactive
-			if (q==null) 
+			if (q == null) 
 			{
-				q=addQuest(id,null,true);
+				q = addQuest(id, null, true);
 			}
-			if (q==null || q.state==2) 
+			if (q == null || q.state==2) 
 			{
 				return;
 			}
-			if (sid==null || sid=='' || int(sid)<0) 
+			if (sid == null || sid == '' || int(sid) < 0) 
 			{
 				q.close();
 			} 
@@ -462,22 +468,22 @@ package locdata
 			var res2, res:String;
 			for each(var q:Quest in quests) 
 			{
-				if (q.state==1 && q.isCheck) 
+				if (q.state == 1 && q.isCheck) 
 				{
-					res=q.check(cid);
-					if (res!=null) res2=res;
+					res = q.check(cid);
+					if (res != null) res2 = res;
 				}
 			}
 			return res2;
 		}
 
-		public function incQuests(cid:String, kol:int=1) 
+		public function incQuests(cid:String, kol:int = 1)
 		{
 			for each(var q:Quest in quests) 
 			{
-				if (q.state==1 && q.isCheck) 
+				if (q.state == 1 && q.isCheck) 
 				{
-					q.inc(cid,kol);
+					q.inc(cid, kol);
 					q.check(cid);
 				}
 			}
@@ -490,9 +496,9 @@ package locdata
 			notes.push(id);
 		}
 		
-		public function setTrigger(id:String, n=1) 
+		public function setTrigger(id:String, n:int = 1)
 		{
-			triggers[id]=n;
+			triggers[id] = n;
 		}
 		
 		// Determine how many items were generated
@@ -501,36 +507,36 @@ package locdata
 			if (limits[id]) return limits[id];
 			if (triggers[id]) 
 			{
-				limits[id]=triggers[id];
+				limits[id] = triggers[id];
 				return limits[id];
 			}
-			limits[id]=0;
+			limits[id] = 0;
 			return 0;
 		}
 		
 		// Increase the limit by 1, stage=1 - during generation, stage=2 - when taken
 		public function addLimit(id:String, etap:int)
 		{
-			if (etap==1) 
+			if (etap == 1) 
 			{
 				if (limits[id]) limits[id]++;
-				else limits[id]=1;
+				else limits[id] = 1;
 			}
-			if (etap==2) 
+			if (etap == 2) 
 			{
 				if (triggers[id]) triggers[id]++;
-				else triggers[id]=1;
+				else triggers[id] = 1;
 			}
 		}
 		
 		// Run a script from gamedata
 		public function runScript(scr:String, own:Obj=null):Boolean 
 		{
-			var xml1=GameData.d.scr.(@id==scr);
+			var xml1 = GameData.d.scr.(@id == scr);
 			if (xml1.length()) 
 			{
-				xml1=xml1[0];
-				var	runScr:Script=new Script(xml1,World.world.land,own);
+				xml1 = xml1[0];
+				var	runScr:Script = new Script(xml1, World.world.level, own);
 				runScr.start();
 				return true;
 			}
@@ -538,14 +544,14 @@ package locdata
 		}
 		
 		// Create a script from gamedata
-		public function getScript(scr:String, own:Obj=null):Script 
+		public function getScript(scr:String, own:Obj = null):Script 
 		{
 			//trace(scr,own);
-			var xml1=GameData.d.scr.(@id==scr);
+			var xml1 = GameData.d.scr.(@id == scr);
 			if (xml1.length()) 
 			{
-				xml1=xml1[0];
-				return new Script(xml1,(own==null)?World.world.land:own.location.land,own);
+				xml1 = xml1[0];
+				return new Script(xml1, (own == null)?World.world.level:own.room.level, own);
 			}
 			return null;
 		}
@@ -553,11 +559,11 @@ package locdata
 		// String representation of game time
 		public function gameTime(n:Number=0):String 
 		{
-			if (n==0) 
+			if (n == 0) 
 			{
-				var dNow:Date=new Date();
-				t_proshlo=dNow.getTime()-dBeg.getTime();
-				n=t_save+t_proshlo;
+				var dNow:Date = new Date();
+				t_proshlo = dNow.getTime() - dBeg.getTime();
+				n = t_save + t_proshlo;
 			}
 			return Res.gameTime(n);
 		}

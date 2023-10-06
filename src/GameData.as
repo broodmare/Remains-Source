@@ -9,7 +9,7 @@ package
 			
 		}
 
-		public static var d:XML=<game>
+		public static var d:XML = <game>
 		
 <!-- ============================================== LOCATIONS ============================================== -->
 			<land1 id='test' autolevel='1' file='rooms' locx='0' locy='0' stage='4' limit='1' test='1' list='-11' tip='test'>
@@ -27,7 +27,7 @@ package
 				</scr>
 			</land1>
 		
-			<land id='begin' dif='0' file='rooms_begin' locx='0' locy='0' stage='1' limit='1' list='2' tip='story'>
+			<level id='begin' dif='0' file='rooms_begin' locx='0' locy='0' stage='1' limit='1' list='2' tip='story'>
 				<options backwall="tBackWall" music='music_begin'/>
 				<scr eve='take' item='mont'>
 					<s1 act="mess" val="trMont" opt1="1"/>
@@ -50,13 +50,13 @@ package
 				<scr eve='take' item='col1'>
 					<s act="quest" val="collectHS"/>
 				</scr>
-			</land>
+			</level>
 			
-			<land id='surf' dif='0' file='rooms_surf' locx='0' locy='1' stage='2' limit='1' list='3' tip='story'>
+			<level id='surf' dif='0' file='rooms_surf' locx='0' locy='1' stage='2' limit='1' list='3' tip='story'>
 				<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_surf'/>
-			</land>
+			</level>
 			
-			<land id='rbl' autolevel='1' dif='0' file='rooms_rbl' locx='0' locy='0' stage='1' list='1' tip='base' fin='0'>
+			<level id='rbl' autolevel='1' dif='0' file='rooms_rbl' locx='0' locy='0' stage='1' list='1' tip='base' fin='0'>
 				<options backwall="tStConcrete" skybox='skyboxWay' music='music_base'/>
 				<prob id='bossraider1' level='0' tip='2' close='1'>
 					<con tip='unit' uid='bossraider1F1'/>
@@ -81,9 +81,9 @@ package
 					<con tip='unit' uid='bossenclF2'/>
 					<con tip='unit' uid='bossenclF3'/>
 				</prob>
-			</land>
+			</level>
 			
-			<land id='random_plant' tip='rnd' rnd='1' dif='0' biom='0' conf='0' file='rooms_plant' stage='3' exit='exit_plant' mx='4' my='6' locx='0' locy='0' list='4' loadscr='1'>
+			<level id='random_plant' tip='rnd' rnd='1' dif='0' biom='0' conf='0' file='rooms_plant' stage='3' exit='exit_plant' mx='4' my='6' locx='0' locy='0' list='4' loadscr='1'>
 				<options backwall="tBackWall" music='music_plant_1' skybox='skyboxDarkClouds' xp='100'/>
 				<!-- 13 -->
 				<prob id='labirint' prize='1' tip='1'>
@@ -172,13 +172,13 @@ package
 				<prob id='generator' level='2' tip='2'> <!-- ЭДЖ -->
 					<con tip='unit' uid='generatorU1'/>
 				</prob>
-			</land>
+			</level>
 			
-			<land id='nio' dif='7' file='rooms_nio' locx='-1' locy='0' stage='2' list='3' tip='story'>
+			<level id='nio' dif='7' file='rooms_nio' locx='-1' locy='0' stage='2' list='3' tip='story'>
 				<options backwall="tTiles" color='lab' music='music_plant_2' xp='100'/>
-			</land>
+			</level>
 			
-			<land id='random_sewer' tip='rnd' rnd='1' dif='10' biom='1' conf='2' file='rooms_sewer' stage='4' exit='exit_sewer' mx='8' my='3' locx='0' locy='0' list='6'>
+			<level id='random_sewer' tip='rnd' rnd='1' dif='10' biom='1' conf='2' file='rooms_sewer' stage='4' exit='exit_sewer' mx='8' my='3' locx='0' locy='0' list='6'>
 				<options backwall="tMossy" music='music_sewer_1' xp='200' border='M' color='green' wtip='1' wrad='3'/>
 				<!-- 6 -->
 				<prob id='slimes' prize='1' tip='1'><!-- бонг -->
@@ -231,9 +231,9 @@ package
 					<s act="stage" val="storyFind" n="2"/>
 					<s act="xp" val="5000"/>
 				</scr>
-			</land>
+			</level>
 			
-			<land id='raiders' dif='10' file='rooms_raiders' locx='0' locy='1' stage='3' list='5' tip='story' loadscr='2'>
+			<level id='raiders' dif='10' file='rooms_raiders' locx='0' locy='1' stage='3' list='5' tip='story' loadscr='2'>
 				<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_raiders'/>
 				<scr eve='take' item='sl_note1'>
 					<s act="control off"/>
@@ -244,9 +244,9 @@ package
 					<s act="control on"/>
 					<s act="xp" val="5000"/>
 				</scr>
-			</land>
+			</level>
 			
-			<land id='random_stable' tip='rnd' rnd='1' dif='12' biom='2' conf='1' file='rooms_stable' exit='exit_stable' stage='5' mx='4' my='6' locx='0' locy='0' list='7' loadscr='3'>
+			<level id='random_stable' tip='rnd' rnd='1' dif='12' biom='2' conf='1' file='rooms_stable' exit='exit_stable' stage='5' mx='4' my='6' locx='0' locy='0' list='7' loadscr='3'>
 				<options backwall="tStConcrete" music='music_stable_1' xp='200'/>
 				<!-- 13 -->
 				<prob id='doors' level='0' prize='1' tip='1'><!-- криопушка -->
@@ -336,9 +336,9 @@ package
 						<obj id='sentinel'/>
 					</wave>
 				</prob>
-			</land>
+			</level>
 			
-			<land id='core' dif='15' file='rooms_core' locx='5' locy='0' stage='6' list='3' tip='story'>
+			<level id='core' dif='15' file='rooms_core' locx='5' locy='0' stage='6' list='3' tip='story'>
 				<options backwall="tStConcrete" color='blue' music='music_stable_2' xp='200'/>
 				<scr eve='take' item='sl_note2'>
 					<s act="control off"/>
@@ -364,13 +364,13 @@ package
 					<s act="dialog" val="stableDialKogit"/>
 					<s act="control on"/>
 				</scr>
-			</land>
+			</level>
 			
-			<land id='garages' dif='15' file='rooms_garages' locx='0' locy='0' stage='6' list='5' tip='story'>
+			<level id='garages' dif='15' file='rooms_garages' locx='0' locy='0' stage='6' list='5' tip='story'>
 				<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_surf'/>
-			</land>
+			</level>
 			
-			<land id='random_mane' tip='rnd' rnd='1' dif='15' biom='3' conf='3' file='rooms_mane' exit='exit_mane' stage='7' mx='5' my='5' locx='0' locy='4' list='9' loadscr='4'>
+			<level id='random_mane' tip='rnd' rnd='1' dif='15' biom='3' conf='3' file='rooms_mane' exit='exit_mane' stage='7' mx='5' my='5' locx='0' locy='4' list='9' loadscr='4'>
 				<options backwall="tWindows" skybox='skyboxRuins' music='music_mane_1' vis='2' xp='300' border='N' darkness="-20"/>
 				<!-- 10 -->
 				<prob id='away' level='0' prize='1' tip='1'><!-- фокусирующий кристалл -->
@@ -438,9 +438,9 @@ package
 						<obj id='alicorn' tr='3'/>
 					</wave>
 				</prob>
-			</land>
+			</level>
 			
-			<land id='mtn' dif='17' file='rooms_mtn' locx='0' locy='8' stage='8' biom='3' list='5' tip='story'>
+			<level id='mtn' dif='17' file='rooms_mtn' locx='0' locy='8' stage='8' biom='3' list='5' tip='story'>
 				<options backwall="tTower" skybox='skyboxRuins' music='music_mane_2' vis='2' xp='300' border='N'/>
 				<scr eve='take' item='amul_al'>
 					<s act="control off"/>
@@ -453,19 +453,19 @@ package
 					<s act="refill"/>
 					<s act="control on"/>
 				</scr>
-			</land>
+			</level>
 			
-			<land id='way' dif='0' file='rooms_way' locx='0' locy='0' stage='8' tip='base'>
+			<level id='way' dif='0' file='rooms_way' locx='0' locy='0' stage='8' tip='base'>
 				<options backwall='sky' skybox='skyboxWay' vis='10' music='music_surf'/>
-			</land>
-			<land id='covert' dif='0' file='rooms_covert' locx='-1' locy='0' tip='base' fin='0'>
+			</level>
+			<level id='covert' dif='0' file='rooms_covert' locx='-1' locy='0' tip='base' fin='0'>
 				<options backwall='sky' skybox='skyboxWay' vis='10' music='music_covert'/>
-			</land>
-			<land id='src' dif='0' file='rooms_src' locx='0' locy='0' tip='base' fin='0'>
+			</level>
+			<level id='src' dif='0' file='rooms_src' locx='0' locy='0' tip='base' fin='0'>
 				<options backwall='tRustPlates' skybox='skyboxWay' vis='10' music='music_base'/>
-			</land>
+			</level>
 			
-			<land id='random_canter' tip='rnd' rnd='1' dif='18' biom='5' conf='5' file='rooms_canter' exit='exit_canter' stage='9' mx='8' my='3' locx='0' locy='0' list='10' loadscr='5'>
+			<level id='random_canter' tip='rnd' rnd='1' dif='18' biom='5' conf='5' file='rooms_canter' exit='exit_canter' stage='9' mx='8' my='3' locx='0' locy='0' list='10' loadscr='5'>
 				<options backwall="tConRough" skybox='skyboxCanterlot' music='music_cat_1' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
 				<!-- 9 -->
 				<prob id='buttons6' level='0' tip='1'>
@@ -547,9 +547,9 @@ package
 						<s act="control on"/>
 					</scr>
 				</prob>
-			</land>
+			</level>
 			
-			<land id='minst' dif='20' file='rooms_minst' locx='0' locy='0' stage='9' biom='5' list='5' tip='story'>
+			<level id='minst' dif='20' file='rooms_minst' locx='0' locy='0' stage='9' biom='5' list='5' tip='story'>
 				<options backwall="tConRough" skybox='skyboxCanterlot' music='music_minst' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
 				<scr eve='take' item='blackbook'>
 					<s act="control off"/>
@@ -561,28 +561,28 @@ package
 					<s act="check" targ="minstComm"/>
 					<s act="control on"/>
 				</scr>
-			</land>
+			</level>
 			
-			<land id='random_mbase' tip='story' rnd='1' dif='22' biom='4' conf='4' file='rooms_mbase' stage='10' mx='5' my='3' locx='0' locy='0' list='10' loadscr='6'>
+			<level id='random_mbase' tip='story' rnd='1' dif='22' biom='4' conf='4' file='rooms_mbase' stage='10' mx='5' my='3' locx='0' locy='0' list='10' loadscr='6'>
 				<options backwall="tMbase" skybox='skyboxWay' music='music_mbase' xp='500' color='red' border='O'/>
-			</land>
-			<land id='bunker' tip='hard' rnd='1' dif='24' biom='4' conf='7' file='rooms_mbase' stage='10' mx='6' my='3' locx='0' locy='0' list='10'>
+			</level>
+			<level id='bunker' tip='hard' rnd='1' dif='24' biom='4' conf='7' file='rooms_mbase' stage='10' mx='6' my='3' locx='0' locy='0' list='10'>
 				<options backwall="tMbase" music='music_mbase' xp='500' color='green' border='O'/>
-			</land>
+			</level>
 			
-			<land id='workshop' dif='25' file='rooms_workshop' stage='10' locx='0' locy='0' tip='story'>
+			<level id='workshop' dif='25' file='rooms_workshop' stage='10' locx='0' locy='0' tip='story'>
 				<options backwall="tBackWall" music='music_workshop' xp='500'/>
-			</land>
+			</level>
 			
-			<land id='hql' dif='26' file='rooms_hql' stage='10' locx='0' locy='0' tip='story'>
+			<level id='hql' dif='26' file='rooms_hql' stage='10' locx='0' locy='0' tip='story'>
 				<options backwall='sky' skybox='skyboxWay' color='blue' vis='10' music='music_hql'/>
-			</land>
+			</level>
 			
-			<land id='post' dif='27' file='rooms_post' stage='11' locx='0' locy='0' tip='story'>
+			<level id='post' dif='27' file='rooms_post' stage='11' locx='0' locy='0' tip='story'>
 				<options backwall='sky' skybox='skyboxWay' color='sky' vis='10' music='music_encl_1'/>
-			</land>
+			</level>
 			
-			<land id='random_encl' tip='rnd' rnd='1' dif='27' biom='6' conf='6' file='rooms_encl' exit='exit_encl' stage='11' mx='3' my='8' locx='0' locy='7' list='10' loadscr='7'>
+			<level id='random_encl' tip='rnd' rnd='1' dif='27' biom='6' conf='6' file='rooms_encl' exit='exit_encl' stage='11' mx='3' my='8' locx='0' locy='7' list='10' loadscr='7'>
 				<options backwall="tEncl3" skybox='skyboxEnclave' music='music_encl_1' postmusic='1' xp='500' color='sky' border='S' darkness="-30"/>
 				<prob id='buttons7' level='0' tip='1'>
 					<con tip='box' uid='buttons7F1'/>
@@ -637,38 +637,38 @@ package
 						<obj id='hellhound'/>
 					</wave>
 				</prob>
-			</land>
+			</level>
 			
-			<land id='comm' dif='29' file='rooms_comm' stage='11' locx='0' locy='0' tip='story'>
+			<level id='comm' dif='29' file='rooms_comm' stage='11' locx='0' locy='0' tip='story'>
 				<options backwall="tEncl3" skybox='skyboxEnclave' music='music_encl_1' xp='500' color='sky' border='S' darkness="-30"/>
-			</land>
+			</level>
 			
-			<land id='art' dif='30' file='rooms_art' stage='12' locx='0' locy='0' tip='story' fin='1'>
+			<level id='art' dif='30' file='rooms_art' stage='12' locx='0' locy='0' tip='story' fin='1'>
 				<options backwall="tMbase" skybox='skyboxDarkClouds' music='music_red' postmusic='1' xp='500' color='red' border='O' art='art_trigger'/>
-			</land>
+			</level>
 			
-			<land id='stable_pi' tip='base' rnd='1' conf='10' biom='10' file='rooms_pi' mx='4' my='6' locx='3' locy='5' fin='2'>
+			<level id='stable_pi' tip='base' rnd='1' conf='10' biom='10' file='rooms_pi' mx='4' my='6' locx='3' locy='5' fin='2'>
 				<options backwall="tStConcrete" music='music_pi' darkness="-15"/>
-			</land>
-			<land id='stable_pi_atk' tip='rnd' stage='12' rnd='1' conf='11' biom='11' file='rooms_pi' mx='6' my='2' locx='0' locy='0'>
+			</level>
+			<level id='stable_pi_atk' tip='rnd' stage='12' rnd='1' conf='11' biom='11' file='rooms_pi' mx='6' my='2' locx='0' locy='0'>
 				<options backwall="tStConcrete" music='music_red' color='fire'/>
-			</land>
+			</level>
 			
-			<land id='stable_pi_surf' tip='story' biom='11' file='rooms_pis' stage='12' locx='1' locy='7'>
+			<level id='stable_pi_surf' tip='story' biom='11' file='rooms_pis' stage='12' locx='1' locy='7'>
 				<options backwall='sky' skybox='skyboxFire' vis='3' music='music_encl_2' postmusic='1' color='fire'/>
-			</land>
+			</level>
 			
-			<land id='thunder' tip='story' biom='11' file='rooms_thunder' stage='12' locx='0' locy='0'>
+			<level id='thunder' tip='story' biom='11' file='rooms_thunder' stage='12' locx='0' locy='0'>
 				<options backwall='sky' skybox='skyboxFinalB' vis='3' music='music_encl_2' postmusic='1' color='blue'/>
-			</land>
+			</level>
 			
-			<land id='grave' tip='story' file='rooms_grave' locx='0' locy='0'>
+			<level id='grave' tip='story' file='rooms_grave' locx='0' locy='0'>
 				<options backwall='sky' skybox='skyboxClear' vis='10' music='music_end' darkness="-50"/>
-			</land>
+			</level>
 			
-			<land id='prob' tip='prob' prob='1' file='rooms_prob'>
+			<level id='prob' tip='prob' prob='1' file='rooms_prob'>
 				<options/>
-			</land>
+			</level>
 			
 			
 <!-- ============================================== NPC ============================================== -->
@@ -682,9 +682,9 @@ package
 			</npc>
 			<npc id='calam2'	vis='Calam' ua1='dial' ua2='dial' ico='10' inter='travel'><!-- Каламити, бар -->
 				<dial id='dialCalam3' trigger='rbl_visited'/>
-				<dial id='dialCalam4' land='raiders'/>
+				<dial id='dialCalam4' level='raiders'/>
 				<dial id='velvetDial2' prev='velvetDial1'/>
-				<dial id='dialCalam5' land='random_mane'/>
+				<dial id='dialCalam5' level='random_mane'/>
 				<dial id='dialCanter1' trigger='story_canter' imp='1'>
 					<scr>
 						<s act="stage" val="storyCanter" n="1"/>
@@ -1093,7 +1093,7 @@ package
 						<s act="xp" val="1000"/>
 					</scr>
 				</dial>
-				<dial id='vendor_sr_bunker' land='bunker'/>
+				<dial id='vendor_sr_bunker' level='bunker'/>
 				<dial id='vendor_sr_power_armor' armor='power'/>
 			</npc>
 			<npc id='vendor_maps' vendor='vendor_maps' 	inter='v' vis='VendorMaps' ico='2' silent='1'>
@@ -2253,10 +2253,10 @@ package
 				<buy id='fuel' n='2000' />
 				<buy id='fuel_7' n='400' barter='1'/>
 				<task id='killBloats'/>
-				<task id='killLucerne' land='raiders'/>
-				<task id='collectFcrystal' land='random_stable'/>
-				<task id='retPistol' land='random_mane'/>
-				<task id='collectBlaster' land='random_mane'/>
+				<task id='killLucerne' level='raiders'/>
+				<task id='collectFcrystal' level='random_stable'/>
+				<task id='retPistol' level='random_mane'/>
+				<task id='collectBlaster' level='random_mane'/>
 			</vendor>
 			<vendor id='vendor_expl'>
 				<buy id='glau1' n='1'/>
@@ -2305,8 +2305,8 @@ package
 				<task id='collectNitro'/>
 				<task id='collectSmoke'/>
 				<task id='killAnthills'/>
-				<task id='testCryo' skill='explosives' skilln='9' land='random_stable'/>
-				<task id='collectSpgren' skill='explosives' skilln='14' land='random_mane'/>
+				<task id='testCryo' skill='explosives' skilln='9' level='random_stable'/>
+				<task id='collectSpgren' skill='explosives' skilln='14' level='random_mane'/>
 			</vendor>
 			<vendor id='vendor_medic'>
 				<buy id='pot1' n='25'/>
@@ -2336,8 +2336,8 @@ package
 				<buy id='impl_intel' n='1' lvl='20' nocheap='1' noref='1'/>
 				<buy id='potHP' n='1' barter='5' noref='1'/>
 				<task id='repairAutoDoc'/>
-				<task id='collectFishfat' land='raiders'/>
-				<task id='collectTmed' land='random_stable'/>
+				<task id='collectFishfat' level='raiders'/>
+				<task id='collectTmed' level='random_stable'/>
 				<task id='collectRecipes'/>
 				<buy id='vaccine' n='1' nocheap='1' noref='1' trigger='patient_tr1'/>
 			</vendor>
@@ -2374,9 +2374,9 @@ package
 				<task id='findProArmor'/>
 				<task id='killMadfox'/>
 				<task id='collectPaintsA'/>
-				<task id='collectPaintsB' trigger='colors1' land='random_stable'/>
-				<task id='collectPaintsC' trigger='colors2' land='random_mane'/>
-				<task id='collectPowerArmor' land='random_mbase'/>
+				<task id='collectPaintsB' trigger='colors1' level='random_stable'/>
+				<task id='collectPaintsC' trigger='colors2' level='random_mane'/>
+				<task id='collectPowerArmor' level='random_mbase'/>
 			</vendor>
 			<vendor id='vendor_mech'>
 				<buy id='mont' n='1'/>
@@ -2455,7 +2455,7 @@ package
 				<task id='collectFans'/>
 				<task id='collectMolefat'/>
 				<task id='collectCol2'/>
-				<task id='collectData' land='random_stable' skill='science' skilln='9'/>
+				<task id='collectData' level='random_stable' skill='science' skilln='9'/>
 			</vendor>
 			<vendor id='vendor_mage'>
 				<buy id='telebul' n='2'/>
@@ -2525,8 +2525,8 @@ package
 				<buy id='tal_ether' n='1' lvl='40' noref='1' nocheap='1'/>
 				
 				<task id='collectBooks'/>
-				<task id='collectGems' land='random_stable'/>
-				<task id='collectDust' land='random_mane'/>
+				<task id='collectGems' level='random_stable'/>
+				<task id='collectDust' level='random_mane'/>
 			</vendor>
 			<vendor id='vendor_cook'>
 				<buy id='meat' n='5'/>
@@ -2695,9 +2695,9 @@ package
 				<task id='hydroPon' man='1'/>
 				<task id='collectDatast' man='1'/>
 				<task id='collectMotiv' man='1'/>
-				<task id='collectBbatt' man='1' land='bunker'/>
-				<task id='enclArmor' man='1' land='bunker'/>
-				<task id='collectTech' man='1' land='bunker'/>
+				<task id='collectBbatt' man='1' level='bunker'/>
+				<task id='enclArmor' man='1' level='bunker'/>
+				<task id='collectTech' man='1' level='bunker'/>
 			</vendor>
 			<vendor id='vendor_maps'>
 				<buy id='card0' n='3' nocheap='1' noref='1'/>

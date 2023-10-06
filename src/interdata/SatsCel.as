@@ -12,7 +12,7 @@ package interdata
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1) 
 		{
 			layer=5;
-			location=World.world.location;
+			room=World.world.room;
 			var ramka:int=10;
 			if (nUn==null) 
 			{
@@ -35,12 +35,12 @@ package interdata
 			addVisual();
 		}
 		
-		public function remove() 
+		public function remove()
 		{
 			remVisual();
 		}
 		
-		public function run() 
+		public function run()
 		{
 			if (un) 
 			{

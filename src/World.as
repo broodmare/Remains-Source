@@ -6,8 +6,7 @@ package
 	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.display.StageAlign;
-	import flash.net.URLLoader; 
-	import flash.net.URLRequest; 
+
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.events.IOErrorEvent;
@@ -21,7 +20,7 @@ package
 	import flash.external.ExternalInterface;
 
 	import locdata.*;
-	import roomdata.Rooms;
+	import roomdata.RoomContainer;
 	import graphdata.Grafon;
 	import graphdata.Part;
 	import graphdata.Emitter;
@@ -33,20 +32,23 @@ package
 	import unitdata.Pers;
 	import weapondata.Weapon;
 
-	
+	import components.Settings;
+	import systems.Languages;
+
 	public class World 
 	{
+
 		public static var world:World;
 		
 		public var urle:String;						//URL from which the game was launched
 
+
 		//Visual components
 		public var mainDisplay:Sprite;				//Main game sprite
-		public var swfStage:Stage;	
-		
+		public var swfStage:Stage;					//Sprite container
 		public var loadingScreen:MovieClip;			//Loading image
 		public var skybox:MovieClip;				//Static background
-		public var mainCanvas:Sprite;					//Active area
+		public var mainCanvas:Sprite;				//Active area
 		public var vscene:MovieClip;				//Scene
 		public var vblack:MovieClip;				//Darkness
 		public var vpip:MovieClip;					//Pipbuck
@@ -56,6 +58,7 @@ package
 		public var verror:MovieClip;				//Error window
 		public var vconsol:MovieClip;				//Console scroll
 	
+
 		//All main components
 		public var mainMenu:MainMenu;
 		public var cam:Camera;						//Camera
@@ -72,21 +75,23 @@ package
 		public var sats:Sats;						//SATS
 		public var app:Appear;						//Character appearance settings
 		
-		//Location components
-		public var land:Land;						//Current terrain
-		public var location:Location;				//Current location
-		public var rooms:Rooms;
+
+		//Room components
+		public var level:Level;						//Current level
+		public var room:Room;						//Current room
+		public var roomContainer:RoomContainer;		//Holds all level data.
 		
+
 		//Working variables
 		public var onConsol:Boolean = false;		//Console active
 		public var onPause:Boolean = false;			//Game on pause
 		public var allStat:int = 0; 				//Overall status 0 - game has not started
-		public var celX:Number;						//Cursor coordinates in location coordinate system
+		public var celX:Number;						//Cursor coordinates in room coordinate system
 		public var celY:Number;
 		public var t_battle:int = 0;				//Is there a battle happening or not
 		public var t_die:int = 0;					//Player character has died
-		public var t_exit:int = 0;					//Exit from location
-		public var gr_stage:int = 0;				//Location rendering stage
+		public var t_exit:int = 0;					//Exit from room
+		public var gr_stage:int = 0;				//Room rendering stage
 		public var checkLoot:Boolean = false;		//Recalculate auto-loot
 		public var calcMass:Boolean = false;		//Recalculate mass
 		public var calcMassW:Boolean = false;		//Recalculate weapon mass
@@ -94,113 +99,13 @@ package
 		public var armorWork:String = '';			//Temporary display of armor
 		public var mmArmor:Boolean = false;			//Armor in main menu
 		public var catPause:Boolean = false;		//Pause for scene display
-		
 		public var testLoot:Boolean = false;		//Loot and experience testing
 		public var summxp:int = 0;
 		public var ccur:String;
+		public var currentMusic:String = '';
 		
-		public var currentMusic:String='';
-		
-		
-		//Settings variables
-		public var enemyAct:int = 3;				//enemy activity, should be 3. If 0, enemies will not be active
-		public var roomsLoad:int = 1;  				//1-load from file
-		public var langLoad = 1;  					//1-load from file
-		public var addCheckSP:Boolean = false;		//add skill points when visiting checkpoints
-		public var weaponsLevelsOff:Boolean = true;	//disable using weapons of incorrect level
-		public var drawAllMap:Boolean = false;		//display the whole map without fog of war
-		public var black:Boolean = true;			//display fog of war
-		public var testMode:Boolean = false;		//Test mode
-		public var chitOn:Boolean = false;
-		public var chit:String=''; 					//current cheat
-		public var chitX:String = null;	
-		public var showArea:Boolean = false;		//Should the current room be rendered?
-		public var godMode:Boolean = false;			//invincibility 
-		public var showAddInfo:Boolean = false;		//show additional information
-		public var testBattle:Boolean = false;		//stamina will be consumed outside of battle
-		public var testEff:Boolean = false;			//effects will be 10 times shorter
-		public var testDam:Boolean = false;			//cancel damage range
-		public var hardInv:Boolean = false;			//limited inventory
-		public var alicorn:Boolean = false;
-		public var maxParts:int = 100;				//maximum particles
-		
-		public var zoom100:Boolean = false;			//zoom 100%
-		public var dialOn:Boolean = true;			//show dialogues with NPCs
-		public var showHit:int = 2;					//show damage
-		public var matFilter:Boolean = true;		//material filter
-		public var helpMess:Boolean = true;			//tutorial messages
-		
-		public var shineObjs:Boolean = false;		//objects glow
-		public var sysCur:Boolean = false;			//system cursor
-		public var hintKeys:Boolean = true;			//keyboard hints
-		public var hintTele:Boolean = true;			//teleport hints
-		public var showFavs:Boolean = true;			//show additional info when cursor is on top of the screen
-		public var errorShow:Boolean = true;
-		public var errorShowOpt:Boolean = true;
-		public var quakeCam:Boolean = true;			//camera shake
-		
-		public var vsWeaponNew:Boolean = true;		//automatically take new weapon if there is room
-		public var vsWeaponRep:Boolean = true;		//automatically take weapon for repair
-		public var vsAmmoAll:Boolean = true;		
-		public var vsAmmoTek:Boolean = true;		
-		public var vsExplAll:Boolean = true;		
-		public var vsMedAll:Boolean = true;		
-		public var vsHimAll:Boolean = true;		
-		public var vsEqipAll:Boolean = true;		
-		public var vsStuffAll:Boolean = true;		
-		public var vsVal:Boolean = true;		
-		public var vsBook:Boolean = true;		
-		public var vsFood:Boolean = true;		
-		public var vsComp:Boolean = true;		
-		public var vsIngr:Boolean = true;		
-		
-		//Global constants
-		public var actionDist = 200*200;
-		public static const tilePixelWidth = 40;	//Tile Width
-		public static const tilePixelHeight = 40;	//Tile Height
-		public static const roomTileWidth:int = 48; //Room Width
-		public static const roomTileHeight:int = 25;//Room Height
-		public static const fps = 30;
-		public static const ddy = 1;
-		public static const maxdy = 20;
-		public static const maxwaterdy = 20;
-		public static const maxdelta = 9;
-		public static const oduplenie = 100;
-		public static const battleNoOut = 120;
-		public static const unitXPMult:Number = 2;
-		public static const kolHK = 12;				//number of hotkeys
-		public static const kolQS = 4;				//number of quick spells
-			
-		
-		public static const boxDamage = 0.2;		//box attack strength multiplier
-		
-		//Load texts
-		public var lang:String = 'en';
-		public var langDef:String = 'ru';
-		public var languageList:Array;
-		public var languageCount:int = 0;
-		public var tl:TextLoader;
-		public var tld:TextLoader;
-		public var textLoaded:Boolean = false;
-		public var textLoadErr:Boolean = false;
-		public var loader_lang:URLLoader; 
-		public var request_lang:URLRequest;
-		public var langsXML:XML;
-		public var textProgressLoad:Number = 0;
-		
-		//Files
-		public var soundPath:String;
-		public var musicPath:String;
-		public var textureURL:String;
-		public var spriteURL:String;
-		public var sprite1URL:String;
-		public var musicKol:int=0;
-		public var musicLoaded:int=0;
-		
-		
-		//public var ressoundURL:String;
-		public var langURL:String;
-		
+
+
 		//Loading, saves, config
 		public var configObj:SharedObject;
 		public var saveObj:SharedObject;
@@ -210,96 +115,77 @@ package
 		public var t_save:int = 0;
 		public var loaddata:Object;					//data loaded from file
 		public var nadv:int = 0, koladv:int = 10;	//advice number
-		public var load_log:String='';
+		public var load_log:String = '';			//This is the text that apepars onscreen during boot.
 		
+
 		//Maps
-		public var landPath:String;
+		public var levelPath:String;
 		public var landData:Array;
 		public var kolLands:int = 0;
 		public var kolLandsLoaded:int = 0;
 		public var allLandsLoaded:Boolean = false;
-		
-		public var comLoad:int = -1;				//load command
-		public var clickReq:int = 0;				//button click request, if set to 1, 2 will only be set after click
-		public var ng_wait:int = 0;					//new game wait
-		public var loadScreen:int = -1;				//loading screen
-		public var autoSaveN:int = 0;				//autosave slot number
-		public var log:String='';
-		
-		public var fc:int=0;
 
-		//var date:Date,
+
+		//Other
+		public var comLoad:int 		= -1;				//load command
+		public var clickReq:int 	= 0;				//button click request, if set to 1, 2 will only be set after click
+		public var ng_wait:int 		= 0;				//new game wait
+		public var loadScreen:int 	= -1;				//loading screen
+		public var autoSaveN:int 	= 0;				//autosave slot number
+		public var log:String 		= '';
+		public var fc:int 			= 0;
+
+
 		public var d1:int, d2:int;
-		
-		public var landError:Boolean= false;
+		public var landError:Boolean = false;
+		public var textProgressLoad:Number;
+
+
+
 
 
 		public function World(nmain:Sprite) 
 		{
-			World.world=this;
+			trace ('World.as/World() - starting loading stage 1...');
+			World.world = this;
+		
 
-			// Technical part
-			
-			//files
-			soundPath = '';
-			musicPath = 'Music/';
-			textureURL = 'texture.swf';
-			spriteURL = 'sprite.swf';
-			sprite1URL = 'sprite1.swf';
-			langURL = 'lang.xml';
-			landPath = 'Rooms/';
-			
 			mainDisplay = nmain;
 
-			swfStage = mainDisplay.stage;
-			swfStage.tabChildren = false;
+			swfStage 				= mainDisplay.stage;
+			swfStage.tabChildren 	= false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
 
-			Tile.tilePixelWidth = tilePixelWidth;
-			Tile.tilePixelHeight = tilePixelHeight;
+			Tile.tilePixelWidth 	= Settings.tilePixelWidth;
+			Tile.tilePixelHeight 	= Settings.tilePixelHeight;
 			
-			//Data initialization
-			loader_lang = new URLLoader(); 
-			request_lang = new URLRequest(langURL); 
-			loader_lang.load(request_lang); 
-			loader_lang.addEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.addEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			
-
-
-			//initTexts();
 			
 			LootGen.init();
 			Form.setForms();
 			Emitter.init();
-
-			if (roomsLoad == 0) 
-			{
-				//=============================== Remove when loading from file
-				//rooms=new Rooms();
-			}
 			
+
 			//Creating graphic elements
 			loadingScreen = new visualWait();
-			loadingScreen.cacheAsBitmap = true;
+			loadingScreen.cacheAsBitmap = Settings.bitmapCachingOption;
 			
 			//Appearance configurator
 			app = new Appear();
 			
-			mainCanvas = new Sprite();
-			vgui =   new visualGUI();
-			skybox = new MovieClip();
-			vpip =   new visPipBuck();
-			vstand = new visualStand();
-			vsats =  new MovieClip();
-			vscene = new visualScene();
-			vblack = new visBlack();
-			vblack.cacheAsBitmap = true;
-			vconsol = new visConsol();
-			verror = new visError();
+			mainCanvas 	= new Sprite();
+			vgui 		= new visualGUI();
+			skybox 		= new MovieClip();
+			vpip 		= new visPipBuck();
+			vstand 		= new visualStand();
+			vsats 		= new MovieClip();
+			vscene 		= new visualScene();
+			vblack 		= new visBlack();
+			vblack.cacheAsBitmap =  Settings.bitmapCachingOption;
+			vconsol 	= new visConsol();
+			verror 		= new visError();
 
 			setLoadScreen();
-			vgui.visible=vpip.visible=vconsol.visible=skybox.visible=mainCanvas.visible=vsats.visible=loadingScreen.visible=vblack.visible=verror.visible=vscene.visible= false;
+			vgui.visible=vpip.visible=vconsol.visible=skybox.visible=mainCanvas.visible=vsats.visible=loadingScreen.visible=vblack.visible=verror.visible=vscene.visible = false;
 			vscene.stop();
 
 			mainDisplay.addChild(loadingScreen);
@@ -314,20 +200,25 @@ package
 			mainDisplay.addChild(verror);
 			mainDisplay.addChild(vconsol);
 
+			//ERROR LOG STUFF
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function () {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
-			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible= false;});
-			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {errorShow= false; verror.visible= false;});
-			vstand.visible= false;
-
+			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible = false;});
+			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {Settings.errorShow = false; verror.visible = false;});
+			
+			vstand.visible = false;
+			trace('World.as/World() - Creating new Grafon object.');
 			grafon = new Grafon(mainCanvas);
 			cam = new Camera(this);
 
+			
 			load_log += 'Stage 1 Ok\n';
+			trace('World.as/World() - STAGE 1 COMPLETE.');
+
 			//FPS counter
 			d1 = d2 = getTimer();
 			
 			//config, immediately loads sound settings
-			configObj=SharedObject.getLocal('config',savePath);
+			configObj = SharedObject.getLocal('config', savePath);
 			if (configObj.data.snd) Snd.load(configObj.data.snd);
 
 		}
@@ -336,113 +227,12 @@ package
 //			Technical Part
 //=============================================================================================================
 		
-		// The loading of the language list from xml was completed successfully
-		function onCompleteLoadLang(event:Event):void  
+		public function init2()
 		{
-			try 
-			{
-				langsXML = new XML(loader_lang.data);
-				initLangs(false)
-			} 
-			catch(err) 
-			{
-				trace('Error in language file');
-				load_log+='Language file error: ' + langURL + '\n';
-				initLangs(true);
-			}
+			trace('World.as/init2() - Starting loading stage 2...');
 
-			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			load_log += 'Language file loading: ' + langURL + ' Ok\n';
-		}
-		
-		//error loading language list from xml
-		function onErrorLoadLang(event:IOErrorEvent):void 
-		{
-			initLangs(true);
-			loader_lang.removeEventListener(Event.COMPLETE, onCompleteLoadLang);
-			loader_lang.removeEventListener(IOErrorEvent.IO_ERROR, onErrorLoadLang);
-			load_log += 'Load lang error ' + langURL + '\n';
-			trace('Cannot load the list of languages');
-        }
-		
-		//create language list, initiate language loading
-		function initLangs(err:Boolean= false) 
-		{
-			if (err) langsXML = <all>
-				<lang id = 'ru' file = 'text_ru.xml'>Русский</lang>
-				<lang id = 'en' file = 'text_en.xml'>English</lang>
-			</all>;	
-
-			lang = Capabilities.language;
-			
-			if (configObj.data.language != null) lang = configObj.data.language;
-			if (langsXML && langsXML.@default.length()) langDef=langsXML.@default;
-
-			languageList = new Array();
-			for each (var xmlFile:XML in langsXML.lang) 
-			{
-				if (xmlFile.@off.length()==0 || !xmlFile.@off> 0) 
-				{
-					var obj={file:xmlFile.@file, nazv:xmlFile[0]};
-					languageList[xmlFile.@id]=obj;
-					languageCount++;
-				}
-			}
-			if (languageList[lang] == null) lang = langDef;
-			tld = new TextLoader(languageList[langDef].file, true);
-			if (lang != langDef) 
-			{
-				tl = new TextLoader(languageList[lang].file);
-			} 
-			else 
-			{
-				tl = tld;
-			}
-		}
-		
-		//language loading completed
-		public function textsLoadOk() 
-		{
-			if (tl.loaded) 
-			{
-				textLoaded=true;
-				Res.d = tl.d;
-			}
-			if (tl.errLoad) 
-			{
-				lang=langDef;
-				if (tld.loaded) 
-				{
-					textLoaded=true;
-					Res.d=tld.d;
-				}
-				textLoadErr=true;
-			}
-		}
-		
-		//select new language
-		public function defuxLang(nid:String) 
-		{
-			lang = nid;
-			textLoadErr = false;
-			if (nid != langDef) 
-			{
-				textLoaded = false;
-				tl = new TextLoader(languageList[nid].file);
-			} 
-			else
-			{
-				Res.d = Res.e;
-				pip.updateLang();
-			}
-			saveConfig();
-		}
-		
-		function init2() 
-		{
 			if (consol) return;
-			if (configObj) lastCom=configObj.data.lastCom;
+			if (configObj) lastCom = configObj.data.lastCom;
 
 			consol = new Consol(vconsol, lastCom);
 
@@ -454,21 +244,21 @@ package
 			}
 			saveObj = saveArr[0];
 
-			if (configObj.data.dialon != null) dialOn=configObj.data.dialon;
-			if (configObj.data.zoom100 != null) zoom100=configObj.data.zoom100;
-			if (zoom100) 
+			if (configObj.data.dialon 	!= null) Settings.dialOn = configObj.data.dialon;
+			if (configObj.data.zoom100 	!= null) Settings.zoom100 = configObj.data.zoom100;
+			if (Settings.zoom100) 
 			{
 				cam.isZoom = 0; 
 			}
 			else cam.isZoom = 2;
-			if (configObj.data.mat != null) matFilter = configObj.data.mat;
-			if (configObj.data.help != null) helpMess = configObj.data.help;
-			if (configObj.data.hit != null) showHit = configObj.data.hit;
-			if (configObj.data.sysCur != null) sysCur = configObj.data.sysCur;
-			if (configObj.data.hintTele != null) hintTele = configObj.data.hintTele;
-			if (configObj.data.showFavs != null) showFavs = configObj.data.showFavs;
-			if (configObj.data.quakeCam != null) quakeCam = configObj.data.quakeCam;
-			if (configObj.data.errorShowOpt != null) errorShowOpt = configObj.data.errorShowOpt;
+			if (configObj.data.mat 		!= null) Settings.matFilter = configObj.data.mat;
+			if (configObj.data.help 	!= null) Settings.helpMess = configObj.data.help;
+			if (configObj.data.hit 		!= null) Settings.showHit = configObj.data.hit;
+			if (configObj.data.sysCur 	!= null) Settings.sysCur = configObj.data.sysCur;
+			if (configObj.data.hintTele != null) Settings.hintTele = configObj.data.hintTele;
+			if (configObj.data.showFavs != null) Settings.showFavs = configObj.data.showFavs;
+			if (configObj.data.quakeCam != null) Settings.quakeCam = configObj.data.quakeCam;
+			if (configObj.data.errorShowOpt != null) Settings.errorShowOpt = configObj.data.errorShowOpt;
 			if (configObj.data.app) 
 			{
 				app.load(configObj.data.app);
@@ -480,58 +270,58 @@ package
 			} 
 			catch (err) 
 			{
-
+				trace('World.as/init2() - Error during init2().' + err.message);
 			}
 
 			if (configObj.data.nadv) 
 			{
 				nadv = configObj.data.nadv;
 				configObj.data.nadv++;
-				if (configObj.data.nadv>=koladv) configObj.data.nadv=0;
+				if (configObj.data.nadv>=koladv) configObj.data.nadv = 0;
 			} 
 			else 
 			{
 				configObj.data.nadv = 1;
 			}
 
-			if (configObj.data.chit > 0) chitOn = true;
-			if (configObj.data.vsWeaponNew > 0) vsWeaponNew = false;
-			if (configObj.data.vsWeaponRep > 0) vsWeaponRep = false;
-			if (configObj.data.vsAmmoAll > 0) vsAmmoAll = false;	
-			if (configObj.data.vsAmmoTek > 0) vsAmmoTek = false;	
-			if (configObj.data.vsExplAll > 0) vsExplAll  = false;	
-			if (configObj.data.vsMedAll > 0) vsMedAll = false;
-			if (configObj.data.vsHimAll > 0) vsHimAll = false;
-			if (configObj.data.vsEqipAll > 0) vsEqipAll = false;
-			if (configObj.data.vsStuffAll > 0) vsStuffAll = false;
-			if (configObj.data.vsVal > 0) vsVal = false;
-			if (configObj.data.vsBook > 0) vsBook = false;
-			if (configObj.data.vsFood > 0) vsFood = false;
-			if (configObj.data.vsComp > 0) vsComp = false;
-			if (configObj.data.vsIngr > 0) vsIngr = false;
+			if (configObj.data.chit > 0) 		Settings.chitOn 		= true;
+			if (configObj.data.vsWeaponNew > 0) Settings.vsWeaponNew 	= false;
+			if (configObj.data.vsWeaponRep > 0) Settings.vsWeaponRep 	= false;
+			if (configObj.data.vsAmmoAll > 0) 	Settings.vsAmmoAll 		= false;	
+			if (configObj.data.vsAmmoTek > 0) 	Settings.vsAmmoTek 		= false;	
+			if (configObj.data.vsExplAll > 0) 	Settings.vsExplAll  	= false;	
+			if (configObj.data.vsMedAll > 0) 	Settings.vsMedAll 		= false;
+			if (configObj.data.vsHimAll > 0) 	Settings.vsHimAll 		= false;
+			if (configObj.data.vsEqipAll > 0) 	Settings.vsEqipAll 		= false;
+			if (configObj.data.vsStuffAll > 0) 	Settings.vsStuffAll 	= false;
+			if (configObj.data.vsVal > 0) 		Settings.vsVal 			= false;
+			if (configObj.data.vsBook > 0) 		Settings.vsBook 		= false;
+			if (configObj.data.vsFood > 0) 		Settings.vsFood 		= false;
+			if (configObj.data.vsComp > 0) 		Settings.vsComp 		= false;
+			if (configObj.data.vsIngr > 0) 		Settings.vsIngr 		= false;
 			
 			//trace(configObj.data.vsWeaponNew,vsWeaponNew);
 			ctr = new Ctr(configObj.data.ctr);
 			pip = new PipBuck(vpip);
-			if (!sysCur) Mouse.cursor='arrow';
+			if (!Settings.sysCur) Mouse.cursor = 'arrow';
 			
-			//loading location maps
+			//loading room maps
 			landData = new Array();
-			for each(var xl in GameData.d.land) 
+			for each(var xl in GameData.d.level) 
 			{
-				if (!testMode && xl.@test> 0) continue;
-				var ll:LandLoader=new LandLoader(xl.@id);
-				if (!(xl.@test> 0)) kolLands++;
-				landData[xl.@id]=ll;
+				if (!Settings.testMode && xl.@test > 0) continue;
+				var ll:LandLoader = new LandLoader(xl.@id);
+				if (!(xl.@test > 0)) kolLands++;
+				landData[xl.@id] = ll;
 			}
 			
-			load_log+='Stage 2 Ok\n';
+			load_log += 'Stage 2 Ok\n';
 			Snd.loadMusic();
 		}
 
-		public function roomsLoadOk() 
+		public function roomsLoadOk()
 		{
-			if (!roomsLoad) 
+			if (!Settings.roomsLoad) 
 			{
 				allLandsLoaded = true;
 				return;
@@ -547,15 +337,15 @@ package
 			{
 				pip.onoff(11);
 			}
-			if (allStat> 0 && !alicorn) saveGame();
+			if (allStat> 0 && !Settings.alicorn) saveGame();
 		}
 		
 		//Pause and call pipbuck if window size is changed
-		public function resizeScreen() 
+		public function resizeScreen()
 		{
 			if (allStat > 0) 
 			{
-				cam.setLoc(location);
+				cam.setLoc(room);
 			} 
 			if (gui) gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
 			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
@@ -568,11 +358,11 @@ package
 				loadingScreen.x=swfStage.stageWidth/2;
 				loadingScreen.y=swfStage.stageHeight/2;
 			}
-			if (allStat == 1 && !testMode) pip.onoff(11);
+			if (allStat == 1 && !Settings.testMode) pip.onoff(11);
 		}
 		
 		//Console call
-		public function consolOnOff() 
+		public function consolOnOff()
 		{
 			onConsol =! onConsol; //Toggles the state of onConsole
 			consol.vis.visible = onConsol; //Toggles the visibility of consol depending on the state of onConsol
@@ -592,20 +382,20 @@ package
 		//Start a new game or load a save. Pass the slot number or -1 for a new game
 		//Stage 0 - create HUD, SATS, and pipuck
 		//Initialize game
-		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null) 
+		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null)
 		{
-			if (testMode && !chitOn) 
+			if (Settings.testMode && !Settings.chitOn) 
 			{
 				loadingScreen.progres.text='error';
 				return;
 			}
 			try
 			{
-				allStat=-1;
+				allStat = -1;
 				opt = nopt;
 				newName = nnewName;
 				game = new Game();
-				if (!roomsLoad) allLandsLoaded = true;
+				if (!Settings.roomsLoad) allLandsLoaded = true;
 				newGame = nload<0;
 				if (newGame) 
 				{
@@ -655,13 +445,13 @@ package
 		}
 		
 		// stage 1 - create character and inventory
-		public function newGame1() 
+		public function newGame1()
 		{
 			try 
 			{
 				if (!newGame) app.load(data.app);
-				if (data.hardInv == true) hardInv = true; else hardInv = false;
-				if (opt && opt.hardinv) hardInv = true;
+				if (data.hardInv == true) Settings.hardInv = true; else Settings.hardInv = false;
+				if (opt && opt.hardinv) Settings.hardInv = true;
 
 				// create character
 				pers = new Pers(data.pers, opt);
@@ -696,7 +486,7 @@ package
 		}
 		
 		// Stage 2 - create a terrain and enter it
-		public function newGame2() 
+		public function newGame2()
 		{
 			try 
 			{
@@ -708,7 +498,8 @@ package
 				vblack.alpha=1;
 				cam.dblack=-10;
 				pip.onoff(-1);
-				//enter the current location
+
+				//enter the current room
 				game.enterToCurLand();//!!!!
 				game.beginGame();
 				
@@ -723,14 +514,14 @@ package
 			}
 		}
 		
-		public function loadGame(nload:int = 0) 
+		public function loadGame(nload:int = 0)
 		{
 			try 
 			{
 				comLoad = -1;
-				if (location) location.unloadLocation();
-				land = null;
-				location = null;
+				if (room) room.unloadRoom();
+				level = null;
+				room = null;
 				try {cur('arrow');} 
 				catch(err)
 				{
@@ -752,7 +543,7 @@ package
 				//create game
 				Snd.off = true;
 				cam.showOn = false;
-				if (data.hardInv==true) hardInv=true; else hardInv= false;
+				if (data.hardInv==true) Settings.hardInv=true; else Settings.hardInv= false;
 				game = new Game();
 				game.init(data.game);
 				app.load(data.app);
@@ -785,10 +576,10 @@ package
 				t_die=0;
 				t_battle=0;
 
-				//enter the current location
+				//enter the current room
 				game.enterToCurLand();//!!!!
 				game.beginGame();
-				log='';
+				log = '';
 				Snd.off= false;
 				gui.setAll();
 				allStat=1;
@@ -799,13 +590,13 @@ package
 			}
 		}
 		
-		// Call when entering a specific location
-		public function ativateLand(nland:Land) 
+		// Call when entering a specific level
+		public function activateLevel(l:Level)
 		{
 			try 
 			{
-				land = nland;
-				grafon.drawSkybox(skybox,land.act.skybox);
+				level = l;
+				grafon.drawSkybox(skybox,level.template.skybox);
 			} 
 			catch (err) 
 			{
@@ -815,21 +606,21 @@ package
 		
 		// Call when entering a specific area
 		// There is a graphical bug here
-		public function ativateLoc(nloc:Location) 
+		public function ativateLoc(newRoom:Room)
 		{
 			try 
 			{
-				if (location != null) //If a location exists, unload it.
+				if (room != null) //If a room exists, unload it.
 				{
-					location.unloadLocation();
+					room.unloadRoom();
 				}
 
-				location = nloc; //Set the desired area as the current area
-				grafon.drawLoc(location); //Draw the current area
-				cam.setLoc(location);
+				room = newRoom; //Set the desired area as the current area
+				grafon.drawLoc(room); //Draw the current area
+				cam.setLoc(room);
 				grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
 				gui.setAll();
-				currentMusic = location.sndMusic;
+				currentMusic = room.sndMusic;
 				Snd.playMusic(currentMusic);
 				gui.hpBarBoss();
 				if (t_die <= 0) World.world.gg.controlOn();
@@ -843,12 +634,12 @@ package
 			}
 		}
 		
-		public function redrawLoc() 
+		public function redrawLoc()
 		{
 			try 
 			{
-				grafon.drawLoc(location);
-				cam.setLoc(location);
+				grafon.drawLoc(room);
+				cam.setLoc(room);
 				gui.setAll();
 			} 
 			catch (err) 
@@ -857,7 +648,7 @@ package
 			}
 		}
 		
-		public function exitLand(fast:Boolean= false) 
+		public function exitLand(fast:Boolean= false)
 		{
 			if (t_exit > 0) return;
 			gg.controlOff();
@@ -873,7 +664,7 @@ package
 		}
 		
 		
-		function exitStep() 
+		function exitStep()
 		{
 			try 
 			{
@@ -916,7 +707,7 @@ package
 			}
 		}
 		
-		function ggDieStep() 
+		function ggDieStep()
 		{
 			try 
 			{
@@ -924,7 +715,7 @@ package
 				if (t_die == 200) cam.dblack = 2.2;
 				if (t_die == 150) 
 				{
-					if (alicorn) 
+					if (Settings.alicorn) 
 					{
 						game.runScript('gameover');
 						t_die=0;
@@ -933,15 +724,15 @@ package
 					{
 						if (gg.sost == 3) 
 						{
-							game.curLandId=game.baseId;
+							game.curLevelID = game.baseId;
 							game.enterToCurLand();
 						} 
 						else 
 						{
-							land.gotoCheckPoint();
+							level.gotoCheckPoint();
 						}
-						cam.dblack=-4;
-						gg.vis.visible=true;
+						cam.dblack = -4;
+						gg.vis.visible = true;
 					}
 				}
 				if (t_die == 100) gg.resurect();
@@ -957,7 +748,7 @@ package
 		}
 
 		// Main loop
-		public function step() 
+		public function step()
 		{
 			try 
 			{
@@ -969,13 +760,13 @@ package
 
 				if (ng_wait > 0) 
 				{
-					if (ng_wait==1) 
+					if (ng_wait == 1) 
 					{
 						newGame1();
 					} 
-					else if (ng_wait==2) 
+					else if (ng_wait == 2) 
 					{
-						if (clickReq!=1) newGame2();
+						if (clickReq != 1) newGame2();
 					}
 					return;
 				}
@@ -996,7 +787,7 @@ package
 					//trace(Emitter.kol2);
 
 					//main loop !!!!
-					if (t_exit != 17) land.step();
+					if (t_exit != 17) level.step();
 
 					//death loop
 					if (t_die > 0) ggDieStep();
@@ -1020,12 +811,12 @@ package
 
 					//Increment ticks since last save, if over 5000, and not in either test or alicorn mode, save the game.
 					t_save++;
-					if (t_save>5000 && !testMode && !alicorn)
+					if (t_save>5000 && !Settings.testMode && !Settings.alicorn)
 					{
 						saveGame();
 					}
 
-					checkLoot= false;
+					checkLoot = false;
 				}
 				//trace(clickReq,t_exit)
 				
@@ -1033,13 +824,13 @@ package
 				{
 					if (comLoad >= 100) 
 					{
-						if (autoSaveN> 0) saveGame();
-						loadGame(comLoad-100);
+						if (autoSaveN > 0) saveGame();
+						loadGame(comLoad - 100);
 					} 
 					else 
 					{
 						pip.onoff(-1);
-						comLoad+=100;
+						comLoad += 100;
 						setLoadScreen();
 					}
 				}
@@ -1110,11 +901,11 @@ package
 //=============================================================================================================
 //			Global interaction functions
 //=============================================================================================================
-		public function cur(ncur:String = 'arrow') 
+		public function cur(ncur:String = 'arrow')
 		{
-			if (sysCur) return;
+			if (Settings.sysCur) return;
 			if (pip.active || stand.active || comLoad >= 0) ncur = 'arrow';
-			else if (t_battle> 0) ncur='combat';
+			else if (t_battle> 0) ncur ='combat';
 			if (ncur != ccur) 
 			{
 				Mouse.cursor = ncur;
@@ -1123,10 +914,10 @@ package
 			}
 		}
 		
-		public function quake(x:Number, y:Number) 
+		public function quake(x:Number, y:Number)
 		{
-			if (location.sky) return;
-			if (quakeCam) 
+			if (room.sky) return;
+			if (Settings.quakeCam) 
 			{
 				cam.quakeX += x;
 				cam.quakeY += y;
@@ -1140,35 +931,35 @@ package
 		
 		public function possiblyOut():int 
 		{
-			if (t_battle> 0) return 2;
-			if (location && location.t_alarm> 0) return 2;
-			if (land.loc_t>120) return 1;
+			if (t_battle > 0) return 2;
+			if (room && room.t_alarm > 0) return 2;
+			if (level.loc_t > 120) return 1;
 			return 0;
 		}
 		
-		public function showError(err:Error, dop:String=null) 
+		public function showError(err:Error, dop:String = null)
 		{
-			if (!errorShow || !errorShowOpt) return;
+			if (!Settings.errorShow || !Settings.errorShowOpt) return;
 
 			try 
 			{
-				verror.info.text=Res.pipText('error');
-				verror.butClose.text.text=Res.pipText('err_close');
-				verror.butForever.text.text=Res.pipText('err_dont_show');
-				verror.butCopy.text.text=Res.pipText('err_copy_to_clipboard');
+				verror.info.text 			= Res.pipText('error');
+				verror.butClose.text.text 	= Res.pipText('err_close');
+				verror.butForever.text.text = Res.pipText('err_dont_show');
+				verror.butCopy.text.text 	= Res.pipText('err_copy_to_clipboard');
 			} 
 			catch (e) 
 			{
 				
 			}
 
-			verror.txt.text=err.message+'\n'+err.getStackTrace();
-			verror.txt.text+='\n'+'gr_stage: '+gr_stage;
-			if (dop != null) verror.txt.text+='\n'+dop;
+			verror.txt.text = err.message + '\n' + err.getStackTrace();
+			verror.txt.text += '\n' + 'gr_stage: ' + gr_stage;
+			if (dop != null) verror.txt.text += '\n' + dop;
 			verror.visible=true;
 		}
 		
-		public function gc() 
+		public function gc()
 		{
 			System.pauseForGCIfCollectionImminent(0.25)	
 		}
@@ -1178,7 +969,7 @@ package
 //=============================================================================================================
 
 		//set loading screen
-		public function setLoadScreen(n:int = -1) 
+		public function setLoadScreen(n:int = -1)
 		{
 			loadScreen = n;
 			loadingScreen.story.lmb.stop();
@@ -1195,8 +986,8 @@ package
 			{
 				loadingScreen.x = swfStage.stageWidth / 2;
 				loadingScreen.y = swfStage.stageHeight / 2;
-				loadingScreen.skill.gotoAndStop(Math.floor(Math.random()*loadingScreen.skill.totalFrames+1));
-				loadingScreen.skill.visible = loadingScreen.progres.visible=true;
+				loadingScreen.skill.gotoAndStop(Math.floor(Math.random() * loadingScreen.skill.totalFrames+1));
+				loadingScreen.skill.visible = loadingScreen.progres.visible = true;
 				loadingScreen.story.visible = false;
 				clickReq=0;
 			} 
@@ -1218,8 +1009,8 @@ package
 				clickReq = 1;
 			}
 
-			loadingScreen.cacheAsBitmap= false;
-			loadingScreen.cacheAsBitmap=true;
+			loadingScreen.cacheAsBitmap = false;
+			loadingScreen.cacheAsBitmap = true;
 		}
 		
 		// Determine which loading screen to display
@@ -1228,7 +1019,7 @@ package
 			return -1;
 			try 
 			{
-				var nscr = game.lands[game.curLandId].loadScr;
+				var nscr = game.levelArray[game.curLevelID].loadScr;
 				if (nscr >= 0 && (game.triggers['loadScr'] == null || game.triggers['loadScr'] < nscr))
 				{
 					game.triggers['loadScr'] = nscr;
@@ -1243,14 +1034,14 @@ package
 		}
 		
 		// Enable waiting for a click
-		function waitLoadClick() 
+		function waitLoadClick()
 		{
 			loadingScreen.story.lmb.play();
 			loadingScreen.story.lmb.visible = true;
 		}
 		
 		// Remove the loading screen
-		function offLoadScreen() 
+		function offLoadScreen()
 		{
 			loadingScreen.visible = false;
 			loadingScreen.story.visible = false;
@@ -1261,7 +1052,7 @@ package
 		}
 
 		// Show the scene
-		public function showScene(sc:String, n:int=0) 
+		public function showScene(sc:String, n:int=0)
 		{
 			catPause = true;
 			mainCanvas.visible = false;
@@ -1293,11 +1084,11 @@ package
 
 			}
 
-			vscene.visible=true;
+			vscene.visible = true;
 		}
 		
 		// Remove the scene
-		public function unshowScene() 
+		public function unshowScene()
 		{
 			catPause = false;
 			mainCanvas.visible = true;
@@ -1307,7 +1098,7 @@ package
 		}
 		
 		// Final credits or game over
-		public function endgame(n:int=0) 
+		public function endgame(n:int = 0)
 		{
 			loadingScreen.visible=skybox.visible = false;
 			var s:String;
@@ -1340,40 +1131,40 @@ package
 //=============================================================================================================
 //			Saves and configuration
 //=============================================================================================================
-		public function saveToObj(data:Object) 
+		public function saveToObj(data:Object)
 		{
-			var now:Date = new Date();
-			data.game = game.save();
-			data.pers = pers.save();
-			data.invent = invent.save();
-			data.app = app.save();
-			data.date = now.time;
-			data.n = autoSaveN;
-			data.hardInv = hardInv;
-			data.ver = mainMenu.version;
-			data.est=1;
+			var now:Date 	= new Date();
+			data.game 		= game.save();
+			data.pers 		= pers.save();
+			data.invent 	= invent.save();
+			data.app 		= app.save();
+			data.date 		= now.time;
+			data.n 			= autoSaveN;
+			data.hardInv 	= Settings.hardInv;
+			data.ver 		= mainMenu.version;
+			data.est 		= 1;
 		}
 		
-		public function saveGame(n:int=-1) 
+		public function saveGame(n:int = -1)
 		{
 			if (n == -2) 
 			{
-				n = autoSaveN;
-				var save = saveArr[n];
+				n 			= autoSaveN;
+				var save 	= saveArr[n];
 				saveToObj(save.data);
 				save.flush();
-				trace('Конец');
+				trace('World.as/saveGame() - Конец');
 				return;
 			}
 			if (t_save < 100 && n == -1 && !pers.hardcoreMode) return;
 			if (pip.gamePause) return;
-			if (n == -1) n=autoSaveN;
-			var save=saveArr[n];
+			if (n == -1) n = autoSaveN;
+			var save = saveArr[n];
 			if (save is SharedObject) 
 			{
 				saveToObj(save.data);
-				var r=save.flush();
-				trace(r);
+				var r = save.flush();
+				trace('World.as/saveGame() - ' + r);
 				if (n == 0) t_save = 0;
 			}
 		}
@@ -1384,41 +1175,41 @@ package
 			else return null;
 		}
 		
-		public function saveConfig() 
+		public function saveConfig()
 		{
 			try 
 			{
 				configObj.data.ctr = ctr.save();
 				configObj.data.snd = Snd.save();
-				configObj.data.language = lang;
-				configObj.data.chit = (chitOn?1:0);
-				configObj.data.dialon = dialOn;
-				configObj.data.zoom100 = zoom100;
-				configObj.data.help = helpMess;
-				configObj.data.mat = matFilter;
-				configObj.data.hit = showHit;
-				configObj.data.sysCur = sysCur;
-				configObj.data.hintTele = hintTele;
-				configObj.data.showFavs = showFavs;
-				configObj.data.quakeCam = quakeCam;
-				configObj.data.errorShowOpt = errorShowOpt;
+				configObj.data.language 	= Languages.currentLanguageName;
+				configObj.data.chit 		= (Settings.chitOn?1:0);
+				configObj.data.dialon 		= Settings.dialOn;
+				configObj.data.zoom100 		= Settings.zoom100;
+				configObj.data.help 		= Settings.helpMess;
+				configObj.data.mat 			= Settings.matFilter;
+				configObj.data.hit 			= Settings.showHit;
+				configObj.data.sysCur 		= Settings.sysCur;
+				configObj.data.hintTele 	= Settings.hintTele;
+				configObj.data.showFavs 	= Settings.showFavs;
+				configObj.data.quakeCam 	= Settings.quakeCam;
+				configObj.data.errorShowOpt = Settings.errorShowOpt;
 				configObj.data.app = app.save();
 				if (lastCom != null) configObj.data.lastCom = lastCom;
 					
-				configObj.data.vsWeaponNew = vsWeaponNew?0:1;
-				configObj.data.vsWeaponRep = vsWeaponRep?0:1;
-				configObj.data.vsAmmoAll = vsAmmoAll?0:1;	
-				configObj.data.vsAmmoTek = vsAmmoTek?0:1;	
-				configObj.data.vsExplAll = vsExplAll?0:1;	
-				configObj.data.vsMedAll = vsMedAll?0:1;
-				configObj.data.vsHimAll = vsHimAll?0:1;
-				configObj.data.vsEqipAll = vsEqipAll?0:1;
-				configObj.data.vsStuffAll = vsStuffAll?0:1;
-				configObj.data.vsVal = vsVal?0:1;
-				configObj.data.vsBook = vsBook?0:1;
-				configObj.data.vsFood = vsFood?0:1;
-				configObj.data.vsComp = vsComp?0:1;
-				configObj.data.vsIngr = vsIngr?0:1;
+				configObj.data.vsWeaponNew 	= Settings.vsWeaponNew?0:1;
+				configObj.data.vsWeaponRep 	= Settings.vsWeaponRep?0:1;
+				configObj.data.vsAmmoAll 	= Settings.vsAmmoAll?0:1;	
+				configObj.data.vsAmmoTek 	= Settings.vsAmmoTek?0:1;	
+				configObj.data.vsExplAll 	= Settings.vsExplAll?0:1;	
+				configObj.data.vsMedAll 	= Settings.vsMedAll?0:1;
+				configObj.data.vsHimAll 	= Settings.vsHimAll?0:1;
+				configObj.data.vsEqipAll 	= Settings.vsEqipAll?0:1;
+				configObj.data.vsStuffAll 	= Settings.vsStuffAll?0:1;
+				configObj.data.vsVal 		= Settings.vsVal?0:1;
+				configObj.data.vsBook 		= Settings.vsBook?0:1;
+				configObj.data.vsFood 		= Settings.vsFood?0:1;
+				configObj.data.vsComp 		= Settings.vsComp?0:1;
+				configObj.data.vsIngr 		= Settings.vsIngr?0:1;
 				configObj.flush();
 			} 
 			catch (err) 
@@ -1427,21 +1218,21 @@ package
 			}
 		}
 		
-		function weaponWrite() 
+		function weaponWrite() //Debug function?
 		{
 			var un:Unit = new Unit();
-			var s:String='';
-			for each (var w in AllData.d.weapon.(@tip> 0)) 
+			var s:String = '';
+			for each (var w in AllData.d.weapon.(@tip > 0)) 
 			{
-				var weap:Weapon=new Weapon(un,w.@id,0);
-				s+=weap.write()+'\n';
-				if (w.com.length() && w.com.@uniq.length()) 
+				var weap:Weapon = new Weapon(un, w.@id, 0);
+				s += weap.write() + '\n';
+				if (w.com.length && w.com.@uniq.length()) 
 				{
-					weap=new Weapon(un,w.@id,1);
-					s+=weap.write()+'\n';
+					weap = new Weapon(un, w.@id, 1);
+					s += weap.write() + '\n';
 				}
 			}
-			trace(s);
+			trace('World.as/weaponWrite() - ' + s);
 		}
 	}
 }

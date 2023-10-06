@@ -4,7 +4,7 @@ package roomdata {
 		
 		public function RoomsPlant() {
 		}
-		public var rooms:XML=<all>
+		public var roomContainer:XML=<all>
   <room name="скорпионы">
     <a>D.D.D.D.D.D.D.D.D.D._._._._._._А._._._._._._._._._._._.D.D.D.D.D.D.D.D.D.D.D.D._._._._._._._._._</a>
     <a>D.D.D.D.D.D.D.D.D.D._._._._._._А._._._._._._._._._._._.D.D._._._._._._._._.D.D._._._._._._._._._</a>

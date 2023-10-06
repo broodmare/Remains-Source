@@ -2,7 +2,9 @@ package unitdata
 {
 	
 	import servdata.Interact;
-	import locdata.Location;
+	import locdata.Room;
+	
+	import components.Settings;
 	
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
@@ -60,14 +62,16 @@ package unitdata
 			setStatus();
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.status=status;
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null)
+		{
 			super.getXmlParam();
 			var node0:XML=AllData.d.unit.(@id==id)[0];
 			if (node0.un.length()) {
@@ -81,14 +85,16 @@ package unitdata
 			}
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
 			setArea();
-			if (location.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
+			if (room.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
 			if (allid==null || allid=='') setDamager();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
 			if (sk<1) sk=1;
@@ -103,42 +109,42 @@ package unitdata
 			var ny:Number=Y;
 			var nxml=<obj/>;
 			var ok:Boolean=false;
-			if (res=='damgren' && isrnd(0.25) && Y<location.limY-100 && location.getAbsTile(X,Y+60).phis==0) {
-				ny=Y+2*World.tilePixelHeight;
+			if (res=='damgren' && isrnd(0.25) && Y<room.roomPixelHeight-100 && room.getAbsTile(X,Y+60).phis==0) {
+				ny=Y+2*Settings.tilePixelHeight;
 				res='expl1';
 				ok=true;
 			} else for (var i=1; i<=10; i++) {
 				if (res=='damgren' || res=='hturret2') {
-					if (location.getAbsTile(X,Y-10-i*World.tilePixelHeight).phis) {
+					if (room.getAbsTile(X,Y-10-i*Settings.tilePixelHeight).phis) {
 						if (i==1) break;
-						ny=Y-(i-1)*World.tilePixelHeight;
+						ny=Y-(i-1)*Settings.tilePixelHeight;
 						ok=true;
 						break;
 					}
 					if (res=='hturret2') {
-						if (location.getAbsTile(X-World.tilePixelWidth,Y-10-i*World.tilePixelHeight).phis) {
-							ny=Y-(i-1)*World.tilePixelHeight;
-							nx=X-World.tilePixelWidth;
+						if (room.getAbsTile(X-Settings.tilePixelWidth,Y-10-i*Settings.tilePixelHeight).phis) {
+							ny=Y-(i-1)*Settings.tilePixelHeight;
+							nx=X-Settings.tilePixelWidth;
 							ok=true;
 							break;
 						}
-						if (location.getAbsTile(X+World.tilePixelWidth,Y-10-i*World.tilePixelHeight).phis) {
-							ny=Y-(i-1)*World.tilePixelHeight;
-							nx=X+World.tilePixelWidth;
+						if (room.getAbsTile(X+Settings.tilePixelWidth,Y-10-i*Settings.tilePixelHeight).phis) {
+							ny=Y-(i-1)*Settings.tilePixelHeight;
+							nx=X+Settings.tilePixelWidth;
 							ok=true;
 							break;
 						}
 					}
 				}
 				if (res=='damshot') {
-					if (i>1 && location.getAbsTile(X-i*World.tilePixelWidth,Y).phis) {
-						nx=X-(i-1)*World.tilePixelWidth;
+					if (i>1 && room.getAbsTile(X-i*Settings.tilePixelWidth,Y).phis) {
+						nx=X-(i-1)*Settings.tilePixelWidth;
 						nxml=<obj turn="1"/>;
 						ok=true;
 						break;
 					}
-					if (i>1 && location.getAbsTile(X+i*World.tilePixelWidth,Y).phis) {
-						nx=X+(i-1)*World.tilePixelWidth;
+					if (i>1 && room.getAbsTile(X+i*Settings.tilePixelWidth,Y).phis) {
+						nx=X+(i-1)*Settings.tilePixelWidth;
 						nxml=<obj turn="-1"/>;
 						ok=true;
 						break;
@@ -146,7 +152,7 @@ package unitdata
 				}
 			}
 			if (ok)	{
-				damager=location.createUnit(res,nx,ny,true, nxml);
+				damager=room.createUnit(res,nx,ny,true, nxml);
 				if (damager) {
 					damager.fraction=fraction;
 				}
@@ -156,13 +162,13 @@ package unitdata
 			} else {
 				res='damshot';
 				if (isrnd()) {
-					nx=X+(3+Math.floor(Math.random()*8))*World.tilePixelWidth;
+					nx=X+(3+Math.floor(Math.random()*8))*Settings.tilePixelWidth;
 					nxml=<obj turn="-1"/>;
 				} else {
-					nx=X-(3+Math.floor(Math.random()*8))*World.tilePixelWidth;
+					nx=X-(3+Math.floor(Math.random()*8))*Settings.tilePixelWidth;
 					nxml=<obj turn="1"/>;
 				}
-				damager=location.createUnit(res,nx,ny,true, nxml);
+				damager=room.createUnit(res,nx,ny,true, nxml);
 				if (damager) {
 					damager.fraction=fraction;
 				}
@@ -181,18 +187,21 @@ package unitdata
 			inter.update();
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			super.die(sposob);
 			if (status==0) activate();
 		}
 		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean)
+		{
 			isVis=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',3);
 		}
 		
@@ -213,7 +222,8 @@ package unitdata
 		}
 		
 		//проверить активацию
-		public override function areaTest(obj:Obj):Boolean {
+		public override function areaTest(obj:Obj):Boolean
+		{
 			if (obj==null || obj.X1>=ax2 || obj.X2<=ax1 || obj.Y1>=ay2 || obj.Y2<=ay1) return false;
 			else return true;
 		}
@@ -238,17 +248,17 @@ package unitdata
 			status=1;
 			var act=false;
 			if (allact=='spawn') {
-				location.enemySpawn(true,true);
+				room.enemySpawn(true,true);
 				return;
 			}
 			if (allid!=null && allid!='') {
-				for each (var un:Unit in location.units) {
+				for each (var un:Unit in room.units) {
 					if (un!=this && (un is UnitDamager) && (un as UnitDamager).allid==allid) {
 						(un as UnitDamager).activate();
 						act=true;
 					}
 				}
-				if (allact) location.allAct(this,allact,allid);
+				if (allact) room.allAct(this,allact,allid);
 			}
 			celX=X;
 			celY=Y;
@@ -268,12 +278,13 @@ package unitdata
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>1 || status==2 || one && status==1) return;
 			aiN++;
 			if (aiN%5==0) {
 				var act:Boolean=false;
-				for each (var un:Unit in location.units) {
+				for each (var un:Unit in room.units) {
 					if (un.activateTrap==0 || un.fraction==fraction || !isMeet(un)) continue;
 					if (trapL<2 && (un.massa<0.5 || un.activateTrap<=1 || !un.stay)) continue;
 					if (areaTest(un)) act=true;

@@ -6,25 +6,28 @@ package locdata
 	
 	import servdata.Interact;
 	
+	import components.Settings;
+	
 	public class CheckPoint extends Obj
 	{
 
 		public var id:String;
 		public var vis2:MovieClip;
 		
-		public var active=0;
+		public var active:int = 0;
 		public var teleOn:Boolean=false;
 		public var used:Boolean=false;
 		public var main:Boolean=false;
 		public var hide:Boolean=false;
 		
-		var locked:Boolean=false;
+		public var locked:Boolean=false;
 		
 		public var area:Area;
 
-		public function CheckPoint(nloc:Location, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) {
+		public function CheckPoint(newRoom:Room, nid:String, nx:int=0, ny:int=0, xml:XML=null, loadObj:Object=null) 
+		{
 			id=nid;
-			location=nloc;
+			room=newRoom;
 			layer=0;
 			prior=1;
 			id=nid;
@@ -32,8 +35,8 @@ package locdata
 			var node:XML=AllData.d.obj.(@id==id)[0];
 			
 			X=nx, Y=ny;
-			scX=node.@size*World.tilePixelWidth;
-			scY=node.@wid*World.tilePixelHeight;
+			scX=node.@size*Settings.tilePixelWidth;
+			scY=node.@wid*Settings.tilePixelHeight;
 			nazv=Res.txt('o','checkpoint');
 			
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
@@ -51,9 +54,9 @@ package locdata
 			} catch (err) {}
 
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
-			cTransform=location.cTransform;
-			location.getAbsTile(X-20,Y+10).shelf=true;
-			location.getAbsTile(X+20,Y+10).shelf=true;
+			cTransform=room.cTransform;
+			room.getAbsTile(X-20,Y+10).shelf=true;
+			room.getAbsTile(X+20,Y+10).shelf=true;
 			
 			inter = new Interact(this,node,xml,loadObj);
 			inter.userAction='activate';
@@ -62,7 +65,7 @@ package locdata
 			inter.active=true;
 			inter.action=100;
 			
-			area=new Area(location);
+			area=new Area(room);
 			area.setSize(X1,Y1,X2,Y2);
 			area.over=areaActivate;
 			
@@ -86,7 +89,7 @@ package locdata
 				active=2;
 				teleOn=true;
 				vis.osn.gotoAndStop('open');
-				location.land.currentCP=this;
+				room.level.currentCP=this;
 				inter.actFun=teleport;
 				inter.userAction='returnm';
 				inter.t_action=30;
@@ -101,7 +104,7 @@ package locdata
 			}
 		}
 		
-		public override function addVisual() 
+		public override function addVisual()
 		{
 			if (vis && !hide) 
 			{
@@ -111,7 +114,7 @@ package locdata
 				}
 			}
 		}
-		public override function remVisual() 
+		public override function remVisual()
 		{
 			super.remVisual();
 		}
@@ -132,7 +135,7 @@ package locdata
 		}
 		
 		//активировать контрольную точку. если параметр true - не добавлять скилл-поинт
-		public function activate(first:Boolean=false) 
+		public function activate(first:Boolean=false)
 		{
 			if (inter.lock>0 || inter.mine>0) return;
 			if (active==2) 
@@ -143,7 +146,7 @@ package locdata
 			if (active==0 && first==false) 
 			{
 				if (World.world.pers.manaCPres) World.world.pers.heal(World.world.pers.manaCPres,6);
-				if (World.world.pers.xpCPadd) World.world.pers.expa(location.unXp*3);
+				if (World.world.pers.xpCPadd) World.world.pers.expa(room.unXp*3);
 			}
 			active=2;
 			World.world.pers.currentCP=this;
@@ -151,9 +154,9 @@ package locdata
 			if (code) 
 			{
 				World.world.pers.prevCPCode=code;
-				location.land.act.lastCpCode=code;
+				room.level.template.lastCpCode=code;
 			}
-			location.land.currentCP=this;
+			room.level.currentCP=this;
 			if (first) 
 			{
 				vis.osn.gotoAndStop('open');
@@ -178,12 +181,12 @@ package locdata
 			World.world.saveGame();
 		}
 		
-		public function teleport() 
+		public function teleport()
 		{
 			if (!main) 
 			{
 				World.world.game.gotoLand(World.world.game.baseId);
-				if (World.world.hardInv && World.world.land.rnd) 
+				if (Settings.hardInv && World.world.level.rnd) 
 				{
 					used=true;
 					inter.active=false;
@@ -192,15 +195,15 @@ package locdata
 				}
 			} 
 			else if (World.world.game.missionId!='rbl') World.world.game.gotoLand(World.world.game.missionId);
-			//trace('GOTO '+World.world.game.curLandId);
+			//trace('GOTO '+World.world.game.curLevelID);
 		}
 		
-		public function areaActivate() 
+		public function areaActivate()
 		{
 			if (active == 0) activate();
 		}
 		
-		public function deactivate() 
+		public function deactivate()
 		{
 			if (main) return;
 			inter.active=!hide;
@@ -213,13 +216,13 @@ package locdata
 			inter.update();
 		}
 		
-		public override function step() 
+		public override function step()
 		{
 			onCursor=(X1<World.world.celX && X2>World.world.celX && Y1<World.world.celY && Y2>World.world.celY)?prior:0;
 			if (inter) inter.step();
 			if (main) 
 			{
-				if (World.world.game.missionId && World.world.game.lands[World.world.game.missionId] && World.world.game.lands[World.world.game.missionId].tip!='base') inter.active=true;
+				if (World.world.game.missionId && World.world.game.levelArray[World.world.game.missionId] && World.world.game.levelArray[World.world.game.missionId].tip!='base') inter.active=true;
 				else inter.active=false;
 				return;
 			}

@@ -1,8 +1,10 @@
 package unitdata 
 {
 
-	import locdata.Location;
+	import locdata.Room;
 	import locdata.Tile;
+	
+	import components.Settings;
 	
 	public class UnitHellhound extends UnitPon{
 		
@@ -31,21 +33,23 @@ package unitdata
 			aiNapr=storona;
 			sit(true);
 		}
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null)
+		{
 			super.getXmlParam('hellhound');
 			super.getXmlParam();
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
 			unsit();
 		}
 		//проверка возможности прыжка
 		function checkJump():Boolean {
-			if (location.getAbsTile(X,Y-85).phis!=0) return false;
-			if (location.getAbsTile(X,Y-125).phis!=0) return false;
-			if (location.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
-			if (location.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
+			if (room.getAbsTile(X,Y-85).phis!=0) return false;
+			if (room.getAbsTile(X,Y-125).phis!=0) return false;
+			if (room.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
+			if (room.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
 			return true;
 		}
 		
@@ -70,7 +74,8 @@ package unitdata
 		var t_laz:int=0;	//прошло времени с начала лазения
 		var r_laz:int=0;	//изменений направления лазения
 		
-		public override function control() {
+		public override function control()
+		{
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) {
@@ -90,7 +95,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -132,7 +137,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					//увидели
 					if (celUnit) {
@@ -203,7 +208,7 @@ package unitdata
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.25 && aiNapr<0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -211,7 +216,7 @@ package unitdata
 				}
 				if (stay && shX2>0.25 && aiNapr>0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -294,13 +299,13 @@ package unitdata
 			if (stay && aiState>0) {
 				//пригнуться
 				if (turnX==-1) {
-					if (location.getAbsTile(X2+2,Y1).phis && location.getAbsTile(X2+2,Y1+40).phis==0 && location.getAbsTile(X2+2,Y1+80).phis==0) {
+					if (room.getAbsTile(X2+2,Y1).phis && room.getAbsTile(X2+2,Y1+40).phis==0 && room.getAbsTile(X2+2,Y1+80).phis==0) {
 						sit(true);
 						turnX=0;
 					}
 				}
 				if (turnX==1) {
-					if (location.getAbsTile(X1-2,Y1).phis && location.getAbsTile(X1-2,Y1+40).phis==0 && location.getAbsTile(X1-2,Y1+80).phis==0) {
+					if (room.getAbsTile(X1-2,Y1).phis && room.getAbsTile(X1-2,Y1+40).phis==0 && room.getAbsTile(X1-2,Y1+80).phis==0) {
 						sit(true);
 						turnX=0;
 					}
@@ -325,7 +330,7 @@ package unitdata
 			}
 			pumpObj=null;
 			
-			if (Y>location.spaceY*Tile.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Tile.tilePixelHeight-80) throu=false;
 			
 			if (celUnit && celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && aiState>1) {
 				attKorp(celUnit,(shok<=0?1:0.5));
@@ -337,20 +342,20 @@ package unitdata
 			try {
 				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
 				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
-				if (j>=location.spaceY) j=location.spaceY-1;
-				if (location.roomTileArray[i][j].phis>=1) {
+				if (j>=room.roomHeight) j=room.roomHeight-1;
+				if (room.roomTileArray[i][j].phis>=1) {
 					isLaz=0;
 					return false;
 				}
-				if ((location.roomTileArray[i][j] as Tile).stair) {
-					isLaz=(location.roomTileArray[i][j] as Tile).stair;
-				} else if (location.getTile(i+storona,j).phis) {
+				if ((room.roomTileArray[i][j] as Tile).stair) {
+					isLaz=(room.roomTileArray[i][j] as Tile).stair;
+				} else if (room.getTile(i+storona,j).phis) {
 					isLaz=storona;
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) X=(location.roomTileArray[i][j] as Tile).phX1+scX/2;
-					else X=(location.roomTileArray[i][j] as Tile).phX2-scX/2;
+					if (isLaz==-1) X=(room.roomTileArray[i][j] as Tile).phX1+scX/2;
+					else X=(room.roomTileArray[i][j] as Tile).phX2-scX/2;
 					X1=X-scX/2, X2=X+scX/2;
 					stay=false;
 					return true;
@@ -361,13 +366,15 @@ package unitdata
 			return false;
 		}
 		
-		public override function look(ncel:Unit, over:Boolean=true, visParam:Number=0, nDist:Number=0):Number {
+		public override function look(ncel:Unit, over:Boolean=true, visParam:Number=0, nDist:Number=0):Number
+		{
 			if (ncel.player && rasst2<nuh*nuh) {
 				return 20;
 			} else return super.look(ncel, over, visParam, nDist);
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			if (sost==2 || sost==3) { //сдох
 				if (stay) {

@@ -5,6 +5,8 @@ package unitdata
 	import locdata.Tile;
 	import weapondata.Weapon;
 	
+	import components.Settings;
+	
 	public class UnitAnt extends Unit{
 
 		public var tr:int;
@@ -47,19 +49,22 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				skin+=4;
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null)
+		{
 			super.getXmlParam('ant');
 			super.getXmlParam();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok;
@@ -69,11 +74,13 @@ package unitdata
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			super.expl();
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				if (isLaz==0) {
 					vis.x=X,vis.y=Y;
@@ -93,7 +100,8 @@ package unitdata
 				}
 			}
 		}
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			if (trup && (sost==2 || sost==3)) { //сдох
 				if (stay && animState!='death') {
@@ -149,7 +157,8 @@ package unitdata
 		//2 - видит цель, бежит к ней, атакует
 		//3 - атакует оружием
 		
-		public override function control() {
+		public override function control()
+		{
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
@@ -168,7 +177,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -188,7 +197,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
 				} else {
@@ -253,7 +262,7 @@ package unitdata
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.5 && aiNapr<0 && isrnd()) {
 					if (optJumping && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -261,7 +270,7 @@ package unitdata
 				}
 				if (stay && shX2>0.5 && aiNapr>0 && isrnd()) {
 					if (optJumping && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -397,29 +406,30 @@ package unitdata
 				currentWeapon.attack();
 			}
 			
-			if (Y>location.spaceY*World.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
 			//World.world.gui.vis.sist.text=aiNeedLaz+':'+isLaz;
 		}
 		
 		//поиск лестницы
-		public override function checkStairs(ny:int=-1, nx:int=0):Boolean {
+		public override function checkStairs(ny:int=-1, nx:int=0):Boolean
+		{
 			try {
 				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
 				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
-				if (j>=location.spaceY) j=location.spaceY-1;
-				if (location.roomTileArray[i][j].phis>=1) {
+				if (j>=room.roomHeight) j=room.roomHeight-1;
+				if (room.roomTileArray[i][j].phis>=1) {
 					isLaz=0;
 					return false;
 				}
-				if ((location.roomTileArray[i][j] as Tile).stair) {
-					isLaz=(location.roomTileArray[i][j] as Tile).stair;
-				} else if (location.getTile(i+storona,j).phis) {
+				if ((room.roomTileArray[i][j] as Tile).stair) {
+					isLaz=(room.roomTileArray[i][j] as Tile).stair;
+				} else if (room.getTile(i+storona,j).phis) {
 					isLaz=storona;
 				} else isLaz=0;
 				if (isLaz!=0) {
 					storona=isLaz;
-					if (isLaz==-1) X=(location.roomTileArray[i][j] as Tile).phX1+scX/2;
-					else X=(location.roomTileArray[i][j] as Tile).phX2-scX/2;
+					if (isLaz==-1) X=(room.roomTileArray[i][j] as Tile).phX1+scX/2;
+					else X=(room.roomTileArray[i][j] as Tile).phX2-scX/2;
 					X1=X-scX/2, X2=X+scX/2;
 					stay=false;
 					return true;

@@ -31,28 +31,32 @@ package unitdata
 			wPos=BlitAnim.wPosGutsy;
 		}
 		
-		public override function forces() {
+		public override function forces()
+		{
 			super.forces();
 			if (sost<3 && dy>0) {
 				dy*=0.9;
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			if (dopWeapon && dopWeapon.tip==0) {
 				dopWeapon.damage*=(1+level*0.12);
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			if (sost==3) { //сдох
 				if (stay) {
@@ -71,21 +75,24 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
 			weaponX=X+(obj.x+visBmp.x)*storona;
 			weaponY=Y+obj.y+visBmp.y;
 			weaponR=obj.r;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1)
+		{
 			if (dy>-jumpdy) {
 				dy-=jumpdy*v/4;
 			}
 		}
 
 		
-		public override function attack() {
+		public override function attack()
+		{
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
 			if (celDX<300 && celDX>-300 && celDY<300 && celDY>-300 || aiAttackT>0) {
 				if (aiAttackOch>0) {										//стрельба очередями

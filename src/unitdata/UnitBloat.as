@@ -4,6 +4,8 @@ package unitdata
 	import weapondata.Weapon;
 	import weapondata.Bullet;
 	
+	import components.Settings;
+	
 	public class UnitBloat extends Unit{
 		
 		public var tr:int;
@@ -47,7 +49,8 @@ package unitdata
 			if (currentWeapon) childObjs=new Array(currentWeapon);
 		}
 
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null)
+		{
 			super.getXmlParam('bloat');
 			super.getXmlParam();
 			var node0:XML=AllData.d.unit.(@id==id)[0];
@@ -60,48 +63,54 @@ package unitdata
 			}
 		}
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				//vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
 				shootCh=0.3;
 			}
 		}
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f) {
 				aiState=0;
 				aiTCh=Math.floor(Math.random()*10)+5;
 			}
 		}
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
 			return obj;
 		}
 		
-		public override function otbros(bul:Bullet) {
+		public override function otbros(bul:Bullet)
+		{
 			if (bul && bul.knockx!=0 || bul.knocky!=0) isGryz=false;
 			super.otbros(bul);
 		}
 		
 		function emit() {
-			var un:Unit=location.createUnit('bloat',X,Y,true,null,'0');
+			var un:Unit=room.createUnit('bloat',X,Y,true,null,'0');
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('shmatok',4,2);
 			newPart('bloat_kap',Math.floor(Math.random()*3+4));
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			super.dropLoot();
 			var un:Unit
 			if (tr>=8) {
-				un=location.createUnit('bloat',X,Y,true,null,String(tr-1));
+				un=room.createUnit('bloat',X,Y,true,null,String(tr-1));
 				un.questId=questId;
-				un=location.createUnit('bloat',X,Y,true,null,String(tr-1));
+				un=room.createUnit('bloat',X,Y,true,null,String(tr-1));
 				un.questId=questId;
 			} 
 			if (isEmit) {
@@ -114,12 +123,14 @@ package unitdata
 			}
 		}
 		
-		public override function incStat(sposob:int=0) {
+		public override function incStat(sposob:int=0)
+		{
 			if (tr>=7 && tr<10) return;
 			super.incStat(sposob);
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 		}
 		
 		var aiDx:Number=0, aiDy:Number=0, aiRasst:Number;
@@ -129,9 +140,10 @@ package unitdata
 		//0 - летает
 		//1 - видит цель, стреляет
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -164,7 +176,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				findCel();
 			}
 			if (isPlav) {
@@ -200,7 +212,7 @@ package unitdata
 			}
 			
 			//атака
-			if (World.world.enemyAct>=3 && celUnit && shok<=0) {
+			if (Settings.enemyAct>=3 && celUnit && shok<=0) {
 				if (aiState==1 && currentWeapon) if (isrnd(shootCh)) currentWeapon.attack();
 				var atk=attKorp(celUnit);
 				if (atk && gryz) isGryz=true;

@@ -6,10 +6,11 @@ package  locdata
 	
 	public class Tile 
 	{
-		public static var tilePixelWidth=40;
-		public static var tilePixelHeight=40;
+		public static var tilePixelWidth:int  = 40;
+		public static var tilePixelHeight:int = 40;
 		
-		public var X:int, Y:int;
+		public var X:int;
+		public var Y:int;
 		
 		public var indestruct:Boolean = false;  //Indestrutable
 		public var phis:int = 0;				//Physics enable
@@ -36,7 +37,7 @@ package  locdata
 		public var tileTexture:String   ='';
 		public var tileRearTexture:String 	  ='';
 		public var zad:String	  ='';
-		public var fRear:Boolean  = false;
+		public var tileHasRearTexture:Boolean = false;
 		public var vRear:Boolean  = false;
 		public var v2Rear:Boolean = false;
 		
@@ -54,7 +55,7 @@ package  locdata
 		// 6 - Earth
 		// 7 - Force Field
 		// 10 - Flesh
-		public var mat:int = 0;
+		public var tileMaterial:int = 0;
 		
 		public var grav:Number = 1;
 		public var lurk:int = 0;
@@ -88,24 +89,35 @@ package  locdata
 		
 
 		//Block type
-		public function inForm(f:Form):void  
+		public function inForm(f:Form):void
 		{
 			var form:Form = f;
 
 			if (form == null) return; //If there's no form, return.
 
-			if (form.formType == 2)  //if this is a backwall.
+			if (form.formLayer == 2)  //if this is a backwall, set it's rear texture as it's normal texure.
 			{
-				if (form.tileTexture) tileRearTexture = form.tileTexture;
-			} 
-			else 
-			{
-				if (form.tileTexture) 
+				try 
 				{
-					tileTexture = form.tileTexture;
-					if (form.rear) fRear=true;
+					tileRearTexture = form.formTextureID;
 				}
-				if (form.tileRearTexture) zad=fform.tileRearTexture;
+				catch (err)
+				{
+					trace('Backwall failed applying texture. Backwall:', form, ' Texture: ', form.formTextureID)
+				}
+			} 
+			else // For Tiles...
+			{
+				try 
+				{
+					tileTexture = form.formTextureID;		  //Set the form texture 
+					if (form.formHasRearTexture) tileHasRearTexture = true; //If this form has a rear texture, set tileHasRearTexture to true.
+					if (form.formRearTextureID) zad = form.formRearTextureID;
+				}
+				catch (err)
+				{
+					trace('Tile failed applying texture. Tile:', form, ' Texture: ', tileTexture)
+				}
 			}
 
 			if (form.vid > 0) 
@@ -113,30 +125,30 @@ package  locdata
 				if (vid == 0)	
 				{
 					vid = form.vid;
-					if (form.rear) vRear=true;
+					if (form.formHasRearTexture) vRear=true;
 				} 
 				else 
 				{
 					vid2 = form.vid;
-					if (form.rear) v2Rear=true;
+					if (form.formHasRearTexture) v2Rear=true;
 				}
 			}
 
-			if (form.mat) mat = form.mat;
+			if (form.formMaterial) tileMaterial = form.formMaterial;
 			
-			if (form.hp) hp=form.hp;
+			if (form.hp) hp = form.hp;
 			if (form.damageThreshold) damageThreshold = form.damageThreshold;
-			if (form.indestruct) indestruct=true;
+			if (form.indestruct) indestruct = true;
 			
-			if (form.lurk) lurk=form.lurk; 
-			if (form.phis) phis=form.phis;
-			if (form.shelf) shelf=true; 
+			if (form.lurk) lurk = form.lurk; 
+			if (form.phis) phis = form.phis;
+			if (form.shelf) shelf = true; 
 			if (form.diagon) diagon = form.diagon;
 			if (form.stair) stair = form.stair;
-			if (phis >0 ) opac = 1; 
+			if (phis > 0 ) opac = 1; // If the tile has physics, it's opaque.
 		}
 		
-		public function parseLevelXML(s:String, mirror:Boolean=false):void  
+		public function parseLevelXML(s:String, mirror:Boolean = false):void  
 		{
 			phis 	= 0;
 			vid 	= 0;
@@ -233,7 +245,7 @@ package  locdata
 			vid2 	= 0;
 			diagon 	= 0;
 			stair 	= 0;
-			mat 	= Form.tileForms[frontTexture].mat;
+			tileMaterial 	= Form.tileForms[frontTexture].formMaterial;
 			tileTexture = frontTexture;
 			tileRearTexture = Form.tileForms[frontTexture].tileRearTexture;
 			indestruct = true;
@@ -276,7 +288,7 @@ package  locdata
 		}
 		
 		// Destroy the block
-		public function die():void  
+		public function die():void
 		{
 			if (phis!=3) tileTexture='';
 			phis = 0;

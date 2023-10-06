@@ -7,7 +7,7 @@ package weapondata
 	import unitdata.UnitPlayer;
 	import unitdata.Mine;
 
-	
+	import components.Settings;
 	
 	public class WThrow  extends Weapon
 	{
@@ -33,21 +33,21 @@ package weapondata
 			var node=AllData.d.weapon.(@id==id)[0];
 			if (node.@throwtip>0) throwTip=node.@throwtip;
 			if (throwTip>0) lvlNoUse=true;
-			if (node.char.length() && node.char[0].@time>0) detTime=node.char[0].@time;
-			if (node.char.length() && node.char.@radio.length()) radio=true;
-			if (node.phis.length() && node.phis[0].@bumc>0) bumc=true;
-			if (node.snd.length() && node.snd[0].@fall.length()) sndFall=node.snd[0].@fall;
+			if (node.char.length && node.char[0].@time>0) detTime=node.char[0].@time;
+			if (node.char.length && node.char.@radio.length()) radio=true;
+			if (node.phis.length && node.phis[0].@bumc>0) bumc=true;
+			if (node.snd.length && node.snd[0].@fall.length()) sndFall=node.snd[0].@fall;
 		}
 
 		public override function attack(waitReady:Boolean=false):Boolean 
 		{
-			if (!waitReady && !World.world.alicorn && !auto && t_auto>0) 
+			if (!waitReady && !Settings.alicorn && !auto && t_auto>0) 
 			{
 				t_auto=3;
 				return false;
 			}
 			skillConf=1;
-			if (owner.player && World.world.weaponsLevelsOff) 
+			if (owner.player && Settings.weaponsLevelsOff) 
 			{
 				if (lvlNoUse) 
 				{
@@ -103,9 +103,9 @@ package weapondata
 			{
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
-				un.putLoc(World.world.location,X,Y);
-				un.location.addObj(un);
-				un.location.units.push(un);
+				un.putLoc(World.world.room,X,Y);
+				un.room.addObj(un);
+				un.room.units.push(un);
 				un.fraction=owner.fraction;
 				if (un.fraction==Unit.F_PLAYER) warn=0;
 				un.damage1*=(1+(sk-1)*0.5);
@@ -148,13 +148,13 @@ package weapondata
 				{
 					if (World.world.pers.grenader && !World.world.ctr.keyRun) (b as PhisBullet).isSensor=true;
 				}
-				location.newGrenade(b);
+				room.newGrenade(b);
 			}
 			owner.isShoot=true;
 			if (sndShoot!='') Snd.ps(sndShoot,X,Y);
 			is_shoot=true;
 			hold=0;
-			if (owner.player && location.train) 
+			if (owner.player && room.train) 
 			{
 				World.world.invent.items[ammo].kol++;
 				World.world.invent.mass[2]+=World.world.invent.items[ammo].mass;
@@ -163,19 +163,19 @@ package weapondata
 			return b;
 		}
 		
-		public override function setTrass(gr:Graphics) 
+		public override function setTrass(gr:Graphics)
 		{
 			skillConf=1;
 			var razn=lvl-World.world.pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.75;
 			else if (razn>=2) skillConf=0.5;
 			var rot3=Math.atan2(World.world.celY-Y, World.world.celX-X);
-			trasser.location=owner.location;
+			trasser.room=owner.room;
 			var rasstx=World.world.celX-X;
 			var rassty=World.world.celY-Y;
 			trasser.X=trasser.begx=X;
 			trasser.Y=trasser.begy=Y;
-			trasser.ddy=World.ddy;
+			trasser.ddy=Settings.ddy;
 			trasser.skok=skok;
 			trasser.tormoz=tormoz;
 			trasser.brake=brake;
@@ -190,7 +190,7 @@ package weapondata
 			trasser.trass(gr);
 		}
 
-		public override function reloadWeapon() 
+		public override function reloadWeapon()
 		{
 			
 		}
@@ -217,7 +217,7 @@ package weapondata
 		}
 		
 		
-		public override function animate() 
+		public override function animate()
 		{
 			super.animate();
 			vis.rotation=0;
@@ -230,7 +230,7 @@ package weapondata
 		{
 			if (radio) 
 			{
-				for each (var un:Unit in location.units) 
+				for each (var un:Unit in room.units) 
 				{
 					if ((un is Mine) && un.id==id) 
 					{
@@ -242,7 +242,7 @@ package weapondata
 			else return false;
 		}
 		
-		public override function setNull(f:Boolean=false) 
+		public override function setNull(f:Boolean=false)
 		{
 			super.setNull();
 		}

@@ -4,8 +4,8 @@ package roomdata {
 		
 		public function RoomsCanter() {
 		}
-		public var rooms:XML=<all>
-  <land/>
+		public var roomContainer:XML=<all>
+  <level/>
   <room name="техника3">
     <a>Q.Q.Q.Q.A._I._I.A.A.A.A.A.A.A._I._I.A.A.A.A.A.A.A._I._I.Q.Q.Q.Q.Q.Q.Q._I._I.Q.Q.Q.Q.Q.Q.Q._._.Q.Q.Q.Q.Q</a>
     <a>Q.Q.Q.Q.A._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I._I.Q</a>

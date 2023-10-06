@@ -3,9 +3,11 @@ package unitdata
 	
 	import weapondata.Weapon;
 	import servdata.LootGen;
-	import locdata.Location;
+	import locdata.Room;
 	import weapondata.Bullet;
 	import locdata.Tile;
+
+	import components.Settings;
 
 	public class UnitMsp extends Unit{
 
@@ -39,31 +41,34 @@ package unitdata
 		}
 
 		//поместить созданный юнит в локацию
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			if (nloc.getAbsTile(nx, ny+10).phis==0) {
-				if (nloc.getAbsTile(nx, ny-50).phis) {
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			if (newRoom.getAbsTile(nx, ny+10).phis==0) {
+				if (newRoom.getAbsTile(nx, ny-50).phis) {
 					cep=1;
 					ny-=40-scY-1
 					fixed=true;
-				} else if (nloc.getAbsTile(nx-40, ny-10).phis) {
+				} else if (newRoom.getAbsTile(nx-40, ny-10).phis) {
 					cep=2;
 					nx-=(40-scX)/2-1;
 					fixed=true;
-				} else if (nloc.getAbsTile(nx+40, ny-10).phis) {
+				} else if (newRoom.getAbsTile(nx+40, ny-10).phis) {
 					cep=3;
 					nx+=(40-scX)/2-1;
 					fixed=true;
 				}
 			}
-			super.putLoc(nloc, nx, ny);
+			super.putLoc(newRoom, nx, ny);
 		}
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				if (cep==0) {
 					vis.x=X,vis.y=Y;
@@ -85,7 +90,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			vis.gotoAndStop(aiState);
 			if (aiState==0 || aiState==1) { //сдох
 				if (animState!='stay') {
@@ -116,10 +122,12 @@ package unitdata
 			}
 			
 		}
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			explosion(dam,tipDamage,150,0,20,30,9);
 		}
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.12);
@@ -134,7 +142,8 @@ package unitdata
 		//3 - видит цель, атакует
 		//4 - не видит цель
 		
-		public override function control() {
+		public override function control()
+		{
 			//var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
@@ -151,7 +160,7 @@ package unitdata
 
 			var jmp:Number=0;
 			
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -183,7 +192,7 @@ package unitdata
 				if (aiSpok>=maxSpok) aiState=3;
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					if (aiState<=1) {
 						aiState=2;
@@ -260,9 +269,9 @@ package unitdata
 				walk=0;
 			}
 			
-			if (Y>location.spaceY*World.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
 			
-			//if ((aiState==3 || aiState==4) && World.world.enemyAct>=3) attack();
+			//if ((aiState==3 || aiState==4) && Settings.enemyAct>=3) attack();
 
 		}
 		

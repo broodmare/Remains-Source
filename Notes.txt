@@ -14,8 +14,9 @@ vfon = background
 
 Renamed all 'loc' variables to avoid compiler ambigiuity with the loc folder.
 Renamed all folders to reduce compiler ambiguity.
-
 Reduced import nesting.
+moved language files into '/data'.
+moved '.swf' files into '/data'.
 
 Appear --
 	Load()
@@ -23,7 +24,7 @@ Appear --
 
 
 		
-Emitter
+Emitter --
 	step()
 		Fixed Emitter.emit setting rx twice instead of rx and ry.
 	
@@ -31,7 +32,16 @@ Form --
 	Fixed loop in setForms().
 	fForms -> tileForms.
 	oForms -> otherForms.
+	id -> formID
+	ed -> formLayer
 	tip -> formType.
+	back -> formRearTextureID
+	rear -> formHasRearTexture.
+	mat -> formMaterial
+	
+Game --
+	lands -> levelArray
+	
 	
 Grafon --
 	Moved initializers into the constructor instead of in the class definition.
@@ -59,7 +69,8 @@ Grafon --
 	visSats -> layerSats.
 	sloy -> layer.
 	ram* -> border*
-
+	
+	toFront -> isTopLayer
 
 	numbMat 	-> materialCount
 	numbFon 	-> skyboxCount
@@ -73,9 +84,19 @@ Grafon --
 	rear - should be drawn behind normal staircases? only normal staircasese don't have this.
 	lurk - only mechanism and pipes.
 	
+languageList.xml (formerly lang.xml)--
+	default -> defaultLang.
+
+
+Level (formerly Land) --
+	Land() -> Level().
+	enterLand -> enterLevel().
 	
-Location --
-	space -> roomTileArray
+	
+LevelTemplates (formerly LandAct) --
+	LandAct() -> LevelTemplates().
+	
+
 	
 MainMenu --
 	MainMenu()
@@ -84,9 +105,29 @@ MainMenu --
 Material --
 		Imports a 'mask' propety from 'AllData.xml' as a generic class. This was changed to be imported as a string.
 		If the import failed, it was set as a class that doesn't exist (TileMask).
+		rear -> isBackwall
+		Filter array changed to a static object and moved to 'TileFilter.as'.
 	
+Room (formerly Location) --
+	space -> roomTileArray
+	unloadLocation() -> unloadRoom().
+	locationActive -> roomActive.
+	removed endLand.
+	landProb -> roomProb
+	acts -> activeObjects.
+	limX -> roomPixelWidth
+	limY -> roomPixelHeight
+	spaceX -> roomWidth
+	spaceY -> roomHeight
+	rx - > roomCoordinateX
+	ry - > roomCoordinateY
+	rz - > roomCoordinateZ
 	
-	
+RoomTemplate (formerly Room)
+
+RoomContainer (formerly Rooms)
+
+
 Stand --
 	Fixed for loop in showWeaponList().
 
@@ -95,6 +136,10 @@ Sats --
 
 Tile --
 	dec() -> parseLevelXML().
+	front -> tileTexture
+	back -> tileRearTexture
+	rear -> tileHasRearTexture.
+	mat -> tileMaterial.
 
 Pipbuck --
 	Fixed for loop in constructor.
@@ -122,11 +167,17 @@ Unit --
 		Fixed loop.
 		
 World --
+	ativateLand() -> activateLevel().
 	vfon -> skybox.
 	main -> mainDisplay
 	visual -> mainCanvas
 	vWait -> loadingScreen
 	w -> world
+	CellsX -> roomTileWidth
+	CellsY -> roomTileHeight
+	Settings moved into their own component class.
+	Language loader moved into their own system class.
+	
 	
 Texture.fla --
 	fonCanter -> skyboxCanterlot
@@ -144,15 +195,14 @@ Texture.fla --
 
 
 TODO:
-Define the res_watcher console command (empty on wiki).
-Fix funtion capitalization for public functions(?)
 Sound.pshum() has a weird return, fix.
 PipPageInv.itemClick() has a weird return, fix.
 Remove DropLoot() overrides from units and merge into one table.
 Remove Expl() overrides from units and merge into one table.
 Remove 'Sky' checks from all over.
 skipTraining appears in MainMenu, Game, Invent, and Pers; Why?
-
+check isBonuses definition in Level, might be unused.
+buildSpecifLand() has really weird variable declarations.
 
 Cyclomatic complexity Highscore:
 

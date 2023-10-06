@@ -11,6 +11,8 @@ package unitdata
 	import weapondata.MagSymbol;
 	import flash.filters.GlowFilter;
 	
+	import components.Settings;
+	
 	public class UnitBossNecr extends UnitPon{
 		
 		public var scrAlarmOn:Boolean=true;
@@ -70,7 +72,8 @@ package unitdata
 		}
 		
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
@@ -84,7 +87,8 @@ package unitdata
 			} 
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
@@ -142,12 +146,14 @@ package unitdata
 			//World.world.gui.vis.hpbarboss.hpNum.text='('+aiState+') '+aiTCh+' '+atk_t;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-scY*0.58;
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
+		{
 			var td:Number=super.damage(dam, tip, bul,tt);
 			if (aiState==0) aiState=1;
 			if (protculd_t<=0 && td>0 && aiState!=3 && aiState!=2) {
@@ -159,7 +165,8 @@ package unitdata
 			return td;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (isNoResBoss()) f=false;
 			super.setNull(f);
 			//вернуть в исходную точку
@@ -195,7 +202,8 @@ package unitdata
 		//2 - атакует
 		//3 - защита
 		
-		public override function control() {
+		public override function control()
+		{
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
@@ -207,8 +215,8 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (location.gg.invulner) return;
-			if (World.world.enemyAct<=0) {
+			if (room.gg.invulner) return;
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -286,8 +294,8 @@ package unitdata
 			}
 			//поиск цели
 			if (aiTCh%10==1) {
-				if (location.gg.pet && location.gg.pet.sost==1 && isrnd(0.4)) setCel(location.gg.pet);
-				else setCel(location.gg);
+				if (room.gg.pet && room.gg.pet.sost==1 && isrnd(0.4)) setCel(room.gg.pet);
+				else setCel(room.gg);
 			}
 			//направление
 			celDX=celX-X;
@@ -360,7 +368,8 @@ package unitdata
 			
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			resetProtect();
 			if (phase==1) {
 				phase=2;
@@ -376,7 +385,7 @@ package unitdata
 				dexter=2;
 				blood=0;
 			} else {
-				for each(var un:Unit in location.units) {
+				for each(var un:Unit in room.units) {
 					if (un.mother==this) un.die();
 				}
 				super.die();
@@ -407,7 +416,7 @@ package unitdata
 		
 		function spawn(n:int=0) {
 			if (kolChild>=kol_emit) return;
-			location.resetUnits();
+			room.resetUnits();
 			for (var i=0; i<3; i++) {
 				var xmlun:XML;
 				if (n==1) xmlun=<un id='zombie' tr='7' hpmult='0.85'/>;
@@ -415,7 +424,7 @@ package unitdata
 				else if (n==5) xmlun=<un id='necros'  hpmult='0.65'/>;
 				else if (n==7) xmlun=<un id='zombie' tr='9' hpmult='0.65'/>;
 				else return;
-				var un:Unit=location.waveSpawn(xmlun,i,'magsymbol');
+				var un:Unit=room.waveSpawn(xmlun,i,'magsymbol');
 				if (un) {
 					un.fraction=fraction;
 					un.inter.cont='';
@@ -434,24 +443,24 @@ package unitdata
 		}
 
 		public function castCurse(n:int=0, otlozh:int=0) {
-			var nx:Number=location.gg.X+location.gg.dx*15+(Math.random()-0.5)*50;
-			var ny:Number=location.gg.Y-location.gg.scY/2+location.gg.dy*15+(Math.random()-0.5)*30;
+			var nx:Number=room.gg.X+room.gg.dx*15+(Math.random()-0.5)*50;
+			var ny:Number=room.gg.Y-room.gg.scY/2+room.gg.dy*15+(Math.random()-0.5)*30;
 			if (n==2) {
-				nx=location.gg.X+location.gg.dx*15+(otlozh-8)*20*((Math.floor(location.gg.X)%2==0)?1:-1);
-				ny=location.gg.Y-location.gg.scY/2+location.gg.dy*15;
+				nx=room.gg.X+room.gg.dx*15+(otlozh-8)*20*((Math.floor(room.gg.X)%2==0)?1:-1);
+				ny=room.gg.Y-room.gg.scY/2+room.gg.dy*15;
 			}
 			if (n==1) {
 				nx+=Math.random()*200-100;
 				ny+=Math.random()*100-50;
 			}
-			if (nx>location.limX-100) nx=location.limX-100;
+			if (nx>room.roomPixelWidth-100) nx=room.roomPixelWidth-100;
 			if (nx<100) nx=100;
-			if (ny>location.limY-100) ny=location.limY-100;
+			if (ny>room.roomPixelHeight-100) ny=room.roomPixelHeight-100;
 			if (ny<100) ny=100;
 			var ms:MagSymbol=new MagSymbol(this,curses[Math.floor(Math.random()*(phase==2?9:5))],nx,ny,otlozh);
 		}
 		
-		public function resetProtect() {
+		public function resetProtect():void {
 			superInvis=false;
 			isVis=levitPoss=true;
 			isShadow=invulner=transp=false;
@@ -467,13 +476,15 @@ package unitdata
 			} else vis.filters=[];
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			newPart('necrblast');
 			Snd.ps('unreal');
 			super.dropLoot();
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

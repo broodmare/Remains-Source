@@ -9,6 +9,8 @@ package unitdata
 	import servdata.NPC;
 	import weapondata.Weapon;
 	
+	import components.Settings;
+	
 	public class UnitNPC extends UnitPon
 	{
 		
@@ -132,7 +134,8 @@ package unitdata
 		}
 		
 
-		public override function addVisual() {
+		public override function addVisual()
+		{
 			super.addVisual();
 			if (targNPC) {
 				targNPC.refresh();
@@ -154,7 +157,8 @@ package unitdata
 			inter.update();
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (t_anim>0) t_anim--;
 			else {
 				t_anim=Math.random()*200+150;
@@ -202,7 +206,8 @@ package unitdata
 		
 		
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			super.command(com,val);
 			//скрыть
 			if (com=='hide') {
@@ -226,7 +231,7 @@ package unitdata
 			} else if (com=='sign') {
 				if (ico.sign) {
 					if (aiTip=='fly') ico.sign.visible=false;
-					else ico.sign.visible=World.world.helpMess;
+					else ico.sign.visible=Settings.helpMess;
 				}
 			//попрощаться
 			} else if (com=='replicVse') {
@@ -257,8 +262,8 @@ package unitdata
 			//лететь в точку
 			} else if (q.com=='fly') {
 				var celF:Array=q.val.split(":");
-				cx=(int(celF[0])+1)*World.tilePixelWidth;
-				cy=(int(celF[1]))*World.tilePixelHeight;
+				cx=(int(celF[0])+1)*Settings.tilePixelWidth;
+				cy=(int(celF[1]))*Settings.tilePixelHeight;
 				trace(cx,cy);
 				dey='fly';
 				wait=1000;
@@ -277,8 +282,9 @@ package unitdata
 			}
 		}
 		
-		public override function findCel(over:Boolean=false):Boolean {
-			for each (var un:Unit in location.units) {
+		public override function findCel(over:Boolean=false):Boolean
+		{
+			for each (var un:Unit in room.units) {
 				if (un.disabled || un.sost>1 || un.fraction==fraction || un.doop || un.invis) continue;
 				if (look(un,true)) {
 					setCel(un);
@@ -291,7 +297,8 @@ package unitdata
 		
 		
 		
-		public override function control() {
+		public override function control()
+		{
 			if (t_ref>0) t_ref--;
 			if (World.world.gui.dialScript.running) {
 			} else {
@@ -355,7 +362,7 @@ package unitdata
 					if (dopWeapon) dopWeapon.attack();
 					ico.visible=false;
 					zanyato=true;
-				} else if (location.locationActive && findCel()) {
+				} else if (room.roomActive && findCel()) {
 					ico.visible=false;
 					zanyato=true;
 				} else {
@@ -371,7 +378,7 @@ package unitdata
 					targNPC.landing();
 					inter.active=true;
 					if (ico.sign) {
-						ico.sign.visible=World.world.helpMess;
+						ico.sign.visible=Settings.helpMess;
 					}
 				}
 			}

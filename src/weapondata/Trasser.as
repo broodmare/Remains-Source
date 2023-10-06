@@ -6,11 +6,12 @@ package weapondata
 	import unitdata.Unit;
 	import locdata.*;
 
+	import components.Settings;
 	
 	public class Trasser 
 	{
 		
-		public var location:Location;
+		public var room:Room;
 		public var X:Number, Y:Number, dx:Number, dy:Number, begx:Number, begy:Number, begdx:Number, begdy:Number, ddx:Number=0, ddy:Number=0;
 		public var is_skok:Boolean=false, vse:Boolean=false, stay:Boolean=false;
 		public var liv:int=100;
@@ -46,10 +47,10 @@ package weapondata
 					else if (dx<-1) dx+=brake;
 					else dx=0;
 				}
-				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
+				if (Math.abs(dx)<Settings.maxdelta && Math.abs(dy)<Settings.maxdelta)	run();
 				else 
 				{
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
 					for (var j=0; (j<div && !vse); j++) run(div);
 				}
 				gr.lineTo(X,Y);
@@ -62,9 +63,9 @@ package weapondata
 		public function run(div:int=1)
 		{
 			if (vse) return;
-			var abstile:* = location.getAbsTile(X,Y);
+			var abstile:* = room.getAbsTile(X,Y);
 			X+=dx/div;
-			if (X<0 || X>=location.spaceX*Tile.tilePixelWidth)
+			if (X<0 || X>=room.roomWidth*Tile.tilePixelWidth)
 			{
 				vse=true;
 				return;
@@ -119,7 +120,7 @@ package weapondata
 			if (dy>0) 
 			{
 				Y+=dy/div;
-				if (Y >= location.spaceY*Tile.tilePixelHeight) 
+				if (Y >= room.roomHeight*Tile.tilePixelHeight) 
 				{
 					vse=true;
 					return;

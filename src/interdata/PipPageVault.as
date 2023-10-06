@@ -14,13 +14,16 @@ package interdata
 	import servdata.Item;
 	import weapondata.Weapon;
 	import locdata.Quest;
-	import locdata.LandAct;
+	import locdata.LevelTemplate;
+	
+	import components.Settings;
 	
 	public class PipPageVault extends PipPage{
 		
 		var assArr:Array;
 
-		public function PipPageVault(npip:PipBuck, npp:String) {
+		public function PipPageVault(npip:PipBuck, npp:String) 
+		{
 			isLC=isRC=true;
 			itemClass=visPipVaultItem;
 			super(npip,npp);
@@ -41,14 +44,15 @@ package interdata
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override function setSubPages()
+		{
 			assArr=new Array();
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
 			statHead.nazv.text=Res.pipText('ii2');
 			statHead.kol.text=Res.pipText('ii7');
 			statHead.kol.width=170;
-			statHead.mass.text=World.world.hardInv?Res.pipText('ii8'):'';
-			statHead.mass2.text=World.world.hardInv?Res.pipText('ii9'):'';
+			statHead.mass.text=Settings.hardInv?Res.pipText('ii8'):'';
+			statHead.mass2.text=Settings.hardInv?Res.pipText('ii9'):'';
 			setTopText('vaultupr');
 			vis.butOk.visible=false;
 			inv.calcMass();
@@ -57,12 +61,6 @@ package interdata
 					var node:XML=inv.items[s].xml;
 					if (node==null) continue;
 					if (node.@tip=='money' || node.@tip=='paint' || node.@tip=='spell' || node.@tip=='spec' || node.@tip=='key' || node.@tip=='instr' || node.@tip=='impl' || node.@tip=='art' || node.@tip=='scheme') continue;
-					/*var itemTip=3;
-					if (node.@tip=='a' || node.@tip=='e') itemTip=2;
-					else if (node.@us>0) itemTip=1;
-					if (node.@tip=='food') itemTip=3;*/
-					
-					//if (node.@v.length() && node.@v!=page2) return;
 					if (inv.items[s].invCat==page2) {
 						var tcat:String;
 						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
@@ -91,20 +89,25 @@ package interdata
 			showBottext();
 		}
 		
-		function showBottext() {
-			if (World.world.hardInv) vis.bottext.text=inv.retMass(page2);
+		function showBottext()
+		{
+			if (Settings.hardInv) vis.bottext.text=inv.retMass(page2);
 			else vis.bottext.text='';
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override function setStatItem(item:MovieClip, obj:Object)
+		{
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.cat.visible=false;
 			item.nazv.alpha=1;
-			try {
+			try 
+			{
 				item.trol.gotoAndStop(obj.tip);
-			} catch (err) {
+			} 
+			catch (err) 
+			{
 				item.trol.gotoAndStop(1);
 			}
 			item.id.text=obj.id;
@@ -112,19 +115,21 @@ package interdata
 			item.nazv.alpha=1;
 			if (obj.kol==0) item.nazv.alpha=0.5;
 			item.cat.text=obj.tip;
-			item.mass.text=World.world.hardInv?obj.mass:'';
-			item.mass2.text=World.world.hardInv?Res.numb(obj.mass*obj.kol):'';
+			item.mass.text=Settings.hardInv?obj.mass:'';
+			item.mass2.text=Settings.hardInv?Res.numb(obj.mass*obj.kol):'';
 			item.kol.text=obj.kol;
 			item.ns.maximum=obj.kol+obj.vault;
 			item.ns.value=obj.vault;
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override function statInfo(event:MouseEvent)
+		{
 			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text);
 		}
 		
-		function chKol(mc, n:int=0) {
+		function chKol(mc, n:int=0)
+		{
 			var obj=assArr[mc.id.text]
 			var item:Item=inv.items[mc.id.text];
 			if (item==null || obj==null) return;
@@ -144,19 +149,23 @@ package interdata
 				else mc.nazv.alpha=1;
 				mc.kol.text=obj.kol;
 				mc.ns.value=obj.vault;
-				mc.mass2.text=World.world.hardInv?Res.numb(obj.mass*obj.kol):'';
+				mc.mass2.text=Settings.hardInv?Res.numb(obj.mass*obj.kol):'';
 			}
 		}
 		
 		
-		function nsClick(event:MouseEvent) {
+		function nsClick(event:MouseEvent)
+		{
 			event.stopPropagation();
 		}
-		function nsCh(event:Event) {
+
+		function nsCh(event:Event)
+		{
 			chKol(event.currentTarget.parent, event.currentTarget.value);
 		}
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent)
+		{
 			if (event.ctrlKey) chKol(event.currentTarget, 0);
 			else chKol(event.currentTarget, int.MAX_VALUE);
 			pip.snd(1);
@@ -164,7 +173,9 @@ package interdata
 			pip.setRPanel();
 			event.stopPropagation();
 		}
-		override function itemRightClick(event:MouseEvent) {
+
+		override function itemRightClick(event:MouseEvent)
+		{
 			chKol(event.currentTarget, 0);
 			pip.snd(1);
 			showBottext();
@@ -172,7 +183,8 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		function checkAmmo(item:Item):Boolean {
+		function checkAmmo(item:Item):Boolean 
+		{
 			var ab:String=item.id;
 			if (item.tip=='a' && item.xml && item.xml.@base.length()) ab=item.xml.@base;
 			for each(var weap:Weapon in inv.weapons) {
@@ -184,7 +196,9 @@ package interdata
 			}
 			return false;
 		}
-		function sbrosHlam() {
+
+		function sbrosHlam()
+		{
 			for (var s in arr) {
 				if (arr[s].tip!='food' && arr[s].tip!='book' && arr[s].tip!='sphera' && arr[s].tip!='valuables' && !arr[s].keep) {
 					var item:Item=inv.items[arr[s].id];
@@ -203,8 +217,10 @@ package interdata
 			pip.setRPanel();
 		}
 		
-		function transOk(event:MouseEvent) {
-			if (page2==2 || page2==3) {
+		function transOk(event:MouseEvent)
+		{
+			if (page2==2 || page2==3) 
+			{
 				sbrosHlam();
 			}
 		}

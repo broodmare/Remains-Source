@@ -4,8 +4,8 @@ package roomdata {
 		
 		public function RoomsProb() {
 		}
-		public var rooms:XML=<all>
-  <land/>
+		public var roomContainer:XML=<all>
+  <level/>
   <room name="bossultra">
     <a>A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A</a>
     <a>A._R._R._R.JR._P._P._Q._P._P._P._P._P._P._P._P._P._P._P._P._Q._P._P._P._P._P._P._Q._P._P._P._P._P._P._P._P._P._P._P._P._Q._P._P.JR._R._R._R.A</a>

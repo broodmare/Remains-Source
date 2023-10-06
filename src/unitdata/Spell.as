@@ -1,17 +1,19 @@
 package unitdata 
 {
 	
-	import locdata.Location;
+	import locdata.Room;
 	import locdata.Tile;
 	import graphdata.Emitter;
 	import flash.ui.Multitouch;
+
+	import components.Settings;
 
 	public class Spell 
 	{
 		
 		public var owner:Unit;
 		public var gg:UnitPlayer;
-		public var location:Location;
+		public var room:Room;
 		public var id:String;
 		public var nazv:String;
 		public var xml:XML;
@@ -53,7 +55,7 @@ package unitdata
 			if (xml.@hp.length()) hp=xml.@hp;
 			if (xml.@mana.length()) mana=xml.@mana;
 			if (xml.@magic.length()) magic=xml.@magic;
-			if (xml.@culd.length()) culd=xml.@culd*World.fps;
+			if (xml.@culd.length()) culd=xml.@culd*Settings.fps;
 			if (xml.@dist.length()) dist=xml.@dist;
 			if (xml.@line.length()) line=xml.@line;
 			if (xml.@rad.length()) rad=xml.@rad;
@@ -75,7 +77,7 @@ package unitdata
 			if (id=='sp_invulner') cf=cast_invulner;
 		}
 		
-		public function step() 
+		public function step()
 		{
 			if (t_culd>0) t_culd--;
 		}
@@ -86,7 +88,7 @@ package unitdata
 			if (cf==null) return false;
 			if (player) 
 			{
-				if (World.world.alicorn && id!='sp_mshit') return false;
+				if (Settings.alicorn && id!='sp_mshit') return false;
 				if (gg.rat>0) return false;
 				if (gg.invent.weapons[id] && gg.invent.weapons[id].respect==1) 
 				{
@@ -107,7 +109,7 @@ package unitdata
 					{
 						if (culd>=100) 
 						{
-							World.world.gui.infoText('spellCuld',Math.ceil(t_culd/World.fps),null,false);
+							World.world.gui.infoText('spellCuld',Math.ceil(t_culd/Settings.fps),null,false);
 							World.world.gui.bulb(owner.X,owner.Y-20);
 						}
 						Snd.ps('nomagic');
@@ -136,7 +138,7 @@ package unitdata
 			{
 				X=owner.magicX;
 				Y=owner.magicY;
-				location=owner.location;
+				room=owner.room;
 				power=owner.spellPower;
 				if (player && teleSpell) {
 					power=gg.pers.telePower;
@@ -144,12 +146,12 @@ package unitdata
 			} 
 			else 
 			{
-				location=World.world.location;
+				room=World.world.room;
 			}
 			//координаты цели
 			cx=nx, cy=ny;
 			//проверка видимости точки цели, если это нужно
-			if (line==1 && owner && !owner.location.isLine(X,Y, cx, cy)) 
+			if (line==1 && owner && !owner.room.isLine(X,Y, cx, cy)) 
 			{
 				if (player) World.world.gui.infoText('noVisible',null,null,false);
 				return false;
@@ -185,22 +187,22 @@ package unitdata
 		}
 		
 		//создать магическую стену
-		function cast_mwall() 
+		function cast_mwall()
 		{
-			var un:Unit=location.createUnit('mwall',cx,cy+60,true);
+			var un:Unit=room.createUnit('mwall',cx,cy+60,true);
 			if (owner) un.fraction=owner.fraction;
 			un.maxhp=hp*power;
 			un.hp=un.maxhp;
 		}
 		
 		//магический щит
-		function cast_mshit() 
+		function cast_mshit()
 		{
-			if (owner.player && World.world.alicorn) owner.shithp=World.world.pers.alicornShitHP;
+			if (owner.player && Settings.alicorn) owner.shithp=World.world.pers.alicornShitHP;
 			else owner.shithp=hp*power;
 		}
 		//магический щит
-		function cast_cryst() 
+		function cast_cryst()
 		{
 			est=1;
 			if (player) 
@@ -211,9 +213,9 @@ package unitdata
 		}
 		
 		//кинетический рывок
-		function cast_kdash() 
+		function cast_kdash()
 		{
-			if (!owner.location.levitOn) return;
+			if (!owner.room.levitOn) return;
 			var dx:Number=(cx-owner.X);
 			var dy:Number=(cy-owner.Y+owner.scY);
 			var rasst:Number=Math.sqrt(dx*dx+dy*dy);
@@ -235,12 +237,12 @@ package unitdata
 		}
 		
 		//кинетический взрыв
-		function cast_blast() 
+		function cast_blast()
 		{
-			if (location==null) return;
+			if (room==null) return;
 			X=owner.X;
 			Y=owner.Y;
-			for each(var un:Unit in location.units) 
+			for each(var un:Unit in room.units) 
 			{
 				if (un.fixed || un.fraction==owner.fraction || !owner.isMeet(un)) continue;
 				var dx:Number=un.X-X;
@@ -256,20 +258,21 @@ package unitdata
 				un.stun+=Math.floor(Math.random()*power*dam);
 				un.t_throw=30;
 			}
-			if (owner.player) location.budilo(X,Y,500);
-			if (location.locationActive) Emitter.emit('blast',location,X,Y);
+			if (owner.player) room.budilo(X,Y,500);
+			if (room.roomActive) Emitter.emit('blast',room,X,Y);
 			
-			if (location.locationActive) World.world.quake(Math.random()*30-10,Math.random()*10-5);
+			if (room.roomActive) World.world.quake(Math.random()*30-10,Math.random()*10-5);
 		}
 		
 		//замедляющее поле
-		function cast_slow() 
+		function cast_slow()
 		{
 			if (owner) owner.addEffect('inhibitor',rad*power);
 		}
 		
 		//лунный клинок
-		function cast_moon() {
+		function cast_moon()
+		{
 			if (gg.currentPet!='moon') {
 				gg.pets['moon'].hp=gg.pets['moon'].maxhp;
 				gg.callPet('moon',true);
@@ -280,31 +283,32 @@ package unitdata
 			}
 		}
 		
-		public function gwall(nx,ny) {
-			var t:Tile=location.getAbsTile(nx,ny);
-			if (location.testTile(t)) 
+		public function gwall(nx,ny)
+		{
+			var t:Tile=room.getAbsTile(nx,ny);
+			if (room.testTile(t)) 
 			{
 				t.phis=3;
 				t.hp=Math.round(hp*power);
-				t.mat=7;
+				t.tileMaterial=7;
 				t.t_ghost=Math.round(dam*power);
 				World.world.grafon.gwall(t.X,t.Y);
 				est=1;
 			}
-			Emitter.emit('gwall',location,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight);
+			Emitter.emit('gwall',room,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight);
 		}
 		
-		function cast_gwall() 
+		function cast_gwall()
 		{
 			est=0;
 			gwall(cx,cy-40);				
 			gwall(cx,cy);				
 			gwall(cx,cy+40);				
-			if (est>0) location.t_gwall=World.fps;
+			if (est>0) room.t_gwall=Settings.fps;
 		}
 		
 		//замедляющее поле
-		function cast_invulner() 
+		function cast_invulner()
 		{
 			if (owner && player) 
 			{

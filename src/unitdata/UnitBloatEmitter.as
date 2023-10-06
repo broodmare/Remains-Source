@@ -1,5 +1,6 @@
 package unitdata 
 {
+	import components.Settings;
 	
 	public class UnitBloatEmitter  extends Unit{
 		
@@ -17,11 +18,13 @@ package unitdata
 			getXmlParam();
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			vis.x=X,vis.y=Y;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (sost==1) {
 				if (f) {
 					//сбросить эффекты
@@ -29,7 +32,7 @@ package unitdata
 						for each (var eff in effects) eff.unsetEff();
 						effects=new Array();
 					}
-					oduplenie=Math.round(World.oduplenie*(Math.random()*0.2+0.9));
+					oduplenie=Math.round(Settings.oduplenie*(Math.random()*0.2+0.9));
 					disabled=false;		//включить
 				}
 			}
@@ -39,12 +42,12 @@ package unitdata
 			var un:Unit;
 			var emitTr:String='0';
 			if (emitId=='bloat') {
-				if (location.locDifLevel>3) emitTr=location.randomCid(emitId);
-				un=location.createUnit(emitId,X,Y,true,null,emitTr);
+				if (room.locDifLevel>3) emitTr=room.randomCid(emitId);
+				un=room.createUnit(emitId,X,Y,true,null,emitTr);
 			}
 			if (emitId=='ant') {
-				emitTr=location.randomCid(emitId);
-				un=location.createUnit(emitId,X,Y-40,true,null,emitTr);
+				emitTr=room.randomCid(emitId);
+				un=room.createUnit(emitId,X,Y-40,true,null,emitTr);
 			}
 			if (un && d) {
 				kolChild++;
@@ -54,24 +57,27 @@ package unitdata
 		
 		var emit_t:int=0;
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			super.expl();
 			if (emitId=='ant') newPart('schep',16,2);
 			else newPart('shmatok',16,2);
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			super.dropLoot();
 			for (var i=0; i<5; i++) emit();
 		}
 		
-		public override function control() {
-			if (World.world.enemyAct<=0) {
+		public override function control()
+		{
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			//поиск цели
 			if (aiTCh>0) aiTCh--;
-			if (World.world.enemyAct>1 && aiTCh==0) {
+			if (Settings.enemyAct>1 && aiTCh==0) {
 				aiTCh=10;
 				if (findCel()) {
 					aiState=2;
@@ -87,7 +93,7 @@ package unitdata
 				}
 			}
 			//атака
-			if (World.world.enemyAct>=3 && celUnit) {
+			if (Settings.enemyAct>=3 && celUnit) {
 				attKorp(celUnit);
 			}
 		}

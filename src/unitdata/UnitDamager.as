@@ -2,7 +2,7 @@ package unitdata
 {
 	
 	import servdata.Interact;
-	import locdata.Location;
+	import locdata.Room;
 	import weapondata.Weapon;
 	import servdata.LootGen;
 	import weapondata.WThrow;
@@ -108,14 +108,16 @@ package unitdata
 			}
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null)
+		{
 			super.getXmlParam();
 			var node0:XML=AllData.d.unit.(@id==id)[0];
 			if (node0.un.length()) {
@@ -125,7 +127,8 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
 			if (sk<1) sk=1;
@@ -137,9 +140,10 @@ package unitdata
 			}
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
-			if (location.mirror) {
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
+			if (room.mirror) {
 				storona=-storona;
 				aiNapr=storona;
 			}
@@ -156,7 +160,8 @@ package unitdata
 			}
 		}
 
-		function setStatus() {
+		function setStatus()
+		{
 			if (status>0) {
 				warn=0;
 				inter.active=false;
@@ -168,12 +173,8 @@ package unitdata
 			inter.update();
 		}
 		
-		/*public override function die(sposob:int=0) {
-			super.die(sposob);
-			//if (status==0) activate();
-		}*/
-		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean)
+		{
 			isVis=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
@@ -183,32 +184,34 @@ package unitdata
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',3);
 		}
 		
 		//обезвредить
 		function disarm() {
 			if (tipDamager==1) {
-				LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,'frag',1);
-				if (kolammo>0) LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,currentWeapon.ammo,kolammo);
+				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,'frag',1);
+				if (kolammo>0) LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.ammo,kolammo);
 			} else if (tipDamager==2 && kolammo>0) {
-				LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
-				LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
-				LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
+				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
+				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
+				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
 			} else if (tipDamager==3 && kolammo>0) {
-				LootGen.lootCont(location,X,Y-20,'bomb');
+				LootGen.lootCont(room,X,Y-20,'bomb');
 			}
 			sost=4;
 			disabled=true;
-			location.remObj(this);
+			room.remObj(this);
 		}
 		
 		//взорвать при нанесении урона
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			super.dropLoot();
 			if ((tipDamager==2 || tipDamager==3) && kolammo>0) iExpl();
-			if (tipDamager==1) LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,'frag',1);
+			if (tipDamager==1) LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,'frag',1);
 		}
 		
 		function iExpl() {
@@ -238,17 +241,20 @@ package unitdata
 		}
 		
 		//команда
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='dam') activate();
 		}
 		
 		//не искать цели
-		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
+		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000)
+		{
 		}
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>1 || status==2 || kolammo<=0) return;
 			aiN++;
 			if (isShoot) {

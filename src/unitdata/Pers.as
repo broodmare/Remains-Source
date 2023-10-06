@@ -5,6 +5,8 @@ package unitdata
 	import servdata.LootGen;
 	import flash.display.MovieClip;
 	
+	import components.Settings;
+	
 	public dynamic class Pers 
 	{
 		
@@ -94,8 +96,8 @@ package unitdata
 		public var h2oPlav:Number=1;
 		public var stamRun:Number=1;
 		public var stamRes:Number=2;
-		public var stamDash=40;		//мультипликатор расхода выносливости на рывок
-		public var stamJump=20;		//мультипликатор расхода выносливости на прыжок
+		public var stamDash = 40;		//мультипликатор расхода выносливости на рывок
+		public var stamJump = 20;		//мультипликатор расхода выносливости на прыжок
 
 		public var weaponSkills:Array=[1,1,1,1,1,1,1,1];
 		//melee
@@ -372,8 +374,8 @@ package unitdata
 					}
 				}
 				if (loadObj.rep) rep=loadObj.rep;
-				World.world.alicorn=false;
-				if (loadObj.alicorn) World.world.alicorn=loadObj.alicorn;
+				Settings.alicorn=false;
+				if (loadObj.alicorn) Settings.alicorn=loadObj.alicorn;
 			} 
 			else if (opt) 
 			{
@@ -408,7 +410,7 @@ package unitdata
 			factor=new Array();
 			for each (var param in AllData.d.param) {
 
-				if (param.@f>0 && param.@v.length() && param.@v!='')	factor[param.@v]=new Array();
+				if (param.@f>0 && param.@v.length && param.@v!='')	factor[param.@v]=new Array();
 			}
 		}
 		
@@ -449,7 +451,7 @@ package unitdata
 			obj.prevcp=prevCPCode;
 			
 			obj.rep=rep;
-			obj.alicorn=World.world.alicorn;
+			obj.alicorn=Settings.alicorn;
 			
 			obj.pet=gg.currentPet;
 			setRoboowl();
@@ -459,7 +461,7 @@ package unitdata
 			
 		}
 		
-		public function setGlobalDif(ndif:int=2) 
+		public function setGlobalDif(ndif:int=2)
 		{
 			//trace('difff',ndif);
 			if (ndif==0) 
@@ -528,7 +530,7 @@ package unitdata
 			}
 		}
 		
-		public function defaultParams() 
+		public function defaultParams()
 		{
 			//параметры по умолчанию
 			gg.maxhp=begHP;
@@ -654,7 +656,7 @@ package unitdata
 		}
 		
 		//получение опыта
-		public function expa(dxp:int, nx:Number=-1, ny:Number=-1) 
+		public function expa(dxp:int, nx:Number=-1, ny:Number=-1)
 		{
 			if (dxp<=0) return;
 			xpCur+=dxp;
@@ -669,7 +671,7 @@ package unitdata
 			} 
 			else 
 			{
-				gg.numbEmit.cast(gg.location,nx,ny,{txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
+				gg.numbEmit.cast(gg.room,nx,ny,{txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
 			}
 			if (xpCur>=xpNext) upLevel();
 			World.world.gui.setXp();
@@ -733,7 +735,7 @@ package unitdata
 		}
 		
 		//принудительно установить уровень перса
-		public function setForcLevel(lvl:int) 
+		public function setForcLevel(lvl:int)
 		{
 			trace('Установлен уровень',lvl);
 			level=lvl;
@@ -741,7 +743,7 @@ package unitdata
 			xpNext=xpProgress(lvl);
 		}
 		
-		public function upLevel() 
+		public function upLevel()
 		{
 			xpPrev=xpProgress(level);
 			level++;
@@ -770,7 +772,7 @@ package unitdata
 		}
 		
 		//принудительно установить количество опыта для сейва старой версии
-		public function recalcXP() 
+		public function recalcXP()
 		{
 			if (xpVer==0) 
 			{
@@ -781,7 +783,7 @@ package unitdata
 		}
 		
 		//добавить скиллпоинты, если dop==true, не повышать левел
-		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true) 
+		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true)
 		{
 			skillPoint+=numb;
 			if (numb==1) World.world.gui.infoText('skillPoint');
@@ -791,7 +793,7 @@ package unitdata
 		}
 		
 		//поднять скилл
-		public function addSkill(id:String, numb:int, minus:Boolean=false) 
+		public function addSkill(id:String, numb:int, minus:Boolean=false)
 		{
 			if (minus && numb>skillPoint) numb=skillPoint;
 			if (numb<=0) return;
@@ -867,7 +869,7 @@ package unitdata
 			World.world.gui.setAll();
 		}
 		
-		public function addPerk(id:String, minus:Boolean=false) 
+		public function addPerk(id:String, minus:Boolean=false)
 		{
 			var maxlvl=AllData.d.perk.(@id==id).@lvl;
 			if (!(maxlvl>0)) maxlvl=1;
@@ -897,7 +899,7 @@ package unitdata
 		}
 		
 		//рандомная прокачка
-		function autoPump() 
+		function autoPump()
 		{
 			var n:int=1000;
 			while (skillPoint>0 && n>0) 
@@ -981,7 +983,7 @@ package unitdata
 		}
 		
 		//lvl1-уровень основных параметров, lvl2-уровень дополнительных параметров с тегом dop=1
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) 
+		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0)
 		{
 			for each(var sk in xml.sk) 
 			{
@@ -1030,17 +1032,18 @@ package unitdata
 			}
 		}
 		
-		function setBegFactor(id:String, res) 
+		function setBegFactor(id:String, res)
 		{
 			if ((factor[id] is Array) && factor[id].length==0) factor[id].push({id:'beg', res:res});
 		}
-		function setFactor(id:String, fact:String, ref:String, val, res, tip=null) 
+		
+		function setFactor(id:String, fact:String, ref:String, val, res, tip=null)
 		{
 			if (ref=='add' && val==0 || ref=='mult' && val==1) return;
 			if (factor[id] is Array) factor[id].push({id:fact, ref:ref, val:val, res:res, tip:tip});
 		}
 		
-		function setAllSt() 
+		function setAllSt()
 		{
 			headSt=4-Math.ceil(headHP/inMaxHP*4);
 			torsSt=4-Math.ceil(torsHP/inMaxHP*4);
@@ -1049,7 +1052,7 @@ package unitdata
 			manaSt=4-Math.ceil(manaHP/inMaxMana*4);
 		}
 		
-		public function setPonpon(mc:MovieClip) 
+		public function setPonpon(mc:MovieClip)
 		{
 			mc.tors.gotoAndStop(torsSt+1);
 			mc.head.gotoAndStop(headSt+1);
@@ -1064,7 +1067,7 @@ package unitdata
 			}
 		}
 		
-		function trauma(st:int, organ:int) 
+		function trauma(st:int, organ:int)
 		{
 			if (st>4) st=4;
 			if (organ==3 && st==4) st=3;
@@ -1082,7 +1085,7 @@ package unitdata
 			}
 		}
 		
-		public function damage(dam:Number, tip:int, isDie:Boolean=false) 
+		public function damage(dam:Number, tip:int, isDie:Boolean=false)
 		{
 			if (isDie) dam=dieDamage*inMaxHP;
 			if (dam<=0 || tip==Unit.D_INSIDE || tip==Unit.D_BLEED) return;
@@ -1135,7 +1138,7 @@ package unitdata
 			}
 		}
 		
-		public function die() 
+		public function die()
 		{
 			gg.poison=0;
 			gg.cut=0;
@@ -1144,7 +1147,7 @@ package unitdata
 			else gg.sost=3;
 		}
 		
-		public function bloodDamage(dam:Number, tip:int) 
+		public function bloodDamage(dam:Number, tip:int)
 		{
 			if (dam<=0) return;
 			dam*=3;
@@ -1166,10 +1169,10 @@ package unitdata
 			}
 		}
 		
-		public function manaDamage(dam:Number) 
+		public function manaDamage(dam:Number)
 		{
 			if (dam<=0) return;
-			if (gg.location.train) return;
+			if (gg.room.train) return;
 			var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
 			manaHP-=dam;
 			if (manaMin>0 && manaHP<1) manaHP=1;
@@ -1183,7 +1186,7 @@ package unitdata
 		}
 		
 		//исцеление 0-самого повреждённого места, 1-голова, 2-корпус, 3-ноги, 4-всё, 5-кровь, 6-мана
-		public function heal(hhp:Number, tip:int) 
+		public function heal(hhp:Number, tip:int)
 		{
 			var sst:int;
 			if (hhp==0) return;
@@ -1227,7 +1230,7 @@ package unitdata
 			}
 			if (tip==6) 
 			{
-				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.location,gg.X,gg.Y-gg.scY/2,{txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
+				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.room,gg.X,gg.Y-gg.scY/2,{txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
 				var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
 				manaHP+=hhp;
 				if (manaHP>inMaxMana) manaHP=inMaxMana;
@@ -1237,7 +1240,7 @@ package unitdata
 			}
 		}
 		
-		public function healAll() 
+		public function healAll()
 		{
 			headHP=inMaxHP;
 			torsHP=inMaxHP;
@@ -1246,7 +1249,7 @@ package unitdata
 			manaHP=inMaxMana;
 		}
 		
-		public function checkHP() 
+		public function checkHP()
 		{
 			if (headHP>inMaxHP) headHP=inMaxHP;
 			if (torsHP>inMaxHP) torsHP=inMaxHP;
@@ -1255,7 +1258,7 @@ package unitdata
 			if (manaHP>inMaxMana) manaHP=inMaxMana;
 		}
 		
-		function traumaParameters() 
+		function traumaParameters()
 		{
 			if (headSt>0) setSkillParam(xml_head, Math.min(headSt,3));
 			if (torsSt>0) setSkillParam(xml_tors, Math.min(torsSt,3));
@@ -1331,7 +1334,7 @@ package unitdata
 		}
 		
 		//вычислить и установить штрафы на перегрузку
-		public function invMassParam() 
+		public function invMassParam()
 		{
 			var inv:Invent=World.world.invent;
 			maxSpeed=100;
@@ -1340,7 +1343,7 @@ package unitdata
 			jumpMult=1;
 			shtrManaRes=1;
 			gg.noStairs=false;
-			if (!World.world.hardInv) return;
+			if (!Settings.hardInv) return;
 			if (inv.massW>maxmW) speedShtr++; 
 			if (inv.massW>maxmW+2) speedShtr++; 
 			if (inv.massW>maxmW+4) speedShtr++; 
@@ -1348,7 +1351,7 @@ package unitdata
 			if (inv.mass[2]>maxm2*1.2) speedShtr++;
 			if (inv.mass[3]>maxm3) speedShtr++;
 			if (inv.mass[3]>maxm3*1.2) speedShtr++;
-			if (World.world.location && !World.world.location.base && !World.world.location.train && !World.world.alicorn) 
+			if (World.world.room && !World.world.room.base && !World.world.room.train && !Settings.alicorn) 
 			{
 				if (speedShtr>=3) 
 				{
@@ -1372,7 +1375,7 @@ package unitdata
 				}
 			}
 			//штраф на магию
-			if (inv.massM>maxmM && !World.world.alicorn) shtrManaRes-=0.25*(inv.massM-maxmM);
+			if (inv.massM>maxmM && !Settings.alicorn) shtrManaRes-=0.25*(inv.massM-maxmM);
 			if (shtrManaRes<0) shtrManaRes=0;
 			gg.setSpeeds();
 		}
@@ -1390,7 +1393,7 @@ package unitdata
 		//инструменты и артефакты
 		//восст. хп
 		
-		public function setParameters() 
+		public function setParameters()
 		{
 			//запомнить процент ХП
 			var procHP=gg.hp/gg.maxhp;
@@ -1429,7 +1432,7 @@ package unitdata
 			bloodHP=procBlood*inMaxHP;
 			manaHP=procMana*inMaxMana;
 			//уменьшение характеристик от состояния здоровья
-			if (!World.world.alicorn) traumaParameters();
+			if (!Settings.alicorn) traumaParameters();
 			//trace('et3',runSpeedMult,stamRun);
 			gg.showObsInd=false;
 			//trace('-------------');
@@ -1446,7 +1449,7 @@ package unitdata
 			{
 
 			} 
-			else if (!World.world.alicorn) 
+			else if (!Settings.alicorn) 
 			{
 				if (gg.currentArmor) 
 				{
@@ -1505,7 +1508,7 @@ package unitdata
 			invMassParam();
 		}
 		
-		public function setInvParameters(inv:Invent) 
+		public function setInvParameters(inv:Invent)
 		{
 			if (inv==null) return;
 			
@@ -1555,7 +1558,7 @@ package unitdata
 			return 100;
 		}
 		
-		public function setRoboowl() 
+		public function setRoboowl()
 		{
 			owlhp=0;
 			owlhpProc=1;

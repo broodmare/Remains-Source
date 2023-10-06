@@ -9,6 +9,8 @@ package unitdata
 	import servdata.BlitAnim;
 	import servdata.LootGen;
 	
+	import components.Settings;
+	
 	public class UnitRaider extends UnitPon{
 		
 		protected var animFrame:int=0;
@@ -153,7 +155,8 @@ package unitdata
 			if (sndDie=='rm' && !msex) sndDie='rw';
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null)
+		{
 			super.getXmlParam(parentId);
 			super.getXmlParam();
 			var node0:XML=AllData.d.unit.(@id==id)[0];
@@ -180,7 +183,8 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				if (currentWeapon && currentWeapon.uniq>0 && isrnd(currentWeapon.uniq/2)) {
@@ -190,7 +194,8 @@ package unitdata
 			}
 		}
 
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
@@ -198,7 +203,8 @@ package unitdata
 			return obj;
 		}	
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			super.setWeaponPos(tip);
 			if (!enclWeap && (tip==1 || tip==2 || tip==4)) {
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
@@ -208,13 +214,8 @@ package unitdata
 			}
 		}
 		
-		/*public override function setVisPos() {
-			super.setVisPos();
-			if (currentWeapon) currentWeapon.
-		}*/
-
-		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			//поворот
 			if (sost==2 || sost==3) { //сдох
@@ -227,9 +228,6 @@ package unitdata
 				if (stay) {
 					if  (dx==0 || aiState==7) {
 						animState='stay';
-					//} else if (flyer) {
-						//animState='walk';
-						//sndStep(anims[animState].f,1);
 					} else if (attackerType==0 && aiAttack || aiState==8) {
 						animState='run';
 						sndStep(anims[animState].f,2);
@@ -266,7 +264,8 @@ package unitdata
 		}
 		
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok+10;
@@ -281,14 +280,15 @@ package unitdata
 			}
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			super.dropLoot();
 			if (currentWeapon) {
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
 				if (isDropArm) {
 					var cid:String=currentWeapon.id;
 					if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
-					LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,cid,0);
+					LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,cid,0);
 				}
 			}
 			if (attackerType==3) {
@@ -301,18 +301,18 @@ package unitdata
 				setCel(null,X+Math.random()*30-15,Y-Math.random()*15);
 				dropWeapon.attack();
 			}
-			//if (hero>0 && Math.random()<0.95) LootGen.lootId(location,currentWeapon.X,currentWeapon.Y,'s_rollup',0);
 		}
 
 		function emit() {
-			var un:Unit=location.createUnit('vortex',X,Y-scY/2,true);
+			var un:Unit=room.createUnit('vortex',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=300;
 			kol_emit--;
 		}
 		
-		public override function actions() {
+		public override function actions()
+		{
 			super.actions();
 			if (aiPlav>0) aiPlav--;
 			if (isPlav) aiPlav=10;
@@ -320,12 +320,14 @@ package unitdata
 			volMinus=rasst/8000;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1)
+		{
 			aiJump=Math.floor(30+Math.random()*50);
 			if (stay || isLaz) {		//прыжок
 				dy=-jumpdy*v;
@@ -342,11 +344,12 @@ package unitdata
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean {
-			if (location.getAbsTile(X,Y-85).phis!=0) return false;
-			if (location.getAbsTile(X,Y-125).phis!=0) return false;
-			if (location.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
-			if (location.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
+		function checkJump():Boolean
+		{
+			if (room.getAbsTile(X,Y-85).phis!=0) return false;
+			if (room.getAbsTile(X,Y-125).phis!=0) return false;
+			if (room.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
+			if (room.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
 			return true;
 		}
 		
@@ -376,7 +379,8 @@ package unitdata
 		//7 - готовится атаковать рывком
 		//8 - атакует быстрым рывком
 		
-		public override function control() {
+		public override function control()
+		{
 			//trace(hpbar);
 			//if (hpbar) trace(hpbar.visible, hpbar.x, hpbar.y);
 		
@@ -414,7 +418,7 @@ package unitdata
 			dexter=isFly?baseDexter*1.5:baseDexter
 			
 			if (!controlOn) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -467,7 +471,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.world.enemyAct>1 && aiTCh%10==1 && aiState!=6) {
+			if (Settings.enemyAct>1 && aiTCh%10==1 && aiState!=6) {
 				if (findCel()) {
 					//увидели
 					if (celUnit) {
@@ -513,7 +517,7 @@ package unitdata
 				}
 			}
 			//гранаты
-			if (location.warning>0 && aiTCh%10==1 && fearGrenade && isrnd(0.2)) {
+			if (room.warning>0 && aiTCh%10==1 && fearGrenade && isrnd(0.2)) {
 				if (findGrenades()) {
 					t_replic-=20;
 					replic('grenade');
@@ -526,17 +530,17 @@ package unitdata
 			}
 			
 			//поиск левитируемой мины
-			if (aiTCh%30==1 && !levit && findLevit() && celUnit!=location.gg) {
-				if (location.gg.teleObj && (location.gg.teleObj is Mine)) {
-					var gx:Number=location.gg.teleObj.X-X;
-					var gy:Number=location.gg.teleObj.Y-Y+scY/2;
+			if (aiTCh%30==1 && !levit && findLevit() && celUnit!=room.gg) {
+				if (room.gg.teleObj && (room.gg.teleObj is Mine)) {
+					var gx:Number=room.gg.teleObj.X-X;
+					var gy:Number=room.gg.teleObj.Y-Y+scY/2;
 					alarma();
 					if (gx*gx+gy*gy<400*400) {
 						aiState=6;
 						if (gx>30) aiNapr=tstor=-1;
 						if (gx<-30) aiNapr=tstor=1;
 					} else if (attackerType==2) {
-						setCel(location.gg.teleObj as Mine);
+						setCel(room.gg.teleObj as Mine);
 						aiState=4;
 					} 
 					aiSpok=maxSpok+10;
@@ -651,7 +655,7 @@ package unitdata
 					//поворачиваем, если впереди некуда бежать
 					if (stay && shX1>0.25 && aiNapr<0) {
 						if (isrnd(0.1)) {
-							t=location.getAbsTile(X+storona*80,Y+10);
+							t=room.getAbsTile(X+storona*80,Y+10);
 							if (t.phis==1 || t.shelf) {
 								jump(0.5);
 							} else turnX=1;
@@ -659,7 +663,7 @@ package unitdata
 					}
 					if (stay && shX2>0.25 && aiNapr>0) {
 						if (isrnd(0.1)) {
-							t=location.getAbsTile(X+storona*80,Y+10);
+							t=room.getAbsTile(X+storona*80,Y+10);
 							if (t.phis==1 || t.shelf) {
 								jump(0.5);
 							} else turnX=-1;
@@ -832,18 +836,19 @@ package unitdata
 			}
 			pumpObj=null;
 			
-			if (Y>location.spaceY*Tile.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Tile.tilePixelHeight-80) throu=false;
 			
 			if (aiState==3 || aiState==4 || aiState==6 || aiState==8) aiAttack=1;
 			else aiAttack=0;
 			
-			if (aiAttack && World.world.enemyAct>=3) {
+			if (aiAttack && Settings.enemyAct>=3) {
 				attack();
 			}
 
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
+		{
 			scrAlarmOn=false;
 			if (sost==1) {
 				if (aiState<=1) budilo();
@@ -851,7 +856,8 @@ package unitdata
 			return super.damage(dam, tip, bul,tt);
 		}
 		
-		public override function replic(s:String) {
+		public override function replic(s:String)
+		{
 			if (t_replic<=0 && s=='attack') {
 				if (tr==8 && isrnd(0.3)) s='fire';
 				if (tr==9 && isrnd(0.3)) s='expl';
@@ -887,7 +893,8 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			super.command(com,val);
 			if (com=='turn') {
 				if (val=='0') storona=-storona;

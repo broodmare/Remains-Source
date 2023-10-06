@@ -1,8 +1,10 @@
 package unitdata 
 {
 	
-	import locdata.Location;
+	import locdata.Room;
 	import weapondata.Bullet;
+	
+	import components.Settings;
 	
 	public class UnitSlime extends Unit
 	{
@@ -57,26 +59,29 @@ package unitdata
 
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
-			oduplenie=World.oduplenie/2;
+			oduplenie=Settings.oduplenie/2;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
 			if (isMine) {
 				aiState=2;
 				vis.gotoAndStop(2);
 				vis.scaleY=0.5;
-			} else if (location.getAbsTile(nx,ny+10).phis) aiState=0;
-			else if (location.getAbsTile(nx,ny-50).phis) {
+			} else if (room.getAbsTile(nx,ny+10).phis) aiState=0;
+			else if (room.getAbsTile(nx,ny-50).phis) {
 				aiState=1;
 				fixed=true;
 			} else aiState=0;
 		}
 		
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				if (aiState==1) {
 					vis.rotation=180;
@@ -96,7 +101,8 @@ package unitdata
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000) {
+		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000)
+		{
 			if (un && isMeet(un)) {
 				celX=un.X, celY=un.Y-un.scY/2;
 			} else if (cx>-10000 && cy>-10000) {
@@ -117,16 +123,10 @@ package unitdata
 			die();
 		}
 		
-		/*public override function udarBullet(bul:Bullet, sposob:int=0):int {	
-			var res:int=super.udarBullet(bul, sposob);
-			if (res==10) return 12;
-			else return res;
-		
-		}*/
-		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			aiN++;
@@ -144,7 +144,7 @@ package unitdata
 					if (dx<maxSpeed) dx+=accel;
 				}
 			} else if (aiState==1) {
-				if (aiN%5==0 && location.getAbsTile(X,Y-50).phis==0) {
+				if (aiN%5==0 && room.getAbsTile(X,Y-50).phis==0) {
 					aiState=0;
 					fixed=false;
 				}
@@ -156,7 +156,7 @@ package unitdata
 				}
 			} else if (aiState==2) {
 				if (oduplenie<=0 && aiN%4==0) {
-					if (location==World.world.gg.location && rasst2>0 && rasst2<explDist*explDist) activate();
+					if (room==World.world.gg.room && rasst2>0 && rasst2<explDist*explDist) activate();
 				}
 				if (aiN%10==0 && !isVis) {
 					isVis=World.world.gg.lookInvis(this,1);
@@ -168,9 +168,9 @@ package unitdata
 			//if (d)dx+=storona*(accel+Math.random());
 			
 			//атака
-			if (World.world.enemyAct>=3 && oduplenie<=0) {
+			if (Settings.enemyAct>=3 && oduplenie<=0) {
 				if (aiN%5==0) {
-					for each (var un:Unit in location.units) {
+					for each (var un:Unit in room.units) {
 						if (un.activateTrap<2 && !un.player || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;
 						if (un.player && (un as UnitPlayer).lurked) continue;
 						if (attKorp(un)) {

@@ -5,6 +5,8 @@ package unitdata
 	import graphdata.Emitter;
 	import locdata.Tile;
 	
+	import components.Settings;
+	
 	public class UnitSpectre extends Unit
 	{
 		
@@ -35,7 +37,8 @@ package unitdata
 			ctrans=false;
 		}
 
-		public override function forces() {
+		public override function forces()
+		{
 			if (isFly) {
 				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
 					dx*=0.8;
@@ -48,19 +51,22 @@ package unitdata
 			} else super.forces();
 		}
 		
-		public override function udarBullet(bul:Bullet, sposob:int=0):int {	
+		public override function udarBullet(bul:Bullet, sposob:int=0):int
+		{	
 			return -1;
 			
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='show') {
 				vis.visible=true;
-				location.lighting(X, Y);
+				room.lighting(X, Y);
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			br+=(dx*4-br)/4;
 			vis.osn.rotation=br*storona;
 		}
@@ -69,14 +75,15 @@ package unitdata
 		//0 - ничего не делает
 		//1 - летит к цели
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			aiTCh++;
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && !World.world.gg.invulner) {
 					aiSpok=maxSpok+10;
 					aiState=1;
@@ -89,7 +96,7 @@ package unitdata
 				storona=(celX>X)?1:-1;
 			}
 			
-			if (aiState==1 && World.world.gg.location==location) {
+			if (aiState==1 && World.world.gg.room==room) {
 				spd.x=celX-X;
 				spd.y=celY-(Y-scY/2);
 				norma(spd,accel);
@@ -108,7 +115,7 @@ package unitdata
 				turnY=0;
 			}
 			//атака
-			if (World.world.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
+			if (Settings.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
 				if (attKorp(celUnit,1)) celUnit.addEffect('curse');
 			}
 		}

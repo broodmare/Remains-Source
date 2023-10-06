@@ -15,6 +15,9 @@ package interdata
 	import fl.controls.ScrollBar;
 	import fl.events.ScrollEvent;
 	import fl.controls.CheckBox;
+	
+	import components.Settings;
+	
 	public class PipPageOpt extends PipPage
 	{
 		
@@ -28,7 +31,8 @@ package interdata
 		var file:FileReference = new FileReference();
 		var ffil:Array;
 		
-		public function PipPageOpt(npip:PipBuck, npp:String) {
+		public function PipPageOpt(npip:PipBuck, npp:String) 
+		{
 			isLC=true;
 			itemClass=visPipOptItem;
 			super(npip,npp);
@@ -37,7 +41,7 @@ package interdata
 			file.addEventListener(Event.SELECT, selectHandler);
 			file.addEventListener(Event.COMPLETE, completeHandler);
 			pip.vis.butHelp.visible=false;
-			var log=new logText();
+			var log = new logText();
 			info=log.text;
 			log.x=20;
 			log.y=85;
@@ -46,51 +50,56 @@ package interdata
 		}
 
 		//подготовка страниц
-		override function setSubPages() {
+		override function setSubPages()
+		{
 			info.visible=false;
 			statHead.visible=false;
 			vis.butOk.visible=vis.butDef.visible=false;
 			vis.pers.visible=false;
 			vis.info.y=160;
 			nSave=-1;
-			if (page2==3) {
+			if (page2==3) 
+			{
 				statHead.nazv.text=statHead.numb.text='';
 				arr.push({id:'fullscreen'});
-				arr.push({id:'zoom100', check:World.world.zoom100});
-				arr.push({id:'quake', check:World.world.quakeCam});
+				arr.push({id:'zoom100', check:Settings.zoom100});
+				arr.push({id:'quake', check:Settings.quakeCam});
 				arr.push({id:'opt1_1', numb:Math.round(Snd.globalVol*100)});
 				arr.push({id:'opt1_2', numb:Math.round(Snd.musicVol*100)});
 				arr.push({id:'opt1_3', numb:Math.round(Snd.stepVol*100)});
-				arr.push({id:'help_mess', check:World.world.helpMess});
-				arr.push({id:'dial_on', check:World.world.dialOn});
-				arr.push({id:'show_hit1', check:World.world.showHit>0});
-				arr.push({id:'show_hit2', check:World.world.showHit==2});
-				arr.push({id:'hint_tele', check:World.world.hintTele});
-				arr.push({id:'sys_cur', check:World.world.sysCur});
-				arr.push({id:'show_favs', check:World.world.showFavs});
-				arr.push({id:'mat_filter', check:World.world.matFilter});
-				arr.push({id:'err_show', check:World.world.errorShowOpt});
+				arr.push({id:'help_mess', check:Settings.helpMess});
+				arr.push({id:'dial_on', check:Settings.dialOn});
+				arr.push({id:'show_hit1', check:Settings.showHit>0});
+				arr.push({id:'show_hit2', check:Settings.showHit==2});
+				arr.push({id:'hint_tele', check:Settings.hintTele});
+				arr.push({id:'sys_cur', check:Settings.sysCur});
+				arr.push({id:'show_favs', check:Settings.showFavs});
+				arr.push({id:'mat_filter', check:Settings.matFilter});
+				arr.push({id:'err_show', check:Settings.errorShowOpt});
 				arr.push({id:'autotake'});
 			}
-			if (page2==6) {
-				arr.push({id:'vsWeaponNew', check:World.world.vsWeaponNew});
-				arr.push({id:'vsWeaponRep', check:World.world.vsWeaponRep});
-				arr.push({id:'vsAmmoAll', check:World.world.vsAmmoAll});
-				arr.push({id:'vsAmmoTek', check:World.world.vsAmmoTek});
-				arr.push({id:'vsExplAll', check:World.world.vsExplAll});
-				arr.push({id:'vsMedAll', check:World.world.vsMedAll});
-				arr.push({id:'vsHimAll', check:World.world.vsHimAll});
-				arr.push({id:'vsEqipAll', check:World.world.vsEqipAll});
-				arr.push({id:'vsStuffAll', check:World.world.vsStuffAll});
-				arr.push({id:'vsVal', check:World.world.vsVal});
-				arr.push({id:'vsBook', check:World.world.vsBook});
-				arr.push({id:'vsFood', check:World.world.vsFood});
-				arr.push({id:'vsComp', check:World.world.vsComp});
-				arr.push({id:'vsIngr', check:World.world.vsIngr});
+			if (page2==6) 
+			{
+				arr.push({id:'vsWeaponNew', check:Settings.vsWeaponNew});
+				arr.push({id:'vsWeaponRep', check:Settings.vsWeaponRep});
+				arr.push({id:'vsAmmoAll', check:Settings.vsAmmoAll});
+				arr.push({id:'vsAmmoTek', check:Settings.vsAmmoTek});
+				arr.push({id:'vsExplAll', check:Settings.vsExplAll});
+				arr.push({id:'vsMedAll', check:Settings.vsMedAll});
+				arr.push({id:'vsHimAll', check:Settings.vsHimAll});
+				arr.push({id:'vsEqipAll', check:Settings.vsEqipAll});
+				arr.push({id:'vsStuffAll', check:Settings.vsStuffAll});
+				arr.push({id:'vsVal', check:Settings.vsVal});
+				arr.push({id:'vsBook', check:Settings.vsBook});
+				arr.push({id:'vsFood', check:Settings.vsFood});
+				arr.push({id:'vsComp', check:Settings.vsComp});
+				arr.push({id:'vsIngr', check:Settings.vsIngr});
 			}
-			if (page2==4) {
+			if (page2==4) 
+			{
 				setTopText('infokeys');
-				for (i in World.world.ctr.keyObj) {
+				for (i in World.world.ctr.keyObj) 
+				{
 					var key:Object=World.world.ctr.keyObj[i];
 					obj={id:key.id, nazv:Res.txt('k',key.id), a1:key.a1, a2:key.a2};
 					arr.push(obj);
@@ -99,24 +108,30 @@ package interdata
 				vis.butDef.visible=true;
 				vis.butDef.text.text=Res.pipText('default');
 			}
-			if (page2==5) {
+			if (page2==5) 
+			{
 				if (pip.light) return;
 				info.visible=true;
 				info.styleSheet=World.world.gui.style;
 				info.htmlText=World.world.log;
 				info.scrollV=info.maxScrollV;
 			}
-			if (page2==1 || page2==2) {
+			if (page2==1 || page2==2) 
+			{
 				if (pip.light) return;
 				vis.butDef.visible=true;
 				World.world.app.saveOst();
-				if (page2==1) {
+				if (page2==1) 
+				{
 					setTopText('infoload');
 					vis.butOk.text.text=Res.pipText('opt1');
 					vis.butDef.text.text=Res.pipText('loadfile');
-				} else {
+				} 
+				else 
+				{
 					setTopText('infosave');
-					if (World.world.pers.hardcoreMode) {
+					if (World.world.pers.hardcoreMode) 
+					{
 						nSave=World.world.autoSaveN;
 						vis.butOk.visible=true;
 					}
@@ -124,12 +139,14 @@ package interdata
 					if (gg.pers.hardcoreMode) vis.butDef.visible=false;
 					vis.butDef.text.text=Res.pipText('savefile');
 				}
-				for (var i=0; i<=World.world.saveCount; i++) {
+				for (var i=0; i<=World.world.saveCount; i++) 
+				{
 					var save:Object=World.world.getSave(i);
 					var obj:Object=saveObj(save,i);
 					arr.push(obj);
 				}
-				if (page2==2 && World.world.pers.hardcoreMode) {
+				if (page2==2 && World.world.pers.hardcoreMode) 
+				{
 					showSaveInfo(arr[nSave],vis);
 				}
 				pip.vis.butHelp.visible=true;
@@ -137,16 +154,20 @@ package interdata
 			}
 		}
 		
-		public static function saveObj(save:Object, n):Object {
+		public static function saveObj(save:Object, n):Object 
+		{
 			var obj:Object={id:n};
-			if (save==null || save.est==null) {
+			if (save==null || save.est==null) 
+			{
 				obj.nazv=Res.pipText('freeslot');
 				obj.gg='';
 				obj.date='';
-			} else {
+			} 
+			else 
+			{
 				obj.nazv=(n==0)?Res.pipText('autoslot'):(Res.pipText('saveslot')+' '+n);
 				obj.gg=(save.pers.persName==null)?'-------':save.pers.persName;
-				obj.land=Res.txt('m',save.game.land);
+				obj.level=Res.txt('m',save.game.level);
 				obj.level=(save.pers.level==null)?'':save.pers.level;
 				obj.date=(save.date==null)?'-------':Res.getDate(save.date);
 				obj.dif=Res.guiText('dif'+save.game.dif);
@@ -163,7 +184,8 @@ package interdata
 		}		
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object) {
+		override function setStatItem(item:MovieClip, obj:Object)
+		{
 			if (obj.id!=null) item.id.text=obj.id;
 			else item.id.text='';
 			item.id.visible=false;
@@ -171,11 +193,13 @@ package interdata
 			item.check.visible=false;
 			item.key1.visible=item.key2.visible=false;
 			item.ramka.visible=false;
-			item.land.text='';
-			if (page2==3 || page2==6) {
+			item.level.text='';
+			if (page2==3 || page2==6) 
+			{
 				item.nazv.text=Res.pipText(obj.id);
 				item.ggName.text='';
-				if (obj.numb!=null) {
+				if (obj.numb!=null) 
+				{
 					item.numb.text=obj.numb;
 					var scr:ScrollBar=item.scr;
 					scr.visible=true;
@@ -183,29 +207,34 @@ package interdata
 					scr.maxScrollPosition=100;
 					scr.scrollPosition=obj.numb;
 					if (!scr.hasEventListener(ScrollEvent.SCROLL)) scr.addEventListener(ScrollEvent.SCROLL,optScroll);
-				} else {
+				} 
+				else 
+				{
 					item.numb.text='';
 				}
-				if (obj.check!=null) {
+				if (obj.check!=null) 
+				{
 					item.check.visible=true;
-					var ch:CheckBox=item.check;
+					var ch:CheckBox = item.check;
 					ch.selected=obj.check;
 					if (!ch.hasEventListener(Event.CHANGE)) ch.addEventListener(Event.CHANGE,optCheck);
 				}
 			}
-			if (page2==4) {
+			if (page2==4) 
+			{
 				item.key1.visible=item.key2.visible=true;
 				item.numb.text=item.ggName.text='';
 				item.nazv.text=obj.nazv;
 				setVisKey(obj.a1,item.key1);
 				setVisKey(obj.a2,item.key2);
 			}
-			if (page2==1 || page2==2) {
+			if (page2==1 || page2==2) 
+			{
 				item.nazv.text=obj.nazv;
 				item.numb.text=obj.date;
 				item.ggName.text=obj.gg;
 				if (obj.level) item.ggName.text+=((obj.level!='')?(' ('+obj.level+')'):'');
-				if (obj.land) item.land.text=obj.land.substr(0,18);
+				if (obj.level) item.level.text=obj.level.substr(0,18);
 				if (obj.hard==1) item.nazv.text+=' {!}';
 				if (obj.hard==2) item.nazv.text+=' [†]';
 				if (nSave==obj.id) item.ramka.visible=true;
@@ -213,35 +242,44 @@ package interdata
 		}
 		
 		//установить визуальное отображение клавиши
-		function setVisKey(n,vis) {
+		function setVisKey(n,vis)
+		{
 			vis.txt.text='';
 			vis.gotoAndStop(1);
 			if (n==null) return;
 			try {
 				vis.txt.text=World.world.ctr.keyNames[n];
-			} catch(err) {
+			} 
+			catch(err) 
+			{
 				vis.gotoAndStop(n);
 			}
 
 		}
 		
 		//показать окно назначения клавиши
-		function showSetKey() {
+		public function showSetKey()
+		{
 			pip.vissetkey.visible=true;
 			pip.vissetkey.txt.htmlText=Res.guiText('setkeyinfo')+'\n\n<b>'+Res.txt('k',setkeyAction)+'</b>\n'+setkeyCell;
 			World.world.ctr.requestKey(unshowSetKey);
 		}
 		
-		function unshowSetKey() {
+		public function unshowSetKey()
+		{
 			var newkey=World.world.ctr.setkeyRequest;
 			pip.vissetkey.visible=false;
-			if (newkey!=-1) {
-				for (var i in arr) {
-					if (newkey!=null) {
+			if (newkey!=-1) 
+			{
+				for (var i in arr) 
+				{
+					if (newkey!=null) 
+					{
 						if (arr[i].a1==newkey) arr[i].a1=null;
 						if (arr[i].a2==newkey) arr[i].a2=null;
 					}
-					if (arr[i].id==setkeyAction) {
+					if (arr[i].id==setkeyAction)
+					{
 						if (setkeyCell==1) arr[i].a1=newkey;
 						if (setkeyCell==2) arr[i].a2=newkey;
 					}
@@ -251,67 +289,82 @@ package interdata
 			}
 		}
 		
-		public override function setStatus(flop:Boolean=true) {
-			if (pip.light) {
+		public override function setStatus(flop:Boolean=true) 
+		{
+			if (pip.light) 
+			{
 				vis.but5.visible=vis.but1.visible=vis.but2.visible=false;
 				if (page2==1 || page2==2) page2=3;
-			} else {
+			}
+			else 
+			{
 				vis.but5.visible=vis.but1.visible=vis.but2.visible=true;
 			}
 			super.setStatus(flop);
 		}
-		public override function updateLang() {
+		public override function updateLang()
+		{
 			vis.butOk.text.text=Res.pipText('accept');
 			vis.butDef.text.text=Res.pipText('default');
 			super.updateLang();
 		}
 		
-		public function optScroll(event:ScrollEvent) {
+		public function optScroll(event:ScrollEvent)
+		{
 			event.currentTarget.parent.numb.text=Math.round(event.position);
 			var id=event.currentTarget.parent.id.text;
-			if (id=='opt1_1') {
+			if (id=='opt1_1') 
+			{
 				Snd.globalVol=(event.position/100).toFixed(2);
 				Snd.onSnd=Snd.globalVol>0;
 				Snd.ps('mine_bip',1000,0);
 			}
-			if (id=='opt1_2') {
+			if (id=='opt1_2') 
+			{
 				Snd.musicVol=(event.position/100).toFixed(2);
 				Snd.onMusic=Snd.musicVol>0;
 				Snd.updateMusicVol();
 			}
-			if (id=='opt1_3') {
+			if (id=='opt1_3') 
+			{
 				Snd.stepVol=(event.position/100).toFixed(2);
 			}
 			pip.isSaveConf=true;
 		}
 
-		public function optCheck(event:Event) {
+		public function optCheck(event:Event)
+		{
 			var id=event.currentTarget.parent.id.text;
 			var sel:Boolean=(event.target as CheckBox).selected;
-			if (id=='dial_on') World.world.dialOn=sel;
-			if (id=='mat_filter') World.world.matFilter=sel;
-			if (id=='help_mess') World.world.helpMess=sel;
-			hit1=World.world.showHit>0;
-			hit2=World.world.showHit==2;
+			if (id=='dial_on') Settings.dialOn=sel;
+			if (id=='mat_filter') Settings.matFilter=sel;
+			if (id=='help_mess') Settings.helpMess=sel;
+			hit1=Settings.showHit>0;
+			hit2=Settings.showHit==2;
 			if (id=='show_hit1') hit1=sel;
 			if (id=='show_hit2') hit2=sel;
-			World.world.showHit=hit1?(hit2?2:1):0;
-			if (id=='sys_cur') World.world.sysCur=sel
-			if (id=='hint_tele') World.world.hintTele=sel;
-			if (id=='show_favs') World.world.showFavs=sel;
-			if (id=='quake') World.world.quakeCam=sel;
-			if (id=='err_show') World.world.errorShowOpt=sel;
-			if (id=='zoom100') {
-				World.world.zoom100=sel;
-				if (!pip.light) {
+			Settings.showHit=hit1?(hit2?2:1):0;
+			if (id=='sys_cur') Settings.sysCur=sel
+			if (id=='hint_tele') Settings.hintTele=sel;
+			if (id=='show_favs') Settings.showFavs=sel;
+			if (id=='quake') Settings.quakeCam=sel;
+			if (id=='err_show') Settings.errorShowOpt=sel;
+			if (id=='zoom100') 
+			{
+				Settings.zoom100=sel;
+				if (!pip.light) 
+				{
 					if (sel) World.world.cam.setZoom(0);
 					else World.world.cam.setZoom(2);
-				} else {
+				} 
+				else 
+				{
 					if (sel) World.world.cam.isZoom=0;
 					else World.world.cam.isZoom=2;
 				}
 			}
-			if (page2==6) {
+			if (page2==6) 
+			{
 				World.world[id]=sel;
 				World.world.checkLoot=true;
 			}
@@ -319,25 +372,34 @@ package interdata
 		}
 		
 		
-		override function itemClick(event:MouseEvent) {
+		override function itemClick(event:MouseEvent)
+		{
 			if (World.world.ctr.setkeyOn) return;
-			if (page2==3) {
-				if (event.currentTarget.id.text=='fullscreen') {
+			if (page2==3) 
+			{
+				if (event.currentTarget.id.text=='fullscreen') 
+				{
 					World.world.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				}
-				if (event.currentTarget.id.text=='autotake') {
+				if (event.currentTarget.id.text=='autotake') 
+				{
 					page2=6;
 					setStatus();
 				}
-			} else if (page2==4) {
+			} 
+			else if (page2==4) 
+			{
 				if (event.target.parent.name=='key1' || event.target.name=='key1') setkeyCell=1;
 				else if (event.target.parent.name=='key2' || event.target.name=='key2') setkeyCell=2;
 				else return;
 				if (setkeyCell==1 && event.currentTarget.key1.txt.text=='TAB') return;
 				setkeyAction=event.currentTarget.id.text;
 				showSetKey();
-			} else if (page2==1 || page2==2) {
-				if (pip.gamePause && page2==2) {
+			} 
+			else if (page2==1 || page2==2) 
+			{
+				if (pip.gamePause && page2==2) 
+				{
 					World.world.gui.infoText('gamePause');
 					return;
 				}
@@ -352,7 +414,8 @@ package interdata
 		}
 		
 		//применить настройки
-		function transOk(event:MouseEvent) {
+		function transOk(event:MouseEvent)
+		{
 			if (page2==4) {
 				for (var i in arr) {
 					var obj=World.world.ctr.keyIds[arr[i].id];
@@ -381,10 +444,13 @@ package interdata
 			}
 		}
 		
-		private function selectHandler(event:Event):void {
+		private function selectHandler(event:Event):void 
+		{
             file.load();
         }		
-		private function completeHandler(event:Event):void {
+
+		private function completeHandler(event:Event):void
+		{
 			try {
 				var obj:Object=file.data.readObject();
 				if (obj && obj.est==1) {
@@ -397,7 +463,8 @@ package interdata
 			trace('Error load');
        }		
 		
-		function gotoDef(event:MouseEvent) {
+		function gotoDef(event:MouseEvent)
+		{
 			if (page2==4) {
 				World.world.ctr.gotoDef();
 				World.world.ctr.updateKeys();
@@ -427,7 +494,8 @@ package interdata
 		}
 		
 		
-		public static function showSaveInfo(obj:Object, vis:MovieClip) {
+		public static function showSaveInfo(obj:Object, vis:MovieClip)
+		{
 			vis.info.htmlText='';
 			if (obj && obj.gg!='') {
 				vis.nazv.text=obj.gg;
@@ -439,7 +507,7 @@ package interdata
 				vis.pers.visible=true;
 				vis.info.y=vis.pers.y+25;
 				vis.info.htmlText+=Res.pipText('level')+': '+yel(obj.level)+'\n';
-				vis.info.htmlText+=obj.land+'\n';
+				vis.info.htmlText+=obj.level+'\n';
 				vis.info.htmlText+='\n';
 				vis.info.htmlText+=Res.pipText('diff')+': '+yel(obj.dif)+'\n';
 				if (obj.hard==1) vis.info.htmlText+=Res.guiText('opt2')+'\n';
@@ -456,7 +524,8 @@ package interdata
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent) {
+		override function statInfo(event:MouseEvent)
+		{
 			if (page2==3 || page2==6) {
 				vis.info.htmlText=Res.txt('p',event.currentTarget.id.text,1);
 			} else if (page2==1 || page2==2) {

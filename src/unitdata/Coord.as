@@ -1,12 +1,12 @@
 package  unitdata
 {
-	import locdata.Location;
+	import locdata.Room;
 	
 	public class Coord 
 	{
 		
 		public var tip:String;
-		public var location:Location;
+		public var room:Room;
 		
 		public var t1:int;
 		public var t2:int;
@@ -20,9 +20,9 @@ package  unitdata
 		var kolClosed:int=3;
 		public var opened:Array=[];
 
-		public function Coord(nloc:Location, ntip:String=null) 
+		public function Coord(newRoom:Room, ntip:String=null) 
 		{
-			location=nloc;
+			room=newRoom;
 			tip=ntip;
 			tr=1;
 			t1=100;
@@ -60,14 +60,14 @@ package  unitdata
 			{
 				for (var i=1;i<=kolAll;i++) 
 				{
-					location.allAct(null,opened[i]?'red':'green','a'+i);
+					room.allAct(null,opened[i]?'red':'green','a'+i);
 				}
 			}
 			if (t2==0) 
 			{
 				for (var i=1;i<=kolAll;i++) 
 				{
-					location.allAct(null,opened[i]?'open':'close','a'+i);
+					room.allAct(null,opened[i]?'open':'close','a'+i);
 				}
 				t2=300;
 				rndOpened();

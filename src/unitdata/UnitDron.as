@@ -6,6 +6,8 @@ package unitdata
 	import graphdata.Emitter;
 	import locdata.Tile;
 	
+	import components.Settings;
+	
 	public class UnitDron extends Unit{
 		
 		var spd:Object;
@@ -66,7 +68,8 @@ package unitdata
 			sndRunOn=true;
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
@@ -74,12 +77,14 @@ package unitdata
 			return obj;
 		}	
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function forces() {
+		public override function forces()
+		{
 			if (isFly) {
 				if (t_throw<=0 && dx*dx+dy*dy>maxSpeed*maxSpeed) {
 					spd.x=dx;
@@ -95,7 +100,8 @@ package unitdata
 			} else super.forces();
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			super.alarma(nx,ny);
 			if (sost==1) {
 				aiState=2;
@@ -103,7 +109,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			br+=(dx*1.5-br)/4;
 			vis.osn.rotation=br*storona;
 			if (celUnit && aiTCh%15==1) {
@@ -117,7 +124,8 @@ package unitdata
 			//vis.cif.text=aiState;
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-scY/2;
 			if (tr>=100) {
@@ -130,9 +138,10 @@ package unitdata
 		//2 - потерял цель
 		//3 - удаляется для новой атаки
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -155,7 +164,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					stuk=0;
 					aiSpok=maxSpok+10;
@@ -203,7 +212,7 @@ package unitdata
 				turnY=0;
 			}
 			//атака
-			if (World.world.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
+			if (Settings.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
 				critCh=0;
 				if (celUnit && (atkRasst>atkDist*atkDist)) currentWeapon.attack();
 				if (attKorp(celUnit,1)) {
@@ -214,7 +223,8 @@ package unitdata
 			}
 		}
 		
-		public override function udarBullet(bul:Bullet, sposob:int=0):int {
+		public override function udarBullet(bul:Bullet, sposob:int=0):int
+		{
 			if (t_krut>0 || tr!=3
 				|| (bul.targetObj==this)
 				|| (bul.vel>=1000)
@@ -230,10 +240,10 @@ package unitdata
 				norma(p,maxSpeed*3);
 				dx+=p.x;
 				dy+=p.y;
-				if (World.world.showHit==1 || World.world.showHit==2 && t_hitPart==0) {
+				if (Settings.showHit==1 || Settings.showHit==2 && t_hitPart==0) {
 					visDamDY-=15;
 					t_hitPart=10;
-					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(location,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(room,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				t_krut=45;
 				return -1;

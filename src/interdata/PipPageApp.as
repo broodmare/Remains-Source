@@ -10,23 +10,27 @@ package interdata
 	{
 		
 
-		public function PipPageApp(npip:PipBuck, npp:String) {
+		public function PipPageApp(npip:PipBuck, npp:String)
+		{
 			itemClass=visPipQuestItem;
 			super(npip,npp);
 			vis.but1.visible=vis.but2.visible=vis.but3.visible=vis.but4.visible=vis.but5.visible=false;
 		}
 		
 		//принять настройки внешности
-		public function funVidOk() {
+		public function funVidOk()
+		{
 			World.world.gg.refreshVis();
 			pip.onoff(-1);
 		}
 		//принять настройки внешности
-		public function funVidCancel() {
+		public function funVidCancel()
+		{
 			pip.onoff(-1);
 		}
 
-		override function setSubPages() {
+		override function setSubPages()
+		{
 			vis.bottext.visible=false;
 			vis.butOk.visible=false;
 			statHead.visible=false;

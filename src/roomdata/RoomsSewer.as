@@ -4,7 +4,7 @@ package roomdata {
 		
 		public function RoomsSewer() {
 		}
-		public var rooms:XML=<all>
+		public var roomContainer:XML=<all>
   <room name="комнаты">
     <a>A.A.A.A.A._._.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A._._.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A.A._._.A.A.A.A.A</a>
     <a>_C._C._C._C._C._C._C._C._C._C._H._H._H._H._H._C._C._C._C._C._C._H._H._H._H._H._C._C._C._C._C._C._C._C._C.FA._A._A._A._A._A._A._A.EA.DA.DA._A.A</a>

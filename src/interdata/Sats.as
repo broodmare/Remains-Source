@@ -17,6 +17,8 @@ package interdata
 	import weapondata.Weapon;
 	import unitdata.UnitPlayer;
 	
+	import components.Settings;
+	
 	public class Sats 
 	{
 		
@@ -38,7 +40,8 @@ package interdata
 		public var odd:Number=0.1;
 		public var limOd:Number=200;
 		
-		public function Sats(nvis:MovieClip) {
+		public function Sats(nvis:MovieClip) 
+		{
 			vis=nvis;
 			vis.visible=false;
 			trasser=new MovieClip();
@@ -50,46 +53,62 @@ package interdata
 		}
 
 		//Показать/скрыть
-		public function onoff(turn:int=0) {
+		public function onoff(turn:int=0)
+		{
 			if (turn==0) active=!active;
 			else if (turn>0) active=true;
 			else active=false;
-			if (active) {
-				if (World.world.location.base || World.world.alicorn) {
+			if (active) 
+			{
+				if (World.world.room.base || Settings.alicorn) 
+				{
 					active=false;
 					return;
 				}
 				gg=World.world.gg;
 				weapon=gg.currentWeapon;
-				if (weapon==null) {
+				if (weapon==null) 
+				{
 					World.world.gui.infoText('noSats');
 					active=false;
-				} else {
-					if (weapon.noSats) {
+				} 
+				else 
+				{
+					if (weapon.noSats) 
+					{
 						World.world.gui.infoText('noSats');
 						active=false;
-					} else {
+					} 
+					else 
+					{
 						var st=weapon.status();
-						if (st==4) {
+						if (st==4) 
+						{
 							World.world.gui.infoText('noAmmo','');
 							active=false;
 						}
-						if (st==5) {
+						if (st==5) 
+						{
 							World.world.gui.infoText('brokenWeapon','');
 							active=false;
 						}
-						if (st==6) {
+						if (st==6) 
+						{
 							World.world.gui.infoText('noMana','');
 							active=false;
 						}
 					}
 				}
 			}
-			if (active) {
-				if (weapon.tip>1) {
+			if (active) 
+			{
+				if (weapon.tip>1) 
+				{
 					trasser.visible=true;
 					trass();
-				} else {
+				} 
+				else 
+				{
 					trasser.visible=false;
 					radius.visible=true;
 					radius.x=gg.X+gg.pers.meleeS*gg.storona;
@@ -97,11 +116,13 @@ package interdata
 					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
 				}
 				skillConf=1;
-				if (World.world.weaponsLevelsOff) {
+				if (Settings.weaponsLevelsOff) 
+				{
 					var razn=weapon.lvl-gg.pers.getWeapLevel(weapon.skill);
 					if (razn==1) skillConf=0.8;
 					else if (razn==2) skillConf=0.6;
-					else if (razn>2) {
+					else if (razn>2) 
+					{
 						skillConf=0;
 						World.world.gui.infoText('weaponSkillLevel');
 						active=false;
@@ -117,7 +138,9 @@ package interdata
 				World.world.gui.setOd();
 				World.world.swfStage.addEventListener(MouseEvent.MOUSE_MOVE,mMove);
 				World.world.gui.setTopText('infosats');
-			} else {
+			} 
+			else 
+			{
 				World.world.grafon.onSats(false);
 				offUnits();
 				World.world.swfStage.removeEventListener(MouseEvent.MOUSE_MOVE,mMove);
@@ -129,17 +152,22 @@ package interdata
 		}
 		
 		//когда на паузе
-		public function step() {
-			if (active) {
-				if (World.world.ctr.keyAttack) {
+		public function step()
+		{
+			if (active) 
+			{
+				if (World.world.ctr.keyAttack) 
+				{
 					setCel();
 					World.world.ctr.keyAttack=false;
 				}
-				if (World.world.ctr.keyTele) {
+				if (World.world.ctr.keyTele) 
+				{
 					unsetCel();
 					World.world.ctr.keyTele=false;
 				}
-				if (World.world.ctr.keyAction) {
+				if (World.world.ctr.keyAction) 
+				{
 					onoff(-1);
 					World.world.ctr.keyAction=false;
 				}
@@ -147,22 +175,27 @@ package interdata
 		}
 		
 		//когда не на паузе
-		public function step2() {
+		public function step2()
+		{
 			if (que.length>0 && World.world.ctr.keyAttack) clearAll();
-			if (que.length>0 && weapon.satsCons*weapon.consMult*weapon.consMult/skillConf*gg.pers.satsMult/weapon.satsQue>od) {
+			if (que.length>0 && weapon.satsCons*weapon.consMult*weapon.consMult/skillConf*gg.pers.satsMult/weapon.satsQue>od) 
+			{
 				World.world.gui.infoText('noOd');
 				clearAll();
 			}
-			if (que.length==0 && od<gg.pers.maxOd) {
+			if (que.length==0 && od<gg.pers.maxOd) 
+			{
 				od+=odd;
 				odv=od;
 				World.world.gui.setOd();
 			}
 		}
 		
-		public function clearAll() {
+		public function clearAll()
+		{
 			var n=que.length;
-			for (var i=0; i<n; i++) {
+			for (var i=0; i<n; i++) 
+			{
 				var cel:SatsCel=que.shift();
 				cel.remove();
 			}
@@ -171,31 +204,36 @@ package interdata
 			//trace('cl all');
 		}
 		
-		public function setCel() {
-			if (weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult>odv) {
+		public function setCel()
+		{
+			if (weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult>odv) 
+			{
 				World.world.gui.infoText('noOd');
 				return;
 			}
 			var cel:SatsCel;
-			if (units.length) {
-				for each (var obj in units) {
+			if (units.length) 
+			{
+				for each (var obj in units) 
+				{
 					//trace (obj.du.filters);
-					if (obj.du.filters.length>0) {
+					if (obj.du.filters.length>0) 
+					{
 						cel=new SatsCel(obj,0,0,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
 						break;
 					}
 				}
 			}
 			if (cel==null) cel=new SatsCel(null, World.world.celX,World.world.celY,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
-			//if (cel.un!=null) trace ('set '+cel.un.u);
-			//else trace ('set *');
 			weapon.ready=false;
 			odv-=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
 			World.world.gui.setOd();
 			que.push(cel);
 		}
-		public function unsetCel(q:Boolean=false) {
-			if (que.length==0) {
+		public function unsetCel(q:Boolean=false) 
+		{
+			if (que.length==0) 
+			{
 				onoff(-1);
 				return;
 			}
@@ -204,47 +242,55 @@ package interdata
 			else cel=que.pop();
 			if (cel.un) cel.un.n--;
 			cel.remove();
-			//if (cel.un!=null) trace ('unset '+cel.un.u);
-			//else trace ('unset *');
 			odv+=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
-			if (que.length==0) {
+			if (que.length==0) 
+			{
 				onoff(-1);
 				odv=od;
 			}
 			World.world.gui.setOd();
 		}
 		
-		public function getReady():Boolean {
+		public function getReady():Boolean 
+		{
 			if (que.length>0 && (que[0].un==null || que[0].begined || que[0].un.u.sost<3)) return true;
 			else return false;
 		}
 		
 		//действие выполнено
-		public function act() {
+		public function act()
+		{
 			od-=que[0].cons;
 			World.world.gui.setOd();
-			if (que[0].kol>1 && weapon.status()<=1) {
+			if (que[0].kol>1 && weapon.status()<=1)
+			{
 				que[0].kol--;
 				que[0].begined=true;
-			} else {
+			} 
+			else 
+			{
 				var cel:SatsCel=que.shift();
 				cel.remove();
 			}
 		}
 		
-		public function getPrec(un:Unit):Number {
+		public function getPrec(un:Unit):Number 
+		{
 			var prec:Number=1;
 			var sk=gg.pers.weaponSkills[weapon.skill];
 			var dx=weapon.X-un.X;
 			var dy=weapon.Y-un.Y;
 			var rasst=Math.sqrt(dx*dx+dy*dy);
-			if (weapon.precision>0) {
+			if (weapon.precision>0) 
+			{
 				prec=weapon.resultPrec(1,sk)/rasst/(un.dexter+0.1)*skillConf;
 			}
-			if (weapon.antiprec>0 && rasst<weapon.antiprec) {
+			if (weapon.antiprec>0 && rasst<weapon.antiprec) 
+			{
 				prec=(rasst/weapon.antiprec*0.75+0.25)/(un.dexter+0.1)*skillConf;
 			}
-			if (weapon.deviation>0 || gg.mazil>0) {
+			if (weapon.deviation>0 || gg.mazil>0) 
+			{
 				var ug1=Math.atan2(un.scY,rasst)*180/Math.PI;
 				var ug2=(weapon.deviation/(sk+0.01)+gg.mazil);
 				if (ug2>ug1) prec=prec*ug1/ug2;
@@ -255,7 +301,8 @@ package interdata
 			return prec;
 		}
 		
-		public function drawUnit(un:Unit):MovieClip {
+		public function drawUnit(un:Unit):MovieClip 
+		{
 			var satsBmp:BitmapData=new BitmapData(un.vis.width,un.vis.height,true,0);
 			var m:Matrix=new Matrix();
 			var rect:Rectangle=un.vis.getBounds(un.vis);
@@ -277,14 +324,16 @@ package interdata
 			return mc;
 		}
 		
-		public function mOver(event:MouseEvent):void {
+		public function mOver(event:MouseEvent):void 
+		{
 			if (active && !weapon.noPerc) (event.currentTarget as MovieClip).filters=[fGlow];
 			try {
 				var su:TextField=(event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
 				su.visible=true;
 			} catch(err){}
 		}
-		public function mOut(event:MouseEvent):void {
+		public function mOut(event:MouseEvent):void 
+		{
 			if (active && !weapon.noPerc) (event.currentTarget as MovieClip).filters=[];
 			try {
 				var su:TextField=(event.currentTarget.parent as MovieClip).getChildAt(1)['info'];
@@ -292,14 +341,20 @@ package interdata
 			} catch(err){}
 		}
 		
-		public function offUnits() {
-			if (units && units.length) {
-				for each (var obj in units) {
-					try {
+		public function offUnits()
+		{
+			if (units && units.length) 
+			{
+				for each (var obj in units) 
+				{
+					try 
+					{
 						vis.removeChild(obj.v);
 						obj.v.removeEventListener(MouseEvent.MOUSE_OVER,mOver);
 						obj.v.removeEventListener(MouseEvent.MOUSE_OUT,mOut);
-					} catch (err) {
+					} 
+					catch (err) 
+					{
 						
 					}
 				}
@@ -310,12 +365,19 @@ package interdata
 			}
 		}
 		
-		public function getUnits() {
-			for each (var un:Unit in World.world.location.units) {
+		public function getUnits()
+		{
+			for each (var un:Unit in World.world.room.units) 
+			{
 				if (!gg.isMeet(un) || !un.isSats || un.sost>=3 || un.invis) continue;
-				if (weapon.satsMelee) {
+				if (weapon.satsMelee) 
+				{
 					if (gg.look(un,false,0,gg.pers.meleeR*1.2+100)<=0) continue;
-				} else 
+				} 
+				else 
+				{
+
+				}
 				if (gg.look(un)<=0 || !un.getTileVisi()) continue;
 				var mc:MovieClip=new MovieClip();
 				mc.x=un.vis.x, mc.y=un.vis.y;
@@ -339,7 +401,8 @@ package interdata
 				info.text='';
 				
 				//расширенная информация о враге
-				if (World.world.pers && World.world.pers.modAnalis) {
+				if (World.world.pers && World.world.pers.modAnalis) 
+				{
 					info.text+='\n'+Res.pipText('level')+': '+(un.level+1);
 					info.text+='\n'+Res.pipText('hp')+': '+Math.ceil(un.hp)+'/'+Math.ceil(un.maxhp);
 					if (un.skin>0) info.text+='\n'+Res.pipText('skin')+': '+Math.ceil(un.skin);
@@ -355,21 +418,25 @@ package interdata
 			}
 		}
 		
-		public function mMove(event:MouseEvent):void {
-			//trace(World.world.celX, World.world.celY);
+		public function mMove(event:MouseEvent):void 
+		{
 			trass();
 		}
 		
-		public function trass() {
+		public function trass()
+		{
 			if (weapon.noTrass) return;
 			weapon.setTrass(trasser.graphics);
-			if (weapon.explRadius) {
+			if (weapon.explRadius) 
+			{
 				radius.visible=true;
 				radius.scaleX=radius.scaleY=weapon.explRadius/100;
 				radius.cacheAsBitmap=true;
 				radius.x=weapon.trasser.X;
 				radius.y=weapon.trasser.Y;
-			} else {
+			} 
+			else 
+			{
 				radius.visible=false;
 			}
 		}

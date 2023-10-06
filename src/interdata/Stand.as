@@ -15,6 +15,8 @@ package interdata
 	import weapondata.Weapon;
 	import servdata.Item;
 	
+	import components.Settings;
+	
 	public class Stand 
 	{
 
@@ -142,7 +144,7 @@ package interdata
 						if (weap.@spell>0) item.nazv.text=Res.txt('i',weap.@id);
 					} else {
 						var vWeapon:Class=null;
-						if (weap.vis.length() && weap.vis[0].@vico.length()) vWeapon=Res.getClass(weap.vis[0].@vico, null);
+						if (weap.vis.length && weap.vis[0].@vico.length()) vWeapon=Res.getClass(weap.vis[0].@vico, null);
 						if (vWeapon==null) {
 							vWeapon=Res.getClass('vis'+weap.@id, null);
 						}
@@ -150,7 +152,7 @@ package interdata
 							infIco=new vWeapon();
 						}
 					}
-					if (weap.vis.length() && weap.vis.@icomult.length()) {
+					if (weap.vis.length && weap.vis.@icomult.length()) {
 						r=infIco.scaleX=infIco.scaleY=weap.vis.@icomult;
 					}
 					infIco.x=-infIco.getRect(infIco).left*r-infIco.width/2;
@@ -259,7 +261,7 @@ package interdata
 			for (var i=0; i<kolPages; i++) {
 				pages[i].visible=false;
 			}
-			if (World.world.hardInv) showMass();
+			if (Settings.hardInv) showMass();
 			pages[n].visible=true;
 			if (n<5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
 			if (n==5) vis.toptext.txt.htmlText=Res.txt('p','infostand',0,true);
@@ -355,7 +357,7 @@ package interdata
 			if (inv.weapons[id]==null || inv.weapons[id].respect==3) return;
 			var resp=inv.respectWeapon(id);
 			showWeapon(event.currentTarget as MovieClip,-1,resp);
-			if (World.world.hardInv) showMass();
+			if (Settings.hardInv) showMass();
 		}
 		public function itemOver(event:MouseEvent) {
 			if (inv.weapons[event.currentTarget.id.text]==null) {

@@ -6,7 +6,7 @@ package roomdata {
 		}
 		
 		var rooms_rbl:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_0_0" x="0" y="0">
     <a>C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C.C</a>
     <a>C._C._C._C._C._C._C._C._C._C._C._C._C.C._._._._._._._._._._._._._._._._._._._._.C._D._D._D._D._D._D._D._D._D._D._D._D.C</a>
@@ -454,7 +454,7 @@ package roomdata {
 </all>
 
 	var rooms_covert:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_-1_0" x="-1" y="0">
     <a>_._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._</a>
     <a>_._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._</a>
@@ -740,7 +740,7 @@ package roomdata {
 </all>
 
 	var rooms_src:XML=<all>
-  <land serial="1"/>
+  <level serial="1"/>
   <room name="room_0_0" x="0" y="0">
     <a>J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J.J</a>
     <a>J._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._._.J</a>

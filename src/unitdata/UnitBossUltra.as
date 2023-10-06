@@ -5,9 +5,11 @@ package unitdata
 	import flash.display.MovieClip;
 	
 	import weapondata.*;
-	import locdata.Location;
+	import locdata.Room;
 	import servdata.LootGen;
 	import graphdata.Emitter;
+	
+	import components.Settings;
 	
 	public class UnitBossUltra extends Unit{
 		
@@ -75,14 +77,16 @@ package unitdata
 			timerDie=150;
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			newPart('baleblast');
 			Snd.ps('bale_e');
 			currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -109,16 +113,19 @@ package unitdata
 			} 
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',22);
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
 			setCel(null,nx+200*storona, ny-50);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
 			}
@@ -131,7 +138,8 @@ package unitdata
 			}
 		}
 
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
@@ -139,7 +147,8 @@ package unitdata
 			return obj;
 		}	
 		
-		public override function animate() {
+		public override function animate()
+		{
 			thWeapon.vis.visible=false;
 			//щит
 			if (visshit && !visshit.visible && shithp>0) {
@@ -149,18 +158,19 @@ package unitdata
 			if (visshit && visshit.visible && shithp<=0) {
 				visshit.visible=false;
 				visshit.gotoAndStop(1);
-				Emitter.emit('pole',location,X,Y-50,{kol:12,rx:100, ry:100});
+				Emitter.emit('pole',room,X,Y-50,{kol:12,rx:100, ry:100});
 			}
 			if (sost==2) {
 				if (isrnd(0.3-timerDie/500)) {
-					Emitter.emit('expl',location,X+Math.random()*120-60,Y-Math.random()*120);
+					Emitter.emit('expl',room,X+Math.random()*120-60,Y-Math.random()*120);
 					newPart('metal');
 					Snd.ps('expl_e');
 				}
 			}
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				if (sost==2) {
 					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
@@ -172,13 +182,14 @@ package unitdata
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=vis.x;
 			weaponY=vis.y-110;
 		}
 		
 		function emit() {
-			var un:Unit=location.createUnit('vortex',X,Y-scY/2,true);
+			var un:Unit=room.createUnit('vortex',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
 			emit_t=500;
@@ -200,7 +211,8 @@ package unitdata
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		public override function control() {
+		public override function control()
+		{
 
 			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
 			//если сдох, то не двигаться
@@ -215,8 +227,8 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (location.gg.invulner) return;
-			if (World.world.enemyAct<=0) {
+			if (room.gg.invulner) return;
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -248,7 +260,7 @@ package unitdata
 						aiTCh=5;
 					}
 					if (attState==4) aiTCh=15;
-					if (attState==0) setCel(location.gg);
+					if (attState==0) setCel(room.gg);
 				} else if (aiState==3) {
 					replic('attack');
 					if (attState==0) aiTCh=80;
@@ -260,7 +272,7 @@ package unitdata
 			//поиск цели
 			//trace(aiState)
 			if ((aiState==1 || aiState>1 && attState==1) && aiTCh%10==1) {
-				setCel(location.gg);
+				setCel(room.gg);
 			}
 			celDX=celX-X;
 			celDY=celY-Y;
@@ -285,9 +297,9 @@ package unitdata
 				dx*=0.7, dy*=0.7;
 			}
 			if (aiState==2 && aiTCh%5==1) {
-				if (attState==0) Emitter.emit('laser',location,celX+Math.random()*100-50,celY-Math.random()*50);
-				if (attState==1) Emitter.emit('plasma',location,celX+Math.random()*50-25,celY-Math.random()*20);
-				if (attState==4) Emitter.emit('spark',location,celX+Math.random()*100-50,celY-Math.random()*50);
+				if (attState==0) Emitter.emit('laser',room,celX+Math.random()*100-50,celY-Math.random()*50);
+				if (attState==1) Emitter.emit('plasma',room,celX+Math.random()*50-25,celY-Math.random()*20);
+				if (attState==4) Emitter.emit('spark',room,celX+Math.random()*100-50,celY-Math.random()*50);
 			}
 			if (aiState>0 && !(aiState==3 && attState==2)) {
 				aiNapr=(celX>X)?1:-1;
@@ -335,7 +347,8 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

@@ -5,6 +5,8 @@ package unitdata
 	import flash.filters.GlowFilter;
 	import flash.geom.Point;
 	
+	import components.Settings;
+	
 	public class UnitPon extends Unit
 	{
 		
@@ -20,12 +22,13 @@ package unitdata
 			blood=1;
 		}
 		//положение оружия
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 				if (weaponKrep==0) {			//телекинез
 					if (storona>0 && celX>X2 || storona<0 && celX<X1) weaponX=X+scX*1*storona;
 					else weaponX=X;
 					if (isLaz) weaponX=X;
-					if (location.getTile(Math.floor((weaponX+storona*15)/World.tilePixelWidth),Math.floor(weaponY/World.tilePixelHeight)).phis==1) weaponX=X;
+					if (room.getTile(Math.floor((weaponX+storona*15)/Settings.tilePixelWidth),Math.floor(weaponY/Settings.tilePixelHeight)).phis==1) weaponX=X;
 					if (tip==1) weaponY=Y-scY*0.4;
 					else weaponY=Y-scY*0.7;
 				} else if (tip==1 || tip==2 || tip==4) {	 //в зубах	
@@ -47,7 +50,7 @@ package unitdata
 		
 		
 		public function sndStep(faza:int,tip:int=0) {
-			if (location==null || !location.locationActive) return;
+			if (room==null || !room.roomActive) return;
 			var nstep:int;
 			var nleg:int;
 			var sst='footstep';
@@ -90,8 +93,9 @@ package unitdata
 			Snd.ps(sst+nleg+rnd,X,Y,0,(footstepVol-volMinus)*Snd.stepVol);
 		}
 		
-		protected override function sndFall() {
-			if (location==null || !location.locationActive) return;
+		protected override function sndFall()
+		{
+			if (room==null || !room.roomActive) return;
 			var rnd=isrnd()?'a':'';
 			var nleg:int;
 			var sst='footstep';
@@ -102,7 +106,8 @@ package unitdata
 			Snd.ps(sst+nleg+rnd,X,Y,0,footstepVol-volMinus);
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			super.command(com,val);
 		}
 

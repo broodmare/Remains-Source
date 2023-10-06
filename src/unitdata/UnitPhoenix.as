@@ -10,7 +10,8 @@ package unitdata
 		//var tameScr:Script;
 		static var questOk:Boolean=false;
 		
-		public function UnitPhoenix(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitPhoenix(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			id='phoenix';
 			getXmlParam();
 			initBlit();
@@ -29,12 +30,14 @@ package unitdata
 			inter.actFun=tame;
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
+		{
 			die();
 			return 1;
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			if (hpbar) hpbar.visible=false;
 			expl();
 			exterminate();
@@ -44,11 +47,13 @@ package unitdata
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('green_spark',25);
 		}
 
-		public override function animate() {
+		public override function animate()
+		{
 			if (aiState==0) animState='stay';
 			else animState='fly';
 			if (animState!=animState2) {
@@ -61,7 +66,8 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='tame') {
 				die();
 				var pet:UnitPet=World.world.gg.pets['phoenix'];
@@ -71,7 +77,8 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (World.world.game.triggers['tame']>=5) die();
 		}
 		
@@ -85,13 +92,7 @@ package unitdata
 				else World.world.game.triggers['tame']=1;
 				if (World.world.game.triggers['tame']>=5 && !World.world.game.triggers['pet_phoenix']) {	//приручить
 					if (World.world.game.runScript('tamePhoenix',this)) World.world.game.triggers['pet_phoenix']=1;
-					/*var xml1=GameData.d.script.(@id==)
-					if (xml1.length()) {
-						xml1=xml1[0];
-						tameScr=new Script(xml1,location.land,this);
-						tameScr.start();
-						World.world.game.triggers['pet_phoenix']=1;
-					}*/
+
 				} else {
 					die();
 					World.world.gui.messText('phoenixFeed2','',Y<300);
@@ -104,10 +105,11 @@ package unitdata
 			}
 		}
 		
-		public override function control() {
+		public override function control()
+		{
 			if (!stay) t_fall++;
 			if (t_fall>=3 || dx>1 || dx<-1) die();
-			if (!questOk && location.celObj==this) {
+			if (!questOk && room.celObj==this) {
 				World.world.game.triggers['frag_'+id]=0;
 				World.world.game.addQuest('tamePhoenix');
 				questOk=true;

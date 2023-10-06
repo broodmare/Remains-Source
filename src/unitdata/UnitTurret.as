@@ -5,7 +5,9 @@ package unitdata
 	import weapondata.Bullet;
 	import servdata.Interact;
 	import locdata.Tile;
-	import locdata.Location;
+	import locdata.Room;
+	
+	import components.Settings;
 	
 	public class UnitTurret extends Unit{
 		
@@ -45,7 +47,7 @@ package unitdata
 				}
 			}
 			//определить тип турели
-			if (cid=='land') turrettip=1;
+			if (cid=='level') turrettip=1;
 			if (cid=='arm') turrettip=3;
 			if (cid=='wall') turrettip=2;
 			if (cid=='hidden') hidden=1;
@@ -89,7 +91,8 @@ package unitdata
 			if (loadObj && loadObj.off) hack(0);
 			if (loadObj && loadObj.reprog) hack(1);
 		}
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
@@ -98,8 +101,9 @@ package unitdata
 			return obj;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
 			if (mxml) inter=new Interact(this,null,mxml,null);
 			//определить углы
 			if (turrettip==0 || turrettip==4) {
@@ -115,7 +119,7 @@ package unitdata
 			} else if (turrettip==2 || turrettip==5){
 				aRot=[45,135,-135,-45];
 				vKonus=Math.PI/2;
-				if (location.mirror) {
+				if (room.mirror) {
 					if (angle=='left') angle='right';
 					else if (angle=='right') angle='left';
 				}
@@ -153,7 +157,8 @@ package unitdata
 			} catch(err) {};
 		}
 
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			level+=nlevel;
 			if (level<0) level=0;
 			hp=maxhp=hp*(1+level*0.2);
@@ -166,12 +171,14 @@ package unitdata
 			currentWeapon.damage*=(1+level*0.12);
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			//if (noTurn) super.setVisPos();
 			//else 
 			vis.x=X,vis.y=Y;
 		}
-		public override function animate() {
+		public override function animate()
+		{
 			try {
 			vis.osn.puha.gotoAndStop(tr);
 			if (fixed && levit) vis.osn.rotation=Math.random()*6-3;
@@ -189,13 +196,15 @@ package unitdata
 			}
 			} catch(err) {}
 		}
-		public override function setPos(nx:Number,ny:Number) {
+		public override function setPos(nx:Number,ny:Number)
+		{
 			super.setPos(nx,ny);
-			if ((turrettip==0 || turrettip==4) && location && !location.locationActive) {
-				osnova=location.getAbsTile(X, Y-50);
+			if ((turrettip==0 || turrettip==4) && room && !room.roomActive) {
+				osnova=room.getAbsTile(X, Y-50);
 			}
 		}
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1) 
+		{
 			super.alarma(nx,ny);
 			if (turrettip==3) return;
 			if (sost==1 && !sleep) {
@@ -210,7 +219,8 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f && !sleep) {
 				if (hidden) aiState=0;
@@ -220,7 +230,8 @@ package unitdata
 			}
 		}
 		
-		public override function hack(sposob:int=0) {
+		public override function hack(sposob:int=0)
+		{
 			if (sposob==0) {
 				sleep=true;
 				aiState=0;
@@ -228,7 +239,7 @@ package unitdata
 				currentWeapon.findCel=false;
 			} else if (sposob==1) {
 				reprog=true;
-				if (fraction!=Unit.F_PLAYER && xp>0 && location) location.takeXP(xp,X,Y,true);
+				if (fraction!=Unit.F_PLAYER && xp>0 && room) room.takeXP(xp,X,Y,true);
 				fraction=Unit.F_PLAYER;
 				xp=0;
 				aiState=1;
@@ -241,12 +252,14 @@ package unitdata
 			}
 			warn=0;
 		}
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			if (turrettip==0 || turrettip==4) weaponY=Y-12;
 			else if (turrettip==1) weaponY=Y-60;
@@ -255,7 +268,8 @@ package unitdata
 		}
 		
 		//оторвать от фиксированного места
-		public override function otryv() {
+		public override function otryv() 
+		{
 			if (turrettip==5) return;
 			if (turrettip==0 || turrettip==2 || turrettip==4) {
 				newPart('iskr_bul',20);
@@ -263,28 +277,30 @@ package unitdata
 				aiState=0;
 				currentWeapon.findCel=false;
 				warn=0;
-				if (xp>0) location.takeXP(xp,X,Y,true);
+				if (xp>0) room.takeXP(xp,X,Y,true);
 				xp=0;
 			}
 			fixed=false;
 		}
 		
 		//команда скрипта
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='shoot') currentWeapon.attack();
 			if (com=='alarma') alarma();
 			if (com=='hack') hack();
 			if (com=='port') {
 				var arr:Array=val.split(':');
-				var nx=(int(arr[0])+0.5)*World.tilePixelWidth;
-				var ny=(int(arr[1])+1)*World.tilePixelHeight;
+				var nx=(int(arr[0])+0.5)*Settings.tilePixelWidth;
+				var ny=(int(arr[1])+1)*Settings.tilePixelHeight;
 				teleport(nx,ny,1);
 				aiState=2;
 				aiTCh=60;
 			}
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number 
+		{
 			//var aq:Number=
 			if (turrettip==3) {
 				shithp=1000;
@@ -307,8 +323,9 @@ package unitdata
 			return ret;
 		}
 		
-		public override function findCel(over:Boolean=false):Boolean {
-			if (absVis && location==World.world.location && !reprog && !sleep) {
+		public override function findCel(over:Boolean=false):Boolean 
+		{
+			if (absVis && room==World.world.room && !reprog && !sleep) {
 				setCel(World.world.gg);
 				return true;
 			}
@@ -319,7 +336,7 @@ package unitdata
 				setCel(priorUnit);
 				return true;
 			} else {
-				for each (var un:Unit in location.units) {
+				for each (var un:Unit in room.units) {
 					if (un.disabled || un.sost>=3 || un.fraction==fraction || un.doop || un.invis) continue;
 					if (look(un)) {
 						setCel(un);
@@ -338,14 +355,15 @@ package unitdata
 		//3 - видит цель, стреляет
 		//4 - не видит цель
 		
-		public override function control() {
+		public override function control() 
+		{
 			if (levit && !reprog || !stay && !fixed && oduplenie<=0) {
 				if (aiState<=1 && !sleep) {
 					aiState=3;
 				}
 			}
 			levitPoss=!hidden;
-			if (World.world.enemyAct<=0 || sleep) {
+			if (Settings.enemyAct<=0 || sleep) {
 				return;
 			}
 			if (aiTCh>0) aiTCh--;
@@ -377,13 +395,13 @@ package unitdata
 				if (aiSpok>=maxSpok) aiState=3;
 			}
 			//поиск цели, мина
-			if (!reprog && aiTCh%15==1 && findLevit() && celUnit!=location.gg) {
-				if (location.gg.teleObj && (location.gg.teleObj is Mine)) {
-					priorUnit =(location.gg.teleObj as Mine);
+			if (!reprog && aiTCh%15==1 && findLevit() && celUnit!=room.gg) {
+				if (room.gg.teleObj && (room.gg.teleObj is Mine)) {
+					priorUnit =(room.gg.teleObj as Mine);
 					aiSpok=maxSpok+10;
 				}
 			}
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (!noTurn) vAngle=currentWeapon.rot;
 				if (osnova && osnova.phis==0) die();
 				if (!stun && findCel()) {
@@ -433,10 +451,10 @@ package unitdata
 				}
 			}
 			//атака
-			if (World.world.enemyAct>=3 && aiState==3 && !stun) {
+			if (Settings.enemyAct>=3 && aiState==3 && !stun) {
 				currentWeapon.attack();
 			}
-			if (World.world.enemyAct>=3 && celUnit && dam>0 && oduplenie<=0) {	//атака корпусом
+			if (Settings.enemyAct>=3 && celUnit && dam>0 && oduplenie<=0) {	//атака корпусом
 				attKorp(celUnit,1);
 			}
 		}

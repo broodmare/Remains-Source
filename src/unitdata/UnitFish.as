@@ -1,6 +1,8 @@
 package unitdata 
 {
 	
+	import components.Settings;
+	
 	public class UnitFish extends Unit{
 		
 		public var tr:int;
@@ -30,7 +32,8 @@ package unitdata
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
@@ -38,7 +41,8 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f) {
 				aiState=aiSpok=0;
@@ -46,7 +50,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 				if (sost==2 || sost==3) { //сдох
 					if (animState!='die') {
 						vis.osn.gotoAndStop('die');
@@ -80,7 +85,8 @@ package unitdata
 				}
 			//vis.gotoAndStop(aiState+1);
 		}
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			super.alarma(nx,ny);
 			if (sost==1 && aiState<=1) {
 				aiSpok=maxSpok-1;
@@ -107,12 +113,13 @@ package unitdata
 		//6 - lunging
 		//7 - on the shore
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) {
 				ddyPlav=-0.2;
 				return;
 			}
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -156,7 +163,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1 && aiState<6) {
+			if (Settings.enemyAct>1 && aiTCh%10==1 && aiState<6) {
 				if (findCel() && celUnit && celUnit.inWater) {
 					aiSpok=maxSpok+10;
 					if (aiState<5) aiState=(hp<maxhp)?4:3;

@@ -46,14 +46,14 @@ package graphdata
 			
 		}
 		
-		public override function setNull(f:Boolean=false) 
+		public override function setNull(f:Boolean=false)
 		{
 			if (visData) 
 			{
 				visData.dispose();
 			}
 
-			location.remObj(this);
+			room.remObj(this);
 			
 			if (maxkol > 0) 
 			{
@@ -62,7 +62,7 @@ package graphdata
 			
 		}
 		
-		public function initBlit(blitId:String) //Create a bitmap
+		public function initBlit(blitId:String)//Create a bitmap
 		{
 			blitData = World.world.grafon.getSpriteList(blitId, 1);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
@@ -84,13 +84,13 @@ package graphdata
 			}
 		}
 		
-		public function blit(blframe:int) 
+		public function blit(blframe:int)
 		{
 			blitRect.x = blframe * blitX, blitRect.y = 0;
 			visData.copyPixels(blitData, blitRect, blitPoint);
 		}
 		
-		public function initVis(frame:int = 0) 
+		public function initVis(frame:int = 0)
 		{
 			if (vClass) vis=new vClass();
 			else return;
@@ -104,7 +104,7 @@ package graphdata
 			vis.rotation=r;
 		}
 		
-		public override function step() 
+		public override function step()
 		{
 
 			if (otklad>0) 
@@ -157,7 +157,7 @@ package graphdata
 
 			if (water>0) 
 			{
-				var voda=location.getAbsTile(X,Y).water;
+				var voda=room.getAbsTile(X,Y).water;
 				if (water==2 && voda==0 || water==1 && voda>0) liv=1;
 			}
 

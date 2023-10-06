@@ -26,19 +26,22 @@ package unitdata
 			if (quiet) id_replic='';
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				jump_m=500;
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			var revers:Boolean=false;
 			if (sost==2 || sost==3) { //сдох
@@ -76,12 +79,14 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-40;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1)
+		{
 			if (stay) jump_n=jump_m;
 			else jump_n--;
 			if (dy>-jumpdy && jump_n>0) {

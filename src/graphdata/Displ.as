@@ -45,12 +45,6 @@ package graphdata
 			gr=ngr;
 			displBmpd=new BitmapData(240,300,false,0x7F7F7F);
 			displStamp=new displVolna();
-			/*displStamp.blendMode='overlay';
-			displStamp.alpha=0.5;
-			addChild(displStamp);
-			displStamp.x=volna.x;
-			displStamp.y=volna.y;*/
-			//displMatrix.d=2;
 			displMatrix.tx=mm.target.x-mm.displ1.x;
 			displMatrix.ty=mm.target.y-mm.displ1.y;
 			displFilter1=new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,displX,displY,DisplacementMapFilterMode.COLOR);
@@ -81,7 +75,6 @@ package graphdata
 				mm.eye.play();
 				t_klip=Math.floor(Math.random()*110+60);
 			}
-			//var sc:Number=1+Math.sin(disp_t/100)*0.5;
 			for (var i:int=0; i<wavKol; i++) {
 				var v:MovieClip=wavArr[i];
 				v.x-=(spd+i/2);

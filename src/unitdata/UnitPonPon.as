@@ -57,24 +57,28 @@ package unitdata
 			
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (f) act=Math.random()<verVis;
 			super.setNull(f);
 			vis.visible=act;
 			isVis=act;
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
 			return obj;
 		}	
 	
-		public override function animate() {
+		public override function animate()
+		{
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			super.command(com,val);
 			if (com=='tell' && act) {
 				t_replic=0;
@@ -82,10 +86,11 @@ package unitdata
 			}
 		}
 		
-		public override function control() {
+		public override function control()
+		{
 			if (novoi || !act) return;
 			t_replic--;
-			if (location!=World.world.location) return;
+			if (room!=World.world.room) return;
 			if (privet && t_replic%60==3) {
 				var nx=World.world.gg.X-X;
 				var ny=World.world.gg.Y-Y;

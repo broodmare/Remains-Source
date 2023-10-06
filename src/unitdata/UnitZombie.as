@@ -10,6 +10,7 @@ package unitdata
 	import graphdata.Emitter;
 	import weapondata.Weapon;
 	
+	import components.Settings;
 	
 	public class UnitZombie extends UnitPon{
 
@@ -89,14 +90,16 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				tZlo=Math.round(tZlo*0.6);
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null) {
+		public override function getXmlParam(mid:String=null)
+		{
 			super.getXmlParam('zombie');
 			super.getXmlParam();
 			var node0:XML=AllData.d.unit.(@id==id)[0];
@@ -107,29 +110,33 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			radMax*=(1+0.05*level);
 			radHeal*=(1+level*0.16);
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X+storona*30;
 			weaponY=Y-scY*0.8;
 		}
 		
-		public override function save():Object {
+		public override function save():Object
+		{
 			var obj:Object=super.save();
 			if (obj==null) obj=new Object();
 			obj.tr=tr;
 			return obj;
 		}	
 		
-		public override function setPos(nx:Number,ny:Number) {
+		public override function setPos(nx:Number,ny:Number)
+		{
 			super.setPos(nx,ny);
-			if (digger && location && !location.locationActive) {
-				kop1=location.getAbsTile(X-10, Y+10);
-				kop2=location.getAbsTile(X+10, Y+10);
+			if (digger && room && !room.roomActive) {
+				kop1=room.getAbsTile(X-10, Y+10);
+				kop2=room.getAbsTile(X+10, Y+10);
 				if (kop1.phis>0 && kop2.phis>0) {
 					zak=true;
 					zakop();
@@ -140,12 +147,13 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			if (sost==3 && isRes && t_res<20) {
 				animState='die';
 				blit(anims[animState].id,t_res);
-				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark',location,X+(Math.random()-0.5)*scX,Y-Math.random()*10);
+				for (var j:int=1; j<=3; j++) Emitter.emit('die_spark',room,X+(Math.random()-0.5)*scX,Y-Math.random()*10);
 				return;
 			} else if (sost==2 || sost==3) { //сдох
 				if (stay) {
@@ -210,7 +218,8 @@ package unitdata
 		}
 		
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			//trace('alarm',aiState)
 			if (digger==3) return;
 			if (sost==1 && (aiState<=1 || aiState==5)) {
@@ -227,12 +236,14 @@ package unitdata
 			}
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			superSilaVse();
 			super.die(sposob);
 		}
 		//команда скрипта
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (digger>=2) {
 				digger=1;
 				aiState=6;
@@ -240,13 +251,15 @@ package unitdata
 			}
 		}
 		
-		public override function actions() {
+		public override function actions()
+		{
 			super.actions();
 			rasst=Math.sqrt(rasst2);
 			volMinus=rasst/8000;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;
 			if (sost==1 && zak) {
@@ -264,7 +277,8 @@ package unitdata
 			}
 		}
 		
-		public override function initBurn(sposob:int) {
+		public override function initBurn(sposob:int)
+		{
 			if (burn!=null) return;
 			if (vlight) vlight.visible=false;
 			super.initBurn(sposob);
@@ -314,14 +328,15 @@ package unitdata
 		
 		//проверка возможности прыжка
 		function checkJump():Boolean {
-			if (location.getAbsTile(X,Y-85).phis!=0) return false;
-			if (location.getAbsTile(X,Y-125).phis!=0) return false;
-			if (location.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
-			if (location.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
+			if (room.getAbsTile(X,Y-85).phis!=0) return false;
+			if (room.getAbsTile(X,Y-125).phis!=0) return false;
+			if (room.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
+			if (room.getAbsTile(X+40*storona,Y-125).phis!=0) return false;
 			return true;
 		}
 		
-		public override function destroyWall(t:Tile, napr:int=0):Boolean {
+		public override function destroyWall(t:Tile, napr:int=0):Boolean
+		{
 			if (napr==3 && dy>5 && superQuake && isrnd(0.2)) {
 				quake(dy);
 			}
@@ -339,16 +354,17 @@ package unitdata
 			transT=false;
 			for (var i=Math.floor((X1)/Tile.tilePixelWidth); i<=Math.floor((X2)/Tile.tilePixelWidth); i++) {
 				for (var j=Math.floor((Y1)/Tile.tilePixelHeight); j<=Math.floor((Y2)/Tile.tilePixelHeight); j++) {
-					if (i<0 || i>=location.spaceX || j<0 || j>=location.spaceY) continue;
-					if (collisionTile(location.roomTileArray[i][j])) location.dieTile(location.roomTileArray[i][j]);
+					if (i<0 || i>=room.roomWidth || j<0 || j>=room.roomHeight) continue;
+					if (collisionTile(room.roomTileArray[i][j])) room.dieTile(room.roomTileArray[i][j]);
 				}
 			}
 		}
 		
-		function quake(n:Number) {
-			location.budilo(X,Y,500);
-			location.earthQuake(n*superQuake);
-			Emitter.emit('quake',location,X+Math.random()*40-20,Y);
+		function quake(n:Number)
+		{
+			room.budilo(X,Y,500);
+			room.earthQuake(n*superQuake);
+			Emitter.emit('quake',room,X+Math.random()*40-20,Y);
 		}
 		
 		var aiJump:int=0;
@@ -366,7 +382,8 @@ package unitdata
 		//6 - выкапывается
 		//7 - спецприём
 		
-		public override function control() {
+		public override function control()
+		{
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) {
@@ -389,7 +406,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -441,7 +458,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.world.enemyAct>1 && aiTCh%10==1 && aiState!=7 && !(aiState==5 && digger==2)) {
+			if (Settings.enemyAct>1 && aiTCh%10==1 && aiState!=7 && !(aiState==5 && digger==2)) {
 				if (findCel()) {
 					//увидели
 					if (celUnit) {
@@ -521,7 +538,7 @@ package unitdata
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.25 && aiNapr<0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -529,7 +546,7 @@ package unitdata
 				}
 				if (stay && shX2>0.25 && aiNapr>0) {
 					if (aiState==1 && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -593,7 +610,7 @@ package unitdata
 			}
 			pumpObj=null;
 			
-			if (Y>location.spaceY*Tile.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Tile.tilePixelHeight-80) throu=false;
 			
 			if (celUnit && celDX<optDistAtt && celDX>-optDistAtt && celDY<80 && celDY>-80 && aiState!=5 && aiState!=6) {
 				if (attKorp(celUnit,(shok<=0?1:0.5)) || isrnd(0.2)) {
@@ -677,26 +694,26 @@ package unitdata
 		
 		function findSuper() {
 			superX=-1;
-			var nx:int=Math.floor(celX/World.tilePixelWidth);
-			var ny:int=Math.floor((celY+40)/World.tilePixelHeight);
-			//Emitter.emit('laser',location,nx*40+20,ny*40+20);
-			if (superSilaTip==1) superY=ny*World.tilePixelHeight+World.tilePixelHeight+scY;
+			var nx:int=Math.floor(celX/Settings.tilePixelWidth);
+			var ny:int=Math.floor((celY+40)/Settings.tilePixelHeight);
+			//Emitter.emit('laser',room,nx*40+20,ny*40+20);
+			if (superSilaTip==1) superY=ny*Settings.tilePixelHeight+Settings.tilePixelHeight+scY;
 			else if (superSilaTip==2 || superSilaTip==7) superY=celY+70;
 			if (Y-celY>120) {
-				if (location.getTile(nx,ny).phis==0) {
-					if (location.getTile(nx-1,ny).phis==0) {
-						superX=nx*World.tilePixelWidth;
-					} else if (location.getTile(nx+1,ny).phis==0) {
-						superX=(nx+1)*World.tilePixelWidth;
+				if (room.getTile(nx,ny).phis==0) {
+					if (room.getTile(nx-1,ny).phis==0) {
+						superX=nx*Settings.tilePixelWidth;
+					} else if (room.getTile(nx+1,ny).phis==0) {
+						superX=(nx+1)*Settings.tilePixelWidth;
 					}
 				}
-				if (superX<0 && location.getTile(nx-2,ny).phis==0) {
-					if (location.getTile(nx-1,ny).phis==0) superX=(nx-1)*World.tilePixelWidth;
-					else if (location.getTile(nx-3,ny).phis==0) superX=(nx-2)*World.tilePixelWidth;
+				if (superX<0 && room.getTile(nx-2,ny).phis==0) {
+					if (room.getTile(nx-1,ny).phis==0) superX=(nx-1)*Settings.tilePixelWidth;
+					else if (room.getTile(nx-3,ny).phis==0) superX=(nx-2)*Settings.tilePixelWidth;
 				}
-				if (superX<0 && location.getTile(nx+2,ny).phis==0) {
-					if (location.getTile(nx+1,ny).phis==0) superX=(nx+2)*World.tilePixelWidth;
-					else if (location.getTile(nx+3,ny).phis==0) superX=(nx+3)*World.tilePixelWidth;
+				if (superX<0 && room.getTile(nx+2,ny).phis==0) {
+					if (room.getTile(nx+1,ny).phis==0) superX=(nx+2)*Settings.tilePixelWidth;
+					else if (room.getTile(nx+3,ny).phis==0) superX=(nx+3)*Settings.tilePixelWidth;
 				}
 			} else {
 				if (superSilaTip==1) {
@@ -708,7 +725,7 @@ package unitdata
 				}
 			}
 			/*if (superX>=0) {
-				Emitter.emit('plasma',location,superX,superY);
+				Emitter.emit('plasma',room,superX,superY);
 			}*/
 		}
 		
@@ -717,7 +734,7 @@ package unitdata
 			super_on=true;
 			if (superSilaTip==1) {
 				if (superX>0 && superY>0 && stay) {
-					//Emitter.emit('plasma',location,superX,superY);
+					//Emitter.emit('plasma',room,superX,superY);
 					var tdx=superX-X;
 					var tdy=superY-Y;
 					var rasst=Math.sqrt(tdx*tdx+tdy*tdy);
@@ -726,7 +743,7 @@ package unitdata
 					tSuper=Math.round(rasst/vJump);
 					if (tSuper>20) tSuper=20;
 					grav=0;
-					//Emitter.emit('plasma',location,superX,superY);
+					//Emitter.emit('plasma',room,superX,superY);
 				}
 			} else if (superSilaTip==2 || superSilaTip==7) {
 			} else if (superSilaTip==3 || superSilaTip==4 || superSilaTip==8) {
@@ -734,15 +751,15 @@ package unitdata
 			} else if (superSilaTip==5) {
 				radioactiv=radMax;
 				radrad=radradMax;
-				for each (var un:Unit in location.units) {
+				for each (var un:Unit in room.units) {
 					if (un is UnitZombie && un.sost==1) {
 						var rasst=Math.sqrt((un.X-X)*(un.X-X)+(un.Y-Y)*(un.Y-Y));
 						if (rasst<radrad) un.heal(radHeal*(radrad-rasst)/radrad);
 					}
 				}
-				Emitter.emit('radioblast',location,X,Y-scY/2);
+				Emitter.emit('radioblast',room,X,Y-scY/2);
 			} else if (superSilaTip==6) {
-				location.budilo(X,Y,1000);
+				room.budilo(X,Y,1000);
 			}
 		}
 		
@@ -767,7 +784,7 @@ package unitdata
 					if (tdy>0 && teleUnit.dy<teleSpeed || tdy<0 && teleUnit.dy>-teleSpeed) teleUnit.dy+=tdy;
 					if (teleUnit.player) (teleUnit as UnitPlayer).levitFilter2=levitFilter;
 				}
-				//Emitter.emit('plasma',location,superX,superY);
+				//Emitter.emit('plasma',room,superX,superY);
 			} else if (superSilaTip==5) {
 				radioactiv-=(radMax-radMin)/tSuper;
 			} else if (superSilaTip==6) {
@@ -790,7 +807,8 @@ package unitdata
 			}
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			super.dropLoot();
 			if (superSilaTip==8) explosion(dam*0.4,19,150,15);
 		}

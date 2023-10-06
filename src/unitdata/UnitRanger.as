@@ -33,7 +33,8 @@ package unitdata
 			plusObserv=5;
 		}
 		
-		public override function attack() {
+		public override function attack()
+		{
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными
 			if (aiAttackOch>0 && (!sniper || celUnit)) {										//стрельба очередями
@@ -52,7 +53,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			//поворот
 			if (sost==2 || sost==3) { //сдох
@@ -65,9 +67,6 @@ package unitdata
 				if (stay) {
 					if  (dx==0 || aiState==7) {
 						animState='stay';
-					//} else if (flyer) {
-						//animState='walk';
-						//sndStep(anims[animState].f,1);
 					} else if (attackerType==0 && aiAttack || aiState==8) {
 						animState='run';
 						sndStep(anims[animState].f,2);

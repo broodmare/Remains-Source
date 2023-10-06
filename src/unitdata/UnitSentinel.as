@@ -29,24 +29,28 @@ package unitdata
 			if (quiet) id_replic='';
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			newPart('expl');
 			currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			if (dopWeapon && dopWeapon.tip==0) {
 				dopWeapon.damage*=(1+level*0.1);
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',12);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
@@ -55,7 +59,8 @@ package unitdata
 		}
 		
 		
-		public override function animate() {
+		public override function animate()
+		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
 					vis.osn.gotoAndStop('die');
@@ -74,12 +79,14 @@ package unitdata
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			weaponX=X;
 			weaponY=Y-90;
 		}
 		
-		public override function jump(v:Number=1) {
+		public override function jump(v:Number=1)
+		{
 			if (stay) jump_n=90;
 			else jump_n--;
 			if (dy>-jumpdy && jump_n>0) {
@@ -87,7 +94,8 @@ package unitdata
 			}
 		}
 		//атака
-		public override function attack() {
+		public override function attack()
+		{
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
 			currentWeapon.attack();
 			if (celUnit && !(celDX<160 && celDX>-160 && celDY<80 && celDY>-80)) dopWeapon.attack();

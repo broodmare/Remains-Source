@@ -2,7 +2,7 @@ package servdata
 {
 	
 	import locdata.Loot;
-	import locdata.Location;
+	import locdata.Room;
 	
 	public class LootGen 
 	{
@@ -18,7 +18,7 @@ package servdata
 		public static var arr:Array;
 				
 		private static var is_loot:int=0;		//был сгенерирован лут
-		private static var location:Location;				//целевая локация
+		private static var room:Room;				//целевая локация
 		private static var nx:Number, ny:Number;
 		private static var lootBroken:Boolean=false;
 		//public static const L_ARMOR=1, L_WEAPON=2, L_AMMO=3, L_ITEM=4, L_MED=5, L_BOOK=6, L_EXPL=7, L_HIM=8, L_SCHEME=9, L_SPECIAL=10, L_COMP1=11, L_COMP2=12, L_COMP3=13;
@@ -61,15 +61,7 @@ package servdata
 			
 			// проверка рандома
 			var a:Array=new Array();
-			/*for (var i=0; i<10000; i++) {
-				var str:String =getRandom('food',3);
-				if (a[str]) a[str]++;
-				else a[str]=1;
-			}
-			for (i in a) trace (i,a[i]);*/
-			/*for (i=0; i<100; i++) {
-				trace(getRandom('weapon',2,2))
-			}*/
+
 		}
 		
 		public static function getRandom(tip:String, maxlvl:Number=-100, worth:int=-100):String {
@@ -77,7 +69,7 @@ package servdata
 			a=arr[tip];
 			if (a==null) return null;
 			var gameStage:int=0
-			if (World.world.land) gameStage=World.world.land.gameStage;
+			if (World.world.level) gameStage=World.world.level.gameStage;
 			if (tip!=Item.L_BOOK && (maxlvl>0 || worth>0 || gameStage>0)) {
 				res=new Array();
 				for each(var i in a) {
@@ -112,11 +104,11 @@ package servdata
 			if (tip==Item.L_WEAPON) {
 				//Рандомное оружие
 				if (int(id)>0) {
-					id=getRandom(tip,Math.max(1,location.weaponLevel+(Math.random()*2-1)),int(id));
+					id=getRandom(tip,Math.max(1,room.weaponLevel+(Math.random()*2-1)),int(id));
 					if (id==null) mn*=0.5;
 				}
 				if (id==null) {
-					id=getRandom(tip,Math.max(1,location.weaponLevel+(Math.random()*2-1)));
+					id=getRandom(tip,Math.max(1,room.weaponLevel+(Math.random()*2-1)));
 					if (id==null) mn*=0.5;
 				}
 				if (id==null) {
@@ -126,9 +118,9 @@ package servdata
 			//Рандомный лут, определить нужный id
 			if (id==null || id=='') {
 				if (tip==Item.L_EXPL || tip==Item.L_UNIQ) {
-					id=getRandom(tip,Math.max(1,location.weaponLevel+(Math.random()*2-1)));
+					id=getRandom(tip,Math.max(1,room.weaponLevel+(Math.random()*2-1)));
 				} else {
-					id=getRandom(tip,Math.max(1,location.locDifLevel/2+(Math.random()*2-1)));
+					id=getRandom(tip,Math.max(1,room.locDifLevel/2+(Math.random()*2-1)));
 				}
 				if (id==null) {
 					id=getRandom(tip);
@@ -156,9 +148,9 @@ package servdata
 			//проверить лимиты
 			if (imp==0 && item.xml.@limit.length()) {
 				var lim:int=World.world.game.getLimit(item.xml.@limit);
-				var itemLimit:Number=World.world.land.lootLimit;
+				var itemLimit:Number=World.world.level.lootLimit;
 				if (item.xml.@mlim.length()) itemLimit*=item.xml.@mlim;
-				if (item.xml.@maxlim.length() && lim>=item.xml.@maxlim) {
+				if (item.xml.@maxlim.length && lim>=item.xml.@maxlim) {
 					if (!World.world.testLoot) trace('Достигнут максимум:', id, lim);
 					return false;
 				}
@@ -169,29 +161,29 @@ package servdata
 				World.world.game.addLimit(item.xml.@limit,1);
 			}
 			if (World.world.testLoot) World.world.invent.take(item);
-			else new Loot(location,item,nx,ny,true);
+			else new Loot(room,item,nx,ny,true);
 			is_loot++;
 			return true;
 		}
 		
 		//Генерация лута по заданному ID
-		public static function lootId(nloc:Location, nnx:Number, nny:Number, id:String, kol:int=-1, imp:int=0, cont:Interact=null, broken:Boolean=false) {
-			if (nloc==null) return false;
+		public static function lootId(newRoom:Room, nnx:Number, nny:Number, id:String, kol:int=-1, imp:int=0, cont:Interact=null, broken:Boolean=false) {
+			if (newRoom==null) return false;
 			lootBroken=broken;
-			location=nloc;
+			room=newRoom;
 			nx=nnx, ny=nny;
 			newLoot(1, '', id, kol, imp, cont);
 		}
 		
 		//генерация лута из заданного типа контейнера, вернуть true если было что-то сгенерировано
 		//dif - сложность замков, принимает значение от 0 до 49
-		public static function lootCont(nloc:Location, nnx:Number, nny:Number, cont:String, broken:Boolean=false, dif:Number=0):Boolean {
-			if (nloc==null) return false;
+		public static function lootCont(newRoom:Room, nnx:Number, nny:Number, cont:String, broken:Boolean=false, dif:Number=0):Boolean {
+			if (newRoom==null) return false;
 			lootBroken=broken;
-			location=nloc;
+			room=newRoom;
 			nx=nnx, ny=nny;
 			is_loot=0;
-			var locdif:Number=Math.min(location.locDifLevel,20);
+			var locdif:Number=Math.min(room.locDifLevel,20);
 			var kol:int=1;
 			if (cont=='ammo') {
 				newLoot(0.7,Item.L_AMMO);
@@ -265,10 +257,10 @@ package servdata
 					newLoot(0.5, Item.L_COMPA);
 				}
 			} else if (cont=='trash') {
-				if (location.land.act.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
+				if (room.level.template.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
 				if (Math.random()<0.25) {
-					if (Math.random()<0.6) location.createUnit('tarakan',nx,ny,true);
-					else location.createUnit('rat',nx,ny,true);
+					if (Math.random()<0.6) room.createUnit('tarakan',nx,ny,true);
+					else room.createUnit('rat',nx,ny,true);
 				} else {
 					kol=Math.floor(Math.random()*2);
 					if (World.world.pers.barahlo) kol+=2;
@@ -280,19 +272,19 @@ package servdata
 				newLoot(0.5, Item.L_FOOD, 'sars');
 				newLoot(0.1, Item.L_FOOD, 'radcola');
 				if (Math.random()<0.2) {
-					if (Math.random()<0.4) location.createUnit('tarakan',nx,ny,true);
-					else if (Math.random()<0.5) location.createUnit('rat',nx,ny,true);
-					else location.createUnit('bloat',nx,ny,true);
+					if (Math.random()<0.4) room.createUnit('tarakan',nx,ny,true);
+					else if (Math.random()<0.5) room.createUnit('rat',nx,ny,true);
+					else room.createUnit('bloat',nx,ny,true);
 				} else {
 					kol=Math.floor(Math.random()*2);
 					for (i=0; i<=kol; i++) newLoot(1, Item.L_FOOD);
 					newLoot(0.3, Item.L_COMPP, 'herbs',Math.floor(Math.random()*6+1));
 				}
 			} else if (cont=='food') {
-				if (location.land.act.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
+				if (room.level.template.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
 				if (Math.random()<0.25) {
-					if (Math.random()<0.6) location.createUnit('tarakan',nx,ny,true);
-					else location.createUnit('rat',nx,ny,true);
+					if (Math.random()<0.6) room.createUnit('tarakan',nx,ny,true);
+					else room.createUnit('rat',nx,ny,true);
 				} else {
 					newLoot(0.8, Item.L_FOOD);
 					newLoot(0.5, Item.L_STUFF);
@@ -343,15 +335,15 @@ package servdata
 				newLoot(0.2, Item.L_COMPA, 'antirad_comp');
 				newLoot(0.2, Item.L_COMPA, 'antihim_comp');
 			} else if (cont=='bloat') {
-				location.createUnit('bloat',nx,ny,true);
+				room.createUnit('bloat',nx,ny,true);
 			} else if (cont=='book') {
 				if (!newLoot(0.3, Item.L_BOOK)) newLoot(1, Item.L_ITEM,'lbook');
 				newLoot(0.1, Item.L_ITEM,'gem'+Math.floor(Math.random()*3+1));
 				newLoot(0.25, Item.L_SCHEME);
 				newLoot(0.3, 'co');
-				if (nloc.itemsTip=='bibl') newLoot(0.5, Item.L_ITEM, 'book_cm');
+				if (newRoom.itemsTip=='bibl') newLoot(0.5, Item.L_ITEM, 'book_cm');
 			} else if (cont=='term' || cont=='info') {
-				if (nloc.land.act.id=='minst') newLoot(1,Item.L_ITEM,'datast');
+				if (newRoom.level.template.id=='minst') newLoot(1,Item.L_ITEM,'datast');
 				else if (!newLoot(0.25, Item.L_ITEM,'disc')) newLoot(1,Item.L_ITEM,'data');
 				newLoot(0.5, Item.L_COMPM);
 			} else if (cont=='cryo') {
@@ -370,8 +362,8 @@ package servdata
 				if (is_loot>5) replic('full');
 				if (is_loot<2) replic('empty');
 			} else if (cont=='safe') {
-				if (World.world.land.rnd && nloc.prob==null && Math.random()<0.05) {
-					for (i=0; i<4; i++) location.createUnit('bloat',nx,ny,true);
+				if (World.world.level.rnd && newRoom.prob==null && Math.random()<0.05) {
+					for (i=0; i<4; i++) room.createUnit('bloat',nx,ny,true);
 				} else {
 					//dif - 0..50
 					newLoot(dif/100, Item.L_UNIQ);
@@ -413,10 +405,10 @@ package servdata
 		}
 		
 		//генерация лута, выпадающего из врагов, вернуть true если было что-то сгенерировано
-		public static function lootDrop(nloc:Location, nnx:Number, nny:Number, cont:String, hero:int=0):Boolean {
-			if (nloc==null) return false;
+		public static function lootDrop(newRoom:Room, nnx:Number, nny:Number, cont:String, hero:int=0):Boolean {
+			if (newRoom==null) return false;
 			lootBroken=false;
-			location=nloc;
+			room=newRoom;
 			nx=nnx, ny=nny;
 			is_loot=0;
 			//монстры

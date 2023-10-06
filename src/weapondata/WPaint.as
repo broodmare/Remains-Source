@@ -7,6 +7,8 @@ package weapondata
 	import unitdata.Pers;
 	import locdata.Tile;
 	
+	import components.Settings;
+	
 	public class WPaint extends Weapon 
 	{
 		
@@ -33,12 +35,12 @@ package weapondata
 			var by:Number=owner.Y-owner.scY*0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
+			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/Settings.maxdelta)+1;
 			for (var i=1; i<div; i++) 
 			{
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
-				var t:Tile=World.world.location.getAbsTile(Math.floor(celX),Math.floor(celY));
+				var t:Tile=World.world.room.getAbsTile(Math.floor(celX),Math.floor(celY));
 				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) 
 				{
 					return 0
@@ -47,7 +49,7 @@ package weapondata
 			return 1;
 		}
 		
-		public override function actions() 
+		public override function actions()
 		{
 			var ds=40*owner.storona;
 			if (owner.player) 
@@ -88,7 +90,7 @@ package weapondata
 
 		}
 		
-		public override function animate() 
+		public override function animate()
 		{
 			if (vis) 
 			{

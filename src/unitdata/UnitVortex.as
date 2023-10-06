@@ -5,6 +5,8 @@ package unitdata
 	import graphdata.Emitter;
 	import locdata.Tile;
 	
+	import components.Settings;
+	
 	public class UnitVortex extends Unit
 	{
 		
@@ -31,12 +33,14 @@ package unitdata
 			sndVolkoef=0;
 		}
 
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('metal',4);
 			newPart('miniexpl');
 		}
 		
-		public override function forces() {
+		public override function forces()
+		{
 			if (isFly) {
 				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
 					dx*=0.95;
@@ -49,18 +53,21 @@ package unitdata
 			} else super.forces();
 		}
 		
-		public override function destroyWall(t:Tile, napr:int=0):Boolean {
+		public override function destroyWall(t:Tile, napr:int=0):Boolean
+		{
 			if (sost!=1) return false;
-			if (destroy>0 && napr==2 || napr==1) location.hitTile(t,destroy,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight,4);
+			if (destroy>0 && napr==2 || napr==1) room.hitTile(t,destroy,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight,4);
 			if (t.phis==0) return true;
 			return false;
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			super.setNull(f);
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			super.alarma(nx,ny);
 			if (sost==1) {
 				aiState=2;
@@ -68,7 +75,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			br+=(dx*2.5-br)/4;
 			vis.osn.rotation=br*storona;
 		}
@@ -78,12 +86,13 @@ package unitdata
 		//1 - видит цель, летит к ней
 		//2 - потерял цель
 		
-		public override function control() {
+		public override function control()
+		{
 			if (sost>=3) return;
 			if (rasst2<800*800) {
 				
 			}
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				return;
 			}
 			if (stun) {
@@ -109,7 +118,7 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel()) {
 					aiSpok=maxSpok+10;
 					aiState=1;
@@ -128,7 +137,7 @@ package unitdata
 			else maxSpeed=runSpeed;
 	
 			if (turnX!=0) {
-				iskr.cast(location,X+15*storona,Y-15,{dx:dx, kol:Math.floor(Math.random()*5+3)});
+				iskr.cast(room,X+15*storona,Y-15,{dx:dx, kol:Math.floor(Math.random()*5+3)});
 				Snd.ps('vortex_cut',X,Y,0,sndVolkoef);
 				storona=turnX;
 				aiTCh=0
@@ -139,7 +148,7 @@ package unitdata
 				turnY=0;
 			}
 			//атака
-			if (World.world.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
+			if (Settings.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
 				attKorp(celUnit,1);
 			}
 		}

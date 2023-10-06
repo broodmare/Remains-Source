@@ -38,7 +38,8 @@ package unitdata
 			hp=maxhp=maxhp*10;
 		}
 		
-		public override function run(div:int=1) {
+		public override function run(div:int=1)
+		{
 			if (head) {
 				X=head.X+bindX;
 				Y=head.Y+bindY;
@@ -49,10 +50,11 @@ package unitdata
 			setVisPos();
 		}
 		
-		public override function control() {
-			if (head==null || location==null) return;
+		public override function control()
+		{
+			if (head==null || room==null) return;
 			if (sost>1 || head.sost>1) return;
-			if (head.isAtt && X>200 && Y>200 && X<location.limX-200 && Y<location.limY-200) {
+			if (head.isAtt && X>200 && Y>200 && X<room.roomPixelWidth-200 && Y<room.roomPixelHeight-200) {
 				if (t_wait>0) {
 					t_wait--;
 					return;
@@ -70,7 +72,8 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			if (World.world.game.globalDif==3) {
 				hp=maxhp=hp*1.5;
 			}
@@ -79,31 +82,42 @@ package unitdata
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			head.dieTurret();
 			newPart('metal',4);
 			newPart('expl');
 		}
-		public override function animate() {
+		public override function animate()
+		{
 			if (sost>1) return;
-			try {
-				//vis.osn.puha.gotoAndStop(tr);
-				//vis.osn.puha.rotation=currentWeapon.rot*180/Math.PI+90*(1-storona);
-			} catch(err) {}
+			try 
+			{
+
+			} 
+			catch(err) 
+			{
+
+			}
 		}
 
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
 				currentWeapon.vis.x=X;
 				currentWeapon.vis.y=Y-scY/2;
 			}
 		}
-		public override function makeNoise(n:int, hlup:Boolean=false) {}
-		public override function setHpbarPos() {
+		public override function makeNoise(n:int, hlup:Boolean=false)
+		{
+
+		}
+		public override function setHpbarPos() 
+		{
 			hpbar.y=Y-140;
 			hpbar.x=X;
-			if (location && location.zoom!=1) hpbar.scaleX=hpbar.scaleY=location.zoom;
+			if (room && room.zoom!=1) hpbar.scaleX=hpbar.scaleY=room.zoom;
 		}
 	}
 	

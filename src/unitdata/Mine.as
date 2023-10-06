@@ -3,7 +3,9 @@ package unitdata
 
 	import servdata.Interact;
 	import servdata.LootGen;
-	import locdata.Location;
+	import locdata.Room;
+	
+	import components.Settings;
 	
 	public class Mine extends Unit
 	{
@@ -126,22 +128,22 @@ package unitdata
 			//fixed=1;
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
 		{
-			super.putLoc(nloc,nx,ny);
-			if (location.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
+			super.putLoc(newRoom,nx,ny);
+			if (room.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
 		}
 		
-		public override function setLevel(nlevel:int=0) 
+		public override function setLevel(nlevel:int=0)
 		{
 			super.setLevel(nlevel);
 			if (nlevel>10) damage1*=(1+(nlevel-10)*0.1);
 		}
 		
-		public override function setNull(f:Boolean=false) 
+		public override function setNull(f:Boolean=false)
 		{
 			super.setNull(f);
-			oduplenie=World.oduplenie/2;
+			oduplenie=Settings.oduplenie/2;
 		}
 
 		public override function save():Object 
@@ -152,7 +154,7 @@ package unitdata
 			return obj;
 		}	
 		
-		public function setVis(v:Boolean) 
+		public function setVis(v:Boolean)
 		{
 			isVis=v;
 			levitPoss=v;
@@ -160,24 +162,24 @@ package unitdata
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function dropLoot() 
+		public override function dropLoot()
 		{
 			explosion(damage1,tipDamage,explRadius,0,otbros1,wdestroy,tipDecal);
 		}
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public function remine() 
+		public function remine()
 		{
 			inter.active=false;
-			if (!location.train) LootGen.lootId(location,X,Y,id);
+			if (!room.train) LootGen.lootId(room,X,Y,id);
 			if (sndDem!='') Snd.ps(sndDem,X,Y);
 			sost=4;
 			disabled=true;
-			location.remObj(this);
+			room.remObj(this);
 		}
 		
-		public function activate() 
+		public function activate()
 		{
 			inter.active=0;
 			aiState=2;
@@ -185,12 +187,12 @@ package unitdata
 			vis.play();
 		}
 		
-		public override function die(sposob:int=0) 
+		public override function die(sposob:int=0)
 		{
 			super.die(0);
 		}
 		
-		public override function control() 
+		public override function control()
 		{
 			aiN++;
 			if (levit || !stay && !fixed && oduplenie<=0 || !stay && fraction==F_PLAYER) 
@@ -208,7 +210,7 @@ package unitdata
 			{ 
 				if (aiN%4==0) 
 				{
-					for each (var un:Unit in location.units) 
+					for each (var un:Unit in room.units) 
 					{
 						if (un==null || un.activateTrap==0 || un.activateTrap==1 && fraction!=Unit.F_PLAYER && un.fraction!=Unit.F_PLAYER || !isMeet(un) || un.sost==3 || un.fraction==fraction || un.fraction==0) continue;
 						if (un.X-X<sens && un.X-X>-sens && un.Y-Y<sens*0.4 && un.Y-Y>-sens && (tipDamage!=8 || un.vulner[8]>0)) 

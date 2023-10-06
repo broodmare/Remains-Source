@@ -7,6 +7,8 @@ package weapondata
 	import unitdata.Pers;
 	import locdata.Tile;
 	
+	import components.Settings;
+	
 	public class WClub extends Weapon 
 	{
 		
@@ -96,19 +98,19 @@ package weapondata
 			if (!auto && !powerfull)combinat=true;
 		}
 		
-		public override function addVisual() 
+		public override function addVisual()
 		{
 			super.addVisual();
 			if (visvzz) World.world.grafon.canvasLayerArray[layer].addChild(visvzz);
 		}
 
-		public override function remVisual() 
+		public override function remVisual()
 		{
 			super.remVisual();
 			if (visvzz && visvzz.parent) visvzz.parent.removeChild(visvzz);
 		}
 
-		public override function setPers(gg:UnitPlayer, pers:Pers) 
+		public override function setPers(gg:UnitPlayer, pers:Pers)
 		{
 			super.setPers(gg,pers);
 			rapidMult=1/pers.meleeSpdMult;
@@ -122,12 +124,12 @@ package weapondata
 			var by:Number=owner.Y-owner.scY*0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/World.maxdelta)+1;
+			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/Settings.maxdelta)+1;
 			for (var i=1; i<div; i++) 
 			{
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
-				var t:Tile=World.world.location.getAbsTile(Math.floor(celX),Math.floor(celY));
+				var t:Tile=World.world.room.getAbsTile(Math.floor(celX),Math.floor(celY));
 				if (t.phis==1 && celX>=t.phX1 && celX<=t.phX2 && celY>=t.phY1 && celY<=t.phY2) 
 				{
 					return 0
@@ -136,15 +138,15 @@ package weapondata
 			return 1;
 		}
 		
-		public override function actions() 
+		public override function actions()
 		{
 			var ds=40*owner.storona;
 			meleeR=World.world.pers.meleeR;
-			if (location && location.sky) meleeR*=10;
+			if (room && room.sky) meleeR*=10;
 			if (owner.player) 
 			{
 				levitRun=(owner as UnitPlayer).pers.meleeRun;
-				if (location.sky) levitRun*=4;
+				if (room.sky) levitRun*=4;
 				if (mtip==0) 
 				{
 					celX=owner.celX-dlina*0.8*storona;
@@ -413,7 +415,7 @@ package weapondata
 			if (hp<maxhp/2) breaking=(maxhp-hp)/maxhp*2-1;
 			else breaking=0;
 			b.off=false;
-			b.location=owner.location;
+			b.room=owner.room;
 			b.knockx=storona;
 			curDam=resultDamage(damage,sk);
 			b.damage=curDam*ammoDamage;
@@ -440,11 +442,11 @@ package weapondata
 			b.X=X+cos2*dlina;
 			b.Y=Y+sin2*dlina;
 			b.inWater=0;
-			if (location.getAbsTile(b.X, b.Y).water>0) b.inWater=1;
+			if (room.getAbsTile(b.X, b.Y).water>0) b.inWater=1;
 			if (mtip==0) 
 			{
-				b.tilePixelWidth=Math.floor(owner.celX/World.tilePixelWidth);
-				b.tilePixelHeight=Math.floor(owner.celY/World.tilePixelHeight);
+				b.tilePixelWidth=Math.floor(owner.celX/Settings.tilePixelWidth);
+				b.tilePixelHeight=Math.floor(owner.celY/Settings.tilePixelHeight);
 			}
 			if (mtip==2) 
 			{
@@ -454,7 +456,7 @@ package weapondata
 			if (holder>0 && hold>0) 
 			{
 				hold-=rashod;
-				if (owner.player && location.train && ammo!='recharg') World.world.invent.items[ammo].kol+=rashod;
+				if (owner.player && room.train && ammo!='recharg') World.world.invent.items[ammo].kol+=rashod;
 			}
 			t_auto=3;
 			return b;
@@ -472,14 +474,14 @@ package weapondata
 			return rap0/skillConf*rapidMult/owner.rapidMultCont;
 		}
 		
-		protected override function weaponAttack() 
+		protected override function weaponAttack()
 		{
 			powerMult=1;
 			if (t_attack<=0) 
 			{
 				setBullet(b);
 				rapid_act=resultRapid(rapid);
-				if (location.getAbsTile(X,Y).water) rapid_act*=2; 
+				if (room.getAbsTile(X,Y).water) rapid_act*=2; 
 				visvzz.alpha=Math.min(10/rapid_act,1);
 				t_attack=rapid_act;
 				shoot();
@@ -497,11 +499,11 @@ package weapondata
 			else if (t_attack>10) combo=0;
 		}
 		
-		public override function crash(dam:int=1) 
+		public override function crash(dam:int=1)
 		{
 			if (owner.player) 
 			{
-				if (!location.train && !World.world.alicorn) hp-=dam+ammoHP;
+				if (!room.train && !Settings.alicorn) hp-=dam+ammoHP;
 				if (hp<0) hp=0;
 				World.world.gui.setWeapon();
 			}
@@ -521,7 +523,7 @@ package weapondata
 			}
 		}
 		
-		public override function animate() 
+		public override function animate()
 		{
 			if (quakeX!=0) 
 			{

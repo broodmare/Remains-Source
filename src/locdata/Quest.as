@@ -3,7 +3,9 @@ package locdata
 	
 	import servdata.Item;
 	import servdata.Script;
-
+	
+	import components.Settings;
+	
 	public class Quest 
 	{
 		
@@ -449,7 +451,7 @@ package locdata
 				World.world.gui.infoText('doneStage',nazv);
 			}
 			//завершающий диалог
-			if (endDial && World.world.dialOn) 
+			if (endDial && Settings.dialOn) 
 			{
 				World.world.pip.onoff(-1);
 				World.world.gui.dialog(endDial);

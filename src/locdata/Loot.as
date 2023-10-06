@@ -9,13 +9,15 @@ package locdata
 	import servdata.Item;
 	import servdata.Interact;
 	
+	import components.Settings;
+	
 	public class Loot extends Obj
 	{
 		
 		public var item:Item;
 		
 		
-		const osnRad=50, actRad=250;
+		const osnRad = 50, actRad = 250;
 		public var vClass:Class;
 		public var osnova:Box=null;
 		public var vsos:Boolean=false;
@@ -32,23 +34,23 @@ package locdata
 		private var tvsos:int=0;
 		public var sndFall:String='fall_item';
 
-		public function Loot(nloc:Location, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true) 
+		public function Loot(newRoom:Room, nitem:Item, nx:Number, ny:Number, jump:Boolean=false, nkrit:Boolean=false, nauto:Boolean=true) 
 		{
-			location=nloc;
+			room=newRoom;
 			item=nitem;
-			if (location.cTransform) cTransform=location.cTransform;
+			if (room.cTransform) cTransform=room.cTransform;
 			layer=2, prior=3;
 			X=nx, Y=ny;
 			krit=nkrit;
 			if (nx<Tile.tilePixelWidth) nx=Tile.tilePixelWidth;
-			if (nx>(location.spaceX-1)*Tile.tilePixelWidth) nx=(location.spaceX-1)*Tile.tilePixelWidth;
-			if (ny>(location.spaceY-1)*Tile.tilePixelHeight) ny=(location.spaceY-1)*Tile.tilePixelHeight;
+			if (nx>(room.roomWidth-1)*Tile.tilePixelWidth) nx=(room.roomWidth-1)*Tile.tilePixelWidth;
+			if (ny>(room.roomHeight-1)*Tile.tilePixelHeight) ny=(room.roomHeight-1)*Tile.tilePixelHeight;
 			massa=0.1;
 			nazv=item.nazv;
 			scX=30, scY=20;
 			if (item.tip==Item.L_WEAPON) 
 			{
-				if (item.xml.vis.length() && item.xml.vis.@loot.length()) 
+				if (item.xml.vis.length && item.xml.vis.@loot.length()) 
 				{
 					vis=new visualItem();
 					try 
@@ -108,7 +110,6 @@ package locdata
 				} 
 				catch(err) 
 				{
-					//var item.tip:String;
 					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
 					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
 					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
@@ -142,7 +143,7 @@ package locdata
 				dx=Math.random()*10-5;
 				dy=Math.random()*5-10;
 			}
-			if (!location.locationActive) sndFall='';
+			if (!room.roomActive) sndFall='';
 			auto=nauto;
 				inter=new Interact(this);
 				inter.active=true;
@@ -151,11 +152,11 @@ package locdata
 				inter.actFun=toTake;
 				inter.update();
 				levitPoss=true;
-			location.addObj(this);
+			room.addObj(this);
 			auto2=item.checkAuto();
 		}
 		
-		public override function addVisual() 
+		public override function addVisual()
 		{
 			super.addVisual();
 			if (vis && cTransform) 
@@ -164,7 +165,7 @@ package locdata
 			}
 		}
 		
-		function shine() 
+		function shine()
 		{
 			if (vis) 
 			{
@@ -175,7 +176,7 @@ package locdata
 		}
 
 		//при нажатии E
-		public function toTake() 
+		public function toTake()
 		{
 			item.checkAuto(true);
 			actTake=true;
@@ -184,14 +185,14 @@ package locdata
 		}
 
 		//попробовать взять
-		public function take(prinud:Boolean=false) 
+		public function take(prinud:Boolean=false)
 		{
-			if ((ttake>0 || World.world.gg.location!=location || World.world.gg.rat>0) && !prinud) return;
+			if ((ttake>0 || World.world.gg.room!=room || World.world.gg.rat>0) && !prinud) return;
 			var rx=World.world.gg.X-X, ry=World.world.gg.Y-World.world.gg.scY/2-Y;
 			//взять
 			if (prinud || (World.world.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) 
 			{
-				if (World.world.hardInv && !actTake) 
+				if (Settings.hardInv && !actTake) 
 				{
 					auto2=item.checkAuto();
 					if (!auto2) 
@@ -204,7 +205,7 @@ package locdata
 					}
 				}
 				levitPoss=false;
-				location.remObj(this);
+				room.remObj(this);
 				if (!isTake) World.world.invent.take(item);
 				isTake=true;
 				onCursor=0;
@@ -230,9 +231,9 @@ package locdata
 			}
 		}
 		
-		public override function step() 
+		public override function step()
 		{
-			if (location.broom && (auto2 || krit)) 
+			if (room.broom && (auto2 || krit)) 
 			{
 				take(true);
 				return;
@@ -245,7 +246,7 @@ package locdata
 			}
 			if (!stay) 
 			{
-				if (!levit && !vsos && dy<World.maxdy) dy+=World.ddy;
+				if (!levit && !vsos && dy<Settings.maxdy) dy+=Settings.ddy;
 				else if (levit && !isPlav) 
 				{
 					dy*=0.8; dx*=0.8;
@@ -254,10 +255,10 @@ package locdata
 				{
 					dy*=0.7; dx*=0.7;
 				}
-				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
+				if (Math.abs(dx)<Settings.maxdelta && Math.abs(dy)<Settings.maxdelta)	run();
 				else 
 				{
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
+					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
 					for (var i=0; (i<div && !stay && !isTake); i++) run(div);
 				}
 				checkWater();
@@ -273,7 +274,7 @@ package locdata
 			if (auto && auto2 || actTake) take();
 		}
 		
-		public function run(div:int=1) 
+		public function run(div:int=1)
 		{
 			//движение
 			var t:Tile;var i:int;
@@ -286,15 +287,15 @@ package locdata
 					X=scX/2;
 					dx=Math.abs(dx);
 				}
-				if (X+scX/2>=location.spaceX*Tile.tilePixelWidth) 
+				if (X+scX/2>=room.roomWidth*Tile.tilePixelWidth) 
 				{
-					X=location.spaceX*Tile.tilePixelWidth-1-scX/2;
+					X=room.roomWidth*Tile.tilePixelWidth-1-scX/2;
 					dx=-Math.abs(dx);
 				}
 				//движение влево
 				if (dx<0) 
 				{
-					t=location.getAbsTile(X,Y);
+					t=room.getAbsTile(X,Y);
 					if (t.phis==1 && X<=t.phX2 && X>=t.phX1 && Y>=t.phY1 && Y<=t.phY2) 
 					{
 						X=t.phX2+1;
@@ -304,7 +305,7 @@ package locdata
 				//движение вправо
 				if (dx>0) 
 				{
-					t=location.getAbsTile(X,Y);
+					t=room.getAbsTile(X,Y);
 					if (t.phis==1 && X>=t.phX1 && X<=t.phX2 && Y>=t.phY1 && Y<=t.phY2) 
 					{
 						X=t.phX1-1;
@@ -320,7 +321,7 @@ package locdata
 				stay=false;
 				Y+=dy/div;
 				if (Y-scY<0) Y=scY;
-				t=location.getAbsTile(X,Y);
+				t=room.getAbsTile(X,Y);
 				if (t.phis==1 && Y<=t.phY2 && Y>=t.phY1 && X>=t.phX1 && X<=t.phX2) 
 				{
 					Y=t.phY2+1;
@@ -332,19 +333,19 @@ package locdata
 			if (dy>0) 
 			{
 				stay=false;
-				if (Y+dy/div>=location.spaceY*Tile.tilePixelHeight) 
+				if (Y+dy/div>=room.roomHeight*Tile.tilePixelHeight) 
 				{
 					if (auto2) take(true);
 					dx=0;
 					return;
 				}
-				t=location.getAbsTile(X,Y+dy/div);
+				t=room.getAbsTile(X,Y+dy/div);
 				if (t.phis==1 && Y+dy/div>=t.phY1 && Y<=t.phY2 && X>=t.phX1 && X<=t.phX2 || t.shelf && !levit && !vsos && Y+dy/div>=t.phY1 && Y<=t.phY1 && X>=t.phX1 && X<=t.phX2) 
 				{
 					newmy=t.phY1;
 				}
 				if (newmy==0 && !levit && !vsos) newmy=checkShelf(dy/div);
-				if (!location.locationActive && Y>=(location.spaceY-1)*Tile.tilePixelHeight) newmy=(location.spaceY-1)*Tile.tilePixelHeight;
+				if (!room.roomActive && Y>=(room.roomHeight-1)*Tile.tilePixelHeight) newmy=(room.roomHeight-1)*Tile.tilePixelHeight;
 				if (newmy) 
 				{
 					Y=newmy-1;
@@ -362,10 +363,10 @@ package locdata
 			}
 		}
 
-		public override function checkStay() 
+		public override function checkStay()
 		{
 			if (osnova) return true;
-			var t:Tile=location.getAbsTile(X,Y+1);
+			var t:Tile=room.getAbsTile(X,Y+1);
 			if ((t.phis==1 || t.shelf) && Y+1>t.phY1) 
 			{
 				return true;
@@ -379,9 +380,9 @@ package locdata
 
 		public function checkShelf(dy):Number 
 		{
-			for (var i in location.objs) 
+			for (var i in room.objs) 
 			{
-				var b:Box=location.objs[i] as Box;
+				var b:Box=room.objs[i] as Box;
 				if (!b.invis && b.stay && b.shelf && b.wall==0 && !(X<b.X1 || X>b.X2) && Y<=b.Y1 && Y+dy>b.Y1) 
 				{
 					osnova=b;
@@ -398,7 +399,7 @@ package locdata
 			isPlav=false;
 			try 
 			{
-				if ((location.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((room.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
 				{
 					isPlav=true;
 				}
@@ -409,7 +410,7 @@ package locdata
 			}
 			if (pla!=isPlav && dy>5) 
 			{
-				Emitter.emit('kap',location,X,Y,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
+				Emitter.emit('kap',room,X,Y,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
 				Snd.ps('fall_item_water',X,Y,0, dy/10);
 			}
 			return isPlav;

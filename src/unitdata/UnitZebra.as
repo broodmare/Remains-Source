@@ -8,6 +8,8 @@ package unitdata
 	import locdata.Tile;
 	import graphdata.Emitter;
 	
+	import components.Settings;
+	
 	public class UnitZebra extends UnitRaider
 	{
 		
@@ -31,7 +33,8 @@ package unitdata
 			wPos=BlitAnim.wPosZebra1;
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			super.animate();
 			if (!red) {
 				//невидимость
@@ -59,29 +62,31 @@ package unitdata
 			}
 		}
 		
-		public override function control() {
+		public override function control()
+		{
 			if (shine<100 && World.world.pers.infravis>0) shine=100;
 			if (sost>1) shine=100;
 			invis=(shine<15);
 			super.control();
 		}
 		
-		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number {
+		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
+		{
 			if (bul && bul.owner && bul.owner.fraction==4) return super.damage(dam*0.3,tip,bul,tt);	//получать меньше урона от СР
 			return super.damage(dam,tip,bul,tt);
 		}
 		
-		public function showThis():Boolean {
+		public function showThis():Boolean
+		{
 			//проверить линию взгляда
 			var cx=-(X-World.world.gg.eyeX);
 			var cy=-(Y-scY*0.6-World.world.gg.eyeY);
 			if (cx*cx+cy*cy>1000*1000) return false;
-			var div=Math.floor(Math.max(Math.abs(cy),Math.abs(cy))/World.maxdelta)+1;
+			var div=Math.floor(Math.max(Math.abs(cy),Math.abs(cy))/Settings.maxdelta)+1;
 			for (var i=1; i<div; i++) {
 				var nx=X+cx*i/div;
 				var ny=Y-scY*0.6+cy*i/div;
-				var t:Tile=World.world.location.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
-				//Emitter.emit('marker',location,nx,ny);
+				var t:Tile=World.world.room.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					return false;
 				}

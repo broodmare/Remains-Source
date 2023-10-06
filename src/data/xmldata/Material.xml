@@ -1,0 +1,254 @@
+			<!--       *******   MATERIALS   *******         -->
+			
+			<!-- Foreground -->
+			<mat drawLayer='1' id='A' name='Steel' physics='1' hp='30000' damageThreshold='1200' back='A' indestruct='1' mat='1'>
+				<main texture='tMetal'/>
+				<border texture='tKlep' mask='maskSimple'/>
+				<filter filter='cont'/>
+			</mat>
+			<mat drawLayer='1' id='B' name='SuperConcrete' physics='1' hp='5000' damageThreshold='1200' back='A' mat='2'>
+				<main texture='tSuperCon' mask='maskBare'/>
+				<border texture='tBorder' mask='maskBorderBare'/>
+				<filter filter='potek'/>
+			</mat>
+			<mat drawLayer='1' id='C' name='Concrete' physics='1' hp='1000' damageThreshold='100' back='A' mat='2'>
+				<main texture='tConcrete' mask='maskBare'/>
+				<border texture='tBorder' mask='maskBorderBare'/>
+				<floor texture='tFloor' mask='maskFloor'/>
+			</mat>
+			<mat drawLayer='1' id='D' name='Damaged Concrete' physics='1' hp='1000' damageThreshold='100' back='A' mat='2'>
+				<main texture='tConcreteD' mask='maskDamaged'/>
+				<border texture='tSkol' mask='maskSkol'/>
+				<filter filter='potek'/>
+			</mat>
+			<mat drawLayer='1' id='E' name='Cracks' physics='1' hp='150' damageThreshold='10' back='A' mat='2'>
+				<main texture='tCracked' mask='maskDamaged'/>
+				<border texture='tSkol' mask='maskSkol'/>
+				<filter filter='potek'/>
+			</mat>
+			<mat drawLayer='1' id='F' name='Rubble' physics='1' hp='40' mat='3'>
+				<main texture='tWood' mask='maskDamaged'/>
+				<filter filter='cont_th'/>
+			</mat>
+			<mat drawLayer='1' id='G' name='Stone' physics='1' hp='1000' damageThreshold='100' back='A' mat='2'>
+				<main texture='tRock' mask='maskStone'/>
+				<border texture='tSkol' mask='maskStoneBorder'/>
+			</mat>
+			<mat drawLayer='1' id='H' name='Earth' physics='1' hp='1000' damageThreshold='100' back='L' mat='6'>
+				<main texture='tStones' mask='maskDirt'/>
+				<border texture='tDirt2' mask='maskDirtBorder'/>
+				<filter filter='potek'/>
+			</mat>
+			<mat drawLayer='1' id='I' name='Brick' physics='1' hp='1000' damageThreshold='100' back='A' mat='4'>
+				<main texture='tBrick2' mask='maskBare'/>
+				<floor texture='tFloor' mask='maskFloor'/>
+			</mat>
+			<mat drawLayer='1' id='J' name='Iron Wall' physics='1' hp='5000' damageThreshold='1200' back='A' mat='1'>
+				<main texture='tMWall'/>
+				<filter filter='cont_metal'/>
+				<floor texture='tFloorMetal' mask='maskFloor'/>
+				<border texture='tKlep2' mask='maskMetalBorder'/>
+			</mat>
+			<mat drawLayer='1' id='K' name='Iron Structures' physics='1' hp='1000' damageThreshold='100' back='A' mat='1'>
+				<main texture='tMWall2'/>
+				<floor texture='tFloorMetal' mask='maskFloor'/>
+				<filter filter='cont_metal'/>
+			</mat>
+			<mat drawLayer='1' id='L' name='Moss' physics='1' hp='1000' damageThreshold='100' back='A' mat='2'>
+				<main texture='tConcreteMoss' mask='maskDirt'/>
+				<border texture='tMoss' mask='maskDirtBorder'/>
+				<filter filter='potek'/>
+			</mat>
+			<mat drawLayer='1' id='M' name='Rusty Metal' physics='1' hp='5000' damageThreshold='1200' back='A' mat='1'>
+				<main texture='tRust'/>
+				<border texture='tKlep' mask='maskSimple'/>
+				<filter filter='cont'/>
+			</mat>
+			<mat drawLayer='1' id='N' name='Building Wall' physics='1' hp='1000' damageThreshold='100' back='A' mat='2'>
+				<main texture='tBuild' mask='maskDirt'/>
+				<border texture='tConRough' mask='maskDirtBorder'/>
+				<floor texture='tFloor' mask='maskFloor'/>
+			</mat>
+			<mat drawLayer='1' id='O' name='Base Wall' physics='1' hp='5000' damageThreshold='4000' back='A' mat='1'>
+				<main texture='tBaseMetal'/>
+				<filter filter='cont_metal'/>
+				<floor texture='tFloorMetal' mask='maskFloor'/>
+				<border texture='tKlep2' mask='maskMetalBorder'/>
+			</mat>
+			<mat drawLayer='1' id='P' name='Canterlot Brick' physics='1' hp='1000' damageThreshold='100' back='A' mat='2'>
+				<main texture='tCanBrick' mask='maskBare'/>
+				<floor texture='tFloor' mask='maskFloor'/>
+			</mat>
+			<mat drawLayer='1' id='Q' name='Canterlot Concrete' physics='1' hp='1000' damageThreshold='100' back='A' mat='2'>
+				<main texture='tConRough' mask='maskBare'/>
+				<border texture='tBorder' mask='maskBorderBare'/>
+				<floor texture='tFloor' mask='maskFloor'/>
+			</mat>
+			<mat drawLayer='1' id='R' name='Roof' physics='1' hp='150' damageThreshold='10' back='A' mat='4'>
+				<main texture='tRoof' mask='maskDirt'/>
+				<floor texture='tRoofFloor' mask='maskFloor'/>
+				<filter filter='potek'/>
+			</mat>
+			<mat drawLayer='1' id='S' name='Sturdy Enclave Wall' physics='1' hp='5000' damageThreshold='4000' back='A' mat='1'>
+				<main texture='tEncl1'/>
+				<filter filter='cont_metal'/>
+				<floor texture='tFloorMetal' mask='maskFloor'/>
+				<border texture='tKlep3' mask='maskMetalBorder'/>
+			</mat>
+			<mat drawLayer='1' id='T' name='Enclave Wall' physics='1' hp='1000' damageThreshold='100' back='A' mat='1'>
+				<main texture='tEncl2'/>
+				<filter filter='cont_metal'/>
+				<floor texture='tFloorMetal' mask='maskFloor'/>
+				<border texture='tKlep3' mask='maskMetalBorder'/>
+			</mat>
+			
+			<mat drawLayer='0' id='100' name='Border' physics='1' hp='10000' back='A' indestruct='1' mat='1'>
+				<main texture='tMetal' mask='TileMask'/>
+				<border texture='tKlep' mask='maskSimple'/>
+				<filter filter='cont'/>
+			</mat>
+			
+			<mat drawLayer='3' id='А' name='Right Staircase' mirroredVer='Б' vid='3' mat='1' stair='1'>
+			</mat>
+			<mat drawLayer='3' id='Б' name='Left Staircase' mirroredVer='А' vid='1' mat='1' stair='-1'>
+			</mat>
+			
+			<mat drawLayer='4' id='-' name='Rusty Beam' mat='1' shelf='1' rear='1'>
+				<main texture='tShelf' mask='TileMask'/>
+			</mat>
+			<mat drawLayer='4' id='В' name='LtRSteps' mirroredVer='Г' vid='6' mat='1' diagon='1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='Г' name='RtLSteps' mirroredVer='В' vid='5' mat='1' diagon='-1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='Д' name='Wooden Beam' mat='3' shelf='1' rear='1'>
+				<main texture='tWoodBeam' mask='TileMask'/>
+				<filter filter='cont_th'/>
+			</mat>
+			<mat drawLayer='4' id='Ж' name='LtR Wooden Steps' mirroredVer='З' vid='8' mat='3' diagon='1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='З' name='RtL Wooden Steps' mirroredVer='Ж' vid='7' mat='3' diagon='-1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='Е' name='Steel Beam' mat='1' shelf='1' rear='1'>
+				<main texture='tStShelf' mask='TileMask'/>
+				<filter filter='cont'/>
+			</mat>
+			<mat drawLayer='4' id='И' name='LtR Steel Steps' mirroredVer='Й' vid='10' mat='1' diagon='1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='Й' name='RtL Steel Steps' mirroredVer='И' vid='9' mat='1' diagon='-1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='К' name='Concrete Beam' mat='2' shelf='1' rear='1'>
+				<main texture='tConBeam' mask='TileMask'/>
+				<filter filter='cont'/>
+			</mat>
+			<mat drawLayer='4' id='Л' name='LtR Concrete Steps' mirroredVer='М' vid='12' mat='2' diagon='1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='М' name='RtL Concrete Steps' mirroredVer='Л' vid='11' mat='2' diagon='-1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='Н' name='Canterlot Beam' mat='2' shelf='1' rear='1'>
+				<main texture='tCanBeam' mask='TileMask'/>
+			</mat>
+			<mat drawLayer='4' id='О' name='LtR Canterlot Steps' mirroredVer='П' vid='14' mat='2' diagon='1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='П' name='RtL Canterlot Steps' mirroredVer='О' vid='13' mat='2' diagon='-1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='Р' name='Cloud Beam' mat='2' shelf='1' rear='1'>
+				<main texture='tCloudBeam' mask='TileMask'/>
+			</mat>
+			<mat drawLayer='4' id='С' name='LtR Cloud Steps' mirroredVer='Т' vid='16' mat='2' diagon='1' rear='1'>
+			</mat>
+			<mat drawLayer='4' id='Т' name='RtL Cloud Steps' mirroredVer='С' vid='15' mat='2' diagon='-1' rear='1'>
+			</mat>
+			
+			<!-- BACKWALLS -->
+			<mat drawLayer='2' name='Back Wall' id='A'>
+				<main texture='tConcreteBack' mask='maskDirt'/>
+			</mat>
+			<mat drawLayer='2' name='Ceramic Tile' id='B'>
+				<main texture='tKaf'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Concrete Slabs' id='C'>
+				<main texture='tConPlates'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Brick Wall' id='D' slit='1'>
+				<main texture='tBrick' mask='maskCTiles'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Large Blocks' id='E'>
+				<main texture='tBlocks'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Metal Plates' id='F'>
+				<main texture='tMetalPlates'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Corrugated Metal' id='G'>
+				<main texture='tMetalVert'/>
+			</mat>
+			<mat drawLayer='2' name='Rusty Corrugated Metal' id='H'>
+				<main texture='tMetalRust'/>
+			</mat>
+			<mat drawLayer='2' name='Vent Duct' id='I'>
+				<main texture='tVent'/>
+			</mat>
+			<mat drawLayer='2' name='Peeling Plaster' id='J'>
+				<main texture='tShtuk' mask='maskCTiles'/>
+			</mat>
+			<mat drawLayer='2' name='Mesh' id='K'>
+				<main texture='tSetka'/>
+			</mat>
+			<mat drawLayer='2' name='Earth' id='L'>
+				<main texture='tDirt2'  mask='maskDirt'/>
+			</mat>
+			<mat drawLayer='2' name='Wooden Planks' id='M'>
+				<main texture='tWoodPlanks'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Stable Plates' id='N'>
+				<main texture='tStPlates'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Mechanisms' id='O' lurk='1'>
+				<main texture='tMeh'/>
+				<filter filter='dyrka'/>
+			</mat>
+			<mat drawLayer='2' name='Dark Wall' id='P'>
+				<main texture='tDarkMetal' alt='tMbase'/>
+			</mat>
+			<mat drawLayer='2' name='Dark Plates' id='Q'>
+				<main texture='tDarkPlates' alt='tLightPlate'/>
+			</mat>
+			<mat drawLayer='2' name='Dark Rivets' id='R'>
+				<main texture='tDarkRivets' alt='tPlates2'/>
+			</mat>
+			<mat drawLayer='2' name='Pipes' id='S' lurk='1'>
+				<main texture='tPipes' mask='maskCrack'/>
+				<filter filter='dyrka'/>
+			</mat>
+			<mat drawLayer='2' name='Rusty Plates' id='T'>
+				<main texture='tRustPlates'/>
+			</mat>
+			<mat drawLayer='2' name='Base Wall' id='U'>
+				<main texture='tBase'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Canterlot Wall' id='V'>
+				<main texture='tCanStuc' mask='maskCTiles'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Canterlot Tiles' id='W'>
+				<main texture='tCanTiles' mask='maskCTiles'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Ornament' id='X'>
+				<main texture='tOrn'/>
+			</mat>
+			<mat drawLayer='2' name='Enclave Wall' id='Y'>
+				<main texture='tEncl2'/>
+				<filter filter='plitka'/>
+			</mat>
+			<mat drawLayer='2' name='Cloud Wall' id='Z'>
+				<main texture='tCloud'/>
+				<filter filter='cloud'/>
+			</mat>

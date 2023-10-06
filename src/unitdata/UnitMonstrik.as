@@ -5,6 +5,8 @@ package unitdata
 	import locdata.Tile;
 	import weapondata.WPunch;
 	
+	import components.Settings;
+	
 	public class UnitMonstrik extends Unit{
 
 		var optDistAtt:int=100;
@@ -54,14 +56,16 @@ package unitdata
 		}
 
 		//сделать героем
-		public override function setHero(nhero:int=1) {
+		public override function setHero(nhero:int=1)
+		{
 			super.setHero(nhero);
 			if (hero==1) {
 				hp=maxhp=maxhp*2;
 			}
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1) {
+		public override function alarma(nx:Number=-1,ny:Number=-1)
+		{
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
 				aiSpok=maxSpok;
@@ -71,7 +75,8 @@ package unitdata
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			super.expl();
 			if (id=='tarakan') {
 				newPart('shmatok',2,1);
@@ -79,7 +84,8 @@ package unitdata
 			}
 		}
 		
-		public override function animate() {
+		public override function animate()
+		{
 			var cframe:int;
 			if (trup && (sost==2 || sost==3)) { //сдох
 				if (stay && animState!='death') {
@@ -130,7 +136,8 @@ package unitdata
 		//2 - видит цель, бежит к ней, атакует
 		//3 - атакует оружием
 		
-		public override function control() {
+		public override function control()
+		{
 			var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
@@ -149,7 +156,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (World.world.enemyAct<=0) {
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -172,7 +179,7 @@ package unitdata
 			}
 			//поиск цели
 			//trace(aiState)
-			if (World.world.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) {
 				if (findCel() && celUnit) {
 					aiSpok=maxSpok;
 				} else {
@@ -224,7 +231,7 @@ package unitdata
 				//поворачиваем, если впереди некуда бежать
 				if (stay && shX1>0.5 && aiNapr<0) {
 					if (optJumping && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=1;
@@ -232,7 +239,7 @@ package unitdata
 				}
 				if (stay && shX2>0.5 && aiNapr>0) {
 					if (optJumping && isrnd(0.1)) {
-						t=location.getAbsTile(X+storona*80,Y+10);
+						t=room.getAbsTile(X+storona*80,Y+10);
 						if (t.phis==1 || t.shelf) {
 							jump(0.5);
 						} else turnX=-1;
@@ -325,7 +332,7 @@ package unitdata
 				}
 			}
 			
-			if (Y>location.spaceY*World.tilePixelHeight-80) throu=false;
+			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
 		}
 		
 		public function attack() {

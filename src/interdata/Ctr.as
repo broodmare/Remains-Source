@@ -6,6 +6,7 @@ package interdata
 	import flash.ui.Keyboard;
 	import flash.display.StageDisplayState;
 	
+	import components.Settings;
 	
 	public class Ctr 
 	{
@@ -315,32 +316,36 @@ package interdata
 			//return "<img src='mouse_"+key+"' hspace='0' vspace='0'>";//width='16' height='16' 
 		}
 		
-		public function permissKey(key:uint):Boolean {
+		public function permissKey(key:uint):Boolean 
+		{
 			if (key==Keyboard.CONTROL || key==Keyboard.ESCAPE || key==Keyboard.TAB || key==Keyboard.CAPS_LOCK || key==Keyboard.DELETE ||  key==Keyboard.END ||  key==Keyboard.HOME ||  key==Keyboard.INSERT) return false;
 			return true;
 		}
 		
 		// Send a request to change the key, execute the fun function upon completion
-		public function requestKey(fun:Function=null) {
+		public function requestKey(fun:Function=null) 
+		{
 			setkeyOn=true;
 			setkeyRequest=null;
 			setkeyFun=fun;
 		}
 		
 		// Request completed
-		function requestOk(nkey) {
+		function requestOk(nkey) 
+		{
 			setkeyOn=false;
 			setkeyRequest=nkey;
 			if (setkeyFun) setkeyFun();
 		}
 
-		public function onMouseMove1(event:MouseEvent):void {
+		public function onMouseMove1(event:MouseEvent):void 
+		{
 			World.world.cam.celX=event.stageX;
 			World.world.cam.celY=event.stageY;
 			if (World.world.gui) {
 				if (event.stageY<100 && event.stageX>World.world.swfStage.stageWidth-400) World.world.gui.infoAlpha=0.2;
 				else World.world.gui.infoAlpha=1;
-				World.world.gui.showDop=World.world.showFavs && (event.stageY>World.world.swfStage.stageHeight-15);
+				World.world.gui.showDop=Settings.showFavs && (event.stageY>World.world.swfStage.stageHeight-15);
 			}
 		}
 		public function onMouseDown1(event:MouseEvent):void {
@@ -361,10 +366,12 @@ package interdata
 				if (keys['lmb']) this[keys['lmb'].id]=true;
 			}
 		}
-		public function onMouseUp1(event:MouseEvent):void {
+		public function onMouseUp1(event:MouseEvent):void 
+		{
 			if (keys['lmb']) this[keys['lmb'].id]=false;
 		}
-		private function onRightMouse(event:MouseEvent):void {
+		private function onRightMouse(event:MouseEvent):void 
+		{
             // Disable the menu
         }
 		public function onRightMouseDown1(event:MouseEvent):void {
@@ -378,7 +385,8 @@ package interdata
 			//if (event.clickCount>1) rbmDbl=true;
 			if (keys['rmb']) this[keys['rmb'].id]=true;
 		}
-		public function onRightMouseUp1(event:MouseEvent):void {
+		public function onRightMouseUp1(event:MouseEvent):void 
+		{
 			if (keys['rmb']) this[keys['rmb'].id]=false;
 		}
 		public function onMiddleMouseDown1(event:MouseEvent):void {
@@ -389,7 +397,8 @@ package interdata
 			}
 			if (keys['mmb']) this[keys['mmb'].id]=true;
 		}
-		public function onMiddleMouseUp1(event:MouseEvent):void {
+		public function onMiddleMouseUp1(event:MouseEvent):void 
+		{
 			if (keys['mmb']) this[keys['mmb'].id]=false;
 		}
 		public function onMouseWheel1(event:MouseEvent):void {
@@ -400,7 +409,8 @@ package interdata
 				return;
 			}
 			try {
-				if (World.world.gui.inform.visible && World.world.gui.inform.scText.visible) {
+				if (World.world.gui.inform.visible && World.world.gui.inform.scText.visible) 
+				{
 					World.world.gui.inform.txt.scrollV-=event.delta;
 					event.stopPropagation();
 					return;
@@ -455,17 +465,17 @@ package interdata
 			if (event.keyCode==Keyboard.END) {
 				World.world.consolOnOff()
 			}
-			if (World.world.chitOn && event.keyCode==Keyboard.HOME) {
+			if (Settings.chitOn && event.keyCode==Keyboard.HOME) {
 				keyTest1=true;
 			}
-			if (event.keyCode==Keyboard.DELETE && World.world.testMode) {
+			if (event.keyCode==Keyboard.DELETE && Settings.testMode) {
 				World.world.onPause=!World.world.onPause;
 			}
 			if (event.keyCode==Keyboard.INSERT) {
 				World.world.redrawLoc();
 			}
 			if (event.keyCode==Keyboard.BACKQUOTE) keyFly=true;
-			if (World.world.chitOn) {
+			if (Settings.chitOn) {
 				if (event.keyCode==Keyboard.INSERT) keyTest2=true;
 			}
 			if (keyFull) {// Only works in the event handler
@@ -474,7 +484,8 @@ package interdata
 			}
 		}
 		
-		public function onKeyboardUpEvent(event:KeyboardEvent):void {
+		public function onKeyboardUpEvent(event:KeyboardEvent):void 
+		{
 			if (event.keyCode<256) keyDowns[event.keyCode]=false;
 			if (keys[event.keyCode]) {
 				this[keys[event.keyCode].id]=false;

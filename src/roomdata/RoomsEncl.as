@@ -4,8 +4,8 @@ package roomdata {
 		
 		public function RoomsEncl() {
 		}
-		public var rooms:XML=<all>
-  <land/>
+		public var roomContainer:XML=<all>
+  <level/>
   <room name="облака2">
     <a>S.S.S.S._._._._.S.S.S.S.S._Y._O._O._Y.S.S.S.S.S._Y._O._O._Y.S.S.S.S.S.S.S.S.S.S.S.S.S.S._Y._Y._Y._Y.S.S.S.S</a>
     <a>_._Z._Z._Z._Z._Z._Z._Z._Z._Z._Z._Z._Z._Y._O._O._Y._Z._Z._Z._Z._Z._Y._O._O._Y._Z._Z._Z._Z._Z._Z._Z._Z._Z._Z._Z._Z._Z._Y._Y._Y._Y._Y._Y._Y._Y._Y</a>

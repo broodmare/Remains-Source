@@ -3,9 +3,10 @@ package graphdata
 	
 	import flash.filters.GlowFilter;
 
-	import locdata.Location;
+	import locdata.Room;
 	import servdata.BlitAnim;
 	
+	import components.Settings;
 
 	public class Emitter 
 	{
@@ -25,16 +26,16 @@ package graphdata
 		}
 		
 		// The specified emitter creates a particle
-		public static function emit(nid:String, location:Location, nx:Number, ny:Number, param:Object=null) {
+		public static function emit(nid:String, room:Room, nx:Number, ny:Number, param:Object=null) {
 			var em:Emitter=arr[nid];
-			if (em) em.cast(location,nx,ny,param);
+			if (em) em.cast(room,nx,ny,param);
 			else trace ('Нет частицы '+nid);
 		}
 		
 		/*
 				Particles
 				vis - visual class
-				ctrans='1' - location's color settings are applied
+				ctrans='1' - room's color settings are applied
 				move='1' - particle moves
 				alph='1' - particle becomes transparent towards the end of its life
 				
@@ -112,9 +113,9 @@ package graphdata
 		//txt - text used in text particles
 		//celx+cely - orientation
 		
-		public function cast(location:Location, nx:Number, ny:Number, param:Object=null):Part {
-			if (location==null || !location.locationActive) return null;
-			if (kol2>World.world.maxParts && imp==0) return null;
+		public function cast(room:Room, nx:Number, ny:Number, param:Object=null):Part {
+			if (room==null || !room.roomActive) return null;
+			if (kol2>Settings.maxParts && imp==0) return null;
 			var kol:int=1;
 			if (param && param.kol) kol=param.kol;
 			if (kol>50) kol=50;
@@ -123,7 +124,7 @@ package graphdata
 			for (var i=1; i<=kol; i++) {
 				if (maxkol>0 && kols[maxkol]>=12) return p;
 				p=new Part();
-				p.location=location;
+				p.room=room;
 				p.layer=layer;
 				p.X=nx;
 				p.Y=ny;
@@ -164,9 +165,9 @@ package graphdata
 					if (param.dframe) dframe=param.dframe;
 					if (param.otklad) otklad=param.otklad;
 				}
-				p.ddy=World.ddy*grav;
+				p.ddy=Settings.ddy*grav;
 				p.brake=brake;
-				if (rgrav) p.ddy+=World.ddy*rgrav*Math.random();
+				if (rgrav) p.ddy+=Settings.ddy*rgrav*Math.random();
 				p.liv=p.mliv=Math.floor(Math.random()*rliv)+minliv;
 				p.isAlph=alph;
 				p.isPreAlph=prealph;
@@ -194,7 +195,7 @@ package graphdata
 					p.vis.blendMode=blend;
 					if (scale!=1) p.vis.scaleX=p.vis.scaleY=scale;
 					if (rsc!=0) p.vis.scaleX=p.vis.scaleY=scale-rsc+Math.random()*rsc;
-					if (ctrans) p.vis.transform.colorTransform=location.cTransform;
+					if (ctrans) p.vis.transform.colorTransform=room.cTransform;
 					if (filter && Emitter.fils[filter]) p.vis.filters=Emitter.fils[filter];
 					if (param && param.celx!=null && param.cely!=null && p.vis.len) {
 						var gx=param.celx-p.X;
@@ -209,7 +210,7 @@ package graphdata
 						}
 					}
 					if (param && param.mirr) p.vis.scaleX=-p.vis.scaleX;
-					location.addObj(p);
+					room.addObj(p);
 					if (prealph) p.vis.alpha=0;
 					if (id=='numb' && param.txt) p.vis.numb.text=param.txt;
 					if ((id=='replic' || id=='replic2') && param.txt) {

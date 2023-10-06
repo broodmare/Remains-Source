@@ -21,9 +21,11 @@ package interdata
 	import weapondata.Weapon;
 	import servdata.Item;
 	import servdata.LootGen;
-	import locdata.LandAct;
+	import locdata.LevelTemplate;
 	import unitdata.UnitPet;
 	
+	import components.Settings;
+
 	public class PipPage 
 	{
 
@@ -51,7 +53,6 @@ package interdata
 		
 		var infIco:MovieClip;
 		var itemFilter:GlowFilter=new GlowFilter(0x00FF88,1,3,3,3,1);
-		//var itemTrans:ColorTransform=new ColorTransform(0,1,0.5);
 		var itemTrans:ColorTransform=new ColorTransform(1,1,1);
 		
 		var pp:String;
@@ -64,7 +65,8 @@ package interdata
 		//setStatItems - обновить все элементы, не перезагружая страницу
 		//setStatus - полностью обновить страницу
 
-		public function PipPage(npip:PipBuck, npp:String) {
+		public function PipPage(npip:PipBuck, npp:String) 
+		{
 			
 			pip=npip;
 			
@@ -83,14 +85,14 @@ package interdata
 			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
 			statArr=new Array();
 			var item:MovieClip;
-			for (var i=-1; i<maxrows; i++) {
+			for (var i:int = -1; i < maxrows; i++) 
+			{
 				item=new itemClass(); 
 				item.x=30;
 				item.y=100+i*30;
 				if (item.nazv) setStyle(item.nazv);
 				vis.addChild(item);
 				if (item.ramka) item.ramka.visible=false;
-				//item.hitArea=item.back;
 				if (i<0) {
 					item.back.visible=false;
 					statHead=item;
@@ -101,23 +103,24 @@ package interdata
 					statArr.push(item);
 				}
 			}
-			for (i=1; i<=5; i++) {
-				item=vis.getChildByName('but'+i) as MovieClip;
-				item.addEventListener(MouseEvent.CLICK,page2Click);
-				item.text.text=Res.pipText(pp+i);
-				//if (ons[i]==0) item.visible=false;
-				item.id.text=i;
-				item.id.visible=false;
+			for (var j:int  = 1; j <= 5; j++) 
+			{
+				item=vis.getChildByName('but' + j) as MovieClip;
+				item.addEventListener(MouseEvent.CLICK, page2Click);
+				item.text.text = Res.pipText(pp + j);
+				item.id.text = j;
+				item.id.visible = false;
 			}
-			vis.butOk.visible=false;
-			vis.butDef.visible=false;
-			if (vis.cats) vis.cats.visible=false;
+			vis.butOk.visible = false;
+			vis.butDef.visible = false;
+			if (vis.cats) vis.cats.visible = false;
 			
 			setStyle(vis.info);
 			setStyle(vis.bottext);
 		}
 		
-		public static function setStyle(tt:TextField) {
+		public static function setStyle(tt:TextField)
+		{
 			var style:StyleSheet = new StyleSheet(); 
 			var styleObj:Object = new Object(); 
 			styleObj.color = "#00FF99"; 
@@ -146,23 +149,26 @@ package interdata
 			tt.styleSheet=style;
 		}
 		
-		public function updateLang() {
-			for (var i=1; i<=5; i++) {
+		public function updateLang()
+		{
+			for (var i:int = 1; i <= 5; i++) 
+			{
 				var item=vis.getChildByName('but'+i) as MovieClip;
 				item.text.text=Res.pipText(pp+i);
 			}
 		}
 
-		public function page2Click(event:MouseEvent) {
+		public function page2Click(event:MouseEvent)
+		{
 			if (World.world.ctr.setkeyOn) return;
-			page2=int(event.currentTarget.id.text);
+			page2 = int(event.currentTarget.id.text);
 			setStatus();
 			pip.snd(2);
 		}
 		
-		public function setButtons() 
+		public function setButtons()
 		{
-			for (var i=1; i<=5; i++) 
+			for (var i:int = 1; i <= 5; i++) 
 			{
 				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
 				if (page2==i) item.gotoAndStop(2);
@@ -171,7 +177,7 @@ package interdata
 			}
 		}
 		
-		public function setStatus(flop:Boolean=true) 
+		public function setStatus(flop:Boolean=true)
 		{
 			pip.reqKey=false;
 			statHead.id.text='';
@@ -192,7 +198,7 @@ package interdata
 			setSubPages();
 			setStatItems(flop?0:-1);
 
-			var sc:ScrollBar=vis.scBar;
+			var sc:ScrollBar = vis.scBar;
 			if (arr.length>maxrows) 
 			{
 				sc.visible=true;
@@ -220,29 +226,29 @@ package interdata
 		}
 		
 		//показ одного элемента
-		function setStatItem(item:MovieClip, obj:Object) 
+		function setStatItem(item:MovieClip, obj:Object)
 		{
 
 		}
 		
 		//информация об элементе
-		function statInfo(event:MouseEvent) 
+		function statInfo(event:MouseEvent)
 		{
 
 		}
 		
-		function itemClick(event:MouseEvent) 
+		function itemClick(event:MouseEvent)
 		{
 
 		}
 
-		function itemRightClick(event:MouseEvent) 
+		function itemRightClick(event:MouseEvent)
 		{
 
 		}
 		
 		//показ всех элементов
-		function setStatItems(n:int=-1) 
+		function setStatItems(n:int=-1)
 		{
 			if (n>=0) scrl=n;
 			for (var i=0; i<statArr.length; i++) 
@@ -259,13 +265,14 @@ package interdata
 			}
 		}
 		
-		function setIco(tip:int=0, id:String='') 
+		function setIco(tip:int=0, id:String='')
 		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
 			vis.pers.visible=vis.skill.visible=false;
 			vis.item.gotoAndStop(1);
 			vis.info.y=vis.ico.y;
-			if (tip==1) {//оружие
+			if (tip==1) //оружие
+			{
 				var w:Weapon=pip.arrWeapon[id];
 				if (w.tip==5) 
 				{
@@ -279,7 +286,7 @@ package interdata
 					if (node.length()) 
 					{
 						node=node[0];
-						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
+						if (node.vis.length && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
 					}
 					if (vWeapon==null) 
 					{
@@ -291,7 +298,7 @@ package interdata
 						infIco.stop();
 						if (infIco.lez) infIco.lez.stop();
 						var r:Number=1;
-						if (node.length() && node.vis.length()) 
+						if (node.length && node.vis.length()) 
 						{
 							if (node.vis.@icomult.length()) 
 							{
@@ -371,14 +378,15 @@ package interdata
 		//добавить в текстовую строку значения
 		public static function addVar(s:String, xml):String 
 		{
-			for (var i=1; i<=5; i++) 
+			for (var i:int = 1; i<=5; i++) 
 			{
 				if (xml.attribute('s'+i).length())  s=s.replace('#'+i,"<span class='yel'>"+xml.attribute('s'+i)+"</span>");
 			}
 			return s;
 		}
 		
-		public static function effStr(tip:String, id:String, dlvl:int=0):String {
+		public static function effStr(tip:String, id:String, dlvl:int=0):String 
+		{
 			var s:String;
 			if (tip=='item') s=Res.txt('i',id,1)
 			else s=Res.txt('e',id,1);
@@ -389,32 +397,38 @@ package interdata
 			if (dp.length()==0) return s;
 			dp=dp[0];
 			//определение текущего уровня
-			var lvl=1;
-			var pers=World.world.pers;
-			if (tip=='perk') {
+			var lvl = 1;
+			var pers = World.world.pers;
+			if (tip=='perk')
+			{
 				lvl=pers.perks[id];
 				if (lvl==null) lvl=0;
-			} else if (tip=='skill') {
+			} else if (tip=='skill') 
+			{
 				lvl=pers.getSkLevel(pers.skills[id]);
-			} else if (dp.@him=='2') {
+			} else if (dp.@him=='2') 
+			{
 				var ad=pers.addictions[id];
 				if (ad>=pers.ad2) lvl=2;
 				if (ad>=pers.ad3) lvl=3;
-			} else if (dp.@him=='1') lvl=pers.himLevel;
+			} 
+			else if (dp.@him=='1') lvl=pers.himLevel;
 			lvl+=dlvl;
-							//trace(id, lvl);
+			//trace(id, lvl);
 			//вставка в текст числовых значений
 			if (lvl>1 && dp.textvar[lvl-1]) s=addVar(s,dp.textvar[lvl-1]);
 			else if (dp.textvar.length()) s=addVar(s,dp.textvar[0]);
 			//добавление особых эффектов
-			if (dp.eff.length() && lvl>0) {
+			if (dp.eff.length && lvl>0) 
+			{
 				s+='<br>';
-				for each(var eff in dp.eff) {
+				for each(var eff in dp.eff) 
+				{
 					s+='<br>'+(eff.@id.length()?Res.pipText(eff.@id):Res.pipText('refeff'))+': '+yel(eff.attribute('n'+lvl));
 				}
 			}
 			//добавление эффектов веса
-			if (World.world.hardInv && dp.sk.length()) 
+			if (Settings.hardInv && dp.sk.length()) 
 			{
 				s+='<br>';
 				for each(var sk in dp.sk) 
@@ -464,14 +478,16 @@ package interdata
 		}
 		
 		
-		public static function infoStr(tip:String, id:String):String {
+		public static function infoStr(tip:String, id:String):String 
+		{
 			var s:String='';
 			var pip=World.world.pip;
 			var gg=World.world.gg;
 			var inv:Invent=World.world.invent;
 			if (tip==Item.L_ARMOR && inv.armors[id]==null && pip.arrArmor[id]==null) tip=Item.L_ITEM;
 			if (tip==Item.L_WEAPON && inv.weapons[id] && inv.weapons[id].spell) tip=Item.L_ITEM;
-			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
+			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) 
+			{
 				var w:Weapon=pip.arrWeapon[id];
 				if (w==null) return '';
 				w.setPers(gg,gg.pers);
@@ -525,12 +541,11 @@ package interdata
 				if (w.explKol>1) s+=' [x'+w.explKol+']';
 				var wrapid=w.resultRapid(w.rapid);
 				if (w.tip!=4) {
-					s+='\n'+Res.pipText('aps')+': '+yel(Number(World.fps/wrapid).toFixed(1));
-					s+='\n'+Res.pipText('dps')+': '+yel(Number((wdam+wdamexpl)*w.kol*World.fps/wrapid).toFixed(1));
-					if (w.holder) s+=' ('+yel(Number((wdam+wdamexpl)*w.kol*World.fps/(wrapid+w.reload*w.reloadMult/w.holder*w.rashod)).toFixed(1))+')';
+					s+='\n'+Res.pipText('aps')+': '+yel(Number(Settings.fps/wrapid).toFixed(1));
+					s+='\n'+Res.pipText('dps')+': '+yel(Number((wdam+wdamexpl)*w.kol*Settings.fps/wrapid).toFixed(1));
+					if (w.holder) s+=' ('+yel(Number((wdam+wdamexpl)*w.kol*Settings.fps/(wrapid+w.reload*w.reloadMult/w.holder*w.rashod)).toFixed(1))+')';
 				}
 				s+='\n'+Res.pipText('critch')+': '+yel(Math.round((w.critCh+w.critchAdd+gg.critCh)*100)+'%');
-				//s+='\n'+Res.pipText('critmult')+': '+yel(Math.round((w.critDamPlus+gg.critDamMult)*100)+'%');
 				s+='\n'+Res.pipText('tipdam')+': '+blue(Res.pipText('tipdam'+w.tipDamage));
 				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('inv5')+': '+yel(Res.txt('i',w.ammo));
 				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('holder')+': '+yel(w.holder);
@@ -554,10 +569,12 @@ package interdata
 				}
 				var sinf=Res.txt('w',id,1);
 				if (sinf=='') sinf=Res.txt('w',w.id,1);
-				if (World.world.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
-				if (World.world.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
+				if (Settings.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
+				if (Settings.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				s+='\n\n'+sinf;
-			} else if (tip==Item.L_ARMOR) {
+			} 
+			else if (tip==Item.L_ARMOR) 
+			{
 				var a:Armor=inv.armors[id];
 				if (a==null) a=pip.arrArmor[id];
 				if (a.armor_qual>0) s+=Res.pipText('aqual')+': '+yel(Math.round(a.armor_qual*100)+'%');
@@ -584,7 +601,9 @@ package interdata
 				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.pipText('acid')+': '+yel(Math.round(a.resist[Unit.D_ACID]*100)+'%');
 				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.pipText('necro')+': '+yel(Math.round(a.resist[Unit.D_NECRO]*100)+'%');
 				s+='\n\n'+Res.txt('a',id,1);
-			} else if (tip==Item.L_AMMO) {
+			} 
+			else if (tip==Item.L_AMMO) 
+			{
 				var ammo=inv.items[id].xml;
 				if (AllData.d.weapon.(@id==id).length()) {
 					s=Res.txt('w',id,1);
@@ -602,18 +621,22 @@ package interdata
 				if (ammo.@armor.length()) s+='\n'+Res.pipText('tarmor')+': x'+yel(ammo.@armor);
 				if (ammo.@prec.length()) s+='\n'+Res.pipText('prec')+': x'+yel(ammo.@prec);
 				if (ammo.@det>0) s+='\n'+Res.pipText('det');
-				if (World.world.hardInv && ammo.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
+				if (Settings.hardInv && ammo.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				if (ammo.@sell>0) s+='\n'+Res.pipText('sell')+": "+yel(ammo.@sell);
-			} else {
+			} 
+			else 
+			{
 				var hhp:Number=0;
 				s=Res.txt('i',id,1)+'\n';
 				var pot=inv.items[id].xml;
 				tip=pot.@tip;
-				if (tip=='instr' || tip=='impl'|| tip=='art') {
+				if (tip=='instr' || tip=='impl'|| tip=='art') 
+				{
 					s=effStr('item',id)+'\n';
 				}
-				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') {
-					if (pot.@hhp.length() || pot.@hhplong.length())
+				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') 
+				{
+					if (pot.@hhp.length || pot.@hhplong.length())
 					s+='\n'+Res.pipText('healhp')+': '+yel(Math.round(pot.@hhp*World.world.pers.healMult));
 					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*World.world.pers.healMult));
 					if (pot.@hrad.length()) s+='\n'+Res.pipText('healrad')+': '+yel(Math.round(pot.@hrad*World.world.pers.healMult));
@@ -625,10 +648,9 @@ package interdata
 					if (pot.@hmana.length()) s+='\n'+Res.pipText('healmana')+': '+yel(Math.round(pot.@hmana*World.world.pers.healManaMult));
 					if (pot.@alc.length()) s+='\n'+Res.pipText('alcohol')+': '+yel(Math.round(pot.@alc));
 					if (pot.@rad.length()) s+='\n'+Res.pipText('rad')+': '+yel(Math.round(pot.@rad));
-					if (pot.@effect.length()) {
+					if (pot.@effect.length()) 
+					{
 						s+='\n'+Res.pipText('refeff')+': '+effStr('eff',pot.@effect);
-						//if (tip=='him' && gg.pers.himLevel>1) s+=effStr('eff',pot.@effect,gg.pers.himLevel-1);
-						//else s+=;
 					}
 					if (pot.@perk.length()) s+='\n'+pink(Res.txt('e',pot.@perk))+': '+Res.pipText('level')+' '+(World.world.pers.perks[pot.@perk]>0?World.world.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
@@ -655,16 +677,18 @@ package interdata
 					}
 				}
 				if (tip=='paint') s=Res.txt('p','paint',1);
-				if (World.world.hardInv && pot.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
+				if (Settings.hardInv && pot.@m>0) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
 				if (pot.@sell>0) s+='\n'+Res.pipText('sell')+": "+yel(pot.@sell);
 			}
 			return s;
 		}
 		
-		function infoItem(tip:String, id:String, nazv:String, craft:int=0) {
+		function infoItem(tip:String, id:String, nazv:String, craft:int=0)
+		{
 			vis.nazv.text=nazv;
 			var s:String='';
-			if (id.substr(0,2)=='s_') {
+			if (id.substr(0,2)=='s_') 
+			{
 				id=id.substr(2);
 				craft=1;
 				if (AllData.d.weapon.(@id==id).length()) tip=Item.L_WEAPON;
@@ -672,13 +696,16 @@ package interdata
 				else tip=Item.L_ITEM;
 			}
 			//trace(tip);
-			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) {
+			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) 
+			{
 				if (craft>0) setIco();
 				else setIco(1,id);
 				s=infoStr(tip, id);
 				if (craft==1) s+=craftInfo(id);
 				if (craft==2) s+=craftInfo(id.substr(0,id.length-2));
-			} else if (tip==Item.L_ARMOR) {
+			} 
+			else if (tip==Item.L_ARMOR) 
+			{
 				var a:Armor=inv.armors[id];
 				if (a==null) a=pip.arrArmor[id];
 				if (craft>0) setIco();
@@ -689,13 +716,15 @@ package interdata
 					var cid:String=a.idComp;
 					var kolcomp:int=a.needComp();
 					s+="\n\n<span class = 'or'>"+Res.txt('i',cid)+ " - "+kolcomp+" <span ";
-					if (!World.world.location.base && kolcomp>inv.items[cid].kol || World.world.location.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
+					if (!World.world.room.base && kolcomp>inv.items[cid].kol || World.world.room.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
 					s+="> ("+inv.items[cid].kol;
-					if (World.world.location.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
+					if (World.world.room.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
 					s+=")</span></span>";
 				}
 				if (craft==1) s+=craftInfo(id);
-			} else if (tip==Item.L_AMMO) {
+			} 
+			else if (tip==Item.L_AMMO) 
+			{
 				var ammo=inv.items[id].xml;
 				if (ammo.@base.length()) {
 					vis.nazv.text=Res.txt('i',ammo.@base);
@@ -707,7 +736,9 @@ package interdata
 				}
 				setIco();
 				s=infoStr(tip, id);
-			} else {
+			} 
+			else 
+			{
 				if (craft>0) setIco();
 				else setIco(3,id);
 				s=infoStr(tip, id);
@@ -717,13 +748,15 @@ package interdata
 			vis.info.height=680-vis.info.y; //475;
 			vis.info.scaleX=vis.info.scaleY=1;
 			if (vis.scText) vis.scText.visible=false;
-			if (vis.info.height<vis.info.textHeight && vis.scText) {
+			if (vis.info.height<vis.info.textHeight && vis.scText) 
+			{
 				vis.scText.maxScrollPosition=vis.info.maxScrollV;
 				vis.scText.visible=true;
 			}
 		}
 		
-		public function craftInfo(id:String):String {
+		public function craftInfo(id:String):String 
+		{
 			var s:String='\n';
 			var sch=AllData.d.item.(@id=='s_'+id);
 			if (sch.length()) sch=sch[0];
@@ -732,18 +765,19 @@ package interdata
 			if (sch.@kol.length()) kol=sch.@kol;
 			if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
 			if (kol>1) s+=Res.pipText('crekol')+": "+kol+"\n";
-			if (sch.@skill.length() && sch.@lvl.length()) {
+			if (sch.@skill.length && sch.@lvl.length()) {
 				s+="\n"+Res.pipText('needskill')+": <span class = '";
 				if (gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) s+="red";
 				else s+="pink";
 				s+="'>"+Res.txt('e',sch.@skill)+" - "+sch.@lvl+"</span>\n";
 			}
-			for each(var c in sch.craft) {
+			for each(var c in sch.craft) 
+			{
 				s+="\n<span class = 'or'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
-				if (!World.world.location.base && c.@kol>inv.items[c.@id].kol
-				  || World.world.location.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
+				if (!World.world.room.base && c.@kol>inv.items[c.@id].kol
+				  || World.world.room.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
 				s+=">("+inv.items[c.@id].kol;
-				if (World.world.location.base && inv.items[c.@id].vault>0) s+=' +'+inv.items[c.@id].vault;
+				if (World.world.room.base && inv.items[c.@id].vault>0) s+=' +'+inv.items[c.@id].vault;
 				s+=")</span></span>";
 			}
 			return s;
@@ -894,7 +928,7 @@ package interdata
 			return s;
 		}
 				
-				public function setTopText(s:String='') 
+				public function setTopText(s:String='')
 				{
 					if (s=='') 
 					{
@@ -913,11 +947,11 @@ package interdata
 		public function checkQuest(task):Boolean 
 		{
 			//проверка на доступ к местности
-			if (task.@land.length()) 
+			if (task.@level.length()) 
 			{
-				var land:LandAct=World.world.game.lands[task.@land];
-				if (land==null) return false;
-				if (!land.access && !land.visited && World.world.pers.level<land.dif) return false;
+				var level:LevelTemplate=World.world.game.levelArray[task.@level];
+				if (level==null) return false;
+				if (!level.access && !level.visited && World.world.pers.level<level.dif) return false;
 			}
 			//проверка триггера
 			if (task.@trigger.length()) 
@@ -925,16 +959,16 @@ package interdata
 				if (World.world.game.triggers[task.@trigger]!=1) return false;
 			}
 			//проверка скилла
-			if (task.@skill.length() && task.@skilln.length()) 
+			if (task.@skill.length && task.@skilln.length()) 
 			{
 				if (World.world.pers.skills[task.@skill]<task.@skilln) return false;
 			}
 			return true;
 		}
 		
-		function initCats() 
+		function initCats()
 		{
-			for (var i=0; i<=kolCats; i++) 
+			for (var i:int = 0; i<=kolCats; i++) 
 			{
 				vis.cats['cat'+i].addEventListener(MouseEvent.CLICK,selCatEvent);
 			}
@@ -942,10 +976,10 @@ package interdata
 		}
 		
 		//установить кнопки категорий
-		function setCats() 
+		function setCats()
 		{
-			var arr=tips[page2];
-			if (arr==null) {
+			var arr = tips[page2];
+			if (arr == null) {
 				vis.cats.visible=false;
 				return;
 			}
@@ -969,14 +1003,14 @@ package interdata
 
 		
 		//выбор подкатегории инвентаря
-		function selCatEvent(event:MouseEvent) 
+		public function selCatEvent(event:MouseEvent)
 		{
 			var n:int=int(event.currentTarget.name.substr(3));
 			cat[page2]=n;
 			setStatus();
 		}
 		
-		function selCat(n:int=0) 
+		public function selCat(n:int=0)
 		{
 			for (var i=0; i<=kolCats; i++) 
 			{
@@ -1005,10 +1039,11 @@ package interdata
 			return false;
 		}
 		
-		function statScroll(event:ScrollEvent) 
+		function statScroll(event:ScrollEvent)
 		{
 			setStatItems(event.position);
 		}
+
 		function onMouseWheel1(event:MouseEvent):void 
 		{
 			if (World.world.ctr.setkeyOn) return;
@@ -1026,11 +1061,13 @@ package interdata
 			if (event.delta>0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
 			event.stopPropagation();
 		}
-		public function scroll(dn:int=0) 
+
+		public function scroll(dn:int=0)
 		{
 
 		}
-		public function step() 
+		
+		public function step()
 		{
 
 		}

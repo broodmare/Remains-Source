@@ -6,11 +6,13 @@ package unitdata
 	
 	import weapondata.*;
 	import servdata.BlitAnim;
-	import locdata.Location;
+	import locdata.Room;
 	import servdata.LootGen;
 	import graphdata.Emitter;
 	import locdata.Box;
 	import locdata.Tile;
+	
+	import components.Settings;
 	
 	public class UnitBossAlicorn extends UnitPon{
 		
@@ -49,21 +51,8 @@ package unitdata
 		public function UnitBossAlicorn(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossalicorn';
-			//определить разновидность tr
-			/*if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {								//случайно по параметру ndif
-				tr=1;
-			}*/
+
 			tr=1;
-			
-			//взять параметры из xml
-			//vis=new visualUltraSentinel();
-			//vis.osn.gotoAndStop(1);
 			
 			getXmlParam();
 			walkSpeed=maxSpeed;
@@ -98,7 +87,8 @@ package unitdata
 			timerDie=90;
 		}
 		
-		public override function setLevel(nlevel:int=0) {
+		public override function setLevel(nlevel:int=0)
+		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
@@ -114,14 +104,16 @@ package unitdata
 			} 
 		}
 		
-		public override function dropLoot() {
+		public override function dropLoot()
+		{
 			newPart('bloodblast');
 			Snd.ps('bale_e');
 			currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
-		public override function setWeaponPos(tip:int=0) {
+		public override function setWeaponPos(tip:int=0)
+		{
 			try {
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
 				weaponX=magicX=X+(obj.x+visBmp.x)*storona;
@@ -132,23 +124,27 @@ package unitdata
 			}
 		}
 		
-		public override function expl()	{
+		public override function expl()
+		{
 			newPart('blood',100);
 		}
 		
-		public override function putLoc(nloc:Location, nx:Number, ny:Number) {
-			super.putLoc(nloc,nx,ny);
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		{
+			super.putLoc(newRoom,nx,ny);
 			setCel(null,nx+200*storona, ny-50);
 		}
 		
-		public override function setNull(f:Boolean=false) {
+		public override function setNull(f:Boolean=false)
+		{
 			if (!isNoResBoss()) isShit=true;
 			super.setNull(f);
 			if (teleObj) dropTeleObj();
 			aiState=aiSpok=0;
 		}
 
-		public override function animate() {
+		public override function animate()
+		{
 			try {
 			var cframe:int;
 				if (sost==2) { 
@@ -185,7 +181,8 @@ package unitdata
 			} catch(err) {}
 		}
 		
-		public override function setVisPos() {
+		public override function setVisPos()
+		{
 			if (vis) {
 				if (sost==2) {
 					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
@@ -198,7 +195,7 @@ package unitdata
 		}
 		
 		function emit(n:int=-1) {
-			var un:Unit=location.createUnit('scythe',Math.random()*1600+160,Math.random()*500+100,true);
+			var un:Unit=room.createUnit('scythe',Math.random()*1600+160,Math.random()*500+100,true);
 			un.fraction=fraction;
 			un.dam*=(1+level*0.1);
 			un.oduplenie=0;
@@ -211,22 +208,24 @@ package unitdata
 		}
 		
 		//телепортация
-		public override function teleport(nx:Number,ny:Number,eff:int=0) {
-			Emitter.emit('telered',location,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
+		public override function teleport(nx:Number,ny:Number,eff:int=0)
+		{
+			Emitter.emit('telered',room,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
 			setPos(nx,ny);
 			dx=dy=0;
 			if (currentWeapon) {
 				setWeaponPos(currentWeapon.tip);
 				currentWeapon.setNull();
 			}
-			var t:Tile=location.getAbsTile(X,Y+10);
+			var t:Tile=room.getAbsTile(X,Y+10);
 			if (t.phis || t.shelf) isFly=false;
 			else isFly=true;
 			levit=0;
-			if (eff>0) Emitter.emit('teleport',location,X,Y-scY/2);
+			if (eff>0) Emitter.emit('teleport',room,X,Y-scY/2);
 		}
 		//проверка на попадание пули, наносится урон, если пуля попала, возвращает -1 если не попала
-		public override function udarBullet(bul:Bullet, sposob:int=0):int {
+		public override function udarBullet(bul:Bullet, sposob:int=0):int
+		{
 			var res:int=super.udarBullet(bul, sposob);
 			if (res>0) curA=100;
 			return res;
@@ -247,9 +246,8 @@ package unitdata
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		public override function control() {
-
-			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+		public override function control()
+		{
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
@@ -262,8 +260,8 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			
-			if (location.gg.invulner) return;
-			if (World.world.enemyAct<=0) {
+			if (room.gg.invulner) return;
+			if (Settings.enemyAct<=0) {
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
@@ -319,8 +317,8 @@ package unitdata
 			//поиск цели
 			//trace(aiState)
 			if ((aiState==1 || aiState>1 && attState<=2) && aiTCh%10==1 || attState==5 && aiState==3) {
-				if (attState<2 && location.gg.pet && location.gg.pet.sost==1 && isrnd(0.2)) setCel(location.gg.pet);
-				else setCel(location.gg);
+				if (attState<2 && room.gg.pet && room.gg.pet.sost==1 && isrnd(0.2)) setCel(room.gg.pet);
+				else setCel(room.gg);
 			}
 			if (isFly) {
 				t_float+=0.0726;
@@ -390,10 +388,10 @@ package unitdata
 				}
 				return teleObj;
 			}
-			for each (var b:Box in location.objs) {
+			for each (var b:Box in room.objs) {
 				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (location.isLine(X,Y-scY/2,b.X,b.Y-b.scY/2)) {
+					if (room.isLine(X,Y-scY/2,b.X,b.Y-b.scY/2)) {
 						upTeleObj(b);
 						return b;
 					}
@@ -432,7 +430,7 @@ package unitdata
 				var p:Object;
 				var tspeed:Number=throwForce;
 				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
-				if (teleObj.X<200 || teleObj.X>location.limX-200) tspeed*=0.6;
+				if (teleObj.X<200 || teleObj.X>room.roomPixelWidth-200) tspeed*=0.6;
 				if (teleObj is Unit) {
 					p={x:100*storona, y:-30};
 				} else {
@@ -452,7 +450,8 @@ package unitdata
 			
 		}
 		
-		public override function die(sposob:int=0) {
+		public override function die(sposob:int=0)
+		{
 			superInvis=false;
 			dropTeleObj();
 
@@ -465,7 +464,7 @@ package unitdata
 				aiTCh=10;
 				blood=1;
 				bloodEmit=Emitter.arr['blood'];
-				bloodEmit.cast(location,X,Y-50,{kol:100, rx:scX/2, ry:scY/2});
+				bloodEmit.cast(room,X,Y-50,{kol:100, rx:scX/2, ry:scY/2});
 				visDetails();
 				sost=1;
 				mat=0;
@@ -474,7 +473,8 @@ package unitdata
 			} else super.die();
 		}
 		
-		public override function command(com:String, val:String=null) {
+		public override function command(com:String, val:String=null)
+		{
 			if (com=='off') {
 				walk=0;
 				controlOn=false;

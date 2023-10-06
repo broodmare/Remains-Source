@@ -7,6 +7,8 @@ package weapondata
 	import locdata.Tile;
 	import locdata.Box;
 	
+	import components.Settings;
+	
 	public class PhisBullet extends Bullet 
 	{
 		
@@ -25,7 +27,7 @@ package weapondata
 		public function PhisBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null) 
 		{
 			super(own,nx,ny,visClass);
-			ddy=World.ddy;
+			ddy=Settings.ddy;
 			massa=0.1;
 			warn=1;
 			levitPoss=true;
@@ -33,7 +35,7 @@ package weapondata
 			scX=scY=30;
 			if (vis) vis.visible=true;
 		}
-		public override function step() 
+		public override function step()
 		{
 			if (levit) 
 			{
@@ -55,11 +57,11 @@ package weapondata
 			}
 			if (!babah && !prilip) 
 			{
-				if (Math.abs(dx)<World.maxdelta && Math.abs(dy)<World.maxdelta)	run();
+				if (Math.abs(dx)<Settings.maxdelta && Math.abs(dy)<Settings.maxdelta)	run();
 				else 
 				{
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/World.maxdelta)+1;
-					for (var i=0; (i<div && !babah); i++) run(div);
+					var div:Number =Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
+					for (var i:int = 0; (i<div && !babah); i++) run(div);
 				}
 			}
 			checkWater();
@@ -69,7 +71,7 @@ package weapondata
 				vis.x=X;
 				vis.y=Y;
 			}
-			if (isSensor || location.sky) sensor();
+			if (isSensor || room.sky) sensor();
 			if (expl_t>0) expl_t--;
 			else liv--;
 			if (liv==3) 
@@ -84,11 +86,11 @@ package weapondata
 				onCursor=0;
 				vse=true;
 			}
-			if (explRadius>0) location.warning=10;	// Command for AI to watch out for grenades
+			if (explRadius>0) room.warning=10;	// Command for AI to watch out for grenades
 			if (vse) 
 			{
-				location.remObj(this);
-				location.remGrenade(this);
+				room.remObj(this);
+				room.remGrenade(this);
 			}
 
 			//trace(liv,expl_t);
@@ -97,7 +99,7 @@ package weapondata
 		
 		private function sensor():Boolean 
 		{
-			for each (var un:Unit in location.units) 
+			for each (var un:Unit in room.units) 
 			{
 				if (!un.disabled && un.fraction!=owner.fraction && X>=un.X1 && X<=un.X2 && Y>=un.Y1 && Y<=un.Y2 && un.sost<3) 
 				{
@@ -117,7 +119,7 @@ package weapondata
 			inWater=0;
 			try 
 			{
-				if ((location.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((room.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
 				{
 					inWater=1;
 				}
@@ -126,13 +128,13 @@ package weapondata
 
 			if (pla!=inWater && dy>5) 
 			{
-				Emitter.emit('kap',location,X,Y,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
+				Emitter.emit('kap',room,X,Y,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:5});
 				Snd.ps('fall_item_water',X,Y,0, dy/10);
 			}
 			return inWater;
 		}
 		
-		public override function popadalo(res:int=0) 
+		public override function popadalo(res:int=0)
 		{
 			if (res<0) return;			// Did not hit
 			dx=dy=0;
@@ -151,10 +153,10 @@ package weapondata
 //################################
 
 
-		public override function run(div:int = 1) 
+		public override function run(div:int = 1)
 		{
-			var celobj:* = location.celObj;
-			var abstile:* = location.getAbsTile(X,Y) 
+			var celobj:* = room.celObj;
+			var abstile:* = room.getAbsTile(X,Y) 
 			X += dx/div;
 
 
@@ -167,10 +169,10 @@ package weapondata
 					return;
 				}
 			}
-			if (location.sky) 
+			if (room.sky) 
 			{
 				Y+=dy/div;
-				if (X<0 || X>=location.limX || Y<0 || Y>=location.limY) 
+				if (X<0 || X>=room.roomPixelWidth || Y<0 || Y>=room.roomPixelHeight) 
 				{
 					vse=true;
 					return;
@@ -178,7 +180,7 @@ package weapondata
 			} 
 			else 
 			{
-				if (X<0 || X >= location.spaceX * Tile.tilePixelWidth) 
+				if (X<0 || X >= room.roomWidth * Tile.tilePixelWidth) 
 				{
 					vse=true;
 					return;
@@ -236,7 +238,7 @@ package weapondata
 				{
 					stay=false;
 					Y+=dy/div;
-					if (Y>=location.spaceY*Tile.tilePixelHeight) 
+					if (Y>=room.roomHeight*Tile.tilePixelHeight) 
 					{
 						vse=true;
 						return;

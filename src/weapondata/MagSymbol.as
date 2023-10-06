@@ -22,37 +22,37 @@ package weapondata
 			if (own==null) 
 			{
 				owner=new Unit();
-				location=World.world.location;
+				room=World.world.room;
 			} 
 			else 
 			{
 				owner=own;
-				location=own.location;
+				room=own.room;
 			}
 			spellId=spell;
 			X=nx;
 			Y=ny;
 			liv=20+otlozh;
-			location.addObj(this);
+			room.addObj(this);
 		}
 		
-		public override function step() 
+		public override function step()
 		{
-			if (liv==20) Emitter.emit('magsymbol',location,X,Y);
+			if (liv==20) Emitter.emit('magsymbol',room,X,Y);
 			liv--;
 			if (liv==1) spellCast();
-			if (liv<=0) location.remObj(this);
+			if (liv<=0) room.remObj(this);
 		}
 		
-		public override function setNull(f:Boolean=false) 
+		public override function setNull(f:Boolean=false)
 		{
-			location.remObj(this);
+			room.remObj(this);
 		}
 		
-		public function spellCast() 
+		public function spellCast()
 		{
 			var cel:Unit=World.world.gg;
-			if (cel.location==location && !cel.invulner && cel.sost<=2) 
+			if (cel.room==room && !cel.invulner && cel.sost<=2) 
 			{
 				if (getRasst2(cel)<rad*rad) 
 				{
@@ -63,7 +63,7 @@ package weapondata
 		
 		public override function err():String 
 		{
-			if (location) location.remObj(this);
+			if (room) room.remObj(this);
 			return null;
 		}
 	}

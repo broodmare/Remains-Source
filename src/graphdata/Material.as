@@ -5,8 +5,10 @@ package graphdata
 	import flash.filters.BevelFilter;
 	import flash.filters.GlowFilter;
 	import flash.filters.DropShadowFilter;
-	import flash.filters.BitmapFilter;
+	import flash.filters.BitmapFilter; //CHECK IF USED
 	import flash.display.BitmapData;
+
+	import systems.TileFilter;
 	
 	public class Material 
 	{
@@ -24,12 +26,9 @@ package graphdata
 
 		public var appliedFilters:Array; //What goes in here?
 
-		public var rear:Boolean = false; //Is the material as a rear wall?
+		public var isBackwall:Boolean = false; //Is the material as a Backwall?
 		public var slit:Boolean = false; 
-		public var filterArray:Array;
-
-		//Creating an array of filters. 
-		//Changes to the names of these need to be updated in AllData.XML as well.
+		
 		
 
 
@@ -38,30 +37,20 @@ package graphdata
 		public function Material(material:XML) //input a material when constructing this...
 		{
 			var tempMaterial:XML = material;
-
-
+			
 			try 
 			{
-				arraySetup()
+				materialSetup(tempMaterial);
 			}
 			catch(err)
 			{
-				trace('error setting up filter array.')
-			}
-
-			try 
-			{
-				materialSetup(tempMaterial)
-			}
-			catch(err)
-			{
-				trace('error setting up material', tempMaterial.@id)
+				trace('Filter: ', tempMaterial.filter.@f, ' for tile: ', tempMaterial.id, '\n', tempMaterial, '\n');
 			}
 		}
 
 
 
-		public function materialSetup(material:XML):void
+		private function materialSetup(material:XML):void
 		{
 			var tempMaterial:XML = material;
 
@@ -69,7 +58,7 @@ package graphdata
 			texture = World.world.grafon.getObj(tempMaterial.main.@tex,Grafon.materialCount);
 
 			//If the material has an alternate texture, set alttexture as alternate texture ID.?
-			if (tempMaterial.main.@alt.length())
+			if (tempMaterial.main.@alt.length)
 			{
 				alttexture = World.world.grafon.getObj(tempMaterial.main.@alt,Grafon.materialCount);
 			}
@@ -92,7 +81,7 @@ package graphdata
 
 			try 
 			{
-				borderMask=getDefinitionByName(tempMaterial.border.@mask) as Class;
+				borderMask = getDefinitionByName(tempMaterial.border.@mask) as Class;
 			} 
 			catch (err:ReferenceError) 
 			{
@@ -108,37 +97,29 @@ package graphdata
 				floorMask = null;
 			}
 			
-			if (tempMaterial.filter.length()) //If the material has a filter, apply it.
-			{
-				appliedFilters = filterArray[tempMaterial.filter.@f];
+			if (tempMaterial.filter.length) //If the material has a filter, apply it.
+			{	
+				try
+				{
+					appliedFilters = TileFilter.getFilter(tempMaterial.filter.@f);
+				}
+				catch (err)
+				{
+
+					trace('Failed to set appliedFilters property, ', tempMaterial.filter.@f);
+
+				}
 			}
 			
 			if (tempMaterial.@rear > 0 || tempMaterial.@ed == '2') // If the material's 'rear' property is greater than 0, or if ed = 2? It should be drawin on the decorative background layer.
 			{
-				rear = true;
+				isBackwall = true;
 			}
 			
 			if (tempMaterial.@slit > 0) //If the material is a slit, set to true.
 			{
 				slit = true;
 			}
-		}
-
-
-		public function arraySetup():void
-		{
-
-			filterArray = new Array();
-
-			filterArray['potek']		=[new BevelFilter(10,270,0,0,0,0.5,1,10,1,3),new GlowFilter(0,2,2,2,2,1,true)];
-			filterArray['shad']			=[new DropShadowFilter(5,90,0,1,12,12,1,3)];
-			filterArray['cont']			=[new GlowFilter(0,1,15,15,1,3,true)];
-			filterArray['cont_metal']	=[new GlowFilter(0,1,2,2,2,1,true), new GlowFilter(0,1,15,15,1,3,true)];
-			filterArray['cont_th']		=[new GlowFilter(0,1,5,5,1,3,true),new GlowFilter(0,2,2,2,2,1,true)];
-			filterArray['plitka']		=[new BevelFilter(2,70,0xFFFFFF,0.5,0,0.5,2,2,1,1),new GlowFilter(0,0.5,5,5,1,3,false)];
-			filterArray['dyrka']		=[new DropShadowFilter(10,70,0,2,10,10,1,3,true),new BevelFilter(2,250,0xFFFFFF,0.7,0,0.7,3,3,1,1)];
-			filterArray['cloud']		=[new DropShadowFilter(5,90,0x375774,1,5,7,1,3,true),new BevelFilter(2,250,0xFFFFFF,0.7,0,0.7,3,3,1,1)];
-
 		}
 	}
 }
