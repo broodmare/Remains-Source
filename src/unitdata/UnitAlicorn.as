@@ -13,6 +13,9 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visShit;
+	import stubs.visShit2;
+
 	public class UnitAlicorn extends UnitPon
 	{
 
@@ -246,8 +249,8 @@ package unitdata
 			if (curA<celA) curA+=5;
 			vis.alpha=curA/100;
 			if (hpbar) hpbar.alpha=vis.alpha;
-			if (!mater && visBmp.filters.length==0) visBmp.filters=[nomaterFilter];
-			if (mater && visBmp.filters.length>0) visBmp.filters=[];
+			if (!mater && visBmp.filters.length == 0) visBmp.filters=[nomaterFilter];
+			if (mater && visBmp.filters.length > 0) visBmp.filters=[];
 			/*if (teleObj && teleObj.vis) {
 				teleObj.vis.filters=[teleFilter];
 			}*/
@@ -303,7 +306,7 @@ package unitdata
 			}
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			superSilaVse();
 			dropTeleObj();
@@ -320,7 +323,7 @@ package unitdata
 			super.die(sposob);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;

@@ -12,6 +12,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visZombieLight;
+	
 	public class UnitZombie extends UnitPon{
 
 		public var tr:int=0;
@@ -236,13 +238,13 @@ package unitdata
 			}
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			superSilaVse();
 			super.die(sposob);
 		}
 		//команда скрипта
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (digger>=2) {
 				digger=1;
@@ -258,7 +260,7 @@ package unitdata
 			volMinus=rasst/8000;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;

@@ -4915,10 +4915,10 @@ package
 			<obj ed='5' ico='term' id='elpanel' inter='2' locktip='2' tip='box' lock='3' wall='2' time='20' knop='1' allact='electro_check' electro='100' size='1' wid='1'/>
 			
 			<!-- кнопки -->
-			<obj ed='4' ico='but' id='knop1' nazv='knop' n='Кнопка' inter='4' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
-			<obj ed='4' ico='but' id='knop2' nazv='knop' n='Кнопка, нажимается пулями' actdam='1' inter='4' tip='box' knop='1' wall='1' size='1' wid='1'/>
-			<obj ed='4' ico='but' id='knop3' nazv='knop' n='Кнопка, нуждается в ремонте' inter='4' lock='2' locktip='5' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
-			<obj ed='4' ico='but' id='knop4' nazv='knop' n='Кнопка с кодовым замком' inter='4' lock='2' locktip='2' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
+			<obj ed='4' ico='but' id='knop1' objectName='knop' n='Кнопка' inter='4' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
+			<obj ed='4' ico='but' id='knop2' objectName='knop' n='Кнопка, нажимается пулями' actdam='1' inter='4' tip='box' knop='1' wall='1' size='1' wid='1'/>
+			<obj ed='4' ico='but' id='knop3' objectName='knop' n='Кнопка, нуждается в ремонте' inter='4' lock='2' locktip='5' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
+			<obj ed='4' ico='but' id='knop4' objectName='knop' n='Кнопка с кодовым замком' inter='4' lock='2' locktip='2' tip='box' knop='1' wall='1' size='1' wid='1' open='button' close='button'/>
 			<obj ed='4' ico='but' id='platform2' inter='0' tip='box' shelf='1' wall='1' layer='1' mat='1' size='3' wid='1' scy='39' n='Платформа'/>
 			<obj ed='4' ico='but' id='platform3' inter='0' tip='box' shelf='1' wall='1' layer='1' size='3' wid='1' scy='39' n='Платформа пл'/>
 			<obj ed='4' ico='but' id='dsph' n='Тёмная сфера' inter='2' tip='box' knop='1' allact='bind' wall='1' size='1' wid='1' open='button' close='button'/>
@@ -5016,11 +5016,11 @@ package
 			<!-- особое -->
 			<obj ed='10' ico='area' tip='area' id='area' n='Область' size='2' wid='2'/>
 			<obj ed='9' ico='' tip='checkpoint' id='checkpoint' n='Контрольная точка' size='2' wid='3'/>
-			<obj ed='9' ico='' tip='checkpoint' id='checkpoint1' nazv='checkpoint' n='КТ с замком' locktip='1' low='0.2' lock='1.4' size='2' wid='3'/>
-			<obj ed='9' ico='' tip='checkpoint' id='checkpoint2' nazv='checkpoint' n='КТ с эл замком' locktip='2' low='0.2' lock='1.4' size='2' wid='3'/>
-			<obj ed='9' ico='' tip='checkpoint' id='checkpoint3' nazv='checkpoint' n='КТ сломанный' locktip='5' lock='2' size='2' wid='3'/>
-			<obj ed='9' ico='' tip='checkpoint' id='checkpoint4' nazv='checkpoint' n='КТ с бомбой'  mine='1' minetip='3' size='2' wid='3'/>
-			<obj ed='9' ico='' tip='checkpoint' id='checkpoint5' nazv='checkpoint' n='КТ с сигнал'  mine='1' minetip='6' size='2' wid='3'/>
+			<obj ed='9' ico='' tip='checkpoint' id='checkpoint1' objectName='checkpoint' n='КТ с замком' locktip='1' low='0.2' lock='1.4' size='2' wid='3'/>
+			<obj ed='9' ico='' tip='checkpoint' id='checkpoint2' objectName='checkpoint' n='КТ с эл замком' locktip='2' low='0.2' lock='1.4' size='2' wid='3'/>
+			<obj ed='9' ico='' tip='checkpoint' id='checkpoint3' objectName='checkpoint' n='КТ сломанный' locktip='5' lock='2' size='2' wid='3'/>
+			<obj ed='9' ico='' tip='checkpoint' id='checkpoint4' objectName='checkpoint' n='КТ с бомбой'  mine='1' minetip='3' size='2' wid='3'/>
+			<obj ed='9' ico='' tip='checkpoint' id='checkpoint5' objectName='checkpoint' n='КТ с сигнал'  mine='1' minetip='6' size='2' wid='3'/>
 			<obj ed='5' ico='' id='work' inter='2' tip='box' allact='work' n='Верстак' lurk='3' size='2' wid='2' scy='37' fall='fall_wood_big'/>
 			<obj ed='5' ico='' id='himlab' inter='2' tip='box' massaMult='0.5' allact='lab' lurk='3' n='Лаборатория' size='2' wid='2' scy='33' fall='fall_wood_ыьфдд'/>
 			<obj ed='5' ico='' id='stove' tip='box' inter='2' massaMult='2' allact='stove' mat='1' size='1' wid='1' fall='fall_metal_big'/>

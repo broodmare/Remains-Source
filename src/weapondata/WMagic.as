@@ -73,7 +73,7 @@ package weapondata
 			return true;
 		}
 		
-		public override function setPers(gg:UnitPlayer, pers:Pers)
+		public override function setPers(gg:UnitPlayer, pers:Pers):void
 		{
 			super.setPers(gg,pers);
 			dmana=mana*pers.allDManaMult*pers.warlockDManaMult;
@@ -105,7 +105,7 @@ package weapondata
 			return b;
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			
 			if (!vis) return;

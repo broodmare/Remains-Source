@@ -2955,7 +2955,7 @@ package roomdata {
     <obj id="work" code="MZjHbw68UaYeSjN9" x="12" y="15"/>
     <obj id="area" code="YSILBhuTZQMK5UIz" x="21" y="15" h="15" scr="stablePi4"/>
     <obj id="area" code="o5U8VIz4Y9Mc7tfl" x="1" y="2">
-      <scr act="gotoland" val="stable_pi_surf"/>
+      <scr act="gotoLevel" val="stable_pi_surf"/>
     </obj>
     <back id="stabledoor" x="40" y="13"/>
     <back id="lred" x="20" y="9" w="8" h="10"/>

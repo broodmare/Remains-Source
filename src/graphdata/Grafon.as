@@ -26,6 +26,7 @@ package graphdata
 
 	import locdata.*;
 	import components.Settings;
+	import systems.TileFilter;
 
 	public class Grafon 
 	{
@@ -73,7 +74,7 @@ package graphdata
 
 
 
-		 			//Export this to some kind of user settings. This might save on memory usage which is a premium for flash.
+		//Export this to some kind of user settings. This might save on memory usage which is a premium for flash.
 
 		public var dsFilter:DropShadowFilter;				// Adds a drop shadow to objects. (What objects?)
 		public var infraTransform:ColorTransform;			// Fog of war stuff.
@@ -113,24 +114,24 @@ package graphdata
 		public var progressLoad:Number;						// Progess of all loaders as a number.
 
 		public static var spriteLists:Array = new Array();	//Array of all active sprites.
-		public static var resourceURLArray:Array = ['texture.swf', 'texture1.swf', 'sprite.swf', 'sprite1.swf']; //URLs of the files to load
+		public static var resourceURLArray:Array = ['data/texture.swf', 'data/texture1.swf', 'data/sprite.swf', 'data/sprite1.swf']; //URLs of the files to load
 		
 		
 		
-		public static const canvasLayerCount:int = 6; 	// Number of Layers to be rendered on mainCanvas.
+		public static const canvasLayerCount:int = 6; 		// Number of Layers to be rendered on mainCanvas.
 
-		public static const materialCount:int = 0;		// Active Materials 
-		public static const skyboxCount:int   = 0;		// Active Skybox Textures
-		public static const bgObjectCount:int = 1;		// Active Background Objects
-		public static const objectCount:int   = 1;		// Active Objects
-		public static const spriteCount:int   = 2;		// Active Sprites (starts at 2 because of Main and MainMenu)
+		public static const activeMaterials:int  = 0;		// Active Materials 
+		public static const skyboxCount:int   	 = 0;		// Active Skybox Textures
+		public static const bgObjectCount:int 	 = 1;		// Active Background Objects
+		public static const objectCount:int   	 = 1;		// Active Objects
+		public static const spriteCount:int   	 = 2;		// Active Sprites (starts at 2 because of Main and MainMenu)
 
-		public var tilepixelwidth:int; 					// Tile Width in pixels.
-		public var tilepixelheight:int;					// Tile Height in pixels.
-		public var finalWidth:int;						// (mapTileWidth * tilepixelwidth) 	 - Precalculated to save time.
-		public var finalHeight:int;						// (mapTileHeight * tilepixelheight) - Precalculated to save time.
+		public var tilepixelwidth:int; 						// Tile Width in pixels.
+		public var tilepixelheight:int;						// Tile Height in pixels.
+		public var finalWidth:int;							// (mapTileWidth * tilepixelwidth) 	 - Precalculated to save time.
+		public var finalHeight:int;							// (mapTileHeight * tilepixelheight) - Precalculated to save time.
 		
-		public var nn:int;								// Something for side quests? Why is this here?
+		public var nn:int;									// Something for side quests? Why is this here?
 
 		public function Grafon(nvis:Sprite)
 		{
@@ -139,10 +140,13 @@ package graphdata
 			mapTileWidth 	= 48; 
 			mapTileHeight 	= 25;
 
+			trace('Grafon.as/Grafon() - Initializing TileFilter array.');
+			var tilefilter:TileFilter = new TileFilter();
+
 			dsFilter 		= new DropShadowFilter(7, 90, 0, 0.75, 16, 16, 1, 3, false, false, true);
 			infraTransform 	= new ColorTransform(1, 1, 1, 1, 100);
 			defTransform 	= new ColorTransform();
-
+			
 			pa 				= new paintaero();
 			pb 				= new paintbrush();
 			brTrans 		= new ColorTransform();
@@ -169,9 +173,9 @@ package graphdata
 			
 			nn = 0;
 
-			tilepixelwidth = Tile.tilePixelWidth;
+			tilepixelwidth 	= Tile.tilePixelWidth;
 			tilepixelheight = Tile.tilePixelHeight;
-			finalWidth 	= mapTileWidth * tilepixelwidth;
+			finalWidth 	= mapTileWidth 	* tilepixelwidth;
 			finalHeight = mapTileHeight * tilepixelheight;
 
 
@@ -195,9 +199,6 @@ package graphdata
 			{
 				canvasLayerArray.push(new Sprite());
 			}
-
-
-			
 
 			mainCanvas.addChild(layerBackground_1);		//0
 			mainCanvas.addChild(layerBackground_2);		//0
@@ -249,10 +250,10 @@ package graphdata
 
 
 
-			borderTop = new visBlack();
+			borderTop 	 = new visBlack();
 			borderBottom = new visBlack();
-			borderRight = new visBlack();
-			borderLeft = new visBlack();
+			borderRight  = new visBlack();
+			borderLeft   = new visBlack();
 
 			borderTop.cacheAsBitmap 	= Settings.bitmapCachingOption;
 			borderBottom.cacheAsBitmap 	= Settings.bitmapCachingOption;
@@ -266,24 +267,11 @@ package graphdata
 
 			//loader array setup
 			grLoaderArray = new Array();
-			//Resource array setup
-			tileArray = new Array(); //TILE ARRAY
-			backwallArray  = new Array();
 
-			trace('Grafon.as/Grafon() - Setting up materials...');
-			//for each material in AllData
-			for each (var p:XML in AllData.d.mat)
-			{
-				// Populates front and back arrays with materials from MaterialData.XML
-				if (p.@vid.length == 0)
-				{
-					if (p.@ed == '2') backwallArray[p.@id] = new Material(p); // ALL BACKWALLS GO INTO backwallArray
-					else tileArray[p.@id] = new Material(p);	// TILES AND CLIMBABLES GO HERE
-				}
-			}
 
 			
 			//Resource URL list setup.
+			trace('Grafon.as/Grafon() - Creating resource resource loader array...');
 			for (var j:int = 0; j < resourceURLArray.length; j++)
 			{
 				//Populates the array with texture URLs.
@@ -299,17 +287,65 @@ package graphdata
 			trace('Grafon.as/Grafon() - Grafon intitialized. ');
 		}
 		
-		//Check if all instances of GrLoader have finished.
-		public function checkLoaded()
+
+
+		public function materialSetup():void
 		{
-			if (grLoaderArray.length > 0 && grLoaderArray[grLoaderArray.length - 1].isLoad) 
+			//tile and backwall arrays
+			tileArray 		= new Array();	//Tiles and climbables
+			backwallArray   = new Array(); 	//Backwalls
+
+			var tileArrayCount:int = 0;
+			var backwallArrayCount:int = 0;
+
+			trace('Grafon.as/Grafon() - Setting up materials...');
+
+			for each (var newMat:XML in AllData.d.mat) //for each <mat> item in AllData...
 			{
-				resourcesLoaded = true;
+				if (newMat.@vid.length() == 0)
+				{
+					if (newMat.@ed == '2') 
+					{
+						backwallArray[newMat.@id] = new Material(newMat);
+						backwallArrayCount++;
+					}
+					else 
+					{
+						tileArray[newMat.@id] = new Material(newMat);
+						tileArrayCount++;
+					}
+				}
+			}
+	
+			trace('Grafon.as/Grafon() - Setup complete. tileArray count: "' + tileArrayCount + '." backwallArray count: "' + backwallArrayCount + '."');
+			trace('Grafon.as/Grafon() - Setting resourcesLoaded to true.');
+			resourcesLoaded = true;
+		}
+
+
+
+		//Check if all instances of GrLoader have finished.
+		public function checkLoaded():void
+		{
+			var allLoaded:Boolean = true;
+
+			for each (var loader:Object in grLoaderArray)
+			{
+				if (!loader.isLoad)
+				{
+					allLoaded = false;
+					break;
+				}
+			}
+			if (allLoaded)
+			{
+				trace('Grafon.as/checkLoaded() - All resources loaded, calling material Setup!');
+				materialSetup();
 			}
 		}
 		
 		//Determine progress of loading.
-		public function allProgress()
+		public function allProgress():void
 		{
 			progressLoad = 0; //Clear the current progress.
 			for (var i in grLoaderArray) //for each loader in the array of loaders...
@@ -320,15 +356,15 @@ package graphdata
 			progressLoad /= GrLoader.instanceCount;
 		}
 		
-		public function createCursors()
+		public function createCursors():void
 		{
-			createCursor(visCurArrow, 'arrow');
-			createCursor(visCurTarget, 'target', 13, 13);
+			createCursor(visCurArrow, 	'arrow');
+			createCursor(visCurTarget, 	'target', 13, 13);
 			createCursor(visCurTarget1, 'combat', 13, 13);
 			createCursor(visCurTarget2, 'action', 13, 13);
 		}
 		
-		public function createCursor(vcur:Class, nazv:String, nx:int = 0, ny:int = 0)
+		public function createCursor(vcur:Class, objectName:String, nx:int = 0, ny:int = 0):void
 		{
 			var cursorData:Vector.<BitmapData>;
 			var mouseCursorData:MouseCursorData;
@@ -337,7 +373,7 @@ package graphdata
 			mouseCursorData  =  new MouseCursorData();
 			mouseCursorData.data  =  cursorData;
 			mouseCursorData.hotSpot = new Point(nx, ny);
-			Mouse.registerCursor(nazv, mouseCursorData);
+			Mouse.registerCursor(objectName, mouseCursorData);
 		}
 		
 		//================================================================================================		
@@ -354,7 +390,7 @@ package graphdata
 		}
 		
 		// Draw the skybox texture.
-		public function drawSkybox(skybox:MovieClip, textureID:String)
+		public function drawSkybox(skybox:MovieClip, textureID:String):void
 		{
 			if (textureID == '' || textureID == null) textureID = 'skyboxDefault';
 			if (skyboxLayer && skybox.contains(skyboxLayer)) skybox.removeChild(skyboxLayer);
@@ -364,7 +400,7 @@ package graphdata
 			if (skyboxLayer) skybox.addChild(skyboxLayer); 	//If the background exists, add it to the background sprite.
 		}
 		
-		public function setSkyboxSize(nx:Number, ny:Number)
+		public function setSkyboxSize(nx:Number, ny:Number):void
 		{
 			if (skyboxLayer)
 			{
@@ -763,7 +799,7 @@ package graphdata
 				World.world.gr_stage = 16;  
 				if (room.gas > 0)
 				{
-					var backgroundMatrix:Matrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
+					backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
 					backgroundMatrix.ty = 520;
 					backBmp2.draw(getObj('back_pink_t', bgObjectCount), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
 				}
@@ -836,7 +872,7 @@ package graphdata
 
 
 		// Drawing the shadow map
-		public function setLight() 
+		public function setLight():void
 		{
 			lightBmp.lock();
 			for (var i:int = 1; i < room.roomWidth; i++) 
@@ -850,7 +886,7 @@ package graphdata
 		}
 		
 		// Drawing all visible (physical?) objects
-		public function drawAllObjs()
+		public function drawAllObjs():void
 		{
 			for (var i:int = 0; i < canvasLayerCount; i++) 
 			{
@@ -877,7 +913,7 @@ package graphdata
 		}
 		
 		// Filling the back wall with texture
-		public function drawBackWall(tex:String, sposob:int = 0)
+		public function drawBackWall(tex:String, sposob:int = 0):void
 		{
 			
 			if (tex == 'sky') return;
@@ -946,7 +982,7 @@ package graphdata
 		// isClimbable If the material is a beam/stairs/etc.
 
 		// m must be instantiated for this function!
-		public function drawTileSprite(material:Material, isTopLayer:Boolean = false, isClimbable:Boolean = false)
+		public function drawTileSprite(material:Material, isTopLayer:Boolean = false, isClimbable:Boolean = false):void
 		{
 			
 
@@ -1022,7 +1058,7 @@ package graphdata
 							}
 							catch(err)
 							{
-								trace('applying texturemask failed on tile ', thisTile, 'at ', i, ',', j)
+								trace('Grafon.as/drawTileSprite() - applying texturemask failed on tile ', thisTile, 'at ', i, ',', j)
 							}
 						}
 
@@ -1034,7 +1070,7 @@ package graphdata
 							}
 							catch(err)
 							{
-								trace('applying bordermask failed on tile ', thisTile, 'at ', i, ',', j)
+								trace('Grafon.as/drawTileSprite() - applying bordermask failed on tile ', thisTile, 'at ', i, ',', j)
 							}
 						}
 
@@ -1054,7 +1090,7 @@ package graphdata
 							}
 							catch(err)
 							{
-								trace('applying floorMask failed on tile ', thisTile, 'at ', i, ',', j)
+								trace('Grafon.as/drawTileSprite() - applying floorMask failed on tile ', thisTile, 'at ', i, ',', j)
 							}
 						}
 					}
@@ -1126,7 +1162,7 @@ package graphdata
 					if (spriteLists[id] == null) spriteLists[id] = getObj(id, spriteCount+1);
 				}
 			}
-			if (spriteLists[id] == null) trace('No sprites', id)
+			if (spriteLists[id] == null) trace('Grafon.as/getSpriteList() - No sprites', id)
 			return spriteLists[id];
 		}
 			
@@ -1197,7 +1233,7 @@ package graphdata
 		}
 			
 		// Bullet holes
-		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1)
+		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1):void
 		{
 			var erC:Class, drC:Class;
 			var bl:String = 'normal';
@@ -1350,7 +1386,7 @@ package graphdata
 				if (nagar.totalFrames > 1) nagar.gotoAndStop(Math.floor(Math.random()*nagar.totalFrames+1));
 				nagar.scaleX = nagar.scaleY = sc;
 				nagar.rotation = rc;
-				var dyrx:Number = Math.round(nagar.width/2+2)*2, dyry = Math.round(nagar.height/2+2)*2;
+				var dyrx:Number = Math.round(nagar.width/2+2)*2, dyry:Number = Math.round(nagar.height/2+2)*2;
 				var res2:BitmapData  =  new BitmapData(dyrx, dyry, false, 0x0);
 				var rdx:Number = 0, rdy:Number = 0;
 				if (nx-dyrx/2<0) rdx = -(nx-dyrx/2);
@@ -1406,7 +1442,7 @@ package graphdata
 			brRect.top = ry1, brRect.bottom = ry2;
 			brData.copyChannel(backBmp, brRect, brPoint, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
 			
-			for (var i = 1; i >= kol; i++)
+			for (var i:int = 1; i >= kol; i++)
 			{
 				paintMatrix.tx = nx1+dx*i;
 				paintMatrix.ty = ny1+dy*i;				

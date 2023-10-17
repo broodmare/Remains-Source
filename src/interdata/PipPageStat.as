@@ -9,216 +9,263 @@ package interdata
 	
 	import components.Settings;
 	
+	import stubs.visPipStatItem;
+	
 	public class PipPageStat extends PipPage
 	{
 		
 		var pers:Pers;
 		var skills:Array;
-		var maxSkLvl:int=20;
-		var skillPoint:int=0;
-		var perkPoint:int=0;
-		var selectedPerk:String='';
-		var infoItemId:String='';
+		var maxSkLvl:int 		= 20;
+		var skillPoint:int 		= 0;
+		var perkPoint:int 		= 0;
+		var selectedPerk:String = '';
+		var infoItemId:String 	= '';
 		var n_food:String;
-		var drunk:int=0;
+		var drunk:int 			= 0;
 
 		public function PipPageStat(npip:PipBuck, npp:String) 
 		{
-			isLC=isRC=true;
-			itemClass=visPipStatItem;
-			skills=new Array();
+			isLC = true;
+			isRC = true;
+			itemClass = visPipStatItem;
+			skills = new Array();
 			super(npip,npp);
-			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
-			vis.butDef.addEventListener(MouseEvent.CLICK,gotoDef);
-			n_food=Res.txt('e','food');
+			vis.butOk.addEventListener(MouseEvent.CLICK,  transOk);
+			vis.butDef.addEventListener(MouseEvent.CLICK, gotoDef);
+			n_food = Res.txt('e', 'food');
+			trace('PipPageStat.as/PipPageStat() - Created PipPageStat page.');
 		}
 		
 		//подготовка страниц
-		override function setSubPages()
+		override function setSubPages():void
 		{
+			trace('PipPageStat.as/setSubPages() - updating subPages.');
+
 			setIco();
-			pers=World.world.pers;
-			maxSkLvl=Pers.maxSkLvl;
-			statHead.progress.visible=false;
-			statHead.hpbar.visible=statHead.cat.visible=false;
-			statHead.numb.x=335;
-			vis.butOk.visible=vis.butDef.visible=false;
-			drunk=0;
-			if (page2==1) {
-				statHead.nazv.text=statHead.numb.text='';
-				arr.push({nazv:Res.pipText('name'), lvl:gg.pers.persName});
-				arr.push({nazv:Res.pipText('level'), lvl:gg.pers.level});
-				arr.push({nazv:Res.pipText('expa'), lvl:gg.pers.xpCur+' ('+(gg.pers.xpNext-gg.pers.xpCur)+')'});
-				arr.push({id:'diff', nazv:Res.pipText('diff'), lvl:Res.guiText('dif'+World.world.game.globalDif)});
-				arr.push({id:'reput', nazv:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
+			pers = World.world.pers;
+			maxSkLvl = Pers.maxSkLvl;
+			statHead.progress.visible = false;
+			statHead.hpbar.visible=statHead.cat.visible = false;
+			statHead.numb.x = 335;
+			vis.butOk.visible = false;
+			vis.butDef.visible = false;
+			drunk = 0;
+			if (page2==1) 
+			{
+				statHead.objectName.text = '';
+				statHead.numb.text = '';
+				arr.push({objectName:Res.pipText('name'), lvl:gg.pers.persName});
+				arr.push({objectName:Res.pipText('level'), lvl:gg.pers.level});
+				arr.push({objectName:Res.pipText('expa'), lvl:gg.pers.xpCur+' ('+(gg.pers.xpNext-gg.pers.xpCur)+')'});
+				arr.push({id:'diff', objectName:Res.pipText('diff'), lvl:Res.guiText('dif'+World.world.game.globalDif)});
+				arr.push({id:'reput', objectName:Res.pipText('reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 				
-				for (var i=0; i<AllData.d.param.length(); i++) {
+				for (var i=0; i<AllData.d.param.length(); i++) 
+				{
 					var xml=AllData.d.param[i];
-					if (xml.@show>0) {
+					if (xml.@show>0) 
+					{
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
 						if (xml.@show=='3' && (!World.world.game.triggers['story_canter']>0)) continue;
-						var nazv=Res.pipText(xml.@id);
-						if (xml.@v!='') nazv='-  '+nazv;
-						else {
-							arr.push({id:xml.@id, nazv:nazv, lvl:''});
+						var objectName=Res.pipText(xml.@id);
+						if (xml.@v!='') objectName='-  '+objectName;
+						else 
+						{
+							arr.push({id:xml.@id, objectName:objectName, lvl:''});
 							continue;
 						}
 						var param;
 						if (xml.@tip=='4') param=gg.vulner[xml.@v];
 						else if (gg.hasOwnProperty(xml.@v)) param=gg[xml.@v];
 						else if (gg.pers.hasOwnProperty(xml.@v)) param=gg.pers[xml.@v];
-						else {
-							trace('нет переменной',xml.@v);
+						else 
+						{
+							trace('нет переменной', xml.@v);
 							continue;
 						}
-						if (xml.@tip=='0') {
-							if (param>0) arr.push({id:xml.@id, nazv:nazv, lvl:Res.numb(param)});
+						if (xml.@tip=='0') 
+						{
+							if (param>0) arr.push({id:xml.@id, objectName:objectName, lvl:Res.numb(param)});
 						}
-						if (xml.@tip=='1') {
-							if (param!=1 || World.world.pers.factor[xml.@v] && World.world.pers.factor[xml.@v].length>1) arr.push({id:xml.@id, nazv:nazv, lvl:((param>=1?'+':'')+Res.numb((param-1)*100)+'%')});
+						if (xml.@tip=='1') 
+						{
+							if (param!=1 || World.world.pers.factor[xml.@v] && World.world.pers.factor[xml.@v].length > 1) arr.push({id:xml.@id, objectName:objectName, lvl:((param>=1?'+':'')+Res.numb((param-1)*100)+'%')});
 						}
-						if (xml.@tip=='2') {
-							arr.push({id:xml.@id, nazv:nazv, lvl:(Res.numb(param*100)+'%')});
+						if (xml.@tip=='2') 
+						{
+							arr.push({id:xml.@id, objectName:objectName, lvl:(Res.numb(param*100)+'%')});
 						}
-						if (xml.@tip=='3' || xml.@tip=='4') {
-							if (param!=1) arr.push({id:xml.@id, nazv:nazv, lvl:((param<1?'+':'')+Res.numb((1-param)*100)+'%')});
+						if (xml.@tip=='3' || xml.@tip=='4') 
+						{
+							if (param!=1) arr.push({id:xml.@id, objectName:objectName, lvl:((param<1?'+':'')+Res.numb((1-param)*100)+'%')});
 						}
 					}
 				}
 			} 
 			else if (page2==5) 
 			{
-				if (World.world.game.triggers['nomed']>0) {
+				if (World.world.game.triggers['nomed']>0) 
+				{
 					vis.emptytext.text=Res.pipText('emptymed');
 					statHead.visible=false;
 					return;
-				} else {
+				}
+				else 
+				{
 					vis.emptytext.text='';
 					statHead.visible=true;
 				}
 				gg.pers.checkHP();
 				setTopText('usemed1');
-				statHead.nazv.text=statHead.numb.text='';
-				arr.push({id:'hp', nazv:Res.pipText('hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp)});
-				arr.push({id:'organism', nazv:Res.pipText('organism')+':', lvl:''});
-				arr.push({id:'statHead'+gg.pers.headSt,nazv:'   '+Res.pipText('head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP)});
-				arr.push({id:'statTors'+gg.pers.torsSt,nazv:'   '+Res.pipText('tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP)});
-				arr.push({id:'statLegs'+gg.pers.legsSt,nazv:'   '+Res.pipText('legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP)});
-				arr.push({id:'statBlood'+gg.pers.bloodSt,nazv:'   '+Res.pipText('blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP)});
-				arr.push({id:'statMana'+gg.pers.manaSt,nazv:'   '+Res.pipText('mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana)});
-				arr.push({id:'rad', nazv:Res.pipText('rad'), lvl:Math.round(gg.rad)});
-				arr.push({id:'radx', nazv:Res.pipText('radx'), lvl:Math.round((1-gg.radX)*100)+'%'});
-				arr.push({id:'cut', nazv:Res.pipText('cut'), lvl:Math.round(gg.cut*10)/10});
-				arr.push({id:'resbleeding', nazv:Res.pipText('resbleeding'), lvl:Math.round((1-gg.vulner[Unit.D_BLEED])*100)+'%'});
-				arr.push({id:'poison', nazv:Res.pipText('poison'), lvl:Math.round(gg.poison*10)/10});
-				arr.push({id:'respoison', nazv:Res.pipText('respoison'), lvl:Math.round((1-gg.vulner[Unit.D_POISON])*100)+'%'});
+				statHead.objectName.text=statHead.numb.text='';
+				arr.push({id:'hp', objectName:Res.pipText('hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp)});
+				arr.push({id:'organism', objectName:Res.pipText('organism')+':', lvl:''});
+				arr.push({id:'statHead'+gg.pers.headSt,objectName:'   '+Res.pipText('head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP)});
+				arr.push({id:'statTors'+gg.pers.torsSt,objectName:'   '+Res.pipText('tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP)});
+				arr.push({id:'statLegs'+gg.pers.legsSt,objectName:'   '+Res.pipText('legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP)});
+				arr.push({id:'statBlood'+gg.pers.bloodSt,objectName:'   '+Res.pipText('blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP)});
+				arr.push({id:'statMana'+gg.pers.manaSt,objectName:'   '+Res.pipText('mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana)});
+				arr.push({id:'rad', objectName:Res.pipText('rad'), lvl:Math.round(gg.rad)});
+				arr.push({id:'radx', objectName:Res.pipText('radx'), lvl:Math.round((1-gg.radX)*100)+'%'});
+				arr.push({id:'cut', objectName:Res.pipText('cut'), lvl:Math.round(gg.cut*10)/10});
+				arr.push({id:'resbleeding', objectName:Res.pipText('resbleeding'), lvl:Math.round((1-gg.vulner[Unit.D_BLEED])*100)+'%'});
+				arr.push({id:'poison', objectName:Res.pipText('poison'), lvl:Math.round(gg.poison*10)/10});
+				arr.push({id:'respoison', objectName:Res.pipText('respoison'), lvl:Math.round((1-gg.vulner[Unit.D_POISON])*100)+'%'});
 				if (gg.pets['phoenix'] && World.world.game.triggers['pet_phoenix']) {
-					arr.push({id:'phoenix', nazv:gg.pets['phoenix'].nazv, lvl:Math.round(gg.pets['phoenix'].hp)+'/'+Math.round(gg.pets['phoenix'].maxhp)});
+					arr.push({id:'phoenix', objectName:gg.pets['phoenix'].objectName, lvl:Math.round(gg.pets['phoenix'].hp)+'/'+Math.round(gg.pets['phoenix'].maxhp)});
 				}
-				for (var i in pers.addictions) {
-					if (pers.addictions[i]>0) {
+				for (var i in pers.addictions) 
+				{
+					if (pers.addictions[i]>0) 
+					{
 						var str:String='';
 						if (pers.addictions[i]>=pers.ad3) str=Res.pipText('ad3');
 						else if (pers.addictions[i]>=pers.ad2) str=Res.pipText('ad2');
 						else if (pers.addictions[i]>=pers.ad1) str=Res.pipText('ad1');
 						else str=Res.pipText('ad0');
-						arr.push({id:i, nazv:Res.txt('e',i+'_ad'), lvl:Math.round(pers.addictions[i])+'% ('+str+')', cat:'ad'});
+						arr.push({id:i, objectName:Res.txt('e',i+'_ad'), lvl:Math.round(pers.addictions[i])+'% ('+str+')', cat:'ad'});
 					}
 				}
-			} else if (page2==2) {	
+			} 
+			else if (page2==2) 
+			{	
 				setTopText('infoskills');
 				skillPoint=pers.skillPoint;
-				statHead.nazv.text=Res.pipText('is1');
+				statHead.objectName.text=Res.pipText('is1');
 				statHead.numb.text=Res.pipText('is2');
-				for each(var sk in pers.skill_ids) {
+				for each(var sk in pers.skill_ids) 
+				{
 					if (pers.level<Pers.postPersLevel && sk.post>0) continue;
 					var numb=pers.skills[sk.id];
-					var n:Object={id:sk.id, nazv:Res.txt('e',sk.id), lvl:numb, minlvl:numb, post:sk.post};
+					var n:Object={id:sk.id, objectName:Res.txt('e',sk.id), lvl:numb, minlvl:numb, post:sk.post};
 					arr.push(n);
 					skills[sk.id]=n;
 				}
 				vis.butOk.text.text=Res.pipText('accept');
-			} else if (page2==3) {
+			} 
+			else if (page2==3) 
+			{
 				perkPoint=pers.perkPoint;
-				statHead.nazv.text=Res.pipText('is5');
+				statHead.objectName.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
-				for (var pid in pers.perks) {
+				for (var pid in pers.perks) 
+				{
 					var maxlvl=1;
 					var xperk=AllData.d.perk.(@id==pid);
-					if (xperk.length && xperk.@lvl.length()) maxlvl=xperk.@lvl;
+					if (xperk.length() && xperk.@lvl.length()) maxlvl=xperk.@lvl;
 					var numb=pers.perks[pid];
-					var n:Object={id:pid, nazv:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
+					var n:Object={id:pid, objectName:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
 					arr.push(n);
 				}
-				if (perkPoint) {
+				if (perkPoint) 
+				{
 					vis.butOk.text.text=Res.pipText('choose');
 					vis.butOk.visible=true;
 				}
-				if (arr.length==0) {
+				if (arr.length == 0)
+				{
 					vis.emptytext.text=Res.pipText('emptyperk');
 					statHead.visible=false;
-				} else {
+				} 
+				else 
+				{
 					vis.emptytext.text='';
 					statHead.visible=true;
-					arr.sortOn(['sort','nazv']);
+					arr.sortOn(['sort','objectName']);
 				}
-			} else if (page2==4) {
-				statHead.nazv.text=Res.pipText('is3');
+			} 
+			else if (page2==4) 
+			{
+				statHead.objectName.text=Res.pipText('is3');
 				statHead.numb.text=Res.pipText('is4');
 				statHead.numb.x=500;
 				for (var sk in gg.effects) {
 					var ef=gg.effects[sk];
-					var n={id:ef.id, nazv:Res.txt('e',ef.id), lvl:'∞'};
+					var n={id:ef.id, objectName:Res.txt('e',ef.id), lvl:'∞'};
 					if (ef.ad) {
 						var str=Res.txt('e',ef.id+'_ad');
-						if (str!='') {
-							n.nazv=str+' ('+Res.pipText('ad'+ef.lvl)+')';
+						if (str!='') 
+						{
+							n.objectName=str+' ('+Res.pipText('ad'+ef.lvl)+')';
 							n.id+='_ad';
 						}
 					}
-					if (ef.id=='drunk') {
-						n.nazv=Res.pipText('drunk'+ef.lvl);
+					if (ef.id=='drunk') 
+					{
+						n.objectName=Res.pipText('drunk'+ef.lvl);
 						drunk=ef.lvl;
 					}
 					if (!ef.forever) n.lvl=Math.round(ef.t/30);
-					if (ef.tip==3) {
-						n.nazv=n_food;
+					if (ef.tip==3) 
+					{
+						n.name=n_food;
 					}
 					arr.push(n);
 				}
-				if (arr.length==0) {
+				if (arr.length == 0) 
+				{
 					vis.emptytext.text=Res.pipText('emptyeff');
 					statHead.visible=false;
-				} else {
+				} 
+				else 
+				{
 					vis.emptytext.text='';
 					statHead.visible=true;
 				}
-			} else if (page2==6) {
+			} 
+			else if (page2==6) 
+			{
 				perkPoint=pers.perkPoint;
-				statHead.nazv.text=Res.pipText('is5');
+				statHead.objectName.text=Res.pipText('is5');
 				statHead.numb.text=Res.pipText('is2');
-				for each(var dp:XML in AllData.d.perk) {
-					if (dp.@tip==1) {
+				for each(var dp:XML in AllData.d.perk) 
+				{
+					if (dp.@tip==1) 
+					{
 						var res:int=pers.perkPoss(dp.@id, dp);
 						if (res<0) continue;
 						var numb=pers.perks[dp.@id];
 						if (numb==null) numb=0;
 						var maxlvl=1;
 						if (dp.@lvl.length()) maxlvl=dp.@lvl;
-						var n:Object={id:dp.@id, nazv:Res.txt('e',dp.@id), lvl:(numb+1), maxlvl:maxlvl, ok:(res>0), sort:(1-res)};
+						var n:Object={id:dp.@id, objectName:Res.txt('e',dp.@id), lvl:(numb+1), maxlvl:maxlvl, ok:(res>0), sort:(1-res)};
 						arr.push(n);
 					}
 				}
-				arr.sortOn(['sort','nazv']);
+				arr.sortOn(['sort','objectName']);
 				vis.butOk.text.text=Res.pipText('accept');
 				vis.butDef.text.text=Res.guiText('cancel');
 				vis.butDef.visible=true;
 			}
 			showBottext();
+
+			trace('PipPageStat.as/setSubPages() - Finished updating subPages.');
+
 		}
 		
-		override function setSigns()
+		override function setSigns():void
 		{
 			super.setSigns();
 			if (pers.skillPoint>0) signs[2]=1;
@@ -228,7 +275,7 @@ package interdata
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object)
+		override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			if (obj.id!=null) item.id.text=obj.id; else item.id.text='';
 			if (obj.cat!=null) item.cat.text=obj.cat; else item.cat.text='';
@@ -237,7 +284,7 @@ package interdata
 			item.progress.visible=false;
 			item.hpbar.visible=false;
 			item.numb.x=335;
-			item.nazv.text=obj.nazv;
+			item.objectName.text=obj.objectName;
 			item.numb.text=obj.lvl;
 			if (obj.maxlvl && obj.maxlvl>1 && obj.maxlvl<1000) item.numb.text+='/'+obj.maxlvl;
 			item.alpha=1;
@@ -277,10 +324,10 @@ package interdata
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent)
+		override function statInfo(event:MouseEvent):void
 		{
 			var id:String=event.currentTarget.id.text;
-			var nazv:String=event.currentTarget.nazv.text;
+			var objectName:String=event.currentTarget.objectName.text;
 			if (page2==2 || page2==3 || page2==6) setIco(5,id);
 			else setIco();
 			if (id!='') 
@@ -290,26 +337,27 @@ package interdata
 					infoItemId=id;
 					if (id=='diff') 
 					{
-						vis.nazv.text=Res.txt('p',id);
+						vis.objectName.text=Res.txt('p',id);
 						vis.info.htmlText=Res.txt('g','dif'+World.world.game.globalDif,1);
 					} 
 					else 
 					{
-						vis.nazv.text=Res.pipText(id);
+						vis.objectName.text=Res.pipText(id);
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
 					var xml=AllData.d.param.(@id==id);
-					if (xml.length && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
+					if (xml.length() && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
 				} 
 				else if (page2==5) 
 				{
 					infoItemId=id;
 					showBottext();
 					var lvl;
+
 					if (event.currentTarget.cat.text=='ad') 
 					{
-						vis.nazv.text=Res.txt('e',id+'_ad');
+						vis.objectName.text=Res.txt('e',id+'_ad');
 						lvl=0;
 						lvl=int(event.currentTarget.numb.text);
 						if (lvl>0) lvl--;
@@ -317,14 +365,15 @@ package interdata
 					} 
 					else if (id=='phoenix') 
 					{
-						vis.nazv.text=nazv;
+						vis.objectName.text=objectName;
 						vis.info.htmlText=Res.txt('u','phoenix',1);
 					} 
 					else 
 					{
-						vis.nazv.text=Res.pipText(id);
+						vis.objectName.text=Res.pipText(id);
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
+
 					vis.info.htmlText+='<br><br>';
 					if (id.substr(0,8)=='statHead') 
 					{
@@ -362,13 +411,13 @@ package interdata
 				} 
 				else 
 				{
-					vis.nazv.text=nazv;
+					vis.objectName.text=objectName;
 					if (page2==4) {
 						if (id=='drunk') 
 						{
 							vis.info.htmlText=effStr('eff',id,drunk-1);
 						} 
-						else if (nazv==n_food) vis.info.htmlText=Res.txt('e','food',1)+'<br><br>'+effStr('eff',id);
+						else if (objectName==n_food) vis.info.htmlText=Res.txt('e','food',1)+'<br><br>'+effStr('eff',id);
 						else vis.info.htmlText=effStr('eff',id);
 					} 
 					else if (page2==2) 
@@ -395,11 +444,11 @@ package interdata
 			} 
 			else 
 			{
-				vis.nazv.text=vis.info.htmlText='';
+				vis.objectName.text=vis.info.htmlText='';
 			}
 		}
 		
-		function selSkill(id:String)
+		function selSkill(id:String):void
 		{
 			if (pers.skillIsPost(id) && skills[id].lvl<Pers.maxPostSkLvl || skills[id].lvl<maxSkLvl) {
 				if (skillPoint>0) {
@@ -411,15 +460,16 @@ package interdata
 				}
 			}
 		}
-		function unselSkill(id:String)
+		function unselSkill(id:String):void
 		{
-			if (skills[id].lvl>skills[id].minlvl) {
+			if (skills[id].lvl>skills[id].minlvl) 
+			{
 				skills[id].lvl--;
 				skillPoint++;
 			}
 		}
 		
-		function showBottext()
+		function showBottext():void
 		{
 			vis.bottext.text='';
 			if (page2==1) vis.bottext.htmlText=Res.pipText('tgame')+': '+World.world.game.gameTime();
@@ -429,85 +479,133 @@ package interdata
 				if (selectedPerk=='') vis.bottext.htmlText=Res.pipText('chooseperk');
 				else vis.bottext.htmlText=pink(Res.txt('e',selectedPerk));
 			}
-			if (page2==5 && infoItemId!='') {
+			if (page2==5 && infoItemId!='') 
+			{
 				var ci:String='';
-				if (infoItemId=='hp') {
+				if (infoItemId=='hp') 
+				{
 					vis.bottext.htmlText=Res.pipText('healpotions')+': '+yel(inv.items['pot1'].kol+inv.items['pot2'].kol+inv.items['pot3'].kol);
-				} else if (infoItemId=='rad') {
+				} 
+				else if (infoItemId=='rad') 
+				{
 					ci='antiradin';
-				} else if (infoItemId=='cut') {
+				} 
+				else if (infoItemId=='cut') 
+				{
 					ci='pot0';
-				} else if (infoItemId=='poison') {
+				} 
+				else if (infoItemId=='poison') 
+				{
 					ci='antidote';
-				} else if (infoItemId.substr(0,9)=='statBlood') {
+				} 
+				else if (infoItemId.substr(0,9)=='statBlood') 
+				{
 					ci='bloodpak';
-				} else if (infoItemId.substr(0,8)=='statMana') {
+				} 
+				else if (infoItemId.substr(0,8)=='statMana') 
+				{
 					vis.bottext.htmlText=Res.txt('i','potm1')+': '+yel(inv.items['potm1'].kol+inv.items['potm2'].kol+inv.items['potm3'].kol);
-				} else if (infoItemId=='phoenix') {
+				} 
+				else if (infoItemId=='phoenix') 
+				{
 					ci='radcookie';
-				} else if (infoItemId.substr(0,8)=='statHead') {
+				} 
+				else if (infoItemId.substr(0,8)=='statHead') 
+				{
 					ci=gg.invent.getMed(1);
 					if (ci=='') vis.bottext.text='';
-				} else if (infoItemId.substr(0,8)=='statTors') {
+				} 
+				else if (infoItemId.substr(0,8)=='statTors') 
+				{
 					ci=gg.invent.getMed(2);
 					if (ci=='') vis.bottext.text='';
-				} else if (infoItemId.substr(0,8)=='statLegs') {
+				} 
+				else if (infoItemId.substr(0,8)=='statLegs') 
+				{
 					ci=gg.invent.getMed(3);
 					if (ci=='') vis.bottext.text='';
-				} else if (infoItemId.substr(0,5)=='post_') {
+				} 
+				else if (infoItemId.substr(0,5)=='post_') 
+				{
 					ci='detoxin'
 				}
 				if (ci!='') vis.bottext.htmlText=Res.txt('i',ci)+': '+yel(inv.items[ci].kol);
 			}
 		}
 		
-		override function itemClick(event:MouseEvent)
+		override function itemClick(event:MouseEvent):void
 		{
-			if (pip.gamePause) {
+			if (pip.gamePause) 
+			{
 				World.world.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==2) {
+			if (page2==2) 
+			{
 				var id=event.currentTarget.id.text;
 				if (event.ctrlKey) unselSkill(id);
 				else selSkill(id);
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
 				pip.snd(1);
 			}
-			if (page2==6) {
-				if (event.currentTarget.alpha>=1) {
+			if (page2==6) 
+			{
+				if (event.currentTarget.alpha>=1) 
+				{
 					vis.butOk.visible=true;
 					selectedPerk=event.currentTarget.id.text;
 				}
 				pip.snd(1);
 			}
-			if (page2==5 && infoItemId!='') {
+			if (page2==5 && infoItemId!='') 
+			{
 				infoItemId=event.currentTarget.id.text;
 				var need:String;
-				if (infoItemId=='hp') {
+				if (infoItemId=='hp') 
+				{
 					inv.usePotion();
-				} else if (infoItemId=='rad') {
+				} 
+				else if (infoItemId=='rad') 
+				{
 					inv.usePotion('antiradin');
-				} else if (infoItemId=='cut') {
+				} 
+				else if (infoItemId=='cut') 
+				{
 					inv.usePotion('pot0');
-				} else if (infoItemId=='poison') {
+				} 
+				else if (infoItemId=='poison') 
+				{
 					inv.usePotion('antidote');
-				} else if (infoItemId.substr(0,9)=='statBlood') {
+				} 
+				else if (infoItemId.substr(0,9)=='statBlood') 
+				{
 					inv.usePotion('bloodpak');
-				} else if (infoItemId=='phoenix') {
+				} 
+				else if (infoItemId=='phoenix') 
+				{
 					inv.usePotion('radcookie');
-				} else if (infoItemId.substr(0,8)=='statHead') {
+				} 
+				else if (infoItemId.substr(0,8)=='statHead') 
+				{
 					need=gg.invent.getMed(1);
 					if (need!='') inv.usePotion(need,1);
-				} else if (infoItemId.substr(0,8)=='statTors') {
+				} 
+				else if (infoItemId.substr(0,8)=='statTors') 
+				{
 					need=gg.invent.getMed(2);
 					if (need!='') inv.usePotion(need,2);
-				} else if (infoItemId.substr(0,8)=='statLegs') {
+				} 
+				else if (infoItemId.substr(0,8)=='statLegs') 
+				{
 					need=gg.invent.getMed(3);
 					if (need!='') inv.usePotion(need,3);
-				} else if (infoItemId.substr(0,8)=='statMana') {
+				} 
+				else if (infoItemId.substr(0,8)=='statMana') 
+				{
 					inv.usePotion('mana');
-				} else if (infoItemId.substr(0,5)=='post_') {
+				} 
+				else if (infoItemId.substr(0,5)=='post_') 
+				{
 					inv.usePotion('detoxin');
 				}
 				setStatus();
@@ -516,7 +614,8 @@ package interdata
 			}
 			showBottext();
 		}
-		override function itemRightClick(event:MouseEvent)
+
+		override function itemRightClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
@@ -530,7 +629,8 @@ package interdata
 			}
 			showBottext();
 		}
-		function transOk(event:MouseEvent)
+
+		function transOk(event:MouseEvent):void
 		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
@@ -563,7 +663,7 @@ package interdata
 			}
 			setStatus();
 		}
-		function gotoDef(event:MouseEvent)
+		function gotoDef(event:MouseEvent):void
 		{
 			if (page2==6) {
 				page2=3;

@@ -7,6 +7,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.vismine;
+
 	public class Mine extends Unit
 	{
 
@@ -63,7 +65,7 @@ package unitdata
 			else vis.gotoAndStop(2);
 			setVis(false);
 			var node:XML=AllData.d.weapon.(@id==id)[0];
-			nazv=Res.txt('w',id);
+			objectName=Res.txt('w',id);
 			scX=node.@sX;
 			scY=node.@sY;
 			
@@ -140,7 +142,7 @@ package unitdata
 			if (nlevel>10) damage1*=(1+(nlevel-10)*0.1);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			oduplenie=Settings.oduplenie/2;
@@ -187,7 +189,7 @@ package unitdata
 			vis.play();
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			super.die(0);
 		}

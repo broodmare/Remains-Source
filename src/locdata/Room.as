@@ -16,6 +16,8 @@ package locdata
 	
 	import components.Settings;
 	
+	import stubs.signPost;
+	
 	public class Room 
 	{
 		
@@ -77,13 +79,13 @@ package locdata
 		public var isRebuild:Boolean=false, isRecalc:Boolean=false, isRelight:Boolean=false, relight_t:int;
 		public var warning:int=0;			// Dangers like thrown grenades exist
 		public var t_gwall:int=0;	// Transparent walls exist
-		public var lDist1:int=300, lDist2:int=1000;	// Fog of war reveal distance
-		public var quake:int=0;
+		public var lDist1:int = 300, lDist2:int = 1000;	// Fog of war reveal distance
+		public var quake:int = 0;
 		public var broom:Boolean=false;		// All loot will be automatically picked up
 		public var isCheck:Boolean=false;	// Checkpoint, exit point, or trial door was created
 		
 		// Options
-		public var noHolesPlace:Boolean=true;	// Remove containers near passages
+		public var noHolesPlace:Boolean = true;	// Remove containers near passages
 		public var ramka:int = 0;					// Frame made of blocks around the perimeter: 1 - entire perimeter, 2 - sides only, 3 - bottom only, 4 - bottom and sides
 		public var bezdna:Boolean = false;		// Falling leads downward
 		public var mirror:Boolean = false;		// Mirror room
@@ -355,7 +357,7 @@ package locdata
 			}
 			
 			// Possible passages to other locations
-			if (nroom.doors.length > 0) 
+			if (nroom.doors.length() > 0) 
 			{
 				var s:String=nroom.doors[0];
 				doors=s.split('.');
@@ -728,13 +730,13 @@ package locdata
 							}
 						}
 					}
-					if (ups[i].length>0) 
+					if (ups[i].length > 0) 
 					{
 						for (j=0; j<kolEn[i]; j++) 
 						{
 							var n=Math.floor(Math.random()*ups[i].length);
 							createUnit(tipEn[i],ups[i][n].x,ups[i][n].y, false, ups[i][n].xml);
-							if (ups[i].length<=1) 
+							if (ups[i].length <= 1) 
 							{
 								ups[i]=[];
 								break;
@@ -745,13 +747,13 @@ package locdata
 				}
 			}
 			// Add hidden enemies
-			if (kolEnHid>0 && ups[2].length>0) 
+			if (kolEnHid>0 && ups[2].length > 0) 
 			{
 				for (j=0; j<kolEnHid; j++) 
 				{
-					n=Math.floor(Math.random()*ups[2].length);
+					n=Math.floor(Math.random()*ups[2].length );
 					createHidden(ups[2][n].x,ups[2][n].y);
-					if (ups[2].length<=1) break;
+					if (ups[2].length <= 1) break;
 					else ups[2].splice(n,1);
 				}
 			}
@@ -785,11 +787,11 @@ package locdata
 				if ((xml==null || xml.@on.length()==0) && Math.random()<0.5) return null;
 			}
 
-			if (xml && xml.@trigger.length && World.world.game.triggers[xml.@trigger]=='1') return null;
+			if (xml && xml.@trigger.length() && World.world.game.triggers[xml.@trigger]=='1') return null;
 
 			var loadObj:Object=null;
 
-			if (xml && xml.@code.length && World.world.game.objs.hasOwnProperty(xml.@code)) loadObj=World.world.game.objs[xml.@code];
+			if (xml && xml.@code.length() && World.world.game.objs.hasOwnProperty(xml.@code)) loadObj=World.world.game.objs[xml.@code];
 
 			//не генерировать юнита, который сдох
 			if (loadObj && loadObj.dead>0 && loadObj.loot!=2)
@@ -1288,7 +1290,7 @@ package locdata
 			var size:int=AllData.d.obj.(@id==id).@size;
 			if (size<=0) size=1;
 			var loadObj:Object=null;
-			if (xml && xml.@code.length && World.world.game.objs.hasOwnProperty(xml.@code)) loadObj=World.world.game.objs[xml.@code];
+			if (xml && xml.@code.length() && World.world.game.objs.hasOwnProperty(xml.@code)) loadObj=World.world.game.objs[xml.@code];
 			if (tip=='box' || tip=='door') 
 			{
 				obj=new Box(this, id, (nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
@@ -1343,12 +1345,12 @@ package locdata
 				obj.uid=xml.@uid;
 				level.uidObjs[obj.uid]=obj;
 			}
-			if (xml && xml.@nazv.length()) 
+			if (xml && xml.@objectName.length()) 
 			{
-				obj.nazv=xml.@nazv;
+				obj.objectName=xml.@objectName;
 			}
 			//Добавление id испытаний
-			if (levelProb=='' && xml && xml.@prob.length && xml.@prob!='') level.probIds.push(xml.@prob);
+			if (levelProb=='' && xml && xml.@prob.length() && xml.@prob!='') level.probIds.push(xml.@prob);
 			addObj(obj);
 			return obj;
 		}
@@ -1356,7 +1358,7 @@ package locdata
 		//создание чекпоинта в случайной точке появления
 		public function createCheck(act:Boolean=false) 
 		{
-			if (spawnPoints.length>0) 
+			if (spawnPoints.length > 0) 
 			{
 				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				var id='checkpoint';
@@ -1373,7 +1375,7 @@ package locdata
 		//создание выхода в случайной точке появления
 		public function createExit(s:String='') 
 		{
-			if (spawnPoints.length>0) 
+			if (spawnPoints.length > 0) 
 			{
 				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={level.template.exitProb+s} time='20' inter='8' sign='1'/>);
@@ -1383,10 +1385,10 @@ package locdata
 		//создание двери испытаний в случайной точке появления
 		public function createDoorProb(nid:String, nprob:String):Boolean 
 		{
-			if (spawnPoints.length>0) 
+			if (spawnPoints.length > 0) 
 			{
 				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
-				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} nazv={Res.txt('m',nprob)} time='20' inter='8'/>);
+				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} objectName={Res.txt('m',nprob)} time='20' inter='8'/>);
 				isCheck=true;
 				return true;
 			}
@@ -2056,7 +2058,7 @@ package locdata
 		// Spawn an enemy at the spawn point
 		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null) 
 		{
-			if (kolEnSpawn<=0 || enspawn==null || enspawn.length==0) return;
+			if (kolEnSpawn<=0 || enspawn==null || enspawn.length == 0) return;
 			kolEnSpawn--;
 			if (!one) t_alarmsp=Math.floor(Math.random()*30);
 			var sp:Object=enspawn[Math.floor(Math.random()*enspawn.length)];
@@ -2075,7 +2077,7 @@ package locdata
 		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit 
 		{
 			if (w==null) return null;
-			if (enspawn.length==0) return null;
+			if (enspawn.length == 0) return null;
 			var sp:Object=enspawn[n];
 			if (sp==null) sp=enspawn[Math.floor(Math.random()*enspawn.length)];
 			var un:Unit=createUnit(w.@id,sp.x,sp.y,true,w,w.@cid,30);
@@ -2324,7 +2326,7 @@ package locdata
 			if (t_gwall>0) t_gwall--;
 		}
 		
-		public function step() 
+		public function step():void
 		{
 			gg.step(); 
 			if (prob) prob.step();

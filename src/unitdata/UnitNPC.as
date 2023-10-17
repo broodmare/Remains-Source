@@ -11,6 +11,10 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualVendor;
+	import stubs.visualDoctor;
+	import stubs.visNPCIco;
+
 	public class UnitNPC extends UnitPon
 	{
 		
@@ -43,24 +47,32 @@ package unitdata
 		var cx:Number=-1, cy:Number=-1;
 		var dvig:Object=new Object;
 		
-		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
-			if (cid!='' && cid!=null) {
+			if (cid!='' && cid!=null) 
+			{
 				id=cid;
-			} else {
-				id='npc';
+			} 
+			else 
+			{
+				id = 'npc';
 			}
 			getXmlParam();
 			
 			//взять данные об npc
-			if (xml && xml.@npc.length()) {
+			if (xml && xml.@npc.length()) 
+			{
 				targNPC=World.world.game.npcs[xml.@npc];
 			}
-			if (targNPC) {
+			if (targNPC) 
+			{
 				if (loadObj && loadObj.rep!=null) targNPC.rep=loadObj.rep;	//старый формат сохранения
 				npcId=targNPC.id;
 				npcXML=targNPC.xml;
-			} else {
+			} 
+			else 
+			{
 				npcId=id;
 				targNPC = new NPC(null,null,id,ndif);
 			}
@@ -68,24 +80,31 @@ package unitdata
 			targNPC.inter=inter;
 			targNPC.owner=this;
 			//если есть настройки npc
-			if (npcXML) {
-				if (npcXML.@vis.length()) {
+			if (npcXML) 
+			{
+				if (npcXML.@vis.length()) 
+				{
 					visClass=Res.getClass('visual'+npcXML.@vis, npcXML.@vis, visualVendor);
 				} else visClass=visualVendor;
 				if (npcXML.@noturn.length()) noTurn=true;
 				if (npcXML.@ico.length()) icoFrame=npcXML.@ico;
-				if (Res.istxt('u',npcId)) nazv=Res.txt('u',npcId);
-				if (npcXML.@name.length()) nazv=Res.txt('u',npcXML.@name);
+				if (Res.istxt('u',npcId)) objectName=Res.txt('u',npcId);
+				if (npcXML.@name.length()) objectName=Res.txt('u',npcXML.@name);
 				if (npcXML.@replic.length()) id_replic=npcXML.@replic;
 				if (npcXML.@silent.length()) silent=true;
 				if (npcXML.@weap.length()) weap=npcXML.@weap;
 				if (npcXML.@weap2.length()) weap2=npcXML.@weap2;
 				if (npcXML.@layer.length()) layer=npcXML.@layer;
-			} else {	//и если нет
-				if (id=='doctor') {
+			} 
+			else 
+			{	//и если нет
+				if (id=='doctor') 
+				{
 					visClass=visualDoctor;
 					icoFrame=3;
-				} else {
+				} 
+				else 
+				{
 					visClass=visualVendor;
 					icoFrame=2;
 				}
@@ -97,22 +116,28 @@ package unitdata
 			ico.y=-140;
 			vis.addChild(ico);
 			if (vis==null) vis=new visualVendor();
-			if (vis.osn) {
-				try {
+			if (vis.osn) 
+			{
+				try 
+				{
 					vis.osn.gotoAndStop('stay');
-				} catch(err) {
+				} 
+				catch(err) 
+				{
 					vis.osn.gotoAndStop(1);
 				}
 			}
 			//оружие
-			if (weap!='') {
+			if (weap!='') 
+			{
 				currentWeapon=Weapon.create(this,weap);
 				currentWeapon.hold=currentWeapon.holder;
 				setCel(null,100,-30);
 				childObjs=[currentWeapon];
 				if (npcXML && npcXML.@dammult.length()) currentWeapon.damage*=npcXML.@dammult;
 			}
-			if (weap2!='') {
+			if (weap2!='') 
+			{
 				dopWeapon=Weapon.create(this,weap2);
 				dopWeapon.hold=dopWeapon.holder;
 				childObjs.push(dopWeapon);
@@ -134,14 +159,14 @@ package unitdata
 		}
 		
 
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			super.addVisual();
 			if (targNPC) {
 				targNPC.refresh();
 				targNPC.check();
 				isVis=!targNPC.hidden;
-				//trace(nazv,targNPC.rep, targNPC.hidden);
+				//trace(objectName,targNPC.rep, targNPC.hidden);
 			}
 			vis.visible=isVis;
 			if (currentWeapon) currentWeapon.vis.visible=isVis;
@@ -206,7 +231,7 @@ package unitdata
 		
 		
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			super.command(com,val);
 			//скрыть

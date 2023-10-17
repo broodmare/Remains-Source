@@ -43,10 +43,10 @@ package servdata
 						if (b.@pmult.length()) item.pmult=b.@pmult;
 						if (loadObj) {
 							//item.kol=0;
-							for each(var obj:Object in loadObj) {
-								if (obj.variant==item.variant && obj.id==item.id) {
-									item.kol=obj.kol;
-									item.sost=obj.sost;
+							for each(var obj2:Object in loadObj) {
+								if (obj2.variant==item.variant && obj2.id==item.id) {
+									item.kol=obj2.kol;
+									item.sost=obj2.sost;
 									break;
 								}
 							}
@@ -58,7 +58,7 @@ package servdata
 				setRndBuys(lvl, tip);
 			}
 			if (xml) id=xml.@id;
-			for (var i in buys) {
+			for (var i:String in buys) {
 				var uid:String=buys[i].id;
 				if (buys[i].variant>0) uid+='^'+buys[i].variant;
 				buys2[uid]=buys[i];
@@ -67,8 +67,10 @@ package servdata
 			if (Math.random()<0.2) money*=2;
 		}
 		
-		public function setRndBuys(lvl:int=0, rndtip:String='vendor') {
-			if (Math.random()<0.7) {
+		public function setRndBuys(lvl:int=0, rndtip:String='vendor'):void 
+		{
+			if (Math.random()<0.7) 
+			{
 				multPrice=Math.floor(Math.random()*6+8)/10;
 			}
 			var num:int;
@@ -79,25 +81,33 @@ package servdata
 			var num2:int=num*(0.1+Math.random()*0.3);
 			var item:Item;
 			var cid:String;
-			for (var i=0; i<num; i++) {
-				if (i<num2 && rndtip!='doctor') {
+			for (var i=0; i<num; i++) 
+			{
+				if (i<num2 && rndtip!='doctor') 
+				{
 					cid=LootGen.getRandom(Item.L_WEAPON,1+lvl/4);
 					item=new Item(Item.L_WEAPON, cid, 1)
 					if (buys2[cid]==null) {
-						if (Math.random()<0.2) {
+						if (Math.random()<0.2) 
+						{
 							item.barter=Math.floor(Math.random()*lvl/4+1);
 							if (item.barter>5) item.barter=5;
 						}
 						buys.push(item);
 						buys2[cid]=item;
 					}
-				} else {
+				} 
+				else 
+				{
 					var tip:String;
 					var t:int=Math.floor(Math.random()*110);
-					if (rndtip=='doctor') {
+					if (rndtip=='doctor') 
+					{
 						if (t<70) tip=Item.L_MED;
 						else tip=Item.L_HIM;
-					} else {
+					} 
+					else 
+					{
 						if (t<5) tip=Item.L_UNIQ;
 						else if (t<10) tip=Item.L_SCHEME;
 						else if (t<25) tip=Item.L_MED;
@@ -112,57 +122,68 @@ package servdata
 					cid=LootGen.getRandom(tip,lvl);
 					if (cid==null) continue;
 					item=new Item(tip, cid);
-					if (buys2[cid]==null) {
-						if (Math.random()<0.3) {
+					if (buys2[cid]==null) 
+					{
+						if (Math.random()<0.3) 
+						{
 							item.lvl=Math.floor(Math.random()*lvl+1);
 							if (item.lvl>5) item.lvl=5;
 						}
-						if (tip==Item.L_AMMO) {
+						if (tip==Item.L_AMMO) 
+						{
 							item.kol=Math.round(item.kol*(3+Math.random()*12));
 						} else if (tip!=Item.L_UNIQ && tip!=Item.L_SCHEME) {
 							item.kol=Math.round(item.kol*(1+Math.random()*4));
 						}
 						buys.push(item);
 						buys2[cid]=item;
-					} else if (tip!=Item.L_UNIQ && tip!=Item.L_SCHEME) {
+					} 
+					else if (tip!=Item.L_UNIQ && tip!=Item.L_SCHEME) 
+					{
 						buys2[cid].kol+=item.kol;
 					}
 				}
 			}
 		}
 		
-		public function reset() {
+		public function reset():void 
+		{
 			kolBou=0;
-			for (var i in buys) buys[i].bou=0;
+			for (var i:String in buys) buys[i].bou=0;
 		}
 		
-		public function refill() {
+		public function refill():void 
+		{
 			//trace(id,xml);
 			if (xml==null) return;
-			if (id=='random') {
+			if (id=='random') 
+			{
 				buys=new Array();
 				buys2=new Array();
 				setRndBuys(100,'random');
-				for (var i in buys) {
+				for (var i:String in buys) 
+				{
 					var uid:String=buys[i].id;
 					if (buys[i].variant>0) uid+='^'+buys[i].variant;
 					buys2[uid]=buys[i];
 				}
 				return;
 			} 
-			for each(var item:Item in buys) {
+			for each(var item:Item in buys) 
+			{
 				if (item.noref || item.tip==Item.L_ARMOR || item.tip==Item.L_WEAPON || item.tip==Item.L_SCHEME || item.tip==Item.L_UNIQ || item.tip==Item.L_IMPL) continue;
-				var buy=xml.buy.(@id==item.id);
+				var buy:XML = xml.buy.(@id==item.id);
 				if (buy.length()==0 || buy.@n.length()==0) continue;
-				var lim=Math.ceil(buy.@n*World.world.pers.limitBuys);
-				if (item.kol<lim) {
-					item.kol=Math.min(lim,item.kol+Math.ceil(0.25*lim));
-					//trace(item.nazv, item.kol);
+				var lim:int = Math.ceil(buy.@n*World.world.pers.limitBuys);
+				if (item.kol < lim) {
+					item.kol = Math.min(lim,item.kol+Math.ceil(0.25*lim));
+					//trace(item.objectName, item.kol);
 				}
 			}
 		}
 		
-		public function save():* {
+		public function save():* 
+		{
 			if (id==null) return null;
 			var arr:Array=new Array();
 			for each (var b:Item in buys) arr.push(b.save());

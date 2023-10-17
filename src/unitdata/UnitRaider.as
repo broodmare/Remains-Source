@@ -320,7 +320,7 @@ package unitdata
 			volMinus=rasst/8000;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;
@@ -385,7 +385,7 @@ package unitdata
 			//if (hpbar) trace(hpbar.visible, hpbar.x, hpbar.y);
 		
 			var t:Tile;
-			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -893,7 +893,7 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			super.command(com,val);
 			if (com=='turn') {

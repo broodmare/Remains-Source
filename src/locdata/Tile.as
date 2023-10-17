@@ -103,7 +103,7 @@ package  locdata
 				}
 				catch (err)
 				{
-					trace('Backwall failed applying texture. Backwall:', form, ' Texture: ', form.formTextureID)
+					trace('Tile.as/inForm() - Backwall failed applying texture. Backwall:', form, ' Texture: ', form.formTextureID)
 				}
 			} 
 			else // For Tiles...
@@ -116,7 +116,7 @@ package  locdata
 				}
 				catch (err)
 				{
-					trace('Tile failed applying texture. Tile:', form, ' Texture: ', tileTexture)
+					trace('Tile.as/inForm() - Tile failed applying texture. Tile:', form, ' Texture: ', tileTexture)
 				}
 			}
 
@@ -175,7 +175,7 @@ package  locdata
 				for (var i = 1; i < s.length; i++) 
 				{
 					fr = s.charCodeAt(i);
-					var tileSymbol:String=s.charAt(i);
+					var tileSymbol:String = s.charAt(i);
 					if (tileSymbol == '*') //water
 					{
 						water = 1;
@@ -290,7 +290,7 @@ package  locdata
 		// Destroy the block
 		public function die():void
 		{
-			if (phis!=3) tileTexture='';
+			if (phis != 3) tileTexture = '';
 			phis = 0;
 			opac = 0;
 			vid = 0;

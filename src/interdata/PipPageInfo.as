@@ -14,6 +14,11 @@ package interdata
 	
 	import components.Settings;
 	
+	import stubs.visPipQuestItem;
+	import stubs.visPipInfo;
+	import stubs.visPipMap;
+	import stubs.visPipWMap;
+
 	public class PipPageInfo extends PipPage
 	{
 		
@@ -29,51 +34,58 @@ package interdata
 
 		public function PipPageInfo(npip:PipBuck, npp:String) 
 		{
-			itemClass=visPipQuestItem;
-			pageClass=visPipInfo;
-			isLC=true;
+			itemClass = visPipQuestItem;
+			pageClass = visPipInfo;
+			isLC = true;
 			super(npip,npp);
+
 			//объект карты
-			visMap=new visPipMap();
-			visWMap=new visPipWMap();
+			visMap 	= new visPipMap();
+			visWMap = new visPipWMap();
 			vis.addChild(visMap);
 			vis.addChild(visWMap);
-			visMap.x=12;
-			visMap.y=75;
-			visWMap.x=17;
-			visWMap.y=80;
+			visMap.x  = 12;
+			visMap.y  = 75;
+			visWMap.x = 17;
+			visWMap.y = 80;
+
 			//битмап
-			map=new Bitmap();
+			map = new Bitmap();
 			visMap.vmap.addChild(map);
-			visMap.vmap.mask=visMap.maska;
-			plTag=visMap.vmap.plTag;
+			visMap.vmap.mask = visMap.maska;
+			plTag = visMap.vmap.plTag;
 			visMap.vmap.swapChildren(map,plTag);
+
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 			visMap.addEventListener(MouseEvent.MOUSE_DOWN,onMouseDown);
 			visMap.addEventListener(MouseEvent.MOUSE_UP,onMouseUp);
 			visMap.butZoomP.addEventListener(MouseEvent.CLICK,funZoomP);
 			visMap.butZoomM.addEventListener(MouseEvent.CLICK,funZoomM);
 			visMap.butCenter.addEventListener(MouseEvent.CLICK,funCenter);
+			trace('PipPageInfo.as/PipPageInfo() - Created PipPageInfo page.');
 		}
 		
 
-		override function setSubPages()
+		override function setSubPages():void
 		{
-			vis.bottext.visible=false;
-			vis.butOk.visible=false;
-			statHead.visible=false;
-			visMap.visible=false;
-			visWMap.visible=false;
-			vis.ico.visible=false;
-			vis.nazv.x=458;
-			vis.info.x=458;
-			vis.nazv.width=413;
-			vis.info.width=458;
-			pip.vis.butHelp.visible=false;
-			targetLand='';
+			trace('PipPageInfo.as/setSubPages() - updating subPages.');
+
+			vis.bottext.visible		= false;
+			vis.butOk.visible		= false;
+			statHead.visible		= false;
+			visMap.visible			= false;
+			visWMap.visible			= false;
+			vis.ico.visible			= false;
+			vis.objectName.x		= 458;
+			vis.info.x				= 458;
+			vis.objectName.width	= 413;
+			vis.info.width			= 458;
+			pip.vis.butHelp.visible	= false;
+			targetLand				= '';
 			setTopText();
-			game=World.world.game;
-			if (page2==1) 
+
+			game = World.world.game;
+			if (page2 == 1) 
 			{		//карта
 				if (World.world.room.noMap) 
 				{
@@ -93,11 +105,11 @@ package interdata
 				{
 					if (i.state>0) 
 					{
-						var n:Object={id:i.id, nazv:i.nazv, main:i.main, sort:(i.main?0:1), state:i.state};
+						var n:Object={id:i.id, objectName:i.objectName, main:i.main, sort:(i.main?0:1), state:i.state};
 						arr.push(n);
 					}
 				}
-				if (arr.length) arr.sortOn(['state','sort','nazv']);
+				if (arr.length) arr.sortOn(['state','sort','objectName']);
 				if (World.world.room && World.world.room.base) {
 					for each (var task in GameData.d.vendor.task) 
 					{
@@ -114,10 +126,10 @@ package interdata
 					}
 				}
 			} 
-			else if (page2==3) 	//общая карта
+			else if (page2 == 3) 	//общая карта
 			{
-				vis.nazv.x=vis.info.x=584;
-				vis.nazv.width=287;
+				vis.objectName.x=vis.info.x=584;
+				vis.objectName.width=287;
 				vis.info.width=332;
 				if (pip.travel) setTopText('infotravel');
 				for each (var level:LevelTemplate in game.levelArray) 
@@ -146,7 +158,7 @@ package interdata
 							sim.sim.gotoAndStop(1);
 						}
 						//trace(level.id, Settings.testMode);
-						if (level.test && !Settings.testMode) continue;
+						if (!Settings.testMode) continue;
 						if (!game.checkTravel(level.id)) sim.alpha=0.5;
 						if (Settings.testMode && !level.visited && !level.access) sim.alpha=0.3;
 						if (Settings.helpMess && !level.visited && level.access) 
@@ -154,7 +166,7 @@ package interdata
 							sim.sign.play();
 							sim.sign.visible=true;
 						}
-						if (Settings.testMode || level.visited || level.access) sim.visible=true;
+						if (Settings.testMode || level.visited || level.access) sim.visible = true;
 					}
 				}
 				vis.butOk.text.text=Res.pipText('trans');
@@ -162,12 +174,12 @@ package interdata
 				pip.vis.butHelp.visible=true;
 				pip.helpText=Res.txt('p','helpWorld',0,true);
 			} 
-			else if (page2==4)
+			else if (page2 == 4)
 			{	//записи
 				var doparr:Array=new Array();
 				for each (var note:String in game.notes) 
 				{
-					var xml=Res.d.txt.(@id==note);
+					var xml=Res.gameData.txt.(@id==note);
 					var nico:int=0;
 					if (xml && xml.@imp>0) 
 					{
@@ -178,19 +190,19 @@ package interdata
 					if (xml.n.t.length()) title=xml.n.t[0];
 					else title=xml.n.r[0];
 					title=title.replace(/&lp/g,World.world.pers.persName);
-					var n:Object={id:note, nazv:title, ico:nico};
+					var n:Object={id:note, objectName:title, ico:nico};
 					if (nico==3) doparr.push(n);
 					else arr.push(n);
 				}
 				arr.reverse();
 				arr=doparr.concat(arr);
 			} 
-			else if (page2==5) 	//противники
+			else if (page2 == 5) 	//противники
 			{
 				if (Unit.arrIcos==null) Unit.initIcos();
 				var prevObj:Object=null;
 				statHead.visible=true;
-				statHead.nazv.text='';
+				statHead.objectName.text='';
 				statHead.mq.visible=false;
 				statHead.kol.text=Res.pipText('frag');
 				vis.ico.visible=true;
@@ -198,7 +210,7 @@ package interdata
 				{
 					if (xml && xml.@cat.length()) 
 					{
-						var n:Object={id:xml.@id, nazv:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
+						var n:Object={id:xml.@id, objectName:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
 						if (xml.@cat=='3' && World.world.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.world.game.triggers['frag_'+xml.@id]);
 						if (xml.@cat=='2') 
 						{
@@ -218,36 +230,39 @@ package interdata
 				}
 				arr=arr.filter(isKol);		//отфильтровать
 			}
+
+			trace('PipPageInfo.as/setSubPages() - Finished updating subPages.');
+
 		}
 		
 		private function isKol(element:*, index:int, arr:Array):Boolean 
 		{
-            return (element.kol>=0 || element.cat=='1');
+            return (element.kol >= 0 || element.cat == '1');
         }		
 		//один эемент списка
-		override function setStatItem(item:MovieClip, obj:Object)
+		override function setStatItem(item:MovieClip, obj:Object):void
 		{
-			item.id.text=obj.id;
-			item.id.visible=false;
-			item.nazv.text=obj.nazv;
-			item.mq.visible=false;
-			item.ramka.visible=false;
-			item.nazv.alpha=1;
-			item.kol.text='';
-			item.kol.visible=false;
-			if (page2==2) 
+			item.id.text 			= obj.id;
+			item.id.visible 		= false;
+			item.objectName.text 	= obj.objectName;
+			item.mq.visible 	 	= false;
+			item.ramka.visible 		= false;
+			item.objectName.alpha 	= 1;
+			item.kol.text 			= '';
+			item.kol.visible 		= false;
+			if (page2 == 2) 
 			{
-				item.nazv.x=32;
+				item.objectName.x=32;
 				item.mq.visible=obj.main;
 				item.mq.gotoAndStop(1);
 				if (obj.state==2) 
 				{
-					item.nazv.alpha=item.mq.alpha=0.4;
-					item.nazv.text+=' ('+Res.pipText('done')+')';
+					item.objectName.alpha=item.mq.alpha=0.4;
+					item.objectName.text+=' ('+Res.pipText('done')+')';
 				} 
 				else 
 				{
-					item.nazv.alpha=item.mq.alpha=1;
+					item.objectName.alpha=item.mq.alpha=1;
 				}
 			} 
 			else if (page2==3) 
@@ -256,26 +271,26 @@ package interdata
 			} 
 			else if (page2==4) 
 			{
-				item.nazv.x=32;
-				item.nazv.htmlText=obj.nazv.substr((obj.nazv.charAt(0)==' ')?3:0, 60);
-				item.kol.text=obj.nazv;
+				item.objectName.x=32;
+				item.objectName.htmlText=obj.objectName.substr((obj.objectName.charAt(0)==' ')?3:0, 60);
+				item.kol.text=obj.objectName;
 				item.mq.visible=true;
 				item.mq.alpha=1;
 				item.mq.gotoAndStop(obj.ico+1);
 			} 
 			else if (page2==5) 
 			{
-				item.nazv.x=5;
-				if (obj.cat=='1') item.nazv.htmlText='<b>'+item.nazv.text+'</b>';
-				if (obj.cat=='2') item.nazv.htmlText='      <b>'+item.nazv.text+'</b>';
-				if (obj.cat=='3') item.nazv.htmlText='            '+item.nazv.text;
+				item.objectName.x=5;
+				if (obj.cat=='1') item.objectName.htmlText='<b>'+item.objectName.text+'</b>';
+				if (obj.cat=='2') item.objectName.htmlText='      <b>'+item.objectName.text+'</b>';
+				if (obj.cat=='3') item.objectName.htmlText='            '+item.objectName.text;
 				if (obj.kol>0) item.kol.text=obj.kol;
 				item.kol.visible=true;
 			}
 		}
 
 		
-		override function statInfo(event:MouseEvent) //информация об элементе
+		override function statInfo(event:MouseEvent):void //информация об элементе
 		{
 			vis.info.y=vis.ico.y;
 			if (page2==2) 
@@ -286,7 +301,7 @@ package interdata
 			{
 				var l:LevelTemplate=game.levelArray[event.currentTarget.name];
 				if (l==null) return;
-				vis.nazv.text=Res.txt('m',l.id);
+				vis.objectName.text=Res.txt('m',l.id);
 				var s:String=Res.txt('m',l.id,1);
 				if (!l.visited) s+="\n\n<span class ='blu'>"+Res.pipText('ls1')+"</span>";
 				else if (l.passed) s+="\n\n<span class ='or'>"+Res.pipText('ls2')+"</span>";
@@ -309,7 +324,7 @@ package interdata
 			} 
 			else if (page2==4) 
 			{
-				vis.info.y=vis.nazv.y;
+				vis.info.y=vis.objectName.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
 				s=s.replace(/&lp/g,World.world.pers.persName);
 				s=s.replace(/\[/g,"<span class='yel'>");
@@ -321,7 +336,7 @@ package interdata
 				if (vis.ico.numChildren>0) vis.ico.removeChildAt(0);
 				Unit.initIco(event.currentTarget.id.text)
 				if (Unit.arrIcos[event.currentTarget.id.text]) vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
-				vis.nazv.text=event.currentTarget.nazv.text;
+				vis.objectName.text=event.currentTarget.objectName.text;
 				vis.info.htmlText=Res.txt('u',event.currentTarget.id.text,1)+'\n'+infoUnit(event.currentTarget.id.text, event.currentTarget.kol.text);
 				vis.info.y=vis.ico.y+vis.ico.height+20;
 				vis.ico.x=685-vis.ico.width/2; //460 910
@@ -440,7 +455,8 @@ package interdata
 				}
 			}
 			//сопротивления
-			if (n>=3 && un.vulner.length()) {
+			if (n>=3 && un.vulner.length()) 
+			{
 				s+=Res.pipText('resists')+': ';
 				node=un.vulner[0];
 				if (node.@emp.length()) 	s+=vulner(Unit.D_EMP,node.@emp);
@@ -465,7 +481,7 @@ package interdata
 		}
 		
 		
-		override function itemClick(event:MouseEvent)
+		override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{
@@ -498,7 +514,7 @@ package interdata
 			}
 		}
 		
-		function transOk(event:MouseEvent)
+		function transOk(event:MouseEvent):void
 		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
@@ -554,7 +570,7 @@ package interdata
 			visMap.vmap.y=visMap.fon.height/2-plTag.y;
 		}
 		
-		function setMapSize(cx:Number=350, cy:Number=285)
+		function setMapSize(cx:Number=350, cy:Number=285):void
 		{
 			if (mapScale>6) mapScale=6;
 			if (mapScale<1) mapScale=1;
@@ -568,7 +584,7 @@ package interdata
 			ms=mapScale;
 		}
 		
-		public override function scroll(dn:int=0)
+		public override function scroll(dn:int=0):void
 		{
 			if (page2==1) 
 			{
@@ -578,11 +594,11 @@ package interdata
 			}
 		}
 
-		function funWMapClick(event:MouseEvent)
+		function funWMapClick(event:MouseEvent):void
 		{
 			trace(event.currentTarget.name);
 		}
-		function funWMapOver(event:MouseEvent)
+		function funWMapOver(event:MouseEvent):void
 		{
 			//trace(event.currentTarget.name);
 		}

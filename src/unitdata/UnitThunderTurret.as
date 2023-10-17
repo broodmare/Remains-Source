@@ -4,6 +4,8 @@ package unitdata
 	import weapondata.Weapon;
 	import weapondata.Bullet;
 	
+	import stubs.visualTTurret;
+	
 	public class UnitThunderTurret extends Unit
 	{
 		
@@ -25,7 +27,7 @@ package unitdata
 			mater=false;
 			mat=1;
 			fixed=true;
-			nazv='';
+			objectName='';
 			friendlyExpl=0;
 			currentWeapon=new Weapon(this,'ttweap'+tr);
 			childObjs=new Array(currentWeapon);

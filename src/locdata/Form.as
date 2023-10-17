@@ -54,13 +54,19 @@ package locdata
 		
 		public static function setForms():void //Populates arrays of all Tiles and Backgrounds.
 		{
+			trace('Form.as/setForms() - SetForms() Executing...');
 			tileForms = new Array();
 			otherForms = new Array();
+			if (AllData.d.mat == null)
+			{
+				trace('Form.as/setForms() - SetForms() AllData.d.mat does not exist!');
+			}
 			for each (var node in AllData.d.mat) 
 			{
 				if (node.@ed == 1) tileForms[node.@id] = new Form(node); // If interactive tile...
 				else otherForms[node.@id] = new Form(node);				// Else (backwall)...
 			}
+			trace('Form.as/setForms() - SetForms() Finished.');
 		}
 	}
 }

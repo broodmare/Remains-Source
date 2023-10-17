@@ -4,6 +4,8 @@ package unitdata
 	import servdata.Interact;
 	import graphdata.Emitter;
 	
+	import stubs.vismwall;
+	
 	public class UnitMWall extends Unit
 	{
 		
@@ -18,7 +20,7 @@ package unitdata
 			//vis.gotoAndStop(1);
 			getXmlParam();
 			vulner[D_NECRO]=begvulner[D_NECRO]=1;
-			nazv='';
+			objectName='';
 			this.levitPoss=false;
 			showNumbs=false;
 			doop=true;
@@ -30,7 +32,7 @@ package unitdata
 			Emitter.emit('pole',room,X,Y-scY/2,{kol:12,rx:scX, ry:scY});
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			if (disabled) return;
 			if (vis && room && room.roomActive) World.world.grafon.canvasLayerArray[layer].addChild(vis);
@@ -48,12 +50,12 @@ package unitdata
 			if (hp<=0) exterminate();
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			exterminate();
 		}		
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			expl();
 			exterminate();

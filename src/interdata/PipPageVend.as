@@ -23,35 +23,41 @@ package interdata
 	{
 		
 		var vend:Vendor;
-		var npcId:String='';
+		var npcId:String	= '';
 		var assArr:Array;
-		var npcInter:String='';
-		var repOwl:int=2;	//цена ремонта совы
-		var inbase:Boolean=false;
-		var selall:Boolean=true;
+		var npcInter:String	= '';
+		var repOwl:int		= 2;	//цена ремонта совы
+		var inbase:Boolean	= false;
+		var selall:Boolean	= true;
 
 		public function PipPageVend(npip:PipBuck, npp:String) 
 		{
-			isLC=isRC=true;
-			itemClass=visPipBuyItem;
-			super(npip,npp);
-			vis.but5.visible=false;
-			vis.butOk.text.text=Res.pipText('transaction');
+			isLC = true;
+			isRC = true;
+			itemClass = visPipBuyItem;
+			super(npip, npp);
+
+			vis.but5.visible = false;
+			vis.butOk.text.text = Res.pipText('transaction');
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
-			var tf:TextFormat=new TextFormat();
+
+			var tf:TextFormat = new TextFormat();
 			tf.color = 0x00FF99; 
-			tf.size = 16; 
-			for (var i=0; i<maxrows; i++) 
+			tf.size = 16;
+
+			for (var i = 0; i < maxrows; i++) 
 			{
-				var item:MovieClip=statArr[i]; 
-				var ns:NumericStepper=item.ns;
-				ns.addEventListener(MouseEvent.CLICK,nsClick);
-				ns.addEventListener(Event.CHANGE,nsCh);
-				ns.tabEnabled=false;
-				ns.focusRect=false;
+				var item:MovieClip = statArr[i]; 
+				var ns:NumericStepper = item.ns;
+
+				ns.addEventListener(MouseEvent.CLICK, nsClick);
+				ns.addEventListener(Event.CHANGE, nsCh);
+
+				ns.tabEnabled = false;
+				ns.focusRect  = false;
 				ns.setStyle("textFormat", tf);
 			}
-			tips=[[],
+			tips = [[],
 				['',
 					[Item.L_WEAPON, Item.L_ARMOR,'spell'],
 					['a','e'],
@@ -68,11 +74,14 @@ package interdata
 				'compp']
 			];
 			initCats();
+			trace('PipPageVend.as/PipPageVend() - Created PipPageVend page.');
 		}
 
 		//подготовка страниц
-		override function setSubPages()
+		override function setSubPages():void
 		{
+			trace('PipPageVend.as/setSubPages() - updating subPages.');
+
 			vend=pip.vendor;
 			npcId=pip.npcId;
 			if (vend) {
@@ -107,7 +116,7 @@ package interdata
 				assArr=new Array();
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
-				statHead.nazv.text=Res.pipText('iv1');
+				statHead.objectName.text=Res.pipText('iv1');
 				statHead.hp.text=Res.pipText('iv2')+' / '+Res.pipText('iv6');
 				statHead.price.text=Res.pipText('iv3');
 				statHead.kol.text=Res.pipText('iv4');
@@ -129,7 +138,7 @@ package interdata
 					b.getPrice();
 					var mp=b.getMultPrice();
 					if (vend.multPrice>mp) mp=vend.multPrice;
-					var n:Object={tip:b.tip, id:b.id, nazv:b.nazv, sost:b.sost*b.multHP, price:b.price, mp:mp, kol:b.kol, bou:0, sort:Res.pipText(b.tip), barter:b.barter, variant:b.variant};
+					var n:Object={tip:b.tip, id:b.id, objectName:b.objectName, sost:b.sost*b.multHP, price:b.price, mp:mp, kol:b.kol, bou:0, sort:Res.pipText(b.tip), barter:b.barter, variant:b.variant};
 					if (b.variant>0) n.rid=b.id+'^'+b.variant;
 					else n.rid=b.id;
 					if (b.nocheap) n.mp=1;
@@ -168,7 +177,7 @@ package interdata
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
 				vend.kolSell=0;
-				statHead.nazv.text=Res.pipText('iv1');
+				statHead.objectName.text=Res.pipText('iv1');
 				statHead.hp.text='';
 				statHead.price.text=Res.pipText('iv3');
 				statHead.kol.text=Res.pipText('iv6');
@@ -180,8 +189,8 @@ package interdata
 					if (node==null) continue;
 					if (node.@sell>0) {
 						if (!checkCat(node.@tip)) continue;
-						var n={tip:inv.items[s].tip, id:s, nazv:inv.items[s].nazv, kol:inv.items[s].kol, bou:0, sort:'b'};
-						if (inv.weapons[s]!=null) n.nazv=Res.txt('w',s); 
+						var n={tip:inv.items[s].tip, id:s, objectName:inv.items[s].objectName, kol:inv.items[s].kol, bou:0, sort:'b'};
+						if (inv.weapons[s]!=null) n.objectName=Res.txt('w',s); 
 						n.price=node.@sell;
 						n.wtip=node.@tip;
 						if (node.@tip=='food' && node.@ftip=='1') 
@@ -220,7 +229,7 @@ package interdata
 			{
 				assArr=new Array();
 				setTopText('inforepair');
-				statHead.nazv.text='';
+				statHead.objectName.text='';
 				statHead.hp.text=Res.pipText('iv2');
 				statHead.price.text=Res.pipText('iv5');
 				statHead.kol.text='';
@@ -229,7 +238,7 @@ package interdata
 				if (inv.items['owl'] && inv.items['owl'].kol) 
 				{
 					World.world.pers.setRoboowl();
-					n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, price:World.world.pers.owlhp*repOwl};
+					n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, price:World.world.pers.owlhp*repOwl};
 					arr.push(n);
 					assArr[n.id]=n;
 					
@@ -239,7 +248,7 @@ package interdata
 					if (w==null) continue;
 					if (w.tip!=0 && w.tip!=4 && w.respect!=1 && w.hp<w.maxhp) 
 					{
-						n={tip:Item.L_WEAPON, id:w.id, nazv:w.nazv, hp:w.hp, maxhp:w.maxhp, price:w.price, variant:w.variant};
+						n={tip:Item.L_WEAPON, id:w.id, objectName:w.objectName, hp:w.hp, maxhp:w.maxhp, price:w.price, variant:w.variant};
 						n.wtip='w'+w.skill;
 						arr.push(n);
 						assArr[n.id]=n;
@@ -249,7 +258,7 @@ package interdata
 				{
 					if (a.hp<a.maxhp && a.tip<3) 
 					{
-						n={tip:Item.L_ARMOR, id:a.id, nazv:a.nazv, hp:a.hp, maxhp:a.maxhp, price:a.price};
+						n={tip:Item.L_ARMOR, id:a.id, objectName:a.objectName, hp:a.hp, maxhp:a.maxhp, price:a.price};
 						arr.push(n);
 						assArr[n.id]=n;
 						n.wtip='armor1';
@@ -285,7 +294,7 @@ package interdata
 						n.skill=task.@skill;
 						n.skilln=task.@skilln;
 					}
-					n.nazv=Res.messText(task.@id);
+					n.objectName=Res.messText(task.@id);
 					if (World.world.game.quests[task.@id]) 
 					{
 						var quest:Quest=World.world.game.quests[task.@id];
@@ -298,7 +307,7 @@ package interdata
 					if (n.state==2) n.sort=3;
 					arr.push(n);
 				}
-				if (arr.length==0) 
+				if (arr.length == 0) 
 				{
 					vis.emptytext.text=Res.pipText('emptytasks');
 				}
@@ -310,9 +319,11 @@ package interdata
 			}
 			setIco();
 			showBottext();
+
+			trace('PipPageVend.as/setSubPages() - Finished updating subPages.');
 		}
 		
-		override function setSigns()
+		override function setSigns():void
 		{
 			if (vend==null) return;
 			super.setSigns();
@@ -340,7 +351,7 @@ package interdata
 			}
 		}
 		
-		public override function page2Click(event:MouseEvent)
+		public override function page2Click(event:MouseEvent):void
 		{
 			if (World.world.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
@@ -357,7 +368,7 @@ package interdata
 		}
 		
 	
-		function showBottext()
+		function showBottext():void
 		{
 			if (page2==1 && vend) 
 			{
@@ -374,7 +385,7 @@ package interdata
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object)
+		override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
 			item.id.visible=false;
@@ -382,7 +393,7 @@ package interdata
 			item.rid.visible=false;
 			item.lvl.visible=false;
 			item.ns.visible=false;
-			item.nazv.alpha=1;
+			item.objectName.alpha=1;
 			item.price.x=504;
 			item.price.width=58;
 			try 
@@ -399,7 +410,7 @@ package interdata
 				item.lvl.gotoAndStop(obj.barter+1);
 				item.rid.text=obj.rid;
 				item.cat.text=obj.tip;
-				item.nazv.text=obj.nazv;
+				item.objectName.text=obj.objectName;
 				if (obj.tip==Item.L_WEAPON || obj.tip==Item.L_ARMOR) 
 				{
 					item.hp.text=Math.round(obj.sost*100)+'%';
@@ -422,7 +433,7 @@ package interdata
 			{
 				item.cat.text=obj.tip;
 				item.rid.text=obj.id;
-				item.nazv.text=obj.nazv;
+				item.objectName.text=obj.objectName;
 				item.hp.text='';
 				item.price.text=Math.round(obj.price*10)/10;
 				item.kol.text=obj.kol;
@@ -435,7 +446,7 @@ package interdata
 			if (page2==3) 
 			{
 				item.cat.text=obj.tip;
-				item.nazv.text=obj.nazv;
+				item.objectName.text=obj.objectName;
 				item.hp.text=Math.round(obj.hp/obj.maxhp*100)+'%';
 				var mp:Number=1;
 				if (obj.tip==Item.L_ARMOR) mp=gg.pers.priceRepArmor;
@@ -447,7 +458,7 @@ package interdata
 			if (page2==4) 
 			{
 				item.cat.text=obj.state;
-				item.nazv.text=obj.nazv;
+				item.objectName.text=obj.objectName;
 				item.hp.text='';
 				item.price.text='';
 				item.price.x=400;
@@ -455,7 +466,7 @@ package interdata
 				if (obj.state==1) item.price.text=Res.pipText('perform');
 				if (obj.state==2) {
 					item.price.text=Res.pipText('done');
-					item.nazv.alpha=0.5;
+					item.objectName.alpha=0.5;
 				}
 				if (obj.state==3) item.price.text=Res.pipText('surr');
 				if (obj.state==4) item.price.text=Res.pipText('progress');
@@ -464,15 +475,15 @@ package interdata
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent)
+		override function statInfo(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2 || page2==3) 
 			{
-				infoItem(event.currentTarget.cat.text,event.currentTarget.rid.text,event.currentTarget.nazv.text);
+				infoItem(event.currentTarget.cat.text,event.currentTarget.rid.text,event.currentTarget.objectName.text);
 			}
 			if (page2==4) 
 			{
-				vis.nazv.text=event.currentTarget.nazv.text;
+				vis.objectName.text=event.currentTarget.objectName.text;
 				var s:String=infoQuest(event.currentTarget.id.text);
 				if (s=='') vis.info.htmlText=Res.messText(event.currentTarget.id.text,1);
 				else vis.info.htmlText=s;
@@ -484,7 +495,7 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		function selBuy(buy:Object, n:int=1)
+		function selBuy(buy:Object, n:int=1):void
 		{
 			if (selall) vis.butOk.text.text=Res.pipText('transaction');
 			selall=false;
@@ -500,7 +511,7 @@ package interdata
 			if (buy.kol-buy.bou<n) n=buy.kol-buy.bou;
 			if (page2==1 && Math.round(buy.price*buy.mp*n)>pip.money-vend.kolBou) //!!!
 			{
-				trace(buy.price,buy.mp,n,pip.money,vend.kolBou)
+				trace(buy.price, buy.mp, n, pip.money, vend.kolBou)
 				n=Math.floor((pip.money-vend.kolBou)/(buy.price*buy.mp));
 				trace(n);
 				if (n<=0) 
@@ -514,7 +525,7 @@ package interdata
 			if (page2==2) vend.kolSell+=buy.price*n;
 		}
 		
-		function unselBuy(buy:Object, n:int=1)
+		function unselBuy(buy:Object, n:int=1):void
 		{
 			if (buy==null || buy.bou<=0) return;
 			if (buy.bou<n) n=buy.bou;
@@ -523,12 +534,12 @@ package interdata
 			if (page2==2) vend.kolSell-=buy.price*n;
 		}
 		
-		function nsClick(event:MouseEvent)
+		function nsClick(event:MouseEvent):void
 		{
 			event.stopPropagation();
 		}
 
-		function nsCh(event:Event)
+		function nsCh(event:Event):void
 		{
 			if (page2==1 || page2==2) 
 			{
@@ -544,7 +555,7 @@ package interdata
 			}
 		}
 		
-		override function itemClick(event:MouseEvent)
+		override function itemClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) 
 			{
@@ -620,7 +631,7 @@ package interdata
 			showBottext();
 			event.stopPropagation();
 		}
-		override function itemRightClick(event:MouseEvent)
+		override function itemRightClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) 
 			{
@@ -635,7 +646,7 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		function transOk(event:MouseEvent)
+		function transOk(event:MouseEvent):void
 		{
 			if (page2==1) 
 			{
@@ -650,7 +661,7 @@ package interdata
 			pip.snd(3);
 		}
 		
-		public function trade(arr:Array)
+		public function trade(arr:Array):void
 		{
 			if (vend.kolBou>inv.money.kol) return;
 			for each(var buy:Item in vend.buys) 
@@ -672,7 +683,7 @@ package interdata
 			setStatus();
 		}
 		
-		public function sell(arr:Array)
+		public function sell(arr:Array):void
 		{
 			if (!inbase && Math.ceil(vend.kolSell)>vend.money) 
 			{
@@ -705,7 +716,7 @@ package interdata
 			setStatus();
 		}
 		
-		public function sellAll()
+		public function sellAll():void
 		{
 			for (var s in arr) 
 			{

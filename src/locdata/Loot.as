@@ -11,6 +11,11 @@ package locdata
 	
 	import components.Settings;
 	
+	import stubs.visp10mm;
+	import stubs.visualItem;
+	import stubs.visualAmmo;
+	import stubs.lootShine;
+
 	public class Loot extends Obj
 	{
 		
@@ -46,11 +51,11 @@ package locdata
 			if (nx>(room.roomWidth-1)*Tile.tilePixelWidth) nx=(room.roomWidth-1)*Tile.tilePixelWidth;
 			if (ny>(room.roomHeight-1)*Tile.tilePixelHeight) ny=(room.roomHeight-1)*Tile.tilePixelHeight;
 			massa=0.1;
-			nazv=item.nazv;
+			objectName=item.objectName;
 			scX=30, scY=20;
 			if (item.tip==Item.L_WEAPON) 
 			{
-				if (item.xml.vis.length && item.xml.vis.@loot.length()) 
+				if (item.xml.vis.length() && item.xml.vis.@loot.length()) 
 				{
 					vis=new visualItem();
 					try 
@@ -126,7 +131,7 @@ package locdata
 				}
 				if (item.tip==Item.L_BOOK) 
 				{
-					nazv='"'+nazv+'"';
+					objectName='"'+objectName+'"';
 					sndFall='fall_paper';
 				}
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
@@ -156,7 +161,7 @@ package locdata
 			auto2=item.checkAuto();
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			super.addVisual();
 			if (vis && cTransform) 
@@ -231,7 +236,7 @@ package locdata
 			}
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (room.broom && (auto2 || krit)) 
 			{
@@ -363,7 +368,7 @@ package locdata
 			}
 		}
 
-		public override function checkStay()
+		public override function checkStay():Boolean
 		{
 			if (osnova) return true;
 			var t:Tile=room.getAbsTile(X,Y+1);

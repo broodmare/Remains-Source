@@ -15,6 +15,9 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualPlayer;
+	import stubs.reloadBar;
+	
 	public class UnitPlayer extends UnitPon{
 		
 		public var ctr:Ctr;
@@ -312,7 +315,7 @@ package unitdata
 			else pers.setParameters();
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
 			setWeaponPos();
@@ -390,8 +393,8 @@ package unitdata
 					}
 				}
 				if (napr==5) dx=3*storona;
-				if (sats.que.length>0) sats.clearAll();
-				if (levit==1 && !ctr.keyJump) levit=0;
+				if (sats.que.length > 0) sats.clearAll();
+				if (levit==1 && !ctr.keyStates.keyJump) levit=0;
 				return true;
 			} else {
 				return false;
@@ -449,7 +452,7 @@ package unitdata
 			vis.svet.visible = room.sky;
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			super.addVisual();
 			if (throwWeapon) {
@@ -497,7 +500,7 @@ package unitdata
 				dy*=0.8;
 				dx*=0.8;
 			} else if (isFly) {
-				if (ctr.keyRun) {
+				if (ctr.keyStates.keyRun) {
 					dy*=0.96;
 					dx*=0.96;
 				} else if (t_throw<=0){
@@ -705,7 +708,7 @@ package unitdata
 				} else if (t_action>0) {
 					t_action--;
 				} else {
-					ctr.keyAction=false;
+					ctr.keyStates.keyAction=false;
 					actionObj.is_act=true;
 					actionObj=null;
 				}
@@ -742,7 +745,7 @@ package unitdata
 			//--------------------- оружие ------------------------
 			//если выстрел был выполнен
 			if (currentWeapon && currentWeapon.is_shoot) {
-				if (sats.que.length>0) {
+				if (sats.que.length > 0) {
 					sats.act();
 					World.world.gui.setWeapon();
 				}
@@ -751,7 +754,7 @@ package unitdata
 			if (currentWeapon && currentWeapon.tip!=5 && currentWeapon.vis && currentWeapon.vis.visible) aMagic=50;
 			else aMagic=0;
 			//если есть активные цели
-			if (sats.que.length>0) {
+			if (sats.que.length > 0) {
 				if (currentWeapon==null || currentWeapon.noSats || currentWeapon.status()>3) {	//если оружие не готово
 					sats.clearAll();	//очистить очередь
 				} else if (sats.getReady()) {	//если цель ещё не убита
@@ -775,7 +778,7 @@ package unitdata
 			}
 			//модификатор точности precMult, только если стрельба не через зпс
 			precMult=pers.allPrecMult, mazil=pers.mazilAdd;
-			if (sats.que.length==0 && !lurked) {
+			if (sats.que.length == 0 && !lurked) {
 				if (pers.runPenalty>0 && (dx>10 || dx<-10 || dy>10 || dy<-10))  precMult*=(1-pers.runPenalty);
 				if (!stay) precMult*=(1-pers.jumpPenalty);
 				//if (isLaz) precMult*=0.8;
@@ -847,7 +850,7 @@ package unitdata
 					if (levit==1) pers.manaDamage(-dmana*pers.teleMana*pers.teleManaMult);
 					else pers.manaDamage(-dmana/3*pers.teleMana*pers.teleManaMult);
 				}
-			} else if (Settings.alicorn && isFly && ctr.keyRun && (ctr.keyLeft || ctr.keyRight || ctr.keyBeUp)) {
+			} else if (Settings.alicorn && isFly && ctr.keyStates.keyRun && (ctr.keyStates.keyLeft || ctr.keyStates.keyRight || ctr.keyStates.keyBeUp)) {
 				dmana=-pers.alicornRunMana;
 				if (!room.sky) Emitter.emit('magrun',room,X,Y-scY/2,{dx:(dx*0.5+Math.random()*4-2), dy:(dy*0.5+Math.random()*4-2)});
 			} else {
@@ -1073,7 +1076,7 @@ package unitdata
 		}
 		
 		function spellDisact() {
-			ctr.keyDef=false;
+			ctr.keyStates.keyDef=false;
 		}
 		
 		public function bindChain(nx:Number, ny:Number) {
@@ -1137,7 +1140,7 @@ package unitdata
 				if (teleObj.inter) teleObj.inter.sign=0;
 				teleObj.fracLevit=fraction;
 				teleObj.stay=false;
-				ctr.keyTele=false;
+				ctr.keyStates.keyTele=false;
 			}
 		}
 		
@@ -1330,11 +1333,11 @@ package unitdata
 			{
 				return;
 			}
-			var keyLeft:Boolean=zaput?ctr.keyRight:ctr.keyLeft;
-			var keyRight:Boolean=zaput?ctr.keyLeft:ctr.keyRight;
+			var keyLeft:Boolean=zaput?ctr.keyStates.keyRight:ctr.keyStates.keyLeft;
+			var keyRight:Boolean=zaput?ctr.keyStates.keyLeft:ctr.keyStates.keyRight;
 			if (work=='lurk' || work=='unlurk' || work=='res') return;
 			if (lurked) {
-				if (ctr.keyBeUp || ctr.keySit || ctr.keyJump) {
+				if (ctr.keyStates.keyBeUp || ctr.keyStates.keySit || ctr.keyStates.keyJump) {
 					unlurk();
 					ctr.clearAll();
 					return;
@@ -1349,14 +1352,14 @@ package unitdata
 			}
 			//--------------------- различные действия ---------------------------
 			//действие
-			if (ctr.keyAction && rat==0) 
+			if (ctr.keyStates.keyAction && rat==0) 
 			{
 				if (!teleObj) {
-					if (sats.que.length>0) sats.clearAll();
+					if (sats.que.length > 0) sats.clearAll();
 					actAction();
 				} else {
 					throwTele();
-					ctr.keyAction=false;
+					ctr.keyStates.keyAction=false;
 				}
 			} 
 			else 
@@ -1364,17 +1367,17 @@ package unitdata
 				actionReady=true;
 				actionObj=null;
 			}
-			if (ctr.keyCrack && !ctr.keyAction && !room.base && rat==0) 
+			if (ctr.keyStates.keyCrack && !ctr.keyStates.keyAction && !room.base && rat==0) 
 			{
-				ctr.keyCrack=false;
+				ctr.keyStates.keyCrack=false;
 				crackAction();
 			}
 			//телекинез
-			if (ctr.keyTele && !ctr.keyAction && !room.base && rat==0) 
+			if (ctr.keyStates.keyTele && !ctr.keyStates.keyAction && !room.base && rat==0) 
 			{
 				if (!teleReady) 
 				{
-					if (sats.que.length>0) sats.clearAll();
+					if (sats.que.length > 0) sats.clearAll();
 					if (visSel) World.world.gui.unshowSelector(0);
 					else actTele();
 					teleReady=true;
@@ -1390,46 +1393,46 @@ package unitdata
 				t_port=0;
 			}
 			//полёт
-			if (ctr.keyFly) {
+			if (ctr.keyStates.keyFly) {
 				chit();
-				ctr.keyFly=false
+				ctr.keyStates.keyFly=false
 			}
 			//тестовая функция
-			if (ctr.keyTest1) {
+			if (ctr.keyStates.keyTest1) {
 				testFunction();
-				ctr.keyTest1=false;
+				ctr.keyStates.keyTest1=false;
 			}
 			//взрывчатка
-			if (ctr.keyGrenad && !room.base && !ctr.keyAttack && attackForever<=0 && atkPoss && (atkWeapon==0 || atkWeapon==2)) {
-				if (sats.que.length>0) sats.clearAll();
+			if (ctr.keyStates.keyGrenad && !room.base && !ctr.keyStates.keyAttack && attackForever<=0 && atkPoss && (atkWeapon==0 || atkWeapon==2)) {
+				if (sats.que.length > 0) sats.clearAll();
 				if (throwWeapon) {
 					throwWeapon.attack();
 					spellDisact();
-					if (throwWeapon.tip==4) ctr.keyGrenad=false;
-				} else ctr.keyGrenad=false;
+					if (throwWeapon.tip==4) ctr.keyStates.keyGrenad=false;
+				} else ctr.keyStates.keyGrenad=false;
 			}
 			//магия
-			if (ctr.keyMagic && !room.base && !ctr.keyAttack && attackForever<=0 && atkPoss && (atkWeapon==0 || atkWeapon==3)) {
-				if (sats.que.length>0) sats.clearAll();
+			if (ctr.keyStates.keyMagic && !room.base && !ctr.keyStates.keyAttack && attackForever<=0 && atkPoss && (atkWeapon==0 || atkWeapon==3)) {
+				if (sats.que.length > 0) sats.clearAll();
 				if (magicWeapon) {
 					magicWeapon.attack();
 					spellDisact();
-					if (magicWeapon.tip==4) ctr.keyMagic=false;
-				} else ctr.keyMagic=false;
+					if (magicWeapon.tip==4) ctr.keyStates.keyMagic=false;
+				} else ctr.keyStates.keyMagic=false;
 			}
 			//заклинание
-			if (ctr.keyDef && rat==0) { //&& !room.base
-				if (sats.que.length>0) sats.clearAll();
+			if (ctr.keyStates.keyDef && rat==0) { //&& !room.base
+				if (sats.que.length > 0) sats.clearAll();
 				if (Settings.alicorn) currentSpell=invent.spells['sp_mshit'];
 				if (currentSpell) {
-					if (!currentSpell.cast(World.world.celX, World.world.celY)) ctr.keyDef=false;
-					if (!currentSpell.prod) ctr.keyDef=false;
-				} else ctr.keyDef=false;
+					if (!currentSpell.cast(World.world.celX, World.world.celY)) ctr.keyStates.keyDef=false;
+					if (!currentSpell.prod) ctr.keyStates.keyDef=false;
+				} else ctr.keyStates.keyDef=false;
 			} //else if (currentSpell) currentSpell.active=false;
 			for (var i=1; i<=Settings.kolQS; i++) {
 				if (ctr['keySpell'+i]) {
 					if (invent.fav[Settings.kolHK*2+i]!=null) {
-						if (sats.que.length>0) sats.clearAll();
+						if (sats.que.length > 0) sats.clearAll();
 						var sp:Spell=invent.spells[invent.fav[Settings.kolHK*2+i]];
 						if (sp) {
 							if (!sp.cast(World.world.celX, World.world.celY)) ctr['keySpell'+i]=false;
@@ -1439,14 +1442,14 @@ package unitdata
 				}
 			}
 			//спутник
-			if (ctr.keyPet) { //&& !room.base
+			if (ctr.keyStates.keyPet) { //&& !room.base
 				k_pet++;
 				if (k_pet>20) {
 					if (pet) {
 						pet.moveTo(X,Y-40,true);		//отзыв назад
 					}
 					k_pet=0;
-					ctr.keyPet=false;
+					ctr.keyStates.keyPet=false;
 				}
 			} else {
 				if (k_pet>0) {				//приказ
@@ -1458,56 +1461,56 @@ package unitdata
 				k_pet=0;
 			}
 			//атака
-			if ((ctr.keyAttack || autoAttack) && (!room.base || visSel) && atkPoss && (atkWeapon==0 || atkWeapon==1)) {
+			if ((ctr.keyStates.keyAttack || autoAttack) && (!room.base || visSel) && atkPoss && (atkWeapon==0 || atkWeapon==1)) {
 				if (visSel) {
 					World.world.gui.unshowSelector(1);
-					ctr.keyAttack=false;
-				} else if (ctr.keyTele) {
-					ctr.keyTele=false;
-					ctr.keyAttack=false;
+					ctr.keyStates.keyAttack=false;
+				} else if (ctr.keyStates.keyTele) {
+					ctr.keyStates.keyTele=false;
+					ctr.keyStates.keyAttack=false;
 					t_port=0;
 					spellDisact();
 				} else if (currentWeapon && t_work<=0) {
-					if (sats.que.length>0) {
+					if (sats.que.length > 0) {
 						sats.clearAll();
-						ctr.keyAttack=false;
+						ctr.keyStates.keyAttack=false;
 					} else {
 						weaponSkill=pers.weaponSkills[currentWeapon.skill];
-						if (!currentWeapon.attack()) ctr.keyAttack=false;
+						if (!currentWeapon.attack()) ctr.keyStates.keyAttack=false;
 						World.world.gui.setWeapon();
 						spellDisact();
 					}
 				}
 			}
 			//перезарядка
-			if (ctr.keyReload && currentWeapon && attackForever<=0) {
+			if (ctr.keyStates.keyReload && currentWeapon && attackForever<=0) {
 				//return;
 				if (t_reload>=30) {
 					currentWeapon.unloadWeapon();
-					ctr.keyReload=false;
+					ctr.keyStates.keyReload=false;
 				}
-				if (currentWeapon.detonator()) ctr.keyReload=false;
+				if (currentWeapon.detonator()) ctr.keyStates.keyReload=false;
 				t_reload++;
 			} else {
 				if (currentWeapon && t_reload>0 && t_reload<10) currentWeapon.initReload();
 				t_reload=0;
 			}
 			//пинок
-			if (ctr.keyPunch && Settings.alicorn) {
-				ctr.keyPunch=false;
+			if (ctr.keyStates.keyPunch && Settings.alicorn) {
+				ctr.keyStates.keyPunch=false;
 				alicornPort();
 			}
-			if (ctr.keyPunch && !Settings.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !room.base && !lurked && attackForever<=0 && atkPoss) {
-				(punchWeapon as WKick).kick=ctr.keyRun;
+			if (ctr.keyStates.keyPunch && !Settings.alicorn && stay && t_work==0 && !isSit && !keyLeft && !keyRight && !room.base && !lurked && attackForever<=0 && atkPoss) {
+				(punchWeapon as WKick).kick=ctr.keyStates.keyRun;
 				punchWeapon.attack();
 				spellDisact();
 				work='punch';
 				t_work=13;
-				ctr.keyPunch=false;
+				ctr.keyStates.keyPunch=false;
 			}
-			if (ctr.keyPunch && rat>0) {
+			if (ctr.keyStates.keyPunch && rat>0) {
 				remEffect('potion_rat');
-				ctr.keyPunch=false;
+				ctr.keyStates.keyPunch=false;
 			}
 			if (rat==0) {
 			//смена оружия
@@ -1515,45 +1518,45 @@ package unitdata
 					for (var i=1; i<=Settings.kolHK; i++) {
 						if (ctr['keyWeapon'+i]) {
 							ctr['keyWeapon'+i]=false;
-							invent.useFav(i+(ctr.keyRun?Settings.kolHK:0));
+							invent.useFav(i+(ctr.keyStates.keyRun?Settings.kolHK:0));
 							if (visSel) World.world.gui.unshowSelector(0);
 							if (currentSpell) currentSpell.active=false;
-							ctr.keyDef=ctr.keyAttack=false;
+							ctr.keyStates.keyDef=ctr.keyStates.keyAttack=false;
 						}
 					}
 				}
-				if (ctr.keyScrDown && !autoAttack) {
-					World.world.gui.showSelector(1, ctr.keyRun?1:0);
-					ctr.keyScrDown=ctr.keyScrUp=false;
+				if (ctr.keyStates.keyScrDown && !autoAttack) {
+					World.world.gui.showSelector(1, ctr.keyStates.keyRun?1:0);
+					ctr.keyStates.keyScrDown=ctr.keyStates.keyScrUp=false;
 				}
-				if (ctr.keyScrUp && !autoAttack) {
-					World.world.gui.showSelector(-1, ctr.keyRun?1:0);
-					ctr.keyScrDown=ctr.keyScrUp=false;
+				if (ctr.keyStates.keyScrUp && !autoAttack) {
+					World.world.gui.showSelector(-1, ctr.keyStates.keyRun?1:0);
+					ctr.keyStates.keyScrDown=ctr.keyStates.keyScrUp=false;
 				}
 				//вещи
-				if (ctr.keyItemNext) {
+				if (ctr.keyStates.keyItemNext) {
 					invent.nextItem(1);
-					ctr.keyItemNext=ctr.keyItemPrev=false;
+					ctr.keyStates.keyItemNext=ctr.keyStates.keyItemPrev=false;
 				}
-				if (ctr.keyItemPrev) {
+				if (ctr.keyStates.keyItemPrev) {
 					invent.nextItem(-1);
-					ctr.keyItemNext=ctr.keyItemPrev=false;
+					ctr.keyStates.keyItemNext=ctr.keyStates.keyItemPrev=false;
 				}
-				if (ctr.keyItem) {
+				if (ctr.keyStates.keyItem) {
 					invent.useItem();
-					ctr.keyItem=false;
+					ctr.keyStates.keyItem=false;
 				}
-				if (ctr.keyPot) {
+				if (ctr.keyStates.keyPot) {
 					invent.usePotion();
-					ctr.keyPot=false;
+					ctr.keyStates.keyPot=false;
 				}
-				if (ctr.keyMana) {
+				if (ctr.keyStates.keyMana) {
 					invent.usePotion('mana');
-					ctr.keyMana=false;
+					ctr.keyStates.keyMana=false;
 				}
-				if (ctr.keyArmor) {
+				if (ctr.keyStates.keyArmor) {
 					armorAbil();
-					ctr.keyArmor=false;
+					ctr.keyStates.keyArmor=false;
 				}
 			}
 			
@@ -1561,14 +1564,14 @@ package unitdata
 			//скорость
 			var accel1=accel*pers.accelMult;
 			maxSpeed=walkSpeed;
-			if (stay && ctr.keyAction && maxSpeed>3) {
+			if (stay && ctr.keyStates.keyAction && maxSpeed>3) {
 				accel1=accel*0.4;
 				maxSpeed=3;
 			}
 			if (room.sky) {
 				maxSpeed*=3;
 			}
-			isRun=((possRun || stam>200) && ctr.keyRun || runForever>0);
+			isRun=((possRun || stam>200) && ctr.keyStates.keyRun || runForever>0);
 			if (h2o<=0) isRun=false;
 			if (isRun && stay) maxSpeed=runSpeed;
 			if (isSit && stay) maxSpeed=sitSpeed;
@@ -1579,7 +1582,7 @@ package unitdata
 			if (isPlav) accel1=0.3*accel*pers.speedPlavMult;
 			if (isFly) {
 				maxSpeed*=1.3;
-				if (Settings.alicorn && ctr.keyRun && mana>20) {
+				if (Settings.alicorn && ctr.keyStates.keyRun && mana>20) {
 					accel1=accel;
 					maxSpeed=runSpeed*pers.alicornFlyMult;
 					if (room.sky) maxSpeed*=2;
@@ -1596,7 +1599,7 @@ package unitdata
 			porog=0;
 			porog_jump=0;//(dy>=0)?5:0;
 			
-			if ((isRun || ctr.keyBeUp)&& jumpNumb==0) porog_jump=10;
+			if ((isRun || ctr.keyStates.keyBeUp)&& jumpNumb==0) porog_jump=10;
 
 			//ускорение
 			//trace(diagonRot);
@@ -1614,7 +1617,7 @@ package unitdata
 				isTake=40;
 				if (storona>0 && stay) {
 					storona=-1;
-				} else if (dx>-maxSpeed && (!ctr.keyRun || t_run>3)) {
+				} else if (dx>-maxSpeed && (!ctr.keyStates.keyRun || t_run>3)) {
 					dx-=accel1;
 					if (dx<-maxSpeed) dx=-maxSpeed;
 				}
@@ -1625,7 +1628,7 @@ package unitdata
 				isTake=40;
 				if (storona<0 && stay) {
 					storona=1;
-				} else if (dx<maxSpeed && (!ctr.keyRun || t_run>3)) {
+				} else if (dx<maxSpeed && (!ctr.keyStates.keyRun || t_run>3)) {
 					dx+=accel1;
 					if (dx>maxSpeed) dx=maxSpeed;
 					
@@ -1636,8 +1639,8 @@ package unitdata
 				t_run=0;
 			}
 			//Рывок в сторону
-			if (ctr.keyDubRight&&!zaput || ctr.keyDubLeft&&zaput || ctr.keyDash&&(storona==1)) {
-				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
+			if (ctr.keyStates.keyDubRight&&!zaput || ctr.keyStates.keyDubLeft&&zaput || ctr.keyStates.keyDash&&(storona==1)) {
+				if (stay && !isSit && (ctr.keyStates.keyRun || ctr.keyStates.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
 					if (dx<dash) dx=dash;
 					aJump=2;
 					dy+=dash_dy;
@@ -1647,14 +1650,14 @@ package unitdata
 					//if (!room.levitOn) {
 						stay=false;
 						jumpp=0;
-						ctr.keyJump=false;
+						ctr.keyStates.keyJump=false;
 					//}
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
-				ctr.keyDubRight=ctr.keyDubLeft=ctr.keyDash=false;
+				ctr.keyStates.keyDubRight=ctr.keyStates.keyDubLeft=ctr.keyStates.keyDash=false;
 			}
-			if (ctr.keyDubLeft&&!zaput || ctr.keyDubRight&&zaput || ctr.keyDash&&(storona==-1)) {
-				if (stay && !isSit && (ctr.keyRun || ctr.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
+			if (ctr.keyStates.keyDubLeft&&!zaput || ctr.keyStates.keyDubRight&&zaput || ctr.keyStates.keyDash&&(storona==-1)) {
+				if (stay && !isSit && (ctr.keyStates.keyRun || ctr.keyStates.keyDash) && dash_t<=0 && stam>200 && pers.speedShtr<=0 && rat==0) {
 					if (dx>-dash) dx=-dash;
 					aJump=2;
 					dy+=dash_dy;
@@ -1664,37 +1667,37 @@ package unitdata
 					//if (!room.levitOn) {
 						stay=false;
 						jumpp=0;
-						ctr.keyJump=false;
+						ctr.keyStates.keyJump=false;
 					//}
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
-				ctr.keyDubLeft=ctr.keyDubRight=ctr.keyDash=false;
+				ctr.keyStates.keyDubLeft=ctr.keyStates.keyDubRight=ctr.keyStates.keyDash=false;
 			}
 			
 			//прыг
 			if (levit==1) levit=0;
-			//throu=(ctr.keyJump || isLaz)&&ctr.keySit || isPlav;
-			throu=(ctr.keyJump || !stay)&&ctr.keySit || isPlav || kdash_t>3 || pinok>70;
-			if (stay && !ctr.keyJump || isLaz) {
+			//throu=(ctr.keyStates.keyJump || isLaz)&&ctr.keyStates.keySit || isPlav;
+			throu=(ctr.keyStates.keyJump || !stay)&&ctr.keyStates.keySit || isPlav || kdash_t>3 || pinok>70;
+			if (stay && !ctr.keyStates.keyJump || isLaz) {
 				jumpp=maxjumpp;//пока стоим, прыжок заряжен полностью
 				dJump=false;
 				if (isLaz && !keyLeft && !keyRight) jumpp=0;
 				jumpNumb=0;
 				if (dash_t<=0) aJump=0;
-			} else if (!stay && !ctr.keyJump && pers.isDJ && jumpNumb<=1 && room.levitOn) {
+			} else if (!stay && !ctr.keyStates.keyJump && pers.isDJ && jumpNumb<=1 && room.levitOn) {
 				jumpp=maxdjumpp;
 				dJump=true;
-			} else if (!ctr.keyJump && jumpNumb==0) jumpNumb=1;
+			} else if (!ctr.keyStates.keyJump && jumpNumb==0) jumpNumb=1;
 			if (throu && stayPhis==2) jumpp=0;
-			if (!stay && ctr.keyJump) jumpp--;
-			if (!stay && !ctr.keyJump && !(pers.isDJ && room.levitOn && jumpNumb<=1)) jumpp=0;
+			if (!stay && ctr.keyStates.keyJump) jumpp--;
+			if (!stay && !ctr.keyStates.keyJump && !(pers.isDJ && room.levitOn && jumpNumb<=1)) jumpp=0;
 			if (isPlav && (jumpp<=2 || jumpNumb>1)) {
 				jumpp=5;
 				jumpNumb=1;
 				dJump=false;
 			}
 			dJump2=false;
-			if (ctr.keyJump && dash_t<dash_maxt-15) {
+			if (ctr.keyStates.keyJump && dash_t<dash_maxt-15) {
 				isTake=40;
 				t_stay=0;
 				if (!isJump) {
@@ -1713,7 +1716,7 @@ package unitdata
 							isFly=!isFly;
 							if (room.sky) isFly=true;
 							t_fly=0;
-							ctr.keyJump=false;
+							ctr.keyStates.keyJump=false;
 						} else if (dJump) {		//двойной прыжок
 							dy=-djumpdy*pers.jumpMult;
 							if (jumpp==maxdjumpp-1) {
@@ -1735,7 +1738,7 @@ package unitdata
 					if (isLaz) isLaz=0;
 					isFly=!isFly;
 					t_fly=0;
-					ctr.keyJump=false;
+					ctr.keyStates.keyJump=false;
 				} else if (levitOn && room.levitOn && jumpNumb>(pers.isDJ?2:1) && !isPlav) {	//самолевитация, при втором нажатии
 					if (levit>1) levit--;
 					else {
@@ -1755,25 +1758,25 @@ package unitdata
 			} else {
 				isJump=false;
 			}
-			if (isPlav && ctr.keyBeUp && !ctr.keyJump) {
+			if (isPlav && ctr.keyStates.keyBeUp && !ctr.keyStates.keyJump) {
 				dy-=plavdy*pers.speedPlavMult;
 			}
 			//самолевитация
 			if (levit==1) {
-				if (ctr.keyBeUp) {
+				if (ctr.keyStates.keyBeUp) {
 					dy-=levidy*0.7;
 					levitup=true;
 					t_up=10;
 				} else levitup=false;
-				if (ctr.keySit) dy+=levidy;
+				if (ctr.keyStates.keySit) dy+=levidy;
 			}
 			if (isFly) {
-				if (ctr.keyBeUp) dy-=levidy;
-				if (ctr.keySit) dy+=levidy;
+				if (ctr.keyStates.keyBeUp) dy-=levidy;
+				if (ctr.keyStates.keySit) dy+=levidy;
 			}
 			//плавание
 			//присесть
-			if (ctr.keySit) {// !isSit &&!levit &&!isLaz &&!isPlav) {
+			if (ctr.keyStates.keySit) {// !isSit &&!levit &&!isLaz &&!isPlav) {
 				porog=0;
 				if (stay && diagon==0 && runForever<=0 && !inWater && isFetter<=0 && !noStairs && rat==0) {
 					if (checkStairs(2)) {	//проверить лестницу
@@ -1803,7 +1806,7 @@ package unitdata
 				downp=0;
 			}
 			//встать
-			if (isSit && ctr.keyBeUp && !ctr.keySit && rat==0) {
+			if (isSit && ctr.keyStates.keyBeUp && !ctr.keyStates.keySit && rat==0) {
 				t_up=10;
 				unsit();
 			}
@@ -1812,7 +1815,7 @@ package unitdata
 			}
 			//поднять оружие или спрятаться
 			weapUp=false;
-			if (stay && ctr.keyBeUp && rat==0) {
+			if (stay && ctr.keyStates.keyBeUp && rat==0) {
 				if (isSit) t_up=10;
 				t_up++;
 				if (t_up>10) weapUp=true;
@@ -1820,20 +1823,20 @@ package unitdata
 				if (t_up>0 && t_up<=7 && !keyLeft && !keyRight && rat==0) {
 					lurk();	//спрятаться
 				}
-				if (!ctr.keyBeUp) t_up=0;
+				if (!ctr.keyStates.keyBeUp) t_up=0;
 			}
 			//быстро спрыгнуть с балки
-			if (ctr.keyDubSit) {
+			if (ctr.keyStates.keyDubSit) {
 				if (stay && stayPhis==2) {
 					t_stay=0;
 					throu=true;
 					dy+=10;
 				}
-				ctr.keyDubSit=false;
+				ctr.keyStates.keyDubSit=false;
 			}
 			if (room.quake>5) throu=true;
 			//лезть
-			if (!isSit && !isFly && ctr.keyBeUp && runForever<=0 && room.quake<=5 && !cryst && isFetter<=0 && !noStairs && pinok<30 && rat==0) {
+			if (!isSit && !isFly && ctr.keyStates.keyBeUp && runForever<=0 && room.quake<=5 && !cryst && isFetter<=0 && !noStairs && pinok<30 && rat==0) {
 				if (checkStairs()) {
 					t_stay=0;
 					dy=-lazSpeed;
@@ -1841,10 +1844,10 @@ package unitdata
 				}
 			}
 			//перестать лезть
-			if (runForever>0 || ctr.keyJump && !ctr.keyBeUp || room.quake>5) {
+			if (runForever>0 || ctr.keyStates.keyJump && !ctr.keyStates.keyBeUp || room.quake>5) {
 				isLaz=0;
 			}
-			isUp=ctr.keyBeUp;
+			isUp=ctr.keyStates.keyBeUp;
 			if (rat==1) {
 				isSit=false;
 				scX=ratX;
@@ -1950,7 +1953,7 @@ package unitdata
 		}
 
 		function endAllEffect() {
-			if (effects.length>0) {
+			if (effects.length > 0) {
 				for each (var eff in effects) eff.unsetEff();
 				effects=new Array();
 			}
@@ -2056,7 +2059,7 @@ package unitdata
 			if (room.train || room.base) return 0;
 			if (tip==Unit.D_EMP && dam>30 && pers.pipEmpVulner>0) {
 				pipOff+=Math.round(dam*pers.pipEmpVulner);
-				if (sats.que.length>0) sats.clearAll();
+				if (sats.que.length > 0) sats.clearAll();
 				World.world.gui.allOff();
 			}
 			if (cryst && tip!=Unit.D_BLEED && tip!=Unit.D_POISON && tip!=Unit.D_INSIDE) {
@@ -2079,7 +2082,7 @@ package unitdata
 			if (pinok>100) pinok=100;
 			if (pinok>60 && levit==1) {
 				levit=0;
-				ctr.keyJump=false;
+				ctr.keyStates.keyJump=false;
 			}
 			if (pinok>60 && teleObj) dropTeleObj();
 			if (pinok>30) isLaz=0;
@@ -2118,7 +2121,7 @@ package unitdata
 		}
 		
 
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			//реанимация
 			if (sost>1 || Settings.godMode && sposob>=0) return;
@@ -2248,7 +2251,7 @@ package unitdata
 		//Смена оружия по цифровой клавише или идентификатору
 		public function changeWeapon(nid:String, moment:Boolean=false) {
 			var nw;
-			if (sats && sats.que.length>0) sats.clearAll();
+			if (sats && sats.que.length > 0) sats.clearAll();
 			if (nid=='not') {
 				nw=null;
 			} else if (nid==null || nid=='' || attackForever>0 || atkPoss==0) {
@@ -2291,7 +2294,7 @@ package unitdata
 		
 		public function changePaintWeapon(npaint:String, ncolor:uint, nblend:String=null) {
 			(paintWeapon as WPaint).setPaint(npaint, ncolor, nblend);
-			if (sats && sats.que.length>0) sats.clearAll();
+			if (sats && sats.que.length > 0) sats.clearAll();
 			newWeapon=paintWeapon;
 			work='change';
 			t_work=changeWeaponTime1;
@@ -2412,7 +2415,7 @@ package unitdata
 			//if (invent.spells[nid]==null) invent.addSpell(nid);
 			if (currentSpell==invent.spells[nid]) currentSpell=null;
 			else currentSpell=invent.spells[nid];
-			if (inf && currentSpell) World.world.gui.infoText('usedSpell',currentSpell.nazv);
+			if (inf && currentSpell) World.world.gui.infoText('usedSpell',currentSpell.objectName);
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch)
@@ -2454,7 +2457,7 @@ package unitdata
 			}
 			noPet2=5*30;
 			if (pet) {
-				World.world.gui.infoText('petRecall',pet.nazv);
+				World.world.gui.infoText('petRecall',pet.objectName);
 				pet.recall();
 				pet=null;
 				childObjs[2]=null;
@@ -2472,7 +2475,7 @@ package unitdata
 					pet.X=X, pet.Y=Y-20;
 					pet.room=room;
 					pet.call();
-					World.world.gui.infoText('petCall',pet.nazv);
+					World.world.gui.infoText('petCall',pet.objectName);
 				}
 			}
 			World.world.gui.setPet();
@@ -2481,7 +2484,7 @@ package unitdata
 		public function uncallPet(ret:Boolean=false) {
 			if (pet) {
 				if (ret && currentPet!='moon') retPet=currentPet;
-				World.world.gui.infoText('petRecall',pet.nazv);
+				World.world.gui.infoText('petRecall',pet.objectName);
 				pet.recall();
 				pet=null;
 				childObjs[2]=null;
@@ -2706,7 +2709,7 @@ package unitdata
 			if (t_work && work=='punch') freeAnim=0;
 			if (t_work && work=='punch' && animState!='punch') {
 				//if (storona>0 && celX>X || storona<0 && celX<X) vis.osn.gotoAndStop('punch');
-				if (!ctr.keyRun) vis.osn.gotoAndStop('punch');
+				if (!ctr.keyStates.keyRun) vis.osn.gotoAndStop('punch');
 				else vis.osn.gotoAndStop('kick');
 				animState='punch';
 			}
@@ -2826,7 +2829,7 @@ package unitdata
 								animState='polz';
 							}
 							if (animState!='polz' && animState!='roll') {
-								if (maxSpeed>walkSpeed*1.6 && dx*storona>0 && (runForever || ctr.keyRun && (ctr.keyLeft || ctr.keyRight))) {
+								if (maxSpeed>walkSpeed*1.6 && dx*storona>0 && (runForever || ctr.keyStates.keyRun && (ctr.keyStates.keyLeft || ctr.keyStates.keyRight))) {
 									vis.osn.gotoAndStop('roll');
 									animState='roll';
 								} else {
@@ -2843,7 +2846,7 @@ package unitdata
 								vis.osn.body.play();
 								animState='walk';
 							}
-						} else if (maxSpeed>walkSpeed*1.6 && dx*storona>0 && (runForever || ctr.keyRun && (ctr.keyLeft || ctr.keyRight))) {
+						} else if (maxSpeed>walkSpeed*1.6 && dx*storona>0 && (runForever || ctr.keyStates.keyRun && (ctr.keyStates.keyLeft || ctr.keyStates.keyRight))) {
 							sndStep(t_walk,2);
 							t_walk++;
 							if (animState!='run') {

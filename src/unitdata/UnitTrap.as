@@ -3,6 +3,8 @@ package unitdata
 	
 	import servdata.Interact;
 
+	import stubs.vismtrap;
+	
 	public class UnitTrap extends Unit
 	{
 		

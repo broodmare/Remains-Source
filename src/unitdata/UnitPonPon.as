@@ -2,6 +2,9 @@ package unitdata
 {
 	import flash.display.MovieClip;
 	
+	import stubs.visualPonPon;
+	import stubs.visualStabPon;
+	import stubs.visualZebPon;
 	
 	public class UnitPonPon extends Unit
 	{
@@ -31,11 +34,11 @@ package unitdata
 				if (tr>=4) msex=true;
 				vis=new visualZebPon();
 				//id_replic='';
-				if (!uniqName) nazv=Res.txt('u','zebpon');
+				if (!uniqName) objectName=Res.txt('u','zebpon');
 				verVis=1;
 			} else if (cid=='stab') {
 				vis=new visualStabPon();
-				if (!uniqName) nazv=Res.txt('u','stabpon');
+				if (!uniqName) objectName=Res.txt('u','stabpon');
 				verVis=1;
 				id_replic='stabpon';
 				if (tr>=17 && tr<=27) msex=true;
@@ -57,7 +60,7 @@ package unitdata
 			
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (f) act=Math.random()<verVis;
 			super.setNull(f);
@@ -77,7 +80,7 @@ package unitdata
 		{
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			super.command(com,val);
 			if (com=='tell' && act) {

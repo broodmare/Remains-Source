@@ -36,7 +36,7 @@ package unitdata
 			return 1;
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			if (hpbar) hpbar.visible=false;
 			expl();
@@ -66,7 +66,7 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='tame') {
 				die();
@@ -77,7 +77,7 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (World.world.game.triggers['tame']>=5) die();
 		}

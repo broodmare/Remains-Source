@@ -8,6 +8,9 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualBloat1;
+	import stubs.visualMegaDron;
+
 	public class UnitDron extends Unit{
 		
 		var spd:Object;
@@ -51,7 +54,7 @@ package unitdata
 			if (tr==100) {
 				vis.osn.scaleX=vis.osn.scaleY=1.5;
 				aiAgr=true;
-				nazv="";
+				objectName="";
 			}
 
 			if (tr==2) aiAgr=true;

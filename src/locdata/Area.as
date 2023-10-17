@@ -7,6 +7,8 @@ package locdata
 	
 	import components.Settings;
 	
+	import stubs.visArea;
+	
 	// area inside of a room?
 	
 	public class Area extends Obj
@@ -106,7 +108,7 @@ package locdata
 				if (xml.@scrout.length()) scrOut = World.world.game.getScript(xml.@scrout, this);
 
 				// Change Walls
-				if (xml.@tilehp.length || xml.@tileop.length || xml.@damageThreshold.length())  //If the tile has a HP value, tileop(?), or damageThreshold property
+				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@damageThreshold.length())  //If the tile has a HP value, tileop(?), or damageThreshold property
 				{
 					for (var i:int = bx; i < bx + rx; i++) 
 					{
@@ -198,7 +200,7 @@ package locdata
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com == 'onoff') enabled =! enabled;
 			if (com == 'off') enabled = false;
@@ -208,7 +210,7 @@ package locdata
 			if (com == 'dam') damTiles(int(val));
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (!enabled || !room.roomActive || tip == '') return;
 			if (emit)
@@ -222,7 +224,7 @@ package locdata
 				}
 			}
 
-			activator=null;
+			activator = null;
 
 			if (tip == 'gg') 
 			{

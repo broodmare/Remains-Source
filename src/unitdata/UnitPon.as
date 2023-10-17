@@ -106,7 +106,7 @@ package unitdata
 			Snd.ps(sst+nleg+rnd,X,Y,0,footstepVol-volMinus);
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			super.command(com,val);
 		}

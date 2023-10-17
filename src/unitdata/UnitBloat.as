@@ -6,6 +6,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualBloat1;
+
 	public class UnitBloat extends Unit{
 		
 		public var tr:int;
@@ -34,7 +36,7 @@ package unitdata
 			vis.stop();
 			runSpeed=0;
 			getXmlParam();
-			if (tr>=7) nazv=Res.txt('u','bloat10');
+			if (tr>=7) objectName=Res.txt('u','bloat10');
 			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);
 			sitSpeed=maxSpeed*0.5;
 			walkSpeed=maxSpeed;
@@ -71,7 +73,7 @@ package unitdata
 				shootCh=0.3;
 			}
 		}
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) {

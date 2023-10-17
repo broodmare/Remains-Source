@@ -35,7 +35,7 @@ package weapondata
 			scX=scY=30;
 			if (vis) vis.visible=true;
 		}
-		public override function step()
+		public override function step():void
 		{
 			if (levit) 
 			{
@@ -115,13 +115,13 @@ package weapondata
 		// Check for liquid
 		public function checkWater():int 
 		{
-			var pla=inWater;
-			inWater=0;
+			var pla:int = inWater;
+			inWater = 0;
 			try 
 			{
-				if ((room.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 
+				if ((room.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water > 0) 
 				{
-					inWater=1;
+					inWater = 1;
 				}
 			} 
 			catch (err) {}
@@ -134,7 +134,7 @@ package weapondata
 			return inWater;
 		}
 		
-		public override function popadalo(res:int=0)
+		public override function popadalo(res:int=0):void
 		{
 			if (res<0) return;			// Did not hit
 			dx=dy=0;
@@ -153,7 +153,7 @@ package weapondata
 //################################
 
 
-		public override function run(div:int = 1)
+		public override function run(div:int = 1):void
 		{
 			var celobj:* = room.celObj;
 			var abstile:* = room.getAbsTile(X,Y) 

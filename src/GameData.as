@@ -12,20 +12,7 @@ package
 		public static var d:XML = <game>
 		
 <!-- ============================================== LOCATIONS ============================================== -->
-			<land1 id='test' autolevel='1' file='rooms' locx='0' locy='0' stage='4' limit='1' test='1' list='-11' tip='test'>
-				<options  music='music_cat_1' skybox='skyboxRuins'/>
-				<scr eve='take' item='captive'>
-					<s act="quest" val="freeCaptive"/>
-				</scr>
-			</land1>
-			<land1 id='test2' dif='0' file='rooms2' locx='0' locy='0' stage='4' limit='1' test='1' list='-10' tip='test' fin='0'>
-				<options backwall='sky' skybox='skyboxFinalB'  music='music_encl_1' xp='500' color='blue' border='S'/>
-				<scr eve='take' item='diary'>
-					<s act="dialog" val="velvetDial6"/>
-					<s act="stage" val="storyFind" n="2"/>
-					<s act="xp" val="5000"/>
-				</scr>
-			</land1>
+
 		
 			<level id='begin' dif='0' file='rooms_begin' locx='0' locy='0' stage='1' limit='1' list='2' tip='story'>
 				<options backwall="tBackWall" music='music_begin'/>
@@ -716,7 +703,7 @@ package
 				</dial>
 				<dial id='dialFB4' imp='1'>
 					<scr>
-						<s act="gotoland" val="thunder"/>
+						<s act="gotoLevel" val="thunder"/>
 					</scr>
 				</dial>
 			</npc>
@@ -776,7 +763,7 @@ package
 				<dial id='dialReadyToGo' imp='1' trigger="ranger_q4">
 					<scr>
 						<s act="openland" val="random_mbase"/>
-						<s act="gotoland" val="random_mbase"/>
+						<s act="gotoLevel" val="random_mbase"/>
 					</scr>
 				</dial>
 				<!-- ЛП решает предупредить об угрозе жителей двух поселений -->
@@ -1312,7 +1299,7 @@ package
 		<!-- entry to the stable -->
 			<scr id='stableStory'>
 				<s act="stage" val="storyStable" n="2"/>
-				<s act="gotoland" val="random_stable"/>
+				<s act="gotoLevel" val="random_stable"/>
 				<s act="passed"/>
 			</scr>
 		<!-- go to the garages -->
@@ -1361,7 +1348,7 @@ package
 				<s act="control off"/>
 				<s act="dialog" val="dialZebra1"/>
 				<s act="trigger" val="encounter_way" n="1"/>
-				<s act="gotoland" val="covert"/>
+				<s act="gotoLevel" val="covert"/>
 				<s act="control on"/>
 			</scr>
 		<!-- встреча с Вельвет -->
@@ -1503,7 +1490,7 @@ package
 				<s act="showstage" val="storyEncl" n="3"/>
 				<s act="trigger" val="encounter_post" n="1"/>
 				<s act="passed"/>
-				<s act="gotoland" val="random_encl"/>
+				<s act="gotoLevel" val="random_encl"/>
 			</scr>
 		<!-- командный центр, вход -->
 			<scr id='commStory0'>
@@ -1665,7 +1652,7 @@ package
 				<s act="black" val="1" t="1"/>
 				<s act="trigger" val="theend" n="1"/>
 				<s act="scene"/>
-				<s act="gotoland" val="grave" n="2"/>
+				<s act="gotoLevel" val="grave" n="2"/>
 			</scr>
 		<!-- кладбище -->
 			<scr id='vse'>
@@ -1705,7 +1692,7 @@ package
 				<s act="dblack" val="2" t="2"/>
 				<s act="black" val="1"/>
 				<s act="dialog" val="dial_endgame"/>
-				<s act="gotoland" val="rbl" n="2"/>
+				<s act="gotoLevel" val="rbl" n="2"/>
 			</scr>
 			<scr id='gameover'>
 				<s act="gameover"/>
@@ -1732,11 +1719,6 @@ package
 	deposit - дать при взятии (активации) квеста
 	reward - дать при закрытии квеста
 -->
-			<quest id='test' sp='3' main='1'>
-				<q id='1'/>
-				<q id='2'/>
-				<q id='3'/>
-			</quest>
 			<quest id='toExit' xp='5000' main='1'>
 				<q id='1'/>
 			</quest>

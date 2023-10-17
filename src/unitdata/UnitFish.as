@@ -3,6 +3,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualFish1;
+
 	public class UnitFish extends Unit{
 		
 		public var tr:int;
@@ -41,7 +43,7 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) {

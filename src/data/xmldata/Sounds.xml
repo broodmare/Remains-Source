@@ -1,6 +1,6 @@
 
-<all>
-	<res id='sound_weapon.swf'>
+<sound>
+
 		<!-- выстрелы -->
 		<s id='p10mm_s'/>
 		<s id='silen_s'/>
@@ -76,12 +76,10 @@
 		<s id='autoaxe_s'/>
 		<s id='bsaw_s'/>
 		
-		<s id='artfire'>
-			<s id='artfire1'/>
-			<s id='artfire2'/>
-		</s>
-	</res>
-	<res id='sound.swf'>
+		<s id='artfire'/>
+		<s id='artfire1'/>
+		<s id='artfire2'/>
+
 		<!-- удары по разным предметам -->
 		<s id='hit_concrete'/>
 		<s id='hit_flesh'/>
@@ -98,11 +96,10 @@
 		<s id='break_metal'/>
 		<s id='electro'/>
 		<s id='acid'/>
-		<s id='fang_hit'>
-			<s id='fang_hit1'/>
-			<s id='fang_hit2'/>
-			<s id='fang_hit3'/>
-		</s>
+		<s id='fang_hit'/>
+		<s id='fang_hit1'/>
+		<s id='fang_hit2'/>
+		<s id='fang_hit3'/>
 		<s id='hit_slime'/>
 		
 		<!-- падение предметов -->
@@ -189,11 +186,10 @@
 		<s id='alarm'/>
 
 		<!-- интерфейс -->
-		<s id='geiger'>
-			<s id='geiger1'/>
-			<s id='geiger2'/>
-			<s id='geiger3'/>
-		</s>
+		<s id='geiger'/>
+		<s id='geiger1'/>
+		<s id='geiger2'/>
+		<s id='geiger3'/>
 		<s id='bonus1'/>
 		<s id='bonus2'/>
 		<s id='levelup'/>
@@ -206,9 +202,7 @@
 		<s id='harddie'/>
 		<s id='lowhp'/>
 		<s id='nomagic'/>
-	</res>
 
-	<res id='sound_unit.swf'>
 		<!-- шаги -->
 		<s id='footstep1'/>
 		<s id='footstep2'/>
@@ -241,57 +235,49 @@
 		<s id='expl3'/>
 		<s id='transmitter'/>
 		<s id='vortex'/>
-		<s id='vortex_cut'>
-			<s id='vortex_cut1'/>
-			<s id='vortex_cut2'/>
-			<s id='vortex_cut3'/>
-		</s>
-		<s id='rm'>
-			<s id='rm1'/>
-			<s id='rm2'/>
-			<s id='rm3'/>
-			<s id='rm4'/>
-			<s id='rm5'/>
-			<s id='rm6'/>
-		</s>
-		<s id='rw'>
-			<s id='rw1'/>
-			<s id='rw2'/>
-			<s id='rw3'/>
-			<s id='rw4'/>
-			<s id='rw5'/>
-			<s id='rw6'/>
-		</s>
-		<s id='ali'>
-			<s id='ali1'/>
-			<s id='ali2'/>
-			<s id='ali3'/>
-		</s>
-		<s id='sr'>
-			<s id='sr1'/>
-			<s id='sr2'/>
-			<s id='sr3'/>
-		</s>
-		<s id='zm'>
-			<s id='zm1'/>
-			<s id='zm2'/>
-			<s id='zm3'/>
-		</s>
-		<s id='zw'>
-			<s id='zw1'/>
-			<s id='zw2'/>
-			<s id='zw3'/>
-		</s>
-		<s id='bat'>
-			<s id='bat1'/>
-			<s id='bat2'/>
-		</s>
-		<s id='bloat'>
-			<s id='bloat1'/>
-			<s id='bloat2'/>
-			<s id='bloat3'/>
-			<s id='bloat4'/>
-		</s>
+		<s id='vortex_cut'/>
+		<s id='vortex_cut1'/>
+		<s id='vortex_cut2'/>
+		<s id='vortex_cut3'/>
+		<s id='rm'/>
+		<s id='rm1'/>
+		<s id='rm2'/>
+		<s id='rm3'/>
+		<s id='rm4'/>
+		<s id='rm5'/>
+		<s id='rm6'/>
+		<s id='rw'/>
+		<s id='rw1'/>
+		<s id='rw2'/>
+		<s id='rw3'/>
+		<s id='rw4'/>
+		<s id='rw5'/>
+		<s id='rw6'/>
+		<s id='ali'/>
+		<s id='ali1'/>
+		<s id='ali2'/>
+		<s id='ali3'/>
+		<s id='sr'/>
+		<s id='sr1'/>
+		<s id='sr2'/>
+		<s id='sr3'/>
+		<s id='zm'/>
+		<s id='zm1'/>
+		<s id='zm2'/>
+		<s id='zm3'/>
+		<s id='zw'/>
+		<s id='zw1'/>
+		<s id='zw2'/>
+		<s id='zw3'/>
+		<s id='bat'/>
+		<s id='bat1'/>
+		<s id='bat2'/>
+		<s id='bloat'/>
+		<s id='bloat1'/>
+		<s id='bloat2'/>
+		<s id='bloat3'/>
+		<s id='bloat4'/>
+
 		<s id='scorp'/>
 		<s id='slime'/>
 		<s id='rat'/>
@@ -300,5 +286,5 @@
 		<s id='drone'/>
 		<s id='zombie_res'/>
 		<s id='al_armor'/>
-	</res>
-</all>
+
+</sound>

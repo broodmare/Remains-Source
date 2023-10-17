@@ -9,6 +9,8 @@ package weapondata
 	
 	import components.Settings;
 	
+	import stubs.visualpaint;
+
 	public class WPaint extends Weapon 
 	{
 		
@@ -30,13 +32,13 @@ package weapondata
 	
 		public function lineCel():int 
 		{
-			var res=0;
+			var res:int = 0;
 			var bx:Number=owner.X;
 			var by:Number=owner.Y-owner.scY*0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/Settings.maxdelta)+1;
-			for (var i=1; i<div; i++) 
+			var div:Number=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/Settings.maxdelta)+1;
+			for (var i:int = 1; i<div; i++) 
 			{
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
@@ -49,9 +51,9 @@ package weapondata
 			return 1;
 		}
 		
-		public override function actions()
+		public override function actions():void
 		{
-			var ds=40*owner.storona;
+			var ds:Number = 40 * owner.storona;
 			if (owner.player) 
 			{
 				celX=owner.celX;
@@ -61,8 +63,8 @@ package weapondata
 				del.y=(celY-owner.weaponY);
 				norma(del,600);
 				ds=(owner as UnitPlayer).pers.meleeS*owner.storona;
-				var tx=celX-X;
-				var ty=celY-Y;
+				var tx:int = celX-X;
+				var ty:int = celY-Y;
 				ready=((tx*tx+ty*ty)<100);
 				del.x=((owner.X+ds+del.x)-X)/2;
 				del.y=((owner.weaponY+del.y)-Y)/2;
@@ -78,11 +80,11 @@ package weapondata
 		
 		public override function attack(waitReady:Boolean=false):Boolean 
 		{
-			World.world.grafon.paint(pX,pY,X,Y,World.world.ctr.keyRun);
+			World.world.grafon.paint(pX,pY,X,Y,World.world.ctr.keyStates.keyRun);
 			return true;
 		}
 
-		public function setPaint(npaint:String, ncolor:uint, nblend:String) 
+		public function setPaint(npaint:String, ncolor:uint, nblend:String):void
 		{
 			paintId=npaint;
 			paintNazv=Res.txt('i',paintId);
@@ -90,7 +92,7 @@ package weapondata
 
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (vis) 
 			{

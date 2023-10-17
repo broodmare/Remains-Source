@@ -36,7 +36,7 @@ package weapondata
 			room.addObj(this);
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (liv==20) Emitter.emit('magsymbol',room,X,Y);
 			liv--;
@@ -44,12 +44,12 @@ package weapondata
 			if (liv<=0) room.remObj(this);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			room.remObj(this);
 		}
 		
-		public function spellCast()
+		public function spellCast():void
 		{
 			var cel:Unit=World.world.gg;
 			if (cel.room==room && !cel.invulner && cel.sost<=2) 

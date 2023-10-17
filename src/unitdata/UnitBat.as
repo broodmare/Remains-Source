@@ -2,6 +2,9 @@ package unitdata
 {
 	import components.Settings;
 	
+	import stubs.visualBloodwing;
+	import stubs.visualBloodwing2;
+
 	public class UnitBat extends Unit
 	{
 		
@@ -36,7 +39,7 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) {

@@ -9,6 +9,8 @@ package weapondata
 	
 	import components.Settings;
 	
+	import stubs.visVzz;
+
 	public class WClub extends Weapon 
 	{
 		
@@ -47,7 +49,7 @@ package weapondata
 
 		public function WClub(own:Unit, id:String, nvar:int=0)
 		{
-			var node=AllData.d.weapon.(@id==id)[0];
+			var node:XML = AllData.d.weapon.(@id==id)[0];
 			if (node.vis[0].@lasm>0) lasM=true;
 			if (!lasM) 
 			{
@@ -89,28 +91,28 @@ package weapondata
 			b.checkLine=checkLine;
 			rot=-Math.PI/2-(Math.PI/6)*storona;
 			cos0=Math.cos(rot), sin0=Math.sin(rot);
-			for (var i=0; i<=kolvzz; i++) 
+			for (var i:int = 0; i<=kolvzz; i++) 
 			{
-				var nx=X+cos2*(mindlina+i*stepdlina)+anim*storona*(mindlina+i*stepdlina);
-				var ny=Y+sin2*(mindlina+i*stepdlina);
+				var nx:int = X+cos2*(mindlina+i*stepdlina)+anim*storona*(mindlina+i*stepdlina);
+				var ny:int = Y+sin2*(mindlina+i*stepdlina);
 				vzz[i]={X:0,Y:0};
 			}
 			if (!auto && !powerfull)combinat=true;
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			super.addVisual();
 			if (visvzz) World.world.grafon.canvasLayerArray[layer].addChild(visvzz);
 		}
 
-		public override function remVisual()
+		public override function remVisual():void
 		{
 			super.remVisual();
 			if (visvzz && visvzz.parent) visvzz.parent.removeChild(visvzz);
 		}
 
-		public override function setPers(gg:UnitPlayer, pers:Pers)
+		public override function setPers(gg:UnitPlayer, pers:Pers):void
 		{
 			super.setPers(gg,pers);
 			rapidMult=1/pers.meleeSpdMult;
@@ -119,13 +121,13 @@ package weapondata
 		
 		public function lineCel():int 
 		{
-			var res=0;
+			var res:int =0;
 			var bx:Number=owner.X;
 			var by:Number=owner.Y-owner.scY*0.75;
 			var ndx:Number=(celX-bx);
 			var ndy:Number=(celY-by);
-			var div=Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/Settings.maxdelta)+1;
-			for (var i=1; i<div; i++) 
+			var div:Number =Math.floor(Math.max(Math.abs(ndx),Math.abs(ndy))/Settings.maxdelta)+1;
+			for (var i:int =1; i<div; i++) 
 			{
 				celX=bx+ndx*i/div;
 				celY=by+ndy*i/div;
@@ -138,9 +140,9 @@ package weapondata
 			return 1;
 		}
 		
-		public override function actions()
+		public override function actions():void
 		{
-			var ds=40*owner.storona;
+			var ds:int =40*owner.storona;
 			meleeR=World.world.pers.meleeR;
 			if (room && room.sky) meleeR*=10;
 			if (owner.player) 
@@ -211,8 +213,8 @@ package weapondata
 			} 
 			else 
 			{
-				var tx=celX-X;
-				var ty=celY-Y;
+				var tx:int=celX-X;
+				var ty:int=celY-Y;
 				if (mtip!=0) 
 				{
 					tx=celRX-X;
@@ -281,10 +283,10 @@ package weapondata
 							}
 						}
 						cos2=Math.cos(rot), sin2=Math.sin(rot);
-						for (var i=0; i<=kolvzz; i++) 
+						for (var i:int=0; i<=kolvzz; i++) 
 						{
-							var nx=X+cos2*(mindlina+i*stepdlina);
-							var ny=Y+sin2*(mindlina+i*stepdlina);
+							var nx:int=X+cos2*(mindlina+i*stepdlina);
+							var ny:int=Y+sin2*(mindlina+i*stepdlina);
 							if (!isPow) b.bindMove(nx,ny, vzz[i].X, vzz[i].Y);
 							vzz[i].X=nx, vzz[i].Y=ny;
 						}
@@ -406,7 +408,7 @@ package weapondata
 		}
 		protected override function shoot():Bullet 
 		{
-			var sk=1;
+			var sk:int=1;
 			if (owner) 
 			{
 				sk=owner.weaponSkill;
@@ -474,7 +476,7 @@ package weapondata
 			return rap0/skillConf*rapidMult/owner.rapidMultCont;
 		}
 		
-		protected override function weaponAttack()
+		protected override function weaponAttack():void
 		{
 			powerMult=1;
 			if (t_attack<=0) 
@@ -499,7 +501,7 @@ package weapondata
 			else if (t_attack>10) combo=0;
 		}
 		
-		public override function crash(dam:int=1)
+		public override function crash(dam:int=1):void
 		{
 			if (owner.player) 
 			{
@@ -523,7 +525,7 @@ package weapondata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (quakeX!=0) 
 			{

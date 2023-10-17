@@ -3,6 +3,8 @@ package weapondata
 	
 	import unitdata.Unit;
 	
+	import stubs.visualPunch;
+
 	public class WPunch extends Weapon 
 	{
 		
@@ -14,7 +16,7 @@ package weapondata
 			vBullet=visualPunch;
 		}
 		
-		public override function actions()
+		public override function actions():void
 		{
 			owner.setPunchWeaponPos(this);
 			if (t_attack>0) t_attack--;
@@ -62,7 +64,7 @@ package weapondata
 			return true;
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 
 		}

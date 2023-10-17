@@ -19,6 +19,9 @@ package interdata
 	
 	import components.Settings;
 	
+	import stubs.satsRadius;
+	import stubs.satsUnit;
+	
 	public class Sats 
 	{
 		
@@ -53,7 +56,7 @@ package interdata
 		}
 
 		//Показать/скрыть
-		public function onoff(turn:int=0)
+		public function onoff(turn:int=0):void
 		{
 			if (turn==0) active=!active;
 			else if (turn>0) active=true;
@@ -102,24 +105,26 @@ package interdata
 			}
 			if (active) 
 			{
-				if (weapon.tip>1) 
+				if (weapon.tip > 1) 
 				{
-					trasser.visible=true;
+					trasser.visible = true;
 					trass();
 				} 
 				else 
 				{
-					trasser.visible=false;
-					radius.visible=true;
-					radius.x=gg.X+gg.pers.meleeS*gg.storona;
-					radius.y=gg.Y-gg.scY/2;
-					radius.scaleX=radius.scaleY=gg.pers.meleeR/100;
+					trasser.visible = false;
+					radius.visible 	= true;
+					radius.x = gg.X + gg.pers.meleeS * gg.storona;
+					radius.y = gg.Y - gg.scY / 2;
+					radius.scaleX = gg.pers.meleeR / 100;
+					radius.scaleY = gg.pers.meleeR / 100;
 				}
-				skillConf=1;
+
+				skillConf = 1;
 				if (Settings.weaponsLevelsOff) 
 				{
-					var razn=weapon.lvl-gg.pers.getWeapLevel(weapon.skill);
-					if (razn==1) skillConf=0.8;
+					var razn = weapon.lvl-gg.pers.getWeapLevel(weapon.skill);
+					if (razn == 1) skillConf = 0.8;
 					else if (razn==2) skillConf=0.6;
 					else if (razn>2) 
 					{
@@ -129,7 +134,7 @@ package interdata
 						return;
 					}
 				}
-				if (que.length>0) clearAll();
+				if (que.length > 0) clearAll();
 				World.world.grafon.drawSats();
 				World.world.grafon.onSats(true);
 				getUnits();
@@ -147,43 +152,43 @@ package interdata
 				World.world.ctr.clearAll();
 				World.world.gui.setTopText('');
 			}
-			vis.visible=active;
+			vis.visible = active;
 			World.world.gui.setSats(active);
 		}
 		
 		//когда на паузе
-		public function step()
+		public function step():void
 		{
 			if (active) 
 			{
-				if (World.world.ctr.keyAttack) 
+				if (World.world.ctr.keyStates.keyAttack) 
 				{
 					setCel();
-					World.world.ctr.keyAttack=false;
+					World.world.ctr.keyStates.keyAttack = false;
 				}
-				if (World.world.ctr.keyTele) 
+				if (World.world.ctr.keyStates.keyTele) 
 				{
 					unsetCel();
-					World.world.ctr.keyTele=false;
+					World.world.ctr.keyStates.keyTele = false;
 				}
-				if (World.world.ctr.keyAction) 
+				if (World.world.ctr.keyStates.keyAction) 
 				{
 					onoff(-1);
-					World.world.ctr.keyAction=false;
+					World.world.ctr.keyStates.keyAction = false;
 				}
 			}
 		}
 		
 		//когда не на паузе
-		public function step2()
+		public function step2():void
 		{
-			if (que.length>0 && World.world.ctr.keyAttack) clearAll();
-			if (que.length>0 && weapon.satsCons*weapon.consMult*weapon.consMult/skillConf*gg.pers.satsMult/weapon.satsQue>od) 
+			if (que.length > 0 && World.world.ctr.keyStates.keyAttack) clearAll();
+			if (que.length > 0 && weapon.satsCons*weapon.consMult*weapon.consMult/skillConf*gg.pers.satsMult/weapon.satsQue>od) 
 			{
 				World.world.gui.infoText('noOd');
 				clearAll();
 			}
-			if (que.length==0 && od<gg.pers.maxOd) 
+			if (que.length == 0 && od<gg.pers.maxOd) 
 			{
 				od+=odd;
 				odv=od;
@@ -191,7 +196,7 @@ package interdata
 			}
 		}
 		
-		public function clearAll()
+		public function clearAll():void
 		{
 			var n=que.length;
 			for (var i=0; i<n; i++) 
@@ -204,7 +209,7 @@ package interdata
 			//trace('cl all');
 		}
 		
-		public function setCel()
+		public function setCel():void
 		{
 			if (weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult>odv) 
 			{
@@ -217,7 +222,7 @@ package interdata
 				for each (var obj in units) 
 				{
 					//trace (obj.du.filters);
-					if (obj.du.filters.length>0) 
+					if (obj.du.filters.length > 0) 
 					{
 						cel=new SatsCel(obj,0,0,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
 						break;
@@ -230,9 +235,9 @@ package interdata
 			World.world.gui.setOd();
 			que.push(cel);
 		}
-		public function unsetCel(q:Boolean=false) 
+		public function unsetCel(q:Boolean=false):void
 		{
-			if (que.length==0) 
+			if (que.length == 0) 
 			{
 				onoff(-1);
 				return;
@@ -243,7 +248,7 @@ package interdata
 			if (cel.un) cel.un.n--;
 			cel.remove();
 			odv+=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
-			if (que.length==0) 
+			if (que.length == 0) 
 			{
 				onoff(-1);
 				odv=od;
@@ -253,12 +258,12 @@ package interdata
 		
 		public function getReady():Boolean 
 		{
-			if (que.length>0 && (que[0].un==null || que[0].begined || que[0].un.u.sost<3)) return true;
+			if (que.length > 0 && (que[0].un==null || que[0].begined || que[0].un.u.sost<3)) return true;
 			else return false;
 		}
 		
 		//действие выполнено
-		public function act()
+		public function act():void
 		{
 			od-=que[0].cons;
 			World.world.gui.setOd();
@@ -341,7 +346,7 @@ package interdata
 			} catch(err){}
 		}
 		
-		public function offUnits()
+		public function offUnits():void
 		{
 			if (units && units.length) 
 			{
@@ -365,7 +370,7 @@ package interdata
 			}
 		}
 		
-		public function getUnits()
+		public function getUnits():void
 		{
 			for each (var un:Unit in World.world.room.units) 
 			{
@@ -391,7 +396,7 @@ package interdata
 				txt.y=3;
 				txt.autoSize=TextFieldAutoSize.CENTER;
 				if (!weapon.noPerc) var prec:Number=getPrec(un);
-				txt.text=un.nazv;
+				txt.text=un.objectName;
 				txt.selectable=false;
 				if (!weapon.noPerc) txt.text+='\n'+Math.round(prec*100)+'%';
 				
@@ -423,7 +428,7 @@ package interdata
 			trass();
 		}
 		
-		public function trass()
+		public function trass():void
 		{
 			if (weapon.noTrass) return;
 			weapon.setTrass(trasser.graphics);

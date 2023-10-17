@@ -9,6 +9,13 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualTurret0;
+	import stubs.visualTurret1;
+	import stubs.visualTurret2;
+	import stubs.visualTurret3;
+	import stubs.visualTurret4;
+	import stubs.visualTurret5;
+	
 	public class UnitTurret extends Unit{
 		
 		public var tr:int;
@@ -219,7 +226,7 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f && !sleep) {
@@ -284,7 +291,7 @@ package unitdata
 		}
 		
 		//команда скрипта
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='shoot') currentWeapon.attack();
 			if (com=='alarma') alarma();

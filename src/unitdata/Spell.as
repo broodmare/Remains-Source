@@ -15,7 +15,7 @@ package unitdata
 		public var gg:UnitPlayer;
 		public var room:Room;
 		public var id:String;
-		public var nazv:String;
+		public var objectName:String;
 		public var xml:XML;
 		public var player:Boolean=false;		//заклинание относится к гг
 		public var X:Number=0, Y:Number=0;		//положение источника
@@ -63,7 +63,7 @@ package unitdata
 			if (xml.@prod.length()) prod=true;
 			if (xml.@tele.length()) teleSpell=true;
 			if (xml.@atk.length()) atk=true;
-			nazv=Res.txt('i',id);
+			objectName=Res.txt('i',id);
 			if (xml.@snd.length()) snd=xml.@snd;
 			
 			if (id=='sp_mwall') cf=cast_mwall;
@@ -77,7 +77,7 @@ package unitdata
 			if (id=='sp_invulner') cf=cast_invulner;
 		}
 		
-		public function step()
+		public function step():void
 		{
 			if (t_culd>0) t_culd--;
 		}

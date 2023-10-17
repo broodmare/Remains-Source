@@ -11,34 +11,34 @@ package locdata
 		
 		public var id:String;
 		public var xml:XML;
-		public var nazv:String;
+		public var objectName:String;
 		public var info:String;
 		public var empl:String;
 		
-		public var main:Boolean=false;	//главный квест
-		public var sub:Boolean=false;	//этап квеста
-		public var nsub:int=0;			//номер этапа
-		public var subs:Array;			//массив этапов 
+		public var main:Boolean = false;	//главный квест
+		public var sub:Boolean 	= false;	//этап квеста
+		public var nsub:int 	= 0;		//номер этапа
+		public var subs:Array;				//массив этапов 
 		public var subsId:Array;			//массив этапов по id
-		public var par:Quest;			//главный квест по отношению к подквесту
-		public var auto:Boolean=true;	//квест автматически берётся если закрыт один из этапов, установить в false чтобы квест добавлялся как скрытый
+		public var par:Quest;				//главный квест по отношению к подквесту
+		public var auto:Boolean = true;		//квест автматически берётся если закрыт один из этапов, установить в false чтобы квест добавлялся как скрытый
+
+		public var isCheck:Boolean = false;
+		public var nn:Boolean = false;		//не обязательно
+		public var collect:String;			//собрать предметы
+		public var colTip:int = 0;			//тип коллекционного предмета. 0-обычный, 1-оружие
+		public var isDel:Boolean = false;	//изъять предмет после закрытия квеста
+		public var give:String;				//кому отдать
+		public var est:int = 0;
+		public var kol:int = 1;
+		public var canBeUse:Boolean = false;//подквест закроется если количество будет достигнуто, и больше уже не откроется
+		public var gived:int = 0;			//сколько было отдано
+		public var pay:int = 0;				//плата за каждый принесённый предмет
+		public var prevRes:String='';		//предыдущий реузльтат проверки
 		
-		public var isCheck:Boolean=false;
-		public var nn:Boolean=false;	//не обязательно
-		public var collect:String;		//собрать предметы
-		public var colTip:int=0;		//тип коллекционного предмета. 0-обычный, 1-оружие
-		public var isDel:Boolean=false;	//изъять предмет после закрытия квеста
-		public var give:String;			//кому отдать
-		public var est:int=0;
-		public var kol:int=1;
-		public var canBeUse:Boolean=false;	//подквест закроется если количество будет достигнуто, и больше уже не откроется
-		public var gived:int=0;			//сколько было отдано
-		public var pay:int=0;			//плата за каждый принесённый предмет
-		public var prevRes:String='';	//предыдущий реузльтат проверки
-		
-		public var hidden:Boolean=false;//описание скрыто
-		public var invis:Boolean=false;//пункт квеста не отображается
-		public var result:Boolean=false;//открывается, если выполнены все предыдущие пункты
+		public var hidden:Boolean = false;	//описание скрыто
+		public var invis:Boolean = false;	//пункт квеста не отображается
+		public var result:Boolean = false;	//открывается, если выполнены все предыдущие пункты
 		
 		public var report:String;
 		
@@ -46,13 +46,13 @@ package locdata
 		public var endDial:String;
 		public var endScript:String;
 		
-		public var state:int=0;			//состояние 0 - не активен, 1 - активен, 2 - выполнен
-		public var sp:int=0;			//награда в скилл-поинтах
-		public var xp:int=0;			//награда в опыте
-		public var rep:int=0;			//награда в репутации
-		
-		public var trigger:String;		//установить триггер, когда квест будет выполнен
-		public var triggerSet:String;	//значение устанавливаемого триггера
+		public var state:int 	= 0;		//состояние 0 - не активен, 1 - активен, 2 - выполнен
+		public var sp:int 		= 0;		//награда в скилл-поинтах
+		public var xp:int 		= 0;		//награда в опыте
+		public var rep:int 		= 0;		//награда в репутации
+
+		public var trigger:String;			//установить триггер, когда квест будет выполнен
+		public var triggerSet:String;		//значение устанавливаемого триггера
 		
 		public var sort:int=0;
 
@@ -127,17 +127,16 @@ package locdata
 			{
 				invis=loadObj.invis;
 			}
-			var node=Res.d.txt.(@id==pid);
-			if (node.length()==0) node=Res.e.txt.(@id==pid);
+			var node=Res.gameData.txt.(@id==pid);
 			if (node.length()) 
 			{
 				node=node[0]
-				nazv=node.n[0];
-				if (nazv==null) nazv='['+id+']';
+				objectName=node.n[0];
+				if (objectName==null) objectName='['+id+']';
 			} 
 			else 
 			{
-				nazv='['+id+']';
+				objectName='['+id+']';
 			}
 			if (!sub) 
 			{
@@ -236,7 +235,7 @@ package locdata
 					{
 						
 					}
-					if (cid!=null && collect==cid) res=nazv+' '+est+'/'+kol;
+					if (cid!=null && collect==cid) res=objectName+' '+est+'/'+kol;
 					if (World.world.invent.items[collect]) est=World.world.invent.items[collect].kol;
 				}
 				if (collect && colTip==1) 
@@ -246,7 +245,7 @@ package locdata
 						state=2;
 						if (par.result) par.isResult();
 					}
-					if (cid!=null && collect==cid) res=nazv;
+					if (cid!=null && collect==cid) res=objectName;
 				}
 			} 
 			else 
@@ -292,7 +291,7 @@ package locdata
 								World.world.invent.money.kol+=est*pay;
 								World.world.gui.infoText('reward',Res.txt('i','money'),est*pay);
 							}
-							World.world.gui.infoText('withdraw',World.world.invent.items[collect].nazv, est);
+							World.world.gui.infoText('withdraw',World.world.invent.items[collect].objectName, est);
 							est=0;
 							if (gived>=kol) close();
 						}
@@ -361,7 +360,7 @@ package locdata
 						if (subs[j].state<2) cl=false;
 					}
 					if (cl) subs[i].invis=false;
-					//trace(subs[i].nazv, cl);
+					//trace(subs[i].objectName, cl);
 				}
 			}
 		}
@@ -399,14 +398,14 @@ package locdata
 							World.world.invent.minusItem(q.collect, q.kol);
 							try 
 							{
-								World.world.gui.infoText('withdraw',World.world.invent.items[q.collect].nazv, q.kol);
+								World.world.gui.infoText('withdraw',World.world.invent.items[q.collect].objectName, q.kol);
 							} catch (err) {}
 						} 
 						else if (q.colTip==1) 
 						{
 							try 
 							{
-								World.world.gui.infoText('withdraw',World.world.invent.weapons[q.collect].nazv, 1);
+								World.world.gui.infoText('withdraw',World.world.invent.weapons[q.collect].objectName, 1);
 							} 
 							catch (err) 
 							{
@@ -443,12 +442,12 @@ package locdata
 			//сообщение и звук
 			if (!sub) 
 			{
-				World.world.gui.infoText('doneTask',nazv);
+				World.world.gui.infoText('doneTask',objectName);
 				Snd.ps('quest_ok');
 			} 
 			else 
 			{
-				World.world.gui.infoText('doneStage',nazv);
+				World.world.gui.infoText('doneStage',objectName);
 			}
 			//завершающий диалог
 			if (endDial && Settings.dialOn) 

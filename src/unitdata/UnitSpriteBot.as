@@ -5,6 +5,7 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualSpriteBot;
 	public class UnitSpriteBot extends Unit
 	{
 		
@@ -41,7 +42,7 @@ package unitdata
 			} else super.forces();
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) {

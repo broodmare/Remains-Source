@@ -9,76 +9,83 @@ package
 	public class Res 
 	{
 		
-		public static var d:XML;
-		public static var e:XML;
+		public static var gameData:XML;
 		
+		public static const classData:Object = 
+		{
+			'u' : 'unit',
+			'w' : 'weapon',
+			'a' : 'armor',
+			'o' : 'obj',
+			'i' : 'item',
+			'e' : 'eff',
+			'f' : 'info',
+			'p' : 'pip',
+			'k' : 'key',
+			'g' : 'gui',
+			'm' : 'map',
+			'0' : 'n',
+			'1' : 'info',
+			'2' : 'mess',
+			'3' : 'help'
+		};
+		
+		private static var rainbowcol:Array = ['red','or','yel','green','blu','purp'];
+
 		public function Res() 
 		{
+
 
 		}
 		
 
-		public static var classData:Array = new Array();
-		classData['u'] = 'unit';
-		classData['w'] = 'weapon';
-		classData['a'] = 'armor';
-		classData['o'] = 'obj';
-		classData['i'] = 'item';
-		classData['e'] = 'eff';
-		classData['f'] = 'info';
-		classData['p'] = 'pip';
-		classData['k'] = 'key';
-		classData['g'] = 'gui';
-		classData['m'] = 'map';
-		classData[0] = 'n';
-		classData[1] = 'info';
-		classData[2] = 'mess';
-		classData[3] = 'help';
-		
+
 
 
 		public static function istxt(type:String, id:String):Boolean 
 		{
-			var xl = d[classData[type]].(@id == id);
-			if (xl.length == 0) 
-			{
-				xl = e[classData[type]].(@id == id);
-				if (xl.length == 0) return false;
-			}
-			return true;
+			    //trace('Res.as/istxt() - istxt() executing with type: ' + type + ' and ID: ' + id + '.');
+				if (gameData == null) trace('Res.as/istxt() - Game data is null.');
+				var xl:XMLList = gameData[classData[type]].(@id == id);
+				return (xl.length() > 0);
 		}
 		
 
 		public static function txt(type:String, id:String, razd:int = 0, dop:Boolean = false):String 
 		{
-			if (id == '') return '';
+			//trace('Res.as/txt() - txt() executing with Class type: "' + type + '" String ID: "' + id + '" razd: "' + razd + '" dop: "' + dop + '."')
+			if (id == '') 
+			{
+				trace('Res.as/txt() - ID is blank, returning.');
+				return '';
+			}
+			if (gameData == null) 
+			{
+				
+				trace('Res.as/txt() - GameData is null.');
+				return '';
+			}
+			if (classData[type] == null) 
+			{
+				trace('Res.as/txt() - Invalid type provided: ' + type);
+				return '';
+			}
+
 
 			var s:String;
-			var xl;
+			var xl:XML;
 
 			try 
 			{
-				xl = d[classData[type]].(@id == id);	// Retrieve from the main language file
+				xl = gameData[classData[type]].(@id == id);	
 				s = xl[classData[razd]][0];		
 			} 
 			catch (err) 
 			{
-
+				trace('Res.as/txt() - txt Error.');
 			}
 
-			if (s == null) 
-			{
-				try 
-				{
-					xl = e[classData[type]].(@id == id);	// Retrieve from the main language file
-					s = xl[classData[razd]][0];		
-				} 
-				catch (err) 
-				{
-
-				}
-			}
-			if (s == null) 
+			if (s == null || s == "") 
 			{
 				if (type == 'o') return '';
 				if (razd == 0) return '*' + classData[type] + '_' + id;			// If still not found, return just the id
@@ -88,20 +95,24 @@ package
 
 			// Processing
 			xl = xl[0];
-			if (xl.@m == '1')	
-			{						// Contains material
+			if (xl.@m == '1')	// Contains material
+			{						
 				var spl:Array = s.split('|');
-				if (spl.length >= 2) s = spl[Settings.matFilter?1:0];
+				if (spl.length >= 2) s = spl[Settings.matFilter ? 1 : 0];
 			}
-			if (razd >= 1 || dop) 
+			if (razd >= 1 || dop) // Control keys
 			{
-				if (xl.@s1.length) s = addKeys(s, xl);	// Control keys
-				try {
-					if (xl[classData[razd]][0].@s1.length) s=addKeys(s,xl[classData[razd]][0]);
+				if (xl.@s1.length()) s = addKeys(s, xl);	
+				try 
+				{
+					if (xl[classData[razd]][0].@s1.length) 
+					{
+						s = addKeys(s, xl[classData[razd]][0]);
+					}
 				} 
 				catch (err) 
 				{
-
+					trace('Res.as/txt() - Failed adding control keys.');
 				}
 				s = s.replace(/\[br\]/g, '<br>');
 				s = s.replace(/\[/g, "<span classData='yel'>");
@@ -109,38 +120,41 @@ package
 			}
 			if (dop) 
 			{
-				s = s.replace(/[\b\r\t]/g,'');
+				s = s.replace(/[\b\r\t]/g, '');
 			}
-			if (type == 'f' || type == 'e' && razd == 2 || razd >= 1 && xl.@st.length) s = "<span classData = 'r" + xl.@st + "'>" + s + "</span>";
+			if (type == 'f' || type == 'e' && razd == 2 || razd >= 1 && xl.@st.length()) s = "<span classData = 'r" + xl.@st + "'>" + s + "</span>";
+			
+			//trace('Res.as/txt() - Returning string: "' + s + '."');
 			return s;
 		}
 
 
 		public static function guiText(id:String):String 
 		{
+			//trace('Res.as/guiText() - guiText executing. Passed string: "' + id + '."');
+			//trace('Res.as/guiText() - returning function Res/txt("g", ' + id + ').');
 			return txt('g', id);
 		}
 
 
 		public static function pipText(id:String):String 
 		{
+
 			return txt('p', id);
+			
 		}
 
 
 		public static function messText(id:String, v:int = 0, imp:Boolean = true):String 
 		{
+			trace('Res.as/messText() - messText Executing...');
 			var s:String = '';
 			try 
 			{
-				var xml = d.txt.(@id == id);
+				if (gameData == null) trace('Res.as/messText() - GameData is null.');
+				var xml:XMLList = gameData.txt.(@id == id);
 
-				if (xml.length == 0) 
-				{
-					xml=e.txt.(@id == id);
-				}
-
-				if (xml.length == 0) 
+				if (xml.length() == 0) 
 				{
 					return '';
 				}
@@ -150,20 +164,22 @@ package
 					return '';
 				}
 
+				trace('Res.as/messText() - Checking version...');
 				var type:int = xml.@imp;
 
 				if (v == 1) 
 				{
 					s = xml.info[0];
 				}
+
 				else 
 				{
-					if (xml.n[0].r.length) 
+					if (xml.n[0].r.length()) 
 					{
-						for each (var node in xml.n[0].r) 
+						for each (var node:XML in xml.n[0].r) 
 						{
 							var s1:String = node.toString();
-							if (node.@m.length) 
+							if (node.@m.length()) 
 							{
 								var sar:Array = s1.split('|');
 								if (sar) 
@@ -174,9 +190,9 @@ package
 							}
 							if (node.@s1.length()) 
 							{
-								for (var i = 1; i <= 5; i++) 
+								for (var i:int = 1; i <= 5; i++) 
 								{
-									if (node.attribute('s'+i).length())  s1=s1.replace('@'+i,"<span classData='yel'>"+World.world.ctr.retKey(node.attribute('s'+i))+"</span>");
+									if (node.attribute('s' + i).length())  s1 = s1.replace('@' + i, "<span classData = 'yel'>" + World.world.ctr.retKey(node.attribute('s' + i)) + "</span>");
 								}
 							}
 
@@ -187,50 +203,56 @@ package
 								if (node.@p.length() == 0) s += "<span classData='dark'>" + s1 + "</span>"+'<br>';
 								else 
 								{
-									var pers = node.@p;
-									if (pers.substr(0,2)=='lp') s+="<span classData='light'>"+' - '+s1+"</span>"+'<br>';
-									else s+=' - '+s1+'<br>';
+									var pers:String = node.@p;
+									if (pers.substr(0, 2) == 'lp') s += "<span classData='light'>" + ' - ' + s1 + "</span>" + '<br>';
+									else s += ' - ' + s1 + '<br>';
 								}
 							} 
-							else s+=s1+'<br>';
+							else s += s1 + '<br>';
 						}
 					} 
 
-					else s=xml.n[0];
+					else 
+					{
+						s = xml.n[0];
+					}
 				}
+				
 				s = lpName(s);
-				s = s.replace(/\[br\]/g,'<br>');
+				s = s.replace(/\[br\]/g, '<br>');
 				if (xml.@s1.length()) 
 				{
-					for (var i = 1; i <= 5; i++) 
+					for (var j:int = 1; j <= 5; j++) 
 					{
-						if (xml.attribute('s' + i).length())  s = s.replace('@'+ i, "<span classData='r2'>" + World.world.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+						if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span classData='r2'>" + World.world.ctr.retKey(xml.attribute('s' + j)) + "</span>");
 					}
 				}
 			} 
 			catch (err) 
 			{
-				return 'err: ' + id;
+				trace('Res.as/messText() - messText Failed.' + err.message)
 			}
-			return (s == null)?'':s;
+			return (s == null) ? '' : s; // If string is null, return a blank string, otherwise return the string.
 		}
 
 
 		public static function advText(n:int):String 
 		{
-			var xml = d.advice[0];
-			var s:String = xml.a[n];
-			return (s == null)?'':s;
+			trace('Res/advText() - advText Executing...');
+			var xml:XML = gameData.advice[0];
+			var s:XMLList = xml.a[n];
+			return (s == null) ? '' : s;
+			trace('Res/advText() - advText Finished.');
 		}
 
 		//Replace text for different languages?
 		public static function repText(id:String, act:String, msex:Boolean=true):String 
 		{
-			var xl:XMLList = d.replic[0].rep.(@id == id && @act == act);
-			if (xl.length == 0) return '';
+			var xl:XMLList = gameData.replic[0].rep.(@id == id && @act == act);
+			if (xl.length() == 0) return '';
 			xl = xl[0].r;	//AllData.lang
 
-			var n = xl.length();
+			var n:int = xl.length();
 
 			if (n == 0) return '';
 
@@ -239,28 +261,28 @@ package
 			if (Settings.matFilter && xl[num].@m.length) return '';
 
 			var s:String = xl[num];
-			var n1 = s.indexOf('#');
+			var n1:int = s.indexOf('#');
 
 			if (n1 >= 0) 
 			{
-				var n2 = s.lastIndexOf('#');
-				var ss:String=s.substring(n1+1,n2);
-				s=s.substring(0,n1)+ss.split('|')[msex?0:1]+s.substring(n2+1);
+				var n2:int = s.lastIndexOf('#');
+				var ss:String = s.substring(n1 + 1, n2);
+				s = s.substring(0, n1) + ss.split('|')[msex ? 0:1] + s.substring(n2 + 1);
 			}
-			s = s.replace('@lp',World.world.pers.persName);
+			s = s.replace('@lp', World.world.pers.persName);
 			return s;
 		}
 		
 
 		public static function namesArr(id:String):Array 
 		{
-			var xl:XMLList = d.names;
-			if (xl.length == 0) return null;
+			var xl:XMLList = gameData.names;
+			if (xl.length() == 0) return null;
 			xl = xl[0].name.(@id == id);
-			if (xl.length == 0) return null;
+			if (xl.length() == 0) return null;
 			xl = xl[0].r;
 			var arr:Array = new Array();
-			for each (var n in xl) arr.push(n.toString());
+			for each (var n:XML in xl) arr.push(n.toString());
 			return arr;
 		}
 		
@@ -271,10 +293,10 @@ package
 		}
 		
 
-		public static function getDate(d:Number):String 
+		public static function getDate(currentDate:Number):String 
 		{
-			var date:Date = new Date(d);
-			return date.fullYear+'.'+(date.month>=9?'':'0')+(date.month+1)+'.'+(date.date>=10?'':'0')+date.date+'  '+date.hours+':'+(date.minutes>=10?'':'0')+date.minutes;
+			var date:Date = new Date(currentDate);
+			return date.fullYear + '.' + (date.month >= 9 ? '':'0') + (date.month + 1) + '.' + (date.date >= 10 ? '':'0') + date.date + '  ' + date.hours + ':' + (date.minutes >= 10 ? '':'0') + date.minutes;
 		}
 		
 
@@ -291,12 +313,13 @@ package
 		
 
 		// Add control keys to a string
-		public static function addKeys(s:String,xml:XML):String 
+		public static function addKeys(s:String, xml:XML):String 
 		{
+			trace('Res/addKeys() - addKeys Executing...');
 			if (s == null) return '';
-			for (var i = 1; i <= 5; i++) 
+			for (var i:int = 1; i <= 5; i++) 
 			{
-				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span classData='imp'>"+World.world.ctr.retKey(xml.attribute('s'+i))+"</span>");
+				if (xml.attribute('s' + i ).length())  s = s.replace('@' + i, "<span classData='imp'>" + World.world.ctr.retKey(xml.attribute('s' + i)) + "</span>");
 			}
 			
 			return s;
@@ -306,7 +329,7 @@ package
 		// Remove /r and /n characters from a string
 		public static function formatText(string:String):String 
 		{
-			return string.replace(/\r\n/g,'<br>');
+			return string.replace(/\r\n/g, '<br>');
 		}
 		
 
@@ -318,22 +341,22 @@ package
 			var m:int = Math.floor((sec - h * 3600) / 60);
 			var s:int = sec%60;
 
-			return h.toString() + ':' + ((m < 10)?'0':'') + m + ':' + ((s < 10)?'0':'') + s;
+			return h.toString() + ':' + ((m < 10) ? '0':'') + m + ':' + ((s < 10)?'0':'') + s;
 		}
 		
 
-		static var rainbowcol:Array = ['red','or','yel','green','blu','purp'];
+		
 		
 
 		public static function rainbow(s:String):String 
 		{
-			var n = 0;
+			var n:int = 0;
 			var res:String = '';
-			for (var i = 0; i < s.length; i++) 
+			for (var i:int = 0; i < s.length; i++) 
 			{
 				res += "<span classData='" + rainbowcol[n] + "'>" + s.charAt(i) + "</span>";
 				n++;
-				if (n >= 6) n=0;
+				if (n >= 6) n = 0;
 			}
 			return res;
 		}
@@ -341,6 +364,7 @@ package
 
 		public static function getVis(id:String, def:Class = null):MovieClip 
 		{
+			trace('Res/getVis() - getVis Executing...');
 			var r:Class;
 			try 
 			{
@@ -355,8 +379,9 @@ package
 		}
 		
 
-		public static function getClass(id1:String, id2:String=null, def:Class=null):Class 
+		public static function getClass(id1:String, id2:String = null, def:Class = null):Class 
 		{
+			//trace('Res/getClass() - getClass Executing...');
 			var r:Class;
 			try 
 			{

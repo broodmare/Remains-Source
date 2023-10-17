@@ -4,6 +4,8 @@ package unitdata
 	import weapondata.Weapon;
 	import servdata.LootGen;
 	
+	import stubs.visualRobobrain;
+
 	public class UnitRobobrain extends UnitAIRobot{
 
 		public function UnitRobobrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {

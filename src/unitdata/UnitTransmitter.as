@@ -7,6 +7,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualTransmitter;
+	
 	public class UnitTransmitter extends Unit
 	{
 		
@@ -66,7 +68,7 @@ package unitdata
 			}
 		}
 		
-		public override function locout()
+		public override function locout():void
 		{
 			super.locout();
 			//if (shum) shum.stop();

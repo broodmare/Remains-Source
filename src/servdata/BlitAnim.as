@@ -113,7 +113,7 @@ package servdata
 			f=firstf;
 		}
 		
-		public function step() 
+		public function step():void
 		{
 			if (stab) return;
 			if (f<firstf+maxf-1) f+=df;

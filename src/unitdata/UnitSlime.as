@@ -6,6 +6,10 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualSlime;
+	import stubs.visualPinkSlime;
+	import stubs.visualCryoSlime;
+	
 	public class UnitSlime extends Unit
 	{
 		
@@ -59,7 +63,7 @@ package unitdata
 
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			oduplenie=Settings.oduplenie/2;

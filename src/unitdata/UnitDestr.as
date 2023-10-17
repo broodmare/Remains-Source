@@ -2,6 +2,9 @@ package unitdata
 {
 	
 	import graphdata.Emitter;
+
+	import stubs.visualStolp;
+
 	public class UnitDestr extends Unit{
 		
 		var tr:int=1;

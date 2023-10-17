@@ -6,6 +6,9 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualRoller;
+	import stubs.visualRoller2;
+	
 	public class UnitRoller extends Unit
 	{
 		
@@ -78,7 +81,7 @@ package unitdata
 			vis.osn.rotation+=rollDr;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (f) aiState=aiSpok=0;

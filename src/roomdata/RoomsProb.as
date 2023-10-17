@@ -1771,7 +1771,7 @@ package roomdata {
     </obj>
     <obj id="area" code="CGUKa3ri6DhGWOzA" x="46" y="15" h="4">
       <scr>
-        <s act="gotoland" val="core"/>
+        <s act="gotoLevel" val="core"/>
       </scr>
     </obj>
     <obj id="player" code="BYmLUWUL072rsQff" x="4" y="11"/>
@@ -2560,7 +2560,7 @@ package roomdata {
     <obj id="stove" code="x4MYbQsGGDuYvbnr" x="4" y="7"/>
     <obj id="area" code="TqlXu8FxA7qZD5P2" x="42" y="1" h="2">
       <scr>
-        <s act="gotoland" val="raiders" n="1" opt1="2" opt2="2"/>
+        <s act="gotoLevel" val="raiders" n="1" opt1="2" opt2="2"/>
       </scr>
     </obj>
     <obj id="area" code="TE5wn7cf0ARqgKmw" x="24" y="11" w="7" trig="1" uid="trig_sewerNextLevel">
@@ -3208,7 +3208,7 @@ package roomdata {
     </obj>
     <obj id="area" code="H9GR1i57C5147YgI" x="46" y="19" h="18">
       <scr>
-        <s act="gotoland" val="minst"/>
+        <s act="gotoLevel" val="minst"/>
       </scr>
     </obj>
     <back id="karniz1" x="15" y="8"/>
@@ -3758,7 +3758,7 @@ package roomdata {
     </obj>
     <obj id="area" code="T2mNZ5w9EXnxxVb3" x="46" y="17" h="18">
       <scr>
-        <s act="gotoland" val="mtn"/>
+        <s act="gotoLevel" val="mtn"/>
       </scr>
     </obj>
     <obj id="area" code="RXAq6P3igxNIIjym" x="5" y="7" h="8">
@@ -4507,7 +4507,7 @@ package roomdata {
     </obj>
     <obj id="area" code="ClOfD5b25z9zJkpv" x="46" y="11" h="5">
       <scr>
-        <s act="gotoland" val="comm"/>
+        <s act="gotoLevel" val="comm"/>
       </scr>
     </obj>
     <obj id="exit" code="srjr5UCA5gVjWHzw" x="18" y="5"/>
@@ -6251,7 +6251,7 @@ package roomdata {
     <obj id="exit" code="tTIQqVKLm6Q85xIl" x="36" y="15"/>
     <obj id="area" code="KRenzoOrqJGLGjBp" x="46" y="15" h="6">
       <scr>
-        <s act="gotoland" val="nio"/>
+        <s act="gotoLevel" val="nio"/>
       </scr>
     </obj>
     <obj id="area" code="dfghS7n19brB6zNm" x="29" y="23" h="23" trig="1" uid="trig_plantNio">

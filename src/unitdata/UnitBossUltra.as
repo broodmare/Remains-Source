@@ -11,6 +11,9 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualUltraSentinel;
+	import stubs.visShit;
+
 	public class UnitBossUltra extends Unit{
 		
 		public var tr:int=1;
@@ -29,16 +32,6 @@ package unitdata
 		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossultra';
-			//определить разновидность tr
-			/*if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {								//случайно по параметру ndif
-				tr=1;
-			}*/
 			tr=1;
 			
 			//взять параметры из xml
@@ -124,7 +117,7 @@ package unitdata
 			setCel(null,nx+200*storona, ny-50);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
@@ -214,7 +207,7 @@ package unitdata
 		public override function control()
 		{
 
-			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.nazv+celDY);
+			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (sost==2) {
@@ -347,7 +340,7 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='off') {
 				walk=0;

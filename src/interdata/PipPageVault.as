@@ -18,37 +18,49 @@ package interdata
 	
 	import components.Settings;
 	
-	public class PipPageVault extends PipPage{
+	public class PipPageVault extends PipPage
+	{
 		
 		var assArr:Array;
 
 		public function PipPageVault(npip:PipBuck, npp:String) 
 		{
-			isLC=isRC=true;
-			itemClass=visPipVaultItem;
-			super(npip,npp);
-			vis.but4.visible=vis.but5.visible=false;
-			var tf:TextFormat=new TextFormat();
+			isLC = true;
+			isRC = true;
+			itemClass = visPipVaultItem;
+			super(npip, npp);
+			vis.but4.visible = false;
+			vis.but5.visible = false;
+
+			var tf:TextFormat = new TextFormat();
 			tf.color = 0x00FF99; 
 			tf.size = 16; 
+
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
-			for (var i=0; i<maxrows; i++) {
-				var item:MovieClip=statArr[i]; 
-				var ns:NumericStepper=item.ns;
-				ns.addEventListener(MouseEvent.CLICK,nsClick);
-				ns.addEventListener(Event.CHANGE,nsCh);
-				ns.tabEnabled=false;
-				ns.focusRect=false;
+
+			for (var i = 0; i < maxrows; i++) 
+			{
+				var item:MovieClip = statArr[i]; 
+				var ns:NumericStepper = item.ns;
+
+				ns.addEventListener(MouseEvent.CLICK, nsClick);
+				ns.addEventListener(Event.CHANGE, nsCh);
+
+				ns.tabEnabled = false;
+				ns.focusRect  = false;
 				ns.setStyle("textFormat", tf);
 			}
+			trace('PipPageVault.as/PipPageVault() - Created PipPageVault page.');
 		}
 
 		//подготовка страниц
-		override function setSubPages()
+		override function setSubPages():void
 		{
+			trace('PipPageVault.as/setSubPages() - updating subPages.');
+
 			assArr=new Array();
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
-			statHead.nazv.text=Res.pipText('ii2');
+			statHead.objectName.text=Res.pipText('ii2');
 			statHead.kol.text=Res.pipText('ii7');
 			statHead.kol.width=170;
 			statHead.mass.text=Settings.hardInv?Res.pipText('ii8'):'';
@@ -65,7 +77,7 @@ package interdata
 						var tcat:String;
 						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
 						else tcat=Res.pipText('stuff');
-						var n={tip:node.@tip, id:s, nazv:((node.@tip=='e')?Res.txt('w',s):inv.items[s].nazv), kol:inv.items[s].kol, vault:inv.items[s].vault, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
+						var n={tip:node.@tip, id:s, objectName:((node.@tip=='e')?Res.txt('w',s):inv.items[s].objectName), kol:inv.items[s].kol, vault:inv.items[s].vault, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
 						if (node.@tip=='valuables') n.price=node.@price;
 						if (node.@tip=='food' && node.@ftip=='1') {
 							n.trol='drink';
@@ -79,7 +91,7 @@ package interdata
 						assArr[n.id]=n;
 					}
 				}
-				if (arr.length) arr.sortOn(['sort','sort2','nazv'],[0,Array.NUMERIC,0]);
+				if (arr.length) arr.sortOn(['sort','sort2','objectName'],[0,Array.NUMERIC,0]);
 			if (page2==2 || page2==3) {
 				vis.butOk.text.text=Res.pipText('tovault');
 				vis.butOk.visible=true;
@@ -87,21 +99,23 @@ package interdata
 				
 			setIco();
 			showBottext();
+
+			trace('PipPageVault.as/setSubPages() - Finished updating subPages.');
 		}
 		
-		function showBottext()
+		function showBottext():void
 		{
 			if (Settings.hardInv) vis.bottext.text=inv.retMass(page2);
 			else vis.bottext.text='';
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object)
+		override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.cat.visible=false;
-			item.nazv.alpha=1;
+			item.objectName.alpha=1;
 			try 
 			{
 				item.trol.gotoAndStop(obj.tip);
@@ -111,9 +125,9 @@ package interdata
 				item.trol.gotoAndStop(1);
 			}
 			item.id.text=obj.id;
-			item.nazv.text=obj.nazv;
-			item.nazv.alpha=1;
-			if (obj.kol==0) item.nazv.alpha=0.5;
+			item.objectName.text=obj.objectName;
+			item.objectName.alpha=1;
+			if (obj.kol==0) item.objectName.alpha=0.5;
 			item.cat.text=obj.tip;
 			item.mass.text=Settings.hardInv?obj.mass:'';
 			item.mass2.text=Settings.hardInv?Res.numb(obj.mass*obj.kol):'';
@@ -123,12 +137,12 @@ package interdata
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent)
+		override function statInfo(event:MouseEvent):void
 		{
-			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text);
+			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text);
 		}
 		
-		function chKol(mc, n:int=0)
+		function chKol(mc, n:int=0):void
 		{
 			var obj=assArr[mc.id.text]
 			var item:Item=inv.items[mc.id.text];
@@ -145,8 +159,8 @@ package interdata
 			showBottext();
 			pip.setRPanel();
 			if (mc) {
-				if (obj.kol==0) mc.nazv.alpha=0.5;
-				else mc.nazv.alpha=1;
+				if (obj.kol==0) mc.objectName.alpha=0.5;
+				else mc.objectName.alpha=1;
 				mc.kol.text=obj.kol;
 				mc.ns.value=obj.vault;
 				mc.mass2.text=Settings.hardInv?Res.numb(obj.mass*obj.kol):'';
@@ -154,17 +168,17 @@ package interdata
 		}
 		
 		
-		function nsClick(event:MouseEvent)
+		function nsClick(event:MouseEvent):void
 		{
 			event.stopPropagation();
 		}
 
-		function nsCh(event:Event)
+		function nsCh(event:Event):void
 		{
 			chKol(event.currentTarget.parent, event.currentTarget.value);
 		}
 		
-		override function itemClick(event:MouseEvent)
+		override function itemClick(event:MouseEvent):void
 		{
 			if (event.ctrlKey) chKol(event.currentTarget, 0);
 			else chKol(event.currentTarget, int.MAX_VALUE);
@@ -174,7 +188,7 @@ package interdata
 			event.stopPropagation();
 		}
 
-		override function itemRightClick(event:MouseEvent)
+		override function itemRightClick(event:MouseEvent):void
 		{
 			chKol(event.currentTarget, 0);
 			pip.snd(1);
@@ -197,7 +211,7 @@ package interdata
 			return false;
 		}
 
-		function sbrosHlam()
+		function sbrosHlam():void
 		{
 			for (var s in arr) {
 				if (arr[s].tip!='food' && arr[s].tip!='book' && arr[s].tip!='sphera' && arr[s].tip!='valuables' && !arr[s].keep) {
@@ -217,7 +231,7 @@ package interdata
 			pip.setRPanel();
 		}
 		
-		function transOk(event:MouseEvent)
+		function transOk(event:MouseEvent):void
 		{
 			if (page2==2 || page2==3) 
 			{

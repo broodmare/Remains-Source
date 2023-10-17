@@ -18,40 +18,41 @@ package weapondata
 		public var sled:Array;
 		public var explRadius:Number=0;	// Explosion radius, if 0, then there is no explosion
 		
-		var brake=2, skok:Number=0.5, tormoz:Number=0.7;
+		var brake:int = 2, skok:Number = 0.5, tormoz:Number = 0.7;
 
 		public function Trasser() 
 		{
 
 		}
 		
-		public function trass(gr:Graphics) 
+		public function trass(gr:Graphics):void
 		{
-			sled=new Array();
-			X=begx;
-			Y=begy;
-			dx=begdx;
-			dy=begdy;
-			vse=stay=false;
+			sled = new Array();
+			X = begx;
+			Y = begy;
+			dx = begdx;
+			dy = begdy;
+			vse = false;
+			stay = false;
 			gr.clear();
-			gr.lineStyle(5,0x00FF99,0.5);
-			gr.moveTo(X,Y);
+			gr.lineStyle(5, 0x00FF99, 0.5);
+			gr.moveTo(X, Y);
 			
-			for (var i=0; i<liv; i++) 
+			for (var i:int = 0; i<liv; i++) 
 			{
-				dy+=ddy;
-				dx+=ddx;
+				dy += ddy;
+				dx += ddx;
 				if (stay) 
 				{
-					if (dx>1) dx-=brake;
-					else if (dx<-1) dx+=brake;
-					else dx=0;
+					if (dx > 1) dx -= brake;
+					else if (dx < -1) dx += brake;
+					else dx = 0;
 				}
 				if (Math.abs(dx)<Settings.maxdelta && Math.abs(dy)<Settings.maxdelta)	run();
 				else 
 				{
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
-					for (var j=0; (j<div && !vse); j++) run(div);
+					var div:Number = Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
+					for (var j:int=0; (j<div && !vse); j++) run(div);
 				}
 				gr.lineTo(X,Y);
 				//trace(X,Y,dx,dy,ddx,ddy);
@@ -60,7 +61,7 @@ package weapondata
 			}
 		}
 		
-		public function run(div:int=1)
+		public function run(div:int=1):void
 		{
 			if (vse) return;
 			var abstile:* = room.getAbsTile(X,Y);

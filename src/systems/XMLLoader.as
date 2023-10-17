@@ -3,106 +3,73 @@ package systems
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
-	import flash.system.Capabilities;
 
-    public class XMLLoader
+    public class XMLLoader extends EventDispatcher 
     {
 
         // TextLoader properties
 
 		
-
-		private var url:String;
-		private var importedData:XML;
+		public var xmlData:XML;
+		private var fileURL:String;
 
 		private var loaderURL:URLRequest;
 		private var loader:URLLoader;
 
-		private var progress:Number;
-		private var returnProgress:Function;
-		private var returnData:Function;
-		
+		private var callerID:String;
+
+		public static const XML_LOADED:String = "xml_Loaded";
+
+
 		public function XMLLoader()
 		{
 
 		}
 
 
-		public function load(fileURL:String, dataReturnCallback:Function, progressUpdateCallback:Function = null):void
+		public function load(url:String, caller:String):void
 		{
-			trace('XMLLoader.as/load() - Received fileURL parameter: (' + fileURL + ')');
-			
-			url = fileURL;
-			returnProgress = progressUpdateCallback; //What function to call when there's loading progress.
-			returnData = dataReturnCallback;
 
-			loaderURL = new URLRequest(url);
+			callerID = caller;	//What function instantiated the loader.
+			fileURL = url;		//What file is being loaded.
+			
+			trace('XMLLoader.as/load() - Function: "' + callerID + '" is requesting to load file: "' + fileURL + '."');
+
+			loaderURL = new URLRequest(fileURL);
 			loader = new URLLoader();
 			
-			addListeners();
-			trace('XMLLoader.as/load() - Attempting to load ' + loaderURL.url);
+			loader.addEventListener(Event.COMPLETE, loaderFinished);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loaderFinished);
+
 			loader.load(loaderURL);
-
-		}
-
-		private function addListeners():void
-		{
-			loader.addEventListener(Event.COMPLETE, eventHandler);
-			loader.addEventListener(IOErrorEvent.IO_ERROR, eventHandler);
-			loader.addEventListener(ProgressEvent.PROGRESS, eventHandler);
-		}
-
-		private function cleanup():void	//Nullify everything to save data and hopefully make this object available for GC.
-		{
-			loader.removeEventListener(Event.COMPLETE, eventHandler);
-			loader.removeEventListener(IOErrorEvent.IO_ERROR, eventHandler);
-			loader.removeEventListener(ProgressEvent.PROGRESS, eventHandler);
-			loader = null;
-			loaderURL = null;
-    		url = null;
-			importedData = null;
-			returnProgress = null;
-			returnData = null;
+			
 		}
 
 
-		private function eventHandler(event:Event):void 
+		private function loaderFinished(event:Event):void
 		{
+			event.target.removeEventListener(Event.COMPLETE, loaderFinished);
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, loaderFinished);
+
+
 			switch (event.type) 
 			{
 				case Event.COMPLETE:
 
-					importedData = new XML(loader.data);
-					trace('XMLLoader.eventHandler/COMPLETE() - ' + loaderURL.url + 'Loaded, executing callback.');
-					returnData(importedData);
-					cleanup();
+					xmlData = new XML(loader.data);
+
+					trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" requested by "' + callerID + '" is done loading. Firing event to notify the caller.')
+					dispatchEvent(new Event(XMLLoader.XML_LOADED));
 					break;
 				
 				case IOErrorEvent.IO_ERROR:
 
-					trace('XMLLoader.eventHandler/IO_ERROR() - ' + loaderURL.url + 'Failed to load, IO Error.' + IOErrorEvent(event).text);
-					cleanup();
-					break;
-
-				case ProgressEvent.PROGRESS:
-				
-					var progressEvent:ProgressEvent = event as ProgressEvent;
-					if (returnProgress != null)
-					{
-
-						progress = progressEvent.bytesLoaded / progressEvent.bytesTotal;
-						returnProgress(progress);
-					}
-					break;
-
-				default:
-
-					trace("XMLLoader.eventHandler() - Unhandled event type: " + event.type + '. ' + loaderURL);
-					cleanup();
+					trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" requested by "' + callerID + '" failed to load! IO_ERROR.');
 					break;
 			}
 		}
+
 	}
 }

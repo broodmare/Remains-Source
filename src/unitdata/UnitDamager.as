@@ -8,6 +8,8 @@ package unitdata
 	import weapondata.WThrow;
 	import weapondata.Bullet;
 	
+	import stubs.vismtrap;
+
 	//механизмы, наносящие урон
 	
 	public class UnitDamager extends Unit{
@@ -241,7 +243,7 @@ package unitdata
 		}
 		
 		//команда
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='dam') activate();
 		}

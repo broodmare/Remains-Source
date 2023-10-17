@@ -5,6 +5,8 @@ package unitdata
 	import servdata.LootGen;
 	import servdata.BlitAnim;
 
+	import stubs.visualSentinel;
+	
 	public class UnitSentinel extends UnitAIRobot
 	{
 
@@ -49,7 +51,7 @@ package unitdata
 			newPart('metal',12);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			if (sost==1) {

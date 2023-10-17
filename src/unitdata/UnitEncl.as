@@ -8,6 +8,7 @@ package unitdata
 	import weapondata.Weapon;
 	import weapondata.WThrow;
 
+	import stubs.visencl;
 	
 	public class UnitEncl extends UnitRaider{
 		
@@ -43,7 +44,7 @@ package unitdata
 			currentWeapon.damage*=1.2;
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			if (disabled) return;
 			trigDis=!checkTrig();

@@ -8,52 +8,61 @@ package
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	
+	import flash.events.EventDispatcher;
 	import components.Settings;
 	import systems.XMLLoader;
 
-	public class Snd 
+	//Class overview
+
+
+
+
+
+	public class Snd extends EventDispatcher 
 	{
 
-		public static var soundDataArray:Array 	= new Array();
-		public static var globalVol 		= 0.4;
-		public static var stepVol 			= 0.5;
-		public static var musicVol 			= 0.2;
+		public static var soundDataArray:Array 	= new Array(); //An array that holds arrays of loaded '.swf' sound packs. Each array is named after the <res> tag of each '.swf' and contains all sound IDs and data.
+		public static var globalVol:Number 			= 0.4;
+		public static var stepVol:Number			= 0.5;
+		public static var musicVol:Number 			= 0.2;
 
 
 		public static var music:Sound;
-		public static var musics:Array		= new Array();
-		public static var sndNames:Array 	= ['mp5'];
-		public static var musicName:String	= '';
+		public static var musics:Array			= new Array();
+		public static var sndNames:Array 		= ['mp5'];
+		public static var musicName:String		= '';
 
 
-		public static var onSnd:Boolean		= true;
-		public static var onMusic:Boolean	= true;
-			
-		public static var resSnd:Loader;
-		public static var resSounds:*;
+		public static var soundEnabled:Boolean	= true;
+		public static var musicEnabled:Boolean	= true;
 		
 		public static var musicCh:SoundChannel;
 		public static var musicPrevCh:SoundChannel;
 		public static var actionCh:SoundChannel;
 		public static var currentMusicPrior:int = 0;
 		
-		public static var t_hit:int = 0;
-		public static var t_combat:int = 0;
-		public static var centrX:Number = 1000, centrY:Number = 500, widthX = 2000;
-		public static var t_music:int = 0;
-		public static var t_shum:int = 0;
-		static var inited:Boolean = false;
-		public static var off:Boolean = true;
+		public static var t_hit:int 		= 0;
+		public static var t_combat:int 		= 0;
+		public static var centrX:Number		= 1000;
+		public static var centrY:Number		= 500;
+		public static var widthX:Number		= 2000;
+		public static var t_music:int 		= 0;
+		public static var t_shum:int 		= 0;
+		public static var soundInitialized:Boolean = false;
+		public static var off:Boolean 		= true;
 		
-		public static var shumArr:Array;
+		public static var soundStage:Array 	= new Array();
 
 		//Holds all the XML data for sounds and music.
-		public static var musicList:XML;
-		public static var soundList:XML;
-		public static var soundLocation; 
-		public static var textLoader:XMLLoader;
-		public static var soundURL:URLRequest;
+		public static const soundLocation:String 	= Settings.soundXMLLocation; 		//Location of sounds XML in game directory.
+		public static const musicLocation:String	= Settings.musicXMLLocation;   	//Location of music XML in game directory.
+
+		public static var soundList:XML;	//XML list of all sounds. formatted as: <sound> <s> </s> </sound>
+		public static var musicList:XML;	//XML list of all music tracks.
+
+		public static var soundTextLoader:XMLLoader = new XMLLoader();
+		public static var musicTextLoader:XMLLoader = new XMLLoader();
+
 
 		function Snd() 
 		{
@@ -62,180 +71,142 @@ package
 		
 
 
-		public static function initSnd() 
+		public static function initSnd():void
 		{
-			trace('Snd.as/initSnd() - Sound initializing ...');
-			if (inited || !onSnd)  return;
-
-			soundLocation = Settings.soundXMLLocation;
-			soundList = new XML();
-
-			mainMenuMusicSetup();
+			trace('Snd.as/initSnd() - initSnd() Executing ...');
+			if (soundInitialized || !soundEnabled)  
+			{
+				trace('Snd.as/initSnd() - error: Sound already intitialized.');
+				return;
+			}
 			
-			soundURL = new URLRequest(soundLocation);
-			textLoader = new XMLLoader();
-			trace('Snd.as/initSnd() - Calling Textloader.as/load with ' + soundLocation);
-			textLoader.load(soundURL.url, soundParser);
+			trace('Snd.as/initSnd() - Calling Snd/mainMenuMusicSetup...');
+			//Main menu song loader was here.
 
-			shumArr = new Array();
-			inited = true;
+			trace('Snd.as/initSnd() - Calling XMLLoader.as/load with ' + soundLocation);
+			soundTextLoader.addEventListener(XMLLoader.XML_LOADED, soundParser);
+			soundTextLoader.load(soundLocation, "initSnd()"); // Load files located at the default sound location and when finished, pass them to soundParser().
 			
-
-			trace('Snd.as/initSnd() - Sound initializated.')
 		}
 
 
 
 
 
-
-
-
-		public static function mainMenuMusicSetup()
+		public static function soundParser(event:Event):void
 		{
-			try 
-			{
-				 trace("Snd.as/mainMenuMusicSetup() - Beginning main menu music setup...");
-				var musicURL:URLRequest;
-				var soundData:Sound;
-
-				//LOAD MAIN MENU MUSIC
-				var songURL = new URLRequest(Settings.musicPath + "mainmenu.mp3");
-				trace("Snd.as/mainMenuMusicSetup() - looking for music at... " + songURL.url);
-				var soundData = new Sound(songURL);
-		
-				
-				soundDataArray['mainmenu'] = soundData; //Add the main menu music to the soundDataArray.
-				if (musicVol > 0) playMusic('mainmenu'); //Play the music if music volume isn't 0.
-
-				trace('Snd.as/mainMenuMusicSetup() - Main menu music loaded sucessfully.');
-
-			}
-			catch (err)
-			{
-				trace('Snd.as/mainMenuMusicSetup() - Main menu music failed to load.');
-			}
-		}
-
-		public static function soundParser(xmlFile:XML)
-		{
-			trace('Snd.as/soundParser() - Beginning sound parsing with file (' + xmlFile + ')');
-			var soundXML:XML = xmlFile;
-			if (soundXML == null) trace('Snd.as/soundParser() - soundXML does not exist.');
+			trace('Snd.as/soundParser() - Sound XML received.');
 			
-			else
-			try 
+			event.target.removeEventListener(XMLLoader.XML_LOADED, soundParser);
+			soundList = soundTextLoader.xmlData; //XML list of all sound ids.
+			Settings.soundFilesFound = soundList.s.length();
+
+			var loadingCount:int = 0;
+			for each (var soundFile:XML in soundList.s) 
 			{
-				var fileCounter:int = 0;
-				for each (var i in soundXML.res) //For each resource .swf load it...
-				{
-					fileCounter++;
-					resSnd = new Loader();
-					var fileSound:String = Settings.soundPath + i.@id;
-					trace('Snd.as/soundParser() - Attempting to load resource id: ' + fileSound);
-					var urlReq:URLRequest = new URLRequest(fileSound);
-					resSnd.load(urlReq);
-					resSnd.contentLoaderInfo.addEventListener(Event.COMPLETE, eventHandler); // When loaded, do this
-					resSnd.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, eventHandler); // Error checker
+				var soundName:String = soundFile.@id;
 
-					trace('Snd.as/soundParser() - Parsed ' + fileCounter + 'files.');
 
-				}
+				var soundURL:URLRequest = new URLRequest(Settings.soundPath + soundName + ".mp3");
+
+				var soundData:Sound = new Sound(soundURL);
+
+				soundData.addEventListener(IOErrorEvent.IO_ERROR, soundEventHandler);
+				soundData.addEventListener(Event.COMPLETE, soundEventHandler);
+
+				soundDataArray[soundName] = soundData; //Place the sound data into the soundDataArray as the sound file's name.
+				loadingCount++;
 
 			}
-			catch (err)
-			{
-				trace('Snd.as/initSnd() - Loading sound resources failed.\n Reason:' + err.message);
-			}
+			trace('Snd.as/soundParser() - Sound files found: "'+ Settings.soundFilesFound + '." Sound files loading: "' + loadingCount + '."');
 
+			trace('Snd.as/soundParser() - Setting soundInitialized to true.');
+			soundInitialized = true;	//Set sound to as initialized.
 		}
 
 
-		
-		
-
-
-
-		
-
-		public static function eventHandler(event:Event):void 
+		public static function soundEventHandler(event:Event):void
 		{
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, soundEventHandler);
+			event.target.removeEventListener(Event.COMPLETE, soundEventHandler);
+
 			switch (event.type) 
 			{
+
 				case Event.COMPLETE:
+				//trace("Snd.as/soundParser() - Sound loaded: " + event.target.url);
+				Settings.soundFilesLoaded++;
+				break;
 
-					var soundURL:String = event.target.url;
-
-					soundURL = soundURL.substr(soundURL.lastIndexOf('/') + 1);
-
-					resSounds = event.target.content;
-					
-					var soundData:Sound;
-
-					trace('Snd.as/eventHandler. Loading Complete, attempting to do whatever the next thing is...' + resSounds);
-					var xml = soundList.res.(@id == soundURL);
-					if (xml.length)
-					trace('XML output\n' + xml);
-					{
-						for each (var j in xml.soundData) 
-						{
-							var id = j.@id;
-							if (j.soundData.length) 
-							{
-								soundDataArray[id] = new Array();
-								for each (var e in j.s) 
-								{
-									soundData = resSounds.getSnd(e.@id);
-									if (soundData != null) soundDataArray[id].push(soundData);
-									else trace('res sound err '+ id + '.' + e.@id);
-								}
-							} 
-							else 
-							{
-								soundData = resSounds.getSnd(id);
-								if (soundData != null) soundDataArray[id] = soundData;
-								else trace('res sound err '+id);
-							}
-						}
-					}
-
-					break;
-				
 				case IOErrorEvent.IO_ERROR:
-
-
-					trace('Snd.as/eventHandler() - IO Error, Failed to load. Error: ' + IOErrorEvent(event).text);
-					break;
-
-				default:
-
-					trace("Snd.as/eventHandler() - Unhandled event type: " + event.type + '. ');
-					break;
+				trace("Snd.as/soundParser() - Sound failed to load: " + event.target.url);
+				break;
 			}
 		}
 
-		public static function loadMusic() 
+
+		
+		public static function loadMusic():void
 		{
-			var soundURL:URLRequest;
-			var soundData:Sound;
+			
+			trace('Snd.as/loadMusic() - Calling XMLLoader.as/load with ' + musicLocation);
+			musicTextLoader.addEventListener(XMLLoader.XML_LOADED, loadMusicCont);
+			musicTextLoader.load(musicLocation, "loadMusic()"); 
+		}
 
+		public static function loadMusicCont(event:Event):void //TODO, Remove into own soundloader class.
+		{
+			trace('Snd.as/loadMusic() - Music XML received.');
 
-			for each (var j in musicList.music.soundData) 
+			event.target.removeEventListener(XMLLoader.XML_LOADED, loadMusicCont);
+
+    		musicList = musicTextLoader.xmlData;
+			Settings.musicTracksFound = musicList.s.length();
+
+			var loadingCount:int = 0;
+			for each (var track:XML in musicList.s) 
 			{
-				var id:String = j.@id;
-				try 
-				{
-					soundURL = new URLRequest(Settings.musicPath+id+".mp3");
-					soundData = new Sound(soundURL); 
-					soundDataArray[id] = soundData;
-					Settings.musicKol++;
-				} 
-				catch (err) 
-				{
-					trace('Snd.as/loadMusic() - Music resources loaded. Songs loaded: ', musics.length);
-				}
+				var trackName:XML = track.@id;
+
+
+				var soundURL:URLRequest = new URLRequest(Settings.musicPath + trackName + ".mp3");
+				var soundData:Sound = new Sound(soundURL);
+
+				soundData.addEventListener(IOErrorEvent.IO_ERROR, musicEventHandler);
+				soundData.addEventListener(Event.COMPLETE, musicEventHandler);
+
+				soundDataArray[trackName] = soundData;
+				loadingCount++;
+
+			}
+			trace('Snd.as/loadMusic() - Music tracks found: "'+ Settings.musicTracksFound + '." Music files loading: "' + loadingCount + '."');
+ 
+ 			trace('Snd.as/loadMusic() - Starting music if volume > 0.');
+			if (musicVol > 0) playMusic('mainmenu'); //If music volume isn't set at 0, play.
+		}
+
+		public static function musicEventHandler(event:Event):void
+		{
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, musicEventHandler);
+			event.target.removeEventListener(Event.COMPLETE, musicEventHandler);
+
+			switch (event.type) 
+			{
+
+				case Event.COMPLETE:
+				Settings.musicTracksLoaded++;
+				break;
+
+				case IOErrorEvent.IO_ERROR:
+				trace("Snd.as/soundParser() - Sound failed to load: " + event.target.url);
+				break;
 			}
 		}
+
+
+
+
+
 
 		public static function save():*
 		{
@@ -245,12 +216,18 @@ package
 			obj.musicVol 	= musicVol;
 			return obj;
 		}
-		public static function load(obj) 
+
+		public static function load(obj:Object):void
 		{
+			trace('Snd.as/load() - applying settings from configObj...');
 			if (obj.globalVol 	!= null && !isNaN(obj.globalVol)) 	globalVol = obj.globalVol;
 			if (obj.stepVol 	!= null && !isNaN(obj.stepVol)) 	stepVol   = obj.stepVol;
 			if (obj.musicVol 	!= null && !isNaN(obj.musicVol)) 	musicVol  = obj.musicVol;
-			if (musicCh) updateMusicVol();
+			if (musicCh) 
+			{
+				trace('Snd.as/load() - calling Snd/updateMusicVol...');
+				updateMusicVol();
+			}
 		}
 		
 		public static function pan(x:Number):Number 
@@ -261,7 +238,7 @@ package
 
 
 
-		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150) 
+		public static function combatMusic(sndMusic:String, sndMusicPrior:int=0, n:int=150):void
 		{
 			t_combat = n;
 			if (sndMusicPrior > currentMusicPrior) 
@@ -272,10 +249,11 @@ package
 		}
 		
 		
-		public static function playMusic(sndMusic:String=null, rep:int = 10000) 
+		public static function playMusic(sndMusic:String=null, rep:int = 10000):void
 		{
+			trace('Snd.as/playMusic() - Playing song: ' + sndMusic + '.');
 			//trace('musvol',musicVol);
-			if (!inited) return;
+			if (!soundInitialized) return;
 			if (sndMusic != null && musicCh && sndMusic == musicName) return;
 			if (sndMusic != null) musicName = sndMusic;
 			var trans:SoundTransform = new SoundTransform(musicVol, 0);
@@ -287,17 +265,18 @@ package
 				t_music = 100;
 			}
 			currentMusicPrior = 0;
-			if (onMusic && soundDataArray[musicName] && soundDataArray[musicName].bytesTotal && soundDataArray[musicName].bytesLoaded == soundDataArray[musicName].bytesTotal) musicCh=soundDataArray[musicName].play(0,rep,trans);
+			if (musicEnabled && soundDataArray[musicName] && soundDataArray[musicName].bytesTotal && soundDataArray[musicName].bytesLoaded == soundDataArray[musicName].bytesTotal) musicCh=soundDataArray[musicName].play(0,rep,trans);
 		}
 
-		public static function stopMusic() 
+		public static function stopMusic():void
 		{
-			if (!inited || !musicCh) return;
+			if (!soundInitialized || !musicCh) return;
 			musicCh.stop();
 		}
 
-		public static function updateMusicVol()
+		public static function updateMusicVol():void
 		{
+			trace('Snd.as/updateMusicVol() - Updating music volume.');
 			if (musicCh) 
 			{
 				var trans:SoundTransform = new SoundTransform(musicVol, 0);
@@ -313,8 +292,9 @@ package
 		public static function ps(txt:String, nx:Number = -1000, ny:Number = -1000, msec:Number = 0,vol:Number = 1):SoundChannel 
 		{
 			//trace(txt);
-			if (!inited || !onSnd || off) return null;
-			if (soundDataArray[txt]) {
+			if (!soundInitialized || !soundEnabled || off) return null;
+			if (soundDataArray[txt]) 
+			{
 				var s:Sound;
 				if (soundDataArray[txt] is Array) s = soundDataArray[txt][Math.floor(Math.random() * soundDataArray[txt].length)];
 				else s = soundDataArray[txt] as Sound;
@@ -329,13 +309,13 @@ package
 			return null;
 		}
 		
-		public static function pshum(txt:String,vol:Number = 1) 
+		public static function pshum(txt:String,vol:Number = 1):void
 		{
-			if (!inited || !onSnd || off) return null;
+			if (!soundInitialized || !soundEnabled || off) return;
 			var shum:Object;
-			if (shumArr[txt]) 
+			if (soundStage[txt]) 
 			{
-				shum = shumArr[txt];
+				shum = soundStage[txt];
 				if (shum.maxVol < vol) shum.maxVol = vol;
 			}
 			else if (soundDataArray[txt]) 
@@ -345,17 +325,18 @@ package
 				shum.curVol = vol;
 				shum.maxVol = vol;
 				shum.pl = false;
-				shumArr[txt] = shum;
+				soundStage[txt] = shum;
 			}
 		}
 		
-		public static function resetShum() 
+		public static function resetShum():void
 		{
 
 		}
 		
-		public static function step() 
+		public static function step():void
 		{
+			trace('Snd.as/step() - sound stepping...');
 			if (t_hit > 0) t_hit--;
 			if (t_music > 0 && musicPrevCh) 
 			{
@@ -382,40 +363,40 @@ package
 				}
 				if (World.world.pip == null || !World.world.pip.active && !World.world.sats.active) t_combat--;
 			}
-				t_shum--;
-				if (t_shum <= 0) 
+			t_shum--;
+			if (t_shum <= 0) 
+			{
+				t_shum = 5;
+				var trans:SoundTransform;
+				for each (var obj in soundStage) 
 				{
-					t_shum = 5;
-					for each (var obj in shumArr) 
+					if (obj.curVol != obj.maxVol) 
 					{
-						if (obj.curVol != obj.maxVol) 
+						if (!obj.pl && obj.maxVol > 0) 
 						{
-							if (!obj.pl && obj.maxVol > 0) 
-							{
-								var s:Sound = soundDataArray[obj.txt] as Sound;
-								var trans:SoundTransform = new SoundTransform(obj.maxVol * globalVol, 0); 
-								obj.ch = s.play(0, 10000, trans);
-								obj.pl = true;
-								//trace(obj.txt,'play')
-							} 
-							else if (obj.pl && obj.maxVol <= 0 && obj.ch) 
-							{
-								obj.ch.stop();
-								obj.pl = false;
-								//trace(obj.txt,'stop')
-							} 
-							else if (obj.pl && obj.maxVol > 0 && obj.ch) 
-							{
-								var trans:SoundTransform = new SoundTransform(obj.maxVol * globalVol, 0);
-								obj.ch.soundTransform = trans;
-								obj.curVol=obj.maxVol;
-							}
+							var s:Sound = soundDataArray[obj.txt] as Sound;
+							trans = new SoundTransform(obj.maxVol * globalVol, 0); 
+							obj.ch = s.play(0, 10000, trans);
+							obj.pl = true;
+							//trace(obj.txt,'play')
+						} 
+						else if (obj.pl && obj.maxVol <= 0 && obj.ch) 
+						{
+							obj.ch.stop();
+							obj.pl = false;
+							//trace(obj.txt,'stop')
+						} 
+						else if (obj.pl && obj.maxVol > 0 && obj.ch) 
+						{
+							trans = new SoundTransform(obj.maxVol * globalVol, 0);
+							obj.ch.soundTransform = trans;
+							obj.curVol=obj.maxVol;
 						}
-						obj.maxVol -= 0.2;
-						if (obj.maxVol < 0) obj.maxVol = 0;
 					}
+					obj.maxVol -= 0.2;
+					if (obj.maxVol < 0) obj.maxVol = 0;
 				}
+			}
 		}
-		
 	}
 }

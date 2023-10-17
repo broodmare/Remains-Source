@@ -10,6 +10,9 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualMegaDron;
+	import stubs.visShit;
+
 	public class UnitBossDron extends Unit{
 		
 		public var controlOn:Boolean=true;
@@ -95,7 +98,7 @@ package unitdata
 			newPart('metal',22);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (sost==1) {
 				if (dopWeapon) dopWeapon.setNull();
@@ -240,7 +243,7 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='off') {
 				walk=0;

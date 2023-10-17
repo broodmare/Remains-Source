@@ -20,7 +20,8 @@ package
 		public var layer:int = 0;
 		
 		//Movement
-		public var dx:Number=0, dy:Number=0;
+		public var dx:Number = 0;
+		public var dy:Number = 0;
 		public var vis:MovieClip;
 		
 		public function Pt() 
@@ -28,7 +29,7 @@ package
 			// constructor code
 		}
 
-		public function addVisual()
+		public function addVisual():void
 		{
 			if (vis && room && room.roomActive) 
 			{
@@ -36,12 +37,12 @@ package
 			}
 		}
 		
-		public function remVisual()
+		public function remVisual():void
 		{
 			if (vis && vis.parent) vis.parent.removeChild(vis);
 		}
 
-		public function setNull(f:Boolean=false)
+		public function setNull(f:Boolean = false):void
 		{
 
 		}
@@ -52,7 +53,7 @@ package
 			return null;
 		}
 		
-		public function step()
+		public function step():void
 		{
 
 		}

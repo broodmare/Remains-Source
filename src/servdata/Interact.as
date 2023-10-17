@@ -16,7 +16,7 @@ package servdata
 		
 		//public var id:String;
 		
-		var inited:Boolean=false;
+		var inited:Boolean = false;
 		public var owner:Obj;
 		public var room:Room;
 		public var X:Number, Y:Number;
@@ -33,52 +33,55 @@ package servdata
 		public var knop:int=0;			// button
 		public var expl:int=0;			// bomb
 		
-		public var lock:int=0;			// locked (lock difficulty)
-		public var lockTip:int=1;		// lock type 1 - normal (lockpick), 2 - electronic (hacker), 3 - booby-trapped, 4 - disable (repair), 5 - fix (repair), 0 - cannot be lockpicked
-		public var lockLevel:int=0;		// lock level (skill level requirements)
-		public var lockAtt:int=-100;	// attempts
-		public var lockHP:Number=10;	// lock's HP
-		public var noRuna:Boolean=false;// cannot use rune or lockpick
-		public var low:Number=0;		// probability of halving lock difficulty
-		public var mine:int=0;			// booby-trapped
-		public var mineTip:int=3;		// 3 - bomb, 6 - alarm
-		public var damage:Number=0;		// explosion damage
-		public var destroy:Number=0;	// destruction from explosion
-		public var explRadius:Number=260;	// explosion radius
-		public var damdis:Number=50;		// shock damage
-		public var at_once:int=0;		// 1 - apply the main action immediately after lockpicking or disarming, 2 - make it inactive after that
+		public var lock:int = 0;			// locked (lock difficulty)
+		public var lockTip:int = 1;		// lock type 1 - normal (lockpick), 2 - electronic (hacker), 3 - booby-trapped, 4 - disable (repair), 5 - fix (repair), 0 - cannot be lockpicked
+		public var lockLevel:int = 0;		// lock level (skill level requirements)
+		public var lockAtt:int = -100;	// attempts
+		public var lockHP:Number = 10;	// lock's HP
+		public var noRuna:Boolean = false;// cannot use rune or lockpick
+		public var low:Number = 0;		// probability of halving lock difficulty
+		public var mine:int = 0;			// booby-trapped
+		public var mineTip:int = 3;		// 3 - bomb, 6 - alarm
+		public var damage:Number = 0;		// explosion damage
+		public var destroy:Number = 0;	// destruction from explosion
+		public var explRadius:Number = 260;	// explosion radius
+		public var damdis:Number = 50;		// shock damage
+		public var at_once:int = 0;		// 1 - apply the main action immediately after lockpicking or disarming, 2 - make it inactive after that
 		public var lockKey:String;		// lock key
 		public var cons:String;			// decrease the number of keys after successful use: 0 - do not decrease, 1 - use the key immediately, 2 - use only if the lock cannot be opened by other means
-		public var allDif:Number=-1;		// overall lock and bomb difficulty
-		public var xp:int=0;			// experience for unlocking
+		public var allDif:Number = -1;		// overall lock and bomb difficulty
+		public var xp:int = 0;			// experience for unlocking
 		
 		public var allact:String;		// specified action for the entire room
 		public var allid:String;		// ID for the specified action
 		public var needSkill:String;
-		public var needSkillLvl:int=0;
-		public var is_hack:Boolean=false;	// controlled by access terminal
-		public var open:Boolean=false;	// opened
-		public var prob:String=null;		// transition to a trial
-		public var noBase:Boolean=false;	// base rules do not apply here
-		public var prize:Boolean=false;	// trial prize container
+		public var needSkillLvl:int = 0;
+		public var is_hack:Boolean = false;	// controlled by access terminal
+		public var open:Boolean = false;	// opened
+		public var prob:String = null;		// transition to a trial
+		public var noBase:Boolean = false;	// base rules do not apply here
+		public var prize:Boolean = false;	// trial prize container
 		
-		public var is_act:Boolean=false, is_ready:Boolean=true
-		public var t_action:int=0;
-		public var unlock:int=0;		// lockpicking ability
-		public var master:int=0;		// lockpicking mastery
+		public var is_act:Boolean = false;
+		public var is_ready:Boolean = true;
+		public var t_action:int = 0;
+		public var unlock:int = 0;		// lockpicking ability
+		public var master:int = 0;		// lockpicking mastery
 		
-		public var stateText='';
-		public var actionText='';
-		public var sndAct='';
+		public var stateText = '';
+		public var actionText = '';
+		public var sndAct = '';
 		
-		public var successUnlock:Function, fiascoUnlock:Function;
-		public var successRemine:Function, fiascoRemine:Function;
+		public var successUnlock:Function;
+		public var fiascoUnlock:Function;
+		public var successRemine:Function;
+		public var fiascoRemine:Function;
 		public var actFun:Function;
 		
 		public var area:Area;	// Attached area
 		
-		public var sign:int=0;	// Pointer
-		var t_sign:int=0;
+		public var sign:int = 0;	// Pointer
+		var t_sign:int = 0;
 		
 		public var isMove:Boolean=false;		// There is movement
 		var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	// Coordinates of the starting and ending points
@@ -97,21 +100,21 @@ package servdata
 		public var scrAct:Script, scrOpen:Script, scrClose:Script, scrTouch:Script;
 		
 		// Changes to states that are saved
-		var saveMine:int=0;		// 101 - mine disarmed or exploded
-		var saveLock:int=0;		// 101 - unlocked, 102 - jammed
-		public var saveLoot:int=0;		// 1 - loot obtained, 2 - loot obtained, critical loot exists
-		var saveOpen:int=0;		// 1 - opened
-		var saveExpl:int=0;
+		var saveMine:int = 0;		// 101 - mine disarmed or exploded
+		var saveLock:int = 0;		// 101 - unlocked, 102 - jammed
+		public var saveLoot:int = 0;		// 1 - loot obtained, 2 - loot obtained, critical loot exists
+		var saveOpen:int = 0;		// 1 - opened
+		var saveExpl:int = 0;
 		//var saveTerm:int=0;		// 1 - activated
 		
-		public const maxLockLvl=24;
-		public const maxMechLvl=7;
+		public const maxLockLvl = 24;
+		public const maxMechLvl = 7;
 		
 		public static var chanceUnlock:Array=[0.9, 0.75, 0.5, 0.3, 0.15, 0.05, 0.01];
 		public static var chanceUnlock2:Array=[0.95, 0.8, 0.55, 0.35, 0.2, 0.08, 0.03];
 		
 		// node - template, xml - individual parameter taken from the map
-		public function Interact(own:Obj, node:XML=null, nxml:XML=null, loadObj:Object=null) 
+		public function Interact(own:Obj, node:XML = null, nxml:XML = null, loadObj:Object = null) 
 		{
 			owner=own;
 			room=owner.room;
@@ -334,7 +337,7 @@ package servdata
 			inited=true;
 		}
 		
-		public function save(obj:Object) 
+		public function save(obj:Object):void
 		{
 			obj.lock=saveLock;
 			obj.lockLevel=lockLevel;
@@ -346,7 +349,7 @@ package servdata
 			obj.sign=sign;
 		}
 		
-		public function step() 
+		public function step():void
 		{
 			if (is_act) act();
 			else is_ready=true;
@@ -379,7 +382,7 @@ package servdata
 			}
 		}
 		
-		public function update() 
+		public function update():void
 		{
 			if (userAction && userAction!='') 
 			{
@@ -461,7 +464,7 @@ package servdata
 		}
 		
 		// Set the state
-		public function setAct(a:String, n:int=0) 
+		public function setAct(a:String, n:int=0):void
 		{
 			if (a=='mine') 
 			{
@@ -540,9 +543,9 @@ package servdata
 		}
 		
 		// Perform an action
-		public function act() 
+		public function act():void
 		{
-			var verZhopa=0, verFail=0;
+			var verZhopa:int = 0, verFail:int = 0;
 			if (action==0) return;
 			if (scrTouch) 
 			{
@@ -711,10 +714,10 @@ package servdata
 						} 
 						else if (lockTip==4) 
 						{		//отключение с помощью навыка ремонт
-							var lockDam=(lockDam1+Math.random()*lockDam2);
-							lockHP-=lockDam;
+							var lockDam:Number = (lockDam1+Math.random()*lockDam2);
+							lockHP -= lockDam;
 							//trace(lockDam,lockHP);
-							if (lockHP<=0) 
+							if (lockHP <= 0) 
 							{		//Удар током
 								//setAct('lock',102);
 								discharge();
@@ -730,12 +733,12 @@ package servdata
 						} 
 						else if (lockTip==5) //ремонт механизма
 						{		
-							lockDam=(lockDam1+Math.random()*lockDam2);
+							lockDam=(lockDam1 + Math.random() * lockDam2);
 							lockHP-=lockDam;
 							//trace(lockDam,lockHP);
-							if (lockHP<=0) //Замок заклинило
+							if (lockHP <= 0) //Замок заклинило
 							{		
-								setAct('lock',102);
+								setAct('lock', 102);
 								World.world.gui.infoText('unFixZhopa');
 								replic('zhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
@@ -805,7 +808,7 @@ package servdata
 		}
 		
 		// Perform the main action
-		public function actOsn() 
+		public function actOsn():void
 		{
 			if (cons) 
 			{
@@ -851,7 +854,7 @@ package servdata
 		}
 		
 		// Break the container
-		public function dieCont() 
+		public function dieCont():void
 		{
 			lootBroken=true;
 			if (cont!=null) 
@@ -870,7 +873,7 @@ package servdata
 			update();
 		}
 		
-		public function load(obj:Object) 
+		public function load(obj:Object):void
 		{
 			if (obj==null) return;
 			if (obj.lock!=null) 
@@ -911,7 +914,7 @@ package servdata
 			}
 		}
 
-		public function setDoor() 
+		public function setDoor():void
 		{
 			if (inited && !open && (owner as Box).attDoor()) 
 			{
@@ -923,7 +926,7 @@ package servdata
 		}
 		
 		// Unsuccessful attempt at defusing - explosion
-		public function explosion() 
+		public function explosion():void
 		{
 			if (saveExpl) return;
 			var un:Unit=new Unit();
@@ -938,7 +941,7 @@ package servdata
 		}
 		
 		// Unsuccessful attempt at hacking a force field - electric shock
-		public function discharge() 
+		public function discharge():void
 		{
 			World.world.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
 			//damage(,Unit.D_SPARK);
@@ -949,7 +952,7 @@ package servdata
 		}
 		
 		// Unsuccessful attempt to disable the alarm - alarm
-		public function alarm() 
+		public function alarm():void
 		{
 			if (saveExpl) return;
 			t_budilo=240;
@@ -959,7 +962,7 @@ package servdata
 		}
 		
 		// Unsuccessful attempt to disable the alarm button
-		public function alarm2() 
+		public function alarm2():void
 		{
 			if (allact!='alarm') return;
 			t_budilo=240;
@@ -972,13 +975,13 @@ package servdata
 		}
 		
 		// Unsuccessful attempt to hack the robot cell - alarm
-		public function robocellFail() 
+		public function robocellFail():void
 		{
 			room.robocellActivate();
 		}
 		
 		// Create a robot
-		public function genRobot() 
+		public function genRobot():void
 		{
 			if (allact!='robocell') return;
 			room.createUnit('robot',X,Y,true,null,null,30);
@@ -992,14 +995,14 @@ package servdata
 			if (mineTip==6 && mine>0) return 1;
 			if (noRuna || lock==0) return 0;
 			if (gg.invent==null || mine>0) return 0;
-			var pick=gg.pers.getLockTip(lockTip);
-			var master=gg.pers.getLockMaster(lockTip)
+			var pick = gg.pers.getLockTip(lockTip);
+			var master = gg.pers.getLockMaster(lockTip)
 			if (lockTip==1 && gg.invent.items['runa'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			if (lockTip==2 && gg.invent.items['reboot'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			return 0;
 		}
 
-		public function useRuna(gg:UnitPlayer) 
+		public function useRuna(gg:UnitPlayer):void
 		{
 			if (mineTip==6 && mine>0) 
 			{
@@ -1029,14 +1032,14 @@ package servdata
 			}
 		}
 		
-		public function off() 
+		public function off():void
 		{
 				stateText='';
 				active=false;
 				lock=0;
 		}
 		
-		public function allAct() 
+		public function allAct():void
 		{
 			if (prob!=null) 
 			{
@@ -1132,7 +1135,7 @@ package servdata
 		}
 		
 		// Start of prolonged action on the object
-		public function beginAct()
+		public function beginAct():void
 		{
 			if (allact=='comein') 
 			{
@@ -1140,18 +1143,18 @@ package servdata
 			}
 		}
 		
-		public function shine() 
+		public function shine():void
 		{
 			Emitter.emit('unlock',room,owner.X,owner.Y-owner.scY/2,{kol:10, rx:owner.scX, ry:owner.scY, dframe:6});
 		}
 		
-		public function signal(n:String) 
+		public function signal(n:String):void
 		{
 			Emitter.emit(n,room,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
 		}
 		
 		
-		public function command(com:String, val:String=null) 
+		public function command(com:String, val:String=null):void
 		{
 			if (com=='hack' && is_hack) 
 			{
@@ -1245,7 +1248,7 @@ package servdata
 			}
 		}
 		
-		public function move() 
+		public function move():void
 		{
 			if (isMove && moveSt>0) 
 			{
@@ -1293,7 +1296,7 @@ package servdata
 			}
 		}
 		
-		public function moveTo(n:int) 
+		public function moveTo(n:int):void
 		{
 			moveSt=n;
 			if (n==1) 
@@ -1331,7 +1334,7 @@ package servdata
 			}
 		}
 		
-		public function sound(s:String=null) 
+		public function sound(s:String=null):void
 		{
 			if (s=='move') 
 			{
@@ -1346,18 +1349,18 @@ package servdata
 			
 		}
 		
-		function replic(s:String) 
+		function replic(s:String):void
 		{
-			if (Math.random()<0.25) World.world.gg.replic(s);
+			if (Math.random() < 0.25) World.world.gg.replic(s);
 		}	
 		
 		// Confirm the receipt of a critical item
-		public function receipt() 
+		public function receipt():void
 		{
-			saveLoot=1;
+			saveLoot = 1;
 		}
 		
-		public function loot(impOnly:Boolean=false) 
+		public function loot(impOnly:Boolean=false):void
 		{
 			if (room==null || cont=='empty') return;
 			X=owner.X, Y=owner.Y-owner.scY/2;

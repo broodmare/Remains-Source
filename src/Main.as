@@ -14,6 +14,7 @@ package
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	
+	import stubs.zastavka;
 	
 	public class Main extends flash.display.MovieClip
 	{
@@ -22,6 +23,8 @@ package
 
 		public function Main() 
 		{
+			trace('Main.as/Main() - Entering Main()...');
+
 			stage.scaleMode = "noScale";
 			stage.align 	= StageAlign.TOP_LEFT;
 			stage.color 	= 0;
@@ -39,10 +42,14 @@ package
 		
 		public function onEnterFrameLoader(event:Event):void
 		{
-			var bLoaded:Number = loaderInfo.bytesLoaded;
-			var bTotal:Number = loaderInfo.bytesTotal;
-			zastavka.alpha = 1;
+			var bLoaded:uint = loaderInfo.bytesLoaded;
+			var bTotal:uint = loaderInfo.bytesTotal;
+			if (zastavka.alpha < 1) 
+			{
+				zastavka.alpha += 0.05;
+			}
 			zastavka.progres.text = 'Loading '+Math.round(bLoaded / bTotal * 100)+'%';
+
 
 			if (bLoaded >= bTotal)
 			{
@@ -50,7 +57,7 @@ package
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 				nextFrame();
 
-				trace('Main.as/Main() - Creating new mainMenu...');
+				trace('Main.as/onEnterFrameLoader() - Creating new mainMenu...');
 				mainMenu = new MainMenu(this);
 				
 			}

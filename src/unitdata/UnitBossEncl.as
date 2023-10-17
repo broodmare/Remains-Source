@@ -66,7 +66,7 @@ package unitdata
 			aiNapr=storona;
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			super.die(3);
 			coord['liv'+tr]=false;
@@ -141,7 +141,7 @@ package unitdata
 			kol_emit--;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			//вернуть в исходную точку
@@ -240,7 +240,7 @@ package unitdata
 			}
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='off') {
 				walk=0;

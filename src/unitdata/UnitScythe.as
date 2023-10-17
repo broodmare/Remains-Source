@@ -3,6 +3,8 @@ package unitdata
 	
 	import locdata.Room;
 	
+	import stubs.visualScythe;
+	
 	public class UnitScythe extends Unit
 	{
 		
@@ -38,7 +40,7 @@ package unitdata
 
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			getNapr();

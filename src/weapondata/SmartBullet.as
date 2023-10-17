@@ -6,10 +6,10 @@ package weapondata
 	public class SmartBullet  extends Bullet
 	{
 
-		public var manevr:Number=3;
-		public var maxVel=150;
+		public var manevr:Number = 3;
+		public var maxVel:Number = 150;
 		public var cel:Unit;
-		static var p:Object={x:0, y:0};
+		static var p:Object = {x:0, y:0};
 
 		public function SmartBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true) 
 		{
@@ -17,13 +17,13 @@ package weapondata
 			vRot=true;
 		}
 		
-		public function setCel(ncel:Unit, man:Number=3) 
+		public function setCel(ncel:Unit, man:Number=3):void
 		{
 			cel=ncel;
 			manevr=man;
 		}
 		
-		public override function step() 
+		public override function step():void
 		{
 			if (!babah && cel && manevr>0) 
 			{

@@ -18,7 +18,7 @@ package locdata
 		public var roomId:String;
 		public var tip:int=0;
 		
-		public var nazv:String;
+		public var objectName:String;
 		public var info:String='';
 		public var help:String='';
 		
@@ -54,8 +54,8 @@ package locdata
 			xml=nxml;
 			room=newRoom;
 			id=xml.@id;
-			nazv=Res.txt('m',id);
-			info='<b>'+nazv+'</b><br><br>'+Res.txt('m',id,1)+'<br>';
+			objectName=Res.txt('m',id);
+			info='<b>'+objectName+'</b><br><br>'+Res.txt('m',id,1)+'<br>';
 			if (Res.txt('m',id,3)!='') help="<span class = 'r3'>"+Res.txt('m',id,3)+"</span>";
 			if (!room.levitOn) info+='<br>'+Res.guiText('restr_levit');
 			if (!room.portOn) info+='<br>'+Res.guiText('restr_port');
@@ -117,7 +117,7 @@ package locdata
 				{
 					for each (var un:Unit in room.units) 
 					{
-						if ((node.@uid.length && un.uid==node.@uid || node.@qid.length && un.questId==node.@qid) && un.sost<3) return false;
+						if ((node.@uid.length() && un.uid==node.@uid || node.@qid.length() && un.questId==node.@qid) && un.sost<3) return false;
 					}
 				} 
 				else if (node.@tip=='wave') //проверка волны
@@ -135,7 +135,7 @@ package locdata
 			active=false;
 			if (World.world.game.triggers['prob_'+id]==null) World.world.game.triggers['prob_'+id]=1;
 			else World.world.game.triggers['prob_'+id]++;
-			World.world.gui.infoText('closeProb',nazv);
+			World.world.gui.infoText('closeProb',objectName);
 			Snd.ps('quest_ok');
 			doorsOnOff(1);
 			//окрыть коробки с призами
@@ -158,7 +158,7 @@ package locdata
 		//войти в комнату
 		public function over() 
 		{
-			World.world.gui.messText('', nazv, World.world.gg.Y<300);
+			World.world.gui.messText('', objectName, World.world.gg.Y<300);
 			if (!closed) defaultProb();
 			if (inScript) 
 			{
@@ -278,7 +278,7 @@ package locdata
 			}
 		}
 		
-		public function step() 
+		public function step():void
 		{
 			if (onWave) 
 			{

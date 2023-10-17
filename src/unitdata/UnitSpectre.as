@@ -7,6 +7,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualSpectre;
+	
 	public class UnitSpectre extends Unit
 	{
 		
@@ -57,7 +59,7 @@ package unitdata
 			
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='show') {
 				vis.visible=true;

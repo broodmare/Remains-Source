@@ -14,6 +14,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visShit3;
+
 	public class UnitBossAlicorn extends UnitPon{
 		
 		public var wPos:Array;
@@ -135,7 +137,7 @@ package unitdata
 			setCel(null,nx+200*storona, ny-50);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (!isNoResBoss()) isShit=true;
 			super.setNull(f);
@@ -450,7 +452,7 @@ package unitdata
 			
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			superInvis=false;
 			dropTeleObj();
@@ -473,7 +475,7 @@ package unitdata
 			} else super.die();
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='off') {
 				walk=0;

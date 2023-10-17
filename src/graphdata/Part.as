@@ -28,15 +28,15 @@ package graphdata
 
 
 		public var blitData:BitmapData;
-		var blitX:int = 120;
-		var blitY:int = 120;
-		var blitRect:Rectangle;
-		var blitPoint:Point;
-		var visData:BitmapData;
-		var visBmp:Bitmap;
-		var blitFrame:Number = 0;
-		var blitDelta:Number = 1;
-		var blitMFrame:int = -1;
+		public var blitX:int = 120;
+		public var blitY:int = 120;
+		public var blitRect:Rectangle;
+		public var blitPoint:Point;
+		public var visData:BitmapData;
+		public var visBmp:Bitmap;
+		public var blitFrame:Number = 0;
+		public var blitDelta:Number = 1;
+		public var blitMFrame:int = -1;
 		
 		public var water:int = 0;
 		public var maxkol:int = 0;
@@ -46,7 +46,7 @@ package graphdata
 			
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (visData) 
 			{
@@ -62,7 +62,7 @@ package graphdata
 			
 		}
 		
-		public function initBlit(blitId:String)//Create a bitmap
+		public function initBlit(blitId:String):void //Create a bitmap
 		{
 			blitData = World.world.grafon.getSpriteList(blitId, 1);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
@@ -71,8 +71,8 @@ package graphdata
 			visData = new BitmapData(blitX, blitY, true, 0);
 			visBmp = new Bitmap(visData);
 			vis.addChild(visBmp);
-			visBmp.x = -blitX/2;
-			visBmp.y = -blitY/2;
+			visBmp.x = -blitX / 2;
+			visBmp.y = -blitY / 2;
 			vis.x = X;
 			vis.y = Y;
 			vis.rotation = r;
@@ -84,81 +84,81 @@ package graphdata
 			}
 		}
 		
-		public function blit(blframe:int)
+		public function blit(blframe:int):void
 		{
 			blitRect.x = blframe * blitX, blitRect.y = 0;
 			visData.copyPixels(blitData, blitRect, blitPoint);
 		}
 		
-		public function initVis(frame:int = 0)
+		public function initVis(frame:int = 0):void
 		{
-			if (vClass) vis=new vClass();
+			if (vClass) vis = new vClass();
 			else return;
-			if (frame==0) vis.gotoAndStop(Math.floor(Math.random()*vis.totalFrames+1));
+			if (frame == 0) vis.gotoAndStop(Math.floor(Math.random() * vis.totalFrames + 1));
 			else vis.gotoAndStop(frame);
-			if (isAnim==0) vis.cacheAsBitmap=true;
-			else if (isAnim==2) vis.gotoAndPlay(Math.floor(Math.random()*vis.totalFrames)+1);
-			else vis.gotoAndPlay(frame+1);
-			vis.x=X;
-			vis.y=Y;
-			vis.rotation=r;
+			if (isAnim == 0) vis.cacheAsBitmap = true;
+			else if (isAnim == 2) vis.gotoAndPlay(Math.floor(Math.random() * vis.totalFrames) + 1);
+			else vis.gotoAndPlay(frame + 1);
+			vis.x = X;
+			vis.y = Y;
+			vis.rotation = r;
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 
-			if (otklad>0) 
+			if (otklad > 0) 
 			{
-				vis.visible=false;
+				vis.visible = false;
 				vis.stop();
 				otklad--;
 				return;
 			} 
 
-			else if (vis.visible==false) 
+			else if (vis.visible == false) 
 			{
-				vis.visible=true;
-				if (isAnim>0) vis.play();
+				vis.visible = true;
+				if (isAnim > 0) vis.play();
 			}
 
 			if (isMove) 
 			{
-				X+=dx;
-				Y+=dy;
-				dy+=ddy;
-				r+=dr;
-				vis.x=X;
-				vis.y=Y;
-				vis.rotation=r;
-				dx*=brake;
-				dy*=brake;
+				X += dx;
+				Y += dy;
+				dy += ddy;
+				r += dr;
+				vis.x = X;
+				vis.y = Y;
+				vis.rotation = r;
+				dx *= brake;
+				dy *= brake;
 			}
 			
-			if (isAlph && liv<9) 
+			if (isAlph && liv < 9) 
 			{
-				vis.alpha=liv/10;
+				vis.alpha = liv / 10;
 			}
-			else if (isPreAlph && (mliv-liv<9)) 
+			else if (isPreAlph && (mliv - liv < 9)) 
 			{
-				vis.alpha=(mliv-liv)/10;
+				vis.alpha = (mliv - liv) / 10;
 			}
 
 			else if (isAlph || isPreAlph) 
 			{
-				vis.alpha=1;
+				vis.alpha = 1;
 			}
 
-			if (isAnim && blitData && blitFrame*blitX<blitData.width) 
+			if (isAnim && blitData && blitFrame * blitX < blitData.width) 
 			{
 				blit(Math.floor(blitFrame));
-				blitFrame+=blitDelta;
-				if (blitMFrame>0 && blitFrame>=blitMFrame) blitFrame=0;
+				blitFrame += blitDelta;
+				if (blitMFrame > 0 && blitFrame >= blitMFrame) blitFrame = 0;
 			}
 
-			if (water>0) 
+			if (water > 0) 
 			{
-				var voda=room.getAbsTile(X,Y).water;
-				if (water==2 && voda==0 || water==1 && voda>0) liv=1;
+				var voda = room.getAbsTile(X, Y).water;
+				if (water == 2 && voda == 0 || water == 1 && voda > 0) liv = 1;
 			}
 
 			liv--;

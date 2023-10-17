@@ -5,6 +5,9 @@ package locdata
 	import graphdata.Emitter;
 	import unitdata.Unit;
 	
+	import stubs.visualBonus;
+	import stubs.visualHealBonus;
+
 	//Бонусы, которые подбираются путём контакта с ними
 	
 	public class Bonus extends Obj
@@ -55,7 +58,7 @@ package locdata
 			return obj;
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (liv<1000000) 
 			{

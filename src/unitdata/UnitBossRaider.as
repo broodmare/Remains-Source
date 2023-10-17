@@ -12,6 +12,9 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualRaiderBoss;
+	import stubs.visualRaiderBoss2;
+
 	public class UnitBossRaider extends UnitPon{
 		
 		public var tr:int=1;
@@ -24,16 +27,6 @@ package unitdata
 		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
 			super(cid, ndif, xml, loadObj);
 			id='bossraider';
-			//определить разновидность tr
-			/*if (loadObj && loadObj.tr) {			//из загружаемого объекта
-				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
-				tr=xml.@tr;
-			} else if (cid) {						//из заданного идентификатора cid
-				tr=int(cid);
-			} else {								//случайно по параметру ndif
-				tr=1;
-			}*/
 			if (xml && xml.@tr.length()) {	//из настроек карты
 				tr=xml.@tr;
 			}
@@ -178,7 +171,7 @@ package unitdata
 			kol_emit--;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			//вернуть в исходную точку
@@ -370,7 +363,7 @@ package unitdata
 			Emitter.emit('quake',room,X+Math.random()*40-20,Y);
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='off') {
 				walk=0;

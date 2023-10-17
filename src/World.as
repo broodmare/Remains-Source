@@ -9,8 +9,6 @@ package
 
 	import flash.events.Event;
 	import flash.events.TimerEvent;
-	import flash.events.IOErrorEvent;
-	import flash.system.Capabilities;
 	import flash.utils.Timer;
 	import flash.net.SharedObject;
     import flash.ui.Mouse;
@@ -35,20 +33,20 @@ package
 	import components.Settings;
 	import systems.Languages;
 
+	import stubs.*;
+	
 	public class World 
 	{
 
 		public static var world:World;
-		
-		public var urle:String;						//URL from which the game was launched
-
 
 		//Visual components
 		public var mainDisplay:Sprite;				//Main game sprite
 		public var swfStage:Stage;					//Sprite container
-		public var loadingScreen:MovieClip;			//Loading image
 		public var skybox:MovieClip;				//Static background
 		public var mainCanvas:Sprite;				//Active area
+
+		public var loadingScreen:MovieClip;			//Loading image
 		public var vscene:MovieClip;				//Scene
 		public var vblack:MovieClip;				//Darkness
 		public var vpip:MovieClip;					//Pipbuck
@@ -92,15 +90,15 @@ package
 		public var t_die:int = 0;					//Player character has died
 		public var t_exit:int = 0;					//Exit from room
 		public var gr_stage:int = 0;				//Room rendering stage
-		public var checkLoot:Boolean = false;		//Recalculate auto-loot
-		public var calcMass:Boolean = false;		//Recalculate mass
-		public var calcMassW:Boolean = false;		//Recalculate weapon mass
-		public var lastCom:String = null;
-		public var armorWork:String = '';			//Temporary display of armor
-		public var mmArmor:Boolean = false;			//Armor in main menu
-		public var catPause:Boolean = false;		//Pause for scene display
-		public var testLoot:Boolean = false;		//Loot and experience testing
-		public var summxp:int = 0;
+		public var checkLoot:Boolean 	= false;		//Recalculate auto-loot
+		public var calcMass:Boolean 	= false;		//Recalculate mass
+		public var calcMassW:Boolean 	= false;		//Recalculate weapon mass
+		public var lastCom:String 		= null;
+		public var armorWork:String 	= '';			//Temporary display of armor
+		public var mmArmor:Boolean 		= false;			//Armor in main menu
+		public var catPause:Boolean 	= false;		//Pause for scene display
+		public var testLoot:Boolean 	= false;		//Loot and experience testing
+		public var summxp:int 			= 0;
 		public var ccur:String;
 		public var currentMusic:String = '';
 		
@@ -109,21 +107,21 @@ package
 		//Loading, saves, config
 		public var configObj:SharedObject;
 		public var saveObj:SharedObject;
-		public var saveArr:Array;
+		public var saveArr:Array = [];
 		public var saveCount:int = 10;
-		public var savePath:String = null;
 		public var t_save:int = 0;
 		public var loaddata:Object;					//data loaded from file
-		public var nadv:int = 0, koladv:int = 10;	//advice number
+		public var nadv:int = 0;
+		public var koladv:int = 10;					//advice number
 		public var load_log:String = '';			//This is the text that apepars onscreen during boot.
 		
 
 		//Maps
 		public var levelPath:String;
 		public var landData:Array;
-		public var kolLands:int = 0;
-		public var kolLandsLoaded:int = 0;
-		public var allLandsLoaded:Boolean = false;
+		public var levelsFound:int = 0;
+		public var levelsLoaded:int = 0;
+		public var allLevelsLoaded:Boolean = false;
 
 
 		//Other
@@ -138,55 +136,93 @@ package
 
 		public var d1:int, d2:int;
 		public var landError:Boolean = false;
-		public var textProgressLoad:Number;
 
-
-
+		public var constructorFinished:Boolean = false; // Used by main menu to start constructor part 2 and not call it repeatedly.
+		public var init2Done:Boolean = false;
 
 
 		public function World(nmain:Sprite) 
 		{
-			trace ('World.as/World() - starting loading stage 1...');
+			trace('World.as/World() - Running world constructor.');
 			World.world = this;
-		
+
 
 			mainDisplay = nmain;
 
 			swfStage 				= mainDisplay.stage;
 			swfStage.tabChildren 	= false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
+			
+			//config, immediately loads sound settings
+			trace('World.as/World() - Creating configObj...');
+			configObj = SharedObject.getLocal('config'); //Attempts to load a locally stored SharedObject called "config"
 
-			Tile.tilePixelWidth 	= Settings.tilePixelWidth;
-			Tile.tilePixelHeight 	= Settings.tilePixelHeight;
+			if (configObj.data.snd) 
+			{
+				trace('World.as/World() - Sound settings found in configObj. Calling Snd/load() and passing configObj.');
+				Snd.load(configObj.data.snd);
+			}
+
+
+			trace('World.as/World() - Calling Languages/languageStart.');
+			Languages.languageStart();
 			
-			
+
+			trace('World.as/World() - Checking if language is loaded.');
+			if (Languages.textLoaded == true)
+			{
+				trace('World.as/World() - Language data already done loading, continuing world setup.');
+				continueLoadingWorld()
+			}
+			else
+			{
+				trace('World.as/World() - Language data still loading, waiting...');
+			}
+
+			trace('World.as/World() - Stage 1 of world setup finished.');
+			load_log += 'Stage 1 Ok\n';
+		}
+
+
+		public function continueLoadingWorld():void
+		{
+
+			trace ('World.as/continueLoadingWorld() - Continuing world construction.');
+
+			trace ('World.as/continueLoadingWorld() - Calling LootGen.init()...');
 			LootGen.init();
+			trace ('World.as/continueLoadingWorld() - Calling Form.setForms()...');
 			Form.setForms();
+			trace ('World.as/continueLoadingWorld() - Calling Emitter.init()...');
 			Emitter.init();
 			
 
-			//Creating graphic elements
-			loadingScreen = new visualWait();
-			loadingScreen.cacheAsBitmap = Settings.bitmapCachingOption;
-			
-			//Appearance configurator
-			app = new Appear();
-			
-			mainCanvas 	= new Sprite();
-			vgui 		= new visualGUI();
-			skybox 		= new MovieClip();
-			vpip 		= new visPipBuck();
-			vstand 		= new visualStand();
-			vsats 		= new MovieClip();
-			vscene 		= new visualScene();
-			vblack 		= new visBlack();
-			vblack.cacheAsBitmap =  Settings.bitmapCachingOption;
-			vconsol 	= new visConsol();
-			verror 		= new visError();
+			trace ('World.as/continueLoadingWorld() - Creating GUI elements.');
+			loadingScreen 	= new visualWait();
+			trace ('World.as/continueLoadingWorld() - world.app created.');
+			app 			= new Appear();
+			mainCanvas 		= new Sprite();
+			vgui 			= new visualGUI();
+			skybox 			= new MovieClip();
+			vpip 			= new visPipBuck();
+			vstand 			= new visualStand();
+			vsats 			= new MovieClip();
+			vscene 			= new visualScene();
+			vblack 			= new visBlack();
+			vconsol 		= new visConsol();
+			verror 			= new visError();
+	
 
+
+			loadingScreen.cacheAsBitmap = Settings.bitmapCachingOption;
+			vblack.cacheAsBitmap 		= Settings.bitmapCachingOption;
+
+			trace ('World.as/continueLoadingWorld() - Calling setLoadScreen().');
 			setLoadScreen();
 			vgui.visible=vpip.visible=vconsol.visible=skybox.visible=mainCanvas.visible=vsats.visible=loadingScreen.visible=vblack.visible=verror.visible=vscene.visible = false;
 			vscene.stop();
+			
+			trace ('World.as/continueLoadingWorld() - Adding mainDisplay children...');
 
 			mainDisplay.addChild(loadingScreen);
 			mainDisplay.addChild(skybox);
@@ -200,84 +236,146 @@ package
 			mainDisplay.addChild(verror);
 			mainDisplay.addChild(vconsol);
 
+
+
 			//ERROR LOG STUFF
-			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function () {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
-			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function () {verror.visible = false;});
-			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function () {Settings.errorShow = false; verror.visible = false;});
+			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function():void {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
+			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function():void {verror.visible = false;});
+			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function():void {Settings.errorShow = false; verror.visible = false;});
 			
 			vstand.visible = false;
-			trace('World.as/World() - Creating new Grafon object.');
+			
+			trace('World.as/continueLoadingWorld() - Creating Grafon object.');
 			grafon = new Grafon(mainCanvas);
+
+			trace('World.as/continueLoadingWorld() - Creating Camera object.');
 			cam = new Camera(this);
 
-			
-			load_log += 'Stage 1 Ok\n';
-			trace('World.as/World() - STAGE 1 COMPLETE.');
-
+			trace('World.as/continueLoadingWorld() - World constructor stage 2 finished.');
+			load_log += 'Stage 2 Ok\n';
 			//FPS counter
 			d1 = d2 = getTimer();
 			
-			//config, immediately loads sound settings
-			configObj = SharedObject.getLocal('config', savePath);
-			if (configObj.data.snd) Snd.load(configObj.data.snd);
-
 		}
 
 //=============================================================================================================
 //			Technical Part
 //=============================================================================================================
 		
-		public function init2()
+		public function init2():void
 		{
-			trace('World.as/init2() - Starting loading stage 2...');
+			trace('World.as/init2() - init2() Executing...');
 
-			if (consol) return;
-			if (configObj) lastCom = configObj.data.lastCom;
+			
+			if (consol) 
+			{
+				if (allLevelsLoaded == false)
+				{
+					trace('World.as/init2() - Checking if all rooms are loaded.');
+					roomsLoadOk()
+				}
+				
 
+
+				trace('World.as/init2() - Consol enabled, returning.');
+				return;
+			}
+			
+			trace('World.as/init2() - Calling configObjSetup().');
+			configObjSetup();
+			
+			if (configObj) //Setting last command for console.
+			{
+				lastCom = configObj.data.lastCom;
+			} 
+			
+			trace('World.as/init2() - Creating new Consol.');
 			consol = new Consol(vconsol, lastCom);
 
 			//saves and config
-			saveArr = new Array();
-			for (var i = 0; i <= saveCount; i++) 
+			trace('World.as/init2() - Populating save array.');
+			for (var i:int = 0; i <= saveCount; i++) 
 			{
-				saveArr[i] = SharedObject.getLocal('PFEgame' + i, savePath);
+				saveArr[i] = SharedObject.getLocal('PFEgame' + i);
 			}
-			saveObj = saveArr[0];
+    		saveObj = saveArr[0];
+			
 
+
+
+			trace('World.as/init2() - Creating input controller.');
+			ctr = new Ctr(configObj.data.ctr);
+
+			trace('World.as/init2() - Creating pipbuck.');
+			pip = new PipBuck(vpip);
+			
+			trace('World.as/init2() - Applying mouse settings.');
+			if (Settings.systemCursor == false) Mouse.cursor = 'arrow';
+			
+			//loading room maps
+			landData = new Array();
+			trace('World.as/init2() - Creating landData array and Processing levelData in GameData.d.level.');
+			for each(var levelData:XML in GameData.d.level) 
+			{
+				var levelLoader:LevelLoader = new LevelLoader(levelData.@id);
+
+				levelsFound++;
+				landData[levelData.@id] = levelLoader;
+			}
+			trace('World.as/init2() - Finished processing levelData.');
+			trace('World.as/init2() - Levels loaded: "' + levelsFound + '."');
+
+			load_log += 'Stage 3 Ok\n';
+
+			trace('World.as/init2() - Calling Sound/loadMusic.');
+			Snd.loadMusic();
+
+			init2Done = true;
+			trace('World.as/init2() - World initialized.');
+		}
+
+		public function configObjSetup():void
+		{
+
+			trace('World.as/configObjSetup() - Executing configObjSetup()...');
 			if (configObj.data.dialon 	!= null) Settings.dialOn = configObj.data.dialon;
 			if (configObj.data.zoom100 	!= null) Settings.zoom100 = configObj.data.zoom100;
+
 			if (Settings.zoom100) 
 			{
 				cam.isZoom = 0; 
 			}
 			else cam.isZoom = 2;
-			if (configObj.data.mat 		!= null) Settings.matFilter = configObj.data.mat;
-			if (configObj.data.help 	!= null) Settings.helpMess = configObj.data.help;
-			if (configObj.data.hit 		!= null) Settings.showHit = configObj.data.hit;
-			if (configObj.data.sysCur 	!= null) Settings.sysCur = configObj.data.sysCur;
-			if (configObj.data.hintTele != null) Settings.hintTele = configObj.data.hintTele;
-			if (configObj.data.showFavs != null) Settings.showFavs = configObj.data.showFavs;
-			if (configObj.data.quakeCam != null) Settings.quakeCam = configObj.data.quakeCam;
-			if (configObj.data.errorShowOpt != null) Settings.errorShowOpt = configObj.data.errorShowOpt;
+
+			if (configObj.data.mat 			!= null) Settings.matFilter 	= configObj.data.mat;
+			if (configObj.data.help 		!= null) Settings.helpMess 		= configObj.data.help;
+			if (configObj.data.hit 			!= null) Settings.showHit 		= configObj.data.hit;
+			if (configObj.data.systemCursor != null) Settings.systemCursor 	= configObj.data.systemCursor;
+			if (configObj.data.hintTele 	!= null) Settings.hintTele 		= configObj.data.hintTele;
+			if (configObj.data.showFavs 	!= null) Settings.showFavs 		= configObj.data.showFavs;
+			if (configObj.data.quakeCam 	!= null) Settings.quakeCam 		= configObj.data.quakeCam;
+			if (configObj.data.errorShowOpt != null) Settings.errorShowOpt 	= configObj.data.errorShowOpt;
 			if (configObj.data.app) 
 			{
 				app.load(configObj.data.app);
 				app.setTransforms();
 			}
-			try 
+			
+			trace('World.as/configObjSetup() - Fetching number of advice snippets.');
+			if (Res.gameData == null || Res.gameData.advice == undefined) 
 			{
-				koladv = Res.d.advice[0].a.length();
-			} 
-			catch (err) 
-			{
-				trace('World.as/init2() - Error during init2().' + err.message);
+   				trace('World.as/configObjSetup() - Either Res.gameData is null or <advice> element is missing');
+				return;
 			}
+			koladv = Res.gameData.advice[0].a.length();
+			trace('World.as/configObjSetup() - Snippets found: "' + koladv + '."');
 
+			trace('World.as/configObjSetup() - Fetching last advice ID. ID: ' + configObj.data.nadv + '.');
 			if (configObj.data.nadv) 
 			{
 				nadv = configObj.data.nadv;
 				configObj.data.nadv++;
-				if (configObj.data.nadv>=koladv) configObj.data.nadv = 0;
+				if (configObj.data.nadv >= koladv) configObj.data.nadv = 0;
 			} 
 			else 
 			{
@@ -285,6 +383,7 @@ package
 			}
 
 			if (configObj.data.chit > 0) 		Settings.chitOn 		= true;
+			
 			if (configObj.data.vsWeaponNew > 0) Settings.vsWeaponNew 	= false;
 			if (configObj.data.vsWeaponRep > 0) Settings.vsWeaponRep 	= false;
 			if (configObj.data.vsAmmoAll > 0) 	Settings.vsAmmoAll 		= false;	
@@ -299,35 +398,18 @@ package
 			if (configObj.data.vsFood > 0) 		Settings.vsFood 		= false;
 			if (configObj.data.vsComp > 0) 		Settings.vsComp 		= false;
 			if (configObj.data.vsIngr > 0) 		Settings.vsIngr 		= false;
-			
-			//trace(configObj.data.vsWeaponNew,vsWeaponNew);
-			ctr = new Ctr(configObj.data.ctr);
-			pip = new PipBuck(vpip);
-			if (!Settings.sysCur) Mouse.cursor = 'arrow';
-			
-			//loading room maps
-			landData = new Array();
-			for each(var xl in GameData.d.level) 
-			{
-				if (!Settings.testMode && xl.@test > 0) continue;
-				var ll:LandLoader = new LandLoader(xl.@id);
-				if (!(xl.@test > 0)) kolLands++;
-				landData[xl.@id] = ll;
-			}
-			
-			load_log += 'Stage 2 Ok\n';
-			Snd.loadMusic();
+
+			trace('World.as/configObjSetup() - Finished setup.');
 		}
 
-		public function roomsLoadOk()
+		public function roomsLoadOk():void
 		{
-			if (!Settings.roomsLoad) 
+			//trace('World.as/roomsLoadOk() - Checking if all levels are loaded. Levels found: "' + levelsFound + '" Levels Loaded: "' + levelsLoaded + '"');
+			if (levelsFound == levelsLoaded) 
 			{
-				allLandsLoaded = true;
-				return;
+				trace('World.as/roomsLoadOk() - All levels loaded, setting allLevelsLoaded to true. Levels found: "' + levelsFound + '" Levels Loaded: "' + levelsLoaded + '"');
+				allLevelsLoaded = true;
 			}
-			kolLandsLoaded++;
-			if (kolLands == kolLandsLoaded) allLandsLoaded = true;
 		}
 
 		//Pause and calling the pipbuck if focus is lost
@@ -341,28 +423,28 @@ package
 		}
 		
 		//Pause and call pipbuck if window size is changed
-		public function resizeScreen()
+		public function resizeScreen():void
 		{
 			if (allStat > 0) 
 			{
 				cam.setLoc(room);
 			} 
-			if (gui) gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			grafon.setSkyboxSize(swfStage.stageWidth,swfStage.stageHeight);
-			if (stand) stand.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
-			vblack.width = swfStage.stageWidth;
-			vblack.height = swfStage.stageHeight;
-			if (loadScreen<0) 
+			if (gui) gui.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
+			pip.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
+			grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
+			if (stand) stand.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
+			vblack.width 	= swfStage.stageWidth;
+			vblack.height 	= swfStage.stageHeight;
+			if (loadScreen < 0) 
 			{
-				loadingScreen.x=swfStage.stageWidth/2;
-				loadingScreen.y=swfStage.stageHeight/2;
+				loadingScreen.x = swfStage.stageWidth  / 2;
+				loadingScreen.y = swfStage.stageHeight / 2;
 			}
 			if (allStat == 1 && !Settings.testMode) pip.onoff(11);
 		}
 		
 		//Console call
-		public function consolOnOff()
+		public function consolOnOff():void
 		{
 			onConsol =! onConsol; //Toggles the state of onConsole
 			consol.vis.visible = onConsol; //Toggles the visibility of consol depending on the state of onConsol
@@ -382,11 +464,12 @@ package
 		//Start a new game or load a save. Pass the slot number or -1 for a new game
 		//Stage 0 - create HUD, SATS, and pipuck
 		//Initialize game
-		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null)
+		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null):void
 		{
+			trace('World.as/startNewGame() - Starting a new game.');
 			if (Settings.testMode && !Settings.chitOn) 
 			{
-				loadingScreen.progres.text='error';
+				loadingScreen.progres.text = 'error';
 				return;
 			}
 			try
@@ -395,8 +478,7 @@ package
 				opt = nopt;
 				newName = nnewName;
 				game = new Game();
-				if (!Settings.roomsLoad) allLandsLoaded = true;
-				newGame = nload<0;
+				newGame = nload < 0;
 				if (newGame) 
 				{
 					if (opt && opt.autoSaveN) 
@@ -410,12 +492,16 @@ package
 				}
 				
 				// create GUI
+				trace('World.as/startNewGame() - Creating new GUI.');
 				gui = new GUI(vgui);
-				gui.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
+				gui.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
+
 				// switch PipBuck to normal mode
+				trace('World.as/startNewGame() - Calling pip.toNormalMode().');
 				pip.toNormalMode();
-				pip.resizeScreen(swfStage.stageWidth,swfStage.stageHeight);
+				pip.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
 				// create SATS interface
+				trace('World.as/startNewGame() - Creating new SATS.');
 				sats = new Sats(vsats);
 				
 				// create game
@@ -440,13 +526,16 @@ package
 			} 
 			catch (err) 
 			{
+				trace('World.as/startNewGame() - Something fucked up starting a new game.');
 				showError(err);
 			}
 		}
 		
 		// stage 1 - create character and inventory
-		public function newGame1()
+		public function newGame1():void
 		{
+			trace('World.as/newGame1() - newGame1 is executing.');
+
 			try 
 			{
 				if (!newGame) app.load(data.app);
@@ -481,13 +570,16 @@ package
 			} 
 			catch (err) 
 			{
+				trace('World.as/newGame1() - Something fucked up.');
 				showError(err);
 			}
 		}
 		
 		// Stage 2 - create a terrain and enter it
-		public function newGame2()
+		public function newGame2():void
 		{
+			trace('World.as/newGame2() - newGame2 is executing.');
+
 			try 
 			{
 				
@@ -500,7 +592,7 @@ package
 				pip.onoff(-1);
 
 				//enter the current room
-				game.enterToCurLand();//!!!!
+				game.enterCurrentLevel();//!!!!
 				game.beginGame();
 				
 				Snd.off= false;
@@ -510,22 +602,29 @@ package
 			} 
 			catch (err) 
 			{
+				trace('World.as/newGame2() - Something fucked up.');
 				showError(err);
 			}
 		}
 		
-		public function loadGame(nload:int = 0)
+		public function loadGame(nload:int = 0):void
 		{
 			try 
 			{
 				comLoad = -1;
-				if (room) room.unloadRoom();
+				if (room) 
+				{
+					room.unloadRoom();
+				}
 				level = null;
 				room = null;
-				try {cur('arrow');} 
+				try 
+				{
+					cur('arrow');
+				} 
 				catch(err)
 				{
-
+					trace('World.as/loadGame() - Failed applying cursor "arrow".');
 				}
 
 				//loading object
@@ -543,15 +642,24 @@ package
 				//create game
 				Snd.off = true;
 				cam.showOn = false;
-				if (data.hardInv==true) Settings.hardInv=true; else Settings.hardInv= false;
+				if (data.hardInv == true) 
+				{
+					Settings.hardInv = true; 
+				}
+				else 
+				{
+					Settings.hardInv = false;
+				}
 				game = new Game();
 				game.init(data.game);
 				app.load(data.app);
 
 				//create character
+				trace('World.as/loadGame() - Creating Pers.');
 				pers = new Pers(data.pers);
 
 				//create player unit
+				trace('World.as/loadGame() - Creating player.');
 				gg = new UnitPlayer();
 				gg.ctr = ctr;
 				gg.sats = sats;
@@ -559,55 +667,66 @@ package
 				gui.gg = gg;
 
 				// create an inventory
+				trace('World.as/loadGame() - Creating inventory.');
 				invent = new Invent(gg, data.invent);
 				if (stand) stand.inv = invent;
 				else stand = new Stand(vstand,invent);
 				gg.attach();
 
 				// auto-save cell number
-				if (data.n != null) autoSaveN=data.n;
+				if (data.n != null) autoSaveN = data.n;
 				
 				offLoadScreen();
-				vgui.visible=skybox.visible=mainCanvas.visible=true;
-				vblack.alpha=1;
-				cam.dblack=-10;
+				vgui.visible 		= true;
+				skybox.visible 		= true;
+				mainCanvas.visible 	= true;
+				vblack.alpha		= 1;
+				cam.dblack			= -10;
 				pip.onoff(-1);
 				gui.allOn();
-				t_die=0;
-				t_battle=0;
+				t_die		= 0;
+				t_battle	= 0;
 
-				//enter the current room
-				game.enterToCurLand();//!!!!
+				trace('World.as/loadGame() - Entering current level.');
+				game.enterCurrentLevel();
+				trace('World.as/loadGame() - Beginning game.');
 				game.beginGame();
 				log = '';
-				Snd.off= false;
+				trace('World.as/loadGame() - Turning on sound.');
+				Snd.off = false;
+				trace('World.as/loadGame() - gui.setAll.');
 				gui.setAll();
-				allStat=1;
+				allStat = 1;
+				trace('World.as/loadGame() - Loading game finished.');
 			} 
 			catch (err) 
 			{
+				trace('World.as/loadGame() - Something fucked up loading the game.');
 				showError(err);
 			}
 		}
 		
 		// Call when entering a specific level
-		public function activateLevel(l:Level)
+		public function activateLevel(l:Level):void
 		{
+			trace('World.as/activateLevel() - Activating level: "' + l + '."');
 			try 
 			{
 				level = l;
-				grafon.drawSkybox(skybox,level.template.skybox);
+				grafon.drawSkybox(skybox, level.template.skybox);
 			} 
 			catch (err) 
 			{
+				trace('World.as/activateLevel() - Failed to activate level.');
 				showError(err);
 			}
 		}
 		
 		// Call when entering a specific area
 		// There is a graphical bug here
-		public function ativateLoc(newRoom:Room)
+		public function activateRoom(newRoom:Room):void
 		{
+			trace('World.as/activateRoom() - Activating room: "' + newRoom + '."');
 			try 
 			{
 				if (room != null) //If a room exists, unload it.
@@ -630,11 +749,12 @@ package
 			} 
 			catch (err) 
 			{
+				trace('World.as/activateRoom() - Failed activating room.');
 				showError(err);
 			}
 		}
 		
-		public function redrawLoc()
+		public function redrawLoc():void
 		{
 			try 
 			{
@@ -648,11 +768,12 @@ package
 			}
 		}
 		
-		public function exitLand(fast:Boolean= false)
+		public function exitLevel(fast:Boolean = false):void
 		{
+			trace('World.as/exitLevel() - exiting Level.');
 			if (t_exit > 0) return;
 			gg.controlOff();
-			pip.gamePause=true;
+			pip.gamePause = true;
 			if (fast) 
 			{
 				t_exit = 21;
@@ -664,7 +785,7 @@ package
 		}
 		
 		
-		function exitStep()
+		function exitStep():void
 		{
 			try 
 			{
@@ -682,7 +803,7 @@ package
 				if (t_exit == 19) 
 				{
 					cur('arrow');
-					game.enterToCurLand();
+					game.enterCurrentLevel();
 				}
 				if (t_exit == 18 && clickReq> 0) waitLoadClick();
 				if (t_exit == 16) 
@@ -707,7 +828,7 @@ package
 			}
 		}
 		
-		function ggDieStep()
+		function ggDieStep():void
 		{
 			try 
 			{
@@ -718,14 +839,14 @@ package
 					if (Settings.alicorn) 
 					{
 						game.runScript('gameover');
-						t_die=0;
+						t_die = 0;
 					} 
 					else 
 					{
 						if (gg.sost == 3) 
 						{
 							game.curLevelID = game.baseId;
-							game.enterToCurLand();
+							game.enterCurrentLevel();
 						} 
 						else 
 						{
@@ -748,173 +869,179 @@ package
 		}
 
 		// Main loop
-		public function step()
+		public function step():void
 		{
-			try 
+			trace('World.as/step() - World stepping.');
+
+			if (verror.visible) 
 			{
-				if (verror.visible) return;
-
-				
-				ctr.step();	//Process controls
-				Snd.step(); //Process sound
-
-				if (ng_wait > 0) 
-				{
-					if (ng_wait == 1) 
-					{
-						newGame1();
-					} 
-					else if (ng_wait == 2) 
-					{
-						if (clickReq != 1) newGame2();
-					}
-					return;
-				}
-
-				if (!onConsol && !pip.active) swfStage.focus = swfStage;
-				
-				//Only if the game has started and not paused, game loops
-				if (allStat == 1 && !onPause) 
-				{
-					//exit loop
-					if (t_exit > 0) 
-					{
-						if (!(t_exit == 17 && clickReq == 1)) exitStep();
-					}
-					//particle count
-					Emitter.kol2 = Emitter.kol1;
-					Emitter.kol1 = 0;
-					//trace(Emitter.kol2);
-
-					//main loop !!!!
-					if (t_exit != 17) level.step();
-
-					//death loop
-					if (t_die > 0) ggDieStep();
-
-					//battle timer
-					if (t_battle > 0) t_battle--;
-
-					sats.step2();
-
-					//if mass recalculation is needed
-					if (calcMass) 
-					{
-						invent.calcMass();
-						calcMass= false;
-					}
-					if (calcMassW) 
-					{
-						invent.calcWeaponMass();
-						calcMassW= false;
-					}
-
-					//Increment ticks since last save, if over 5000, and not in either test or alicorn mode, save the game.
-					t_save++;
-					if (t_save>5000 && !Settings.testMode && !Settings.alicorn)
-					{
-						saveGame();
-					}
-
-					checkLoot = false;
-				}
-				//trace(clickReq,t_exit)
-				
-				if (comLoad >= 0) 
-				{
-					if (comLoad >= 100) 
-					{
-						if (autoSaveN > 0) saveGame();
-						loadGame(comLoad - 100);
-					} 
-					else 
-					{
-						pip.onoff(-1);
-						comLoad += 100;
-						setLoadScreen();
-					}
-				}
-				
-				//If the game has started, and is also on pause
-				if (allStat >= 1) 
-				{
-					cam.calc(gg);
-					gui.step();
-					pip.step();
-					sats.step();
-					
-					if (ctr.keyPip) 
-					{
-						if (!sats.active) pip.onoff();
-						ctr.keyPip = false;
-					}
-					if (ctr.keyInvent) 
-					{
-						if (!sats.active) pip.onoff(2);
-						ctr.keyInvent = false;
-					}
-					if (ctr.keyStatus) 
-					{
-						if (!sats.active) pip.onoff(1,1);
-						ctr.keyStatus = false;
-					}
-					if (ctr.keySkills) 
-					{
-						if (!sats.active) pip.onoff(1,2);
-						ctr.keySkills = false;
-					}
-					if (ctr.keyMed) 
-					{
-						if (!sats.active) pip.onoff(1,5);
-						ctr.keyMed = false;
-					}
-					if (ctr.keyMap) 
-					{
-						if (!sats.active) pip.onoff(3,1);
-						ctr.keyMap = false;
-					}
-					if (ctr.keyQuest) 
-					{
-						if (!sats.active) pip.onoff(3,2);
-						ctr.keyQuest = false;
-					}
-					if (ctr.keySats) 
-					{
-						if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
-						ctr.keySats = false;
-					}
-
-					allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
-					
-					if (consol && consol.visoff) 
-					{
-						onConsol=consol.vis.visible=consol.visoff= false;
-					}
-				}
-			} 
-			catch (err) 
-			{
-				showError(err);
+				return;
 			}
+			if (Languages.textLoaded == false) 
+			{
+				trace('World.as/step() - Language data still loading, waiting.');
+				return;
+			}
+			
+			trace('World.as/step() - Controller step.');
+			ctr.step();	//Process controls
+
+			trace('World.as/step() - Sound step.');
+			Snd.step(); //Process sound
+
+			if (ng_wait > 0) 
+			{
+				if (ng_wait == 1) 
+				{
+					newGame1();
+				} 
+				else if (ng_wait == 2) 
+				{
+					if (clickReq != 1) newGame2();
+				}
+				return;
+			}
+
+			if (!onConsol && !pip.active) swfStage.focus = swfStage;
+			
+			//Only if the game has started and not paused, game loops
+			if (allStat == 1 && !onPause) 
+			{
+				//exit loop
+				if (t_exit > 0) 
+				{
+					if (!(t_exit == 17 && clickReq == 1)) exitStep();
+				}
+				//particle count
+				Emitter.kol2 = Emitter.kol1;
+				Emitter.kol1 = 0;
+				//trace(Emitter.kol2);
+
+				//main loop !!!!
+				if (t_exit != 17) level.step();
+
+				//death loop
+				if (t_die > 0) ggDieStep();
+
+				//battle timer
+				if (t_battle > 0) t_battle--;
+
+				sats.step2();
+
+				//if mass recalculation is needed
+				if (calcMass) 
+				{
+					invent.calcMass();
+					calcMass = false;
+				}
+				if (calcMassW) 
+				{
+					invent.calcWeaponMass();
+					calcMassW = false;
+				}
+
+				//Increment ticks since last save, if over 5000, and not in either test or alicorn mode, save the game.
+				t_save++;
+				if (t_save>5000 && !Settings.testMode && !Settings.alicorn)
+				{
+					saveGame();
+				}
+
+				checkLoot = false;
+			}
+			//trace(clickReq,t_exit)
+			
+			if (comLoad >= 0) 
+			{
+				if (comLoad >= 100) 
+				{
+					if (autoSaveN > 0) saveGame();
+					loadGame(comLoad - 100);
+				} 
+				else 
+				{
+					pip.onoff(-1);
+					comLoad += 100;
+					setLoadScreen();
+				}
+			}
+			
+			//If the game has started, and is also on pause
+			if (allStat >= 1) 
+			{
+				cam.calc(gg);
+				gui.step();
+				pip.step();
+				sats.step();
+				
+				if (ctr.keyStates.keyPip) 
+				{
+					if (!sats.active) pip.onoff();
+					ctr.keyStates.keyPip = false;
+				}
+				if (ctr.keyStates.keyInvent) 
+				{
+					if (!sats.active) pip.onoff(2);
+					ctr.keyStates.keyInvent = false;
+				}
+				if (ctr.keyStates.keyStatus) 
+				{
+					if (!sats.active) pip.onoff(1,1);
+					ctr.keyStates.keyStatus = false;
+				}
+				if (ctr.keyStates.keySkills) 
+				{
+					if (!sats.active) pip.onoff(1,2);
+					ctr.keyStates.keySkills = false;
+				}
+				if (ctr.keyStates.keyMed) 
+				{
+					if (!sats.active) pip.onoff(1,5);
+					ctr.keyStates.keyMed = false;
+				}
+				if (ctr.keyStates.keyMap) 
+				{
+					if (!sats.active) pip.onoff(3,1);
+					ctr.keyStates.keyMap = false;
+				}
+				if (ctr.keyStates.keyQuest) 
+				{
+					if (!sats.active) pip.onoff(3,2);
+					ctr.keyStates.keyQuest = false;
+				}
+				if (ctr.keyStates.keySats) 
+				{
+					if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
+					ctr.keyStates.keySats = false;
+				}
+
+				allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
+				
+				if (consol && consol.visoff) 
+				{
+					onConsol=consol.vis.visible=consol.visoff= false;
+				}
+			}
+
 		}
 
 //=============================================================================================================
 //			Global interaction functions
 //=============================================================================================================
-		public function cur(ncur:String = 'arrow')
+		public function cur(ncur:String = 'arrow'):void
 		{
-			if (Settings.sysCur) return;
+			if (Settings.systemCursor) return;
 			if (pip.active || stand.active || comLoad >= 0) ncur = 'arrow';
 			else if (t_battle> 0) ncur ='combat';
 			if (ncur != ccur) 
 			{
 				Mouse.cursor = ncur;
 				Mouse.show();
-				ccur=ncur;
+				ccur = ncur;
 			}
 		}
 		
-		public function quake(x:Number, y:Number)
+		public function quake(x:Number, y:Number):void
 		{
 			if (room.sky) return;
 			if (Settings.quakeCam) 
@@ -931,13 +1058,13 @@ package
 		
 		public function possiblyOut():int 
 		{
-			if (t_battle > 0) return 2;
-			if (room && room.t_alarm > 0) return 2;
-			if (level.loc_t > 120) return 1;
+			if (t_battle > 0) 				return 2;
+			if (room && room.t_alarm > 0) 	return 2;
+			if (level.loc_t > 120) 			return 1;
 			return 0;
 		}
 		
-		public function showError(err:Error, dop:String = null)
+		public function showError(err:Error, dop:String = null):void
 		{
 			if (!Settings.errorShow || !Settings.errorShowOpt) return;
 
@@ -959,7 +1086,7 @@ package
 			verror.visible=true;
 		}
 		
-		public function gc()
+		public function gc():void
 		{
 			System.pauseForGCIfCollectionImminent(0.25)	
 		}
@@ -969,8 +1096,9 @@ package
 //=============================================================================================================
 
 		//set loading screen
-		public function setLoadScreen(n:int = -1)
+		public function setLoadScreen(n:int = -1):void
 		{
+			trace('World.as/setLoadScreen() - setLoadScreen() executing...');
 			loadScreen = n;
 			loadingScreen.story.lmb.stop();
 			loadingScreen.story.lmb.visible = false;
@@ -980,22 +1108,23 @@ package
 			vscene.visible = false;
 			loadingScreen.visible = true;
 			catPause = false;
+			trace('World.as/setLoadScreen() - Calling Res/guiText("loading").');
 			loadingScreen.progres.text = Res.guiText('loading');
 
 			if (n < 0) 
 			{
 				loadingScreen.x = swfStage.stageWidth / 2;
 				loadingScreen.y = swfStage.stageHeight / 2;
-				loadingScreen.skill.gotoAndStop(Math.floor(Math.random() * loadingScreen.skill.totalFrames+1));
+				loadingScreen.skill.gotoAndStop(Math.floor(Math.random() * loadingScreen.skill.totalFrames + 1));
 				loadingScreen.skill.visible = loadingScreen.progres.visible = true;
 				loadingScreen.story.visible = false;
-				clickReq=0;
+				clickReq = 0;
 			} 
 			else 
 			{
-				loadingScreen.x=loadingScreen.y = 0;
+				loadingScreen.x = loadingScreen.y = 0;
 				loadingScreen.story.visible = true;
-				loadingScreen.skill.visible = loadingScreen.progres.visible= false;
+				loadingScreen.skill.visible = loadingScreen.progres.visible = false;
 
 				if (n == 0) 
 				{
@@ -1014,7 +1143,7 @@ package
 		}
 		
 		// Determine which loading screen to display
-		function getLoadScreen():int 
+		public function getLoadScreen():int 
 		{
 			return -1;
 			try 
@@ -1034,25 +1163,26 @@ package
 		}
 		
 		// Enable waiting for a click
-		function waitLoadClick()
+		function waitLoadClick():void
 		{
 			loadingScreen.story.lmb.play();
 			loadingScreen.story.lmb.visible = true;
 		}
 		
 		// Remove the loading screen
-		function offLoadScreen()
+		public function offLoadScreen():void
 		{
+			trace('World.as/offLoadScreen() - offLoadScreen() executing, removing loading screen.');
 			loadingScreen.visible = false;
 			loadingScreen.story.visible = false;
-			loadingScreen.skill.visible=loadingScreen.progres.visible = true;
+			loadingScreen.skill.visible = loadingScreen.progres.visible = true;
 			loadingScreen.story.lmb.stop();
 			loadingScreen.story.lmb.visible = false;
-			clickReq=0;
+			clickReq = 0;
 		}
 
 		// Show the scene
-		public function showScene(sc:String, n:int=0)
+		public function showScene(sc:String, n:int=0):void
 		{
 			catPause = true;
 			mainCanvas.visible = false;
@@ -1088,7 +1218,7 @@ package
 		}
 		
 		// Remove the scene
-		public function unshowScene()
+		public function unshowScene():void
 		{
 			catPause = false;
 			mainCanvas.visible = true;
@@ -1098,7 +1228,7 @@ package
 		}
 		
 		// Final credits or game over
-		public function endgame(n:int = 0)
+		public function endgame(n:int = 0):void
 		{
 			loadingScreen.visible=skybox.visible = false;
 			var s:String;
@@ -1131,7 +1261,7 @@ package
 //=============================================================================================================
 //			Saves and configuration
 //=============================================================================================================
-		public function saveToObj(data:Object)
+		public function saveToObj(data:Object):void
 		{
 			var now:Date 	= new Date();
 			data.game 		= game.save();
@@ -1145,7 +1275,7 @@ package
 			data.est 		= 1;
 		}
 		
-		public function saveGame(n:int = -1)
+		public function saveGame(n:int = -1):void
 		{
 			if (n == -2) 
 			{
@@ -1175,41 +1305,45 @@ package
 			else return null;
 		}
 		
-		public function saveConfig()
+		public function saveConfig():void
 		{
 			try 
 			{
 				configObj.data.ctr = ctr.save();
 				configObj.data.snd = Snd.save();
-				configObj.data.language 	= Languages.currentLanguageName;
-				configObj.data.chit 		= (Settings.chitOn?1:0);
+
+				configObj.data.language 	= Languages.languageName;
+				configObj.data.chit 		= (Settings.chitOn ? 1:0);
 				configObj.data.dialon 		= Settings.dialOn;
 				configObj.data.zoom100 		= Settings.zoom100;
 				configObj.data.help 		= Settings.helpMess;
 				configObj.data.mat 			= Settings.matFilter;
 				configObj.data.hit 			= Settings.showHit;
-				configObj.data.sysCur 		= Settings.sysCur;
+				configObj.data.systemCursor = Settings.systemCursor;
 				configObj.data.hintTele 	= Settings.hintTele;
 				configObj.data.showFavs 	= Settings.showFavs;
 				configObj.data.quakeCam 	= Settings.quakeCam;
 				configObj.data.errorShowOpt = Settings.errorShowOpt;
+
 				configObj.data.app = app.save();
+
 				if (lastCom != null) configObj.data.lastCom = lastCom;
 					
-				configObj.data.vsWeaponNew 	= Settings.vsWeaponNew?0:1;
-				configObj.data.vsWeaponRep 	= Settings.vsWeaponRep?0:1;
-				configObj.data.vsAmmoAll 	= Settings.vsAmmoAll?0:1;	
-				configObj.data.vsAmmoTek 	= Settings.vsAmmoTek?0:1;	
-				configObj.data.vsExplAll 	= Settings.vsExplAll?0:1;	
-				configObj.data.vsMedAll 	= Settings.vsMedAll?0:1;
-				configObj.data.vsHimAll 	= Settings.vsHimAll?0:1;
-				configObj.data.vsEqipAll 	= Settings.vsEqipAll?0:1;
-				configObj.data.vsStuffAll 	= Settings.vsStuffAll?0:1;
-				configObj.data.vsVal 		= Settings.vsVal?0:1;
-				configObj.data.vsBook 		= Settings.vsBook?0:1;
-				configObj.data.vsFood 		= Settings.vsFood?0:1;
-				configObj.data.vsComp 		= Settings.vsComp?0:1;
-				configObj.data.vsIngr 		= Settings.vsIngr?0:1;
+				configObj.data.vsWeaponNew 	= Settings.vsWeaponNew	? 0:1;
+				configObj.data.vsWeaponRep 	= Settings.vsWeaponRep	? 0:1;
+				configObj.data.vsAmmoAll 	= Settings.vsAmmoAll	? 0:1;	
+				configObj.data.vsAmmoTek 	= Settings.vsAmmoTek	? 0:1;	
+				configObj.data.vsExplAll 	= Settings.vsExplAll	? 0:1;	
+				configObj.data.vsMedAll 	= Settings.vsMedAll		? 0:1;
+				configObj.data.vsHimAll 	= Settings.vsHimAll		? 0:1;
+				configObj.data.vsEqipAll 	= Settings.vsEqipAll	? 0:1;
+				configObj.data.vsStuffAll 	= Settings.vsStuffAll	? 0:1;
+				configObj.data.vsVal 		= Settings.vsVal		? 0:1;
+				configObj.data.vsBook 		= Settings.vsBook		? 0:1;
+				configObj.data.vsFood 		= Settings.vsFood		? 0:1;
+				configObj.data.vsComp 		= Settings.vsComp		? 0:1;
+				configObj.data.vsIngr 		= Settings.vsIngr		? 0:1;
+
 				configObj.flush();
 			} 
 			catch (err) 
@@ -1218,7 +1352,7 @@ package
 			}
 		}
 		
-		function weaponWrite() //Debug function?
+		function weaponWrite():void //Debug function?
 		{
 			var un:Unit = new Unit();
 			var s:String = '';
@@ -1226,7 +1360,7 @@ package
 			{
 				var weap:Weapon = new Weapon(un, w.@id, 0);
 				s += weap.write() + '\n';
-				if (w.com.length && w.com.@uniq.length()) 
+				if (w.com.length() && w.com.@uniq.length()) 
 				{
 					weap = new Weapon(un, w.@id, 1);
 					s += weap.write() + '\n';

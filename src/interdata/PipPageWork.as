@@ -18,34 +18,46 @@ package interdata
 		var assId:String = null;
 		var assArr:Array;
 		
-		var owlRep:int=100;
+		var owlRep:int = 100;
 
 		public function PipPageWork(npip:PipBuck, npp:String) 
 		{
-			isLC=true;
-			itemClass=visPipInvItem;
-			super(npip,npp);
-			vis.but4.visible=vis.but5.visible=false;
+			isLC = true;
+			itemClass = visPipInvItem;
+			super(npip, npp);
+			vis.but4.visible = false;
+			vis.but5.visible = false;
+			trace('PipPageWork.as/PipPageWork() - Created PipPageWork page.');
+														
 		}
 
 		//подготовка страниц
-		override function setSubPages()
+		override function setSubPages():void
 		{
-			if (pip.workTip=='mworklab') pip.workTip='lab';
-			if (pip.workTip=='mworkexpl') pip.workTip='expl';
-			vis.but1.visible=vis.but2.visible=vis.but3.visible=true;
-			if (pip.workTip=='mworkbench') 
+			trace('PipPageWork.as/setSubPages() - updating subPages.');
+
+			if (pip.workTip == 'mworklab') pip.workTip='lab';
+			if (pip.workTip == 'mworkexpl') pip.workTip='expl';
+
+			vis.but1.visible = true;
+			vis.but2.visible = true;
+			vis.but3.visible = true;
+
+			if (pip.workTip == 'mworkbench') 
 			{
-				vis.but1.visible=vis.but2.visible=false;
-				page2=3;
+				vis.but1.visible = false;
+				vis.but2.visible = false;
+
+				page2 = 3;
 			} 
-			else if (pip.workTip=='stove' || pip.workTip=='lab' || pip.workTip=='expl') 
+			else if (pip.workTip == 'stove' || pip.workTip == 'lab' || pip.workTip == 'expl') 
 			{
-				vis.but2.visible=vis.but3.visible=false;
-				page2=1;
+				vis.but2.visible = false;
+				vis.but3.visible = false;
+				page2 = 1;
 			}
 			
-			vis.bottext.text=Res.pipText('caps')+': '+pip.money;
+			vis.bottext.text = Res.pipText('caps') + ': ' + pip.money;
 			vis.butOk.visible=false;
 			statHead.cat.visible=false;
 			setIco();
@@ -57,7 +69,7 @@ package interdata
 			if (page2==1) {		//крафт
 				assArr=new Array();
 				statHead.fav.text='';
-				statHead.nazv.text=Res.pipText('work1');
+				statHead.objectName.text=Res.pipText('work1');
 				statHead.hp.text=Res.pipText('iv6');
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
@@ -65,52 +77,55 @@ package interdata
 					if (s=='' || inv.items[s]==null || inv.items[s].kol<=0) continue;
 					var node=inv.items[s].xml;
 					if (node==null) continue;
-					if (node.@tip=='scheme' && (node.@work.length()==0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {//node.@work=='stove' && pip.workTip=='lab' ||
+					if (node.@tip=='scheme' && (node.@work.length() == 0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {//node.@work=='stove' && pip.workTip=='lab' ||
 						var ok:int=1;
-						if (node.@skill.length && node.@lvl.length && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
+						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
 						var wid:String=s.substr(2);
 						if (inv.weapons[wid]) {
 							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) {
-								n={tip:Item.L_WEAPON, id:wid, nazv:Res.txt('w',wid), ok:ok ,sort:node.@skill+node.@lvl};
+								n={tip:Item.L_WEAPON, id:wid, objectName:Res.txt('w',wid), ok:ok ,sort:node.@skill+node.@lvl};
 								if (inv.items[wid] && inv.items[wid].kol>0) n.kol=inv.items[wid].kol;
 								arr.push(n);
 								assArr[n.id]=n;
 							}
 						} else if (inv.armors[wid]) {
 							if (inv.armors[wid].lvl<0) {
-								n={tip:Item.L_ARMOR, id:wid, nazv:Res.txt('a',wid), ok:ok ,sort:node.@skill+node.@lvl};
+								n={tip:Item.L_ARMOR, id:wid, objectName:Res.txt('a',wid), ok:ok ,sort:node.@skill+node.@lvl};
 								arr.push(n);
 							}
 						} else {
 							var node1=AllData.d.item.(@id==wid);
 							if (node1.length()==0) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
-							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, nazv:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
+							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, objectName:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
 							//if (node1.@one>0) n.tip=Item.L_IMPL;
 							arr.push(n);
 							assArr[n.id]=n;
 						}
 					}
 				}
-				if (arr.length) {
+				if (arr.length) 
+				{
 					arr.sortOn(['ok','sort']);
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				} 
+				else 
+				{
 					vis.emptytext.text=Res.pipText('emptycreate');
 					statHead.visible=false;
 				}
 					
 			} else if (page2==2) {	//улучшение
 				statHead.fav.text='';
-				statHead.nazv.text='';//Res.pipText('ii2');
+				statHead.objectName.text='';//Res.pipText('ii2');
 				statHead.hp.text='';
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
 				if (gg.pers.maxArmorLvl>0) {
 					for each(var arm:Armor in inv.armors) {
 						if (arm.lvl>=0 && arm.lvl<arm.maxlvl && arm.lvl<gg.pers.maxArmorLvl) {
-							n={tip:Item.L_ARMOR, id:arm.id, nazv:arm.nazv, lvl:arm.lvl, sort:('a'+arm.sort)};
+							n={tip:Item.L_ARMOR, id:arm.id, objectName:arm.objectName, lvl:arm.lvl, sort:('a'+arm.sort)};
 							arr.push(n);
 						}
 					}
@@ -118,22 +133,27 @@ package interdata
 				for each(var weap:Weapon in inv.weapons) {
 					if (weap==null) continue;
 					if (weap.skill==3 && weap.variant==0 && weap.respect!=3) {
-						n={tip:Item.L_WEAPON, id:weap.id, nazv:weap.nazv, sort:('w'+weap.nazv)};
+						n={tip:Item.L_WEAPON, id:weap.id, objectName:weap.objectName, sort:('w'+weap.objectName)};
 						arr.push(n);
 					}
 				}
-				if (arr.length) {
+				if (arr.length) 
+				{
 					arr.sortOn('sort');
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				} 
+				else 
+				{
 					vis.emptytext.text=Res.pipText('emptyupgrade');
 					statHead.visible=false;
 				}
-			} else if (page2==3) {	//ремонт
+			} 
+			else if (page2==3) 
+			{	//ремонт
 				assArr=new Array();
 				statHead.fav.text='';
-				statHead.nazv.text=Res.pipText('ii2');
+				statHead.objectName.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
 				statHead.ammo.text='';
 				statHead.ammotip.text=Res.pipText('repairto');
@@ -141,7 +161,7 @@ package interdata
 				if (inv.items['owl'] && inv.items['owl'].kol) {
 					World.world.pers.setRoboowl();
 					if (World.world.pers.owlhpProc<1) {
-						n={tip:Item.L_INSTR, id:'owl', nazv:inv.items['owl'].nazv, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, rep:owlRep/World.world.pers.owlhp};
+						n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, rep:owlRep/World.world.pers.owlhp};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
@@ -150,36 +170,39 @@ package interdata
 				for each (var w:Weapon in inv.weapons) {
 					if (w==null) continue;
 					if (w.tip!=0 && w.tip!=4 && w.respect!=1 && w.hp<w.maxhp) {
-						n={tip:Item.L_WEAPON, id:w.id, nazv:w.nazv, hp:w.hp, maxhp:w.maxhp, rep:w.rep_eff*0.25};
+						n={tip:Item.L_WEAPON, id:w.id, objectName:w.objectName, hp:w.hp, maxhp:w.maxhp, rep:w.rep_eff*0.25};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
 				}
 				for each (var a:Armor in inv.armors) {
 					if (!a.norep && !a.und && a.hp<a.maxhp) {
-						n={tip:Item.L_ARMOR, id:a.id, nazv:a.nazv, hp:a.hp, maxhp:a.maxhp, rep:1/a.kolComp};
+						n={tip:Item.L_ARMOR, id:a.id, objectName:a.objectName, hp:a.hp, maxhp:a.maxhp, rep:1/a.kolComp};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
 				}
-				if (arr.length) {
+				if (arr.length) 
+				{
 					vis.emptytext.text='';
 					statHead.visible=true;
-				} else {
+				} 
+				else 
+				{
 					vis.emptytext.text=Res.pipText('emptyrep');
 					statHead.visible=false;
 				}
 			}
-			
+			trace('PipPageWork.as/setSubPages() - Finished updating subPages.');
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object)
+		override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.rid.visible=false;
 			item.id.text=obj.id;
 			item.cat.text=obj.tip;
-			item.nazv.text=obj.nazv;
+			item.objectName.text=obj.objectName;
 			item.id.visible=item.cat.visible=false;
 			item.ramka.visible=false;
 			item.mass.text='';
@@ -199,21 +222,21 @@ package interdata
 		
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent)
+		override function statInfo(event:MouseEvent):void
 		{
 			assId=null;
 			if (page2==1) {
-				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text, 1);
+				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text, 1);
 			}
 			if (page2==2) {
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
-					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text, 2);
+					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text, 2);
 				} else {
-					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text+'^1',event.currentTarget.nazv.text+' - II', 2);
+					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text+'^1',event.currentTarget.objectName.text+' - II', 2);
 				}
 			}
 			if (page2==3) {
-				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.nazv.text);
+				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text);
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
 					showBottext(inv.armors[event.currentTarget.id.text].idComp);
 				}
@@ -226,19 +249,22 @@ package interdata
 			}
 		}
 		
-		function showBottext(cid)
+		function showBottext(cid):void
 		{
-			if (inv.items[cid]) {
+			if (inv.items[cid]) 
+			{
 				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+yel(inv.items[cid].kol);
 				if (World.world.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.pipText('invault')+')';
-			} else {
+			} 
+			else 
+			{
 				vis.bottext.htmlText='';
 			}
 		}
 		
 		function checkScheme(sch:XML):Boolean
 		{
-			if (sch.@skill.length && sch.@lvl.length && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
+			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
 				World.world.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
 			}
@@ -252,16 +278,18 @@ package interdata
 		}
 		
 		//вычесть нужное для крафта количество компонентов
-		function minusCraftComp(sch)
+		function minusCraftComp(sch):void
 		{
-			for each(var c in sch.craft) {
+			for each(var c in sch.craft) 
+			{
 				inv.minusItem(c.@id,c.@kol,false);
 			}
 		}
 		
-		override function itemClick(event:MouseEvent)
+		override function itemClick(event:MouseEvent):void
 		{
-			if (pip.gamePause) {
+			if (pip.gamePause) 
+			{
 				World.world.gui.infoText('gamePause');
 				return;
 			}
@@ -269,8 +297,9 @@ package interdata
 			var arm:Armor;
 			var cid:String=event.currentTarget.id.text;
 			var ccat:String=event.currentTarget.cat.text;
-			var cnazv:String=event.currentTarget.nazv.text
-			if (page2==1) {
+			var cnazv:String=event.currentTarget.objectName.text
+			if (page2==1) 
+			{
 				var sch=AllData.d.item.(@id=='s_'+cid);
 				if (sch.length()) sch=sch[0];
 				var kol:int=1;

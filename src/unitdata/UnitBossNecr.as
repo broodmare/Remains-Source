@@ -13,6 +13,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualNecrBoss;
+
 	public class UnitBossNecr extends UnitPon{
 		
 		public var scrAlarmOn:Boolean=true;
@@ -165,7 +167,7 @@ package unitdata
 			return td;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (isNoResBoss()) f=false;
 			super.setNull(f);
@@ -368,7 +370,7 @@ package unitdata
 			
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			resetProtect();
 			if (phase==1) {
@@ -483,7 +485,7 @@ package unitdata
 			super.dropLoot();
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			if (com=='off') {
 				walk=0;

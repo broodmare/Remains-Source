@@ -410,7 +410,7 @@ package unitdata
 			factor=new Array();
 			for each (var param in AllData.d.param) {
 
-				if (param.@f>0 && param.@v.length && param.@v!='')	factor[param.@v]=new Array();
+				if (param.@f>0 && param.@v.length() && param.@v!='')	factor[param.@v]=new Array();
 			}
 		}
 		
@@ -911,13 +911,13 @@ package unitdata
 					if (skills[sk]<maxSkLvl && !skillIsPost(sk)) dost.push(sk);
 				}
 				//если уже все прокачаны, вкачать дополнительные
-				if (dost.length==0 || level>=postPersLevel && Math.random()<0.2) 
+				if (dost.length == 0 || level>=postPersLevel && Math.random()<0.2) 
 				{
 					for (var sk in skills) 
 					{
 						if (skillIsPost(sk) && skills[sk]<maxPostSkLvl) dost.push(sk);
 					}
-					if (dost.length==0) break;
+					if (dost.length == 0) break;
 				}
 				sk=dost[Math.floor(Math.random()*dost.length)];
 				//определить, на сколько поднимать
@@ -940,7 +940,7 @@ package unitdata
 						if (res==1) dost.push(dp.@id);
 					}
 				}
-				if (dost.length==0) break;
+				if (dost.length == 0) break;
 				sk=dost[Math.floor(Math.random()*dost.length)];
 				addPerk(sk,true);
 				n--;
@@ -1034,7 +1034,7 @@ package unitdata
 		
 		function setBegFactor(id:String, res)
 		{
-			if ((factor[id] is Array) && factor[id].length==0) factor[id].push({id:'beg', res:res});
+			if ((factor[id] is Array) && factor[id].length == 0) factor[id].push({id:'beg', res:res});
 		}
 		
 		function setFactor(id:String, fact:String, ref:String, val, res, tip=null)
@@ -1138,7 +1138,7 @@ package unitdata
 			}
 		}
 		
-		public function die()
+		public function die():void
 		{
 			gg.poison=0;
 			gg.cut=0;

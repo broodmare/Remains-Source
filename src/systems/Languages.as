@@ -1,13 +1,7 @@
 package systems
 {
 
-
-	import flash.net.URLLoader; 
-	import flash.net.URLRequest; 
 	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
-	import flash.system.Capabilities;
 
 	import components.Settings;
 	import systems.XMLLoader;
@@ -17,124 +11,144 @@ package systems
 
 
 		//Language settings
-		public static var currentLanguageName:String; 		//Current langauge. Set to 'en'.
-		public static var defaultLanguageName:String; 		//Default langauge. Set to 'en'.
-		public static var languageList:Object;
+		public static var languageName:String = 'en';
+
+		public static var languageListObject:Object = {};
 		public static var languageCount:int = 0;
 
 		//Loading info
-		public static var currentLanguageData:Object;
-		public static var defaultLanguageData:Object;
-		public static var textLoaded:Boolean = false;
-		public static var textLoadFailed:Boolean = false;
+		public static var languageData:XML;
 
+		public static var textLoaded:Boolean = false;
 
 		public static var languageListXML:XML;
-		public static var langURL:String;
+
+		public static var languageFilesLocation:String 
+		public static var languageListURL:String;
 
 		public static var languageLoader:XMLLoader;
-		public static var languageURL:URLRequest;
-
+		public static var languageDataLoader:XMLLoader;
 
         public function Languages()
         {
-            
 			
         }
 
 
-		public static function languageStart()
+		public static function languageStart():void
 		{
+			trace('Languages.as/languageStart() - Loading languages..."');
 
+			languageFilesLocation = Settings.languageXMLLocation;
 
-			//Sets Language setting defaults
-            currentLanguageName     = 'en'; //Hardcoded for now
-            defaultLanguageName     = 'en'; //Hardcoded for now
-			langURL = Settings.languageListURL;
-
+			languageListURL = (languageFilesLocation + "languageList.xml");
 			
-			trace('Languages.as/languageStart() - Starting language setup...\n' + 'langURL is ' + langURL);
-            World.world.textProgressLoad = 0;
+			trace('Languages.as/languageStart() - Attempting to available languages from: "' + languageListURL + '."');
+			
+			languageLoader = new XMLLoader();
+			languageLoader.addEventListener(XMLLoader.XML_LOADED, languageSetup);
 
-			try
-			{
-				
-				languageURL = new URLRequest(langURL);
-				languageLoader = new XMLLoader();
-				languageLoader.load(languageURL.url, languageSetup, funProgress)
-				World.world.load_log += 'Language list: ' + languageURL.url + ' Loaded.\n';
-				trace('Languages.as/languageSetup() - Language list: ' + languageURL.url + ' Loaded.');
-			}
-			catch (err) 
-			{
-				textLoadFailed = true;
-				World.world.load_log += 'Error in language file: ' + languageURL.url + '\n';
-				trace('Languages.as/onCompleteLoadLang() - Error in language file: ' + languageURL.url);
-			}
+			trace('Languages.as/languageStart() - Calling XMLLoader.as/load with ' + languageListURL);
+			languageLoader.load(languageListURL, "languageStart()");
+
 		}
 
-        public static function languageSetup(langXML:XML)
+        public static function languageSetup(event:Event):void
         {
-			textLoaded = true;
-
-			languageListXML = langXML;
-			Res.d = languageListXML;
 			
+			trace('Languages.as/languageSetup() - Language list loaded, languageSetup() Executing...');
+			languageLoader.removeEventListener(XMLLoader.XML_LOADED, languageSetup);
+			
+			World.world.load_log += 'Language list: ' + languageListURL + ' Loaded.\n';
 
-			//Set currentLanguage as the game's saved lanaguge if it exists.
-			if (World.world.configObj.data.language != null) currentLanguageName = World.world.configObj.data.language; 
-
-			//If the languageXML exists and has a default language option, set it as the default language.
-			if (languageListXML && languageListXML.@defaultLanguage.length) defaultLanguageName = languageListXML.@defaultLanguage; 
-
-
-			for each (var xmlFile:XML in languageListXML.languageID) //Grab each langauge URL location in the file and save each one as an object.
+			languageListXML = languageLoader.xmlData;
+			
+			if (languageListXML == null)
 			{
-				if (xmlFile.@off.length == 0 || !(xmlFile.@off > 0))
-				{
-					var obj:Object = {file:xmlFile.@file, nazv:xmlFile[0]};
-					languageList[xmlFile.@id] = obj;
-					languageCount++;
-				}
+				trace('Languages.as/languageSetup() - ERROR: languageListXML is null.');
 			}
-
-			if (languageList[currentLanguageName] == null) currentLanguageName = defaultLanguageName; // If there was no language saved , set it to default.
-
-			defaultLanguageData = [languageList[defaultLanguageName].file, true]; // Load the default langauge
-			if (currentLanguageName != defaultLanguageName) // If the current language is different from the default, load it as well.
+			
+			if (World.world.configObj != null)
 			{
-				currentLanguageData = [languageList[currentLanguageName].file]; // Set the current langauge data as information from the XML.
-			} 
-			else 
-			{
-				currentLanguageData = defaultLanguageData; //Otherwise Just copy over default language
+				trace('Languages.as/languageSetup() - Setting current language.');
+				languageName = World.world.configObj.data.language;
 			}
-
-        }
-
-		public static function funProgress(progress:Number):void 
-		{
-			World.world.textProgressLoad = progress;
-        }
-
-
-		//select new language
-		public static function defuxLang(languageID:String)
-		{
-			currentLanguageName = languageID;
-			textLoadFailed = false;
-			if (languageID != defaultLanguageName) 
-			{
-				textLoaded = false;
-				currentLanguageData = [languageList[languageID].file];
-			} 
 			else
 			{
-				Res.d = Res.e;
-				World.world.pip.updateLang();
+				trace('Languages.as/languageSetup() - ERROR: World.world.configObj is null.');
 			}
-			World.world.saveConfig();
+			
+			
+			
+			if (languageListXML && languageListXML.languageID != null) 
+			{
+				trace('Languages.as/languageSetup() - Adding each language from xmlFile to languageListObject.');
+				for each (var languageFile:XML in languageListXML.languageID) //Grab each langauge URL from languageListXML.
+				{
+						//Create an object with two properties. A 'file' property which stores that language's XML file name and the 'name' property, which grabs the text from each node used for each language name.
+						var languageDataObject:Object = {objectName:languageFile[0], file:languageFile.@file}; //Sets the object's name as the first XML text (The language name) and saves the file URL.
+						languageListObject[languageFile] = languageDataObject; //Saves the Name and File url as the language ID. eg. 'en', 'ru', etc.
+						languageCount++;
+				}
+				trace('Languages.as/languageSetup() - Finished. Final languageCount is: "' + languageCount + '."');
+
+			}
+			else
+			{
+				trace('Languages.as/languageSetup() - ERROR: languageListXML.languageID is null!');
+			}
+
+
+			var languageFileURL:String = languageListObject[languageName].file;
+			trace('Languages.as/languageSetup() - Loading current language into memory. languageName: "' + languageName + '." URL: "' + languageFileURL + '."');
+			loadLanguage(languageFileURL); // Load the current language into memory as languageData.
+			
+        }
+
+
+		public static function loadLanguage(fileURL:String):void
+		{
+
+			var languageFileURL:String = (languageFilesLocation + fileURL);
+
+			languageDataLoader = new XMLLoader();
+			languageDataLoader.addEventListener(XMLLoader.XML_LOADED, applyLanguage);
+
+			trace('Languages.as/loadLanguage() - Calling XMLLoader.as/load with ' + languageFileURL);
+			languageDataLoader.load(languageFileURL, "loadLanguage()");
 		}
 
+		public static function applyLanguage(event:Event):void
+		{
+			languageDataLoader.removeEventListener(XMLLoader.XML_LOADED, applyLanguage);
+
+			
+			languageData = languageDataLoader.xmlData;
+			languageName = languageData.all.lang;
+			trace('Languages.as/applyLanguage() - Lanuage applied: "' + languageName + '." Updating "Res.as" to use currentLanguageData.');
+
+			Res.gameData = languageData;
+			
+
+			textLoaded = true;
+			trace('Languages.as/applyLanguage() - Language setup complete.');
+		}
+
+
+		public static function changeLanguage(newLanguageID:String):void
+		{
+			trace('Languages.as/languageSetup() - Setting textLoaded to false.');
+			textLoaded = false;
+			
+			languageName = newLanguageID
+			var languageFileURL:String = languageListObject[newLanguageID].file;
+			
+			trace('Languages.as/languageSetup() - Loading new language into memory. languageName: "' + newLanguageID + '" URL: "' + languageFileURL + '"');
+			loadLanguage(languageFileURL); // Load the current language into memory as languageData.
+
+			World.world.saveConfig();
+		} 
+		
+		
 	}
 }

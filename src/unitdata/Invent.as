@@ -76,7 +76,7 @@ package unitdata
 			{
 				addLoad(loadObj);
 			}
-			cItemMax=itemsId.length;
+			cItemMax = itemsId.length;
 		}
 		
 		public function nextItem(n:int=1) 
@@ -252,7 +252,7 @@ package unitdata
 				}
 			}
 			//проверить соответствие уровню навыка
-			if (pot.@minmed.length && pot.@minmed>gg.pers.medic) 
+			if (pot.@minmed.length() && pot.@minmed>gg.pers.medic) 
 			{
 				 World.world.gui.infoText('needSkill',Res.txt('e','medic'),pot.@minmed);
 				  return false;
@@ -407,7 +407,7 @@ package unitdata
 			if (item.@paint.length())  //краска
 			{
 				gg.changePaintWeapon(item.@id,item.@paint,item.@blend);
-				World.world.gui.infoText('inUse',items[ci].nazv);
+				World.world.gui.infoText('inUse',items[ci].objectName);
 				return true;
 			}
 			if (item.@text.length())  //документ
@@ -624,7 +624,7 @@ package unitdata
 				{
 					var hhp=w.maxhp*gg.pers.repairMult*w.rep_eff*koef;
 					w.repair(hhp);
-					World.world.gui.infoText('repairWeapon',w.nazv,Math.round(w.hp/w.maxhp*100));
+					World.world.gui.infoText('repairWeapon',w.objectName,Math.round(w.hp/w.maxhp*100));
 					World.world.gui.setWeapon();
 				} 
 				else 
@@ -737,7 +737,7 @@ package unitdata
 			spells[id]=sp;
 			var w:Weapon=addWeapon(id);
 			w.spell=true;
-			w.nazv=sp.nazv;
+			w.objectName=sp.objectName;
 			return sp;
 		}
 		
@@ -771,18 +771,18 @@ package unitdata
 					{
 						if (weapons[l.id].variant<l.variant) 
 						{
-							if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
+							if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
 							updWeapon(l.id,l.variant);
 						}
 						if (weapons[l.id].tip!=5) 
 						{
 							repairWeapon(l.id, hp);
-							if (!World.world.testLoot) World.world.gui.infoText('repairWeapon',weapons[l.id].nazv,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
+							if (!World.world.testLoot) World.world.gui.infoText('repairWeapon',weapons[l.id].objectName,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
 						}
 					} 
 					else 
 					{
-						if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.nazv,Math.round(l.sost*l.multHP*100));
+						if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
 						addWeapon(l.id, hp, 0,0, l.variant);
 						takeScript(l.id);
 						if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
@@ -808,7 +808,7 @@ package unitdata
 				{
 					if (items[l.id].kol==0)	takeScript(l.id);
 					plus(l,tr);
-					if (tr <=1 && !World.world.testLoot) World.world.gui.infoText('take',l.nazv);
+					if (tr <=1 && !World.world.testLoot) World.world.gui.infoText('take',l.objectName);
 					if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) 
 					{
 						addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
@@ -823,19 +823,19 @@ package unitdata
 				{
 					plus(l,tr);
 					if (!weapons[l.id]) addWeapon(l.id);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
+					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('take',l.objectName+((l.kol>1)?(' ('+l.kol+')'):''));
 					color=3;
 				} 
 				else if (l.tip==Item.L_AMMO) 
 				{
 					plus(l,tr);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeAmmo',l.nazv,l.kol);
+					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeAmmo',l.objectName,l.kol);
 					color=3;
 				} 
 				else if (l.tip==Item.L_MED) 
 				{
 					plus(l,tr);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeMed',l.nazv);
+					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeMed',l.objectName);
 					if (cItem<0) nextItem(1);
 					else World.world.gui.setItems();
 					color=1;
@@ -844,7 +844,7 @@ package unitdata
 				{
 					if (items[l.id].kol==0)	takeScript(l.id);
 					plus(l,tr);
-					if (tr <= 1 && !World.world.testLoot) World.world.gui.infoText('takeBook',l.nazv);
+					if (tr <= 1 && !World.world.testLoot) World.world.gui.infoText('takeBook',l.objectName);
 					if (cItem<0) nextItem(1);
 					else World.world.gui.setItems();
 					color=4;
@@ -853,7 +853,7 @@ package unitdata
 				{
 					if (items[l.id].kol==0)	takeScript(l.id);
 					plus(l,tr);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('take',l.nazv);
+					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('take',l.objectName);
 					gg.pers.setParameters();
 					color=6;
 				} 
@@ -863,7 +863,7 @@ package unitdata
 					plus(l,tr);
 					if (tr==0 && !World.world.testLoot) {
 						if (l.id=='money') World.world.gui.infoText('takeMoney',l.kol);
-						else World.world.gui.infoText('take',l.nazv+((l.kol>1)?(' ('+l.kol+')'):''));
+						else World.world.gui.infoText('take',l.objectName+((l.kol>1)?(' ('+l.kol+')'):''));
 					}
 					if (cItem<0) nextItem(1);
 					else World.world.gui.setItems();
@@ -876,8 +876,8 @@ package unitdata
 				}
 				if (tr==2) 
 				{
-					if (l.kol>1) World.world.gui.infoText('reward',l.nazv,l.kol);
-					else World.world.gui.infoText('reward2',l.nazv);
+					if (l.kol>1) World.world.gui.infoText('reward',l.objectName,l.kol);
+					else World.world.gui.infoText('reward2',l.objectName);
 				}
 				//если объект был сгенерирован случайно, обновить лимиты
 				if (tr==0 && l.imp==0 && l.xml.@limit.length()) 
@@ -888,7 +888,7 @@ package unitdata
 				if (!World.world.testLoot && (tr==0 || tr==2)) 
 				{
 					if (l.fc>=0) color=l.fc;
-					World.world.gui.floatText(l.nazv+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
+					World.world.gui.floatText(l.objectName+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
 				}
 				//информационное окно для важных предметов
 				if (Settings.helpMess || l.tip=='art') 
@@ -1032,12 +1032,12 @@ package unitdata
 						if (destr) {
 
 							minusItem(nid,kol,false);
-							World.world.gui.infoText('itemDestr',items[nid].nazv, kol);
+							World.world.gui.infoText('itemDestr',items[nid].objectName, kol);
 						} 
 						else 
 						{
 							drop(nid,kol);
-							World.world.gui.infoText('itemLose',items[nid].nazv, kol);
+							World.world.gui.infoText('itemLose',items[nid].objectName, kol);
 						}
 						World.world.calcMass=true;
 						return;

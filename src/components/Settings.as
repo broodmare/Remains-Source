@@ -29,8 +29,6 @@ package components
 
 		//Settings variables
 		public static var enemyAct:int;				//enemy activity, should be 3. If 0, enemies will not be active
-		public static var roomsLoad:int;			//1-load from file
-		public static var langLoad:int;				//1-load from file
 		public static var addCheckSP:Boolean;		//add skill points when visiting checkpoints
 		public static var weaponsLevelsOff:Boolean;	//disable using weapons of incorrect level
 		public static var drawAllMap:Boolean;		//display the whole map without fog of war
@@ -54,13 +52,14 @@ package components
 		public static var matFilter:Boolean;		//material filter
 		public static var helpMess:Boolean;		    //tutorial messages
 		public static var shineObjs:Boolean;		//objects glow
-		public static var sysCur:Boolean;			//system cursor
+		public static var systemCursor:Boolean;		//system cursor
 		public static var hintKeys:Boolean;		    //keyboard hints
 		public static var hintTele:Boolean;		    //teleport hints
 		public static var showFavs:Boolean;		    //show additional info when cursor is on top of the screen
 		public static var errorShow:Boolean;   
 		public static var errorShowOpt:Boolean;    
 		public static var quakeCam:Boolean;		    //camera shake
+
 		public static var vsWeaponNew:Boolean;		//automatically take new weapon if there is room
 		public static var vsWeaponRep:Boolean;		//automatically take weapon for repair
 		public static var vsAmmoAll:Boolean;		
@@ -75,6 +74,7 @@ package components
 		public static var vsFood:Boolean;		
 		public static var vsComp:Boolean;		
 		public static var vsIngr:Boolean;
+		
         public static var bitmapCachingOption:Boolean;
 
         //files
@@ -86,13 +86,18 @@ package components
         public static var textureURL:String;
         public static var spriteURL:String;
         public static var sprite1URL:String;
-        public static var languageListURL:String;
         
-        public static var musicKol:int;
-		public static var musicLoaded:int;
+        public static var musicTracksFound:int;
+		public static var musicTracksLoaded:int;
+		public static var soundFilesFound:int;
+		public static var soundFilesLoaded:int;
 
+
+
+		public static var musicXMLLocation:String;
 		public static var soundXMLLocation:String;
-
+		
+		public static var languageXMLLocation:String;
 
 
 
@@ -121,16 +126,15 @@ package components
         //Game settings
 		maxParts            = 100;			//maximum particles
 		shineObjs           = false;		//objects glow
-		sysCur              = false;		//system cursor
+		systemCursor        = false;		//system cursor
 		showHit             = 2;			//show damage
 		hintKeys            = true;			//keyboard hints
 		hintTele            = true;			//teleport hints
 		showFavs            = true;			//show additional info when cursor is on top of the screen
 		errorShow           = true;
 		errorShowOpt        = true;
-		roomsLoad           = 1;  		    //1-load from file
-		langLoad            = 1;  			//1-load from file
         bitmapCachingOption = true;
+
 
 
         //General player settings
@@ -177,20 +181,24 @@ package components
 
 
         //files
-        soundPath 	    = 'data/sound.swf';
-        musicPath 	    = 'Music/';
-        textureURL 	    = 'data/texture.swf';
-        spriteURL 	    = 'data/sprite.swf';
-        sprite1URL 	    = 'data/sprite1.swf';
-        levelPath 	    = 'Rooms/';
+        soundPath 	    	= 'sound/';
+        musicPath 	    	= 'sound/music/';
+        textureURL 	    	= 'data/texture.swf';
+        spriteURL 	    	= 'data/sprite.swf';
+        sprite1URL 	    	= 'data/sprite1.swf';
+        levelPath 	    	= 'Rooms/';
 
-		languageListURL = 'data/languageList.xml';
-		soundXMLLocation = 'data/xmldata/Sounds.xml';
+		languageXMLLocation = 'data/xmldata/';
+		soundXMLLocation 	= 'data/xmldata/Sounds.xml';
+		musicXMLLocation 	= 'data/xmldata/Music.xml';
 
-        musicKol        = 0;
-		musicLoaded     = 0;
 
-		trace('Settings.as/settingsSetup() - Settings initialized. languageListURL:' + languageListURL);
+		soundFilesFound 	= 0;
+		soundFilesLoaded   	= 0;
+        musicTracksFound    = 0;
+		musicTracksLoaded   = 0;
+
+		trace('Settings.as/settingsSetup() - Settings initialized.');
 
         }
 	}

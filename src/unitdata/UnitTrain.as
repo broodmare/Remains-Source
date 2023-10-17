@@ -2,6 +2,10 @@ package unitdata
 {
 	
 	import servdata.Interact;
+
+	import stubs.visualTrain;
+	import stubs.visualTrainArmor;
+
 	public class UnitTrain extends Unit
 	{
 		
@@ -33,12 +37,12 @@ package unitdata
 		{
 			hp=maxhp;
 		}
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			armor_hp=armor_maxhp;
 		}
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			hp=maxhp;
 		}

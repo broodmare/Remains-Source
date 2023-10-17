@@ -1,6 +1,9 @@
 package interdata 
 {
 	
+	import stubs.satsCel;
+	import stubs.satsUnCel;
+
 	public class SatsCel extends Obj
 	{
 		
@@ -35,12 +38,12 @@ package interdata
 			addVisual();
 		}
 		
-		public function remove()
+		public function remove():void
 		{
 			remVisual();
 		}
 		
-		public function run()
+		public function run():void
 		{
 			if (un) 
 			{

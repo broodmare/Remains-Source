@@ -8,6 +8,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualMoon;
+
 	public class UnitPet extends Unit{
 		
 		var spd:Object;
@@ -84,7 +86,7 @@ package unitdata
 			if (id=='moon')	newPart('blue_spark',25);
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (World.world.room.petOn) super.step();
 		}
@@ -116,7 +118,7 @@ package unitdata
 			}
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 			aiState=1;
@@ -299,7 +301,7 @@ package unitdata
 			addVisual();
 			flyX=gg.X, flyY=gg.Y-20;
 			setLevel(gg.pers.level);
-			if (room && room.units) room.units[1]=this;
+			if (room && room.units) room.units[1] = this;
 			//damage(40,Unit.D_INSIDE);
 		}
 		
@@ -312,17 +314,16 @@ package unitdata
 			remVisual();
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int = 0):void
 		{
 			if (sost>=3) return;
-			if (optAutores)	World.world.gui.infoText('petDie', nazv, World.world.pers.petRes);
-			else World.world.gui.infoText('petDie2',nazv);
+			if (optAutores)	World.world.gui.infoText('petDie', objectName, World.world.pers.petRes);
+			else World.world.gui.infoText('petDie2', objectName);
 			if (optUncall) {
 				recall();
 				gg.pet=null;
 				gg.childObjs[2]=null;
 				gg.currentPet='';
-				//gg.callPet(id,true)
 				return;
 			}
 			if (hpbar) hpbar.visible=false;
@@ -331,12 +332,12 @@ package unitdata
 			poison=stun=cut=0;
 			sost=4;
 			expl();
-			if (optAutores)	gg.noPet=World.world.pers.petRes*30;
+			if (optAutores)	gg.noPet = World.world.pers.petRes * 30;
 			World.world.gui.setPet();
 		}
 		
 		public function resurrect() {
-			World.world.gui.infoText('petRes', nazv);
+			World.world.gui.infoText('petRes', objectName);
 			if (hpbar) hpbar.visible=false;
 			hp=Math.min(100,maxhp/2);
 			setLevel(gg.pers.level);
@@ -351,14 +352,17 @@ package unitdata
 			World.world.gui.setPet();
 		}
 		
-		public function repair(hl:Number):Boolean {
+		public function repair(hl:Number):Boolean 
+		{
 			if (hp<0) hp=0;
 			if (hp>=maxhp) return false;
 			heal(hl,0,false);
-			if (sost==4) {
+			if (sost==4) 
+			{
 				sost=1;
-				if (gg.currentPet==id) {
-					World.world.gui.infoText('petRes', nazv);
+				if (gg.currentPet==id) 
+				{
+					World.world.gui.infoText('petRes', objectName);
 					setLevel(gg.pers.level);
 					visDetails();
 					X=gg.X, Y=gg.Y-20;

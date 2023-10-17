@@ -538,7 +538,7 @@ var rooms_begin:XML=<all>
     <back id="hkonstr" x="17" y="13"/>
     <obj id="area" code="RiWE7ABoZtLfggXI" x="46" y="19" h="7">
       <scr>
-        <s act="gotoland" val="surf"/>
+        <s act="gotoLevel" val="surf"/>
         <s act="passed"/>
       </scr>
     </obj>
@@ -2812,7 +2812,7 @@ var rooms_way:XML=<all>
         <s act="control off"/>
         <s act="dialog" val="dialZebra1"/>
         <s act="trigger" val="encounter_way" n="1"/>
-        <s act="gotoland" val="covert"/>
+        <s act="gotoLevel" val="covert"/>
         <s act="control on"/>
       </scr>
     </obj>

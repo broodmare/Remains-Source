@@ -9,6 +9,9 @@ Exported audio changed from Mono to Stereo.
 Exported audio set at 128kbs mp3.
 Flash version 30 -> 32.
 
+
+"Test" levels, quest, and checks removed.
+
 vfon = background
 
 
@@ -17,12 +20,15 @@ Renamed all folders to reduce compiler ambiguity.
 Reduced import nesting.
 moved language files into '/data'.
 moved '.swf' files into '/data'.
+moved .xml files to /data
+Removed built in levels option/check.
 
 Appear --
 	Load()
 		Fixed 'l' being defined twice.
 
-
+Ctr --
+	Grouped all key states into a keyState object.
 		
 Emitter --
 	step()
@@ -40,15 +46,16 @@ Form --
 	mat -> formMaterial
 	
 Game --
-	lands -> levelArray
-	
+	lands -> levelArray.
+	gotoLand -> gotoLevel.
+	exitLand -> exitLevel.
+	enterToCurLand -> enterCurrentLevel.
 	
 Grafon --
 	Moved initializers into the constructor instead of in the class definition.
 	Fixed for loop in constructor.
 	Fixed 'i' being defined twice in constructor.
 	Fixed for loop in drawAllObjs().
-	Rewrote checkLoaded() to avoid a situation where a resource loader could finish before an array was created to hold the data.
 	setBackgroundSize() -> setSkyboxSize.
 	transpFon -> transparentBackground.
 	drawBackWall() -> drawDecorativeBackground().
@@ -101,12 +108,17 @@ LevelTemplates (formerly LandAct) --
 MainMenu --
 	MainMenu()
 		Changed passed variable from a Sprite to a MovieClip.
+	Consolidated event listeners.
 	
 Material --
 		Imports a 'mask' propety from 'AllData.xml' as a generic class. This was changed to be imported as a string.
 		If the import failed, it was set as a class that doesn't exist (TileMask).
 		rear -> isBackwall
 		Filter array changed to a static object and moved to 'TileFilter.as'.
+	
+Res --
+	d -> gameData.
+	
 	
 Room (formerly Location) --
 	space -> roomTileArray
@@ -127,12 +139,19 @@ RoomTemplate (formerly Room)
 
 RoomContainer (formerly Rooms)
 
+Sats --
+	concatenating strings method changed from '+=' to '.appendText()' for performance.
+Snd --
+	inited -> soundInitialized.
+	onSnd -> soundEnabled.
+	onMusic -> musicEnabled.
+	shumArr -> soundStage.
+	resSounds -> soundResourceData
 
 Stand --
 	Fixed for loop in showWeaponList().
 
-Sats --
-	concatenating strings method changed from '+=' to '.appendText()' for performance.
+
 
 Tile --
 	dec() -> parseLevelXML().
@@ -168,16 +187,22 @@ Unit --
 		
 World --
 	ativateLand() -> activateLevel().
+	allLandsLoaded -> allLevelsLoaded
 	vfon -> skybox.
 	main -> mainDisplay
+	kolLands -> levelsFound
+	kolLandsLoaded -> levelsLoaded
 	visual -> mainCanvas
 	vWait -> loadingScreen
+	landDifLevel -> levelDifficultyLevel
 	w -> world
 	CellsX -> roomTileWidth
 	CellsY -> roomTileHeight
 	Settings moved into their own component class.
 	Language loader moved into their own system class.
-	
+	removed extra setTransform() call during appearance menu initialization.
+	removed savePath variable.
+	Create configObj sooner, language setup needs it to complete it's tasks.
 	
 Texture.fla --
 	fonCanter -> skyboxCanterlot

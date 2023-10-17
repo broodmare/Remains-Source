@@ -4,6 +4,7 @@ package unitdata
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
+	import stubs.visualCaptive;
 	
 	public class UnitCaptive extends Unit{
 		
@@ -50,7 +51,7 @@ package unitdata
 				vis.osn.gotoAndStop('opened');
 				inter.active=false;
 				id='cage';
-				nazv=Res.txt('u',id);
+				objectName=Res.txt('u',id);
 				npc=false;
 				fraction=0;
 			}
@@ -73,7 +74,7 @@ package unitdata
 		{
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			inter.command(com,val);
 		}
@@ -86,7 +87,7 @@ package unitdata
 			vis.osn.gotoAndPlay('open');
 			inter.active=false;
 			id='cage';
-			nazv=Res.txt('u',id);
+			objectName=Res.txt('u',id);
 			npc=false;
 			room.takeXP(500,World.world.gg.X, World.world.gg.Y-100,true);
 			fraction=0;

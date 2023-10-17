@@ -6,6 +6,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.vismtrap;
+
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
 	public class UnitTrigger extends Unit{
@@ -187,7 +189,7 @@ package unitdata
 			inter.update();
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			super.die(sposob);
 			if (status==0) activate();

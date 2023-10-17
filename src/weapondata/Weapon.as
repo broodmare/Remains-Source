@@ -13,11 +13,14 @@ package weapondata
 	
 	import components.Settings;
 	
+	import stubs.visp10mm;
+	import stubs.visualBullet;
+
 	public class Weapon extends Obj
 	{
 		
-		public static var weaponPerks:Array=['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']
-		public static var variant2=' - II';
+		public static var weaponPerks:Array = ['pistol','shot','commando','rifle','perf','laser','plasma','pyro','acute','stunning']
+		public static var variant2:String = ' - II';
 		
 		public var b:Bullet;
 		public var trasser:Trasser;
@@ -223,60 +226,60 @@ package weapondata
 		
 		public static function create(owner:Unit, id:String, nvar:int=0):Weapon 
 		{
-			if (id.charAt(id.length-2)=='^') 
+			if (id.charAt(id.length - 2)=='^') 
 			{
-				id=id.substr(0,id.length-2);
+				id=id.substr(0,id.length - 2);
 				nvar=1;
 			}
 			var xl:XMLList=AllData.d.weapon.(@id==id);
-			if (xl.length()==0) return null;
-			var node=AllData.d.weapon.(@id==id);
-			if (node.length()==0) return null;
-			node=node[0];
+			if (xl.length() == 0) return null;
+			var node:XMLList = AllData.d.weapon.(@id == id);
+			if (node.length() == 0) return null;
+			node = node[0];
 			var w:Weapon;
 			if (node.@tip==1) 
 			{
-				w=new WClub(owner,id,nvar);
+				w = new WClub(owner, id, nvar);
 			} 
-			else if (node.@tip==12) 
+			else if (node.@tip == 12) 
 			{
-				w=new WPaint(owner,id,nvar);
+				w = new WPaint(owner, id, nvar);
 			} 
-			else if (node.@tip==4) 
+			else if (node.@tip == 4) 
 			{
-				w=new WThrow(owner,id,nvar);
+				w = new WThrow(owner, id, nvar);
 			} 
-			else if (node.@tip==5) 
+			else if (node.@tip == 5) 
 			{
-				w=new WMagic(owner,id,nvar);
+				w = new WMagic(owner, id, nvar);
 			} 
-			else if (node.@punch>0)
+			else if (node.@punch > 0)
 			{
-				w=new WPunch(owner,id,nvar);
+				w = new WPunch(owner, id, nvar);
 			} 
 			else 
 			{
-				w=new Weapon(owner,id,nvar);
+				w = new Weapon(owner, id, nvar);
 			}
 			return w;
 		}
 		
 		public override function err():String 
 		{
-			return 'Error weapon '+nazv+':'+(owner?owner.nazv:'????');
+			return 'Error weapon '+objectName+':'+(owner?owner.objectName:'????');
 		}
 		
-		public function getXmlParam()
+		public function getXmlParam():void
 		{
 			// Common characteristics
 			var node:XML=AllData.d.weapon.(@id==id)[0];
 			
 			if (node.@tip.length()) tip=node.@tip;
-			if (variant==0)	nazv=Res.txt('w',id);
+			if (variant==0)	objectName=Res.txt('w',id);
 			else 
 			{
-				if (Res.istxt('w',id+'^'+variant)) nazv=Res.txt('w',id+'^'+variant);
-				else nazv=Res.txt('w',id)+variant2;
+				if (Res.istxt('w',id+'^'+variant)) objectName=Res.txt('w',id+'^'+variant);
+				else objectName=Res.txt('w',id)+variant2;
 			}
 			cat=node.@cat;
 			skill=node.@skill;
@@ -329,16 +332,16 @@ package weapondata
 			{ 
 				try 
 				{
-					vBullet=getDefinitionByName('visbul'+visbul) as Class;
+					vBullet = getDefinitionByName('visbul'+visbul) as Class;
 				} 
 				catch (err:ReferenceError) 
 				{
-					vBullet=visualBullet;
+					vBullet = visualBullet;
 				}
 			} 
 			else 
 			{
-				vBullet=visualBullet;
+				vBullet = visualBullet;
 			}
 			
 			//Sounds
@@ -368,8 +371,8 @@ package weapondata
 			//Ammunition
 			if (node.a.length()) 
 			{
-				ammo=ammoBase=node.a[0];
-				var ammoNode=AllData.d.item.(@id==ammo)[0];
+				ammo = ammoBase = node.a[0];
+				var ammoNode:XML = AllData.d.item.(@id==ammo)[0];
 				setAmmo(ammo,ammoNode);
 			}
 			
@@ -389,7 +392,7 @@ package weapondata
 			}
 		}
 		
-		function getVisParam(node:XML)
+		function getVisParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@vweap.length()>0) svisv=node.@vweap;
@@ -404,7 +407,7 @@ package weapondata
 			if (node.@flare.length()) flare=node.@flare;
 		}
 		
-		function getSndParam(node:XML)
+		function getSndParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@shoot.length()) sndShoot=node.@shoot;
@@ -417,7 +420,7 @@ package weapondata
 			if (node.@noise.length()) noise=node.@noise;
 		}
 		
-		function getDopParam(node:XML)
+		function getDopParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@vision.length()) visionMult=node.@vision;
@@ -427,7 +430,7 @@ package weapondata
 			if (node.@probiv.length()) probiv=node.@probiv;
 		}
 		
-		function getPhisParam(node:XML)
+		function getPhisParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@massa>0) massa=node.@massa/50;
@@ -447,7 +450,7 @@ package weapondata
 			if (node.@volna.length()) volna=true;
 		}
 		
-		function getCharParam(node:XML)
+		function getCharParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@maxhp.length()) maxhp=node.@maxhp;
@@ -476,7 +479,7 @@ package weapondata
 			if (node.@auto.length()) auto=(node.@auto!='0');
 		}
 		
-		function getAmmoParam(node:XML)
+		function getAmmoParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@holder.length()) holder=node.@holder;
@@ -487,7 +490,7 @@ package weapondata
 			if (node.@magic.length()) magic=dmagic=node.@magic;
 		}
 		
-		public function updVariant(nvar:int)
+		public function updVariant(nvar:int):void
 		{
 			if (uniq<0) return;
 			variant=nvar;
@@ -503,34 +506,34 @@ package weapondata
 			}
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			actions();		//various actions
 			if (owner) owner.setWeaponPos(tip);
 			if (vis) animate();		//animation
 		}
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			if (owner) 
 			{
-				room=owner.room;
+				room = owner.room;
 			} 
 			else 
 			{
-				room=World.world.room;
+				room = World.world.room;
 			}
 			super.addVisual();
-			if (owner && tip!=5 && owner.cTransform) 
+			if (owner && tip != 5 && owner.cTransform) 
 			{
-				vis.transform.colorTransform=owner.cTransform;
+				vis.transform.colorTransform = owner.cTransform;
 			}
 		}
-		public function addVisual2()
+		public function addVisual2():void
 		{
-			if (tip==5 && vis) World.world.grafon.canvasLayerArray[layer].addChild(vis);
+			if (tip == 5 && vis) World.world.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			t_attack=t_reload=0;
 			if (owner) 
@@ -541,177 +544,177 @@ package weapondata
 			}
 		}
 		
-		public function setPers(gg:UnitPlayer, pers:Pers)
+		public function setPers(gg:UnitPlayer, pers:Pers):void
 		{
-  			weaponSkill=pers.weaponSkills[skill];
-			if (pers.desintegr>0) desintegr=pers.desintegr;
-			if (tip!=5) drotMult=pers.drotMult;
-			reloadMult=pers.reloadMult;
-			precMult=pers.allPrecMult;
-			recoilMult=pers.recoilMult;
-			consMult=1;
-			damMult=pers.allDamMult;
-			if (skill==2 || skill==3 || skill==4) damMult*=pers.gunsDamMult;
-			var razn=lvl-pers.getWeapLevel(skill);
-			if (razn<0) skillPlusDam=1-razn*0.1;
-			else skillPlusDam=1;
-			//skillPlusDam=1;
-			speedMult=1;
-			damAdd=0;
-			pierAdd=0;
-			critchAdd=0;
-			otbrosMult=1;
-			devMult=1;
-			//dopDamage=1;
+  			weaponSkill = pers.weaponSkills[skill];
+			if (pers.desintegr > 0) desintegr = pers.desintegr;
+			if (tip != 5) drotMult = pers.drotMult;
+			reloadMult = pers.reloadMult;
+			precMult = pers.allPrecMult;
+			recoilMult = pers.recoilMult;
+			consMult = 1;
+			damMult = pers.allDamMult;
+			if (skill == 2 || skill == 3 || skill == 4) damMult *= pers.gunsDamMult;
+			var razn = lvl - pers.getWeapLevel(skill);
+			if (razn < 0) skillPlusDam = 1 - razn * 0.1;
+			else skillPlusDam = 1;
+			speedMult = 1;
+			damAdd = 0;
+			pierAdd = 0;
+			critchAdd = 0;
+			otbrosMult = 1;
+			devMult = 1;
 			for each(var wp in weaponPerks) 
 			{
 				if (opt[wp]) 
 				{
-					if (pers.hasOwnProperty(wp+'Prec')) precMult*=pers[wp+'Prec'];
-					if (pers.hasOwnProperty(wp+'Cons')) consMult*=pers[wp+'Cons'];
-					if (pers.hasOwnProperty(wp+'Dam')) damMult*=pers[wp+'Dam'];
-					if (pers.hasOwnProperty(wp+'Speed')) speedMult*=pers[wp+'Speed'];
-					if (pers.hasOwnProperty(wp+'Det')) damAdd+=pers[wp+'Det'];
-					if (pers.hasOwnProperty(wp+'Pier')) pierAdd+=pers[wp+'Pier'];
-					if (pers.hasOwnProperty(wp+'Critch')) critchAdd+=pers[wp+'Critch'];
-					if (pers.hasOwnProperty(wp+'Knock')) otbrosMult*=pers[wp+'Knock'];
-					if (pers.hasOwnProperty(wp+'Dev')) devMult*=pers[wp+'Dev'];
-					if (pers.hasOwnProperty(wp+'Stun')) {
-						dopEffect='stun';
-						dopDamage=pers[wp+'Stun'];
-						dopCh=1;
+					if (pers.hasOwnProperty(wp + 'Prec')) precMult *= pers[wp + 'Prec'];
+					if (pers.hasOwnProperty(wp + 'Cons')) consMult *= pers[wp + 'Cons'];
+					if (pers.hasOwnProperty(wp + 'Dam')) damMult *= pers[wp + 'Dam'];
+					if (pers.hasOwnProperty(wp + 'Speed')) speedMult *= pers[wp + 'Speed'];
+					if (pers.hasOwnProperty(wp + 'Det')) damAdd += pers[wp + 'Det'];
+					if (pers.hasOwnProperty(wp + 'Pier')) pierAdd += pers[wp + 'Pier'];
+					if (pers.hasOwnProperty(wp + 'Critch')) critchAdd += pers[wp + 'Critch'];
+					if (pers.hasOwnProperty(wp + 'Knock')) otbrosMult *= pers[wp + 'Knock'];
+					if (pers.hasOwnProperty(wp + 'Dev')) devMult *= pers[wp + 'Dev'];
+					if (pers.hasOwnProperty(wp + 'Stun')) 
+					{
+						dopEffect = 'stun';
+						dopDamage = pers[wp + 'Stun'];
+						dopCh = 1;
 					}
 				}
 			}
-			absPierRnd=pers.modTarget;
-			explRadMult=pers.explRadMult;
+			absPierRnd = pers.modTarget;
+			explRadMult = pers.explRadMult;
 		}
 		
-		public function actions()
+		public function actions():void
 		{
 			var rot2:Number;
-			if (owner==null) return;
-			if (X<owner.celX) storona=1;
-			else storona=-1;
+			if (owner == null) return;
+			if (X < owner.celX) storona = 1;
+			else storona = -1;
 			if (findCel) 
 			{
-				if (tip==5) 
+				if (tip == 5) 
 				{
-					X=owner.magicX;
-					Y=owner.magicY;
-					rot2=Math.atan2(owner.celY-Y, owner.celX-X);
+					X = owner.magicX;
+					Y = owner.magicY;
+					rot2 = Math.atan2(owner.celY - Y, owner.celX - X);
 				} 
-				else if (krep>0 || !X) 
+				else if (krep > 0 || !X) 
 				{
-					X=owner.weaponX;
-					Y=owner.weaponY;
-					rot2=Math.atan2(owner.celY-Y, Math.abs(owner.celX-X)*owner.storona);
+					X = owner.weaponX;
+					Y = owner.weaponY;
+					rot2 = Math.atan2(owner.celY - Y, Math.abs(owner.celX - X) * owner.storona);
 				} 
 				else 
 				{
-					X+=(owner.weaponX-X)/5;
-					Y+=(owner.weaponY-Y)/5;
-					rot2=Math.atan2(owner.celY-Y, owner.celX-X);
+					X += (owner.weaponX - X) / 5;
+					Y += (owner.weaponY - Y) / 5;
+					rot2 = Math.atan2(owner.celY - Y, owner.celX - X);
 				}
 			} 
 			else 
 			{
-				X=owner.weaponX;
-				Y=owner.weaponY;
-				rot2=forceRot;
+				X = owner.weaponX;
+				Y = owner.weaponY;
+				rot2 = forceRot;
 			}
-			ready=false;
-			var rdrot:Number=drot;
-			if (drot2>0 && (t_prep>0 || t_attack>0)) rdrot=drot2;
-			if (rdrot==0) 
+			ready = false;
+			var rdrot:Number = drot;
+			if (drot2 > 0 && (t_prep > 0 || t_attack > 0)) rdrot = drot2;
+			if (rdrot == 0) 
 			{
-				rot=rot2;
-				ready=true;
+				rot = rot2;
+				ready = true;
 			} 
 			else 
 			{
-				if (Math.abs(rot-rot2)>Math.PI) 
+				if (Math.abs(rot - rot2) > Math.PI) 
 				{
-					if (Math.abs(rot-rot2)>Math.PI*2-rdrot*drotMult) 
+					if (Math.abs(rot - rot2) > Math.PI * 2 - rdrot * drotMult) 
 					{
-						rot=rot2;
-						ready=true;
+						rot = rot2;
+						ready = true;
 					} 
-					else if (rot>rot2) rot+=rdrot*drotMult;
-					else rot-=rdrot*drotMult;
+					else if (rot > rot2) rot += rdrot * drotMult;
+					else rot -= rdrot * drotMult;
 				} 
 				else 
 				{
-					if (rot2-rot>rdrot*drotMult) rot+=rdrot*drotMult;
-					else if (rot2-rot<-rdrot*drotMult) rot-=rdrot*drotMult;
+					if (rot2 - rot > rdrot * drotMult) rot += rdrot * drotMult;
+					else if (rot2 - rot < -rdrot * drotMult) rot -= rdrot * drotMult;
 					else 
 					{
-						rot=rot2;
-						ready=true;
+						rot = rot2;
+						ready = true;
 					}
 				}
-				if (rot>Math.PI) rot-=Math.PI*2;
-				if (rot<-Math.PI) rot+=Math.PI*2;
+				if (rot > Math.PI) rot -= Math.PI * 2;
+				if (rot < -Math.PI) rot += Math.PI * 2;
 			}
-			if (fixRot==1) 
+			if (fixRot == 1) 
 			{
 				if (rot<-Math.PI/6 && rot>-Math.PI/2) rot=-Math.PI/6;
 				if (rot>-Math.PI*5/6 && rot<=-Math.PI/2) rot=-Math.PI*5/6;
 			}
-			if (fixRot==2) 
+			if (fixRot == 2) 
 			{
 				if (rot<-Math.PI/6) rot=-Math.PI/6;
 				if (rot>Math.PI/6) rot=Math.PI/6;
 			}
-			if (fixRot==3) 
+			if (fixRot == 3) 
 			{
-				if (rot>0 && rot<Math.PI*5/6) rot=Math.PI*5/6;
-				if (rot<=0 && rot>-Math.PI*5/6) rot=-Math.PI*5/6;
+				if (rot >  0 && rot < Math.PI * 5 / 6)  rot =  Math.PI * 5 / 6;
+				if (rot <= 0 && rot > -Math.PI * 5 / 6) rot = -Math.PI * 5 / 6;
 			}
 			
 			try 
 			{
-				if (dkol<=0 && t_attack==rapid) shoot();
-				if (dkol>0 && t_attack>rapid && t_attack%rapid==0) shoot();
+				if (dkol <= 0 && t_attack == rapid) shoot();
+				if (dkol > 0 && t_attack>rapid && t_attack%rapid == 0) shoot();
 			} 
 			catch (err) 
 			{
-				trace('err shoot', owner.nazv);
+				trace('err shoot', owner.objectName);
 			}
 
-			if (t_attack>0) 
+			if (t_attack > 0) 
 			{
 				t_attack--;
 			}
-			if (t_rel>0) t_rel--;
-			if (t_ret>0) 
+			if (t_rel > 0) t_rel--;
+			if (t_ret > 0) 
 			{
 				t_ret--;
 			}
-			if (rotUp>5) 
+			if (rotUp > 5) 
 			{
-				rotUp*=0.9;
+				rotUp *= 0.9;
 			} 
-			else if (rotUp>0.5) 
+			else if (rotUp > 0.5) 
 			{
-				rotUp-=0.5;
+				rotUp -= 0.5;
 			} 
-			else rotUp=0;
-			if (t_prep>0) 
+			else rotUp = 0;
+			if (t_prep > 0) 
 			{
 				t_prep--;
 			} 
-			else {
-				kol_shoot=0;
+			else 
+			{
+				kol_shoot = 0;
 			}
-			if (t_auto>0) 
+			if (t_auto > 0) 
 			{
 				t_auto--;
 			} 
-			else pow=0;
-			if (t_shoot>0) t_shoot--;
+			else pow = 0;
+			if (t_shoot > 0) t_shoot--;
 			
-			if (sndPrep!='') 
+			if (sndPrep != '') 
 			{
 				//trace('act',is_attack, is_pattack)
 				if (!is_pattack && is_attack) 
@@ -750,7 +753,7 @@ package weapondata
 			if (waitReady && !ready) return false;
 			if (hp<=0 && owner==World.world.gg) 
 			{
-				World.world.gui.infoText('brokenWeapon',nazv,null,false);
+				World.world.gui.infoText('brokenWeapon',objectName,null,false);
 				World.world.gui.bulb(X,Y);
 				return false;
 			}
@@ -787,26 +790,26 @@ package weapondata
 			return true;
 		}
 		
-		protected function weaponAttack()
+		protected function weaponAttack():void
 		{
 			if (jammed) 
 			{
 				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) World.world.gui.infoText('weaponCircuit',null,null,false);
-				else World.world.gui.infoText('weaponJammed',null,null,false);
+				else World.world.gui.infoText('weaponJammed', null, null, false);
 				Snd.ps('no_ammo',X,Y);
 				initReload();
-				return false;
+				return;
 			}
 			if (hp<maxhp/2) breaking=(maxhp-hp)/maxhp*2-1;
-			else breaking=0;
+			else breaking = 0;
 		}
 		
 		protected function checkAvail():Boolean 
 		{
-			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
-			if (razn==1) skillConf=0.8;
-			else if (razn==2) skillConf=0.6;
-			else if (razn>2) 
+			var razn:Number = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
+			if (razn == 1) skillConf = 0.8;
+			else if (razn == 2) skillConf = 0.6;
+			else if (razn > 2) 
 			{
 				World.world.gui.infoText('weaponSkillLevel',null,null,false);
 				return false;
@@ -822,10 +825,10 @@ package weapondata
 		//возможность атаки
 		public function attackPos():Boolean 
 		{
-			return t_attack<=0 && t_reload<=0;
+			return t_attack <= 0 && t_reload <= 0;
 		}
 		
-		public function getBulXY()
+		public function getBulXY():void
 		{
 			try 
 			{
@@ -877,7 +880,7 @@ package weapondata
 			}
 			var r:Number = (Math.random()-0.5)*(deviation*(1+breaking*2)/skillConf/(sk+0.01)+owner.mazil)*3.1415/180*devMult;
 			getBulXY();
-			for (var i=0; i<kol; i++) 
+			for (var i:int = 0; i<kol; i++) 
 			{
 				if (navod) 
 				{
@@ -1016,7 +1019,7 @@ package weapondata
 			return rap0;
 		}
 		
-		public function setTrass(gr:Graphics)
+		public function setTrass(gr:Graphics):void
 		{
 			var rot3:Number = Math.atan2(World.world.celY-Y, World.world.celX-X);
 			trasser.room=owner.room;
@@ -1039,7 +1042,7 @@ package weapondata
 		}
 		
 		
-		protected function setBullet(bul:Bullet)
+		protected function setBullet(bul:Bullet):void
 		{
 			bul.tipDamage=tipDamage;
 			bul.tipDecal=tipDecal;
@@ -1073,7 +1076,7 @@ package weapondata
 			if (absPierRnd>0 && Math.random()<absPierRnd*critCh) bul.pier=1000;
 		}
 		
-		public function reloadWeapon()
+		public function reloadWeapon():void
 		{
 			jammed=false;
 			if (ammo=='recharg') return;
@@ -1103,7 +1106,7 @@ package weapondata
 		}
 		
 		//установить использующийся тип боеприпасов
-		public function setAmmo(nammo:String=null, node:XML=null)
+		public function setAmmo(nammo:String=null, node:XML=null):void
 		{
 			if (nammo!=null) ammo=nammo;
 			if (node==null) 
@@ -1137,11 +1140,11 @@ package weapondata
 		}
 		
 		//разрядить
-		public function unloadWeapon()
+		public function unloadWeapon():void
 		{
 			if (owner && owner.player && holder && hold && ammo!='' && ammo!='recharg' && ammo!='not') 
 			{
-				World.world.gui.infoText('unloadWeapon',nazv,null,false);
+				World.world.gui.infoText('unloadWeapon',objectName,null,false);
 				(owner as UnitPlayer).invent.items[ammo].kol+=hold;
 				World.world.invent.mass[2]+=World.world.invent.items[ammo].mass*hold;
 				hold=0;
@@ -1170,24 +1173,24 @@ package weapondata
 		{
 			if (hp<=0) return -2;
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) return -1; 
-			var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
+			var razn:Number = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			if (Settings.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) return -1;
 			if (ammo!='recharg' && ammo!='not' && holder>0 && World.world.invent.items[ammo].kol<rashod) return 0;
 			return 1;
 		}
 		
-		public function repair(nhp:int)
+		public function repair(nhp:int):void
 		{
 			hp+=nhp;
 			if (hp>maxhp) hp=maxhp;
 		}
 		
-		public function crash(dam:int=1)
+		public function crash(dam:int=1):void
 		{
 
 		}
 
-		public function initReload(nammo:String='')
+		public function initReload(nammo:String=''):void
 		{
 			if (!jammed && (holder<=0 || (hold==holder && nammo=='') || recharg>0)) return;
 			if (nammo=='') ammoTarg=ammo;
@@ -1196,10 +1199,11 @@ package weapondata
 				//не подходящие боеприпасы
 				if (nammo!='' && nammo!=ammo) 
 				{
-					var am=AllData.d.item.(@id==nammo);
-					if (am.length()==0) return;
-					if (am.@base!=ammoBase) {
-						World.world.gui.infoText('imprAmmo',World.world.invent.items[nammo].nazv,null,false);
+					var am:XMLList = AllData.d.item.(@id==nammo);
+					if (am.length() == 0) return;
+					if (am.@base!=ammoBase) 
+					{
+						World.world.gui.infoText('imprAmmo',World.world.invent.items[nammo].objectName,null,false);
 						World.world.gui.bulb(X,Y);
 						return;
 					}
@@ -1209,8 +1213,9 @@ package weapondata
 				{
 					ammoTarg=nammo;
 				}
-				if (!jammed && ammo!='not' && World.world.invent.items[ammoTarg].kol<rashod) {
-					World.world.gui.infoText('noAmmo',World.world.invent.items[ammoTarg].nazv,null,false);
+				if (!jammed && ammo!='not' && World.world.invent.items[ammoTarg].kol<rashod) 
+				{
+					World.world.gui.infoText('noAmmo',World.world.invent.items[ammoTarg].objectName,null,false);
 					World.world.gui.bulb(X,Y);
 					return;
 				}
@@ -1219,7 +1224,7 @@ package weapondata
 			{
 				if (reload>0) 
 				{
-					//if (owner==World.world.gg && holder>rashod) World.world.gui.infoText('reloadWeapon',nazv);
+					//if (owner==World.world.gg && holder>rashod) World.world.gui.infoText('reloadWeapon',objectName);
 					t_reload=Math.round(reload*reloadMult);
 					if (animated) 
 					{
@@ -1240,7 +1245,7 @@ package weapondata
 			return false;
 		}
 
-		public function animate()
+		public function animate():void
 		{
 			if (!vis) return;
 			vis.x=X-t_ret*vis.scaleX*2;
@@ -1287,7 +1292,7 @@ package weapondata
 			s+=id;
 			if (variant>0) s+='^'+variant;
 			s+='\t';
-			s+=nazv+'\t';
+			s+=objectName+'\t';
 			s+=skill+'\t';
 			if (lvl>0) s+=lvl+'\t';
 			else if (tip==5 && variant>0) s+=(perslvl+7)+'\t';

@@ -9,6 +9,8 @@ package unitdata
 
 	import components.Settings;
 
+	import stubs.visualMsp;
+
 	public class UnitMsp extends Unit{
 
 		public var tr:int;

@@ -7,6 +7,8 @@ package unitdata
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	
+	import stubs.visualGrifArm1;
+
 	public class UnitMerc extends UnitRaider{
 		
 		var arm:MovieClip;
@@ -30,7 +32,7 @@ package unitdata
 			}
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			if (disabled) return;
 			trigDis=!checkTrig();
@@ -43,7 +45,7 @@ package unitdata
 				currentWeapon.recoilUp*=0.25;
 			}
 		}
-		public override function remVisual()
+		public override function remVisual():void
 		{
 			super.remVisual();
 			try {

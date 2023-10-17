@@ -8,6 +8,8 @@ package locdata
 	
 	import components.Settings;
 	
+	import stubs.vistrapspikes;
+	
 	public class Trap extends Obj
 	{
 
@@ -19,9 +21,9 @@ package locdata
 		
 		public var spDam:int=1;		//способ нанесения урона
 		public var spBind:int=1;	//способ прикрепления
-		public var floor:Boolean=false;
+		public var floor:Boolean = false;
 		
-		var anim:Boolean=false;
+		var anim:Boolean = false;
 
 
 		public function Trap(newRoom:Room, nid:String, nx:int=0, ny:int=0) 
@@ -31,40 +33,49 @@ package locdata
 			prior=1;
 			id=nid;
 			X=nx, Y=ny;
-			var vClass:Class=Res.getClass('vistrap'+id, null, vistrapspikes);
-			var vClass2:Class=Res.getClass('vistrap'+id+'2', null, null);
-			vis=new vClass();
-			vis2=new vClass2();
-			var n1=Math.floor(Math.random()*vis.totalFrames)+1;
-			var n2=Math.floor(Math.random()*vis.totalFrames)+1;
-			levitPoss=false;
+			var vClass:Class  = Res.getClass('vistrap' + id, null, vistrapspikes);
+			var vClass2:Class = Res.getClass('vistrap' + id + '2', null, null);
+			vis  = new vClass();
+			vis2 = new vClass2();
+			var n1 = Math.floor(Math.random() * vis.totalFrames) + 1;
+			var n2 = Math.floor(Math.random() * vis.totalFrames) + 1;
+			levitPoss = false;
 			vis.gotoAndStop(n1);
 			vis2.gotoAndStop(n2);
 			getXmlParam()
 			if (!anim) vis.cacheAsBitmap=true;
-			if (vis2 && !anim) vis2.cacheAsBitmap=true;
-			X1=X-scX/2, X2=X+scX/2;
+			if (vis2 && !anim) vis2.cacheAsBitmap = true;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
 			if (floor) 
 			{
-				Y1=Y-scY, Y2=Y;
+				Y1 = Y - scY; 
+				Y2 = Y;
 			} 
 			else 
 			{
-				Y1=Y-Settings.tilePixelHeight, Y2=Y1+scY;
+				Y1 = Y - Settings.tilePixelHeight;
+				Y2 = Y1 + scY;
 			}
-			vis.x=X, vis.y=Y;
-			vis2.x=X, vis2.y=Y;
-			cTransform=room.cTransform;
+			vis.x = X;
+			vis.y = Y;
+			vis2.x = X;
+			vis2.y = Y;
+			cTransform = room.cTransform;
 			bindTile();
 		}
 		
 		public function getXmlParam()
 		{
-			var node:XML=AllData.d.obj.(@id==id)[0];
-			nazv=Res.txt('u',id);
-			if (node.@sX>0) scX=node.@sX; else scX=node.@size*Settings.tilePixelWidth;
-			if (node.@sY>0) scY=node.@sY; else scY=node.@wid*Settings.tilePixelHeight;
-			dam=node.@damage;
+			var node:XML = AllData.d.obj.(@id == id)[0];
+			objectName = Res.txt('u', id);
+			if (node.@sX > 0) scX = node.@sX; 
+			else scX = node.@size * Settings.tilePixelWidth;
+
+			if (node.@sY > 0) scY = node.@sY; 
+			else scY = node.@wid*Settings.tilePixelHeight;
+
+			dam = node.@damage;
 			if (node.@tipdam.length()) tipDamage=node.@tipdam;
 			if (node.@anim.length()) anim=true;
 			if (node.@floor.length()) floor=true;
@@ -72,9 +83,10 @@ package locdata
 			if (node.@bind.length()) spBind=node.@bind;
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
-			if (vis) {
+			if (vis) 
+			{
 				World.world.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform) 
 				{
@@ -90,13 +102,13 @@ package locdata
 				}
 			}
 		}
-		public override function remVisual()
+		public override function remVisual():void
 		{
 			super.remVisual();
 			if (vis2 && vis2.parent) vis2.parent.removeChild(vis2);
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if(!room.roomActive) return;
 			for each (var un:Unit in room.units) 
@@ -118,7 +130,7 @@ package locdata
 			}
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			room.remObj(this);
 		}

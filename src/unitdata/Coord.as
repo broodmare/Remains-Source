@@ -42,7 +42,7 @@ package  unitdata
 			}
 		}
 		
-		public function step() 
+		public function step():void
 		{
 			t1--;
 			if (t1<=0) 

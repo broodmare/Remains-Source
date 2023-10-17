@@ -56,13 +56,14 @@ package servdata
 		}
 
 		public function save():Object {
-			var obj=new Object();
+			var obj:Object = new Object();
 			obj.rep=rep;
 			return obj;
 		}
 		
 		// Setting up interaction, called when connecting to the unit
-		public function setInter() {
+		public function setInter():void
+		{
 			if (id=='adoc' && rep<=1) inter.t_action=45;
 		}
 		
@@ -77,13 +78,16 @@ package servdata
 			if (id=='steel2') refresh();
 		}
 		
-		function trig(s:String):* {
+		function trig(s:String):* 
+		{
 			return World.world.game.triggers[s];
 		}
 		
 		// This function is called when generating a map with the unit
-		public function refresh() {
-			if (id=='calam') {
+		public function refresh():void
+		{
+			if (id=='calam') 
+			{
 				if (rep==0 && owner) owner.command('ai','');
 			}
 			if (id=='calam2') hidden=(trig('storm')>0);
@@ -102,14 +106,17 @@ package servdata
 		}
 		
 		// This function is called when a flying unit lands
-		public function landing() {
-			if (id=='calam') {
+		public function landing():void 
+		{
+			if (id=='calam') 
+			{
 				rep=1;
 			}
 		}
 		
 		// Activate interaction with NPC
-		public function activate() {
+		public function activate():void
+		{
 			if (check(true) && npcInter!='patient') return;
 			if (npcInter=='travel') {
 				World.world.pip.travel=true;
@@ -133,7 +140,8 @@ package servdata
 			}
 		}
 		
-		public function pip(n:int) {
+		public function pip(n:int):void
+		{
 			World.world.pip.vendor=vendor;
 			World.world.pip.npcId=id;
 			World.world.pip.npcInter=npcInter;
@@ -147,8 +155,8 @@ package servdata
 			if (xml && xml.dial.length()) {
 				for each (var dial in xml.dial) {
 					if (trig('dial_'+dial.@id)) continue;
-					if (dial.@lvl.length && dial.@lvl>World.world.pers.level) continue; 
-					if (dial.@barter.length && dial.@barter>World.world.pers.getSkLevel(World.world.pers.skills['barter'])) continue; 
+					if (dial.@lvl.length() && dial.@lvl>World.world.pers.level) continue; 
+					if (dial.@barter.length() && dial.@barter>World.world.pers.getSkLevel(World.world.pers.skills['barter'])) continue; 
 					if (dial.@trigger.length()) {
 						if (dial.@n.length()) {
 							if (trig(dial.@trigger)!=dial.@n) continue;
@@ -156,10 +164,10 @@ package servdata
 							if (trig(dial.@trigger)!=1) continue;
 						}
 					}
-					if (dial.@prev.length && trig('dial_'+dial.@prev)!=1) continue; 
-					if (dial.@level.length && !World.world.game.levelArray[dial.@level].access) continue; 
-					if (dial.@armor.length && (World.world.gg.currentArmor==null || World.world.gg.currentArmor.id!=dial.@armor)) continue; 
-					if (dial.@pet.length && World.world.gg.currentPet!=dial.@pet) continue; 
+					if (dial.@prev.length() && trig('dial_'+dial.@prev)!=1) continue; 
+					if (dial.@level.length() && !World.world.game.levelArray[dial.@level].access) continue; 
+					if (dial.@armor.length() && (World.world.gg.currentArmor==null || World.world.gg.currentArmor.id!=dial.@armor)) continue; 
+					if (dial.@pet.length() && World.world.gg.currentPet!=dial.@pet) continue; 
 					if (dial.@quest.length()) {						 // If a quest is active
 						var quest=World.world.game.quests[dial.@quest];
 						if (quest==null || quest.state!=1) continue; 
@@ -183,7 +191,7 @@ package servdata
 
 						}
 						if (dial.reward.length()) {
-							for each(var rew in dial.reward) {
+							for each(var rew:XML in dial.reward) {
 								if (rew.@id.length()) {
 									var item:Item;
 									if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
@@ -256,67 +264,97 @@ package servdata
 			if (World.world.pers.skills[xml.@needskill]==null) return;
 			var sk:int=World.world.pers.getSkLevel(World.world.pers.skills[xml.@needskill]);
 			var ok:Boolean=false;
-			if (sk<2) {
+			if (sk<2) 
+			{
 				World.world.gui.dialog('rblAutoDocR1');
-			} else if (sk>=5) {
+			} 
+			else if (sk>=5) 
+			{
 				World.world.gui.dialog('rblAutoDocR5');
 				ok=true;
-			} else if (rep==1) {
+			} 
+			else if (rep==1) 
+			{
 				ok=true;
-				for each(var node in xml.rep) {
-					if (World.world.invent.items[node.@id] && World.world.invent.items[node.@id].kol<node.@kol) {
-						World.world.gui.infoText('required',World.world.invent.items[node.@id].nazv, node.@kol-World.world.invent.items[node.@id].kol);
+				for each(var node:XML in xml.rep) 
+				{
+					if (World.world.invent.items[node.@id] && World.world.invent.items[node.@id].kol<node.@kol) 
+					{
+						World.world.gui.infoText('required',World.world.invent.items[node.@id].objectName, node.@kol-World.world.invent.items[node.@id].kol);
 						ok=false;
 					}
 				}
-				if (ok) {
-					for each(node in xml.rep) {
-						if (World.world.invent.items[node.@id]) {
+				if (ok) 
+				{
+					for each(node in xml.rep) 
+					{
+						if (World.world.invent.items[node.@id]) 
+						{
 							World.world.invent.minusItem(node.@id, node.@kol);
-							World.world.gui.infoText('withdraw',World.world.invent.items[node.@id].nazv, node.@kol);
+							World.world.gui.infoText('withdraw',World.world.invent.items[node.@id].objectName, node.@kol);
 						}
 					}
 					World.world.gui.dialog('rblAutoDocR4');
-				} else {
+				} 
+				else 
+				{
 					World.world.gui.dialog('rblAutoDocR3');
 				}
-			} else {
+			} 
+			else 
+			{
 				World.world.gui.dialog('rblAutoDocR2');
 				rep=1;
 			}
-			if (ok) {
+			if (ok) 
+			{
 				rep=2;
-				inter.t_action=0;
+				inter.t_action = 0;
 				setStatus();
-				if (xml && xml.quest.length()) {
+				if (xml && xml.quest.length()) 
+				{
 					World.world.game.closeQuest(xml.quest.@id,xml.quest.@cid);
 				}
 			}
 		}
 		
-		public function patient() {
+		public function patient():void 
+		{
 			if (World.world.pers.skills[xml.@needskill]==null) return;
 			var sk:int=World.world.pers.getSkLevel(World.world.pers.skills[xml.@needskill]);
-			if (rep==2) {	// Cured
-				if (trig('patient_tr2')=='1') {// Cured
+			if (rep==2) 
+			{	// Cured
+				if (trig('patient_tr2')=='1') 
+				{// Cured
 					if (owner) owner.command('openEyes');
-				} else {
+				}
+				else 
+				{
 					World.world.gui.dialog('dialPatient7');
 				}
-			} else if (rep==1) {	// After examination
-				if (World.world.invent.items[xml.@needitem] && World.world.invent.items[xml.@needitem].kol>0) {	// There's medicine
+			} 
+			else if (rep==1) 
+			{	// After examination
+				if (World.world.invent.items[xml.@needitem] && World.world.invent.items[xml.@needitem].kol>0) 
+				{	// There's medicine
 					World.world.invent.minusItem(xml.@needitem, 1);
 					rep=2;
 					World.world.gui.dialog('dialPatient5');
 					World.world.game.triggers['patient_tr2']='wait';
 					World.world.game.closeQuest('patientHeal', '3');
 					World.world.game.showQuest('patientHeal', '4');
-				} else {	// No medicine
+				} 
+				else 
+				{	// No medicine
 					World.world.gui.dialog('dialPatient8');
 				}
-			} else if (sk<4) {	// Insufficient medical skill
+			} 
+			else if (sk<4) 
+			{	// Insufficient medical skill
 				World.world.gui.dialog('dialPatient2');
-			} else {
+			} 
+			else 
+			{
 				World.world.gui.dialog('dialPatient3');
 				rep=1;
 				World.world.game.triggers['patient_tr1']=1;

@@ -32,13 +32,13 @@ package locdata
 		public var prob:String = '';			//trial layer, ''-main layer
 		public var minLocX:int = 0;
 		public var minLocY:int = 0;
-		public var minLocZ:int = 0;				//terrain size
+		public var minLocZ:int = 0;				//Level size
 		public var maxLocX:int = 4;
 		public var maxLocY:int = 6;
-		public var maxLocZ:int = 2;				//terrain size
+		public var maxLocZ:int = 2;				//Level size
 		
 		public var loc_t:int = 0;				//timer
-		static var locN:int = 0;			//transition counter
+		static var locN:int = 0;				//transition counter
 		
 		public var gg:UnitPlayer;
 		public var ggX:Number=0;				//X coordinate of the player in the level
@@ -46,17 +46,17 @@ package locdata
 		public var currentCP:CheckPoint;
 		public var art_t:int=200;				// ???
 		
-		public var map:BitmapData;				//terrain map
+		public var map:BitmapData;				//Level map
 		
-		public var landDifLevel:Number = 0;		//overall difficulty, depends on player level or map settings
+		public var levelDifficultyLevel:Number = 0;		//overall difficulty, depends on player level or map settings
 		public var gameStage:int = 0;			//game story stage, affects loot drops, if 0, then no restrictions
 		public var lootLimit:Number = 0;		//limit of special item drops
 		public var allXp:int = 0;
 		public var summXp:int = 0;
 		public var isRefill:Boolean = false;	//goods have been replenished
 		
-		var allRoom:Array;				//array of all rooms taken from xml
-		var rndRoom:Array;				//array used for random generation
+		var allRoom:Array;						//array of all rooms taken from xml
+		var rndRoom:Array;						//array used for random generation
 		public var kolAll:Array;				//number of each type of object
 		
 		public var uidObjs:Array;				//all objects with uid
@@ -64,10 +64,10 @@ package locdata
 		public var itemScripts:Array;			//array of scripts linked to item pickups
 		
 		public var kol_phoenix:int = 0;
-		public var aliAlarm:Boolean = false;		//alarm among alicorns
+		public var aliAlarm:Boolean = false;	//alarm among alicorns
 		
 		public var probIds:Array;				//available trial rooms
-		var impProb:int = -1;						//important trial room
+		var impProb:int = -1;					//important trial room
 
 
 		//lvl - character level-1
@@ -86,16 +86,16 @@ package locdata
 			prepareRooms();
 			if (rnd) 
 			{
-				landDifLevel = lvl;	//difficulty is determined by the given parameter
-				if (landDifLevel < template.dif) landDifLevel = template.dif;	//if the difficulty is less than the minimum, set it to the minimum
+				levelDifficultyLevel = lvl;	//difficulty is determined by the given parameter
+				if (levelDifficultyLevel < template.dif) levelDifficultyLevel = template.dif;	//if the difficulty is less than the minimum, set it to the minimum
 				maxLocX = template.mLocX;	//dimensions are taken from the level settings
 				maxLocY = template.mLocY;
 				buildRandomLand();
 			} 
 			else 
 			{
-				landDifLevel = template.dif;	//difficulty is taken from the level settings
-				if (template.autoLevel) landDifLevel = lvl;
+				levelDifficultyLevel = template.dif;	//difficulty is taken from the level settings
+				if (template.autoLevel) levelDifficultyLevel = lvl;
 				maxLocX = 1;	//dimensions are determined according to the map
 				maxLocY = 1;	//dimensions are determined according to the map
 				buildSpecifLevel();
@@ -649,7 +649,7 @@ package locdata
 			if (rndRoom.length == 0) return false;
 			var pid:String, did:String='doorprob';
 			if (imp && impProb) pid=impProb;
-			else if (rndRoom.length==1) pid=rndRoom[0];
+			else if (rndRoom.length == 1) pid=rndRoom[0];
 			else pid=rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			try 
 			{
@@ -707,7 +707,7 @@ package locdata
 					}
 				}
 			}
-			if (rndRoom.length>0) 
+			if (rndRoom.length > 0) 
 			{
 				roomTemplate = rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			} 
@@ -759,7 +759,7 @@ package locdata
 		// Setting the difficulty level of the room based on the character's level and difficulty gradient
 		function setLocDif(room:Room, deep:Number)
 		{
-			var ml:Number=landDifLevel+deep;
+			var ml:Number = levelDifficultyLevel + deep;
 			room.locDifLevel=ml;
 			room.locksLevel=ml*0.7;	// level of locks
 			room.mechLevel=ml/4;		// level of mines and mechanisms
@@ -771,9 +771,9 @@ package locdata
 			if (World.world.game.globalDif>2) room.enemyLevel+=(World.world.game.globalDif-2)*2;	// level of enemies based on difficulty
 			// type of enemies
 			if (template.biom==0 && Math.random()<0.25) room.tipEnemy=1;
-			if (room.tipEnemy<0) room.tipEnemy=Math.floor(Math.random()*3);
+			if (room.tipEnemy<0) room.tipEnemy=Math.floor(Math.random() * 3);
 			if (template.biom==1) room.tipEnemy=0;
-			if (template.biom==2 && room.tipEnemy==1 && Math.random()<ml/20) room.tipEnemy=3;	// slave traders
+			if (template.biom==2 && room.tipEnemy == 1 && Math.random() < ml / 20) room.tipEnemy = 3;	// slave traders
 			if (template.biom==3) 
 			{
 				room.tipEnemy=Math.floor(Math.random()*3)+3;			 // 4-mercenaries, 5-unicorns
@@ -870,7 +870,7 @@ package locdata
 				if (narr.length >= 2) locY = narr[1]; else locY = 0;
 				locZ = 0;
 				prob = '';
-				ativateLoc();
+				activateRoom();
 				setGGToSpawnPoint();
 			} 
 			else if (currentCP && !first) 
@@ -886,7 +886,7 @@ package locdata
 				locY=template.begLocY;
 				locZ=0;
 				prob='';
-				ativateLoc();
+				activateRoom();
 				setGGToSpawnPoint();
 			}
 		}
@@ -925,7 +925,7 @@ package locdata
 		}
 		
 		//Activate the room with the current coordinates
-		public function ativateLoc():Boolean 
+		public function activateRoom():Boolean 
 		{
 			var newRoom:Room;
 
@@ -947,7 +947,7 @@ package locdata
 			room = newRoom; //Set the current room as the room being loaded.
 			gg.inLoc(room);
 			room.reactivate(locN);
-			World.world.ativateLoc(room);
+			World.world.activateRoom(room);
 			if (room.sky) 
 			{
 				gg.isFly=true;
@@ -968,7 +968,7 @@ package locdata
 			locX = roomCoordinateX;
 			locY = roomCoordinateY;
 			locZ = 0;
-			ativateLoc();
+			activateRoom();
 			setGGToSpawnPoint();
 		}
 		
@@ -1030,7 +1030,7 @@ package locdata
 			
 			loc_t=150;
 			locX=newX, locY=newY, locZ=newZ;
-			ativateLoc();
+			activateRoom();
 			gg.setLocPos(outP.x,outP.y);
 			return outP;
 		}
@@ -1038,40 +1038,50 @@ package locdata
 		// Go to the test layer nprob, or return to the main layer if the parameter is not specified
 		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) 
 		{
-			if (nprob=='') 
+			if (nprob == '') 
 			{
-				prob='';
-				locX=retLocX;
-				locY=retLocY;
-				locZ=retLocZ;
-				ativateLoc();
-				if (retX==0 && retY==0) setGGToSpawnPoint();
-				else gg.setLocPos(retX,retY);
+				prob = '';
+				locX = retLocX;
+				locY = retLocY;
+				locZ = retLocZ;
+				activateRoom();
+				if (retX == 0 && retY == 0) setGGToSpawnPoint();
+				else gg.setLocPos(retX, retY);
 			}
 			else 
 			{
-				retLocX=locX, retLocY=locY, retLocZ=locZ;
-				if (nretX<0 || nretY<0) 
+				retLocX = locX;
+				retLocY = locY;
+				retLocZ = locZ;
+
+				if (nretX < 0 || nretY < 0) 
 				{
-					retX=gg.X, retY=gg.Y;
+					retX = gg.X;
+					retY = gg.Y;
 				} 
 				else 
 				{
-					retX=nretX, retY=nretY;
+					retX = nretX;
+					retY = nretY;
 				}
-				prob=nprob;
-				locX=locY=locZ=0;
-				if (ativateLoc()) 
+
+				prob = nprob;
+				locX = 0;
+				locY = 0;
+				locZ = 0;
+
+				if (activateRoom()) 
 				{
 					setGGToSpawnPoint();
 				} 
 				else 
 				{
-					prob='';
-					locX=retLocX;
-					locY=retLocY;
-					locZ=retLocZ;
+					prob = '';
+					locX = retLocX;
+					locY = retLocY;
+					locZ = retLocZ;
 				}
+
 			}
 		}
 		
@@ -1095,7 +1105,7 @@ package locdata
 				locY=template.begLocY;
 				locZ=0;
 				prob='';
-				if (!ativateLoc()) room.reactivate();
+				if (!activateRoom()) room.reactivate();
 				setGGToSpawnPoint();
 			} 
 			else 
@@ -1104,7 +1114,7 @@ package locdata
 				locY=cp.room.roomCoordinateY;
 				locZ=cp.room.roomCoordinateZ;
 				prob=cp.room.levelProb;
-				if (!ativateLoc()) room.reactivate();
+				if (!activateRoom()) room.reactivate();
 				gg.setLocPos(cp.X,cp.Y);
 			}
 			gg.dx=3;
@@ -1176,7 +1186,7 @@ package locdata
 			return summ;
 		}
 		
-		public function step() 
+		public function step():void
 		{
 			if (!World.world.catPause) 
 			{

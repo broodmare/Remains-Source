@@ -2,6 +2,9 @@ package unitdata
 {
 	import components.Settings;
 	
+	import stubs.visualAntEmitter;
+	import stubs.visualBloatEmitter;
+
 	public class UnitBloatEmitter  extends Unit{
 		
 		var emitId:String='bloat';
@@ -23,12 +26,13 @@ package unitdata
 			vis.x=X,vis.y=Y;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			if (sost==1) {
 				if (f) {
 					//сбросить эффекты
-					if (effects.length>0) {
+					if (effects.length > 0) 
+					{
 						for each (var eff in effects) eff.unsetEff();
 						effects=new Array();
 					}

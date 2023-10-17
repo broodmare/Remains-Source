@@ -22,6 +22,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.hpBar;
+
 	public class Unit extends Obj
 	{
 		
@@ -312,7 +314,7 @@ package unitdata
 				}
 				if (xml.@name.length()) {
 					uniqName=true;
-					nazv=Res.txt('u',xml.@name);
+					objectName=Res.txt('u',xml.@name);
 				}
 				if (xml.@ai.length()) aiTip=xml.@ai;
 				if (xml.@hpmult.length()) hpmult=xml.@hpmult;
@@ -335,7 +337,7 @@ package unitdata
 			{
 				sost=4;
 				disabled=true;
-				trace(this, nazv)
+				trace(this, objectName)
 			}
 			mapxml=xml;
 		}
@@ -446,10 +448,10 @@ package unitdata
 				mid=id;
 			}
 			var node0:XML=AllData.d.unit.(@id==mid)[0];
-			if (mid && !uniqName) nazv=Res.txt('u',mid);
+			if (mid && !uniqName) objectName=Res.txt('u',mid);
 			if (node0.@fraction.length()) fraction=node0.@fraction;
 			inter.cont=mid;
-			if (node0.@cont.length && inter) inter.cont=node0.@cont;
+			if (node0.@cont.length() && inter) inter.cont=node0.@cont;
 			if (fraction==F_PLAYER) warn=0;
 
 			if (node0.@xp.length()) xp = node0.@xp * Settings.unitXPMult; //TODO - Probably redundant, remove from World.
@@ -631,7 +633,7 @@ package unitdata
 			for each(var n:XML in node0.w) 
 			{
 				if (n.@f.length()) continue;
-				if (n.@dif.length && n.@dif>dif) continue;
+				if (n.@dif.length() && n.@dif>dif) continue;
 				if (n.@ch.length()==0 || isrnd(n.@ch)) 
 				{
 					weap=Weapon.create(this,n.@id);
@@ -645,8 +647,8 @@ package unitdata
 		{
 			if (World.world.game==null || id_name==null) return '';
 			var arr:Array=World.world.game.names[id_name];
-			if (arr==null || arr.length==0) arr=Res.namesArr(id_name); 	//подготовить массив имён
-			if (arr==null || arr.length==0) return '';
+			if (arr==null || arr.length == 0) arr=Res.namesArr(id_name); 	//подготовить массив имён
+			if (arr==null || arr.length == 0) return '';
 			World.world.game.names[id_name]=arr;
 			var n=Math.floor(Math.random()*arr.length);
 			var s=arr[n];
@@ -755,7 +757,7 @@ package unitdata
 				if (!uniqName) 
 				{
 					var s=getName();
-					if (s!=null && s!='') nazv=s;
+					if (s!=null && s!='') objectName=s;
 				}
 				xp*=5;
 			}
@@ -807,7 +809,7 @@ package unitdata
 		}
 		
 		// Set to the initial state; if f = true, return to the original position
-		public override function setNull(f:Boolean = false)
+		public override function setNull(f:Boolean = false):void
 		{
 			if (boss && isNoResBoss()) f=false;
 			if (sost==1) 
@@ -834,7 +836,7 @@ package unitdata
 				}
 				if (currentWeapon) currentWeapon.setNull();
 			}
-			levit=0;
+			levit = 0;
 		}
 		
 		// Condition under which the boss does not restore HP
@@ -851,12 +853,12 @@ package unitdata
 		
 		public override function err():String 
 		{
-			return 'Error unit ' + nazv;
+			return 'Error unit ' + objectName;
 		}
 		
 		
 		
-		public override function step()
+		public override function step():void
 		{
 			if (disabled || trigDis) return;
 			if (t_emerg > 0)
@@ -1739,11 +1741,11 @@ package unitdata
 				{
 					var bmpd:BitmapData;
 					var ok:Boolean=false;
-					if (xml.vis.length && xml.vis.@blit.length()) 
+					if (xml.vis.length() && xml.vis.@blit.length()) 
 					{
 
 					} 
-					else if (xml.vis.length && xml.vis.@vclass.length()) 
+					else if (xml.vis.length() && xml.vis.@vclass.length()) 
 					{
 						var dvis:MovieClip=Res.getVis(xml.vis.@vclass);
 						var sprX:int=dvis.width+2;
@@ -1769,7 +1771,7 @@ package unitdata
 			if (arrIcos==null) arrIcos=new Array();
 			if (arrIcos[nid]) return;
 			var xml=AllData.d.unit.(@id==nid);
-			if (xml.vis.length && xml.vis.@blit.length()) 
+			if (xml.vis.length() && xml.vis.@blit.length()) 
 			{
 				var bmpd:BitmapData;
 				var data:BitmapData=World.world.grafon.getSpriteList(xml.vis.@blit);
@@ -1810,7 +1812,7 @@ package unitdata
 			visData.copyPixels(blitData,blitRect,blitPoint);
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			if (disabled) return;
 			trigDis=!checkTrig();
@@ -1818,7 +1820,7 @@ package unitdata
 			super.addVisual();
 			if (!player && !hpbar && vis) 
 			{
-				hpbar=new hpBar();
+				hpbar = new hpBar();
 				if (hero <= 0) hpbar.goldstar.visible = false;
 				if (invis) hpbar.visible = false;
 				visDetails();
@@ -1836,7 +1838,7 @@ package unitdata
 			}
 		}
 		
-		public override function remVisual()
+		public override function remVisual():void
 		{
 			super.remVisual();
 			if (hpbar && hpbar.parent) hpbar.parent.removeChild(hpbar);
@@ -1947,12 +1949,12 @@ package unitdata
 		{
 			if (isNaN(dx)) 
 			{
-				trace(nazv, 'dx!!!');
+				trace(objectName, 'dx!!!');
 				dx=0;
 			}
 			if (isNaN(dy)) 
 			{
-				trace(nazv, 'dy!!!');
+				trace(objectName, 'dy!!!');
 				dy=0;
 			}
 			if (neujaz>0) neujaz--;
@@ -1999,7 +2001,7 @@ package unitdata
 			}
 			
 			if (demask>0) demask-=5;
-			if (effects.length>0) 
+			if (effects.length > 0) 
 			{
 				for (var i=0; i<effects.length; i++) 
 				{
@@ -2242,7 +2244,7 @@ package unitdata
 			} 
 			catch (err) 
 			{
-				trace('Error in effects',nazv)
+				trace('Error in effects',objectName)
 			}
 		}
 		
@@ -2802,7 +2804,7 @@ package unitdata
 //--------------------------------------------------------------------------------------------------------------------
 //				Death
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int = 0):void
 		{
 			if (hpbar) hpbar.visible=false;
 			if (boss) 
@@ -2864,7 +2866,7 @@ package unitdata
 			{
 				lootIsDrop=true;
 				if (mother) mother.kolChild--;
-				if (hero>0) World.world.gui.infoText('killHero',nazv);
+				if (hero>0) World.world.gui.infoText('killHero',objectName);
 				runScript();
 				dropLoot();
 				incStat();
@@ -3002,7 +3004,7 @@ package unitdata
 			if (eyeX==-1000 || eyeY==-1000) 
 			{
 				eyeX=X,eyeY=Y-30;
-				//trace('Point of view not set', nazv);
+				//trace('Point of view not set', objectName);
 			}
 			// Visibility distance
 			var distVis=nDist;		// take from parameter
@@ -3145,7 +3147,7 @@ package unitdata
 			return false;
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			super.command(com,val);
 			if (com=='activate') 

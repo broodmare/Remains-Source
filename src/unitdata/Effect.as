@@ -346,7 +346,7 @@ package unitdata
 			}
 		}
 		
-		public function step() 
+		public function step():void
 		{
 			if (t%30 == 0) 
 			{

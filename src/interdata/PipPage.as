@@ -26,6 +26,8 @@ package interdata
 	
 	import components.Settings;
 
+	import stubs.visPipInv;
+	
 	public class PipPage 
 	{
 
@@ -37,80 +39,87 @@ package interdata
 		var pageClass:Class;
 		var itemClass:Class;
 
-		var maxrows:int=18;
+		var maxrows:int = 18;
 		var selItem:MovieClip;
 		
 		var pip:PipBuck;
 		var inv:Invent;
 		var gg:UnitPlayer;
 		
-		var isLC:Boolean=false, isRC:Boolean=false; //реакция на клик
+		var isLC:Boolean = false;
+		var isRC:Boolean = false; //реакция на клик
 		
-		var signs:Array=[0,0,0,0,0,0];
+		var signs:Array = [0, 0, 0, 0, 0, 0];
 		
-		var page2:int=1;
-		var scrl:int=0;
+		var page2:int = 1;
+		var scrl:int = 0;
 		
 		var infIco:MovieClip;
-		var itemFilter:GlowFilter=new GlowFilter(0x00FF88,1,3,3,3,1);
-		var itemTrans:ColorTransform=new ColorTransform(1,1,1);
+		var itemFilter:GlowFilter 		= new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
+		var itemTrans:ColorTransform 	= new ColorTransform(1, 1, 1);
 		
-		var pp:String;
+		var pp:String; //pipPage
 		
 		var kolCats:int=6;
-		var cat:Array=[0,0,0,0,0,0,0];
-		var curTip='';
-		var tips:Array=[[]];
+		var cat:Array=[0, 0, 0, 0, 0, 0, 0];
+		var curTip = '';
+		var tips:Array = [[]];
 		
-		//setStatItems - обновить все элементы, не перезагружая страницу
-		//setStatus - полностью обновить страницу
+		//setStatItems - update all elements without reloading the page
+		//setStatus - fully refresh the page"
 
 		public function PipPage(npip:PipBuck, npp:String) 
 		{
 			
-			pip=npip;
+			pip = npip;
 			
-			pp=npp;
-			if (pageClass==null) pageClass=visPipInv;
-			vis=new pageClass();
-			vis.x=165;
-			vis.y=72;
-			vis.visible=false;
-			if (vis.pers) vis.pers.visible=false
-			if (vis.skill) vis.skill.visible=false;
-			if (vis.item) vis.item.visible=false
+			pp = npp;
+			if (pageClass == null) pageClass = visPipInv;
+			vis = new pageClass();
+			vis.x = 165;
+			vis.y = 72;
+			vis.visible = false;
+			if (vis.pers) vis.pers.visible 	 = false
+			if (vis.skill) vis.skill.visible = false;
+			if (vis.item) vis.item.visible 	 = false
 			pip.vis.addChild(vis);
 			
-			vis.scBar.addEventListener(ScrollEvent.SCROLL,statScroll);
-			vis.addEventListener(MouseEvent.MOUSE_WHEEL,onMouseWheel1);
-			statArr=new Array();
+			vis.scBar.addEventListener(ScrollEvent.SCROLL, statScroll);
+			vis.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel1);
+			statArr = new Array();
 			var item:MovieClip;
+
 			for (var i:int = -1; i < maxrows; i++) 
 			{
-				item=new itemClass(); 
-				item.x=30;
-				item.y=100+i*30;
-				if (item.nazv) setStyle(item.nazv);
+				item = new itemClass(); 
+				item.x = 30;
+				item.y = 100 + i * 30;
+				if (item.objectName) setStyle(item.objectName);
 				vis.addChild(item);
 				if (item.ramka) item.ramka.visible=false;
-				if (i<0) {
-					item.back.visible=false;
-					statHead=item;
-				} else {
+				if (i < 0) 
+				{
+					item.back.visible = false;
+					statHead = item;
+				} 
+				else 
+				{
 					if (isLC) item.addEventListener(MouseEvent.CLICK,itemClick);
 					if (isRC) item.addEventListener(MouseEvent.RIGHT_CLICK,itemRightClick);
 					item.addEventListener(MouseEvent.MOUSE_OVER,statInfo);
 					statArr.push(item);
 				}
 			}
+
 			for (var j:int  = 1; j <= 5; j++) 
 			{
-				item=vis.getChildByName('but' + j) as MovieClip;
+				item = vis.getChildByName('but' + j) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK, page2Click);
 				item.text.text = Res.pipText(pp + j);
 				item.id.text = j;
 				item.id.visible = false;
 			}
+
 			vis.butOk.visible = false;
 			vis.butDef.visible = false;
 			if (vis.cats) vis.cats.visible = false;
@@ -119,46 +128,59 @@ package interdata
 			setStyle(vis.bottext);
 		}
 		
-		public static function setStyle(tt:TextField)
+		public static function setStyle(tt:TextField):void
 		{
 			var style:StyleSheet = new StyleSheet(); 
 			var styleObj:Object = new Object(); 
+
 			styleObj.color = "#00FF99"; 
 			style.setStyle(".r0", styleObj); 	//по умолчанию зелёный
 			
 			styleObj.color = "#FF3333"; 
 			style.setStyle(".red", styleObj);	//красный
+
 			styleObj.color = "#FFFF33"; 
 			style.setStyle(".yel", styleObj);	//жёлтый
+
 			styleObj.color = "#FF9900"; 
 			style.setStyle(".or", styleObj);	//оранжевый
+
 			styleObj.color = "#FC7FED"; 
 			style.setStyle(".pink", styleObj);	//розовый
+
 			styleObj.color = "#00FFFF"; 
 			style.setStyle(".blu", styleObj);	//голубой
+
 			styleObj.color = "#99CCFF"; 
 			style.setStyle(".mass", styleObj);	//серо-голубой
+
 			styleObj.color = "#007E4B"; 
 			style.setStyle(".dark", styleObj);	//7 - тёмно-зелёный
+
 			styleObj.color = "#8AFFD0"; 
 			style.setStyle(".light", styleObj);	//7 - светло-зелёный
+
 			styleObj.color = "#33FF33"; 
 			style.setStyle(".green", styleObj);	//зелёный
+
 			styleObj.color = "#B466FF"; 
 			style.setStyle(".purp", styleObj);	//фиолет
-			tt.styleSheet=style;
+
+			tt.styleSheet = style;
+			//trace('PipPage.as/SetStyle() - Style applied successfully.');
 		}
 		
-		public function updateLang()
+		public function updateLang():void
 		{
+			//trace('PipPage.as/updateLang() - PipPage: "' + pp + '" updating button langauge.');
 			for (var i:int = 1; i <= 5; i++) 
 			{
-				var item=vis.getChildByName('but'+i) as MovieClip;
-				item.text.text=Res.pipText(pp+i);
+				var item = vis.getChildByName('but' + i) as MovieClip;
+				item.text.text = Res.pipText(pp + i);
 			}
 		}
 
-		public function page2Click(event:MouseEvent)
+		public function page2Click(event:MouseEvent):void
 		{
 			if (World.world.ctr.setkeyOn) return;
 			page2 = int(event.currentTarget.id.text);
@@ -166,312 +188,378 @@ package interdata
 			pip.snd(2);
 		}
 		
-		public function setButtons()
+		public function setButtons():void
 		{
 			for (var i:int = 1; i <= 5; i++) 
 			{
-				var item:MovieClip=vis.getChildByName('but'+i) as MovieClip;
-				if (page2==i) item.gotoAndStop(2);
-				else if (signs[i]>0) item.gotoAndStop(signs[i]+2);
+				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
+
+				if (page2 == i) item.gotoAndStop(2);
+				else if (signs[i] > 0) item.gotoAndStop(signs[i] + 2);
 				else item.gotoAndStop(1);
 			}
 		}
 		
-		public function setStatus(flop:Boolean=true)
+		public function setStatus(flop:Boolean = true):void
 		{
-			pip.reqKey=false;
-			statHead.id.text='';
-			vis.visible=true;
-			vis.info.text='';
-			vis.nazv.text='';
-			vis.bottext.text='';
-			vis.emptytext.text='';
-			arr=new Array();
-			if (flop) scrl=0;
-			if (vis.scText) vis.scText.visible=false;
+			trace('PipPage.as/setStatus() - setStatus is executing.');
+
+			//Clear text
+			try
+			{
+				if (pip.reqKey != null) 
+				{
+					pip.reqKey = false;
+				}
+				if (statHead.id != null) 
+				{
+					statHead.id.text = '';
+				}
+				if (vis.visible != null) 
+				{
+					vis.visible = true;
+				}
+				if (vis.info != null) 
+				{
+					vis.info.text = '';
+				}
+				if (vis.objectName != null) 
+				{
+					vis.objectName.text = '';
+				}
+				if (vis.bottext != null) 
+				{
+					vis.bottext.text = '';
+				}
+				if (vis.emptytext != null) 
+				{
+					vis.emptytext.text = '';
+				}
+				
+				trace('PipPage.as/setStatus() - Text cleared successfully.');
+			}
+			catch (err)
+			{
+				trace('PipPage.as/setStatus() - Error clearing text.');
+			}
+
 			
-			gg=pip.gg;
-			inv=pip.inv;
-			pip.vis.toptext.visible=false;
-			pip.vis.butHelp.visible=pip.vis.butMass.visible=false;
-			pip.vishelp.visible=false;
+			trace('PipPage.as/setStatus() - Creating new array.');
+			arr = new Array();
+
+			if (flop) scrl = 0; // Reset scroll
+			if (vis.scText) vis.scText.visible = false;
+			
+			trace('PipPage.as/setStatus() - Assigning player and inventory.');
+			gg = pip.gg;
+			inv = pip.inv;
+			trace('PipPage.as/setStatus() - Disabling text visibility.');
+			pip.vis.toptext.visible = false;
+			pip.vis.butHelp.visible = false;
+			pip.vis.butMass.visible = false;
+			pip.vishelp.visible 	= false;
+
+			trace('PipPage.as/setStatus() - Setting subPages.');
 			setSubPages();
-			setStatItems(flop?0:-1);
+
+			trace('PipPage.as/setStatus() - setting StatItems.');
+			setStatItems(flop ? 0 : -1);
 
 			var sc:ScrollBar = vis.scBar;
-			if (arr.length>maxrows) 
+
+			trace('PipPage.as/setStatus() - "sc" stuff(?)');
+			if (arr.length > maxrows) 
 			{
-				sc.visible=true;
-				sc.minScrollPosition=0
-				sc.maxScrollPosition=arr.length-maxrows;
-				sc.scrollPosition=scrl;
+				sc.visible 			 = true;
+				sc.minScrollPosition = 0
+				sc.maxScrollPosition = arr.length - maxrows;
+				sc.scrollPosition 	 = scrl;
 			} 
 			else 
 			{
-				sc.visible=false;
+				sc.visible = false;
 			}
+
+			trace('PipPage.as/setStatus() - Turning off all button highlights.');
 			setSigns();
+
+			trace('PipPage.as/setStatus() - Creating buttons.)');
 			setButtons();
 		}
 		
 		
-		function setSubPages() //подготовка страниц
+		function setSubPages():void // Preparation of pages
 		{
 
 		}
 		
-		function setSigns() //определение подсвеченности кнопок
+		function setSigns():void // Which buttons are highlighted.
 		{
-			signs=[0,0,0,0,0,0];
+			signs = [0, 0, 0, 0, 0, 0];
 		}
 		
-		//показ одного элемента
-		function setStatItem(item:MovieClip, obj:Object)
-		{
-
-		}
-		
-		//информация об элементе
-		function statInfo(event:MouseEvent)
+		// Display of a single element
+		function setStatItem(item:MovieClip, obj:Object):void
 		{
 
 		}
 		
-		function itemClick(event:MouseEvent)
-		{
-
-		}
-
-		function itemRightClick(event:MouseEvent)
+		// Information about the element
+		function statInfo(event:MouseEvent):void
 		{
 
 		}
 		
-		//показ всех элементов
-		function setStatItems(n:int=-1)
+		function itemClick(event:MouseEvent):void
 		{
-			if (n>=0) scrl=n;
-			for (var i=0; i<statArr.length; i++) 
+
+		}
+
+		function itemRightClick(event:MouseEvent):void
+		{
+
+		}
+		
+		// Show all elements
+		function setStatItems(n:int = -1):void
+		{
+			if (n >= 0) scrl = n;
+			for (var i:int = 0; i < statArr.length; i++) 
 			{
-				if (i+scrl>=arr.length) 
+				if (i + scrl >= arr.length) 
 				{
-					statArr[i].visible=false;
+					statArr[i].visible = false;
 				} 
 				else 
 				{
-					statArr[i].visible=true;
-					setStatItem(statArr[i],arr[i+scrl]);
+					statArr[i].visible = true;
+					setStatItem(statArr[i], arr[i + scrl]);
 				}
 			}
 		}
 		
-		function setIco(tip:int=0, id:String='')
+		function setIco(tip:int = 0, id:String = ''):void
 		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
-			vis.pers.visible=vis.skill.visible=false;
+			vis.pers.visible = vis.skill.visible = false;
 			vis.item.gotoAndStop(1);
-			vis.info.y=vis.ico.y;
-			if (tip==1) //оружие
+			vis.info.y = vis.ico.y;
+			if (tip == 1) //оружие
 			{
 				var w:Weapon=pip.arrWeapon[id];
-				if (w.tip==5) 
+				if (w.tip == 5) 
 				{
-					tip=3;
-					if (id.charAt(id.length-2)=='^') id=id.substr(0,id.length-2);
+					tip = 3;
+					if (id.charAt(id.length - 2) == '^') id = id.substr(0, id.length - 2);
 				} 
 				else 
 				{
-					var vWeapon:Class=w.vWeapon;
-					var node=AllData.d.weapon.(@id==id);
+					var vWeapon:Class = w.vWeapon;
+					var node = AllData.d.weapon.(@id == id);
 					if (node.length()) 
 					{
 						node=node[0];
-						if (node.vis.length && node.vis[0].@vico.length()) vWeapon=Res.getClass(node.vis[0].@vico, null);
+						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon = Res.getClass(node.vis[0].@vico, null);
 					}
-					if (vWeapon==null) 
+					if (vWeapon == null) 
 					{
-						vWeapon=Res.getClass('vis'+id, null);
+						vWeapon = Res.getClass('vis' + id, null);
 					}
-					if (vWeapon!=null) 
+					if (vWeapon != null) 
 					{
-						infIco=new vWeapon();
+						infIco = new vWeapon();
 						infIco.stop();
 						if (infIco.lez) infIco.lez.stop();
-						var r:Number=1;
-						if (node.length && node.vis.length()) 
+						var r:Number = 1;
+						if (node.length() && node.vis.length()) 
 						{
 							if (node.vis.@icomult.length()) 
 							{
-								r=infIco.scaleX=infIco.scaleY=node.vis.@icomult;
+								r = infIco.scaleX = infIco.scaleY = node.vis.@icomult;
 							}
 						}
-						infIco.x=-infIco.getRect(infIco).left*r+140-infIco.width/2;
-						infIco.y=-infIco.getRect(infIco).top;
+						infIco.x = -infIco.getRect(infIco).left * r + 140 - infIco.width / 2;
+						infIco.y = -infIco.getRect(infIco).top;
 						vis.ico.addChild(infIco);
-						vis.info.y=vis.ico.y+vis.ico.height+10;
-						infIco.transform.colorTransform=itemTrans;
-						infIco.filters=[itemFilter];
+						vis.info.y = vis.ico.y + vis.ico.height + 10;
+						infIco.transform.colorTransform = itemTrans;
+						infIco.filters = [itemFilter];
 					}
 				}
 			}
-			if (tip==2) //бронька
+			if (tip == 2) //бронька
 			{
 				pip.setArmor(id);
 				vis.pers.gotoAndStop(2);
 				vis.pers.gotoAndStop(1);
-				vis.pers.head.morda.magic.visible=false;
-				vis.pers.visible=true;
-				vis.info.y=vis.pers.y+25;
+				vis.pers.head.morda.magic.visible = false;
+				vis.pers.visible = true;
+				vis.info.y = vis.pers.y + 25;
 			}
-			if (tip==3) 
+			if (tip == 3) 
 			{
-				vis.item.visible=true;
+				vis.item.visible = true;
 				try 
 				{
 					vis.item.gotoAndStop(id);
-					vis.info.y=vis.item.y+vis.item.height+25;
+					vis.info.y = vis.item.y+vis.item.height + 25;
 				} 
 				catch(err) 
 				{
 					vis.item.gotoAndStop(1);
-					vis.item.visible=false;
-					vis.info.y=vis.ico.y;
+					vis.item.visible = false;
+					vis.info.y = vis.ico.y;
 				}
 			}
-			if (tip==5) //перки 
+			if (tip == 5) //перки 
 			{
-				vis.skill.visible=true;
+				vis.skill.visible = true;
 				try 
 				{
 					vis.skill.gotoAndStop(id);
-					vis.info.y=vis.ico.y+220;
+					vis.info.y = vis.ico.y + 220;
 				} 
 				catch(err) 
 				{
-					vis.skill.visible=false;
-					vis.info.y=vis.ico.y;
+					vis.skill.visible = false;
+					vis.info.y = vis.ico.y;
 				}
 			}
 		}
 		
 		public static function yel(s):String 
 		{
-			return "<span class = 'yel'>"+s+"</span>";
+			return "<span class = 'yel'>" + s + "</span>";
 		}
 		public static function red(s):String 
 		{
-			return "<span class = 'red'>"+s+"</span>";
+			return "<span class = 'red'>" + s + "</span>";
 		}
 		public static function pink(s):String 
 		{
-			return "<span class = 'pink'>"+s+"</span>";
+			return "<span class = 'pink'>" + s + "</span>";
 		}
 		public static function mass(s):String 
 		{
-			return "<span class = 'mass'>"+s+"</span>";
+			return "<span class = 'mass'>" + s + "</span>";
 		}
 		public static function blue(s):String 
 		{
-			return "<span class = 'blu'>"+s+"</span>";
+			return "<span class = 'blu'>" + s + "</span>";
 		}
 		
 		//добавить в текстовую строку значения
-		public static function addVar(s:String, xml):String 
+		public static function addVar(s:String, xml:XML):String 
 		{
-			for (var i:int = 1; i<=5; i++) 
+			for (var i:int = 1; i <= 5; i++) 
 			{
-				if (xml.attribute('s'+i).length())  s=s.replace('#'+i,"<span class='yel'>"+xml.attribute('s'+i)+"</span>");
+				if (xml.attribute('s' + i).length())  s = s.replace('#' + i, "<span class='yel'>" + xml.attribute('s' + i) + "</span>");
 			}
 			return s;
 		}
 		
-		public static function effStr(tip:String, id:String, dlvl:int=0):String 
+		public static function effStr(tip:String, id:String, dlvl:int = 0):String 
 		{
 			var s:String;
-			if (tip=='item') s=Res.txt('i',id,1)
-			else s=Res.txt('e',id,1);
-			if (id.substr(-3)=='_ad') id=id.substr(0,id.length-3);
-			var dp=AllData.d[tip];
-			if (dp.length()==0) return s;
-			dp=dp.(@id==id);
-			if (dp.length()==0) return s;
-			dp=dp[0];
+			if (tip == 'item') s = Res.txt('i', id, 1)
+			else s = Res.txt('e', id, 1);
+			if (id.substr(-3) == '_ad') id=id.substr(0, id.length - 3);
+			var dp:XML = AllData.d[tip];
+			if (dp.length() == 0) return s;
+			dp = dp.(@id == id);
+			if (dp.length() == 0) return s;
+			dp = dp[0];
+
 			//определение текущего уровня
 			var lvl = 1;
-			var pers = World.world.pers;
-			if (tip=='perk')
+			var pers:Pers = World.world.pers;
+			if (tip == 'perk')
 			{
-				lvl=pers.perks[id];
-				if (lvl==null) lvl=0;
-			} else if (tip=='skill') 
+				lvl = pers.perks[id];
+				if (lvl == null) lvl = 0;
+			} 
+			else if (tip == 'skill') 
 			{
 				lvl=pers.getSkLevel(pers.skills[id]);
-			} else if (dp.@him=='2') 
-			{
-				var ad=pers.addictions[id];
-				if (ad>=pers.ad2) lvl=2;
-				if (ad>=pers.ad3) lvl=3;
 			} 
-			else if (dp.@him=='1') lvl=pers.himLevel;
-			lvl+=dlvl;
+			else if (dp.@him == '2') 
+			{
+				var ad = pers.addictions[id];
+				if (ad >= pers.ad2) lvl = 2;
+				if (ad >= pers.ad3) lvl = 3;
+			} 
+			else if (dp.@him == '1') 
+			{
+				lvl = pers.himLevel;
+			}
+
+			lvl += dlvl;
+
 			//trace(id, lvl);
 			//вставка в текст числовых значений
-			if (lvl>1 && dp.textvar[lvl-1]) s=addVar(s,dp.textvar[lvl-1]);
-			else if (dp.textvar.length()) s=addVar(s,dp.textvar[0]);
-			//добавление особых эффектов
-			if (dp.eff.length && lvl>0) 
+			if (lvl > 1 && dp.textvar[lvl - 1]) 
 			{
-				s+='<br>';
+				s = addVar(s, dp.textvar[lvl-1]);
+			}
+			else if (dp.textvar.length()) 
+			{
+				s = addVar(s, dp.textvar[0]);
+			}
+
+			//добавление особых эффектов
+			if (dp.eff.length() && lvl > 0) 
+			{
+				s += '<br>';
 				for each(var eff in dp.eff) 
 				{
-					s+='<br>'+(eff.@id.length()?Res.pipText(eff.@id):Res.pipText('refeff'))+': '+yel(eff.attribute('n'+lvl));
+					s += '<br>' + (eff.@id.length() ? Res.pipText(eff.@id):Res.pipText('refeff')) + ': ' + yel(eff.attribute('n' + lvl));
 				}
 			}
 			//добавление эффектов веса
-			if (Settings.hardInv && dp.sk.length()) 
+			if (Settings.hardInv && dp.sk.length())
 			{
-				s+='<br>';
+				s += '<br>';
 				for each(var sk in dp.sk) 
 				{
-					if (sk.@tip=='m') 
+					if (sk.@tip == 'm') 
 					{
-						var add=mass('+1');
-						if (sk.@vd>0) add=mass('+'+sk.@vd)+' '+Res.pipText('perlevel');
-						if (sk.@v1>0) add=mass('+'+sk.@v1);
-						s+='<br>'+Res.pipText('add_'+sk.@id)+' '+add;
+						var add = mass('+1');
+						if (sk.@vd > 0) add = mass('+' + sk.@vd) + ' '+Res.pipText('perlevel');
+						if (sk.@v1 > 0) add = mass('+' + sk.@v1);
+						s += '<br>' + Res.pipText('add_' + sk.@id)+' ' + add;
 					}
 				}
 			}
 			//добавление требований
 			if (dp.req.length()) 
 			{
-				s+='<br><br>'+Res.pipText('requir');
+				s += '<br><br>' + Res.pipText('requir');
 				lvl--;
 				for each(var req in dp.req) 
 				{
-					var reqlevel:int=1;
-					if (req.@lvl.length()) reqlevel=req.@lvl;
-					if (lvl>0 && req.@dlvl.length()) reqlevel+=lvl*req.@dlvl;
-					var s1:String='<br>';
-					var ok:Boolean=true;
-					if (req.@id=='level') 
+					var reqlevel:int = 1;
+					if (req.@lvl.length()) reqlevel = req.@lvl;
+					if (lvl > 0 && req.@dlvl.length()) reqlevel += lvl * req.@dlvl;
+					var s1:String = '<br>';
+					var ok:Boolean = true;
+					if (req.@id == 'level') 
 					{
-						s1+=Res.pipText('level');
-						if (pers.level<reqlevel) ok=false;
+						s1 += Res.pipText('level');
+						if (pers.level<reqlevel) ok = false;
 					} 
-					else if (req.@id=='guns') 
+					else if (req.@id == 'guns') 
 					{
-						s1+=Res.txt('e','smallguns')+' '+Res.pipText('or')+' '+Res.txt('e','energy');
-						if (pers.getSkLevel(pers.skills['smallguns'])<reqlevel && pers.getSkLevel(pers.skills['energy'])<reqlevel) ok=false;
+						s1 += Res.txt('e', 'smallguns') + ' ' + Res.pipText('or') + ' ' + Res.txt('e', 'energy');
+						if (pers.getSkLevel(pers.skills['smallguns']) < reqlevel && pers.getSkLevel(pers.skills['energy']) < reqlevel) ok = false;
 					}
 					else 
 					{
-						s1+=Res.txt('e',req.@id);
-						if (pers.getSkLevel(pers.skills[req.@id])<reqlevel) ok=false;
+						s1 += Res.txt('e', req.@id);
+						if (pers.getSkLevel(pers.skills[req.@id]) < reqlevel) ok = false;
 					}
-					s1+=': '+reqlevel;
-					if (ok)	s+=yel(s1);
-					else s+=red(s1);
+					s1 += ': ' + reqlevel;
+					if (ok)	s += yel(s1);
+					else s += red(s1);
 				}
 			}
 			return s;
@@ -480,80 +568,94 @@ package interdata
 		
 		public static function infoStr(tip:String, id:String):String 
 		{
-			var s:String='';
-			var pip=World.world.pip;
-			var gg=World.world.gg;
+			var s:String = '';
+			var pip:PipBuck = World.world.pip;
+			var gg:UnitPlayer = World.world.gg;
 			var inv:Invent=World.world.invent;
-			if (tip==Item.L_ARMOR && inv.armors[id]==null && pip.arrArmor[id]==null) tip=Item.L_ITEM;
-			if (tip==Item.L_WEAPON && inv.weapons[id] && inv.weapons[id].spell) tip=Item.L_ITEM;
-			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) 
+			if (tip == Item.L_ARMOR && inv.armors[id] == null && pip.arrArmor[id] == null) tip = Item.L_ITEM;
+			if (tip == Item.L_WEAPON && inv.weapons[id] && inv.weapons[id].spell) tip = Item.L_ITEM;
+			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) 
 			{
-				var w:Weapon=pip.arrWeapon[id];
-				if (w==null) return '';
+				var w:Weapon = pip.arrWeapon[id];
+				if (w == null) return '';
 				w.setPers(gg,gg.pers);
-				var skillConf=1;
-				var razn=w.lvl-gg.pers.getWeapLevel(w.skill);
-				if (razn==1) skillConf=0.75;
-				if (razn>=2) skillConf=0.5;
-				w.skillConf=skillConf;
-				s+=Res.pipText('weapontip')+': '+yel(Res.pipText('weapontip'+w.skill));
-				if (w.lvl>0) {
-					s+='\n'+Res.pipText('lvl')+': '+yel(w.lvl);
-					s+='\n'+Res.pipText('islvl')+': '+yel(gg.pers.getWeapLevel(w.skill));
-					if (razn>0) s+="<span class = 'red'>";
-					if (w.lvlNoUse && razn>0 || razn>2) s+=' ('+Res.pipText('weapnouse')+')</span>';
-					else if (razn>0){
-						if (razn==2) {
-							s+=' (-40% ';
-						} else if (razn==1) {
-							s+=' (-20% ';
+				var skillConf:int = 1;
+				var razn:Number = w.lvl - gg.pers.getWeapLevel(w.skill);
+				if (razn == 1) skillConf = 0.75;
+				if (razn >= 2) skillConf = 0.5;
+				w.skillConf = skillConf;
+				s += Res.pipText('weapontip') + ': ' + yel(Res.pipText('weapontip' + w.skill));
+				if (w.lvl > 0) 
+				{
+					s += '\n' + Res.pipText('lvl') + ': ' + yel(w.lvl);
+					s += '\n' + Res.pipText('islvl') + ': ' + yel(gg.pers.getWeapLevel(w.skill));
+					if (razn > 0) s += "<span class = 'red'>";
+
+					if (w.lvlNoUse && razn > 0 || razn > 2) s += ' ('+Res.pipText('weapnouse') + ')</span>';
+					else if (razn > 0)
+					{
+						if (razn == 2) 
+						{
+							s += ' (-40% ';
+						} 
+						else if (razn == 1) 
+						{
+							s += ' (-20% ';
 						}
-						if (w.tip==1) s+=Res.pipText('rapid')
-						else if (w.tip==4) s+=Res.pipText('distance');
-						else s+=Res.pipText('precision');
-						s+=")</span>";
+						if (w.tip == 1) s += Res.pipText('rapid')
+						else if (w.tip == 4) s += Res.pipText('distance');
+						else s += Res.pipText('precision');
+
+						s += ")</span>";
 					}
 				}
-				if (w.perslvl>0) {
-					s+='\n'+Res.pipText('perslvl')+': '+yel(w.perslvl);
-					s+='\n'+Res.pipText('isperslvl')+': '+yel(gg.pers.level);
-					if (gg.pers.level<w.perslvl) s+=red(' ('+Res.pipText('weapnouse')+')');
+				if (w.perslvl > 0) 
+				{
+					s += '\n' + Res.pipText('perslvl') + ': ' + yel(w.perslvl);
+					s += '\n' + Res.pipText('isperslvl') + ': ' + yel(gg.pers.level);
+					if (gg.pers.level < w.perslvl) s += red(' (' + Res.pipText('weapnouse') + ')');
 				}
-				s+='\n'+Res.pipText('damage')+': ';
-				var wdam=w.damage, wdamexpl=w.damageExpl;
-				if (w.damage>0) {
-					s+=yel(Math.round(w.damage*10)/10);
-					wdam=w.resultDamage(w.damage,gg.pers.weaponSkills[w.skill]);
-					if (wdam!=w.damage) {
-						s+=' ('+yel(Math.round(wdam*10)/10)+')';
+				s += '\n' + Res.pipText('damage') + ': ';
+				var wdam:Number = w.damage, wdamexpl:Number = w.damageExpl;
+				if (w.damage > 0) 
+				{
+					s += yel(Math.round(w.damage * 10) / 10);
+					wdam = w.resultDamage(w.damage,gg.pers.weaponSkills[w.skill]);
+					if (wdam != w.damage) 
+					{
+						s += ' (' + yel(Math.round(wdam * 10) / 10) + ')';
 					}
 				}
-				if (w.damage>0 && w.damageExpl>0) s+=' + ';
-				if (w.damageExpl>0) {
-					s+=yel(Math.round(w.damageExpl*w.damMult*10)/10);
-					wdamexpl=w.resultDamage(w.damageExpl,gg.pers.weaponSkills[w.skill]);
-					if (wdamexpl!=w.damageExpl) {
-						s+=' ('+yel(Math.round(wdamexpl*10)/10)+')';
+				if (w.damage > 0 && w.damageExpl > 0) s += ' + ';
+				if (w.damageExpl > 0) 
+				{
+					s += yel(Math.round(w.damageExpl * w.damMult * 10) / 10);
+					wdamexpl = w.resultDamage(w.damageExpl, gg.pers.weaponSkills[w.skill]);
+					if (wdamexpl!=w.damageExpl) 
+					{
+						s += ' ('+yel(Math.round(wdamexpl * 10) / 10)+')';
 					}
-					s+=' '+Res.pipText('expldam');
+					s += ' ' + Res.pipText('expldam');
 				}
-				if (w.kol>1) s+=' [x'+w.kol+']';
-				if (w.explKol>1) s+=' [x'+w.explKol+']';
-				var wrapid=w.resultRapid(w.rapid);
-				if (w.tip!=4) {
-					s+='\n'+Res.pipText('aps')+': '+yel(Number(Settings.fps/wrapid).toFixed(1));
-					s+='\n'+Res.pipText('dps')+': '+yel(Number((wdam+wdamexpl)*w.kol*Settings.fps/wrapid).toFixed(1));
-					if (w.holder) s+=' ('+yel(Number((wdam+wdamexpl)*w.kol*Settings.fps/(wrapid+w.reload*w.reloadMult/w.holder*w.rashod)).toFixed(1))+')';
+				if (w.kol > 1) s += ' [x' + w.kol + ']';
+				if (w.explKol > 1) s+= ' [x' + w.explKol + ']';
+				var wrapid:Number = w.resultRapid(w.rapid);
+				if (w.tip != 4) 
+				{
+					s += '\n'+Res.pipText('aps') + ': ' + yel(Number(Settings.fps / wrapid).toFixed(1));
+					s += '\n'+Res.pipText('dps') + ': ' + yel(Number((wdam + wdamexpl) * w.kol * Settings.fps / wrapid).toFixed(1));
+					if (w.holder) s += ' (' + yel(Number((wdam + wdamexpl) * w.kol * Settings.fps / (wrapid + w.reload * w.reloadMult / w.holder * w.rashod)).toFixed(1)) + ')';
 				}
-				s+='\n'+Res.pipText('critch')+': '+yel(Math.round((w.critCh+w.critchAdd+gg.critCh)*100)+'%');
-				s+='\n'+Res.pipText('tipdam')+': '+blue(Res.pipText('tipdam'+w.tipDamage));
-				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('inv5')+': '+yel(Res.txt('i',w.ammo));
-				if (w.tip<4 && w.holder>0) s+='\n'+Res.pipText('holder')+': '+yel(w.holder);
-				if (w.rashod>1) s+=' ('+yel(w.rashod)+' '+Res.pipText('rashod')+')';
-				if (w.tip==5) s+='\n'+Res.pipText('dmana')+': '+yel(Math.round(w.mana));
-				if (w.precision>0) s+='\n'+Res.pipText('prec')+': '+yel(Math.round(w.precision*w.precMult/40));
-				if (w.pier+w.pierAdd>0) s+='\n'+Res.pipText('pier')+': '+yel(Math.round(w.pier+w.pierAdd));
-				if (!w.noSats) {
+				s += '\n' + Res.pipText('critch') + ': ' + yel(Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + '%');
+				s += '\n' + Res.pipText('tipdam') + ': ' + blue(Res.pipText('tipdam' + w.tipDamage));
+				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.pipText('inv5') + ': ' + yel(Res.txt('i', w.ammo));
+				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.pipText('holder') + ': ' + yel(w.holder);
+				if (w.rashod> 1 ) s += ' (' + yel(w.rashod) + ' ' + Res.pipText('rashod') + ')';
+				if (w.tip == 5) s += '\n' + Res.pipText('dmana') + ': ' + yel(Math.round(w.mana));
+				if (w.precision > 0) s +='\n' + Res.pipText('prec') + ': ' + yel(Math.round(w.precision * w.precMult / 40));
+				if (w.pier+w.pierAdd > 0) s +='\n' + Res.pipText('pier') + ': ' + yel(Math.round(w.pier + w.pierAdd));
+				if (!w.noSats) 
+				{
 					s+='\n'+Res.pipText('ap')+': ';
 					if (razn>0) s+="<span class = 'red'>";
 					else s+="<span class = 'yel'>";
@@ -561,17 +663,19 @@ package interdata
 					s+="</span>";
 					if (w.satsQue>1) s+=' (x'+yel(w.satsQue)+')';
 				}
-				if (w.destroy>=100) {
+				if (w.destroy>=100) 
+				{
 					s+='\n'+Res.pipText('destroy');
 				}
-				if (w.opt && w.opt.perk) {
+				if (w.opt && w.opt.perk) 
+				{
 					s+='\n'+Res.pipText('refperk')+': '+pink(Res.txt('e',w.opt.perk));
 				}
-				var sinf=Res.txt('w',id,1);
-				if (sinf=='') sinf=Res.txt('w',w.id,1);
-				if (Settings.hardInv && w.tip<4) s+='\n'+Res.pipText('mass2')+": <span class = 'mass'>"+w.mass+"</span>";
-				if (Settings.hardInv && w.tip==4) s+='\n\n'+Res.pipText('mass')+": <span class = 'mass'>"+inv.items[id].xml.@m+"</span> ("+Res.pipText('vault'+inv.items[id].invCat)+')';
-				s+='\n\n'+sinf;
+				var sinf:String = Res.txt('w', id, 1);
+				if (sinf == '') sinf = Res.txt('w', w.id, 1);
+				if (Settings.hardInv && w.tip < 4) s += '\n' + Res.pipText('mass2') + ": <span class = 'mass'>" + w.mass + "</span>";
+				if (Settings.hardInv && w.tip == 4) s += '\n\n' + Res.pipText('mass') + ": <span class = 'mass'>" + inv.items[id].xml.@m + "</span> (" + Res.pipText('vault' + inv.items[id].invCat) + ')';
+				s += '\n\n' + sinf;
 			} 
 			else if (tip==Item.L_ARMOR) 
 			{
@@ -604,7 +708,7 @@ package interdata
 			} 
 			else if (tip==Item.L_AMMO) 
 			{
-				var ammo=inv.items[id].xml;
+				var ammo:XML = inv.items[id].xml;
 				if (AllData.d.weapon.(@id==id).length()) {
 					s=Res.txt('w',id,1);
 				} else if (ammo.@base.length()) {
@@ -628,7 +732,7 @@ package interdata
 			{
 				var hhp:Number=0;
 				s=Res.txt('i',id,1)+'\n';
-				var pot=inv.items[id].xml;
+				var pot:XML = inv.items[id].xml;
 				tip=pot.@tip;
 				if (tip=='instr' || tip=='impl'|| tip=='art') 
 				{
@@ -636,7 +740,7 @@ package interdata
 				}
 				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') 
 				{
-					if (pot.@hhp.length || pot.@hhplong.length())
+					if (pot.@hhp.length() || pot.@hhplong.length())
 					s+='\n'+Res.pipText('healhp')+': '+yel(Math.round(pot.@hhp*World.world.pers.healMult));
 					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*World.world.pers.healMult));
 					if (pot.@hrad.length()) s+='\n'+Res.pipText('healrad')+': '+yel(Math.round(pot.@hrad*World.world.pers.healMult));
@@ -683,36 +787,40 @@ package interdata
 			return s;
 		}
 		
-		function infoItem(tip:String, id:String, nazv:String, craft:int=0)
+		function infoItem(tip:String, id:String, objectName:String, craft:int=0):void
 		{
-			vis.nazv.text=nazv;
-			var s:String='';
+			vis.objectName.text = objectName;
+			var s:String = '';
 			if (id.substr(0,2)=='s_') 
 			{
 				id=id.substr(2);
-				craft=1;
+				craft = 1;
 				if (AllData.d.weapon.(@id==id).length()) tip=Item.L_WEAPON;
 				else if (AllData.d.armor.(@id==id).length()) tip=Item.L_ARMOR;
 				else tip=Item.L_ITEM;
 			}
+
 			//trace(tip);
-			if (tip==Item.L_WEAPON || tip==Item.L_EXPL) 
+			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) 
 			{
-				if (craft>0) setIco();
+				if (craft > 0) setIco();
 				else setIco(1,id);
-				s=infoStr(tip, id);
-				if (craft==1) s+=craftInfo(id);
-				if (craft==2) s+=craftInfo(id.substr(0,id.length-2));
+				s = infoStr(tip, id);
+				if (craft==1) s += craftInfo(id);
+				if (craft==2) s += craftInfo(id.substr(0, id.length - 2));
 			} 
 			else if (tip==Item.L_ARMOR) 
 			{
 				var a:Armor=inv.armors[id];
-				if (a==null) a=pip.arrArmor[id];
-				if (craft>0) setIco();
-				else if (a.tip==3) setIco(3,id);
-				else setIco(2,id);
-				s=infoStr(tip, id);
-				if (craft==2) {
+				if (a == null) a = pip.arrArmor[id];
+				
+				if (craft > 0) setIco();
+				else if (a.tip == 3) setIco(3, id);
+				else setIco(2, id);
+
+				s = infoStr(tip, id);
+				if (craft==2) 
+				{
 					var cid:String=a.idComp;
 					var kolcomp:int=a.needComp();
 					s+="\n\n<span class = 'or'>"+Res.txt('i',cid)+ " - "+kolcomp+" <span ";
@@ -727,11 +835,11 @@ package interdata
 			{
 				var ammo=inv.items[id].xml;
 				if (ammo.@base.length()) {
-					vis.nazv.text=Res.txt('i',ammo.@base);
+					vis.objectName.text=Res.txt('i',ammo.@base);
 					if (ammo.@mod>0) {
-						vis.nazv.text+='\n'+Res.pipText('ammomod_'+ammo.@mod);
+						vis.objectName.text+='\n'+Res.pipText('ammomod_'+ammo.@mod);
 					} else {
-						vis.nazv.text+='\n'+Res.pipText('ammomod_0');
+						vis.objectName.text+='\n'+Res.pipText('ammomod_0');
 					}
 				}
 				setIco();
@@ -744,6 +852,7 @@ package interdata
 				s=infoStr(tip, id);
 				if (craft==1) s+=craftInfo(id);
 			}
+
 			vis.info.htmlText=s;
 			vis.info.height=680-vis.info.y; //475;
 			vis.info.scaleX=vis.info.scaleY=1;
@@ -758,14 +867,14 @@ package interdata
 		public function craftInfo(id:String):String 
 		{
 			var s:String='\n';
-			var sch=AllData.d.item.(@id=='s_'+id);
+			var sch:XML = AllData.d.item.(@id=='s_'+id);
 			if (sch.length()) sch=sch[0];
 			else return '';
 			var kol:int=1;
 			if (sch.@kol.length()) kol=sch.@kol;
 			if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
 			if (kol>1) s+=Res.pipText('crekol')+": "+kol+"\n";
-			if (sch.@skill.length && sch.@lvl.length()) {
+			if (sch.@skill.length() && sch.@lvl.length()) {
 				s+="\n"+Res.pipText('needskill')+": <span class = '";
 				if (gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) s+="red";
 				else s+="pink";
@@ -787,26 +896,30 @@ package interdata
 		{
 				var q:Quest=World.world.game.quests[id];
 				if (q==null) return '';
-				vis.nazv.text=q.nazv;
+				vis.objectName.text=q.objectName;
 				var s:String=q.info;
 				if (q.empl) s+='<br><br>'+Res.txt('u',q.empl);
 				s+='\n';
 				var n:int=1;
-				for each(var st:Quest in q.subs) {
+				for each(var st:Quest in q.subs) 
+				{
 					if (st.invis && st.state<2) continue;
 					s+="\n";
 					if (st.state==2) s+="<span class = 'dark'>";
-					s+=yel(n+'.')+" "
-					if (st.hidden && st.state<2 && st.est<=0) s+='?????';
-					else s+=st.nazv;
-					if (st.collect && st.colTip==0) {
-						if (st.give) {
-							s+=' ('+yel(st.gived+'/'+st.kol)+')';
-							if (st.est>0 && st.state<2) s+=' ('+yel('+'+st.est)+')';
-						} else s+=' ('+yel(st.est+'/'+st.kol)+')';
+					s += yel(n + '.') + " "
+					if (st.hidden && st.state < 2 && st.est <= 0) s += '?????';
+					else s+=st.objectName;
+					if (st.collect && st.colTip==0) 
+					{
+						if (st.give) 
+						{
+							s += ' (' + yel(st.gived + '/' + st.kol) + ')';
+							if (st.est > 0 && st.state < 2) s += ' (' + yel('+' + st.est) + ')';
+						} 
+						else s += ' ('+yel(st.est + '/' + st.kol) + ')';
 					}
-					if (st.nn) s+=' ('+Res.pipText('nn')+')';
-					if (st.state==2) s+="</span>";
+					if (st.nn) s += ' (' + Res.pipText('nn') + ')';
+					if (st.state==2) s += "</span>";
 					n++;
 				}
 				return s;
@@ -818,20 +931,25 @@ package interdata
 			var s1:String;
 			var ok:Boolean = false;
 			
-			var xml = AllData.d.param.(@v==id);
+			var xml:XML = AllData.d.param.(@v == id);
 			var xmlTip:String = xml.@tip;
 			
-			if (World.world.pers.factor[id] is Array) {
+			if (World.world.pers.factor[id] is Array) 
+			{
 				if (xmlTip == '4') lines.push('- ' + Res.pipText('begvulner') + ': ' + yel('100%'));
 				
-				for each (var obj in World.world.pers.factor[id]) {
+				for each (var obj in World.world.pers.factor[id]) 
+				{
 					var line:String = '- ';
 					
-					if (obj.id == 'beg') {
+					if (obj.id == 'beg') 
+					{
 						if (xml.@nobeg > 0) continue;
 						
 						line += handleBeg(obj, xmlTip);
-					} else {
+					} 
+					else 
+					{
 						if ((obj.ref == 'add' && obj.val == 0) || (obj.ref == 'mult' && obj.val == 1)) continue;
 						
 						ok = true;
@@ -841,12 +959,14 @@ package interdata
 					lines.push(line);
 				}
 				
-				if (obj && (xmlTip == '3' || xmlTip == '4')) {
+				if (obj && (xmlTip == '3' || xmlTip == '4')) 
+				{
 					lines.push('- ' + Res.pipText('result') + ': 100% - ' + yel(Res.numb(obj.res * 100) + '%') + ' = ' + yel(Res.numb((1 - obj.res) * 100) + '%'));
 				}
 			}
 			
-			if (ok) {
+			if (ok) 
+			{
 				lines.unshift(Res.pipText('factor') + ':');
 				return lines.join('\n');
 			}
@@ -857,11 +977,16 @@ package interdata
 		private function handleBeg(obj:Object, xmlTip:String):String 
 		{
 			var s:String = '';
-			if (xmlTip == '0') {
+			if (xmlTip == '0') 
+			{
 				if (obj.res != 0) s = Res.pipText('begval') + ': ' + yel(Res.numb(obj.res));
-			} else if (xmlTip == '3') {
+			} 
+			else if (xmlTip == '3') 
+			{
 				s = Res.pipText('begvulner') + ': ' + yel(Res.numb(obj.res * 100) + '%');
-			} else {
+			} 
+			else 
+			{
 				s = Res.pipText('begval') + ': ' + yel(Res.numb(obj.res * 100) + '%');
 			}
 			return s;
@@ -879,13 +1004,20 @@ package interdata
 			if (s1.substr(0, 6) == '*eff_f') s1 = Res.txt('e', 'food');
 			s += s1 + ': ';
 			
-			if (obj.ref == 'add') {
+			if (obj.ref == 'add') 
+			{
 				s += handleAdd(obj, xmlTip);
-			} else if (obj.ref == 'mult') {
+			} 
+			else if (obj.ref == 'mult') 
+			{
 				s += handleMult(obj, xmlTip);
-			} else if (obj.ref == 'min') {
+			} 
+			else if (obj.ref == 'min') 
+			{
 				s += handleMin(obj, xmlTip);
-			} else {
+			} 
+			else 
+			{
 				s += handleElse(obj, xmlTip);
 			}
 			return s;
@@ -894,7 +1026,8 @@ package interdata
 		private function handleAdd(obj:Object, xmlTip:String):String 
 		{
 			var s:String = (obj.val > 0 ? '+' : '-') + ' ' + yel(Math.abs(obj.val));
-			if (xmlTip != '0') {
+			if (xmlTip != '0') 
+			{
 				s = (obj.val > 0 ? '+' : '-') + ' ' + yel(Res.numb(Math.abs(obj.val * 100)) + '%');
 				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
 			}
@@ -903,13 +1036,18 @@ package interdata
 
 		private function handleMult(obj:Object, xmlTip:String):String 
 		{
-			var s:String = '× ' + yel(obj.val);
-			if (xmlTip == '0') {
+			var s:String = 'x ' + yel(obj.val);
+			if (xmlTip == '0') 
+			{
 				s += ' = ' + yel(Res.numb(obj.res));
-			} else if (xmlTip == '3' || xmlTip == '4') {
-				s += '× (1 ' + (obj.val < 1 ? '-' : '+') + ' ' + yel(Math.abs(Math.round(100 - obj.val * 100)) * 0.01) + ')';
+			} 
+			else if (xmlTip == '3' || xmlTip == '4') 
+			{
+				s += 'x (1 ' + (obj.val < 1 ? '-' : '+') + ' ' + yel(Math.abs(Math.round(100 - obj.val * 100)) * 0.01) + ')';
 				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
-			} else {
+			} 
+			else 
+			{
 				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
 			}
 			return s;
@@ -928,9 +1066,9 @@ package interdata
 			return s;
 		}
 				
-				public function setTopText(s:String='')
+				public function setTopText(s:String=''):void
 				{
-					if (s=='') 
+					if (s == '') 
 					{
 						pip.vis.toptext.visible=false;
 					} 
@@ -944,7 +1082,7 @@ package interdata
 				}
 				
 		//проверка квеста на доступность
-		public function checkQuest(task):Boolean 
+		public function checkQuest(task:XML):Boolean 
 		{
 			//проверка на доступ к местности
 			if (task.@level.length()) 
@@ -959,14 +1097,14 @@ package interdata
 				if (World.world.game.triggers[task.@trigger]!=1) return false;
 			}
 			//проверка скилла
-			if (task.@skill.length && task.@skilln.length()) 
+			if (task.@skill.length() && task.@skilln.length()) 
 			{
 				if (World.world.pers.skills[task.@skill]<task.@skilln) return false;
 			}
 			return true;
 		}
 		
-		function initCats()
+		function initCats():void
 		{
 			for (var i:int = 0; i<=kolCats; i++) 
 			{
@@ -976,7 +1114,7 @@ package interdata
 		}
 		
 		//установить кнопки категорий
-		function setCats()
+		function setCats():void
 		{
 			var arr = tips[page2];
 			if (arr == null) {
@@ -1003,16 +1141,16 @@ package interdata
 
 		
 		//выбор подкатегории инвентаря
-		public function selCatEvent(event:MouseEvent)
+		public function selCatEvent(event:MouseEvent):void
 		{
-			var n:int=int(event.currentTarget.name.substr(3));
-			cat[page2]=n;
+			var n:int = int(event.currentTarget.name.substr(3));
+			cat[page2] = n;
 			setStatus();
 		}
 		
-		public function selCat(n:int=0)
+		public function selCat(n:int=0):void
 		{
-			for (var i=0; i<=kolCats; i++) 
+			for (var i:int = 0; i<= kolCats; i++) 
 			{
 				vis.cats['cat'+i].fon.gotoAndStop(1);
 			}
@@ -1022,24 +1160,24 @@ package interdata
 			} 
 			catch (err) 
 			{
-				curTip='';
+				curTip = '';
 			}
-			if (curTip==null) curTip='';
+			if (curTip == null) curTip = '';
 			//trace(curTip);
 		}
 		
 		//проверить соответствии категории
 		function checkCat(tip:String):Boolean 
 		{
-			if (curTip=='' || curTip==null || curTip==tip) return true;
+			if (curTip == '' || curTip == null || curTip == tip) return true;
 			if (curTip is Array) 
 			{
-				for each (var t in curTip) if (t==tip) return true;
+				for each (var t in curTip) if (t == tip) return true;
 			}
 			return false;
 		}
 		
-		function statScroll(event:ScrollEvent)
+		function statScroll(event:ScrollEvent):void
 		{
 			setStatItems(event.position);
 		}
@@ -1057,17 +1195,17 @@ package interdata
 			}
 			scroll(event.delta);
 			if (!vis.scBar.visible) return;
-			if (event.delta<0) (event.currentTarget as MovieClip).scBar.scrollPosition++;
-			if (event.delta>0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
+			if (event.delta < 0) (event.currentTarget as MovieClip).scBar.scrollPosition++;
+			if (event.delta > 0) (event.currentTarget as MovieClip).scBar.scrollPosition--;
 			event.stopPropagation();
 		}
 
-		public function scroll(dn:int=0)
+		public function scroll(dn:int=0):void
 		{
 
 		}
 		
-		public function step()
+		public function step():void
 		{
 
 		}

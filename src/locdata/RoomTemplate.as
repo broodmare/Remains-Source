@@ -45,11 +45,6 @@ package locdata
 					}
 				}
 				if (xml.options.@nornd.length()) rnd = false;
-				if (xml.options.@test.length()) 
-				{
-					kol = 4;
-					lvl = 0;
-				}
 			}
 		}
 

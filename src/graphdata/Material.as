@@ -5,7 +5,7 @@ package graphdata
 	import flash.filters.BevelFilter;
 	import flash.filters.GlowFilter;
 	import flash.filters.DropShadowFilter;
-	import flash.filters.BitmapFilter; //CHECK IF USED
+	import flash.filters.BitmapFilter; 
 	import flash.display.BitmapData;
 
 	import systems.TileFilter;
@@ -14,112 +14,91 @@ package graphdata
 	{
 
 		public var id:String;
-		public var used:Boolean = false;
+		public var materialName:String;
+		
 		public var texture:BitmapData;
 		public var alttexture:BitmapData;
 		public var border:BitmapData;
 		public var floor:BitmapData;
 
-		public var textureMask:Class;
-		public var borderMask:Class;
-		public var floorMask:Class;
+		public var textureMask:Class;	// Pulled from flash file.
+		public var borderMask:Class;	// Pulled from flash file.
+		public var floorMask:Class;		// Pulled from flash file.
 
-		public var appliedFilters:Array; //What goes in here?
+		public var appliedFilters:Array;
 
-		public var isBackwall:Boolean = false; //Is the material as a Backwall?
-		public var slit:Boolean = false; 
+		public var used:Boolean;
+		public var isBackwall:Boolean; 
+		public var slit:Boolean; 
 		
 		
 
-
-
-		//Material class setup.
-		public function Material(material:XML) //input a material when constructing this...
+		public function Material(materialXML:XML) //This constructor is passed a material XML element.
 		{
-			var tempMaterial:XML = material;
+			try
+			{
+				materialSetup(materialXML);
+			}
+			catch (err)
+			{
+				trace('Material.as/Material() - Error while creating material: "' + materialName + '."');
+			}
 			
-			try 
-			{
-				materialSetup(tempMaterial);
-			}
-			catch(err)
-			{
-				trace('Filter: ', tempMaterial.filter.@f, ' for tile: ', tempMaterial.id, '\n', tempMaterial, '\n');
-			}
 		}
 
 
 
-		private function materialSetup(material:XML):void
+		private function materialSetup(materialXML:XML):void
 		{
-			var tempMaterial:XML = material;
+			var material:XML = materialXML;
 
-			id = tempMaterial.@id; //id of the material is the id of the material in the XML file.
-			texture = World.world.grafon.getObj(tempMaterial.main.@tex,Grafon.materialCount);
+			this.id = materialXML.@id; 
+			this.materialName = materialXML.@n; 
+			this.texture = World.world.grafon.getObj(material.main.@tex, Grafon.activeMaterials);
 
-			//If the material has an alternate texture, set alttexture as alternate texture ID.?
-			if (tempMaterial.main.@alt.length)
+			if (material.main.@alt.length()) //If the materialXML has an alternate texture...
 			{
-				alttexture = World.world.grafon.getObj(tempMaterial.main.@alt,Grafon.materialCount);
+				this.alttexture = World.world.grafon.getObj(material.main.@alt, Grafon.activeMaterials);
 			}
 
-			border = World.world.grafon.getObj(tempMaterial.border.@tex,Grafon.materialCount);
-			floor = World.world.grafon.getObj(tempMaterial.floor.@tex,Grafon.materialCount);
-
-			if (tempMaterial.main.@mask.length()) //If a material has a mask property...
+			if (material.border.@tex.length())
 			{
-				try //try setting the texturemask variable of the instantiated material as that mask.
-				{
-					textureMask = getDefinitionByName(tempMaterial.main.@mask) as Class;
-				} 
-				catch (err:ReferenceError) 
-				{
-					textureMask = null;
-					trace('Applying texture mask failed', id)
-				}
-			} 
-
-			try 
+				this.border = World.world.grafon.getObj(material.border.@tex, Grafon.activeMaterials);
+			}
+			if (material.floor.@tex.length())
 			{
-				borderMask = getDefinitionByName(tempMaterial.border.@mask) as Class;
-			} 
-			catch (err:ReferenceError) 
+				this.floor  = World.world.grafon.getObj(material.floor.@tex,  Grafon.activeMaterials);
+			}
+			if (material.main.@mask.length()) //If a materialXML has a mask property...
 			{
-				borderMask = null;
+				this.textureMask = getDefinitionByName(material.main.@mask) as Class;
 			}
 
-			try 
+			if (material.border.@mask.length())
 			{
-				floorMask=getDefinitionByName(tempMaterial.floor.@mask) as Class;
-			} 
-			catch (err:ReferenceError) 
-			{
-				floorMask = null;
+				this.borderMask = getDefinitionByName(material.border.@mask) as Class;
 			}
 			
-			if (tempMaterial.filter.length) //If the material has a filter, apply it.
+			if (material.floor.@mask.length())
+			{
+				this.floorMask  = getDefinitionByName(material.floor.@mask)  as Class;
+			}
+
+			if (material.filter.length()) //If the materialXML has a filter, apply it.
 			{	
-				try
-				{
-					appliedFilters = TileFilter.getFilter(tempMaterial.filter.@f);
-				}
-				catch (err)
-				{
-
-					trace('Failed to set appliedFilters property, ', tempMaterial.filter.@f);
-
-				}
+				this.appliedFilters = TileFilter.getFilter(material.filter.@f);
 			}
 			
-			if (tempMaterial.@rear > 0 || tempMaterial.@ed == '2') // If the material's 'rear' property is greater than 0, or if ed = 2? It should be drawin on the decorative background layer.
+			if (material.@rear > 0 || material.@ed == '2') // If the materialXML is a backwall, set to true.
 			{
-				isBackwall = true;
+				this.isBackwall = true;
 			}
 			
-			if (tempMaterial.@slit > 0) //If the material is a slit, set to true.
+			if (material.@slit > 0) //If the materialXML is a slit, set to true.
 			{
-				slit = true;
+				this.slit = true;
 			}
+			
 		}
 	}
 }

@@ -17,6 +17,8 @@ package locdata
 	
 	import components.Settings;
 	
+	import stubs.visbox0;
+	
 	public class Box extends Obj
 	{
 		
@@ -94,19 +96,19 @@ package locdata
 			shad = World.world.grafon.getObj('vis'+id, Grafon.objectCount);
 			if (vis == null) 
 			{
-				vis = new visbox0();
+				vis  = new visbox0();
 				shad = new visbox0();
 			}
 
 			vis.stop();
 			shad.gotoAndStop(vis.currentFrame);
-			shad.filters=[dsf];
+			shad.filters = [dsf];
 			
 			var node:XML = AllData.d.obj.(@id == id)[0];
 			
-			X = nx;
+			X 	 = nx;
 			begX = nx; 
-			Y = ny;
+			Y 	 = ny;
 			begY = ny;
 
 			scX = vis.width;
@@ -121,35 +123,35 @@ package locdata
 			Y2 = Y;
 			
 			
-			if (node.@mat.length()) mat=node.@mat;
-			if (node.@hp.length()) hp=node.@hp;
+			if (node.@mat.length()) mat = node.@mat;
+			if (node.@hp.length()) hp = node.@hp;
 			if (node.@damageThreshold.length()) damageThreshold = node.@damageThreshold;
-			if (node.@shield.length()) bulChance=node.@shield;
-			if (node.@lurk.length()) lurk=node.@lurk;
-			if (node.@sur.length()) sur=node.@sur;
-			if (node.@montdam.length()) montdam=node.@montdam;
-			if (node.@electro.length()) electroDam=node.@electro;
-			if (node.@moln.length()) molnDam=node.@moln;
-			if (node.@period.length()) molnPeriod=node.@period;
-			if (node.@rad.length()) radioactiv=node.@rad;
-			if (node.@radrad.length()) radrad=node.@radrad;
-			if (node.@radtip.length()) radtip=node.@radtip;
-			if (node.@wall.length()) wall=node.@wall;
-			if (wall>1) shad.alpha=0;
-			if (node.@phis.length()) phis=node.@phis;
-			if (node.@fall.length()) sndFall=node.@fall;
-			if (node.@open.length()) sndOpen=node.@open;
-			if (node.@close.length()) sndClose=node.@close;
-			if (node.@die.length()) sndDie=node.@die;
-			if (node.@plav.length()) ddyPlav=node.@plav;
-			if (node.@nazv.length()) nazv=Res.txt('o',node.@nazv);
-			else nazv=Res.txt('o',id);
+			if (node.@shield.length()) bulChance = node.@shield;
+			if (node.@lurk.length()) lurk = node.@lurk;
+			if (node.@sur.length()) sur = node.@sur;
+			if (node.@montdam.length()) montdam = node.@montdam;
+			if (node.@electro.length()) electroDam = node.@electro;
+			if (node.@moln.length()) molnDam = node.@moln;
+			if (node.@period.length()) molnPeriod = node.@period;
+			if (node.@rad.length()) radioactiv = node.@rad;
+			if (node.@radrad.length()) radrad = node.@radrad;
+			if (node.@radtip.length()) radtip = node.@radtip;
+			if (node.@wall.length()) wall = node.@wall;
+			if (wall > 1) shad.alpha = 0;
+			if (node.@phis.length()) phis = node.@phis;
+			if (node.@fall.length()) sndFall = node.@fall;
+			if (node.@open.length()) sndOpen = node.@open;
+			if (node.@close.length()) sndClose = node.@close;
+			if (node.@die.length()) sndDie = node.@die;
+			if (node.@plav.length()) ddyPlav = node.@plav;
+			if (node.@objectName.length()) objectName = Res.txt('o', node.@objectName);
+			else objectName = Res.txt('o', id);
 			if (node.@explcrack.length()) explcrack = true;
 			if (scX < 40 || wall > 0) shelf = false;
 			if (node.@shelf.length()) shelf = true;
 			if (node.@massaMult.length()) massaMult = node.@massaMult;
 			massa = scX * scY * scY / 250000 * massaMult;
-			if (node.@massa.length()) massa=node.@massa / 50;
+			if (node.@massa.length()) massa = node.@massa / 50;
 			
 			if (xml && xml.@indestruct.length()) 
 			{
@@ -166,13 +168,13 @@ package locdata
 			}
 
 			// Interactivity
-			if (node.@inter.length || (xml && (xml.@inter.length || xml.scr.length || xml.@scr.length()))) inter=new Interact(this,node,xml,loadObj);
+			if (node.@inter.length() || (xml && (xml.@inter.length() || xml.scr.length() || xml.@scr.length()))) inter=new Interact(this,node,xml,loadObj);
 			if (inter && inter.cont!='' && inter.cont!='empty' && inter.lock && inter.lockTip<=1) bulPlayer=true;
 			
 			// Individual parameters from the XML map
 			if (xml) 
 			{
-				if (xml.@name.length()) nazv=Res.txt('o',xml.@name);	//название
+				if (xml.@name.length()) objectName=Res.txt('o',xml.@name);	//название
 				// Attached scripts
 				if (xml.scr.length()) 
 				{
@@ -198,7 +200,7 @@ package locdata
 				
 				if (xml.@prob.length && id!='exit') 
 				{
-					nazv=Res.txt('m',xml.@prob);
+					objectName=Res.txt('m',xml.@prob);
 				}
 				if (xml.@light.length()) light=true;
 				if (xml.@fun.length()) 
@@ -251,7 +253,7 @@ package locdata
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String=null):void
 		{
 			super.command(com,val);
 			if (com == 'die') 
@@ -262,7 +264,7 @@ package locdata
 			if (inter) inter.command(com,val);
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			if (invis) return;
 			if (vis && room && room.roomActive) 
@@ -276,7 +278,7 @@ package locdata
 			}
 		}
 
-		public override function setNull(f:Boolean=false) 
+		public override function setNull(f:Boolean = false):void
 		{
 			super.setNull(f);
 			if (!dead && invis && f) 
@@ -293,13 +295,13 @@ package locdata
 			}
 		}
 		
-		public override function remVisual()
+		public override function remVisual():void
 		{
 			if (vis && vis.parent) vis.parent.removeChild(vis);
 			if (shad && shad.parent) shad.parent.removeChild(shad);
 		}
 		
-		public override function setVisState(s:String)
+		public override function setVisState(s:String):void
 		{
 			if ((s=='open' || s=='comein') && sndOpen!='' && !World.world.testLoot) Snd.ps(sndOpen,X,Y);
 			if (s=='close' && sndClose!='') Snd.ps(sndClose,X,Y);
@@ -311,7 +313,7 @@ package locdata
 			catch (err) {}
 		}
 		
-		public override function step()
+		public override function step():void
 		{
 			if (dead && invis) 
 			{
@@ -439,7 +441,7 @@ package locdata
 				}
 				if (!(cel.X1>=X2 || cel.X2<=X1 || cel.Y1>=Y2 || cel.Y2<=Y1)) 
 				{
-					trace('Мешает:',cel.nazv);
+					trace('Мешает:',cel.objectName);
 					return true;
 				}
 			}
@@ -498,7 +500,7 @@ package locdata
 			if (hp <= 0) die();
 		}
 		
-		public override function die(sposob:int=0)
+		public override function die(sposob:int=0):void
 		{
 			if (dead) return;
 			if (inter && inter.prize) return;
@@ -592,18 +594,18 @@ package locdata
 			}
 		}
 		
-		public override function checkStay()
+		public override function checkStay():Boolean
 		{
-			if (osnova || wall>0) return true;
+			if (osnova || wall > 0) return true;
 			fixPlav = false;
 			checkWater();
 			if (isPlav && !isPlav2 && dy < 2 && dy > -2) 
 			{
 				fixPlav = true;
 			}
-			for (var i = Math.floor(X1 / Tile.tilePixelWidth); i <= Math.floor(X2 / Tile.tilePixelWidth); i++) 
+			for (var i:int = Math.floor(X1 / Tile.tilePixelWidth); i <= Math.floor(X2 / Tile.tilePixelWidth); i++) 
 			{
-				var t = room.roomTileArray[i][Math.floor((Y2 + 1) / Tile.tilePixelHeight)];
+				var t:Tile = room.roomTileArray[i][Math.floor((Y2 + 1) / Tile.tilePixelHeight)];
 				if (collisionTile(t, 0, 1)) 
 				{
 					return true;
@@ -804,12 +806,12 @@ package locdata
 				
 			}
 
-			if (pla!=isPlav && (dy>8 || dy<-8)) Emitter.emit('kap',room,X,Y-scY*0.25+dy,{dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
-			if (pla!=isPlav && dy>5) 
+			if (pla != isPlav && (dy > 8 || dy < -8)) Emitter.emit('kap', room, X, Y - scY * 0.25 + dy, {dy:-Math.abs(dy)*(Math.random()*0.3+0.3), kol:Math.floor(Math.abs(dy*massa*2)-5)});
+			if (pla != isPlav && dy > 5) 
 			{
-				if (massa>2) sound('fall_water0', 0, dy/10);
-				else if (massa>0.4) sound('fall_water1', 0, dy/10);
-				else if (massa>0.2) sound('fall_water2', 0, dy/10);
+				if (massa > 2) sound('fall_water0', 0, dy / 10);
+				else if (massa > 0.4) sound('fall_water1', 0, dy / 10);
+				else if (massa > 0.2) sound('fall_water2', 0, dy / 10);
 				else sound('fall_item_water', 0, dy/10);
 			}
 			return isPlav;
@@ -821,7 +823,7 @@ package locdata
 				var b:Box = room.objs[i] as Box;
 				if (!b.invis && b.stay && b.shelf && !(X<b.X1 || X>b.X2) && Y2<=b.Y1 && Y2+dy>b.Y1) 
 				{
-					osnova=b;
+					osnova = b;
 					return b.Y1;
 				}
 			}
@@ -841,14 +843,14 @@ package locdata
 		
 		public function bindUnit(n:String='-1')
 		{
-			un=new VirtualUnit(n);
+			un = new VirtualUnit(n);
 			copy(un);
 			un.owner=this;
 			un.room = room;
 		}
 		
 		// forced movement
-		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1)
+		public override function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1):void
 		{
 			super.bindMove(nx,ny);
 			if (this.un) un.bindMove(nx,ny);
@@ -860,12 +862,12 @@ package locdata
 			vis.x=shad.x=X,vis.y=Y,shad.y=Y+(wall?2:6);
 		}
 		
-		public function sound(sid:String, msec:Number=0, vol:Number=1):* 
+		public function sound(sid:String, msec:Number = 0, vol:Number = 1):* 
 		{
 			return Snd.ps(sid,X,Y,msec,vol);
 		}
 		
-		public function collisionTile(t:Tile, gx:Number=0, gy:Number=0):int 
+		public function collisionTile(t:Tile, gx:Number = 0, gy:Number = 0):int 
 		{
 			if (!t || (t.phis==0 || t.phis==3) && !t.shelf) return 0;  //пусто
 			if (X2+gx<=t.phX1 || X1+gx>=t.phX2 || Y2+gy<=t.phY1 || Y1+gy>=t.phY2) 

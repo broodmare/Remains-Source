@@ -29,7 +29,6 @@ package locdata
 		public var list:int=0;				// Number in the list
 		public var rnd:Boolean=false;
 		public var autoLevel:Boolean=false;
-		public var test:Boolean=false;
 		public var fin:int=-1;
 		public var prob:int=0;
 		public var exitProb:String;
@@ -73,25 +72,24 @@ package locdata
 			levelData = levelXML;
 			id = levelXML.@id;
 
-			if (levelXML.@tip.length()) tip=levelXML.@tip;
-			if (levelXML.@dif.length()) dif=levelXML.@dif;
-			if (levelXML.@biom.length()) biom=levelXML.@biom;
-			if (levelXML.@conf.length()) conf=levelXML.@conf;
-			if (levelXML.@stage.length()) gameStage=levelXML.@stage;
-			if (levelXML.@limit.length()) lootLimit=levelXML.@limit;
-			if (levelXML.@rnd.length()) rnd=true;
-			if (levelXML.@test.length()) test=true;
-			if (levelXML.@fin.length()) fin=levelXML.@fin;
-			if (levelXML.@autolevel.length()) autoLevel=true;
-			if (levelXML.@prob.length()) prob=levelXML.@prob;
-			if (levelXML.@list.length()) list=levelXML.@list;
-			if (levelXML.@locx.length()) begLocX=levelXML.@locx;
-			if (levelXML.@locy.length()) begLocY=levelXML.@locy;
-			if (levelXML.@mx.length()) mLocX=levelXML.@mx;
-			if (levelXML.@my.length()) mLocY=levelXML.@my;
-			if (levelXML.@acc.length()) access=true;
-			if (levelXML.@exit.length()) exitProb=levelXML.@exit;
-			if (levelXML.@loadscr.length()) loadScr=levelXML.@loadscr;
+			if (levelXML.@tip.length()) 		tip 	= levelXML.@tip;
+			if (levelXML.@dif.length()) 		dif 	= levelXML.@dif;
+			if (levelXML.@biom.length()) 		biom 	= levelXML.@biom;
+			if (levelXML.@conf.length()) 		conf 	= levelXML.@conf;
+			if (levelXML.@stage.length()) 		gameStage = levelXML.@stage;
+			if (levelXML.@limit.length()) 		lootLimit = levelXML.@limit;
+			if (levelXML.@rnd.length()) 		rnd 	= true;
+			if (levelXML.@fin.length()) 		fin 	= levelXML.@fin;
+			if (levelXML.@autolevel.length()) 	autoLevel = true;
+			if (levelXML.@prob.length()) 		prob 	= levelXML.@prob;
+			if (levelXML.@list.length()) 		list 	= levelXML.@list;
+			if (levelXML.@locx.length()) 		begLocX = levelXML.@locx;
+			if (levelXML.@locy.length()) 		begLocY = levelXML.@locy;
+			if (levelXML.@mx.length()) 			mLocX 	= levelXML.@mx;
+			if (levelXML.@my.length()) 			mLocY 	= levelXML.@my;
+			if (levelXML.@acc.length()) 		access 	= true;
+			if (levelXML.@exit.length()) 		exitProb = levelXML.@exit;
+			if (levelXML.@loadscr.length()) 	loadScr = levelXML.@loadscr;
 			if (levelXML.options.length()) 
 			{
 				if (levelXML.options.@xp.length()) xp=levelXML.options.@xp;

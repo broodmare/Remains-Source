@@ -42,7 +42,7 @@ package interdata
 			world = nw;
 		}
 		
-		public function setLoc(room:Room)
+		public function setLoc(room:Room):void
 		{
 			if (room == null) return;
 			screenX=world.swfStage.stageWidth;
@@ -67,13 +67,13 @@ package interdata
 			setZoom();
 		}
 		
-		public function setKoord(mc:DisplayObject, nx:Number, ny:Number)
+		public function setKoord(mc:DisplayObject, nx:Number, ny:Number):void
 		{
 			mc.x=nx*scaleV+vx;
 			mc.y=ny*scaleV+vy;
 		}
 		
-		public function setZoom(turn:int=-1000)
+		public function setZoom(turn:int=-1000):void
 		{
 			if (turn==1000) 
 			{
@@ -126,9 +126,9 @@ package interdata
 			}
 		}
 		
-		public function calc(un:Unit)
+		public function calc(un:Unit):void
 		{
-			if (world.ctr.keyZoom)
+			if (world.ctr.keyStates.keyZoom)
 			{
 				if (World.world.room && World.world.room.sky) 
 				{
@@ -138,21 +138,21 @@ package interdata
 				{
 					setZoom(1000);
 				}
-				world.ctr.keyZoom=false;
+				world.ctr.keyStates.keyZoom=false;
 			}
 			if (moved) 
 			{
-				if ((world.ctr.keyLook || showOn) && otryv<1) 
+				if ((world.ctr.keyStates.keyLook || showOn) && otryv<1) 
 				{
 					if (showOn) otryv+=0.2;
 					else otryv+=0.05;
 				}
-				if (!world.ctr.keyLook && !showOn && otryv>0) 
+				if (!world.ctr.keyStates.keyLook && !showOn && otryv>0) 
 				{
 					otryv-=0.2;
 					if (otryv<0) otryv=0;
 				}
-				if (world.ctr.keyLook) {
+				if (world.ctr.keyStates.keyLook) {
 					showX=-1;
 				}
 				if (!camRun) 

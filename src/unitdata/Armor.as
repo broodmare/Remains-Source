@@ -6,7 +6,7 @@ package unitdata
 	{
 
 		public var id:String;
-		public var nazv:String;
+		public var objectName:String;
 		public var owner:Unit;
 		public var tip:int=1;		//1 - броня, 3 - амулет
 		public var clo:int=0;		//броню можно переодевать в любой момент в огран инвентаре
@@ -113,8 +113,8 @@ package unitdata
 			if (node.@res.length()) dmana_res=node.@res;
 			
 			//showObsInd=true;//!!!!
-			nazv=Res.txt('a',id);
-			if (lvl>0) nazv+=' - '+lvl;
+			objectName=Res.txt('a',id);
+			if (lvl>0) objectName+=' - '+lvl;
 		}
 		
 		public function setArmor() {

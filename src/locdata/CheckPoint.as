@@ -8,6 +8,8 @@ package locdata
 	
 	import components.Settings;
 	
+	import stubs.vischeckpoint;
+	
 	public class CheckPoint extends Obj
 	{
 
@@ -37,7 +39,7 @@ package locdata
 			X=nx, Y=ny;
 			scX=node.@size*Settings.tilePixelWidth;
 			scY=node.@wid*Settings.tilePixelHeight;
-			nazv=Res.txt('o','checkpoint');
+			objectName=Res.txt('o','checkpoint');
 			
 			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
 			X=nx, Y=ny;
@@ -99,12 +101,12 @@ package locdata
 			if (hide) 
 			{
 				vis.visible=false;
-				nazv='';
+				objectName='';
 				inter.active=false;
 			}
 		}
 		
-		public override function addVisual()
+		public override function addVisual():void
 		{
 			if (vis && !hide) 
 			{
@@ -114,7 +116,7 @@ package locdata
 				}
 			}
 		}
-		public override function remVisual()
+		public override function remVisual():void
 		{
 			super.remVisual();
 		}
@@ -129,7 +131,7 @@ package locdata
 			return obj;
 		}
 		
-		public override function command(com:String, val:String=null)
+		public override function command(com:String, val:String = null):void
 		{
 			activate();
 		}
@@ -137,31 +139,33 @@ package locdata
 		//активировать контрольную точку. если параметр true - не добавлять скилл-поинт
 		public function activate(first:Boolean=false)
 		{
-			if (inter.lock>0 || inter.mine>0) return;
-			if (active==2) 
+			if (inter.lock > 0 || inter.mine > 0) return;
+			if (active == 2) 
 			{
 				return;
 			}
 
-			if (active==0 && first==false) 
+			if (active == 0 && first == false) 
 			{
-				if (World.world.pers.manaCPres) World.world.pers.heal(World.world.pers.manaCPres,6);
-				if (World.world.pers.xpCPadd) World.world.pers.expa(room.unXp*3);
+				if (World.world.pers.manaCPres) World.world.pers.heal(World.world.pers.manaCPres, 6);
+				if (World.world.pers.xpCPadd) World.world.pers.expa(room.unXp * 3);
 			}
-			active=2;
-			World.world.pers.currentCP=this;
-			World.world.pers.currentCPCode=code;
+			active = 2;
+			World.world.pers.currentCP = this;
+			World.world.pers.currentCPCode = code;
 			if (code) 
 			{
-				World.world.pers.prevCPCode=code;
-				room.level.template.lastCpCode=code;
+				World.world.pers.prevCPCode = code;
+				room.level.template.lastCpCode = code;
 			}
-			room.level.currentCP=this;
+			room.level.currentCP = this;
 			if (first) 
 			{
 				vis.osn.gotoAndStop('open');
 				if (World.world.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
-			} else {
+			} 
+			else 
+			{
 				vis.osn.play();
 				if (World.world.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
 			}
@@ -169,13 +173,15 @@ package locdata
 			//trace(World.world.game.mReturn)
 			if (World.world.game.mReturn && teleOn && !used) 
 			{
-				inter.actFun=teleport;
-				inter.userAction='returnb';
-				inter.t_action=30;
+				inter.actFun = teleport;
+				inter.userAction = 'returnb';
+				inter.t_action = 30;
 				inter.update();
-			} else {
-				inter.active=false;
-				inter.actionText='';
+			} 
+			else 
+			{
+				inter.active = false;
+				inter.actionText = '';
 			}
 			World.world.gui.infoText('checkPoint');
 			World.world.saveGame();
@@ -185,16 +191,16 @@ package locdata
 		{
 			if (!main) 
 			{
-				World.world.game.gotoLand(World.world.game.baseId);
+				World.world.game.gotoLevel(World.world.game.baseId);
 				if (Settings.hardInv && World.world.level.rnd) 
 				{
-					used=true;
-					inter.active=false;
-					inter.actionText='';
+					used = true;
+					inter.active = false;
+					inter.actionText = '';
 					vis.fiol.gotoAndStop(1);
 				}
 			} 
-			else if (World.world.game.missionId!='rbl') World.world.game.gotoLand(World.world.game.missionId);
+			else if (World.world.game.missionId != 'rbl') World.world.game.gotoLevel(World.world.game.missionId);
 			//trace('GOTO '+World.world.game.curLevelID);
 		}
 		
@@ -206,35 +212,35 @@ package locdata
 		public function deactivate()
 		{
 			if (main) return;
-			inter.active=!hide;
-			active=1;
+			inter.active =! hide;
+			active = 1;
 			vis.osn.gotoAndStop('reopen');
 			vis.fiol.gotoAndStop(1);
-			inter.actFun=activate;
-			inter.userAction='activate';
-			inter.t_action=0;
+			inter.actFun = activate;
+			inter.userAction = 'activate';
+			inter.t_action = 0;
 			inter.update();
 		}
 		
-		public override function step()
+		public override function step():void
 		{
-			onCursor=(X1<World.world.celX && X2>World.world.celX && Y1<World.world.celY && Y2>World.world.celY)?prior:0;
+			onCursor = (X1 < World.world.celX && X2 > World.world.celX && Y1 < World.world.celY && Y2 > World.world.celY) ? prior:0;
 			if (inter) inter.step();
 			if (main) 
 			{
 				if (World.world.game.missionId && World.world.game.levelArray[World.world.game.missionId] && World.world.game.levelArray[World.world.game.missionId].tip!='base') inter.active=true;
-				else inter.active=false;
+				else inter.active = false;
 				return;
 			}
 
-			if (locked && inter.lock==0 && inter.mine==0) 
+			if (locked && inter.lock == 0 && inter.mine == 0) 
 			{
-				locked=false;
-				vis.lock.visible=false;
+				locked = false;
+				vis.lock.visible = false;
 			}
 			
 			if (area) area.step();
-			if (active==2 && World.world.pers.currentCP!=this) deactivate();
+			if (active == 2 && World.world.pers.currentCP != this) deactivate();
 		}
 		
 	}

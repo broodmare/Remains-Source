@@ -1793,7 +1793,7 @@ package roomdata {
     <obj id="tcloud1" code="EmZ0QJA5FLlGUxSQ" x="11" y="13"/>
     <obj id="area" code="y4QOt9ZKNyUr1hyZ" x="46" y="22" h="5">
       <scr>
-        <s act="gotoland" val="random_sewer"/>
+        <s act="gotoLevel" val="random_sewer"/>
       </scr>
     </obj>
     <obj id="radbarrel" code="AkBzZ9TRx5fF5Cmc" x="4" y="23"/>

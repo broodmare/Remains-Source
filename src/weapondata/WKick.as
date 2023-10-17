@@ -4,6 +4,8 @@ package weapondata
 	import unitdata.Unit;
 	import locdata.Tile
 	
+	import stubs.visualPunch;
+
 	public class WKick extends Weapon 
 	{
 		
@@ -20,7 +22,7 @@ package weapondata
 			setBullet(b);
 		}
 		
-		public override function actions()
+		public override function actions():void
 		{
 			X=owner.X;
 			Y=owner.Y;
@@ -71,12 +73,12 @@ package weapondata
 				} 
 				else 
 				{
-					var t1:Tile=owner.room.getAbsTile(X+storona*60, Y-30);
-					var t2:Tile=owner.room.getAbsTile(X+storona*60, Y-50);
-					if (t1 && t2 && t2.damageThreshold < t1.damageThreshold) vverh=true;
+					var t3:Tile=owner.room.getAbsTile(X+storona*60, Y-30);
+					var t4:Tile=owner.room.getAbsTile(X+storona*60, Y-50);
+					if (t3 && t4 && t4.damageThreshold < t3.damageThreshold) vverh=true;
 					if (vverh) b.bindMove(X+storona*60,Y-50,X+storona*20,Y-50);
 					b.bindMove(X+storona*60,Y-30,X+storona*20,Y-30);
-					for (var i=1; i<=5; i++) 
+					for (var i:int = 1; i<=5; i++) 
 					{
 						if (i!=3 && !(vverh && i==5)) b.bindMove(X+storona*60,Y-i*10,X+storona*20,Y-i*10);
 					}
@@ -94,7 +96,7 @@ package weapondata
 			return true;
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			
 		}

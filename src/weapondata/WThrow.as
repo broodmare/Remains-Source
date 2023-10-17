@@ -14,11 +14,11 @@ package weapondata
 		
 		public var kolAmmo:int=4;
 		public var detTime:int=75;
-		var throwTip:int=0;
-		var radio:Boolean=false;
+		var throwTip:int = 0;
+		var radio:Boolean = false;
 		
-		var brake=2, skok:Number=0.4, tormoz:Number=0.6, bumc:Boolean=false;
-		public var sndFall:String='';
+		var brake = 2, skok:Number = 0.4, tormoz:Number = 0.6, bumc:Boolean = false;
+		public var sndFall:String = '';
 		
 		
 		public function WThrow(own:Unit, nid:String, nvar:int=0) 
@@ -30,13 +30,13 @@ package weapondata
 			vis.gotoAndStop(1);
 			holder=1;
 			ammo=id;
-			var node=AllData.d.weapon.(@id==id)[0];
+			var node:XML = AllData.d.weapon.(@id==id)[0];
 			if (node.@throwtip>0) throwTip=node.@throwtip;
 			if (throwTip>0) lvlNoUse=true;
-			if (node.char.length && node.char[0].@time>0) detTime=node.char[0].@time;
-			if (node.char.length && node.char.@radio.length()) radio=true;
-			if (node.phis.length && node.phis[0].@bumc>0) bumc=true;
-			if (node.snd.length && node.snd[0].@fall.length()) sndFall=node.snd[0].@fall;
+			if (node.char.length() && node.char[0].@time>0) detTime=node.char[0].@time;
+			if (node.char.length() && node.char.@radio.length()) radio=true;
+			if (node.phis.length() && node.phis[0].@bumc>0) bumc=true;
+			if (node.snd.length() && node.snd[0].@fall.length()) sndFall=node.snd[0].@fall;
 		}
 
 		public override function attack(waitReady:Boolean=false):Boolean 
@@ -51,7 +51,7 @@ package weapondata
 			{
 				if (lvlNoUse) 
 				{
-					if ((owner as UnitPlayer).pers.getWeapLevel(skill)<lvl) 
+					if ((owner as UnitPlayer).pers.getWeapLevel(skill) < lvl) 
 					{
 						World.world.gui.infoText('weaponSkillLevel');
 						return false;
@@ -59,7 +59,7 @@ package weapondata
 				} 
 				else 
 				{
-					var razn=lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
+					var razn = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 					if (razn==1) skillConf=0.75;
 					else if (razn==2) skillConf=0.5;
 					else if (razn>2) 
@@ -90,15 +90,15 @@ package weapondata
 		
 		protected override function shoot():Bullet 
 		{
-			var sk=1;
+			var sk:int = 1;
 			if (owner) 
 			{
 				sk=owner.weaponSkill;
 				if (owner.player) sk=weaponSkill;
 			}
-			var r=(Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
-			var rasstx=owner.celX-X;
-			var rassty=owner.celY-Y;
+			var r:Number = (Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
+			var rasstx:Number = owner.celX-X;
+			var rassty:Number = owner.celY-Y;
 			if (throwTip==1) 
 			{
 				var un:Mine = new Mine(id);
@@ -134,7 +134,7 @@ package weapondata
 				(b as PhisBullet).bumc=bumc;
 				b.damage=(damage+damAdd)*damMult*(1+(sk-1)*0.5);
 				b.damageExpl=(damageExpl)*damMult*(1+(sk-1)*0.5)*skillConf;
-				b.nazv=nazv;
+				b.objectName=objectName;
 				(b as PhisBullet).skok=skok;
 				(b as PhisBullet).tormoz=tormoz;
 				(b as PhisBullet).brake=brake;
@@ -146,7 +146,7 @@ package weapondata
 				(b as PhisBullet).sndHit=sndFall;
 				if (owner.player) 
 				{
-					if (World.world.pers.grenader && !World.world.ctr.keyRun) (b as PhisBullet).isSensor=true;
+					if (World.world.pers.grenader && !World.world.ctr.keyStates.keyRun) (b as PhisBullet).isSensor=true;
 				}
 				room.newGrenade(b);
 			}
@@ -163,26 +163,26 @@ package weapondata
 			return b;
 		}
 		
-		public override function setTrass(gr:Graphics)
+		public override function setTrass(gr:Graphics):void
 		{
 			skillConf=1;
-			var razn=lvl-World.world.pers.getWeapLevel(skill);
+			var razn:Number = lvl-World.world.pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.75;
 			else if (razn>=2) skillConf=0.5;
-			var rot3=Math.atan2(World.world.celY-Y, World.world.celX-X);
+			var rot3:Number=Math.atan2(World.world.celY-Y, World.world.celX-X);
 			trasser.room=owner.room;
-			var rasstx=World.world.celX-X;
-			var rassty=World.world.celY-Y;
+			var rasstx:Number = World.world.celX-X;
+			var rassty:Number = World.world.celY-Y;
 			trasser.X=trasser.begx=X;
 			trasser.Y=trasser.begy=Y;
 			trasser.ddy=Settings.ddy;
 			trasser.skok=skok;
 			trasser.tormoz=tormoz;
 			trasser.brake=brake;
-			var bvel=0;
+			var bvel:int = 0;
 			if (owner.player) bvel=getVel(rasstx, rassty, weaponSkill*skillConf);
 			else bvel=getVel(rasstx, rassty, owner.weaponSkill*skillConf);
-			var	brot=rot3+getRot(rasstx, rassty, bvel);
+			var	brot:Number = rot3+getRot(rasstx, rassty, bvel);
 			trasser.dx=trasser.begdx=Math.cos(brot)*bvel;
 			trasser.dy=trasser.begdy=Math.sin(brot)*bvel;
 			trasser.liv=detTime;
@@ -190,7 +190,7 @@ package weapondata
 			trasser.trass(gr);
 		}
 
-		public override function reloadWeapon()
+		public override function reloadWeapon():void
 		{
 			
 		}
@@ -199,11 +199,11 @@ package weapondata
 		{
 			if (owner.player) 
 			{
-				return (owner as UnitPlayer).getInvAmmo(ammo,1,1,true) > 0;
+				return (owner as UnitPlayer).getInvAmmo(ammo, 1, 1, true) > 0;
 			} 
 			else 
 			{
-				if (kolAmmo<=0) 
+				if (kolAmmo <= 0) 
 				{
 					return false;
 				} 
@@ -217,13 +217,13 @@ package weapondata
 		}
 		
 		
-		public override function animate()
+		public override function animate():void
 		{
 			super.animate();
-			vis.rotation=0;
-			vis.scaleX=1;
-			if (t_attack>0 || kolAmmo<=0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo)<=0) vis.alpha=0;
-			else vis.alpha=1;
+			vis.rotation = 0;
+			vis.scaleX = 1;
+			if (t_attack > 0 || kolAmmo <= 0 || owner.player && (owner as UnitPlayer).getInvAmmo(ammo) <= 0) vis.alpha = 0;
+			else vis.alpha = 1;
 		}
 		
 		public override function detonator():Boolean 
@@ -232,7 +232,7 @@ package weapondata
 			{
 				for each (var un:Unit in room.units) 
 				{
-					if ((un is Mine) && un.id==id) 
+					if ((un is Mine) && un.id == id) 
 					{
 						(un as Mine).activate();
 					}
@@ -242,7 +242,7 @@ package weapondata
 			else return false;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean = false):void
 		{
 			super.setNull();
 		}

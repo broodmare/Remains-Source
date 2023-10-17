@@ -7,6 +7,8 @@ package unitdata
 	
 	import components.Settings;
 	
+	import stubs.visualVortex;
+	
 	public class UnitVortex extends Unit
 	{
 		
@@ -61,7 +63,7 @@ package unitdata
 			return false;
 		}
 		
-		public override function setNull(f:Boolean=false)
+		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
 		}

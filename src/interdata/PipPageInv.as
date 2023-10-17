@@ -11,59 +11,70 @@ package interdata
 
 	import components.Settings;
 
+	import stubs.visPipInvItem;
+	
 	public class PipPageInv extends PipPage
 	{
 		
 		var assId:String=null;
 		var assArr:Array;
-		var actCurrent:String='';
+		var actCurrent:String = '';
 		
 		var overId:String;
 		var overItem:Object;
 		var over_t:int;
-		var dat:Number=0;
+		var dat:Number = 0;
 		
 		
 
 		public function PipPageInv(npip:PipBuck, npp:String) 
 		{
-			isLC=isRC=true;
-			itemClass=visPipInvItem;
+			isLC = true;
+			isRC = true;
+			itemClass = visPipInvItem;
 			super(npip,npp);
-			vis.butOk.addEventListener(MouseEvent.CLICK,showH);
-			tips=[[],
+
+			vis.butOk.addEventListener(MouseEvent.CLICK, showH);
+
+			tips = [[],
 			['','w1','w2','w4','w5','w6','w3'],
 			['','armor1','armor3'],
 			['','med',['him','pot'],'food',['equip','spell'],['book','sphera','note'],'paint'],
 			['',['valuables','money'],['spec','key'],['impl','art','instr','equip'],['stuff','compa','compw','compe','compm'],['compp','food'],'scheme'],
 			['','a','e']];
+
 			initCats();
+			trace('PipPageInv.as/PipPageInv() - Created PipPageInv page.');
 		}
 		
 		//подготовка страниц
-		override function setSubPages()
+		override function setSubPages():void
 		{
-			vis.butOk.visible=false;
-			statHead.cat.visible=false;
-			statHead.rid.visible=false;
-			pip.vis.butHelp.visible=true;
-			pip.vis.butMass.visible=Settings.hardInv;
+			trace('PipPageInv.as/setSubPages() - updating subPages.');
+
+			vis.butOk.visible 		= false;
+			statHead.cat.visible 	= false;
+			statHead.rid.visible 	= false;
+			pip.vis.butHelp.visible = true;
+			pip.vis.butMass.visible = Settings.hardInv;
+
 			setIco();
 			setCats();
-			assId=null;
-			dat=new Date().getTime();
-			if (page2!=4) 
+			assId 	= null;
+			dat 	= new Date().getTime();
+
+			if (page2 != 4) 
 			{
-				setTopText('invupr'+page2);
+				setTopText('invupr' + page2);
 			}
 			inv.calcMass();
 			inv.calcWeaponMass();
-			if (page2==1) 
+			if (page2 == 1) 
 			{		//оружие
 				inv.getKolAmmos();
 				assArr=new Array();
 				statHead.fav.text=Res.pipText('ii1');
-				statHead.nazv.text=Res.pipText('ii2');
+				statHead.objectName.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
@@ -88,7 +99,7 @@ package interdata
 						if (curTip!='' && curTip!=null && curTip!=trol) continue;	//категория
 						var avail:Boolean=true;
 						if (w.avail()<=-1) avail=false;
-						var n:Object={tip:'w', id:w.id, nazv:w.nazv, respect:w.respect, avail:avail, variant:w.variant, trol:trol};
+						var n:Object={tip:'w', id:w.id, objectName:w.objectName, respect:w.respect, avail:avail, variant:w.variant, trol:trol};
 						n.sort1=1;
 						if (!avail) n.sort1=2;
 						if (n.respect==1) n.sort1=3;
@@ -105,9 +116,9 @@ package interdata
 						{
 							if (inv.ammos[w.ammoBase]!=null) n.ammo=inv.ammos[w.ammoBase]+w.hold;
 							else n.ammo=inv.items[w.ammo].kol+w.hold;
-							n.ammotip=(w.tip!=4)?inv.items[w.ammoBase].nazv:'';
+							n.ammotip=(w.tip!=4)?inv.items[w.ammoBase].objectName:'';
 						}
-						if (w.alicorn) n.nazv=Res.rainbow(n.nazv);
+						if (w.alicorn) n.objectName=Res.rainbow(n.objectName);
 						arr.push(n);
 						assArr[n.id]=n;
 					}
@@ -115,13 +126,13 @@ package interdata
 				pip.reqKey=true;
 				vis.butOk.text.text=Res.pipText('showhidden');
 				actCurrent='showhidden';
-				if (arr.length) arr.sortOn(['sort1','sort2','sort3','nazv'],[0,0,Array.NUMERIC,0]);
+				if (arr.length) arr.sortOn(['sort1','sort2','sort3','objectName'],[0,0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv1',0,true);
 			} 
-			else if (page2==2) 
+			else if (page2 == 2) 
 			{	//броня
 				statHead.fav.text=Res.pipText('ii1');
-				statHead.nazv.text=Res.pipText('ii2');
+				statHead.objectName.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
@@ -132,7 +143,7 @@ package interdata
 					var arm:Armor=inv.armors[s];
 					if (arm.lvl<0) continue;
 					if (curTip!='' && curTip!=null && curTip!='armor'+arm.tip) continue;	//категория
-					n={id:s, nazv:arm.nazv, clo:arm.clo, hp:Math.round(arm.hp/arm.maxhp*100)+'%', sort:arm.sort, trol:'armor'+arm.tip};
+					n={id:s, objectName:arm.objectName, clo:arm.clo, hp:Math.round(arm.hp/arm.maxhp*100)+'%', sort:arm.sort, trol:'armor'+arm.tip};
 					arr.push(n);
 				}
 				pip.reqKey=true;
@@ -143,7 +154,7 @@ package interdata
 			{	//снаряжение
 				assArr=new Array();
 				statHead.fav.text=Res.pipText('ii1');
-				statHead.nazv.text=Res.pipText('ii2');
+				statHead.objectName.text=Res.pipText('ii2');
 				statHead.hp.text=Res.pipText('ii5');
 				statHead.ammotip.text=Res.pipText('ii6');
 				statHead.ammo.text='';
@@ -164,7 +175,7 @@ package interdata
 						var tcat:String;
 						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
 						else tcat=Res.pipText('stuff');
-						n={tip:node.@tip, id:s, nazv:((node.@tip=='e')?Res.txt('w',s):inv.items[s].nazv), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
+						n={tip:node.@tip, id:s, objectName:((node.@tip=='e')?Res.txt('w',s):inv.items[s].objectName), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
 						if (node.@tip=='valuables') n.price=node.@price;
 						if (node.@tip=='food' && node.@ftip=='1') {
 							n.trol='drink';
@@ -179,11 +190,11 @@ package interdata
 					}
 				}
 				if (page2==3) pip.reqKey=true;
-				if (arr.length) arr.sortOn(['sort','sort2','nazv'],[0,Array.NUMERIC,0]);
+				if (arr.length) arr.sortOn(['sort','sort2','objectName'],[0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv3',0,true);
 			}
 			pip.helpText=Res.txt('p','helpInv'+page2,0,true);
-			if (arr.length==0) 
+			if (arr.length == 0) 
 			{
 				vis.emptytext.text=Res.pipText('emptyinv');
 				statHead.visible=false;
@@ -194,11 +205,14 @@ package interdata
 				statHead.visible=true;
 			}
 			showBottext();
+
+			trace('PipPageInv.as/setSubPages() - Finished updating subPages.');
+
 		}
 		
-		function showBottext()
+		function showBottext():void
 		{
-			vis.bottext.htmlText=Res.pipText('caps')+': '+yel(pip.money);
+			vis.bottext.htmlText=Res.pipText('caps') + ': '+yel(pip.money);
 			if (Settings.hardInv) 
 			{
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
@@ -210,12 +224,12 @@ package interdata
 		
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object)
+		override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
 			item.id.visible=item.rid.visible=item.cat.visible=false;
 			item.alpha=1;
-			item.nazv.alpha=1;
+			item.objectName.alpha=1;
 			item.mass.text='';
 			if (inv.favIds[obj.id]) 
 			{
@@ -239,7 +253,7 @@ package interdata
 			{
 				item.ramka.visible=(World.world.gg.newWeapon && World.world.gg.newWeapon.id==obj.id) || (World.world.gg.currentSpell && World.world.gg.currentSpell.id==obj.id);
 				if (item.ramka.visible) selItem=item;
-				item.nazv.htmlText=obj.nazv;
+				item.objectName.htmlText=obj.objectName;
 				if (obj.respect==0 && item.fav.text=='') item.fav.text='☩';
 				item.hp.text=(obj.hp==null)?'':obj.hp;
 				if (obj.ammo!=null) 
@@ -252,7 +266,7 @@ package interdata
 					item.ammo.text=item.ammotip.text='';
 				}
 				if (obj.respect==1) item.alpha=0.4;
-				if (obj.avail==false) item.nazv.alpha=0.6;
+				if (obj.avail==false) item.objectName.alpha=0.6;
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
 			} 
@@ -268,7 +282,7 @@ package interdata
 				if (World.world.gg.currentAmul && World.world.gg.currentAmul.id==obj.id) {
 					item.ramka.visible=true;
 				}
-				item.nazv.text=obj.nazv;
+				item.objectName.text=obj.objectName;
 				if (obj.trol=='armor3') item.hp.text='';
 				else item.hp.text=obj.hp;
 				item.ammo.text='';
@@ -277,7 +291,7 @@ package interdata
 			else  
 			{
 				item.ramka.visible=(World.world.gg.currentSpell && World.world.gg.currentSpell.id==obj.id);
-				item.nazv.text=obj.nazv;
+				item.objectName.text=obj.objectName;
 				item.hp.text=obj.kol;
 				if (Settings.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);
 				if (obj.price && obj.tip=='valuables') item.ammo.text=obj.price;
@@ -294,27 +308,27 @@ package interdata
 		
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent)
+		override function statInfo(event:MouseEvent):void
 		{
 			assId=null;
 			if (page2==1) 
 			{
 				assId=event.currentTarget.id.text;
-				infoItem(Item.L_WEAPON,event.currentTarget.rid.text,event.currentTarget.nazv.text);
+				infoItem(Item.L_WEAPON,event.currentTarget.rid.text,event.currentTarget.objectName.text);
 			}
 			if (page2==2) 
 			{
 				assId=event.currentTarget.id.text;
-				infoItem(Item.L_ARMOR,event.currentTarget.id.text,event.currentTarget.nazv.text);
+				infoItem(Item.L_ARMOR,event.currentTarget.id.text,event.currentTarget.objectName.text);
 			}
 			if (page2==3 || page2==4) 
 			{
 				if (page2==3) assId=event.currentTarget.id.text;
-				infoItem(Item.L_ITEM,event.currentTarget.id.text,event.currentTarget.nazv.text);
+				infoItem(Item.L_ITEM,event.currentTarget.id.text,event.currentTarget.objectName.text);
 			}
 			if (page2==5) 
 			{
-				infoItem(Item.L_AMMO,event.currentTarget.id.text,event.currentTarget.nazv.text);
+				infoItem(Item.L_AMMO,event.currentTarget.id.text,event.currentTarget.objectName.text);
 			}
 			if (page2>=3) 
 			{
@@ -327,7 +341,7 @@ package interdata
 			}
 		}
 		
-		override function itemClick(event:MouseEvent) 
+		override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{
@@ -339,15 +353,15 @@ package interdata
 				itemRightClick(event);
 				return;
 			}
-			var ci:String=event.currentTarget.id.text;
-			if (page2==1) 
+			var ci:String = event.currentTarget.id.text;
+			if (page2 == 1) 
 			{
 				World.world.gg.changeWeapon(ci);
-				selItem=event.currentTarget as MovieClip;
+				selItem = event.currentTarget as MovieClip;
 				setStatus(false);
 				pip.snd(1);
 			} 
-			else if (page2==2) 
+			else if (page2 == 2) 
 			{
 				if (World.world.gg.changeArmor(ci)) 
 				{
@@ -362,7 +376,7 @@ package interdata
 					if (Settings.alicorn)
 					{
 						World.world.gui.infoText('alicornNot',null,null,false);
-						return false;
+						return;
 					}
 					if (World.world.game.curLevelID==World.world.game.baseId) return;
 					else if (World.world.possiblyOut()>=2) World.world.gui.infoText('noUseCombat'); 
@@ -401,7 +415,7 @@ package interdata
 			showBottext();
 		}
 		
-		override function itemRightClick(event:MouseEvent)
+		override function itemRightClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{
@@ -439,9 +453,9 @@ package interdata
 			}
 		}
 		
-		public function assignKey(num:int)
+		public function assignKey(num:int):void
 		{
-			trace('назначение клавиши',num,assId);
+			trace('назначение клавиши', num, assId);
 			pip.snd(1);
 			var temp=assId;
 			if (page2<=3 && assId!=null) 
@@ -452,7 +466,7 @@ package interdata
 			assId=temp;
 		}
 		
-		function showH(event:MouseEvent)
+		function showH(event:MouseEvent):void
 		{
 			if (actCurrent=='showhidden') 
 			{			//показать скрытое оружие
@@ -465,7 +479,7 @@ package interdata
 				if (inv.items['retr'].kol>0 && World.world.game.triggers['noreturn']!=1) 
 				{
 					inv.minusItem('retr');
-					World.world.game.gotoLand(World.world.game.baseId);
+					World.world.game.gotoLevel(World.world.game.baseId);
 				}
 				vis.butOk.visible=false;
 				pip.onoff(-1);
@@ -481,7 +495,7 @@ package interdata
 			}
 		}
 		
-		function buttonOk(act:String)
+		function buttonOk(act:String):void
 		{
 			vis.butOk.visible=true;
 			vis.butOk.text.text=Res.pipText(act);
@@ -489,7 +503,7 @@ package interdata
 		}
 		
 		
-		public override function step()
+		public override function step():void
 		{
 			if (over_t>0) over_t--;
 			if (over_t==1 && overItem) 
