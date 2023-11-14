@@ -60,11 +60,11 @@ package interdata
 
 			assArr=new Array();
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
-			statHead.objectName.text=Res.pipText('ii2');
-			statHead.kol.text=Res.pipText('ii7');
+			statHead.objectName.text=Res.txt('p', 'ii2');
+			statHead.kol.text=Res.txt('p', 'ii7');
 			statHead.kol.width=170;
-			statHead.mass.text=Settings.hardInv?Res.pipText('ii8'):'';
-			statHead.mass2.text=Settings.hardInv?Res.pipText('ii9'):'';
+			statHead.mass.text=Settings.hardInv?Res.txt('p', 'ii8'):'';
+			statHead.mass2.text=Settings.hardInv?Res.txt('p', 'ii9'):'';
 			setTopText('vaultupr');
 			vis.butOk.visible=false;
 			inv.calcMass();
@@ -75,8 +75,8 @@ package interdata
 					if (node.@tip=='money' || node.@tip=='paint' || node.@tip=='spell' || node.@tip=='spec' || node.@tip=='key' || node.@tip=='instr' || node.@tip=='impl' || node.@tip=='art' || node.@tip=='scheme') continue;
 					if (inv.items[s].invCat==page2) {
 						var tcat:String;
-						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
-						else tcat=Res.pipText('stuff');
+						if (Res.istxt('p',node.@tip)) tcat=Res.txt('p', node.@tip);
+						else tcat=Res.txt('p', 'stuff');
 						var n={tip:node.@tip, id:s, objectName:((node.@tip=='e')?Res.txt('w',s):inv.items[s].objectName), kol:inv.items[s].kol, vault:inv.items[s].vault, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
 						if (node.@tip=='valuables') n.price=node.@price;
 						if (node.@tip=='food' && node.@ftip=='1') {
@@ -93,7 +93,7 @@ package interdata
 				}
 				if (arr.length) arr.sortOn(['sort','sort2','objectName'],[0,Array.NUMERIC,0]);
 			if (page2==2 || page2==3) {
-				vis.butOk.text.text=Res.pipText('tovault');
+				vis.butOk.text.text=Res.txt('p', 'tovault');
 				vis.butOk.visible=true;
 			}
 				

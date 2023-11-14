@@ -143,7 +143,7 @@ package servdata
 			{
 				base = xml.@base;
 				objectName = Res.txt('i', base);
-				if (xml.@mod.length()) objectName += ' (' + Res.pipText('am_' + xml.@mod) + ')';
+				if (xml.@mod.length()) objectName += ' (' + Res.txt('p', 'am_' + xml.@mod) + ')';
 			} 
 			else objectName = Res.txt('i', id);
 
@@ -151,8 +151,8 @@ package servdata
 			if (tip == L_SCHEME && !Res.istxt('i', id)) 
 			{
 				var wid:String = id.substr(2);
-				if (xml.@work == 'work') objectName = Res.pipText('scheme1') + ' «' + Res.txt('i', wid) + '»';
-				else objectName = Res.pipText('recipe') + ' «' + Res.txt('i', wid) + '»';
+				if (xml.@work == 'work') objectName = Res.txt('p', 'scheme1') + ' «' + Res.txt('i', wid) + '»';
+				else objectName = Res.txt('p', 'recipe') + ' «' + Res.txt('i', wid) + '»';
 			}
 			if (tip == L_AMMO || tip == L_EXPL) invCat = 2;
 			if (xml && xml.@us > 0 && tip != L_FOOD && tip != 'eda' && tip != L_BOOK) invCat = 1;

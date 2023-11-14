@@ -9,8 +9,9 @@ package
 	public class Res 
 	{
 		
-		public static var gameData:XML;
+		public static var localizationFile:XML;
 		
+		//Localization strings sorted into various categories.
 		public static const classData:Object = 
 		{
 			'u' : 'unit',
@@ -45,50 +46,50 @@ package
 		public static function istxt(type:String, id:String):Boolean 
 		{
 			    //trace('Res.as/istxt() - istxt() executing with type: ' + type + ' and ID: ' + id + '.');
-				if (gameData == null) trace('Res.as/istxt() - Game data is null.');
-				var xl:XMLList = gameData[classData[type]].(@id == id);
+				if (localizationFile == null) trace('Res.as/istxt() - Game data is null.');
+				var xl:XMLList = localizationFile[classData[type]].(@id == id);
 				return (xl.length() > 0);
 		}
 		
 
-		public static function txt(type:String, id:String, razd:int = 0, dop:Boolean = false):String 
+		public static function txt(classDataKey:String, id:String, classDataIndexNumber:int = 0, dop:Boolean = false):String 
 		{
-			//trace('Res.as/txt() - txt() executing with Class type: "' + type + '" String ID: "' + id + '" razd: "' + razd + '" dop: "' + dop + '."')
+			//trace('Res.as/txt() - txt() executing with classDataKey: "' + classDataKey + '" String ID: "' + id + '" classDataIndexNumber: "' + classDataIndexNumber + '" dop: "' + dop + '."')
 			if (id == '') 
 			{
 				trace('Res.as/txt() - ID is blank, returning.');
 				return '';
 			}
-			if (gameData == null) 
+			if (localizationFile == null) 
 			{
 				
-				trace('Res.as/txt() - GameData is null.');
+				trace('Res.as/txt() - localizationFile is null.');
 				return '';
 			}
-			if (classData[type] == null) 
+			if (classData[classDataKey] == null) 
 			{
-				trace('Res.as/txt() - Invalid type provided: ' + type);
+				trace('Res.as/txt() - Invalid classDataKey provided: ' + classDataKey);
 				return '';
 			}
 
-
-			var s:String;
-			var xl:XML;
 
 			try 
 			{
-				xl = gameData[classData[type]].(@id == id);	
-				s = xl[classData[razd]][0];		
+				//trace('Res.as/txt() - Trying to set "xl" as: ' + localizationFile[classData[classDataKey]].(@id == id));
+				var xl = localizationFile[classData[classDataKey]].(@id == id);
+
+				//trace('Res.as/txt() - Trying to set "s" as: ' + xl[classData[classDataIndexNumber]][0]);
+				var s = xl[classData[classDataIndexNumber]][0];
 			} 
-			catch (err) 
+			catch (err:Error) 
 			{
-				trace('Res.as/txt() - txt Error.');
+				trace('Res.as/txt() - txt Error.' + err.message);
 			}
 
 			if (s == null || s == "") 
 			{
-				if (type == 'o') return '';
-				if (razd == 0) return '*' + classData[type] + '_' + id;			// If still not found, return just the id
+				if (classDataKey == 'o') return '';
+				if (classDataIndexNumber == 0) return '*' + classData[classDataKey] + '_' + id;			// If still not found, return just the id
 				return '';
 			}
 
@@ -100,14 +101,14 @@ package
 				var spl:Array = s.split('|');
 				if (spl.length >= 2) s = spl[Settings.matFilter ? 1 : 0];
 			}
-			if (razd >= 1 || dop) // Control keys
+			if (classDataIndexNumber >= 1 || dop) // Control keys
 			{
 				if (xl.@s1.length()) s = addKeys(s, xl);	
 				try 
 				{
-					if (xl[classData[razd]][0].@s1.length) 
+					if (xl[classData[classDataIndexNumber]][0].@s1.length) 
 					{
-						s = addKeys(s, xl[classData[razd]][0]);
+						s = addKeys(s, xl[classData[classDataIndexNumber]][0]);
 					}
 				} 
 				catch (err) 
@@ -122,26 +123,10 @@ package
 			{
 				s = s.replace(/[\b\r\t]/g, '');
 			}
-			if (type == 'f' || type == 'e' && razd == 2 || razd >= 1 && xl.@st.length()) s = "<span classData = 'r" + xl.@st + "'>" + s + "</span>";
+			if (classDataKey == 'f' || classDataKey == 'e' && classDataIndexNumber == 2 || classDataIndexNumber >= 1 && xl.@st.length()) s = "<span classData = 'r" + xl.@st + "'>" + s + "</span>";
 			
 			//trace('Res.as/txt() - Returning string: "' + s + '."');
 			return s;
-		}
-
-
-		public static function guiText(id:String):String 
-		{
-			//trace('Res.as/guiText() - guiText executing. Passed string: "' + id + '."');
-			//trace('Res.as/guiText() - returning function Res/txt("g", ' + id + ').');
-			return txt('g', id);
-		}
-
-
-		public static function pipText(id:String):String 
-		{
-
-			return txt('p', id);
-			
 		}
 
 
@@ -151,8 +136,8 @@ package
 			var s:String = '';
 			try 
 			{
-				if (gameData == null) trace('Res.as/messText() - GameData is null.');
-				var xml:XMLList = gameData.txt.(@id == id);
+				if (localizationFile == null) trace('Res.as/messText() - localizationFile is null.');
+				var xml:XMLList = localizationFile.txt.(@id == id);
 
 				if (xml.length() == 0) 
 				{
@@ -238,17 +223,15 @@ package
 
 		public static function advText(n:int):String 
 		{
-			trace('Res/advText() - advText Executing...');
-			var xml:XML = gameData.advice[0];
+			var xml:XML = localizationFile.advice[0];
 			var s:XMLList = xml.a[n];
 			return (s == null) ? '' : s;
-			trace('Res/advText() - advText Finished.');
 		}
 
 		//Replace text for different languages?
 		public static function repText(id:String, act:String, msex:Boolean=true):String 
 		{
-			var xl:XMLList = gameData.replic[0].rep.(@id == id && @act == act);
+			var xl:XMLList = localizationFile.replic[0].rep.(@id == id && @act == act);
 			if (xl.length() == 0) return '';
 			xl = xl[0].r;	//AllData.lang
 
@@ -276,7 +259,7 @@ package
 
 		public static function namesArr(id:String):Array 
 		{
-			var xl:XMLList = gameData.names;
+			var xl:XMLList = localizationFile.names;
 			if (xl.length() == 0) return null;
 			xl = xl[0].name.(@id == id);
 			if (xl.length() == 0) return null;
@@ -315,13 +298,25 @@ package
 		// Add control keys to a string
 		public static function addKeys(s:String, xml:XML):String 
 		{
-			trace('Res/addKeys() - addKeys Executing...');
-			if (s == null) return '';
-			for (var i:int = 1; i <= 5; i++) 
+			if (s == null) 
 			{
-				if (xml.attribute('s' + i ).length())  s = s.replace('@' + i, "<span classData='imp'>" + World.world.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+				trace('Res.as/addKeys() -  ERROR: Passed string was null. XML: "' + xml + '."');
+				return '';
 			}
-			
+
+			try
+			{
+				for (var i:int = 1; i <= 5; i++) 
+				{
+					if (xml.attribute('s' + i ).length())  s = s.replace('@' + i, "<span classData='imp'>" + World.world.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+				}
+			}
+			catch(err:Error)
+			{
+				trace('Res.as/addKeys() -  ERROR: Error while transforming string: "' + s + '."');
+			}
+
+
 			return s;
 		}
 		

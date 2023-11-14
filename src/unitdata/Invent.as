@@ -523,7 +523,7 @@ package unitdata
 			else if (item.@chdif.length()) 	//карта судьбы
 			{
 				if (!World.world.game.changeDif(item.@chdif)) return false;
-				World.world.gui.infoText('changeDif',Res.guiText('dif'+item.@chdif));
+				World.world.gui.infoText('changeDif',Res.txt('g', 'dif'+item.@chdif));
 			} 
 			else return false;
 			minusItem(ci);
@@ -1072,7 +1072,7 @@ package unitdata
 				maxm=gg.pers.maxmM;
 			}
 			if (m>maxm) cl='red';
-			return Res.pipText(txt)+": <span class = '"+cl+"'>"+Res.numb(m)+'/'+Math.round(maxm)+"</span>";
+			return Res.txt('p', txt)+": <span class = '"+cl+"'>"+Res.numb(m)+'/'+Math.round(maxm)+"</span>";
 		}
 		
 		//выкинуть вещи

@@ -1580,12 +1580,12 @@ package unitdata
 		
 		public function repTex():String 
 		{
-			if (rep>=repGood) return Res.pipText('reputmax');
-			if (rep>=rep4) return Res.pipText('reput4');
-			if (rep>=rep3) return Res.pipText('reput3');
-			if (rep>=rep2) return Res.pipText('reput2');
-			if (rep>=rep1) return Res.pipText('reput1');
-			return Res.pipText('reput0');
+			if (rep>=repGood) return Res.txt('p', 'reputmax');
+			if (rep>=rep4) return Res.txt('p', 'reput4');
+			if (rep>=rep3) return Res.txt('p', 'reput3');
+			if (rep>=rep2) return Res.txt('p', 'reput2');
+			if (rep>=rep1) return Res.txt('p', 'reput1');
+			return Res.txt('p', 'reput0');
 		}
 		
 		

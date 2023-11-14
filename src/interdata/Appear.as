@@ -14,6 +14,8 @@ package interdata
 	import fl.motion.Color;
 	// Character Appearance Settings
 	
+	import stubs.dialVid;
+
 	public class Appear 
 	{
 
@@ -60,6 +62,7 @@ package interdata
 		public function Appear():void
 		{
 			vis = new dialVid();
+
 			for each(var l in clist) 
 			{
 				this['t' + l] = this['c' + l];
@@ -74,14 +77,14 @@ package interdata
 		public function setLang():void
 		{
 			vis.butOk.text.text = 'OK';
-			vis.butCancel.text.text=Res.guiText('cancel');
-			vis.butDef.text.text=Res.pipText('default');
-			vis.title.text=Res.guiText('butvid');
-			vis.tFur.text=Res.guiText('vidfur');
-			vis.tHair.text=Res.guiText('vidhair');
-			vis.tHair1.text=Res.guiText('vidhair1');
-			vis.tEye.text=Res.guiText('videye');
-			vis.tMagic.text=Res.guiText('vidmagic');
+			vis.butCancel.text.text=Res.txt('g', 'cancel');
+			vis.butDef.text.text=Res.txt('p', 'default');
+			vis.title.text=Res.txt('g', 'butvid');
+			vis.tFur.text=Res.txt('g', 'vidfur');
+			vis.tHair.text=Res.txt('g', 'vidhair');
+			vis.tHair1.text=Res.txt('g', 'vidhair1');
+			vis.tEye.text=Res.txt('g', 'videye');
+			vis.tMagic.text=Res.txt('g', 'vidmagic');
 		}
 		
 		//присоединить диалоговое окно
@@ -255,19 +258,19 @@ package interdata
 		// Convert color to transform
 		public function colorToTransform(c:uint, ct:ColorTransform):void
 		{
-			var colMax:int = 290, colSd:Number = (290 - 255)/255;
+			var colMax:int = 290, colSd:Number = (290 - 255) / 255;
 			col.tintMultiplier = 1;
 			col.tintColor = c;
-			ct.redMultiplier = col.redOffset / colMax+colSd;
-			ct.greenMultiplier = col.greenOffset / colMax+colSd;
-			ct.blueMultiplier = col.blueOffset / colMax+colSd;
+			ct.redMultiplier = col.redOffset / colMax + colSd;
+			ct.greenMultiplier = col.greenOffset / colMax + colSd;
+			ct.blueMultiplier = col.blueOffset / colMax + colSd;
 			vis.slRed.value = col.redOffset;
 			vis.slGreen.value = col.greenOffset;
 			vis.slBlue.value = col.blueOffset;
 			setRGB();
 		}
 		
-		//надписи
+		//Labels
 		public function setRGB():void
 		{
 			vis.nRed.text 	= 'R:' + col.redOffset;
@@ -275,7 +278,7 @@ package interdata
 			vis.nBlue.text 	= 'B:' + col.blueOffset;
 		}
 		
-		//событие ползунков
+		//Slider event
 		public function chColor(event:SliderEvent):void
 		{
 			col.redOffset=vis.slRed.value;
@@ -285,25 +288,25 @@ package interdata
 			setColor(tek,col.color);
 		}
 		
-		//события колорпикеров
+		//Color picker events
 		public function changeHandler(event:ColorPickerEvent):void
 		{
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
 			var myCT:ColorTransform;
-			var nam=myCP.name.substr(5);
-			tek=nam;
+			var nam:String = myCP.name.substr(5);
+			tek = nam;
 			setColor(nam,myCP.selectedColor);
 		}
 
 		public function openHandler(event:Event):void
 		{
 			var myCP:ColorPicker = event.currentTarget as ColorPicker;
-			var nam=myCP.name.substr(5);
-			tek=nam;
+			var nam:String = myCP.name.substr(5);
+			tek = nam;
 			setColor(nam,myCP.selectedColor);
 		}
 		
-		//вкл/выкл второй цвет
+		//Enable/disable second color
 		public function changeHair1(e:Event):void
 		{
 			visHair1=vis.checkHair1.selected;
@@ -311,40 +314,40 @@ package interdata
 			vis.pers.gotoAndStop(1);
 		}
 		
-		//кнопки выбора вариантов
+		//Buttons for selecting options
 		public function chBut(event:MouseEvent):void
 		{
-			var nam:String=(event.currentTarget as flash.display.DisplayObject).name;
-			if (nam=='b1Eye') 
+			var nam:String = (event.currentTarget as flash.display.DisplayObject).name;
+			if (nam == 'b1Eye') 
 			{
 				fEye--;
-				if (fEye<=0) fEye=maxEye;
+				if (fEye <= 0) fEye = maxEye;
 			}
-			if (nam=='b2Eye') 
+			if (nam == 'b2Eye') 
 			{
 				fEye++;
-				if (fEye>maxEye) fEye=1;
+				if (fEye>maxEye) fEye = 1;
 			}
-			if (nam=='b1Hair') 
+			if (nam == 'b1Hair') 
 			{
 				fHair--;
-				if (fHair<=0) fHair=maxHair;
+				if (fHair <= 0) fHair = maxHair;
 			}
-			if (nam=='b2Hair') 
+			if (nam == 'b2Hair') 
 			{
 				fHair++;
-				if (fHair>maxHair) fHair=1;
+				if (fHair > maxHair) fHair = 1;
 			}
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}
 		
-		//установить цвет модельки
+		//set the model's color
 		public function setColor(nam:String, c:uint):void
 		{
-			this['c'+nam]=c;
-			colorToTransform(this['c'+nam],Appear['tr'+nam]);
-			vis['color'+nam].selectedColor=c;
+			this['c' + nam] = c;
+			colorToTransform(this['c' + nam], Appear['tr' + nam]);
+			vis['color' + nam].selectedColor = c;
 			vis.pers.gotoAndStop(2);
 			vis.pers.gotoAndStop(1);
 		}

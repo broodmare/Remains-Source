@@ -118,7 +118,9 @@ Material --
 	
 Res --
 	d -> gameData.
-	
+	type -> classDataKey.
+	removed pipText().
+	removed guiText().
 	
 Room (formerly Location) --
 	space -> roomTileArray

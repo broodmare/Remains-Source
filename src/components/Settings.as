@@ -98,7 +98,7 @@ package components
 		public static var soundXMLLocation:String;
 		
 		public static var languageXMLLocation:String;
-
+		public static var xmlBookDataLocation:String;
 
 
 
@@ -133,7 +133,7 @@ package components
 		showFavs            = true;			//show additional info when cursor is on top of the screen
 		errorShow           = true;
 		errorShowOpt        = true;
-        bitmapCachingOption = true;
+        bitmapCachingOption = true;			//Bitcaching to trade RAM for peformance. Default was on, added this as an option.
 
 
 
@@ -189,6 +189,9 @@ package components
         levelPath 	    	= 'Rooms/';
 
 		languageXMLLocation = 'data/xmldata/';
+		xmlBookDataLocation = 'data/xmldata/';
+
+
 		soundXMLLocation 	= 'data/xmldata/Sounds.xml';
 		musicXMLLocation 	= 'data/xmldata/Music.xml';
 
@@ -196,7 +199,7 @@ package components
 		soundFilesFound 	= 0;
 		soundFilesLoaded   	= 0;
         musicTracksFound    = 0;
-		musicTracksLoaded   = 0;
+		musicTracksLoaded   = 1; //Quick hack, fogriv me jegus
 
 		trace('Settings.as/settingsSetup() - Settings initialized.');
 

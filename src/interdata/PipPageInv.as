@@ -73,12 +73,12 @@ package interdata
 			{		//оружие
 				inv.getKolAmmos();
 				assArr=new Array();
-				statHead.fav.text=Res.pipText('ii1');
-				statHead.objectName.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii3');
+				statHead.fav.text=Res.txt('p', 'ii1');
+				statHead.objectName.text=Res.txt('p', 'ii2');
+				statHead.hp.text=Res.txt('p', 'ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
-				statHead.ammotip.text=Res.pipText('ii4');
+				statHead.ammotip.text=Res.txt('p', 'ii4');
 				for each(var obj in inv.weapons) 
 				{
 					if (obj is Weapon) 
@@ -124,16 +124,16 @@ package interdata
 					}
 				}
 				pip.reqKey=true;
-				vis.butOk.text.text=Res.pipText('showhidden');
+				vis.butOk.text.text=Res.txt('p', 'showhidden');
 				actCurrent='showhidden';
 				if (arr.length) arr.sortOn(['sort1','sort2','sort3','objectName'],[0,0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('p','massInv0',0,true)+'<br><br>'+Res.txt('p','massInv1',0,true);
 			} 
 			else if (page2 == 2) 
 			{	//броня
-				statHead.fav.text=Res.pipText('ii1');
-				statHead.objectName.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii3');
+				statHead.fav.text=Res.txt('p', 'ii1');
+				statHead.objectName.text=Res.txt('p', 'ii2');
+				statHead.hp.text=Res.txt('p', 'ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
 				statHead.ammotip.text='';
@@ -153,12 +153,12 @@ package interdata
 			else if (page2==3 || page2==4 || page2==5) 
 			{	//снаряжение
 				assArr=new Array();
-				statHead.fav.text=Res.pipText('ii1');
-				statHead.objectName.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii5');
-				statHead.ammotip.text=Res.pipText('ii6');
+				statHead.fav.text=Res.txt('p', 'ii1');
+				statHead.objectName.text=Res.txt('p', 'ii2');
+				statHead.hp.text=Res.txt('p', 'ii5');
+				statHead.ammotip.text=Res.txt('p', 'ii6');
 				statHead.ammo.text='';
-				if (Settings.hardInv) statHead.mass.text=Res.pipText('ii8');
+				if (Settings.hardInv) statHead.mass.text=Res.txt('p', 'ii8');
 				for (s in inv.items) {
 					if (s=='' || inv.items[s].kol<=0 || inv.items[s].invis) continue;
 					var node:XML=inv.items[s].xml;
@@ -173,8 +173,8 @@ package interdata
 					else if (node.@us>0) itemTip=1;
 					if ((itemTip==1 && page2==3) || (itemTip==0 && page2==4) || (itemTip==2 && page2==5)) {
 						var tcat:String;
-						if (Res.istxt('p',node.@tip)) tcat=Res.pipText(node.@tip);
-						else tcat=Res.pipText('stuff');
+						if (Res.istxt('p',node.@tip)) tcat=Res.txt('p', node.@tip);
+						else tcat=Res.txt('p', 'stuff');
 						n={tip:node.@tip, id:s, objectName:((node.@tip=='e')?Res.txt('w',s):inv.items[s].objectName), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
 						if (node.@tip=='valuables') n.price=node.@price;
 						if (node.@tip=='food' && node.@ftip=='1') {
@@ -196,7 +196,7 @@ package interdata
 			pip.helpText=Res.txt('p','helpInv'+page2,0,true);
 			if (arr.length == 0) 
 			{
-				vis.emptytext.text=Res.pipText('emptyinv');
+				vis.emptytext.text=Res.txt('p', 'emptyinv');
 				statHead.visible=false;
 			} 
 			else 
@@ -212,7 +212,7 @@ package interdata
 		
 		function showBottext():void
 		{
-			vis.bottext.htmlText=Res.pipText('caps') + ': '+yel(pip.money);
+			vis.bottext.htmlText=Res.txt('p', 'caps') + ': '+yel(pip.money);
 			if (Settings.hardInv) 
 			{
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
@@ -301,7 +301,7 @@ package interdata
 					if (inv.items[obj.id].nov==1) item.fav.text='☩';
 					if (inv.items[obj.id].nov==2) item.fav.text='+';
 				}
-				if (obj.drop>0) item.ammotip.text=Res.pipText('drop')+': '+obj.drop;
+				if (obj.drop>0) item.ammotip.text=Res.txt('p', 'drop')+': '+obj.drop;
 				else item.ammotip.text=obj.cat.substring(2);
 			}
 		}
@@ -498,7 +498,7 @@ package interdata
 		function buttonOk(act:String):void
 		{
 			vis.butOk.visible=true;
-			vis.butOk.text.text=Res.pipText(act);
+			vis.butOk.text.text=Res.txt('p', act);
 			actCurrent=act;
 		}
 		

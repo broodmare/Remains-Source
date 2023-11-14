@@ -362,12 +362,12 @@ package
 			}
 			
 			trace('World.as/configObjSetup() - Fetching number of advice snippets.');
-			if (Res.gameData == null || Res.gameData.advice == undefined) 
+			if (Res.localizationFile == null || Res.localizationFile.advice == undefined) 
 			{
-   				trace('World.as/configObjSetup() - Either Res.gameData is null or <advice> element is missing');
+   				trace('World.as/configObjSetup() - Either Res.localizationFile is null or <advice> element is missing');
 				return;
 			}
-			koladv = Res.gameData.advice[0].a.length();
+			koladv = Res.localizationFile.advice[0].a.length();
 			trace('World.as/configObjSetup() - Snippets found: "' + koladv + '."');
 
 			trace('World.as/configObjSetup() - Fetching last advice ID. ID: ' + configObj.data.nadv + '.');
@@ -563,7 +563,7 @@ package
 				{
 					autoSaveN = data.n;
 				}
-				Unit.txtMiss = Res.guiText('miss');
+				Unit.txtMiss = Res.txt('g', 'miss');
 				
 				waitLoadClick();
 				ng_wait = 2;
@@ -1070,10 +1070,10 @@ package
 
 			try 
 			{
-				verror.info.text 			= Res.pipText('error');
-				verror.butClose.text.text 	= Res.pipText('err_close');
-				verror.butForever.text.text = Res.pipText('err_dont_show');
-				verror.butCopy.text.text 	= Res.pipText('err_copy_to_clipboard');
+				verror.info.text 			= Res.txt('p', 'error');
+				verror.butClose.text.text 	= Res.txt('p', 'err_close');
+				verror.butForever.text.text = Res.txt('p', 'err_dont_show');
+				verror.butCopy.text.text 	= Res.txt('p', 'err_copy_to_clipboard');
 			} 
 			catch (e) 
 			{
@@ -1108,8 +1108,8 @@ package
 			vscene.visible = false;
 			loadingScreen.visible = true;
 			catPause = false;
-			trace('World.as/setLoadScreen() - Calling Res/guiText("loading").');
-			loadingScreen.progres.text = Res.guiText('loading');
+			trace('World.as/setLoadScreen() - Calling Res/txt("g", "loading").');
+			loadingScreen.progres.text = Res.txt('g', 'loading');
 
 			if (n < 0) 
 			{
@@ -1128,7 +1128,7 @@ package
 
 				if (n == 0) 
 				{
-					loadingScreen.story.txt.htmlText = '<i>' + Res.guiText('story') + '</i>';
+					loadingScreen.story.txt.htmlText = '<i>' + Res.txt('g', 'story') + '</i>';
 				} 
 				else 
 				{
@@ -1235,18 +1235,18 @@ package
 			if (n == 1) 
 			{
 				showScene('gameover');
-				s = Res.lpName(Res.guiText('end_bad'));
+				s = Res.lpName(Res.txt('g', 'end_bad'));
 			} 
 			else if (pers.rep>=pers.repGood) 
 			{
 				showScene('endgame');
-				s = Res.lpName(Res.guiText('end_good'));
+				s = Res.lpName(Res.txt('g', 'end_good'));
 				Snd.playMusic('music_fall_2');
 			} 
 			else 
 			{
 				showScene('endgame');
-				s=Res.lpName(Res.guiText('end_norm'));
+				s=Res.lpName(Res.txt('g', 'end_norm'));
 			}
 			try 
 			{

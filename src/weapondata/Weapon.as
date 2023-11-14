@@ -1303,7 +1303,7 @@ package weapondata
 			s+='\t';
 			s+=Number(30/rapid).toFixed(1)+'\t';
 			s+=Number((damage+damageExpl)*kol*30/rapid).toFixed(1)+'\t';
-			s+=Res.pipText('tipdam'+tipDamage)+'\t';
+			s+=Res.txt('p', 'tipdam'+tipDamage)+'\t';
 			s+=Math.round(critCh*100)+'%\t';
 			s+=Math.round(precision/40)+'\t';
 			s+=pier+'\t';

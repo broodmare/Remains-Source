@@ -161,9 +161,9 @@ package interdata
 						var obj:Object = {id:key.id, objectName:Res.txt('k', key.id), a1:key.a1, a2:key.a2};
 						arr.push(obj);
 					}
-					vis.butOk.text.text  = Res.pipText('accept');
+					vis.butOk.text.text  = Res.txt('p', 'accept');
 					vis.butDef.visible 	 = true;
-					vis.butDef.text.text = Res.pipText('default');
+					vis.butDef.text.text = Res.txt('p', 'default');
 					trace('PipPageOpt.as/setSubPages() - Sucessfully updated page 2.');
 				}
 				catch (err)
@@ -204,8 +204,8 @@ package interdata
 					if (page2 == 1) 
 					{
 						setTopText('infoload');
-						vis.butOk.text.text = Res.pipText('opt1');
-						vis.butDef.text.text = Res.pipText('loadfile');
+						vis.butOk.text.text = Res.txt('p', 'opt1');
+						vis.butDef.text.text = Res.txt('p', 'loadfile');
 					} 
 					else 
 					{
@@ -215,9 +215,9 @@ package interdata
 							nSave = World.world.autoSaveN;
 							vis.butOk.visible = true;
 						}
-						vis.butOk.text.text = Res.pipText('opt2');
+						vis.butOk.text.text = Res.txt('p', 'opt2');
 						if (gg.pers.hardcoreMode) vis.butDef.visible = false;
-						vis.butDef.text.text = Res.pipText('savefile');
+						vis.butDef.text.text = Res.txt('p', 'savefile');
 					}
 					for (var i:int = 0; i <= World.world.saveCount; i++) 
 					{
@@ -246,18 +246,18 @@ package interdata
 			var obj:Object={id:n};
 			if (save == null || save.est == null) 
 			{
-				obj.objectName=Res.pipText('freeslot');
+				obj.objectName=Res.txt('p', 'freeslot');
 				obj.gg='';
 				obj.date='';
 			} 
 			else 
 			{
-				obj.objectName = (n == 0) ? Res.pipText('autoslot'):(Res.pipText('saveslot')+' '+n);
+				obj.objectName = (n == 0) ? Res.txt('p', 'autoslot'):(Res.txt('p', 'saveslot')+' '+n);
 				obj.gg 		= (save.pers.persName==null)?'-------':save.pers.persName;
 				obj.level 	= Res.txt('m',save.game.level);
 				obj.level 	= (save.pers.level==null)?'':save.pers.level;
 				obj.date 	= (save.date==null)?'-------':Res.getDate(save.date);
-				obj.dif 	= Res.guiText('dif'+save.game.dif);
+				obj.dif 	= Res.txt('g', 'dif'+save.game.dif);
 				obj.app 	= save.app;
 				obj.armor 	= save.invent.cArmorId;
 				if (save.pers.dead) obj.hard = 2;
@@ -286,7 +286,7 @@ package interdata
 			item.level.text='';
 			if (page2==3 || page2==6) 
 			{
-				item.objectName.text=Res.pipText(obj.id);
+				item.objectName.text=Res.txt('p', obj.id);
 				item.ggName.text='';
 				if (obj.numb!=null) 
 				{
@@ -351,7 +351,7 @@ package interdata
 		public function showSetKey():void
 		{
 			pip.vissetkey.visible=true;
-			pip.vissetkey.txt.htmlText=Res.guiText('setkeyinfo')+'\n\n<b>'+Res.txt('k',setkeyAction)+'</b>\n'+setkeyCell;
+			pip.vissetkey.txt.htmlText=Res.txt('g', 'setkeyinfo')+'\n\n<b>'+Res.txt('k',setkeyAction)+'</b>\n'+setkeyCell;
 			World.world.ctr.requestKey(unshowSetKey);
 		}
 		
@@ -394,8 +394,8 @@ package interdata
 		}
 		public override function updateLang():void
 		{
-			vis.butOk.text.text=Res.pipText('accept');
-			vis.butDef.text.text=Res.pipText('default');
+			vis.butOk.text.text=Res.txt('p', 'accept');
+			vis.butDef.text.text=Res.txt('p', 'default');
 			super.updateLang();
 		}
 		
@@ -573,7 +573,7 @@ package interdata
 			} 
 			else if (page2==1) 
 			{
-				ffil=[new FileFilter(Res.pipText('gamesaves')+" (*.sav)", "*.sav")];
+				ffil=[new FileFilter(Res.txt('p', 'gamesaves')+" (*.sav)", "*.sav")];
 				file.browse(ffil);
 			} 
 			else if (page2==2) 
@@ -613,17 +613,17 @@ package interdata
 				vis.pers.head.morda.magic.visible=false;
 				vis.pers.visible=true;
 				vis.info.y=vis.pers.y+25;
-				vis.info.htmlText+=Res.pipText('level')+': '+yel(obj.level)+'\n';
+				vis.info.htmlText+=Res.txt('p', 'level')+': '+yel(obj.level)+'\n';
 				vis.info.htmlText+=obj.level+'\n';
 				vis.info.htmlText+='\n';
-				vis.info.htmlText+=Res.pipText('diff')+': '+yel(obj.dif)+'\n';
-				if (obj.hard==1) vis.info.htmlText+=Res.guiText('opt2')+'\n';
-				if (obj.hard==2) vis.info.htmlText+=red(Res.pipText('dead'))+'\n';
-				if (obj.hardInv==1) vis.info.htmlText+=Res.guiText('opt6')+'\n';
-				if (obj.rndpump==1) vis.info.htmlText+=Res.guiText('opt4')+'\n';
-				if (obj.ver) vis.info.htmlText+=Res.guiText('version')+': '+yel(obj.ver)+'\n';
-				vis.info.htmlText+=Res.pipText('tgame')+': '+yel(obj.time)+'\n';
-				vis.info.htmlText+=Res.pipText('saved')+': '+yel(obj.date)+'\n';
+				vis.info.htmlText+=Res.txt('p', 'diff')+': '+yel(obj.dif)+'\n';
+				if (obj.hard==1) vis.info.htmlText+=Res.txt('g', 'opt2')+'\n';
+				if (obj.hard==2) vis.info.htmlText+=red(Res.txt('p', 'dead'))+'\n';
+				if (obj.hardInv==1) vis.info.htmlText+=Res.txt('g', 'opt6')+'\n';
+				if (obj.rndpump==1) vis.info.htmlText+=Res.txt('g', 'opt4')+'\n';
+				if (obj.ver) vis.info.htmlText+=Res.txt('g', 'version')+': '+yel(obj.ver)+'\n';
+				vis.info.htmlText+=Res.txt('p', 'tgame')+': '+yel(obj.time)+'\n';
+				vis.info.htmlText+=Res.txt('p', 'saved')+': '+yel(obj.date)+'\n';
 			} 
 			else 
 			{

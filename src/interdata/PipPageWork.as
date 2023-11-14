@@ -57,7 +57,7 @@ package interdata
 				page2 = 1;
 			}
 			
-			vis.bottext.text = Res.pipText('caps') + ': ' + pip.money;
+			vis.bottext.text = Res.txt('p', 'caps') + ': ' + pip.money;
 			vis.butOk.visible=false;
 			statHead.cat.visible=false;
 			setIco();
@@ -69,8 +69,8 @@ package interdata
 			if (page2==1) {		//крафт
 				assArr=new Array();
 				statHead.fav.text='';
-				statHead.objectName.text=Res.pipText('work1');
-				statHead.hp.text=Res.pipText('iv6');
+				statHead.objectName.text=Res.txt('p', 'work1');
+				statHead.hp.text=Res.txt('p', 'iv6');
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
 				for (var s:String in inv.items) {
@@ -112,13 +112,13 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.pipText('emptycreate');
+					vis.emptytext.text=Res.txt('p', 'emptycreate');
 					statHead.visible=false;
 				}
 					
 			} else if (page2==2) {	//улучшение
 				statHead.fav.text='';
-				statHead.objectName.text='';//Res.pipText('ii2');
+				statHead.objectName.text='';//Res.txt('p', 'ii2');
 				statHead.hp.text='';
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
@@ -145,7 +145,7 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.pipText('emptyupgrade');
+					vis.emptytext.text=Res.txt('p', 'emptyupgrade');
 					statHead.visible=false;
 				}
 			} 
@@ -153,10 +153,10 @@ package interdata
 			{	//ремонт
 				assArr=new Array();
 				statHead.fav.text='';
-				statHead.objectName.text=Res.pipText('ii2');
-				statHead.hp.text=Res.pipText('ii3');
+				statHead.objectName.text=Res.txt('p', 'ii2');
+				statHead.hp.text=Res.txt('p', 'ii3');
 				statHead.ammo.text='';
-				statHead.ammotip.text=Res.pipText('repairto');
+				statHead.ammotip.text=Res.txt('p', 'repairto');
 				setTopText('inforepair');
 				if (inv.items['owl'] && inv.items['owl'].kol) {
 					World.world.pers.setRoboowl();
@@ -189,7 +189,7 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.pipText('emptyrep');
+					vis.emptytext.text=Res.txt('p', 'emptyrep');
 					statHead.visible=false;
 				}
 			}
@@ -254,7 +254,7 @@ package interdata
 			if (inv.items[cid]) 
 			{
 				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+yel(inv.items[cid].kol);
-				if (World.world.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.pipText('invault')+')';
+				if (World.world.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.txt('p', 'invault')+')';
 			} 
 			else 
 			{

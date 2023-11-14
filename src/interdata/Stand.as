@@ -67,7 +67,7 @@ package interdata
 				but.id.text = i;
 				but.id.visible = false;
 				but.ico.gotoAndStop(i + 2);
-				but.text.text = Res.guiText('stand' + i);
+				but.text.text = Res.txt('g', 'stand' + i);
 				but.y = 25 + 75 * i;
 				but.x = 20;
 				but.stop();
@@ -77,7 +77,7 @@ package interdata
 			}
 			vis.butclose.addEventListener(MouseEvent.CLICK,standClose);
 			vis.butclose.id.visible=false;
-			vis.butclose.text.text=Res.guiText('close');
+			vis.butclose.text.text=Res.txt('g', 'close');
 			resizeScreen(1200,800);
 			createWeaponLists(0);
 			createWeaponLists(1);

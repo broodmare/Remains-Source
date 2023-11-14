@@ -386,22 +386,22 @@ package servdata
 		{
 			if (userAction && userAction!='') 
 			{
-				 actionText=Res.guiText(userAction);
+				 actionText=Res.txt('g', userAction);
 			} 
 			else 
 			{
 				if (active && action>0) 
 				{
-					if (action==1) actionText=Res.guiText(!open?'open':'close');
-					if (action==2) actionText=Res.guiText('use'); 
-					if (action==3) actionText=Res.guiText('remine'); 
-					if (action==4) actionText=Res.guiText('press'); 
-					if (action==5) actionText=Res.guiText('shutoff'); 
-					if (action==8) actionText=Res.guiText('comein'); 
-					if (action==9) actionText=Res.guiText('exit'); 
-					if (action==10) actionText=Res.guiText('beginm'); 
-					if (action==11) actionText=Res.guiText('return'); 
-					if (action==12) actionText=Res.guiText('see'); 
+					if (action==1) actionText=Res.txt('g', !open?'open':'close');
+					if (action==2) actionText=Res.txt('g', 'use'); 
+					if (action==3) actionText=Res.txt('g', 'remine'); 
+					if (action==4) actionText=Res.txt('g', 'press'); 
+					if (action==5) actionText=Res.txt('g', 'shutoff'); 
+					if (action==8) actionText=Res.txt('g', 'comein'); 
+					if (action==9) actionText=Res.txt('g', 'exit'); 
+					if (action==10) actionText=Res.txt('g', 'beginm'); 
+					if (action==11) actionText=Res.txt('g', 'return'); 
+					if (action==12) actionText=Res.txt('g', 'see'); 
 				} 
 				else actionText='';
 			}
@@ -410,13 +410,13 @@ package servdata
 			{
 				if (mineTip==6) 
 				{
-					stateText="<span class = 'r2'>"+Res.guiText('signal')+"</span>";
-					actionText=Res.guiText('shutoff');
+					stateText="<span class = 'r2'>"+Res.txt('g', 'signal')+"</span>";
+					actionText=Res.txt('g', 'shutoff');
 				} 
 				else 
 				{
-					if (owner is Box) stateText="<span class = 'warn'>"+Res.guiText('mined')+"</span>";
-					actionText=Res.guiText('remine');
+					if (owner is Box) stateText="<span class = 'warn'>"+Res.txt('g', 'mined')+"</span>";
+					actionText=Res.txt('g', 'remine');
 				}
 				sndAct='rem_act';
 			} 
@@ -424,38 +424,38 @@ package servdata
 			{
 				if (lockTip==0)	
 				{
-					stateText="<span class = 'r2'>"+Res.guiText('lock')+"</span>";
+					stateText="<span class = 'r2'>"+Res.txt('g', 'lock')+"</span>";
 					actionText='';
 					sndAct='lock_act';
 				}
 				if (lockTip==1)	
 				{
-					if (lock>=100) stateText="<span class = 'r3'>"+Res.guiText('zhopa')+"</span>";
-					else stateText="<span class = 'r2'>"+Res.guiText('lock')+"</span>";
-					actionText=Res.guiText('unlock');
+					if (lock>=100) stateText="<span class = 'r3'>"+Res.txt('g', 'zhopa')+"</span>";
+					else stateText="<span class = 'r2'>"+Res.txt('g', 'lock')+"</span>";
+					actionText=Res.txt('g', 'unlock');
 					sndAct='lock_act';
 				}
 				if (lockTip==2)	
 				{
-					if (lock>=100)stateText="<span class = 'r3'>"+Res.guiText('block')+"</span>";
-					else stateText="<span class = 'r2'>"+Res.guiText('termlock')+"</span>";
-					actionText=Res.guiText('termunlock'); 
+					if (lock>=100)stateText="<span class = 'r3'>"+Res.txt('g', 'block')+"</span>";
+					else stateText="<span class = 'r2'>"+Res.txt('g', 'termlock')+"</span>";
+					actionText=Res.txt('g', 'termunlock'); 
 					sndAct='term_act';
 				}
 				if (lockTip==4)	
 				{
-					actionText=Res.guiText('shutoff');
+					actionText=Res.txt('g', 'shutoff');
 					sndAct='rem_act';
 				}
 				if (lockTip==5)	
 				{
-					actionText=Res.guiText('fixup');
+					actionText=Res.txt('g', 'fixup');
 					sndAct='rem_act';
 				}
 			} 
 			else if (cont=='empty') 
 			{
-				stateText="<span class = 'r0'>"+Res.guiText('empty')+"</span>";
+				stateText="<span class = 'r0'>"+Res.txt('g', 'empty')+"</span>";
 			} 
 			else 
 			{
@@ -497,9 +497,9 @@ package servdata
 				{
 					saveLock=102;
 					lock=100;
-					if (lockTip==1) stateText="<span class = 'r3'>"+Res.guiText('zhopa')+"</span>";
-					if (lockTip==2) stateText="<span class = 'r3'>"+Res.guiText('block')+"</span>";
-					if (lockTip==5) stateText="<span class = 'r3'>"+Res.guiText('broken')+"</span>";
+					if (lockTip==1) stateText="<span class = 'r3'>"+Res.txt('g', 'zhopa')+"</span>";
+					if (lockTip==2) stateText="<span class = 'r3'>"+Res.txt('g', 'block')+"</span>";
+					if (lockTip==5) stateText="<span class = 'r3'>"+Res.txt('g', 'broken')+"</span>";
 				}
 			}
 			if (a=='loot') 

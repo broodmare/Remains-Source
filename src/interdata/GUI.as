@@ -73,7 +73,6 @@ package interdata
 			vis.mouseChildren = false;
 			vis.mouseEnabled = false;
 			
-			//styleObj.fontWeight = "bold"; 
 			styleObj.color = "#00FF99"; 
 			style.setStyle(".r", styleObj); 	// Default is green
 			
@@ -92,7 +91,6 @@ package interdata
 			styleObj.color = "#FC7FED"; 
 			style.setStyle(".r4", styleObj);	// 4 - pink
 			
-			//styleObj.fontWeight = "bold"; 
 			styleObj.color = "#FF3333"; 
 			style.setStyle(".r5", styleObj);	// 5 - red
 			
@@ -153,34 +151,34 @@ package interdata
 			vis.portCel.gotoAndStop(1);
 			vis.portCel.visible = false;
 
-			trace('GUI.as/GUI() -  Calling Res.GuiText() to set pipbuck GUI text.');
-			txtTele			= Res.guiText('tele');
-			txtOpen			= Res.guiText('open');
-			txtSoft			= Res.guiText('soft');
-			txtHard			= Res.guiText('hard');
-			txtVeryHard		= Res.guiText('veryhard');
-			txtUnreal		= Res.guiText('unreal');
-			txtUndef0		= Res.guiText('undef0');
-			txtUndef1		= Res.guiText('undef1');
-			txtUndef2		= Res.guiText('undef2');
-			txtClose		= Res.guiText('close');
-			txtUnlock		= Res.guiText('unlock');
-			txtRemine		= Res.guiText('remine');
-			txtUse			= Res.guiText('use');
-			txtLock			= Res.guiText('lock');
-			txtZhopa		= Res.guiText('zhopa');
-			txtEmpty		= Res.guiText('empty');
-			txtDrop			= Res.guiText('drop');
-			txtHold			= Res.guiText('hold');
-			txtHeavy		= Res.guiText('heavy');
-			txtMagia		= Res.guiText('magia');
-			txtArmorMana	= Res.guiText('armormana');
-			txtChance		= Res.guiText('chance');
-			txtMagiaOver	= Res.guiText('magiaover');
-			txtH2o			= Res.guiText('h2o');
-			txtH2oOver		= Res.guiText('h2over');
-			txtStam			= Res.guiText('stam');
-			txtOd			= Res.pipText('ap');
+			trace('GUI.as/GUI() -  Calling Res.txt() to set pipbuck GUI text.');
+			txtTele			= Res.txt('g', 'tele');
+			txtOpen			= Res.txt('g', 'open');
+			txtSoft			= Res.txt('g', 'soft');
+			txtHard			= Res.txt('g', 'hard');
+			txtVeryHard		= Res.txt('g', 'veryhard');
+			txtUnreal		= Res.txt('g', 'unreal');
+			txtUndef0		= Res.txt('g', 'undef0');
+			txtUndef1		= Res.txt('g', 'undef1');
+			txtUndef2		= Res.txt('g', 'undef2');
+			txtClose		= Res.txt('g', 'close');
+			txtUnlock		= Res.txt('g', 'unlock');
+			txtRemine		= Res.txt('g', 'remine');
+			txtUse			= Res.txt('g', 'use');
+			txtLock			= Res.txt('g', 'lock');
+			txtZhopa		= Res.txt('g', 'zhopa');
+			txtEmpty		= Res.txt('g', 'empty');
+			txtDrop			= Res.txt('g', 'drop');
+			txtHold			= Res.txt('g', 'hold');
+			txtHeavy		= Res.txt('g', 'heavy');
+			txtMagia		= Res.txt('g', 'magia');
+			txtArmorMana	= Res.txt('g', 'armormana');
+			txtChance		= Res.txt('g', 'chance');
+			txtMagiaOver	= Res.txt('g', 'magiaover');
+			txtH2o			= Res.txt('g', 'h2o');
+			txtH2oOver		= Res.txt('g', 'h2over');
+			txtStam			= Res.txt('g', 'stam');
+			txtOd			= Res.txt('p', 'ap');
 
 			vis.odBar.txt.text		= txtOd;
 			vis.selector.visible	= false;
@@ -207,7 +205,7 @@ package interdata
 			informScript = new Script(<scr act = "inform" val = "id"/>);
 			dialScript 	 = new Script(<scr act = "dialog" val = "id"/>);
 			vis.inform.but0.addEventListener(MouseEvent.MOUSE_DOWN, showHelp);
-			vis.inform.but0.text.text = Res.guiText('help');
+			vis.inform.but0.text.text = Res.txt('g', 'help');
 			vis.blood.visible = false;
 			vis.blood.stop();
 		}
@@ -330,9 +328,9 @@ package interdata
 							n={id:gg.currentSpell.id, objectName:gg.currentSpell.objectName, fav:i};
 							if (gg.currentSpell.t_culd>0) 
 							{
-								n.ammo=Math.ceil(gg.currentSpell.t_culd/Settings.fps)+' '+Res.guiText('sec');
+								n.ammo=Math.ceil(gg.currentSpell.t_culd/Settings.fps)+' '+Res.txt('g', 'sec');
 							} 
-							else n.ammo=Res.guiText('ready')
+							else n.ammo=Res.txt('g', 'ready')
 						} 
 						else continue;
 					} 
@@ -360,9 +358,9 @@ package interdata
 						{
 							if (inv.spells[n.id].t_culd>0) 
 							{
-								n.ammo=Math.ceil(inv.spells[n.id].t_culd/Settings.fps)+' '+Res.guiText('sec');
+								n.ammo=Math.ceil(inv.spells[n.id].t_culd/Settings.fps)+' '+Res.txt('g', 'sec');
 							} 
-							else n.ammo=Res.guiText('ready')
+							else n.ammo=Res.txt('g', 'ready')
 						}
 					}
 					arrfav[i]=n;
@@ -943,10 +941,10 @@ package interdata
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
 							if (Settings.hintKeys) s+=World.world.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
-							s+=Res.guiText('usekey');
+							s+=Res.txt('g', 'usekey');
 						 // Locked, key needed, but not available
 						} else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
-							s+="\n(<span class = 'r5'>"+Res.guiText('required')+' '+Res.txt('i',celObj.inter.lockKey)+"</span>)"; 
+							s+="\n(<span class = 'r5'>"+Res.txt('g', 'required')+' '+Res.txt('i',celObj.inter.lockKey)+"</span>)"; 
 						// Jammed
 						} else if (celObj.inter.lock>=100) {
 							//s+="\n(<span class = 'warn'>"+txtNoUnlock+"</span>)"; 
@@ -971,7 +969,7 @@ package interdata
 							}
 							//заколки
 							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.world.invent && World.world.invent.pin.kol>0) s+=" {<span class = 'r2'>"+World.world.invent.pin.kol+"</span>}";
-							if (celObj.inter.cons) s+='\n('+Res.guiText('required')+': '+Res.txt('i',celObj.inter.cons)+')';
+							if (celObj.inter.cons) s+='\n('+Res.txt('g', 'required')+': '+Res.txt('i',celObj.inter.cons)+')';
 						}
 					} else {
 						s+='\n';
@@ -987,11 +985,11 @@ package interdata
 					acts="\n<span class = 'r3'>";
 					if (Settings.hintKeys) acts+=World.world.ctr.keyStates.retKey('keyCrack')+' - ';
 					if (celObj.inter.mineTip==6 && celObj.inter.mine>0) {
-						s+=acts+Res.guiText('actalarm')+"</span>";
+						s+=acts+Res.txt('g', 'actalarm')+"</span>";
 					} else if (celObj.inter.lockTip==1 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.guiText('runa')+"</span>";
+						s+=acts+Res.txt('g', 'runa')+"</span>";
 					} else if (celObj.inter.lockTip==2 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.guiText('reboot')+"</span>";
+						s+=acts+Res.txt('g', 'reboot')+"</span>";
 					}
 				}
 				if (gg.showObsInd && (celObj is Unit) && (celObj as Unit).fraction!=Unit.F_PLAYER && !(celObj as Unit).doop && (celObj as Unit).observ>gg.sneak+1) {
@@ -1201,11 +1199,11 @@ package interdata
 				vis.mouseEnabled 	= false;
 				return false;
 			}
-			var xml:XML;
+			var xml;
 
 			if (id is String) 
 			{
-				xml = Res.gameData.txt.(@id == id);
+				xml = Res.localizationFile.txt.(@id == id);
 				if (xml.length() == 0) return false;
 				xml = xml.n[0];
 				if (xml.length() == 0) return false;

@@ -152,25 +152,40 @@ package
 			trace('Snd.as/loadMusic() - Calling XMLLoader.as/load with ' + musicLocation);
 			musicTextLoader.addEventListener(XMLLoader.XML_LOADED, loadMusicCont);
 			musicTextLoader.load(musicLocation, "loadMusic()"); 
+
 		}
 
 		public static function loadMusicCont(event:Event):void //TODO, Remove into own soundloader class.
 		{
-			trace('Snd.as/loadMusic() - Music XML received.');
+			trace('Snd.as/loadMusicCont() - Music XML received.');
 
 			event.target.removeEventListener(XMLLoader.XML_LOADED, loadMusicCont);
-
-    		musicList = musicTextLoader.xmlData;
+			if (musicTextLoader.xmlData != null)
+			{
+				try
+				{
+					musicList = musicTextLoader.xmlData;
+				}
+				catch(err:Error)
+				{
+					trace('Snd.as/loadMusicCont() - Failed setting musicList as: ' + musicTextLoader.xmlData);
+				}
+			}
+			else 
+			{
+				trace('Snd.as/loadMusicCont() - musicTextLoader.xmlData was NULL.');
+			}
 			Settings.musicTracksFound = musicList.s.length();
+			trace('Snd.as/loadMusicCont() - music tracks found: "' + Settings.musicTracksFound + '".'); 
 
 			var loadingCount:int = 0;
-			for each (var track:XML in musicList.s) 
+			for each (var track in musicList.s) 
 			{
-				var trackName:XML = track.@id;
+				var trackName = track.@id;
 
 
 				var soundURL:URLRequest = new URLRequest(Settings.musicPath + trackName + ".mp3");
-				var soundData:Sound = new Sound(soundURL);
+				var soundData = new Sound(soundURL);
 
 				soundData.addEventListener(IOErrorEvent.IO_ERROR, musicEventHandler);
 				soundData.addEventListener(Event.COMPLETE, musicEventHandler);
@@ -337,12 +352,13 @@ package
 		public static function step():void
 		{
 			trace('Snd.as/step() - sound stepping...');
+			var trans:SoundTransform;
 			if (t_hit > 0) t_hit--;
 			if (t_music > 0 && musicPrevCh) 
 			{
-				if (t_music%10 == 1) 
+				if (t_music % 10 == 1) 
 				{
-					var trans:SoundTransform = new SoundTransform(musicVol * t_music / 100, 0);
+					trans = new SoundTransform(musicVol * t_music / 100, 0);
 					musicPrevCh.soundTransform = trans;
 				}
 				if (t_music <= 5) 
@@ -367,7 +383,6 @@ package
 			if (t_shum <= 0) 
 			{
 				t_shum = 5;
-				var trans:SoundTransform;
 				for each (var obj in soundStage) 
 				{
 					if (obj.curVol != obj.maxVol) 

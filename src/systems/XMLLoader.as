@@ -35,7 +35,7 @@ package systems
 			callerID = caller;	//What function instantiated the loader.
 			fileURL = url;		//What file is being loaded.
 			
-			trace('XMLLoader.as/load() - Function: "' + callerID + '" is requesting to load file: "' + fileURL + '."');
+			//trace('XMLLoader.as/load() - Function: "' + callerID + '" is requesting to load file: "' + fileURL + '."');
 
 			loaderURL = new URLRequest(fileURL);
 			loader = new URLLoader();
@@ -60,7 +60,7 @@ package systems
 
 					xmlData = new XML(loader.data);
 
-					trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" requested by "' + callerID + '" is done loading. Firing event to notify the caller.')
+					//trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" requested by "' + callerID + '" is done loading. Firing event to notify the caller.')
 					dispatchEvent(new Event(XMLLoader.XML_LOADED));
 					break;
 				

@@ -89,7 +89,7 @@ package interdata
 			{		//карта
 				if (World.world.room.noMap) 
 				{
-					vis.emptytext.text=Res.pipText('emptymap');
+					vis.emptytext.text=Res.txt('p', 'emptymap');
 				} 
 				else 
 				{
@@ -119,7 +119,7 @@ package interdata
 							if (j==null || j.state==0) 
 							{
 								vis.butOk.visible=true;
-								vis.butOk.text.text=Res.pipText('alltask');
+								vis.butOk.text.text=Res.txt('p', 'alltask');
 								break;
 							}
 						}
@@ -169,7 +169,7 @@ package interdata
 						if (Settings.testMode || level.visited || level.access) sim.visible = true;
 					}
 				}
-				vis.butOk.text.text=Res.pipText('trans');
+				vis.butOk.text.text=Res.txt('p', 'trans');
 				visWMap.visible=true;
 				pip.vis.butHelp.visible=true;
 				pip.helpText=Res.txt('p','helpWorld',0,true);
@@ -179,7 +179,7 @@ package interdata
 				var doparr:Array=new Array();
 				for each (var note:String in game.notes) 
 				{
-					var xml=Res.gameData.txt.(@id==note);
+					var xml=Res.localizationFile.txt.(@id==note);
 					var nico:int=0;
 					if (xml && xml.@imp>0) 
 					{
@@ -204,7 +204,7 @@ package interdata
 				statHead.visible=true;
 				statHead.objectName.text='';
 				statHead.mq.visible=false;
-				statHead.kol.text=Res.pipText('frag');
+				statHead.kol.text=Res.txt('p', 'frag');
 				vis.ico.visible=true;
 				for each(var xml in AllData.d.unit) 
 				{
@@ -258,7 +258,7 @@ package interdata
 				if (obj.state==2) 
 				{
 					item.objectName.alpha=item.mq.alpha=0.4;
-					item.objectName.text+=' ('+Res.pipText('done')+')';
+					item.objectName.text+=' ('+Res.txt('p', 'done')+')';
 				} 
 				else 
 				{
@@ -303,23 +303,23 @@ package interdata
 				if (l==null) return;
 				vis.objectName.text=Res.txt('m',l.id);
 				var s:String=Res.txt('m',l.id,1);
-				if (!l.visited) s+="\n\n<span class ='blu'>"+Res.pipText('ls1')+"</span>";
-				else if (l.passed) s+="\n\n<span class ='or'>"+Res.pipText('ls2')+"</span>";
-				else if (l.tip=='base') s+="\n\n<span class ='or'>"+Res.pipText('ls4')+"</span>";
-				else if (l.tip=='rnd') s+="\n\n<span class ='yel'>"+Res.pipText('ls3')+": "+(l.landStage+1)+"</span>";
+				if (!l.visited) s+="\n\n<span class ='blu'>"+Res.txt('p', 'ls1')+"</span>";
+				else if (l.passed) s+="\n\n<span class ='or'>"+Res.txt('p', 'ls2')+"</span>";
+				else if (l.tip=='base') s+="\n\n<span class ='or'>"+Res.txt('p', 'ls4')+"</span>";
+				else if (l.tip=='rnd') s+="\n\n<span class ='yel'>"+Res.txt('p', 'ls3')+": "+(l.landStage+1)+"</span>";
 				if (l.tip=='rnd' && l.kolAllProb>0) {
-					s+="\n<span class ='yel'>"+Res.pipText('kolProb')+': '+l.kolClosedProb+'/'+l.kolAllProb+"</span>";
+					s+="\n<span class ='yel'>"+Res.txt('p', 'kolProb')+': '+l.kolClosedProb+'/'+l.kolAllProb+"</span>";
 				}
-				if (l.dif>0) s+='\n\n'+Res.pipText('recLevel')+' '+Math.round(l.dif);
-				if (l.dif>World.world.pers.level) s+='\n\n'+Res.pipText('wrLevel');
+				if (l.dif>0) s+='\n\n'+Res.txt('p', 'recLevel')+' '+Math.round(l.dif);
+				if (l.dif>World.world.pers.level) s+='\n\n'+Res.txt('p', 'wrLevel');
 				if (World.world.pers.speedShtr>=3) {
-					s+='\n\n'+red(Res.pipText('speedshtr3'));
+					s+='\n\n'+red(Res.txt('p', 'speedshtr3'));
 				} else if (World.world.pers.speedShtr==2) {
-					s+='\n\n'+red(Res.pipText('speedshtr2'));
+					s+='\n\n'+red(Res.txt('p', 'speedshtr2'));
 				} else if (World.world.pers.speedShtr==1) {
-					s+='\n\n'+red(Res.pipText('speedshtr1'));
+					s+='\n\n'+red(Res.txt('p', 'speedshtr1'));
 				}
-				if (World.world.pers.speedShtr>=1) s+='\n'+Res.pipText('speedshtr0');
+				if (World.world.pers.speedShtr>=1) s+='\n'+Res.txt('p', 'speedshtr0');
 				vis.info.htmlText=s;
 			} 
 			else if (page2==4) 
@@ -395,13 +395,13 @@ package interdata
 				if (n>=1) 
 				{
 					//ХП
-					s+=Res.pipText('hp')+': '+yel(v_hp)+'\n';
+					s+=Res.txt('p', 'hp')+': '+yel(v_hp)+'\n';
 					//порог урона и броня
-					if (v_skin) 	s+=Res.pipText('skin')+': '+yel(v_skin)+'\n';
+					if (v_skin) 	s+=Res.txt('p', 'skin')+': '+yel(v_skin)+'\n';
 					if (v_aqual) 
 					{
-						if (v_armor) 	s+=Res.pipText('armor')+': '+yel(v_armor)+' ('+(v_aqual*100)+'%)  ';
-						if (v_marmor) 	s+=Res.pipText('marmor')+': '+yel(v_marmor)+' ('+(v_aqual*100)+'%)';
+						if (v_armor) 	s+=Res.txt('p', 'armor')+': '+yel(v_armor)+' ('+(v_aqual*100)+'%)  ';
+						if (v_marmor) 	s+=Res.txt('p', 'marmor')+': '+yel(v_marmor)+' ('+(v_aqual*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
@@ -409,14 +409,14 @@ package interdata
 				{
 					if ((v_visdam==1 || v_visdam==3) && v_damage) 
 					{
-						s+=Res.pipText('dam_melee')+': ';
-						if (v_tipdam) s+=blue(Res.pipText('tipdam'+v_tipdam)); else s+=blue(Res.pipText('tipdam2'));
+						s+=Res.txt('p', 'dam_melee')+': ';
+						if (v_tipdam) s+=blue(Res.txt('p', 'tipdam'+v_tipdam)); else s+=blue(Res.txt('p', 'tipdam2'));
 						s+=' ('+yel(v_damage)+')\n'
 					}
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) 
 					{
-						s+=Res.pipText('dam_shoot')+': ';
-						if (v_stipdam) s+=blue(Res.pipText('tipdam'+v_stipdam)); else s+=blue(Res.pipText('tipdam0'));
+						s+=Res.txt('p', 'dam_shoot')+': ';
+						if (v_stipdam) s+=blue(Res.txt('p', 'tipdam'+v_stipdam)); else s+=blue(Res.txt('p', 'tipdam0'));
 						s+=' ('+yel(v_sdamage)+')\n'
 					}
 					if (un.w.length()) 
@@ -427,7 +427,7 @@ package interdata
 							if (!(weap.@no>0)) 
 							{
 								if (wk) s+=', ';
-								else s+=Res.pipText('enemy_weap')+': ';
+								else s+=Res.txt('p', 'enemy_weap')+': ';
 								s+=blue(Res.txt('w', weap.@id));
 								try 
 								{
@@ -449,15 +449,15 @@ package interdata
 				}
 				//уклонение
 				if (n>=3) {
-					if (v_dexter!=null) 	s+=Res.pipText('dexter')+': '+yel((v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
-					if (v_observ) 	s+=Res.pipText('observ')+': '+yel((v_observ>0?'+':'')+v_observ)+'\n';
-					if (v_skill!=null) 	s+=Res.pipText('weapskill')+': '+yel(Math.round(v_skill*100)+'%')+'\n';
+					if (v_dexter!=null) 	s+=Res.txt('p', 'dexter')+': '+yel((v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
+					if (v_observ) 	s+=Res.txt('p', 'observ')+': '+yel((v_observ>0?'+':'')+v_observ)+'\n';
+					if (v_skill!=null) 	s+=Res.txt('p', 'weapskill')+': '+yel(Math.round(v_skill*100)+'%')+'\n';
 				}
 			}
 			//сопротивления
 			if (n>=3 && un.vulner.length()) 
 			{
-				s+=Res.pipText('resists')+': ';
+				s+=Res.txt('p', 'resists')+': ';
 				node=un.vulner[0];
 				if (node.@emp.length()) 	s+=vulner(Unit.D_EMP,node.@emp);
 				if (node.@bul.length()) 	s+=vulner(Unit.D_BUL,node.@bul);
@@ -477,7 +477,7 @@ package interdata
 		
 		function vulner(n:int, val:Number):String 
 		{
-			return blue(Res.pipText('tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
+			return blue(Res.txt('p', 'tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
 		}
 		
 		

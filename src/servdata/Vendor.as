@@ -155,24 +155,29 @@ package servdata
 		public function refill():void 
 		{
 			//trace(id,xml);
-			if (xml==null) return;
-			if (id=='random') 
+			if (xml == null) return;
+
+			if (id == 'random') 
 			{
-				buys=new Array();
-				buys2=new Array();
-				setRndBuys(100,'random');
+				buys = new Array();
+				buys2 = new Array();
+				setRndBuys(100, 'random');
 				for (var i:String in buys) 
 				{
-					var uid:String=buys[i].id;
-					if (buys[i].variant>0) uid+='^'+buys[i].variant;
-					buys2[uid]=buys[i];
+					var uid:String = buys[i].id;
+					if (buys[i].variant>0) 
+					{
+						uid += '^' + buys[i].variant;
+					}
+					buys2[uid] = buys[i];
 				}
 				return;
 			} 
 			for each(var item:Item in buys) 
 			{
 				if (item.noref || item.tip==Item.L_ARMOR || item.tip==Item.L_WEAPON || item.tip==Item.L_SCHEME || item.tip==Item.L_UNIQ || item.tip==Item.L_IMPL) continue;
-				var buy:XML = xml.buy.(@id==item.id);
+				var buy:XMLList = xml.buy.(@id == item.id);
+				
 				if (buy.length()==0 || buy.@n.length()==0) continue;
 				var lim:int = Math.ceil(buy.@n*World.world.pers.limitBuys);
 				if (item.kol < lim) {
@@ -184,9 +189,18 @@ package servdata
 		
 		public function save():* 
 		{
-			if (id==null) return null;
-			var arr:Array=new Array();
-			for each (var b:Item in buys) arr.push(b.save());
+			if (id == null) 
+			{
+				return null;
+			}
+
+			var arr:Array = new Array();
+
+			for each (var b:Item in buys) 
+			{
+				arr.push(b.save());
+			}
+
 			return arr;
 		}
 		

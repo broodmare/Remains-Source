@@ -2321,7 +2321,7 @@ package unitdata
 				{
 					armor_hp=0;
 					armor_qual=0;
-					mess=Res.guiText('abr');
+					mess=Res.txt('g', 'abr');
 				}
 			}
 
@@ -2418,7 +2418,7 @@ package unitdata
 				// Electric and EMP damage stun robots
 				if ((tip==D_SPARK || tip==D_EMP) && opt && opt.robot && sost==1 && Math.random()<dam/maxhp) 
 				{
-					mess=Res.guiText('kz');
+					mess=Res.txt('g', 'kz');
 					if (stun<robotKZ) stun=robotKZ;
 				}
 				// Explosions cause concussion
@@ -2475,7 +2475,7 @@ package unitdata
 								stun=bul.weap.dopDamage;
 								//trace(stun);
 								if (player && stun<=0) World.world.gui.infoText('stun');
-								if (stun>1) mess=Res.guiText('stun');
+								if (stun>1) mess=Res.txt('g', 'stun');
 							}
 						}
 					}

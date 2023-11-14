@@ -28,6 +28,8 @@ package graphdata
 	import components.Settings;
 	import systems.TileFilter;
 
+	import stubs.tileGwall;
+
 	public class Grafon 
 	{
 		
@@ -289,6 +291,31 @@ package graphdata
 		
 
 
+
+
+
+
+		//Check if all instances of GrLoader have finished.
+		public function checkLoaded():void
+		{
+			var allLoaded:Boolean = true;
+
+			for each (var loader:Object in grLoaderArray)
+			{
+				if (!loader.isLoad)
+				{
+					allLoaded = false;
+					break;
+				}
+			}
+
+			if (allLoaded)
+			{
+				trace('Grafon.as/checkLoaded() - All resources loaded, calling material Setup!');
+				materialSetup();
+			}
+		}
+		
 		public function materialSetup():void
 		{
 			//tile and backwall arrays
@@ -321,29 +348,6 @@ package graphdata
 			trace('Grafon.as/Grafon() - Setting resourcesLoaded to true.');
 			resourcesLoaded = true;
 		}
-
-
-
-		//Check if all instances of GrLoader have finished.
-		public function checkLoaded():void
-		{
-			var allLoaded:Boolean = true;
-
-			for each (var loader:Object in grLoaderArray)
-			{
-				if (!loader.isLoad)
-				{
-					allLoaded = false;
-					break;
-				}
-			}
-			if (allLoaded)
-			{
-				trace('Grafon.as/checkLoaded() - All resources loaded, calling material Setup!');
-				materialSetup();
-			}
-		}
-		
 		//Determine progress of loading.
 		public function allProgress():void
 		{
@@ -906,9 +910,9 @@ package graphdata
 
 			room.gg.addVisual();
 
-			for (var i:int = 0; i < room.signposts.length; i++)
+			for (var j:int = 0; i < room.signposts.length; j++)
 			{
-				canvasLayerArray[3].addChild(room.signposts[i]);
+				canvasLayerArray[3].addChild(room.signposts[j]);
 			}
 		}
 		
@@ -1186,7 +1190,7 @@ package graphdata
 			backgroundMatrix.tx = tile.X * tilepixelwidth;
 			backgroundMatrix.ty = tile.Y * tilepixelheight;
 			voda.gotoAndStop(room.tipWater+1);
-			if (room.getTile(tile.X, tile.Y-1).water == 0 && room.getTile(tile.X, tile.Y-1).phis == 0 ) voda.voda.gotoAndStop(2);
+			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) voda.voda.gotoAndStop(2);
 			else voda.voda.gotoAndStop(1);
 			vodaBmp.draw(voda, backgroundMatrix, room.cTransform, (tile.water>0)?'normal':'erase', null, false);
 			if (recurs) drawWater(room.getTile(tile.X, tile.Y+1), false);
@@ -1194,7 +1198,8 @@ package graphdata
 			
 		public function tileDie(tile:Tile, tip:int):void
 		{
-			var erC:Class = block_dyr, drC:Class = block_tre;
+			var erC:Class = block_dyr;
+			var drC:Class = block_tre;
 			var nx:Number = (tile.X + 0.5) * tilepixelwidth;
 			var ny:Number = (tile.Y + 0.5) * tilepixelheight;
 			if (tile.fake)
@@ -1238,8 +1243,8 @@ package graphdata
 			var erC:Class, drC:Class;
 			var bl:String = 'normal';
 			var centr:Boolean = false;
-			var sc:Number = Math.random()*0.5+0.5;
-			var rc:Number = Math.random()*360
+			var sc:Number = Math.random() * 0.5 + 0.5;
+			var rc:Number = Math.random() * 360
 			if (tip == 0 || mat == 0) return;
 			if (mat == 1) //metal
 			{ 			
@@ -1275,7 +1280,8 @@ package graphdata
 					if (mat == 2) Emitter.emit('kusoch', room, nx, ny, {kol:3});
 					else Emitter.emit('kusochB', room, nx, ny, {kol:3});
 				}
-			} else if (mat == 3) //wood
+			} 
+			else if (mat == 3) //wood
 			{	
 				if (tip >= 1 && tip <= 3) //bullets
 					{					
@@ -1305,9 +1311,10 @@ package graphdata
 			{	
 				Emitter.emit('pole', room, nx, ny, {kol:5});
 			}
+
 			if (tip == 11) // fire
 			{					
-				if (Math.random()<0.1) drC = fire_soft;
+				if (Math.random() < 0.1) drC = fire_soft;
 			} 
 			else if (tip == 12 || tip == 13) // lasers
 			{		
@@ -1327,7 +1334,9 @@ package graphdata
 				if (soft)
 				{
 					drC = plasma_soft;
-				} else {
+				} 
+				else 
+				{
 					erC = plasma_dyr, drC = plasma_tre;
 				}
 				bl = 'hardlight';
@@ -1388,9 +1397,10 @@ package graphdata
 				nagar.rotation = rc;
 				var dyrx:Number = Math.round(nagar.width/2+2)*2, dyry:Number = Math.round(nagar.height/2+2)*2;
 				var res2:BitmapData  =  new BitmapData(dyrx, dyry, false, 0x0);
-				var rdx:Number = 0, rdy:Number = 0;
-				if (nx-dyrx/2<0) rdx = -(nx-dyrx/2);
-				if (ny-dyry/2<0) rdy = -(ny-dyry/2);
+				var rdx:Number = 0;
+				var rdy:Number = 0;
+				if (nx - dyrx / 2 < 0) rdx = -(nx - dyrx / 2);
+				if (ny - dyry / 2 < 0) rdy = -(ny - dyry / 2);
 				var rect:Rectangle  =  new Rectangle(nx-dyrx/2+rdx, ny-dyry/2+rdy, nx+dyrx/2+rdx, ny+dyry/2+rdy);
 				var pt:Point  =  new Point(0, 0);
 				res2.copyChannel(frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
@@ -1413,11 +1423,12 @@ package graphdata
 		public function paint(nx1:int, ny1:int, nx2:int, ny2:int, aero:Boolean = false):void
 		{
 			var br:MovieClip;
-			if (aero) br = pa; else br = pb;
-			var rasst:Number = Math.sqrt((nx2-nx1)*(nx2-nx1)+(ny2-ny1)*(ny2-ny1));
-			var kol:int = Math.ceil(rasst/3);
-			var dx:Number = (nx2-nx1)/kol;
-			var dy:Number = (ny2-ny1)/kol;
+			if (aero) br = pa; 
+			else br = pb;
+			var rasst:Number = Math.sqrt((nx2 - nx1) * (nx2 - nx1) + (ny2 - ny1) * (ny2 - ny1));
+			var kol:int = Math.ceil(rasst / 3);
+			var dx:Number = (nx2 - nx1) / kol;
+			var dy:Number = (ny2 - ny1) / kol;
 			
 			var rx1:int, rx2:int, ry1:int, ry2:int;
 			if (nx1<nx2)

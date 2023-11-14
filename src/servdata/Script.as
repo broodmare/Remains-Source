@@ -186,10 +186,10 @@ package servdata
 						World.world.gg.controlOff();
 						wait=true;
 						World.world.ctr.active=false;
-						var str = Res.txt('m', actObj.val) + "\n" + Res.pipText('recLevel') + ': ['+World.world.game.levelArray[actObj.val].dif + "]\n" + Res.pipText('isperslvl') + ': [' + World.world.pers.level + ']';
+						var str = Res.txt('m', actObj.val) + "\n" + Res.txt('p', 'recLevel') + ': ['+World.world.game.levelArray[actObj.val].dif + "]\n" + Res.txt('p', 'isperslvl') + ': [' + World.world.pers.level + ']';
 						if (World.world.game.levelArray[actObj.val].dif > World.world.pers.level) 
 						{
-							str += '\n\n' + Res.pipText('wrLevel');
+							str += '\n\n' + Res.txt('p', 'wrLevel');
 						}
 						World.world.gui.dialText(<r mod='1'>{str}</r>, 0, false, true);
 					}

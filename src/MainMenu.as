@@ -25,6 +25,7 @@ package
 
 	import systems.Languages;
 	import components.Settings;
+	import components.XmlBook;
 
 	import stubs.*;
 
@@ -47,12 +48,13 @@ package
 		public var displ:Displ;
 		public var animOn:Boolean			= true;
 		public var langReload:Boolean		= false;
-
+		private var langButtonsLoaded:Boolean = false;
 
 		public var kolDifs:int 				= 5;
 		public var kolOpts:int 				= 6;
 		
 		public var languageButtons:Array;
+
 		public var stn:int 					= 0;
 		public var style:StyleSheet 		= new StyleSheet(); 
 		public var styleObj:Object 			= new Object(); 
@@ -69,7 +71,9 @@ package
 			trace('MainMenu.as/MainMenu() - Running mainMenu constructor.');
 			trace('MainMenu.as/MainMenu() - Calling Settings.as/settingsSetup().');
 			Settings.settingsSetup();
-			
+			trace('MainMenu.as/MainMenu() - Calling XmlBook.as/xmlBookSetup().');
+			XmlBook.xmlBookSetup();
+
 			main = nmain;
 			
 			trace('MainMenu.as/MainMenu() - Creating new video object from .swf file');
@@ -90,7 +94,7 @@ package
 
 			trace('MainMenu.as/MainMenu() - Creating new world and passing the "main" sprite.');
 			world = new World(main);
-			trace('MainMenu.as/MainMenu() - Setting the world mainMenu to be "this" mainMenu.');
+
 			world.mainMenu = this;
 			mainMenu.info.visible = false;
 			
@@ -143,12 +147,9 @@ package
 			trace('MainMenu.as/mainMenuOn() - setting mainMenu.active to true.');
 			active = true;
 
-			trace('MainMenu.as/mainMenuOn() - Adding all mainMenu listeners.');
-
 			mainMenuListenerToggle(true);
 			if (!main.contains(mainMenu))
 			{
-				trace('MainMenu.as/mainMenuOn() - "main" does not contain a "mainMenu", adding this instance...');
 				main.addChild(mainMenu);
 			}
 			file.addEventListener(Event.SELECT, selectHandler);
@@ -169,7 +170,7 @@ package
 			}
 			if (main.contains(mainMenu)) main.removeChild(mainMenu);
 			world.loadingScreen.visible = true;
-			world.loadingScreen.progres.text = Res.guiText('loading');
+			world.loadingScreen.progres.text = Res.txt('g', 'loading');
 		}
 
 		public function mainMenuListenerToggle(enabled:Boolean):void
@@ -275,31 +276,42 @@ package
 		{
 			trace('MainMenu.as/setLangButtons() - Creating language buttons.');
 
-			languageButtons = new Array();
 
-			var buttonCount:int = 0;
-			if (Languages.languageCount > 1) 
-			{
-				var i:int = Languages.languageCount;
-				for each(var languageID:XML in Languages.languageListXML.languageID) 
+				languageButtons = new Array();
+
+				try
 				{
-					i--;
-					buttonCount++;
-					var button:MovieClip = new butLang(); //create a new button
+					for each(var language in Languages.languageListDictionary) 
+					{
+						
+						Languages.languageCount++;
+						var button:MovieClip = new butLang();
 
-					languageButtons[i] = languageID; // Name that spot in the array the languageID
+						var languageId:String = language.lang.@id;
+						var languageName:String = language.lang.text();
 
-					button.lang.text = languageID[0];
-					button.y = -i * 40;
-					button.n.text = languageID;
-					button.n.visible = false; 
-					button.addEventListener(MouseEvent.CLICK, languageButtonPress);
-					mainMenu.lang.addChild(button);
-					trace('MainMenu.as/setLangButtons() - Button: "' + buttonCount + '." Language ID: "' + languageID );
+						trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName'"');
+
+						// Set the button properties
+						button.lang.text = languageName;
+						button.y = -Languages.languageCount * 40;
+						button.n.text = languageId;
+						button.n.visible = false; 
+						button.addEventListener(MouseEvent.CLICK, languageButtonPress);
+						mainMenu.lang.addChild(button)
+					}
 				}
-			}
-			trace('MainMenu.as/setLangButtons() - Created: "' + buttonCount + '" language buttons.');
+				catch(err:Error)
+				{
+					trace('MainMenu.as/setLangButtons() - ERROR: Failed to create language buttons. Error: "' + err.message + '."');
+				}
 
+				trace('MainMenu.as/setLangButtons() - Created: "' + Languages.languageCount + '" language buttons.');
+
+				if (Languages.languageCount > -1 ) //-1 is the starting value.
+				{
+					langButtonsLoaded = true;
+				}
 		}
 		
 		//Language
@@ -307,39 +319,39 @@ package
 		{
 			trace('MainMenu.as/updateMainMenuLanguage() - Updating language on mainMenu buttons.');
 
-			setMainButton(mainMenu.butContGame, Res.guiText	('contgame'));
-			setMainButton(mainMenu.butNewGame, 	Res.guiText	('newgame'));
-			setMainButton(mainMenu.butLoadGame, Res.guiText	('loadgame'));
-			setMainButton(mainMenu.butOpt, 		Res.guiText	('options'));
-			setMainButton(mainMenu.butAbout, 	Res.guiText	('about'));
+			setMainButton(mainMenu.butContGame, Res.txt	('g', 'contgame'));
+			setMainButton(mainMenu.butNewGame, 	Res.txt	('g', 'newgame'));
+			setMainButton(mainMenu.butLoadGame, Res.txt	('g', 'loadgame'));
+			setMainButton(mainMenu.butOpt, 		Res.txt	('g', 'options'));
+			setMainButton(mainMenu.butAbout, 	Res.txt	('g', 'about'));
 
-			mainMenu.dialNew.title.text 			= Res.guiText('newgame');
-			mainMenu.dialLoad.title.text 			= Res.guiText('loadgame');
-			mainMenu.dialLoad.title2.text 			= Res.guiText('select_slot');
-			mainMenu.version.htmlText 				= '<b>' + Res.guiText('version') + ' ' + version + '</b>';
-			mainMenu.dialLoad.butCancel.text.text 	= Res.guiText('cancel');
-			mainMenu.dialNew.butCancel.text.text 	= Res.guiText('cancel');
-			mainMenu.dialLoad.butFile.text.text 	= Res.pipText('loadfile');
-			mainMenu.dialLoad.warn.text 			= Res.guiText('loadwarn');
-			mainMenu.dialNew.warn.text 				= Res.guiText('loadwarn');
-			mainMenu.dialNew.infoName.text 			= Res.guiText('inputname');
-			mainMenu.dialNew.hardOpt.text 			= Res.guiText('hardopt');
+			mainMenu.dialNew.title.text 			= Res.txt('g', 'newgame');
+			mainMenu.dialLoad.title.text 			= Res.txt('g', 'loadgame');
+			mainMenu.dialLoad.title2.text 			= Res.txt('g', 'select_slot');
+			mainMenu.version.htmlText 				= '<b>' + Res.txt('g', 'version') + ' ' + version + '</b>';
+			mainMenu.dialLoad.butCancel.text.text 	= Res.txt('g', 'cancel');
+			mainMenu.dialNew.butCancel.text.text 	= Res.txt('g', 'cancel');
+			mainMenu.dialLoad.butFile.text.text 	= Res.txt('p', 'loadfile');
+			mainMenu.dialLoad.warn.text 			= Res.txt('g', 'loadwarn');
+			mainMenu.dialNew.warn.text 				= Res.txt('g', 'loadwarn');
+			mainMenu.dialNew.infoName.text 			= Res.txt('g', 'inputname');
+			mainMenu.dialNew.hardOpt.text 			= Res.txt('g', 'hardopt');
 			mainMenu.dialNew.butOk.text.text 		= 'OK';
 			mainMenu.dialNew.inputName.text 		= Res.txt('u','littlepip');
 			mainMenu.dialNew.maxChars = 32;
 
 			for (var i:int = 0; i < kolDifs; i++) 
 			{
-				mainMenu.dialNew['dif' + i].mode.text 		= Res.guiText('dif' + i);
+				mainMenu.dialNew['dif' + i].mode.text 		= Res.txt('g', 'dif' + i);
 				mainMenu.dialNew['dif' + i].modeinfo.text 	= Res.formatText(Res.txt('g', 'dif' + i, 1));
 			}
 
 			for (var j:int = 1; j <= kolOpts; j++) 
 			{
-				mainMenu.dialNew['infoOpt' + j].text = Res.guiText('opt' + j);
+				mainMenu.dialNew['infoOpt' + j].text = Res.txt('g', 'opt' + j);
 			}
 			
-			mainMenu.dialNew.butVid.mode.text = Res.guiText('butvid');
+			mainMenu.dialNew.butVid.mode.text = Res.txt('g', 'butvid');
 
 			world.app.setLang();
 
@@ -432,7 +444,7 @@ package
 				slot.id.visible = false;
 				if (save != null && save.est != null) 
 				{
-					slot.objectName.text = (i == 0)?Res.pipText('autoslot'):(Res.pipText('saveslot') + ' ' + i);
+					slot.objectName.text = (i == 0)?Res.txt('p', 'autoslot'):(Res.txt('p', 'saveslot') + ' ' + i);
 					slot.ggName.text = (save.pers.persName == null) ? '-------':save.pers.persName;
 					if (save.pers.level != null) slot.ggName.text += ' ('+save.pers.level+')';
 					if (save.pers.dead) slot.objectName.text += ' [†]';
@@ -442,7 +454,7 @@ package
 				} 
 				else 
 				{
-					slot.objectName.text = Res.pipText('freeslot');
+					slot.objectName.text = Res.txt('p', 'freeslot');
 					slot.ggName.text 	= '';
 					slot.level.text 	= '';
 					slot.date.text 		= '';
@@ -504,7 +516,7 @@ package
 		
 		public function funLoadFile(event:MouseEvent):void
 		{
-			ffil = [new FileFilter(Res.pipText('gamesaves') + " (*.sav)", "*.sav")];
+			ffil = [new FileFilter(Res.txt('p', 'gamesaves') + " (*.sav)", "*.sav")];
 			file.browse(ffil);
 		}
 		
@@ -702,7 +714,7 @@ package
 			var newLanguage:String = event.currentTarget.n.text;
 			if (newLanguage == Languages.languageName) 
 			{
-				trace('MainMenu.as/languageButtonPress() - New langaugeg is the same as old language, returning.');
+				trace('MainMenu.as/languageButtonPress() - New langauge is the same as old language, returning.');
 				return;
 			}
 
@@ -732,10 +744,10 @@ package
 		{
 			trace('MainMenu.as/funAbout() - Executing funAbout().');
 
-			mainMenu.dialAbout.title.text = Res.guiText('about');
+			mainMenu.dialAbout.title.text = Res.txt('g', 'about');
 			var s:String = Res.formatText(Res.txt('g','about', 1));
-			s += '<br><br>' + Res.guiText('usedmusic') + '<br>';
-			s += "<br><span class='music'>" + Res.formatText(Res.gameData.gui.(@id == 'usedmusic').info[0]) + "</span>"
+			s += '<br><br>' + Res.txt('g', 'usedmusic') + '<br>';
+			s += "<br><span class='music'>" + Res.formatText(Res.localizationFile.gui.(@id == 'usedmusic').info[0]) + "</span>"
 			s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
 			mainMenu.dialAbout.txt.styleSheet 	= style;
 			mainMenu.dialAbout.txt.htmlText 	= s;
@@ -838,12 +850,24 @@ package
 
 					if (Languages.textLoaded && world.allLevelsLoaded) 
 					{
-						trace('MainMenu.as/step() - Everything loaded. All buttons enabled and loaded set to true.');
-						setLangButtons();
-						updateMainMenuLanguage();
+						trace('MainMenu.as/step() - Languages.textLoaded and world.allLevelsLoaded are true.');
+						trace('MainMenu.as/step() - Checking if language buttons are loaded...');
+
+						if (langButtonsLoaded == false)
+						{
+							trace('MainMenu.as/step() - No language buttons found, creating new Menu buttons array.');
+							setLangButtons();
+							updateMainMenuLanguage(); //I put this in here as a quick hacky fix.
+						}
+
+						
+						
+						trace('MainMenu.as/step() - Everything loaded! Showing Buttons and returning...');
+
 						loaded = true; // ALL loading is finished.
 						showMainButtons(true); 
-
+						
+						trace('MainMenu.as/step() - Buttons turned on, returning.');
 						return;
 					}
 
@@ -917,7 +941,7 @@ package
 			
 			else 
 			{
-				trace('MainMenu.as/mainStep() - mainMenu is not active and (mainMenu.command < 1). Calling world/step().');
+				//trace('MainMenu.as/mainStep() - mainMenu is not active and (mainMenu.command < 1). Calling world/step().');
 				world.step();
 			}
 		}

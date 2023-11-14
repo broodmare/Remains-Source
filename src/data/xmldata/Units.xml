@@ -1,4 +1,6 @@
-			<!--       *******   Units   *******         -->
+		<!--       *******   Units   *******         -->
+		
+		<units>
 			
 			<!-- player and allies -->
 			<unit id='littlepip'>
@@ -1650,3 +1652,5 @@
 				<comb hp='5000'/>
 				<param mech='1'/>
 			</unit>
+			
+	</units>

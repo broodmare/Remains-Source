@@ -38,7 +38,7 @@ package interdata
 			super(npip, npp);
 
 			vis.but5.visible = false;
-			vis.butOk.text.text = Res.pipText('transaction');
+			vis.butOk.text.text = Res.txt('p', 'transaction');
 			vis.butOk.addEventListener(MouseEvent.CLICK,transOk);
 
 			var tf:TextFormat = new TextFormat();
@@ -98,8 +98,8 @@ package interdata
 				vis.but4.visible=false;
 			}
 			//trace(npcId, npcInter)
-			if (npcInter=='vr') vis.but3.text.text=Res.pipText('vend3');
-			if (npcInter=='doc') vis.but3.text.text=Res.pipText('med1');
+			if (npcInter=='vr') vis.but3.text.text=Res.txt('p', 'vend3');
+			if (npcInter=='doc') vis.but3.text.text=Res.txt('p', 'med1');
 			if (npcInter=='v') {
 				vis.but3.visible=false;
 				if (page2==3) page2=1;
@@ -116,10 +116,10 @@ package interdata
 				assArr=new Array();
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
-				statHead.objectName.text=Res.pipText('iv1');
-				statHead.hp.text=Res.pipText('iv2')+' / '+Res.pipText('iv6');
-				statHead.price.text=Res.pipText('iv3');
-				statHead.kol.text=Res.pipText('iv4');
+				statHead.objectName.text=Res.txt('p', 'iv1');
+				statHead.hp.text=Res.txt('p', 'iv2')+' / '+Res.txt('p', 'iv6');
+				statHead.price.text=Res.txt('p', 'iv3');
+				statHead.kol.text=Res.txt('p', 'iv4');
 				//statHead.bou.text='';
 				statHead.cat.visible=false;
 				for each(var b:Item in vend.buys) 
@@ -138,7 +138,7 @@ package interdata
 					b.getPrice();
 					var mp=b.getMultPrice();
 					if (vend.multPrice>mp) mp=vend.multPrice;
-					var n:Object={tip:b.tip, id:b.id, objectName:b.objectName, sost:b.sost*b.multHP, price:b.price, mp:mp, kol:b.kol, bou:0, sort:Res.pipText(b.tip), barter:b.barter, variant:b.variant};
+					var n:Object={tip:b.tip, id:b.id, objectName:b.objectName, sost:b.sost*b.multHP, price:b.price, mp:mp, kol:b.kol, bou:0, sort:Res.txt('p', b.tip), barter:b.barter, variant:b.variant};
 					if (b.variant>0) n.rid=b.id+'^'+b.variant;
 					else n.rid=b.id;
 					if (b.nocheap) n.mp=1;
@@ -164,11 +164,11 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.pipText('emptybuy');
+					vis.emptytext.text=Res.txt('p', 'emptybuy');
 					statHead.visible=false;
 				}
 
-				vis.butOk.text.text=Res.pipText('transaction');
+				vis.butOk.text.text=Res.txt('p', 'transaction');
 				vis.butOk.visible=false;
 			} 
 			if (page2==2) 
@@ -177,10 +177,10 @@ package interdata
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
 				vend.kolSell=0;
-				statHead.objectName.text=Res.pipText('iv1');
+				statHead.objectName.text=Res.txt('p', 'iv1');
 				statHead.hp.text='';
-				statHead.price.text=Res.pipText('iv3');
-				statHead.kol.text=Res.pipText('iv6');
+				statHead.price.text=Res.txt('p', 'iv3');
+				statHead.kol.text=Res.txt('p', 'iv6');
 				statHead.cat.visible=false;
 				for (var s in inv.items) 
 				{
@@ -210,13 +210,13 @@ package interdata
 				} 
 				else
 				{
-					vis.emptytext.text=Res.pipText('emptysell');
+					vis.emptytext.text=Res.txt('p', 'emptysell');
 					statHead.visible=false;
 				}
 				if (inbase) 
 				{
 					selall=true;
-					vis.butOk.text.text=Res.pipText('sellall');
+					vis.butOk.text.text=Res.txt('p', 'sellall');
 					vis.butOk.visible=true;
 				} 
 				else 
@@ -230,8 +230,8 @@ package interdata
 				assArr=new Array();
 				setTopText('inforepair');
 				statHead.objectName.text='';
-				statHead.hp.text=Res.pipText('iv2');
-				statHead.price.text=Res.pipText('iv5');
+				statHead.hp.text=Res.txt('p', 'iv2');
+				statHead.price.text=Res.txt('p', 'iv5');
 				statHead.kol.text='';
 				statHead.price.x=450;
 				statHead.cat.visible=false;
@@ -272,7 +272,7 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.pipText('emptyrep');
+					vis.emptytext.text=Res.txt('p', 'emptyrep');
 					statHead.visible=false;
 				}
 				vis.butOk.visible=false;
@@ -282,7 +282,7 @@ package interdata
 				statHead.visible=false;
 				if (npcId=='' || vend==null || vend.xml==null || vend.xml.task.length()==0) 
 				{
-					vis.emptytext.text=Res.pipText('emptytasks');
+					vis.emptytext.text=Res.txt('p', 'emptytasks');
 					return;
 				}
 				for each(var task in vend.xml.task) 
@@ -309,7 +309,7 @@ package interdata
 				}
 				if (arr.length == 0) 
 				{
-					vis.emptytext.text=Res.pipText('emptytasks');
+					vis.emptytext.text=Res.txt('p', 'emptytasks');
 				}
 				else 
 				{
@@ -372,16 +372,16 @@ package interdata
 		{
 			if (page2==1 && vend) 
 			{
-				vis.bottext.htmlText=Res.pipText('caps')+': '+yel(pip.money)+' (';
+				vis.bottext.htmlText=Res.txt('p', 'caps')+': '+yel(pip.money)+' (';
 				if (vend.kolBou>0) vis.bottext.htmlText+='-'+yel(Math.ceil(vend.kolBou))+'; ';
-				vis.bottext.htmlText+=yel(Math.floor(pip.money-vend.kolBou))+' '+Res.pipText('ost')+')';
+				vis.bottext.htmlText+=yel(Math.floor(pip.money-vend.kolBou))+' '+Res.txt('p', 'ost')+')';
 			}
 			if (page2==2 && vend) 
 			{
-				vis.bottext.htmlText=Res.pipText('caps')+': '+yel(pip.money)+' (+'+yel(Math.floor(vend.kolSell))+')';
-				if (!inbase) vis.bottext.htmlText+='   '+Res.pipText('vcaps')+': '+yel(vend.money);
+				vis.bottext.htmlText=Res.txt('p', 'caps')+': '+yel(pip.money)+' (+'+yel(Math.floor(vend.kolSell))+')';
+				if (!inbase) vis.bottext.htmlText+='   '+Res.txt('p', 'vcaps')+': '+yel(vend.money);
 			}
-			if (page2==3) vis.bottext.htmlText=Res.pipText('caps')+': '+yel(inv.money.kol);
+			if (page2==3) vis.bottext.htmlText=Res.txt('p', 'caps')+': '+yel(inv.money.kol);
 		}
 		
 		//показ одного элемента
@@ -414,8 +414,8 @@ package interdata
 				if (obj.tip==Item.L_WEAPON || obj.tip==Item.L_ARMOR) 
 				{
 					item.hp.text=Math.round(obj.sost*100)+'%';
-					if (obj.bou==0) item.kol.text=Res.pipText('est');
-					else item.kol.text=Res.pipText('sel');
+					if (obj.bou==0) item.kol.text=Res.txt('p', 'est');
+					else item.kol.text=Res.txt('p', 'sel');
 					item.price.text=Math.round(obj.price*obj.mp);
 				} 
 				else 
@@ -463,13 +463,13 @@ package interdata
 				item.price.text='';
 				item.price.x=400;
 				item.price.width=158;
-				if (obj.state==1) item.price.text=Res.pipText('perform');
+				if (obj.state==1) item.price.text=Res.txt('p', 'perform');
 				if (obj.state==2) {
-					item.price.text=Res.pipText('done');
+					item.price.text=Res.txt('p', 'done');
 					item.objectName.alpha=0.5;
 				}
-				if (obj.state==3) item.price.text=Res.pipText('surr');
-				if (obj.state==4) item.price.text=Res.pipText('progress');
+				if (obj.state==3) item.price.text=Res.txt('p', 'surr');
+				if (obj.state==4) item.price.text=Res.txt('p', 'progress');
 				item.kol.text='';
 			}
 		}
@@ -487,9 +487,9 @@ package interdata
 				var s:String=infoQuest(event.currentTarget.id.text);
 				if (s=='') vis.info.htmlText=Res.messText(event.currentTarget.id.text,1);
 				else vis.info.htmlText=s;
-				if (event.currentTarget.cat.text=='0') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.pipText('actTake')+"</span>";
-				if (event.currentTarget.cat.text=='3') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.pipText('actSurr')+"</span>";
-				if (event.currentTarget.cat.text=='4') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.pipText('actGive')+"</span>";
+				if (event.currentTarget.cat.text=='0') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.txt('p', 'actTake')+"</span>";
+				if (event.currentTarget.cat.text=='3') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.txt('p', 'actSurr')+"</span>";
+				if (event.currentTarget.cat.text=='4') vis.info.htmlText+="\n\n<span class = 'or'>"+Res.txt('p', 'actGive')+"</span>";
 				setIco();
 			}
 			event.stopPropagation();
@@ -497,7 +497,7 @@ package interdata
 		
 		function selBuy(buy:Object, n:int=1):void
 		{
-			if (selall) vis.butOk.text.text=Res.pipText('transaction');
+			if (selall) vis.butOk.text.text=Res.txt('p', 'transaction');
 			selall=false;
 			if (buy==null || buy.kol-buy.bou<=0) return;
 			if (buy.tip==Item.L_WEAPON && inv.weapons[buy.id]!=null && inv.weapons[buy.id].variant>=buy.variant) return;
@@ -725,7 +725,7 @@ package interdata
 					selBuy(arr[s],arr[s].kol-arr[s].bou);
 				}
 			}
-			vis.butOk.text.text=Res.pipText('transaction');
+			vis.butOk.text.text=Res.txt('p', 'transaction');
 			selall=false;
 			showBottext();
 			setStatItems();

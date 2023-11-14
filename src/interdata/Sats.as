@@ -408,11 +408,11 @@ package interdata
 				//расширенная информация о враге
 				if (World.world.pers && World.world.pers.modAnalis) 
 				{
-					info.text+='\n'+Res.pipText('level')+': '+(un.level+1);
-					info.text+='\n'+Res.pipText('hp')+': '+Math.ceil(un.hp)+'/'+Math.ceil(un.maxhp);
-					if (un.skin>0) info.text+='\n'+Res.pipText('skin')+': '+Math.ceil(un.skin);
-					if (un.armor_qual>0 && un.armor>0) info.text+='\n'+Res.pipText('armor')+': '+Math.ceil(un.armor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
-					if (un.armor_qual>0 && un.marmor>0) info.text+='\n'+Res.pipText('marmor')+': '+Math.ceil(un.marmor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
+					info.text+='\n'+Res.txt('p', 'level')+': '+(un.level+1);
+					info.text+='\n'+Res.txt('p', 'hp')+': '+Math.ceil(un.hp)+'/'+Math.ceil(un.maxhp);
+					if (un.skin>0) info.text+='\n'+Res.txt('p', 'skin')+': '+Math.ceil(un.skin);
+					if (un.armor_qual>0 && un.armor>0) info.text+='\n'+Res.txt('p', 'armor')+': '+Math.ceil(un.armor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
+					if (un.armor_qual>0 && un.marmor>0) info.text+='\n'+Res.txt('p', 'marmor')+': '+Math.ceil(un.marmor+un.skin)+' ('+Math.round(un.armor_qual*100)+'%)';
 					if (mc.y<150) info.y=50;
 					else info.y=-un.scY-info.textHeight-20;
 				}
