@@ -1,0 +1,36 @@
+<music>
+    <s id='music_begin'/>
+    <s id='music_strange'/>
+    <s id='music_base'/>
+    <s id='music_surf'/>
+    <s id='music_enc'/>
+    <s id='music_raiders'/>
+    <s id='music_plant_1'/>
+    <s id='music_plant_2'/>
+    <s id='music_sewer_1'/>
+    <s id='music_stable_1'/>
+    <s id='music_stable_2'/>
+    <s id='music_cat_1'/>
+    <s id='music_mane_1'/>
+    <s id='music_mane_2'/>
+    <s id='music_mbase'/>
+    <s id='music_covert'/>
+    <s id='music_minst'/>
+    <s id='music_encl_1'/>
+    <s id='music_encl_2'/>
+    <s id='music_pi'/>
+    <s id='music_workshop'/>
+    <s id='music_hql'/>
+    <s id='music_red'/>
+    <s id='music_fall_1'/>
+    <s id='music_fall_2'/>
+    <s id='music_end'/>
+    <s id='pre_1'/>
+    <s id='combat_1'/>
+    <s id='boss_1'/>
+    <s id='boss_2'/>
+    <s id='boss_3'/>
+    <s id='boss_4'/>
+    <s id='boss_5'/>
+    <s id='boss_6'/>
+</music>

@@ -386,3 +386,17 @@ lib.swc
 application.xml
 pfe.fla
 asconfig.json
+bat/RemainsSource.p12
+.vscode/tasks.json
+src/Remains.fla
+src/data/sound.swf
+src/data/sprite.swf
+src/data/sprite1.swf
+src/data/texture.swf
+src/data/texture1.swf
+.gitignore
+src/Remains.fla
+src/Remains.fla
+src/data/sound_unit.swf
+src/data/sound_weapon.swf
+src/Remains.fla
