@@ -1,51 +1,59 @@
-﻿package src {
+package
+{
 	
 	// Base class for all objects.
 	
 	import flash.display.MovieClip;
-	import src.loc.Location;
-	
-	public class Pt {
 
-		public var loc:Location;
+	import locdata.Room;
+	
+	public class Pt
+	{
+
+		public var room:Room;
 		public var nobj:Pt, pobj:Pt;
-		public var in_chain:Boolean=false;
+		public var in_chain:Boolean = false;
 		
-		public var stay:Boolean=false;
+		public var stay:Boolean = false;
 		public var X:Number;
 		public var Y:Number;
-		public var sloy:int=0;
+		public var layer:int = 0;
 		
 		//Movement
-		public var dx:Number=0, dy:Number=0;
+		public var dx:Number = 0;
+		public var dy:Number = 0;
 		public var vis:MovieClip;
 		
-		public function Pt() {
+		public function Pt() 
+		{
 			// constructor code
 		}
 
-		public function addVisual() 
+		public function addVisual():void
 		{
-			if (vis && loc && loc.locationActive) World.w.grafon.visObjs[sloy].addChild(vis);
+			if (vis && room && room.roomActive) 
+			{
+				World.world.grafon.canvasLayerArray[layer].addChild(vis);
+			}
 		}
 		
-		public function remVisual() 
+		public function remVisual():void
 		{
 			if (vis && vis.parent) vis.parent.removeChild(vis);
 		}
 
-		public function setNull(f:Boolean=false) 
+		public function setNull(f:Boolean = false):void
 		{
 
 		}
 		
 		public function err():String 
 		{
-			if (loc) loc.remObj(this);
+			if (room) room.remObj(this);
 			return null;
 		}
 		
-		public function step() 
+		public function step():void
 		{
 
 		}

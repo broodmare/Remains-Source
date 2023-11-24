@@ -1,0 +1,49 @@
+<chit>
+    <a>all - add everything</a>
+    <a>all weapon - add all weapons</a>
+    <a>all armor - add all armor</a>
+    <a>all item - 1000 of each item</a>
+    <a>all ammo - 10000 of each ammo</a>
+    <a>min - add the necessary minimum</a>
+    <a>god - toggle invincibility</a>
+    <a>jump - change jump mode</a>
+    <a>xp X - add X experience</a>
+    <a>lvl X - set character level to X</a>
+    <a>sp X - add X skill points</a>
+    <a>pp X - add X perk points</a>
+    <a>money X - set the amount of caps to X</a>
+    <a>weapon ID - get weapon ID</a>
+    <a>armor ID - get armor ID</a>
+    <a>item ID X - set the quantity of item ID to X</a>
+    <a>ammo ID X - set the quantity of ammo ID to X</a>
+    <a>skill ID n - set skill ID to n (0-20)</a>
+    <a>perk ID - get perk ID</a>
+    <a>eff ID - get effect ID</a>
+    <a>res - reset all effects</a>
+    <a>testeff - all effects will be 10 times shorter</a>
+    <a>testdam - cancel damage spread</a>
+    <a>hardinv - toggle restricted inventory</a>
+    <a>repair - repair weapons</a>
+    <a>crack X - damage weapons by X%</a>
+    <a>break X - damage armor by X%</a>
+    <a>lim X - set the special loot limit to X%</a>
+    <a>heal - full healing</a>
+    <a>mana X - set mana to X</a>
+    <a>die - die</a>
+    <a>check - return to the checkpoint</a>
+    <a>goto X Y - move to room with coordinates X Y</a>
+    <a>clear - reset some variables</a>
+    <a>map - show the entire map</a>
+    <a>black - hide/show fog of war</a>
+    <a>enemy - toggle AI</a>
+    <a>fly - can enable flight with the ~ key</a>
+    <a>port - teleport with the ~ key</a>
+    <a>emit X - summon particle X with the ~ key</a>
+    <a>refill - restock items at traders</a>
+    <a>getroom - clear the room</a>
+    <a>getloc - clear the room</a>
+    <a>dif X - change difficulty (0-4)</a>
+    <a>st X Y - set trigger X to value Y</a>
+    <a>trigger X - get the value of trigger X</a>
+    <a>triggers - get trigger values</a>
+</chit>;
