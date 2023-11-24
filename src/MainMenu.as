@@ -290,7 +290,7 @@ package
 						var languageId:String = language.lang.@id;
 						var languageName:String = language.lang.text();
 
-						trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName'"');
+						trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
 
 						// Set the button properties
 						button.lang.text = languageName;

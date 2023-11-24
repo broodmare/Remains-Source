@@ -14,7 +14,7 @@ package
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	
-	import stubs.zastavka;
+	import stubs.loadingWidget;
 	
 	public class Main extends flash.display.MovieClip
 	{
@@ -44,16 +44,16 @@ package
 		{
 			var bLoaded:uint = loaderInfo.bytesLoaded;
 			var bTotal:uint = loaderInfo.bytesTotal;
-			if (zastavka.alpha < 1) 
-			{
-				zastavka.alpha += 0.05;
-			}
-			zastavka.progres.text = 'Loading '+Math.round(bLoaded / bTotal * 100)+'%';
+			//if (loadingWidget.alpha < 1) 
+			//{
+				//loadingWidget.alpha += 0.05;
+			//}
+			//loadingWidget.progres.text = 'Loading ' + Math.round(bLoaded / bTotal * 100) + '%';
 
 
 			if (bLoaded >= bTotal)
 			{
-				zastavka.visible = false;
+				//loadingWidget.visible = false;
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
 				nextFrame();
 

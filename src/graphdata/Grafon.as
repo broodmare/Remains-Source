@@ -92,7 +92,7 @@ package graphdata
 		public var paintMatrix:Matrix;						// Something for spraypainting.
 
 
-		public var voda;  
+		
 		
 		//Screen Borders
 		public var borderTop:MovieClip;						// Black border around the screen
@@ -135,6 +135,9 @@ package graphdata
 		
 		public var nn:int;									// Something for side quests? Why is this here?
 
+		public var waterMovieClip;  						// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
+
+
 		public function Grafon(nvis:Sprite)
 		{
 			
@@ -158,7 +161,6 @@ package graphdata
 			brRect 			= new Rectangle(0, 0, 50, 50);
 
 			paintMatrix 	= new Matrix();
-			voda 			= new tileVoda();
 
 			screenResX 		= 1920;
 			screenResY 		= 1000;
@@ -533,7 +535,7 @@ package graphdata
 				var front:Sprite = new Sprite();	
 				var back:Sprite = new Sprite();	
 				var back2:Sprite = new Sprite();	
-				var voda:Sprite = new Sprite();	
+				var waterMovieClip:Sprite = new Sprite();	
 				
 
 				var mat:Material;
@@ -602,10 +604,10 @@ package graphdata
 							{				
 								tileSprite = new tileVoda();
 								tileSprite.gotoAndStop(room.tipWater+1);
-								if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) tileSprite.voda.gotoAndStop(2);
+								if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) tileSprite.waterMovieClip.gotoAndStop(2);
 								tileSprite.x = spriteWidth;
 								tileSprite.y = spriteHeight;
-								voda.addChild(tileSprite);
+								waterMovieClip.addChild(tileSprite);
 							}
 						}
 					}
@@ -617,7 +619,7 @@ package graphdata
 				//      STAGE 6   
 				//####################
 				World.world.gr_stage = 6;
-				vodaBmp.draw(voda, null, null, null, null, false);
+				vodaBmp.draw(waterMovieClip, null, null, null, null, false);
 				frontBmp.draw(front, null, null, null, null, false);
 				
 				
@@ -1105,8 +1107,8 @@ package graphdata
 			if (!isDraw) return; //If the tile's material should not be drawn, return.
 
 			tileTexture.mask = maska; 
-			border.mask 	= bmaska; 
-			floor.mask 		= fmaska;
+			border.mask = bmaska; 
+			floor.mask = fmaska;
 
 			tileTexture.cacheAsBitmap 	= Settings.bitmapCachingOption; 
 			maska.cacheAsBitmap		 	= Settings.bitmapCachingOption; 
@@ -1189,10 +1191,10 @@ package graphdata
 			var backgroundMatrix:Matrix = new Matrix();
 			backgroundMatrix.tx = tile.X * tilepixelwidth;
 			backgroundMatrix.ty = tile.Y * tilepixelheight;
-			voda.gotoAndStop(room.tipWater+1);
-			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) voda.voda.gotoAndStop(2);
-			else voda.voda.gotoAndStop(1);
-			vodaBmp.draw(voda, backgroundMatrix, room.cTransform, (tile.water>0)?'normal':'erase', null, false);
+			waterMovieClip.gotoAndStop(room.tipWater+1);
+			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) waterMovieClip.gotoAndStop(2);
+			else waterMovieClip.gotoAndStop(1);
+			vodaBmp.draw(waterMovieClip, backgroundMatrix, room.cTransform, (tile.water > 0) ? 'normal':'erase', null, false);
 			if (recurs) drawWater(room.getTile(tile.X, tile.Y+1), false);
 		}
 			
@@ -1465,7 +1467,7 @@ package graphdata
 			brRect.top = 0, brRect.bottom = ry2-ry1;
 			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 		}
-			
+		
 		public function specEffect(n:Number = 0):void
 		{
 			if (n == 0)
@@ -1497,10 +1499,10 @@ package graphdata
 			{
 				mainCanvas.filters = [new ColorMatrixFilter([0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0.33, 0.33, 0.33, 0, 0, 0, 0, 0, 1, 0])];
 			} 
-			else if (n>100)
+			else if (n > 100)
 			{
-				mainCanvas.filters 	= [new BlurFilter(n-100, n-100)];
-				skyboxLayer.filters  = [new BlurFilter(n-100, n-100)];
+				mainCanvas.filters  = [new BlurFilter(n - 100, n - 100)];
+				skyboxLayer.filters = [new BlurFilter(n - 100, n - 100)];
 			}
 		}
 	}

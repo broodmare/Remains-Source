@@ -1,13 +1,25 @@
 
 
 Remains.fla --
-Duplicate Zastavki folder removed from inside of Zastavki.
+zastavka -> loadingWidget.
+	duplicated zastavka removed.
 MainFE renamed to Main.
 import 'fe.Obj' calls changed to import 'Obj'.
 Removed import protection.
 Exported audio changed from Mono to Stereo.
 Exported audio set at 128kbs mp3.
 Flash version 30 -> 32.
+voda -> waterMovieClip
+pink -> pinkCloudMovieClip
+govno -> greenCloudMovieClip
+
+butEng removed.
+butRus removed.
+
+butLang 
+	[russian] -> "langauge" so it's more obvious when mainMenu is broke.
+
+
 
 
 "Test" levels, quest, and checks removed.
@@ -50,6 +62,9 @@ Game --
 	gotoLand -> gotoLevel.
 	exitLand -> exitLevel.
 	enterToCurLand -> enterCurrentLevel.
+	
+GameData --
+	Split into levels.xml, npcs.xml, scripts.xml, quests.xml, vendors.xml, 
 	
 Grafon --
 	Moved initializers into the constructor instead of in the class definition.
@@ -103,7 +118,8 @@ Level (formerly Land) --
 LevelTemplates (formerly LandAct) --
 	LandAct() -> LevelTemplates().
 	
-
+Main --
+	zastavka -> loadingWidget.
 	
 MainMenu --
 	MainMenu()

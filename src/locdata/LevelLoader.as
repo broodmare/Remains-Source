@@ -25,13 +25,14 @@ package locdata
 		
 		public var allroom:XML;
 		
+		private static const roomsURL:String = Settings.levelPath + roomsFile + ".xml";
+
 		public function LevelLoader(nid:String) 
 		{
 			id = nid;
 			roomsFile = GameData.d.level.(@id == id).@file;
 			// Source of room templates
-
-			var roomsURL = Settings.levelPath + roomsFile + ".xml";
+			
 			request = new URLRequest(roomsURL); 
 			loader_rooms = new URLLoader(request);
 
@@ -52,7 +53,7 @@ package locdata
 		
 		private function ioErrorHandler(event:IOErrorEvent):void 
 		{
-			trace('LevelLoader.as/onCompleteLoadRooms() - Rooms failed to load, IO Error. loaded still == false.');
+			trace('LevelLoader.as/onCompleteLoadRooms() - Rooms failed to load, IO Error.');
 			World.world.load_log += 'IOerror ' + roomsFile + '\n';
         }
 		
