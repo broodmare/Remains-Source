@@ -72,7 +72,7 @@ package unitdata
 			return obj;
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
@@ -86,7 +86,7 @@ package unitdata
 			} 
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
@@ -127,7 +127,7 @@ package unitdata
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-scY*0.58;
@@ -208,7 +208,7 @@ package unitdata
 		//2 - стоит и стреляет
 		//3 - лупит по земле
 		
-		public override function control()
+		public override function control():void
 		{
 			var t:Tile;
 			//если сдох, то не двигаться

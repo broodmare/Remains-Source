@@ -69,7 +69,7 @@ package unitdata
 			newPart('miniexpl');
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				if (cep==0) {
@@ -92,7 +92,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			vis.gotoAndStop(aiState);
 			if (aiState==0 || aiState==1) { //сдох
@@ -128,7 +128,7 @@ package unitdata
 		{
 			explosion(dam,tipDamage,150,0,20,30,9);
 		}
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			level+=nlevel;
 			if (level<0) level=0;
@@ -144,66 +144,87 @@ package unitdata
 		//3 - видит цель, атакует
 		//4 - не видит цель
 		
-		public override function control()
+		public override function control():void
 		{
 			//var t:Tile;
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
-				if (aiState<=1) {
+				if (aiState<=1) 
+				{
 					shok=15;
 					aiState=3;
 					budilo();
 				}
 			}
-			if (stun) {
+			if (stun) 
+			{
 				aiState=0; aiTCh=3; walk=0;
 			}
 
 			var jmp:Number=0;
 			
-			if (Settings.enemyAct<=0) {
+			if (Settings.enemyAct<=0) 
+			{
 				celY=Y-scY;
 				celX=X+scX*storona*2;
 				return;
 			}
-			if (aiState>=3 && cep>0) {
+			if (aiState>=3 && cep>0) 
+			{
 				cep=0;
 				fixed=false;
 			}
 			//таймер смены состояний
 			if (aiTCh>0) aiTCh--;
-			else if (aiState==2) {
-				if (celUnit) {
+			else if (aiState==2) 
+			{
+				if (celUnit) 
+				{
 					aiSpok=maxSpok+10;
 					celDX=celX-X;
 					if (celDX>40) aiNapr=1;
 					if (celDX<-40) aiNapr=-1;
 					aiState=3;
-				} else {
+				} 
+				else 
+				{
 					aiState=1;
 				}
-			} else {
-				if (aiSpok<=0) {
+			} 
+			else 
+			{
+				if (aiSpok<=0) 
+				{
 					aiState=1;
 					aiTCh=Math.floor(Math.random()*40)+40;
-				} else {
+				} 
+				else 
+				{
 					aiTCh=Math.floor(Math.random()*50)+40;
 				}
 				if (aiSpok>0) aiState=4;
 				if (aiSpok>=maxSpok) aiState=3;
 			}
 			//поиск цели
-			if (Settings.enemyAct>1 && aiTCh%10==1) {
-				if (findCel()) {
-					if (aiState<=1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) 
+			{
+				if (findCel()) 
+				{
+					if (aiState<=1) 
+					{
 						aiState=2;
 						aiTCh=Math.floor(Math.random()*10)+30;
-					} else if (aiState>=3) {
+					} 
+					else if (aiState>=3) 
+					{
 						aiState=3;
 					}
-				} else {
-					if (aiSpok>0) {
+				} 
+				else 
+				{
+					if (aiSpok>0) 
+					{
 						aiSpok--;
 					}
 				}
@@ -219,13 +240,18 @@ package unitdata
 			else aiVNapr=0;
 
 			//поведение при различных состояниях
-			if (aiState==3) {
+			if (aiState==3) 
+			{
 				//определить, куда двигаться
-				if (aiTCh%15==1) {
-					if (isrnd(0.9)) {
+				if (aiTCh%15==1) 
+				{
+					if (isrnd(0.9)) 
+					{
 						if (celDY>80) throu=true;
 						if (aiVNapr<0 && isrnd(0.2)) jmp=1;
-					} else {
+					} 
+					else 
+					{
 						throu=false;
 						jmp=0;
 					}
@@ -233,41 +259,56 @@ package unitdata
 					if (celDX<-40) aiNapr=-1;
 					storona=aiNapr;
 				}
-				if (levit) {
-					if (aiNapr==-1) {
+				if (levit) 
+				{
+					if (aiNapr==-1) 
+					{
 						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
+					} 
+					else 
+					{
 						if (dx<maxSpeed) dx+=levitaccel;
 					}
-				} else {
-					if (aiNapr==-1) {
+				} 
+				else 
+				{
+					if (aiNapr==-1) 
+					{
 						walk=-1;
 						if (dx>-maxSpeed) dx-=accel;
-					} else {
+					} 
+					else 
+					{
 						walk=1;
 						if (dx<maxSpeed) dx+=accel;
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
-				if (turnX!=0) {
+				if (turnX!=0) 
+				{
 					aiTTurn--;
 					if (isrnd(0.03) || turnY>0) aiTTurn-=10;
 					else jmp=1;
-					if (aiTTurn<0) {
+					if (aiTTurn<0) 
+					{
 						aiNapr=storona=turnX;
 						aiTTurn=Math.floor(Math.random()*20)+5;
 					}
 					turnX=turnY=0;
 				}
-				if (jmp>0) {
+				if (jmp>0) 
+				{
 					jump(jmp);
 					jmp=0;
 				}
-				if (celUnit) {
+				if (celUnit) 
+				{
 					if ((X-celUnit.X)*(X-celUnit.X)+(Y-celUnit.Y+celUnit.scY/2)*(Y-celUnit.Y+celUnit.scY/2)<100*100) die();
 				}
 				pumpObj=null;
-			} else {
+			} 
+			else 
+			{
 				walk=0;
 			}
 			

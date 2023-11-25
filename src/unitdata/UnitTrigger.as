@@ -5,6 +5,7 @@ package unitdata
 	import locdata.Room;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.vismtrap;
 
@@ -28,7 +29,8 @@ package unitdata
 		
 		var sndAct:String;
 
-		public function UnitTrigger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTrigger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			if (cid==null) {
 				id='triglaser';
@@ -75,7 +77,7 @@ package unitdata
 		public override function getXmlParam(mid:String=null)
 		{
 			super.getXmlParam();
-			var node0:XML=AllData.d.unit.(@id==id)[0];
+			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
 			if (node0.un.length()) {
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
 				if (node0.un.@res.length()) res=node0.un.@res;
@@ -95,7 +97,7 @@ package unitdata
 			if (allid==null || allid=='') setDamager();
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
@@ -104,7 +106,8 @@ package unitdata
 			inter.needSkillLvl=sk;
 		}
 		
-		function setDamager() {
+		function setDamager() 
+		{
 			if (res=='noise' || res=='') return;
 			var i:int=1;
 			var nx:Number=X;
@@ -177,7 +180,8 @@ package unitdata
 			}
 		}
 
-		function setStatus() {
+		function setStatus():void
+		{
 			if (status>0) {
 				warn=0;
 				inter.active=false;
@@ -208,7 +212,8 @@ package unitdata
 		}
 		
 		//установить границы активации
-		function setArea() {
+		function setArea():void
+		{
 			if (id=='trigridge' || id=='triglaser') {
 				ax1=X-5
 				ax2=X+5;
@@ -231,20 +236,23 @@ package unitdata
 		}
 		
 		//обезвредить
-		function disarm() {
+		function disarm():void
+		{
 			status=2;
 			setStatus();
 			World.world.gui.infoText('trapDisarm')
 		}
 		
 		//реактивировать
-		function rearm() {
+		function rearm():void
+		{
 			status=0;
 			setStatus();
 		}
 		
 		//активировать
-		function activate() {
+		function activate():void
+		{
 			if (status!=0) return;
 			setVis(true);
 			status=1;
@@ -280,7 +288,7 @@ package unitdata
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>1 || status==2 || one && status==1) return;
 			aiN++;

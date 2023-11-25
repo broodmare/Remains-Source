@@ -46,7 +46,7 @@ package unitdata
 			getNapr();
 		}
 		
-		public override function forces()
+		public override function forces():void
 		{
 		}
 		
@@ -57,7 +57,7 @@ package unitdata
 			getNapr();
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (dr<30) dr+=0.5;
 			vis.osn.rotation+=dr;
@@ -73,7 +73,7 @@ package unitdata
 			if (napr==-1) napr=napr2;
 		}
 		
-		public override function run(div:int=1)
+		public override function run(div:int=1):void
 		{
 			if (bind) {
 				X=bind.X-Math.sin(t*bindKoef+Math.PI*2*bindN/6)*bindRad;
@@ -86,7 +86,7 @@ package unitdata
 			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY, Y2=Y;
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			t++;

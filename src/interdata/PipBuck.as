@@ -19,7 +19,8 @@ package interdata
 	import unitdata.Pers;
 	
 	import components.Settings;
-
+	import components.XmlBook;
+	
 	import stubs.visPipHelp;
 	import stubs.visSetKey;
 	import stubs.visPipRItem;
@@ -453,17 +454,25 @@ package interdata
 			var owner:Unit = new Unit();
 			var w:Weapon;
 			var a:Armor;
-			for each (var weap:XML in AllData.d.weapon.(@tip > 0))
+
+			// Retrieve the XML files for weapons and armors
+			var weaponsXML:XML = XmlBook.getXML("weapons");
+			var armorsXML:XML  = XmlBook.getXML("armors");
+
+			// Iterate over weapon elements in the weapons XML
+			for each (var weap:XML in weaponsXML.weapon.(@tip > 0))
 			{
-				w = Weapon.create(owner,weap.@id, 0);
+				w = Weapon.create(owner, weap.@id, 0);
 				arrWeapon[weap.@id] = w;
 				if (weap.char.length() > 1) 
 				{
-					w = Weapon.create(owner,weap.@id, 1);
+					w = Weapon.create(owner, weap.@id, 1);
 					arrWeapon[weap.@id + '^' + 1] = w;
 				}
 			}
-			for each (var armor:XML in AllData.d.armor)
+
+			// Iterate over armor elements in the armors XML
+			for each (var armor:XML in armorsXML.armor)
 			{
 				a = new Armor(armor.@id);
 				arrArmor[armor.@id] = a;
@@ -566,7 +575,20 @@ package interdata
 			ArmorId = aid;
 			try 
 			{
-				hideMane = AllData.d.armor.(@id == aid).@hide;
+				// Retrieve the entire XML file for armors
+				var armorsXML:XML = XmlBook.getXML("armors");
+
+				// Navigate to the correct XMLList of armor elements and filter by ID
+				var armorXMLList:XMLList = armorsXML.armor.(@id == aid);
+
+				if (armorXMLList.length() > 0) 
+				{
+					hideMane = armorXMLList[0].@hide;
+				} 
+				else 
+				{
+					hideMane = 0;
+				}
 			} 
 			catch (err) 
 			{

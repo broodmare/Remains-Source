@@ -13,7 +13,8 @@ package unitdata
 	import stubs.visualMegaDron;
 	import stubs.visShit;
 
-	public class UnitBossDron extends Unit{
+	public class UnitBossDron extends Unit
+	{
 		
 		public var controlOn:Boolean=true;
 		public var kol_emit=5;
@@ -31,7 +32,8 @@ package unitdata
 		var kolth:int=0;
 		var speedBonus:Number=1;
 
-		public function UnitBossDron(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBossDron(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='bossdron';
 			
@@ -77,7 +79,7 @@ package unitdata
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
@@ -106,21 +108,25 @@ package unitdata
 			super.setNull(f);
 		}
 
-		public override function animate()
+		public override function animate():void
 		{
 			thWeapon.vis.visible=false;
 			//щит
-			if (visshit && !visshit.visible && shithp>0) {
+			if (visshit && !visshit.visible && shithp>0) 
+			{
 				visshit.visible=true;
 				visshit.gotoAndPlay(1);
 			}
-			if (visshit && visshit.visible && shithp<=0) {
+			if (visshit && visshit.visible && shithp<=0) 
+			{
 				visshit.visible=false;
 				visshit.gotoAndStop(1);
 				Emitter.emit('pole',room,X,Y-50,{kol:12,rx:100, ry:100});
 			}
-			if (sost==2) {
-				if (isrnd(0.3-timerDie/500)) {
+			if (sost==2) 
+			{
+				if (isrnd(0.3-timerDie/500)) 
+				{
 					Emitter.emit('expl',room,X+Math.random()*120-60,Y-Math.random()*120);
 					newPart('metal');
 					Snd.ps('expl_e');
@@ -128,19 +134,24 @@ package unitdata
 			}
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
-			if (vis) {
-				if (sost==2) {
+			if (vis) 
+			{
+				if (sost==2) 
+				{
 					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
 					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;
-				} else {
+				} 
+				else 
+				{
 					vis.x=X,vis.y=Y;
 				}
 			}
 		}
 		
-		public function emit() {
+		public function emit() 
+		{
 			if (kolChild>=kol_emit) return;
 			var un:Unit=room.createUnit('dron',X,Y-scY/2,true);
 			un.fraction=fraction;
@@ -157,18 +168,20 @@ package unitdata
 		//0 - стоит на месте
 		//1 - движется
 		
-		public override function control()
+		public override function control():void
 		{
 
 			if (sost==3) return;
-			if (sost==2) {
+			if (sost==2) 
+			{
 				dx=0;
 				dy=0;
 				return;
 			}
 			
 			if (room.gg.invulner) return;
-			if (Settings.enemyAct<=0) {
+			if (Settings.enemyAct<=0) 
+			{
 				return;
 			}
 			if (t_shit>0) t_shit--;
@@ -177,7 +190,8 @@ package unitdata
 			else aiState=0;
 			
 			aiTCh++;
-			if (aiState==1 && aiTCh%10==1) {
+			if (aiState==1 && aiTCh%10==1) 
+			{
 				if (room.gg.pet && room.gg.pet.sost==1 && isrnd(0.2)) setCel(room.gg.pet);
 				else setCel(room.gg);
 			}
@@ -189,9 +203,12 @@ package unitdata
 			var dist2:Number=celDX*celDX+celDY*celDY;
 			var dist:Number=(moveX-X)*(moveX-X)+(moveY-Y)*(moveY-Y);
 			//поведение при различных состояниях
-			if (aiState==0) {
+			if (aiState==0) 
+			{
 				walk=0;
-			} else if (aiState==1) {
+			} 
+			else if (aiState==1) 
+			{
 				moveX=room.gg.X;
 				moveY=room.gg.Y;
 				spd.x=moveX-X;
@@ -207,7 +224,8 @@ package unitdata
 				dx=spd.x;
 				dy=spd.y;
 				
-				if (dist<1000) {
+				if (dist<1000) 
+				{
 					dx*=0.8, dy*=0.8;
 				}
 				attack();
@@ -216,27 +234,33 @@ package unitdata
 			}
 		}
 		
-		function castShit() {
+		function castShit() 
+		{
 			if (shithp<=0 && t_shit<=0 && (World.world.game.globalDif==4 || World.world.game.globalDif==3 && hp<maxhp/2)) {
 				shithp=shitMaxHp;
 				t_shit=1000;
 			}
 		}
 		
-		public function attack() {
+		public function attack()
+		{
 			if (sost!=1) return;
-			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
+			if (aiState==1 && celUnit) 
+			{	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,1);
 			}
 			t_atk--;
-			if (t_atk<=0) {
+			if (t_atk<=0) 
+			{
 				t_atk=Math.floor(Math.random()*60+40);
 				if (isrnd()) currentWeapon.attack();
 				else kolth=3;
 			}
-			if (kolth>0) {
+			if (kolth>0) 
+			{
 				thWeapon.attack();
-				if (thWeapon.is_shoot) {
+				if (thWeapon.is_shoot) 
+				{
 					kolth--;
 					thWeapon.is_shoot=false;
 				}
@@ -245,10 +269,13 @@ package unitdata
 		
 		public override function command(com:String, val:String=null):void
 		{
-			if (com=='off') {
+			if (com=='off') 
+			{
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			} 
+			else if (com=='on') 
+			{
 				controlOn=true;
 			}
 		}

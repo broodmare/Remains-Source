@@ -25,6 +25,7 @@ package interdata
 	import unitdata.UnitPet;
 	
 	import components.Settings;
+	import components.XmlBook;
 
 	import stubs.visPipInv;
 	
@@ -355,7 +356,7 @@ package interdata
 				else 
 				{
 					var vWeapon:Class = w.vWeapon;
-					var node = AllData.d.weapon.(@id == id);
+					var node:XMLList = XmlBook.getXML("weapons").weapon.(@id == id);
 					if (node.length()) 
 					{
 						node=node[0];
@@ -464,7 +465,7 @@ package interdata
 			if (tip == 'item') s = Res.txt('i', id, 1)
 			else s = Res.txt('e', id, 1);
 			if (id.substr(-3) == '_ad') id=id.substr(0, id.length - 3);
-			var dp = AllData.d[tip];
+			var dp = XmlBook.getXML(tip);
 			if (dp.length() == 0) return s;
 			dp = dp.(@id == id);
 			if (dp.length() == 0) return s;
@@ -704,22 +705,30 @@ package interdata
 				if (a.resist[Unit.D_VENOM]!=0) s+='\n'+Res.txt('p', 'venom')+': '+yel(Math.round(a.resist[Unit.D_VENOM]*100)+'%');
 				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.txt('p', 'acid')+': '+yel(Math.round(a.resist[Unit.D_ACID]*100)+'%');
 				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.txt('p', 'necro')+': '+yel(Math.round(a.resist[Unit.D_NECRO]*100)+'%');
-				s+='\n\n'+Res.txt('a',id,1);
+				s += '\n\n' + Res.txt('a', id, 1);
 			} 
-			else if (tip==Item.L_AMMO) 
+			else if (tip == Item.L_AMMO) 
 			{
 				var ammo:XML = inv.items[id].xml;
-				if (AllData.d.weapon.(@id==id).length()) {
-					s=Res.txt('w',id,1);
-				} else if (ammo.@base.length()) {
-					s=Res.txt('i',ammo.@base,1);
-					if (ammo.@mod>0) {
-						s+='\n\n'+Res.txt('p','ammomod_'+ammo.@mod,1);
+
+				if (XmlBook.getXML("weapons").weapon.(@id == id).length()) 
+				{
+					s = Res.txt('w', id, 1);
+				} 
+				else if (ammo.@base.length()) 
+				{
+					s = Res.txt('i', ammo.@base, 1);
+					if (ammo.@mod > 0) 
+					{
+						s += '\n\n' + Res.txt('p', 'ammomod_' + ammo.@mod, 1);
 					}
-				} else {
-					s=Res.txt('i',id,1);
+				} 
+				else 
+				{
+					s = Res.txt('i', id, 1);
 				}
-				s+='\n';
+
+				s += '\n';
 				if (ammo.@damage.length()) s+='\n'+Res.txt('p', 'damage')+': x'+yel(ammo.@damage);
 				if (ammo.@pier.length()) s+='\n'+Res.txt('p', 'pier')+': '+yel(ammo.@pier);
 				if (ammo.@armor.length()) s+='\n'+Res.txt('p', 'tarmor')+': x'+yel(ammo.@armor);
@@ -791,13 +800,13 @@ package interdata
 		{
 			vis.objectName.text = objectName;
 			var s:String = '';
-			if (id.substr(0,2)=='s_') 
+			if (id.substr(0, 2) == 's_') 
 			{
-				id=id.substr(2);
+				id = id.substr(2);
 				craft = 1;
-				if (AllData.d.weapon.(@id==id).length()) tip=Item.L_WEAPON;
-				else if (AllData.d.armor.(@id==id).length()) tip=Item.L_ARMOR;
-				else tip=Item.L_ITEM;
+				if (XmlBook.getXML("weapons").weapon.(@id == id).length()) tip = Item.L_WEAPON;
+				else if (XmlBook.getXML("armors").armor.(@id == id).length()) tip = Item.L_ARMOR;
+				else tip = Item.L_ITEM;
 			}
 
 			//trace(tip);
@@ -867,7 +876,7 @@ package interdata
 		public function craftInfo(id:String):String 
 		{
 			var s:String='\n';
-			var sch = AllData.d.item.(@id=='s_'+id);
+			var sch = XmlBook.getXML("items").item.(@id == 's_' + id);
 			if (sch.length()) sch=sch[0];
 			else return '';
 			var kol:int=1;
@@ -931,7 +940,7 @@ package interdata
 			var s1:String;
 			var ok:Boolean = false;
 			
-			var xml = AllData.d.param.(@v == id);
+			var xml = XmlBook.getXML("parameters").param.(@v == id);
 			var xmlTip:String = xml.@tip;
 			
 			if (World.world.pers.factor[id] is Array) 

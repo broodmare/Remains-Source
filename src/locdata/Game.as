@@ -7,7 +7,9 @@ package locdata
 	import servdata.NPC;
 	
 	import components.Settings;
-	
+	import components.XmlBook;
+
+	//TODO - Calling entire script file multiple times, fix that later.
 	public class Game 
 	{
 		
@@ -51,7 +53,7 @@ package locdata
 			quests 		= new Array();
 			names 		= new Array();
 			
-			for each(var xl in GameData.d.level) 
+			for each (var xl in XmlBook.getXML("levels").level)
 			{
 				var level:LevelTemplate = new LevelTemplate(xl);
 				if (World.world.landData[xl.@id] && World.world.landData[xl.@id].allroom) 
@@ -160,14 +162,14 @@ package locdata
 				}
 				
 			}
-			for each(var xl in GameData.d.vendor) 
+			for each(var xl in XmlBook.getXML("vendors").vendor) 
 			{
 				var loadVendor = null;
 				if (loadObj && loadObj.vendors && loadObj.vendors[xl.@id]) loadVendor = loadObj.vendors[xl.@id];
 				var v:Vendor = new Vendor(0, xl, loadVendor);
 				vendors[v.id] = v;
 			}
-			for each(var xl in GameData.d.npc) 
+			for each(var xl in XmlBook.getXML("npcs").npc) 
 			{
 				var loadNPC = null;
 				if (loadObj && loadObj.npcs && loadObj.npcs[xl.@id]) loadNPC = loadObj.npcs[xl.@id];
@@ -290,11 +292,28 @@ package locdata
 		// Redirect to another room
 		function Encounter()
 		{
-			if (curLevelID == 'random_canter' && !(triggers['encounter_way'] > 0)) curLevelID = 'way';
-			if (curLevelID == 'random_encl' && !(triggers['encounter_post'] > 0)) curLevelID = 'post';
-			if (curLevelID == 'stable_pi' && triggers['storm'] == 4) curLevelID = 'stable_pi_atk';
-			if (curLevelID == 'stable_pi' && triggers['storm'] == 5) curLevelID = 'stable_pi_surf';
-		}
+			switch(curLevelID)
+			{
+				case 'random_canter':
+					if (!(triggers['encounter_way'] > 0)) curLevelID = 'way';
+					break;
+
+				case 'random_encl':
+					if (!(triggers['encounter_post'] > 0)) curLevelID = 'post';
+					break;
+
+				case 'stable_pi':
+					if (triggers['storm'] == 4) 
+						curLevelID = 'stable_pi_atk';
+					else if (triggers['storm'] == 5) 
+						curLevelID = 'stable_pi_surf';
+					break;
+
+				default:
+					trace('Game.as/Encounter() - function called but no suitable case was found. curLevelID: "' + curLevelID + '"');
+					break;
+			}
+}
 		
 		/*Transition to a new room
 			gotoLevel(newLand:String)
@@ -325,12 +344,12 @@ package locdata
 			}
 		}
 		
-		public function beginGame() 
+		public function beginGame():void
 		{
 
 		}
 		
-		public function beginMission(nid:String = null) 
+		public function beginMission(nid:String = null):void
 		{
 			if (nid == curLevelID) return;
 			if (nid && levelArray[nid]) 
@@ -344,7 +363,7 @@ package locdata
 			gotoLevel(nid);
 		}
 		
-		public function gotoNextLevel() 
+		public function gotoNextLevel():void
 		{
 			trace('Game.as/gotoNextLevel() - Moving to a next level: "' + missionId + '."');
 			World.world.pers.prevCPCode 	= null;
@@ -355,7 +374,7 @@ package locdata
 			gotoLevel(missionId);
 		}
 		
-		public function upLandLevel() 
+		public function upLandLevel():void
 		{
 			if (!curLevel.upStage) curLevel.landStage++;
 			curLevel.upStage = true;
@@ -364,15 +383,26 @@ package locdata
 		// Check the possibility of traveling through the map
 		public function checkTravel(lid):Boolean 
 		{
+			// Check based on curLevelID
 			if (this.curLevelID == 'grave') return false;
-			if (!triggers['fin'] > 0) return true;
-			if (triggers['fin'] == 1) return levelArray[lid].fin == 0 || levelArray[lid].fin == 1;
-			if (triggers['fin'] == 2) return levelArray[lid].fin == 0 || levelArray[lid].fin == 2;
-			if (triggers['fin'] == 3) return levelArray[lid].fin == 2;
-			return true;
+
+			// Use a switch statement for different values of triggers['fin']
+			switch(triggers['fin'])
+			{
+				case 0:
+					return true;
+				case 1:
+					return levelArray[lid].fin == 0 || levelArray[lid].fin == 1;
+				case 2:
+					return levelArray[lid].fin == 0 || levelArray[lid].fin == 2;
+				case 3:
+					return levelArray[lid].fin == 2;
+				default:
+					return true;
+			}
 		}
 		
-		public function refillVendors() 
+		public function refillVendors():void
 		{
 			for each(var vend:Vendor in vendors) vend.refill();
 			for (var tr in triggers) 
@@ -401,7 +431,7 @@ package locdata
 				}
 				return quests[id];
 			}
-			var xlq:XMLList=GameData.d.quest.(@id == id);
+			var xlq:XMLList = XmlBook.getXML("quests").quest.(@id == id);
 			if (xlq.length() == 0) 
 			{
 				trace ('Quest not found', id);
@@ -425,7 +455,7 @@ package locdata
 			return q;
 		}
 		
-		public function showQuest(id:String, sid:String) 
+		public function showQuest(id:String, sid:String):void
 		{
 			var q:Quest = quests[id];
 			if (q == null) 
@@ -455,7 +485,7 @@ package locdata
 			}
 		}
 		
-		public function closeQuest(id:String, sid:String=null) 
+		public function closeQuest(id:String, sid:String=null):void
 		{
 			var q:Quest=quests[id];
 			// If the quest stage is completed, but the quest is not taken, add it as inactive
@@ -463,7 +493,7 @@ package locdata
 			{
 				q = addQuest(id, null, true);
 			}
-			if (q == null || q.state==2) 
+			if (q == null || q.state == 2) 
 			{
 				return;
 			}
@@ -491,7 +521,7 @@ package locdata
 			return res2;
 		}
 
-		public function incQuests(cid:String, kol:int = 1)
+		public function incQuests(cid:String, kol:int = 1):void
 		{
 			for each(var q:Quest in quests) 
 			{
@@ -503,14 +533,14 @@ package locdata
 			}
 		}
 		
-		public function addNote(id:String) 
+		public function addNote(id:String):void
 		{
 			if (triggers['note_' + id]) return;
 			triggers['note_' + id] = 1;
 			notes.push(id);
 		}
 		
-		public function setTrigger(id:String, n:int = 1)
+		public function setTrigger(id:String, n:int = 1):void
 		{
 			triggers[id] = n;
 		}
@@ -529,7 +559,7 @@ package locdata
 		}
 		
 		// Increase the limit by 1, stage=1 - during generation, stage=2 - when taken
-		public function addLimit(id:String, etap:int)
+		public function addLimit(id:String, etap:int):void
 		{
 			if (etap == 1) 
 			{
@@ -543,14 +573,18 @@ package locdata
 			}
 		}
 		
-		// Run a script from gamedata
-		public function runScript(scr:String, own:Obj=null):Boolean 
+		public function runScript(scr:String, own:Obj = null):Boolean 
 		{
-			var xml1 = GameData.d.scr.(@id == scr);
-			if (xml1.length()) 
+			// Retrieve the entire XML file for scripts
+			var scriptsXML:XML = XmlBook.getXML("scripts");
+
+			// Navigate to the correct XMLList of script elements and filter by ID
+			var xmlList:XMLList = scriptsXML.scr.(@id == scr);
+
+			if (xmlList.length()) 
 			{
-				xml1 = xml1[0];
-				var	runScr:Script = new Script(xml1, World.world.level, own);
+				var scriptXML:XML = xmlList[0];
+				var runScr:Script = new Script(scriptXML, World.world.level, own);
 				runScr.start();
 				return true;
 			}
@@ -560,12 +594,18 @@ package locdata
 		// Create a script from gamedata
 		public function getScript(scr:String, own:Obj = null):Script 
 		{
-			//trace(scr,own);
-			var xml1 = GameData.d.scr.(@id == scr);
-			if (xml1.length()) 
+
+			// Retrieve the entire XML file for scripts
+    		var scriptsXML:XML = XmlBook.getXML("scripts");
+
+			// Navigate to the correct XMLList of script elements and filter by ID
+    		var xmlList:XMLList = scriptsXML.scr.(@id == scr);
+
+			//If a script is found by that name, do stuff, otherwise return null.
+			if (xmlList.length()) 
 			{
-				xml1 = xml1[0];
-				return new Script(xml1, (own == null)?World.world.level:own.room.level, own);
+				var scriptXML:XML = xmlList[0];
+				return new Script(scriptXML, (own == null) ? World.world.level : own.room.level, own);
 			}
 			return null;
 		}

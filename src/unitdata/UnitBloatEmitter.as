@@ -21,7 +21,7 @@ package unitdata
 			getXmlParam();
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			vis.x=X,vis.y=Y;
 		}
@@ -74,7 +74,7 @@ package unitdata
 			for (var i=0; i<5; i++) emit();
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (Settings.enemyAct<=0) {
 				return;

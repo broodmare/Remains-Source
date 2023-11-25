@@ -180,14 +180,14 @@ package unitdata
 			reloadDiv+=0.1;
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
 			}
 		}
 		
-		public override function run(div:int=1)
+		public override function run(div:int=1):void
 		{
 			X1=X-scX/2+300*3, X2=X1+1370*3;
 			Y1=Y-scY/2+170*3, Y2=Y1+580*3;
@@ -205,7 +205,7 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			if (World.world.game.globalDif==3) {
 				kol_emit=3;
@@ -243,7 +243,7 @@ package unitdata
 		var distanc:Number=6000;
 		
 		
-		public override function control()
+		public override function control():void
 		{
 			if (vsosOn) vsos();
 			if (sost==3) return;
@@ -308,7 +308,7 @@ package unitdata
 		}
 		
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (sost>1 && t_die<150) {
 				t_die++;
@@ -341,7 +341,7 @@ package unitdata
 			}
 		}
 		
-		public override function makeNoise(n:int, hlup:Boolean=false)
+		public override function makeNoise(n:int, hlup:Boolean=false):void
 		{
 
 		}

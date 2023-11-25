@@ -56,7 +56,7 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			if (currentWeapon) {
@@ -83,7 +83,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			var revers:Boolean=false;

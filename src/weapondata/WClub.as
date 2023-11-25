@@ -8,6 +8,7 @@ package weapondata
 	import locdata.Tile;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.visVzz;
 
@@ -49,7 +50,7 @@ package weapondata
 
 		public function WClub(own:Unit, id:String, nvar:int=0)
 		{
-			var node:XML = AllData.d.weapon.(@id==id)[0];
+			var node:XML = XmlBook.getXML("weapons").weapon.(@id == id)[0];
 			if (node.vis[0].@lasm>0) lasM=true;
 			if (!lasM) 
 			{

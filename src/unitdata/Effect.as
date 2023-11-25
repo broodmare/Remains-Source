@@ -6,6 +6,7 @@ package unitdata
 	import graphdata.Emitter;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class Effect 
 	{
@@ -50,7 +51,7 @@ package unitdata
 			him=0;
 			lvl=1;
 			forever=false;
-			var node=AllData.d.eff.(@id==id);
+			var node:XMLList = XmlBook.getXML("effects").eff.(@id == id);
 			if (node.length()) 
 			{
 				tip=node.@tip;

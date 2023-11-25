@@ -12,6 +12,7 @@ package weapondata
 	import unitdata.Pers;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.visp10mm;
 	import stubs.visualBullet;
@@ -36,7 +37,8 @@ package weapondata
 		public var flare:String;				//flash
 		public var visexpl:String;				//explosion
 		
-		var is_attack:Boolean=false, is_pattack:Boolean=false;	//	is the attack key pressed
+		var is_attack:Boolean  = false;
+		var is_pattack:Boolean = false;	//	is the attack key pressed
 		public var t_attack:int=0;
 		public var t_prep:int=0;
 		public var t_reload:int=0;
@@ -231,9 +233,9 @@ package weapondata
 				id=id.substr(0,id.length - 2);
 				nvar=1;
 			}
-			var xl:XMLList=AllData.d.weapon.(@id==id);
+			var xl:XMLList = XmlBook.getXML("weapons").weapon.(@id == id);
 			if (xl.length() == 0) return null;
-			var node:XMLList = AllData.d.weapon.(@id == id);
+			var node:XMLList = XmlBook.getXML("weapons").weapon.(@id == id);
 			if (node.length() == 0) return null;
 			node = node[0];
 			var w:Weapon;
@@ -272,7 +274,7 @@ package weapondata
 		public function getXmlParam():void
 		{
 			// Common characteristics
-			var node:XML=AllData.d.weapon.(@id==id)[0];
+			var node:XML = XmlBook.getXML("weapons").weapon.(@id == id)[0];
 			
 			if (node.@tip.length()) tip=node.@tip;
 			if (variant==0)	objectName=Res.txt('w',id);
@@ -372,8 +374,8 @@ package weapondata
 			if (node.a.length()) 
 			{
 				ammo = ammoBase = node.a[0];
-				var ammoNode:XML = AllData.d.item.(@id==ammo)[0];
-				setAmmo(ammo,ammoNode);
+				var ammoNode:XML = XmlBook.getXML("items").item.(@id == ammo)[0];
+				setAmmo(ammo, ammoNode);
 			}
 			
 			//Combat characteristics
@@ -1197,17 +1199,17 @@ package weapondata
 			if (owner.player) 
 			{
 				//не подходящие боеприпасы
-				if (nammo!='' && nammo!=ammo) 
+				if (nammo != '' && nammo != ammo) 
 				{
-					var am:XMLList = AllData.d.item.(@id==nammo);
+					var am:XMLList = XmlBook.getXML("items").item.(@id == nammo);
 					if (am.length() == 0) return;
-					if (am.@base!=ammoBase) 
+					if (am.@base != ammoBase) 
 					{
-						World.world.gui.infoText('imprAmmo',World.world.invent.items[nammo].objectName,null,false);
-						World.world.gui.bulb(X,Y);
+						World.world.gui.infoText('imprAmmo', World.world.invent.items[nammo].objectName, null, false);
+						World.world.gui.bulb(X, Y);
 						return;
 					}
-					ammoTarg=nammo;
+					ammoTarg = nammo;
 				}
 				if (nammo!='' && nammo==ammo) 
 				{
@@ -1326,7 +1328,7 @@ package weapondata
 			s+='\t';
 			if (tip<4) s+=maxhp+'\t';
 			else s+='\t';
-			if (tip==4) s+=AllData.d.item.(@id==id).@price+'\t';
+			if (tip == 4) s += XmlBook.getXML("items").item.(@id == id).@price + '\t';
 			else if (tip!=5 && variant>0) s+=price*3+'\t';
 			else s+=price+'\t';
 			return s;

@@ -38,7 +38,7 @@ package unitdata
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			if (dopWeapon && dopWeapon.tip==0) {
@@ -61,7 +61,7 @@ package unitdata
 		}
 		
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
@@ -81,7 +81,7 @@ package unitdata
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-90;

@@ -17,12 +17,13 @@ package unitdata
 		
 		protected var footstepVol:Number=0.2;
 		
-		public function UnitPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			blood=1;
 		}
 		//положение оружия
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 				if (weaponKrep==0) {			//телекинез
 					if (storona>0 && celX>X2 || storona<0 && celX<X1) weaponX=X+scX*1*storona;
@@ -40,16 +41,19 @@ package unitdata
 				}
 		}
 		
-		public function weaponLevit() {
+		public function weaponLevit() 
+		{
 			if (!currentWeapon || !teleFilter) return;
-			if (weaponKrep==0 && currentWeapon.tip!=5) {
+			if (weaponKrep==0 && currentWeapon.tip!=5) 
+			{
 				if (currentWeapon.vis.kor) currentWeapon.vis.kor.filters=[teleFilter];
 				else currentWeapon.vis.filters=[teleFilter];
 			} 
 		}
 		
 		
-		public function sndStep(faza:int,tip:int=0) {
+		public function sndStep(faza:int,tip:int=0) 
+		{
 			if (room==null || !room.roomActive) return;
 			var nstep:int;
 			var nleg:int;
@@ -57,21 +61,27 @@ package unitdata
 			if (mat==1) sst='metalstep';
 			if (tip==0) {
 				nleg=Math.floor(Math.random()*4)+1;
-			} else if (tip==1) {
+			} 
+			else if (tip==1) 
+			{
 				nstep=faza%16;
 				if (nstep==5) nleg=1;
 				else if (nstep==7) nleg=4;
 				else if (nstep==13) nleg=2;
 				else if (nstep==15) nleg=3;
 				else return;
-			} else if (tip==2) {
+			} 
+			else if (tip==2) 
+			{
 				nstep=faza%8;
 				if (nstep==1) nleg=4;
 				else if (nstep==2) nleg=1;
 				else if (nstep==5) nleg=2;
 				else if (nstep==6) nleg=3;
 				else return;
-			} else if (tip==3) {
+			} 
+			else if (tip==3) 
+			{
 				nstep=faza%14;
 				if (nstep==4) nleg=4;
 				else if (nstep==6) nleg=1;
@@ -80,7 +90,9 @@ package unitdata
 				else return;
 				Snd.ps('lazstep'+nleg,X,Y,0,(footstepVol*2-volMinus)*Snd.stepVol);
 				return;
-			} else if (tip==4) {
+			} 
+			else if (tip==4) 
+			{
 				nstep=faza%24;
 				if (nstep==4) nleg=4;
 				else if (nstep==9) nleg=1;
@@ -93,7 +105,7 @@ package unitdata
 			Snd.ps(sst+nleg+rnd,X,Y,0,(footstepVol-volMinus)*Snd.stepVol);
 		}
 		
-		protected override function sndFall()
+		protected override function sndFall():void
 		{
 			if (room==null || !room.roomActive) return;
 			var rnd=isrnd()?'a':'';

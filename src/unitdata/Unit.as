@@ -21,7 +21,8 @@ package unitdata
 	import graphdata.Part;
 	
 	import components.Settings;
-	
+	import components.XmlBook;
+
 	import stubs.hpBar;
 
 	public class Unit extends Obj
@@ -347,7 +348,7 @@ package unitdata
 			if (id=='mwall') return new UnitMWall(null,0,null,null);
 			if (id=='scythe') return new UnitScythe(null,0,null,null);
 			if (id=='ttur') return new UnitThunderTurret(ncid,0,null,null);
-			var node:XML=AllData.d.obj.(@id==id)[0];
+			var node:XML = XmlBook.getXML("objects").obj.(@id == id)[0];
 			if (node==null) 
 			{
 				trace('Не найден юнит',id);
@@ -447,7 +448,7 @@ package unitdata
 				if (hero>0) isHero=true;
 				mid=id;
 			}
-			var node0:XML=AllData.d.unit.(@id==mid)[0];
+			var node0:XML = XmlBook.getXML("units").unit.(@id == mid)[0];
 			if (mid && !uniqName) objectName=Res.txt('u',mid);
 			if (node0.@fraction.length()) fraction=node0.@fraction;
 			inter.cont=mid;
@@ -628,7 +629,7 @@ package unitdata
 		
 		public function getXmlWeapon(dif:int):Weapon 
 		{
-			var node0:XML=AllData.d.unit.(@id==id)[0];
+			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
 			var weap:Weapon;
 			for each(var n:XML in node0.w) 
 			{
@@ -722,7 +723,7 @@ package unitdata
 		}
 
 		// Set the level of the mob (the value is added to the level set through the map, default is 0)
-		public function setLevel(nlevel:int = 0)
+		public function setLevel(nlevel:int = 0):void
 		{
 			level += nlevel;
 			if (level < 0) level = 0;
@@ -748,7 +749,7 @@ package unitdata
 		}
 		
 		//сделать героем
-		public function setHero(nhero:int=1)
+		public function setHero(nhero:int=1):void
 		{
 			if (!mHero) return;
 			if (hero==0) hero=nhero;
@@ -785,7 +786,7 @@ package unitdata
 			//trace(id,hero)
 		}
 		
-		public function setHeroVulners()
+		public function setHeroVulners():void
 		{
 			vulner[D_EMP]*=0.8;
 			vulner[D_BALE]*=0.7;
@@ -935,7 +936,7 @@ package unitdata
 
 		}
 		
-		public function control()
+		public function control():void
 		{
 
 		}
@@ -946,7 +947,7 @@ package unitdata
 //
 //**************************************************************************************************************************
 		//Move to a point
-		public function setPos(nx:Number,ny:Number)
+		public function setPos(nx:Number,ny:Number):void
 		{
 			X=nx, Y=ny;
 			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
@@ -983,13 +984,13 @@ package unitdata
 		}
 		
 		// Gradual appearance
-		public function emergence(n:int=30)
+		public function emergence(n:int=30):void
 		{
 			t_emerg=max_emerg=n;
 		}
 
 		// Acting forces
-		public function forces()
+		public function forces():void
 		{
 			if (levit) 
 			{
@@ -1078,7 +1079,7 @@ package unitdata
 		
 		
 		
-		public function run(div:int=1)
+		public function run(div:int=1):void
 		{
 			if (room.sky) 
 			{
@@ -1448,7 +1449,7 @@ package unitdata
 			}
 		}
 		
-		public function run2(div:int=1)
+		public function run2(div:int=1):void
 		{
 			X+=dx/div;
 			Y+=dy/div;
@@ -1480,7 +1481,7 @@ package unitdata
 			Y1=Y-scY, Y2=Y;
 		}
 		
-		public function sit(turn:Boolean)
+		public function sit(turn:Boolean):void
 		{
 			if (isSit==turn) return;
 			isSit=turn;
@@ -1495,7 +1496,7 @@ package unitdata
 			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
 		}
 		
-		public function unsit()
+		public function unsit():void
 		{
 			sit(false);
 			if (collisionAll()) 
@@ -1706,7 +1707,7 @@ package unitdata
 		}
 		
 		// Teleportation
-		public function teleport(nx:Number,ny:Number,eff:int=0)
+		public function teleport(nx:Number,ny:Number,eff:int=0):void
 		{
 			if (eff > 0) Emitter.emit('tele', room, X, Y - scY / 2,{rx:scX, ry:scY, kol:30});
 			setPos(nx, ny);
@@ -1721,7 +1722,7 @@ package unitdata
 		}
 		
 		// Detach from a fixed position
-		public function otryv()
+		public function otryv():void
 		{
 			fixed = false;
 		}
@@ -1732,10 +1733,10 @@ package unitdata
 //
 //**************************************************************************************************************************
 
-		public static function initIcos()
+		public static function initIcos():void
 		{
 			arrIcos=new Array();
-			for each(var xml in AllData.d.unit) 
+			for each (var xml in XmlBook.getXML("units").unit) 
 			{
 				if (xml.@cat=='3') 
 				{
@@ -1766,11 +1767,11 @@ package unitdata
 			}
 		}
 		
-		public static function initIco(nid:String)
+		public static function initIco(nid:String):void
 		{
 			if (arrIcos==null) arrIcos=new Array();
 			if (arrIcos[nid]) return;
-			var xml=AllData.d.unit.(@id==nid);
+			var xml = XmlBook.getXML("units").unit.(@id == nid);
 			if (xml.vis.length() && xml.vis.@blit.length()) 
 			{
 				var bmpd:BitmapData;
@@ -1851,17 +1852,17 @@ package unitdata
 			}
 		}
 		
-		public function animate()
+		public function animate():void
 		{
 
 		}
 		
-		protected function sndFall()
+		protected function sndFall():void
 		{
 
 		}
 		
-		function sndRunPlay()
+		function sndRunPlay():void
 		{
 				if (rasst2 < sndRunDist * sndRunDist) 
 				{
@@ -1872,12 +1873,12 @@ package unitdata
 				}
 		}
 		
-		function newPart(nid:String, kol:int = 1, frame:int = 0)
+		function newPart(nid:String, kol:int = 1, frame:int = 0):void
 		{
 			Emitter.emit(nid, room, X, Y - scY / 2,{kol:kol, frame:frame});
 		}
 
-		public function setVisPos()
+		public function setVisPos():void
 		{
 			if (vis) 
 			{
@@ -1887,7 +1888,7 @@ package unitdata
 			}
 		}
 
-		public function visDetails()
+		public function visDetails():void
 		{
 			if (hpbar==null) return;
 			if ((hp<maxhp || armor_qual>0 && armor_hp<armor_maxhp || hero>0) && hp>0 && !invis || boss) 
@@ -1917,7 +1918,7 @@ package unitdata
 			else hpbar.visible=false;
 		}
 		
-		public function setHpbarPos()
+		public function setHpbarPos():void
 		{
 			if (boss) 
 			{
@@ -1945,7 +1946,7 @@ package unitdata
 //
 //**************************************************************************************************************************
 
-		public function actions()
+		public function actions():void
 		{
 			if (isNaN(dx)) 
 			{
@@ -2077,7 +2078,7 @@ package unitdata
 			if (t_mess>0) t_mess--;
 		}
 		
-		public function makeNoise(n:int, hlup:Boolean=false)
+		public function makeNoise(n:int, hlup:Boolean=false):void
 		{
 			if (n<=0) return;
 			if (noise<n) noise=n;
@@ -2103,19 +2104,19 @@ package unitdata
 			return cel.udarUnit(this, mult);
 		}
 		// The hit reached the target
-		public function crash(b:Bullet)
+		public function crash(b:Bullet):void
 		{
 			if (b.weap) makeNoise(b.weap.noise, true);
 		}
 		// Set weapon position
-		public function setWeaponPos(tip:int=0)
+		public function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-scY*0.5;
 			magicX=X;
 			magicY=Y-scY*0.5;
 		}
-		public function setPunchWeaponPos(w:WPunch)
+		public function setPunchWeaponPos(w:WPunch):void
 		{
 			w.X=X+scX/3*storona;
 			w.Y=Y-scY*0.75;
@@ -2192,7 +2193,7 @@ package unitdata
 			return eff;
 		}
 		
-		public function remEffect(id:String)
+		public function remEffect(id:String):void
 		{
 			for each(var eff in effects) 
 			{
@@ -2200,7 +2201,7 @@ package unitdata
 			}
 		}
 		
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0) 
+		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void
 		{
 			if (xml==null) return;
 			for each(var sk in xml.sk) 
@@ -2221,7 +2222,7 @@ package unitdata
 			}
 			
 		}
-		public function setEffParams()
+		public function setEffParams():void
 		{
 			try 
 			{
@@ -2237,7 +2238,7 @@ package unitdata
 				for each(var eff:Effect in effects) 
 				{
 					var effid=eff.id;
-					var sk=AllData.d.eff.(@id==effid)[0];
+					var sk:XML = XmlBook.getXML("effects").eff.(@id == effid)[0];
 					setSkillParam(sk, eff.vse?0:1);
 				}
 				setHeroVulners();
@@ -3088,7 +3089,7 @@ package unitdata
 			return false;
 		}
 		// Set a target to a unit or a point
-		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000)
+		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void
 		{
 			if (un && isMeet(un)) 
 			{
@@ -3135,7 +3136,7 @@ package unitdata
 			return false;
 		}
 		
-		public function findLevit()
+		public function findLevit():Boolean
 		{
 			if (isMeet(room.gg) && room.gg.teleObj) 
 			{
@@ -3170,7 +3171,7 @@ package unitdata
 //--------------------------------------------------------------------------------------------------------------------
 //				Conversations
 
-		public function replic(s:String)
+		public function replic(s:String):void
 		{
 			//trace(id,s);
 			if (sost!=1 || id_replic=='' || !room.roomActive) return;

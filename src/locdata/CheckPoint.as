@@ -7,6 +7,7 @@ package locdata
 	import servdata.Interact;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.vischeckpoint;
 	
@@ -34,7 +35,7 @@ package locdata
 			prior=1;
 			id=nid;
 			levitPoss=false;
-			var node:XML=AllData.d.obj.(@id==id)[0];
+			var node:XML = XmlBook.getXML("objects").obj.(@id == id)[0];
 			
 			X=nx, Y=ny;
 			scX=node.@size*Settings.tilePixelWidth;

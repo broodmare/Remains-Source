@@ -7,6 +7,7 @@ package locdata
 	import unitdata.Unit;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.vistrapspikes;
 	
@@ -67,7 +68,8 @@ package locdata
 		
 		public function getXmlParam()
 		{
-			var node:XML = AllData.d.obj.(@id == id)[0];
+			var node:XML = XmlBook.getXML("objects").obj.(@id == id)[0];
+			
 			objectName = Res.txt('u', id);
 			if (node.@sX > 0) scX = node.@sX; 
 			else scX = node.@size * Settings.tilePixelWidth;

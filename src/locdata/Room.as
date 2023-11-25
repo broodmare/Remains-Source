@@ -15,6 +15,7 @@ package locdata
 	import unitdata.UnitTurret;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.signPost;
 	
@@ -404,7 +405,7 @@ package locdata
 			objsT = new Array();
 			for each(var obj:XML in nroom.obj) 
 			{
-				var xmll:XML = AllData.d.obj.(@id == obj.@id)[0];
+				var xmll:XML = XmlBook.getXML("objects").obj.(@id == obj.@id)[0];
 				var size:int = xmll.@size;
 				if (size <= 0) size = 1;
 				var nx:int = obj.@x;
@@ -417,7 +418,6 @@ package locdata
 					var n:int = xmll.@tipn;
 					ups[n].push({x:nx, y:ny, xml:obj});
 				} 
-
 				else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
 			}
 			
@@ -1287,7 +1287,7 @@ package locdata
 		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj 
 		{
 			var obj:Obj;
-			var size:int=AllData.d.obj.(@id==id).@size;
+			var size:int = XmlBook.getXML("objects").obj.(@id == id).@size;
 			if (size<=0) size=1;
 			var loadObj:Object=null;
 			if (xml && xml.@code.length() && World.world.game.objs.hasOwnProperty(xml.@code)) loadObj=World.world.game.objs[xml.@code];

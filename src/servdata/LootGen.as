@@ -3,6 +3,8 @@ package servdata
 	
 	import locdata.Loot;
 	import locdata.Room;
+
+	import components.XmlBook;
 	
 	public class LootGen 
 	{
@@ -34,27 +36,27 @@ package servdata
 			arr['magic'] 	= new Array();
 			arr['uniq'] 	= new Array();
 			arr['pers'] 	= new Array();
-			for each (var weap:XML in AllData.d.weapon.(@tip > 0 && @tip < 4)) 
+			for each (var weap:XML in XmlBook.getXML("weapons").weapon.(@tip > 0 && @tip < 4)) 
 			{
-				if (weap.com.length()==0) continue;
-				arr['weapon'].push({id:weap.@id, st:weap.com.@stage, chance:weap.com.@chance, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['weapon']+=Number(weap.com.@chance))});
-				if (weap.com.@uniq.length()) arr['uniq'].push({id:weap.@id+'^1', st:weap.com.@stage, chance:weap.com.@uniq, worth:weap.com.@worth, lvl:weap.@lvl, r:(n['uniq']+=Number(weap.com.@uniq))});
+				if (weap.com.length() == 0) continue;
+				arr['weapon'].push({id: weap.@id, st: weap.com.@stage, chance: weap.com.@chance, worth: weap.com.@worth, lvl: weap.@lvl, r: (n['weapon'] += Number(weap.com.@chance))});
+				if (weap.com.@uniq.length()) arr['uniq'].push({id: weap.@id + '^1', st: weap.com.@stage, chance: weap.com.@uniq, worth: weap.com.@worth, lvl: weap.@lvl, r: (n['uniq'] += Number(weap.com.@uniq))});
 			}
-			for each (weap in AllData.d.weapon.(@tip == 5)) 
+			for each (weap in XmlBook.getXML("weapons").weapon.(@tip == 5)) 
 			{
-				arr['magic'].push({id:weap.@id, st:0, chance:0, worth:0, lvl:0, r:0});
+				arr['magic'].push({id: weap.@id, st: 0, chance: 0, worth: 0, lvl: 0, r: 0});
 			}
-			for each (var item:XML in AllData.d.item) 
+			for each (var item:XML in XmlBook.getXML("items").item) 
 			{
 				if (item.@tip.length()) 
 				{
-					if (arr[item.@tip]==null) 
+					if (arr[item.@tip] == null) 
 					{
-						arr[item.@tip]=new Array();
-						n[item.@tip]=0;
+						arr[item.@tip] = new Array();
+						n[item.@tip] = 0;
 					}
-					arr[item.@tip].push({id:item.@id, st:item.@stage, chance:(item.@chance.length() ? item.@chance:1), lvl:item.@lvl,  r:(n[item.@tip] += Number(item.@chance.length()?item.@chance:1))});
-					if (item.@tip == 'art' || item.@tip == 'impl' || item.sk.length()) arr['pers'].push(item.@id);	//признак предметов, изменяющих характеристики перса
+					arr[item.@tip].push({id: item.@id, st: item.@stage, chance: (item.@chance.length() ? item.@chance : 1), lvl: item.@lvl, r: (n[item.@tip] += Number(item.@chance.length() ? item.@chance : 1))});
+					if (item.@tip == 'art' || item.@tip == 'impl' || item.sk.length()) arr['pers'].push(item.@id); // Items modifying character traits
 				}
 				if (item.@tip2.length()) 
 				{
@@ -63,7 +65,7 @@ package servdata
 						arr[item.@tip2] = new Array();
 						n[item.@tip2] = 0;
 					}
-					arr[item.@tip2].push({id:item.@id, st:item.@stage, chance:(item.@chance2.length()?item.@chance2:item.@chance), lvl:item.@lvl,  r:(n[item.@tip2]+=Number(item.@chance2.length()?item.@chance2:item.@chance))});
+					arr[item.@tip2].push({id: item.@id, st: item.@stage, chance: (item.@chance2.length() ? item.@chance2 : item.@chance), lvl: item.@lvl, r: (n[item.@tip2] += Number(item.@chance2.length() ? item.@chance2 : item.@chance))});
 				}
 			}
 			

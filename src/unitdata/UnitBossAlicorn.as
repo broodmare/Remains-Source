@@ -89,7 +89,7 @@ package unitdata
 			timerDie=90;
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
@@ -114,7 +114,7 @@ package unitdata
 			super.dropLoot();
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			try {
 				var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
@@ -145,7 +145,7 @@ package unitdata
 			aiState=aiSpok=0;
 		}
 
-		public override function animate()
+		public override function animate():void
 		{
 			try {
 			var cframe:int;
@@ -183,7 +183,7 @@ package unitdata
 			} catch(err) {}
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				if (sost==2) {
@@ -210,7 +210,7 @@ package unitdata
 		}
 		
 		//телепортация
-		public override function teleport(nx:Number,ny:Number,eff:int=0)
+		public override function teleport(nx:Number,ny:Number,eff:int=0):void
 		{
 			Emitter.emit('telered',room,X,Y-scY/2,{rx:scX, ry:scY, kol:30});
 			setPos(nx,ny);
@@ -248,7 +248,7 @@ package unitdata
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		public override function control()
+		public override function control():void
 		{
 			//если сдох, то не двигаться
 			if (sost==3) return;

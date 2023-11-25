@@ -25,7 +25,9 @@ package graphdata
 	import fl.motion.Color;
 
 	import locdata.*;
+
 	import components.Settings;
+	import components.XmlBook;
 	import systems.TileFilter;
 
 	import stubs.tileGwall;
@@ -329,7 +331,7 @@ package graphdata
 
 			trace('Grafon.as/Grafon() - Setting up materials...');
 
-			for each (var newMat:XML in AllData.d.mat) //for each <mat> item in AllData...
+			for each (var newMat:XML in XmlBook.getXML("materials").mat) //for each <mat> item in AllData...
 			{
 				if (newMat.@vid.length() == 0)
 				{

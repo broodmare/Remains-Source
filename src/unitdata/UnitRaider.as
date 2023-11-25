@@ -10,6 +10,7 @@ package unitdata
 	import servdata.LootGen;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class UnitRaider extends UnitPon{
 		
@@ -159,7 +160,7 @@ package unitdata
 		{
 			super.getXmlParam(parentId);
 			super.getXmlParam();
-			var node0:XML=AllData.d.unit.(@id==id)[0];
+			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
 			if (node0.vis.length()) {
 				if (node0.vis.@telecolor.length()) teleColor=node0.vis.@telecolor;
 			}
@@ -183,7 +184,7 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1)
+		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
 			if (hero==1) {
@@ -203,7 +204,7 @@ package unitdata
 			return obj;
 		}	
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			super.setWeaponPos(tip);
 			if (!enclWeap && (tip==1 || tip==2 || tip==4)) {
@@ -214,7 +215,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			//поворот
@@ -311,7 +312,7 @@ package unitdata
 			kol_emit--;
 		}
 		
-		public override function actions()
+		public override function actions():void
 		{
 			super.actions();
 			if (aiPlav>0) aiPlav--;
@@ -379,7 +380,7 @@ package unitdata
 		//7 - готовится атаковать рывком
 		//8 - атакует быстрым рывком
 		
-		public override function control()
+		public override function control():void
 		{
 			//trace(hpbar);
 			//if (hpbar) trace(hpbar.visible, hpbar.x, hpbar.y);
@@ -856,7 +857,7 @@ package unitdata
 			return super.damage(dam, tip, bul,tt);
 		}
 		
-		public override function replic(s:String)
+		public override function replic(s:String):void
 		{
 			if (t_replic<=0 && s=='attack') {
 				if (tr==8 && isrnd(0.3)) s='fire';

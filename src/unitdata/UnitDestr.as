@@ -35,11 +35,11 @@ package unitdata
 			mat=1;
 		}
 
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (tr==1) {
 				t_part--;

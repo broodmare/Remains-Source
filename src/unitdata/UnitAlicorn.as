@@ -161,7 +161,7 @@ package unitdata
 			super.getXmlParam();
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
 			weaponX=magicX=X+(obj.x+visBmp.x)*storona;
@@ -169,7 +169,7 @@ package unitdata
 			weaponR=obj.r;
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			currentWeapon.damage*=(1+level*0.05);
@@ -190,7 +190,7 @@ package unitdata
 			return obj;
 		}	
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			if (sost==2 || sost==3) { //сдох
@@ -350,7 +350,7 @@ package unitdata
 		//3 - видит цель, летает, атакует
 		//4 - приземляется
 		
-		public override function control()
+		public override function control():void
 		{
 			//если сдох, то не двигаться
 			var t:Tile;
@@ -836,7 +836,7 @@ package unitdata
 			}
 		}
 		
-		public override function visDetails()
+		public override function visDetails():void
 		{
 			if (hpbar==null) return;
 			super.visDetails();

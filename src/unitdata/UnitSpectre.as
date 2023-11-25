@@ -39,7 +39,7 @@ package unitdata
 			ctrans=false;
 		}
 
-		public override function forces()
+		public override function forces():void
 		{
 			if (isFly) {
 				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
@@ -67,7 +67,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			br+=(dx*4-br)/4;
 			vis.osn.rotation=br*storona;
@@ -77,7 +77,7 @@ package unitdata
 		//0 - ничего не делает
 		//1 - летит к цели
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			if (Settings.enemyAct<=0) {

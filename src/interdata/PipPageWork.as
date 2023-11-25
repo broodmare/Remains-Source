@@ -11,6 +11,7 @@ package interdata
 	import unitdata.UnitPet;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class PipPageWork extends PipPage
 	{
@@ -73,7 +74,8 @@ package interdata
 				statHead.hp.text=Res.txt('p', 'iv6');
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
-				for (var s:String in inv.items) {
+				for (var s:String in inv.items) 
+				{
 					if (s=='' || inv.items[s]==null || inv.items[s].kol<=0) continue;
 					var node=inv.items[s].xml;
 					if (node==null) continue;
@@ -81,24 +83,30 @@ package interdata
 						var ok:int=1;
 						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
 						var wid:String=s.substr(2);
-						if (inv.weapons[wid]) {
-							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) {
+						if (inv.weapons[wid]) 
+						{
+							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) 
+							{
 								n={tip:Item.L_WEAPON, id:wid, objectName:Res.txt('w',wid), ok:ok ,sort:node.@skill+node.@lvl};
 								if (inv.items[wid] && inv.items[wid].kol>0) n.kol=inv.items[wid].kol;
 								arr.push(n);
 								assArr[n.id]=n;
 							}
-						} else if (inv.armors[wid]) {
-							if (inv.armors[wid].lvl<0) {
+						} 
+						else if (inv.armors[wid]) 
+						{
+							if (inv.armors[wid].lvl<0) 
+							{
 								n={tip:Item.L_ARMOR, id:wid, objectName:Res.txt('a',wid), ok:ok ,sort:node.@skill+node.@lvl};
 								arr.push(n);
 							}
-						} else {
-							var node1=AllData.d.item.(@id==wid);
+						} 
+						else 
+						{
+							var node1 = XmlBook.getXML("items").item.(@id == wid);
 							if (node1.length()==0) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
 							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, objectName:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
-							//if (node1.@one>0) n.tip=Item.L_IMPL;
 							arr.push(n);
 							assArr[n.id]=n;
 						}
@@ -116,23 +124,30 @@ package interdata
 					statHead.visible=false;
 				}
 					
-			} else if (page2==2) {	//улучшение
+			} 
+			else if (page2==2) 
+			{	//улучшение
 				statHead.fav.text='';
 				statHead.objectName.text='';//Res.txt('p', 'ii2');
 				statHead.hp.text='';
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
-				if (gg.pers.maxArmorLvl>0) {
-					for each(var arm:Armor in inv.armors) {
-						if (arm.lvl>=0 && arm.lvl<arm.maxlvl && arm.lvl<gg.pers.maxArmorLvl) {
+				if (gg.pers.maxArmorLvl>0) 
+				{
+					for each(var arm:Armor in inv.armors) 
+					{
+						if (arm.lvl>=0 && arm.lvl<arm.maxlvl && arm.lvl<gg.pers.maxArmorLvl) 
+						{
 							n={tip:Item.L_ARMOR, id:arm.id, objectName:arm.objectName, lvl:arm.lvl, sort:('a'+arm.sort)};
 							arr.push(n);
 						}
 					}
 				}
-				for each(var weap:Weapon in inv.weapons) {
+				for each(var weap:Weapon in inv.weapons) 
+				{
 					if (weap==null) continue;
-					if (weap.skill==3 && weap.variant==0 && weap.respect!=3) {
+					if (weap.skill==3 && weap.variant==0 && weap.respect!=3) 
+					{
 						n={tip:Item.L_WEAPON, id:weap.id, objectName:weap.objectName, sort:('w'+weap.objectName)};
 						arr.push(n);
 					}
@@ -158,25 +173,31 @@ package interdata
 				statHead.ammo.text='';
 				statHead.ammotip.text=Res.txt('p', 'repairto');
 				setTopText('inforepair');
-				if (inv.items['owl'] && inv.items['owl'].kol) {
+				if (inv.items['owl'] && inv.items['owl'].kol) 
+				{
 					World.world.pers.setRoboowl();
-					if (World.world.pers.owlhpProc<1) {
+					if (World.world.pers.owlhpProc<1) 
+					{
 						n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, rep:owlRep/World.world.pers.owlhp};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
 					
 				}
-				for each (var w:Weapon in inv.weapons) {
+				for each (var w:Weapon in inv.weapons) 
+				{
 					if (w==null) continue;
-					if (w.tip!=0 && w.tip!=4 && w.respect!=1 && w.hp<w.maxhp) {
+					if (w.tip!=0 && w.tip!=4 && w.respect!=1 && w.hp<w.maxhp) 
+					{
 						n={tip:Item.L_WEAPON, id:w.id, objectName:w.objectName, hp:w.hp, maxhp:w.maxhp, rep:w.rep_eff*0.25};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
 				}
-				for each (var a:Armor in inv.armors) {
-					if (!a.norep && !a.und && a.hp<a.maxhp) {
+				for each (var a:Armor in inv.armors) 
+				{
+					if (!a.norep && !a.und && a.hp<a.maxhp) 
+					{
 						n={tip:Item.L_ARMOR, id:a.id, objectName:a.objectName, hp:a.hp, maxhp:a.maxhp, rep:1/a.kolComp};
 						arr.push(n);
 						assArr[n.id]=n;
@@ -209,11 +230,17 @@ package interdata
 			item.fav.text='';
 			item.hp.text=item.ammotip.text='';
 			item.alpha=1;
-			if (page2==1) {
+			if (page2==1) 
+			{
 				if (obj.ok>1) item.alpha=0.5;
 				if (obj.kol>0) item.hp.text=obj.kol;
-			} else if (page2==2) {
-			} else if (page2==3) {
+			} 
+			else if (page2==2) 
+			{
+
+			} 
+			else if (page2==3) 
+			{
 				item.hp.text=Math.round(obj.hp/obj.maxhp*1000)/10+'%';
 				item.ammotip.text=Math.round(obj.rep*gg.pers.repairMult*1000)/10+'%';
 			}
@@ -225,25 +252,32 @@ package interdata
 		override function statInfo(event:MouseEvent):void
 		{
 			assId=null;
-			if (page2==1) {
+			if (page2==1) 
+			{
 				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text, 1);
 			}
-			if (page2==2) {
+			if (page2==2) 
+			{
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
 					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text, 2);
-				} else {
+				}
+				else 
+				{
 					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text+'^1',event.currentTarget.objectName.text+' - II', 2);
 				}
 			}
-			if (page2==3) {
+			if (page2==3) 
+			{
 				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text);
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
 					showBottext(inv.armors[event.currentTarget.id.text].idComp);
 				}
-				if (event.currentTarget.cat.text==Item.L_WEAPON) {
+				if (event.currentTarget.cat.text==Item.L_WEAPON) 
+				{
 					showBottext('frag');
 				}
-				if (event.currentTarget.cat.text==Item.L_INSTR) {
+				if (event.currentTarget.cat.text==Item.L_INSTR) 
+				{
 					showBottext('scrap');
 				}
 			}
@@ -300,23 +334,27 @@ package interdata
 			var cnazv:String=event.currentTarget.objectName.text
 			if (page2==1) 
 			{
-				var sch=AllData.d.item.(@id=='s_'+cid);
+				var sch = XmlBook.getXML("items").item.(@id == 's_' + cid);
 				if (sch.length()) sch=sch[0];
 				var kol:int=1;
 				if (sch.@kol.length()) kol=int(sch.@kol);
 				if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
 				if (!checkScheme(sch)) return;
-				if (ccat==Item.L_WEAPON) {
+				if (ccat==Item.L_WEAPON) 
+				{
 					w=inv.weapons[cid];
 					var obj=assArr[cid];
 					if (w.tip!=4 && w.respect!=3) return;
 					minusCraftComp(sch);
-					if (w.tip!=4) {
+					if (w.tip!=4) 
+					{
 						w.respect=0;
 						w.hold=w.holder;
 						World.world.gui.infoText('created',cnazv);
 						setStatus();
-					} else {
+					} 
+					else 
+					{
 						inv.plusItem(w.id,kol);
 						obj.kol=inv.items[w.id].kol;
 						World.world.gui.infoText('created2',cnazv,inv.items[cid].kol);
@@ -324,21 +362,27 @@ package interdata
 						setStatItem(event.currentTarget as MovieClip, obj);
 					}
 					inv.calcWeaponMass();
-				} else if (ccat==Item.L_ARMOR) {
+				} 
+				else if (ccat==Item.L_ARMOR) 
+				{
 					arm=inv.armors[cid];
 					if (arm.lvl>=0) return;
 					minusCraftComp(sch);
 					arm.lvl=0;
 					World.world.gui.infoText('created3',cnazv);
 					setStatus();
-				} else if (ccat==Item.L_IMPL) {
+				} 
+				else if (ccat==Item.L_IMPL) 
+				{
 					minusCraftComp(sch);
 					inv.plusItem(cid,1);
 					inv.takeScript(cid);
 					World.world.gui.infoText('created4',cnazv);
 					gg.pers.setParameters();
 					setStatus();
-				} else if (ccat==Item.L_ITEM) {
+				} 
+				else if (ccat==Item.L_ITEM) 
+				{
 					var obj=assArr[cid];
 					minusCraftComp(sch);
 					inv.plusItem(cid,kol);
@@ -349,7 +393,8 @@ package interdata
 					setStatItem(event.currentTarget as MovieClip, obj);
 				}
 				World.world.game.checkQuests(cid);
-				if (Settings.helpMess && inv.items[cid]) {
+				if (Settings.helpMess && inv.items[cid]) 
+				{
 					var lmess:String=inv.items[cid].mess;
 					if (lmess!=null && !(World.world.game.triggers['mess_'+lmess]>0)) 
 					{
@@ -361,21 +406,27 @@ package interdata
 			} 
 			else if (page2==2) 
 			{
-				if (ccat==Item.L_ARMOR) {
+				if (ccat==Item.L_ARMOR) 
+				{
 					arm=inv.armors[cid];
 					if (arm==null) return;
 					var kol=arm.needComp();
-					if (inv.checkKol(arm.idComp,kol)) {
+					if (inv.checkKol(arm.idComp,kol)) 
+					{
 						inv.minusItem(arm.idComp,kol,false);
 						arm.upgrade();
 						gg.pers.setParameters();
 						World.world.gui.infoText('upArmor');
 						setStatus();
-					} else {
+					} 
+					else 
+					{
 						World.world.gui.infoText('noMaterials');
 					}
-				} else if (ccat==Item.L_WEAPON) {
-					var sch=AllData.d.item.(@id=='s_'+cid);
+				} 
+				else if (ccat==Item.L_WEAPON) 
+				{
+					var sch = XmlBook.getXML("items").item.(@id == 's_' + cid);
 					if (sch.length()) sch=sch[0];
 					if (!checkScheme(sch)) return;
 					minusCraftComp(sch);
@@ -383,43 +434,62 @@ package interdata
 					World.world.gui.infoText('created',cnazv+Weapon.variant2);
 					setStatus();
 				}
-			} else if (page2==3) {
+			} 
+			else if (page2==3) 
+			{
 				var obj=assArr[cid];
-				if (ccat==Item.L_ARMOR) {
+				if (ccat==Item.L_ARMOR) 
+				{
 					arm=inv.armors[cid];
-					if (arm.hp>=arm.maxhp) {
+					if (arm.hp>=arm.maxhp) 
+					{
 						World.world.gui.infoText('noRepair');
 						return;
 					}
 					var cid2:String=inv.armors[cid].idComp;
-					if (inv.checkKol(cid2)) {
+					if (inv.checkKol(cid2)) 
+					{
 						arm.repair(arm.maxhp*gg.pers.repairMult/arm.kolComp);
 						inv.minusItem(cid2);
 						obj.hp=arm.hp;
 						showBottext(cid2);
-					} else {
+					} 
+					else 
+					{
 						World.world.gui.infoText('noMaterials');
 					}
-				} else if (ccat==Item.L_WEAPON) {
-					if (inv.checkKol('frag')) {
+				}
+				else if (ccat==Item.L_WEAPON) 
+				{
+					if (inv.checkKol('frag')) 
+					{
 						w=inv.weapons[cid];
-						if (inv.repWeapon(w,0.25)) {
+						if (inv.repWeapon(w,0.25)) 
+						{
 							inv.minusItem('frag');
 							obj.hp=w.hp;
 							showBottext('frag');
 						}
-					} else {
+					} 
+					else 
+					{
 						World.world.gui.infoText('noMaterials');
 					}
-				} else if (ccat==Item.L_INSTR) {
-					if (inv.checkKol('scrap')) {
+				} 
+				else if (ccat==Item.L_INSTR) 
+				{
+					if (inv.checkKol('scrap')) 
+					{
 						var owl:UnitPet=gg.pets[cid];
-						if (owl.repair(owlRep*gg.pers.repairMult)) {
+						if (owl.repair(owlRep*gg.pers.repairMult)) 
+						{
 							inv.minusItem('scrap');
 							obj.hp=owl.hp;
 							showBottext('scrap');
 						}
-					} else {
+					} 
+					else 
+					{
 						World.world.gui.infoText('noMaterials');
 					}
 				}

@@ -13,6 +13,7 @@ package interdata
 	import unitdata.Unit;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.visPipQuestItem;
 	import stubs.visPipInfo;
@@ -26,10 +27,12 @@ package interdata
 		var visWMap:MovieClip;
 		public var map:Bitmap;
 		public var mbmp:BitmapData;
-		var visPageX=850, visPageY=540;
-		var mapScale:Number=2, ms:Number=2;
+		var visPageX = 850;
+		var visPageY = 540;
+		var mapScale:Number = 2;
+		var ms:Number = 2;
 		var plTag:MovieClip;
-		var targetLand:String='';
+		var targetLand:String = '';
 		var game:Game;
 
 		public function PipPageInfo(npip:PipBuck, npp:String) 
@@ -111,7 +114,7 @@ package interdata
 				}
 				if (arr.length) arr.sortOn(['state','sort','objectName']);
 				if (World.world.room && World.world.room.base) {
-					for each (var task in GameData.d.vendor.task) 
+					for each (var task in XmlBook.getXML("vendors").vendor.task)
 					{
 						if (checkQuest(task)) 
 						{
@@ -206,7 +209,7 @@ package interdata
 				statHead.mq.visible=false;
 				statHead.kol.text=Res.txt('p', 'frag');
 				vis.ico.visible=true;
-				for each(var xml in AllData.d.unit) 
+				for each (var xml in XmlBook.getXML("units").unit)
 				{
 					if (xml && xml.@cat.length()) 
 					{
@@ -363,11 +366,14 @@ package interdata
 		{
 			var n:int=0, delta;
 			//юнит
-			var un=AllData.d.unit.(@id==id);
+			var un = XmlBook.getXML("units").unit.(@id == id);
 			if (un.length()==0 || un.@cat!='3') return '';
 			//родитель
 			var pun;
-			if (un.@parent.length()) pun=AllData.d.unit.(@id==un.@parent);
+			if (un.@parent.length()) 
+			{
+				var pun = XmlBook.getXML("units").unit.(@id == un.@parent);
+			}
 			//дельта
 			delta=getParam(un,pun,'vis','dkill');
 			if (delta==null) delta=5;
@@ -431,7 +437,7 @@ package interdata
 								s+=blue(Res.txt('w', weap.@id));
 								try 
 								{
-									var w=AllData.d.weapon.(@id==weap.@id);
+									var w = XmlBook.getXML("weapons").weapon.(@id == weap.@id);
 									var dam=0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
@@ -533,7 +539,7 @@ package interdata
 			}
 			if (page2==2) 
 			{
-				for each (var task in GameData.d.vendor.task)
+				for each (var task in XmlBook.getXML("vendors").vendor.task)
 				 {
 					if (task.@man=='1') continue;
 					if (checkQuest(task)) {

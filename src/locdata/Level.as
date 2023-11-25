@@ -9,6 +9,7 @@ package locdata
 	import unitdata.Pers;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class Level 
 	{
@@ -618,7 +619,7 @@ package locdata
 					var room:Room = newRoom(roomTemplate,0,0,0,{prob:nprob});
 					room.levelProb = nprob;
 					room.noMap = true;
-					var xmll = GameData.d.level.prob.(@id == nprob);
+					var xmll:XMLList = XmlBook.getXML("levels").level.prob.(@id == nprob);
 					if (xmll.length()) room.prob = new Probation(xmll[0],room);
 					//add an exit door
 					if (room.spawnPoints.length) 

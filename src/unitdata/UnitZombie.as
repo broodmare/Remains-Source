@@ -11,6 +11,7 @@ package unitdata
 	import weapondata.Weapon;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.visZombieLight;
 	
@@ -52,7 +53,8 @@ package unitdata
 		
 		protected var levitFilter:GlowFilter;
 
-		public function UnitZombie(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitZombie(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -92,7 +94,7 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1)
+		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
 			if (hero==1) {
@@ -104,7 +106,7 @@ package unitdata
 		{
 			super.getXmlParam('zombie');
 			super.getXmlParam();
-			var node0:XML=AllData.d.unit.(@id==id)[0];
+			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
 			if (node0.un.length()) {
 				if (node0.un.@ss.length()) superSilaTip=node0.un.@ss;		//суперсила
 				if (node0.un.@glow.length()) glowTip=node0.un.@glow;		//свечение
@@ -112,14 +114,14 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			radMax*=(1+0.05*level);
 			radHeal*=(1+level*0.16);
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X+storona*30;
 			weaponY=Y-scY*0.8;
@@ -133,7 +135,7 @@ package unitdata
 			return obj;
 		}	
 		
-		public override function setPos(nx:Number,ny:Number)
+		public override function setPos(nx:Number,ny:Number):void
 		{
 			super.setPos(nx,ny);
 			if (digger && room && !room.roomActive) {
@@ -149,7 +151,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			if (sost==3 && isRes && t_res<20) {
@@ -253,7 +255,7 @@ package unitdata
 			}
 		}
 		
-		public override function actions()
+		public override function actions():void
 		{
 			super.actions();
 			rasst=Math.sqrt(rasst2);
@@ -270,11 +272,14 @@ package unitdata
 			visDetails();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1) 
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 				aiJump=Math.floor(30+Math.random()*50);
-			} else if (isPlav) {
+			} 
+			else if (isPlav) 
+			{
 				dy-=plavdy;
 			}
 		}
@@ -286,7 +291,8 @@ package unitdata
 			super.initBurn(sposob);
 		}
 		
-		public function zakop() {
+		public function zakop() 
+		{
 			knocked=0;
 			aiState=5;
 			scY=0;
@@ -300,18 +306,23 @@ package unitdata
 			if (digger==1) {
 				vision=0.75;
 				ear=0.2;
-			} else if (digger==2){
+			} 
+			else if (digger==2){
 				vision=0;
 				ear=1.8;
-			} else {
+			} 
+			else 
+			{
 				vision=ear=0;
 			}
-			if (vlight) {
+			if (vlight) 
+			{
 				vlight.alpha=0;
 				vlight.y=0;
 			}
 		}
-		public function vykop() {
+		public function vykop() 
+		{
 			knocked=knocked2;
 			scY=stayY;
 			Y1=Y-scY;
@@ -329,7 +340,8 @@ package unitdata
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		function checkJump():Boolean 
+		{
 			if (room.getAbsTile(X,Y-85).phis!=0) return false;
 			if (room.getAbsTile(X,Y-125).phis!=0) return false;
 			if (room.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
@@ -339,13 +351,15 @@ package unitdata
 		
 		public override function destroyWall(t:Tile, napr:int=0):Boolean
 		{
-			if (napr==3 && dy>5 && superQuake && isrnd(0.2)) {
+			if (napr==3 && dy>5 && superQuake && isrnd(0.2)) 
+			{
 				quake(dy);
 			}
 			return super.destroyWall(t, napr);
 		}
 		
-		function resurrect() {
+		function resurrect()
+		{
 			hp=maxhp;
 			sost=1;
 			scY=stayY; Y1=Y-scY;
@@ -384,7 +398,7 @@ package unitdata
 		//6 - выкапывается
 		//7 - спецприём
 		
-		public override function control()
+		public override function control():void
 		{
 			var t:Tile;
 			//если сдох, то не двигаться

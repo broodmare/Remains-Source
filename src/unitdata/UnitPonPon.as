@@ -15,28 +15,38 @@ package unitdata
 		var verVis:Number=0.4;
 		var privet:Boolean=false;
 		
-		public function UnitPonPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitPonPon(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='ponpon';
 			//if (questId==null) questId=id;
 			npc=true;
 			getXmlParam();
-			if (loadObj && loadObj.tr) {			//из загружаемого объекта
+			if (loadObj && loadObj.tr) 
+			{			//из загружаемого объекта
 				tr=loadObj.tr;
-			} else if (xml && xml.@tr.length()) {	//из настроек карты
+			} 
+			else if (xml && xml.@tr.length()) 
+			{	//из настроек карты
 				tr=xml.@tr;
-			} else {
+			} 
+			else 
+			{
 				if (cid=='zebra') tr=Math.floor(Math.random()*5+1);
 				if (cid=='stab') tr=Math.floor(Math.random()*33+1);
 				else tr=Math.floor(Math.random()*15+13);
 			}
-			if (cid=='zebra') {
+
+			if (cid=='zebra') 
+			{
 				if (tr>=4) msex=true;
 				vis=new visualZebPon();
 				//id_replic='';
 				if (!uniqName) objectName=Res.txt('u','zebpon');
 				verVis=1;
-			} else if (cid=='stab') {
+			} 
+			else if (cid=='stab') 
+			{
 				vis=new visualStabPon();
 				if (!uniqName) objectName=Res.txt('u','stabpon');
 				verVis=1;
@@ -44,13 +54,17 @@ package unitdata
 				if (tr>=17 && tr<=27) msex=true;
 				if (tr>=28) id_replic='child';
 				privet=true;
-			} else {
+			} 
+			else 
+			{
 				vis=new visualPonPon();
 				if (tr>=9 && tr<=11 || tr>=22) msex=true;
 				else msex=false;
 				if (tr==12) novoi=true;
 			}
-			if (xml && xml.@rep.length()) {
+
+			if (xml && xml.@rep.length()) 
+			{
 				id_replic=xml.@rep;
 				privet=false;
 			}
@@ -76,28 +90,31 @@ package unitdata
 			return obj;
 		}	
 	
-		public override function animate()
+		public override function animate():void
 		{
 		}
 		
 		public override function command(com:String, val:String=null):void
 		{
 			super.command(com,val);
-			if (com=='tell' && act) {
+			if (com=='tell' && act) 
+			{
 				t_replic=0;
 				replic(val);			
 			}
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (novoi || !act) return;
 			t_replic--;
 			if (room!=World.world.room) return;
-			if (privet && t_replic%60==3) {
+			if (privet && t_replic%60==3) 
+			{
 				var nx=World.world.gg.X-X;
 				var ny=World.world.gg.Y-Y;
-				if (Math.abs(nx)<200 && Math.abs(ny)<60) {
+				if (Math.abs(nx)<200 && Math.abs(ny)<60) 
+				{
 					t_replic=0;
 					replic('hi');
 					t_replic=Math.random()*1500+1000;

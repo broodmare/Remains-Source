@@ -16,7 +16,8 @@ package unitdata
 		var br:Number=0;
 		var iskr:Emitter;
 
-		public function UnitVortex(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitVortex(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='vortex';
 			vis=new visualVortex();
@@ -41,14 +42,16 @@ package unitdata
 			newPart('miniexpl');
 		}
 		
-		public override function forces()
+		public override function forces():void
 		{
 			if (isFly) {
-				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
+				if (dx*dx+dy*dy>maxSpeed*maxSpeed) 
+				{
 					dx*=0.95;
 					dy*=0.95;
 				}
-				if (isPlav) {
+				if (isPlav) 
+				{
 					dy*=0.9;
 					dx*=0.9;
 				}
@@ -71,13 +74,14 @@ package unitdata
 		public override function alarma(nx:Number=-1,ny:Number=-1)
 		{
 			super.alarma(nx,ny);
-			if (sost==1) {
+			if (sost==1) 
+			{
 				aiState=2;
 				aiTCh=3;
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			br+=(dx*2.5-br)/4;
 			vis.osn.rotation=br*storona;
@@ -88,44 +92,61 @@ package unitdata
 		//1 - видит цель, летит к ней
 		//2 - потерял цель
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
-			if (rasst2<800*800) {
+			if (rasst2<800*800) 
+			{
 				
 			}
-			if (Settings.enemyAct<=0) {
+			if (Settings.enemyAct<=0) 
+			{
 				return;
 			}
-			if (stun) {
+			if (stun) 
+			{
 				return;
 			}
 			if (aiTCh>0) aiTCh--;		//счётчик смены состояний
-			else {						//смена состояний
-				if (aiSpok==0) {	//перейти в пассивный режим
+			else 
+			{						//смена состояний
+				if (aiSpok==0) 
+				{	//перейти в пассивный режим
 					aiState=0;
-				} else if (aiSpok>=maxSpok) {	//агрессивный
+				} 
+				else if (aiSpok>=maxSpok) 
+				{	//агрессивный
 					aiState=1;
-				} else {
+				} 
+				else 
+				{
 					aiState=2;
 				}
 				aiTCh=Math.floor(Math.random()*100)+100;
-				if (aiState==0) {		//выбрать случайную цель в пассивном режиме
-					if (isrnd()) {
+				if (aiState==0) 
+				{		//выбрать случайную цель в пассивном режиме
+					if (isrnd()) 
+					{
 						celX=X+(Math.random()*300+400)*(isrnd()?1:-1);
 						celY=Y+Math.random()*200-100;
-					} else {
+					} 
+					else 
+					{
 						celX=X, celY=Y-scY/2;
 					}
 				}
 			}
 			//поиск цели
-			if (Settings.enemyAct>1 && aiTCh%10==1) {
-				if (findCel()) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) 
+			{
+				if (findCel()) 
+				{
 					aiSpok=maxSpok+10;
 					aiState=1;
 					storona=(celX>X)?1:-1;
-				} else {
+				} 
+				else 
+				{
 					if (aiSpok>0) aiSpok--;
 				}
 				spd.x=celX-X;
@@ -138,19 +159,22 @@ package unitdata
 			if (aiState==0) maxSpeed=walkSpeed;
 			else maxSpeed=runSpeed;
 	
-			if (turnX!=0) {
+			if (turnX!=0) 
+			{
 				iskr.cast(room,X+15*storona,Y-15,{dx:dx, kol:Math.floor(Math.random()*5+3)});
 				Snd.ps('vortex_cut',X,Y,0,sndVolkoef);
 				storona=turnX;
 				aiTCh=0
 				turnX=0;
 			}
-			if (turnY!=0) {
+			if (turnY!=0) 
+			{
 				dy=-dy*0.5;
 				turnY=0;
 			}
 			//атака
-			if (Settings.enemyAct>=3 && aiState==1 && celUnit && shok<=0) {
+			if (Settings.enemyAct>=3 && aiState==1 && celUnit && shok<=0) 
+			{
 				attKorp(celUnit,1);
 			}
 		}

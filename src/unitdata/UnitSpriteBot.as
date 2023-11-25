@@ -34,7 +34,7 @@ package unitdata
 			newPart('miniexpl');
 		}
 		
-		public override function forces()
+		public override function forces():void
 		{
 			if (isFly) {
 				dx*=0.95;
@@ -53,7 +53,7 @@ package unitdata
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-1;
@@ -68,7 +68,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 		}
 		
@@ -84,7 +84,7 @@ package unitdata
 		//0 - летает
 		//1 - видит цель, стреляет
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			if (Settings.enemyAct<=0) {

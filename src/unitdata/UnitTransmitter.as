@@ -61,7 +61,7 @@ package unitdata
 			//if (shum) shum.stop();
 			//shum=null;
 		}
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
@@ -80,7 +80,7 @@ package unitdata
 		//0 - ничего не делает
 		//1 - излучает
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			if (Settings.enemyAct<=0) {

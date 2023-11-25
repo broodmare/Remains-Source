@@ -7,6 +7,7 @@ package unitdata
 	import flash.ui.Multitouch;
 
 	import components.Settings;
+	import components.XmlBook;
 
 	public class Spell 
 	{
@@ -17,25 +18,29 @@ package unitdata
 		public var id:String;
 		public var objectName:String;
 		public var xml:XML;
-		public var player:Boolean=false;		//заклинание относится к гг
-		public var X:Number=0, Y:Number=0;		//положение источника
-		public var cx:Number=0, cy:Number=0;	//положение цели
-		public var power:Number=1;				//множитель силы заклинания
-		public var prod:Boolean=false;			//продолжительное
-		public var atk:Boolean=false;			//запрещено, когда запрещена атака
-		public var active:Boolean=false;
-		public var teleSpell:Boolean=false;		//заклинание телекинеза
-		var est:int=1;							//результат каста
+		public var player:Boolean = false;		//заклинание относится к гг
+		public var X:Number = 0;
+		public var Y:Number = 0;				//положение источника
+		public var cx:Number = 0;
+		public var cy:Number = 0;				//положение цели
+		public var power:Number = 1;			//множитель силы заклинания
+		public var prod:Boolean = false;		//продолжительное
+		public var atk:Boolean = false;			//запрещено, когда запрещена атака
+		public var active:Boolean = false;
+		public var teleSpell:Boolean = false;	//заклинание телекинеза
+		var est:int = 1;						//результат каста
 		
-		public var magic:Number=0, dmagic:Number=0;	//сколько маны требует
-		public var mana:Number=0, dmana:Number=0;	//сколько маны требует
-		public var culd:int=0;					//кулдаун
-		public var t_culd:int=0;
-		public var hp:Number=300;					//хп заклинания
-		public var dist:Number=0;					//максимальная дистанция заклинания
-		public var rad:Number=0;					//радиус заклинания
-		public var dam:Number=0;					//действие заклинания
-		public var line:int=0;			//требование к видимости цели
+		public var magic:Number = 0;
+		public var dmagic:Number = 0;			//сколько маны требует
+		public var mana:Number = 0;
+		public var dmana:Number = 0;			//сколько маны требует
+		public var culd:int = 0;				//кулдаун
+		public var t_culd:int = 0;
+		public var hp:Number = 300;				//хп заклинания
+		public var dist:Number = 0;				//максимальная дистанция заклинания
+		public var rad:Number = 0;				//радиус заклинания
+		public var dam:Number = 0;				//действие заклинания
+		public var line:int = 0;				//требование к видимости цели
 		
 		public var cf:Function;
 		
@@ -43,49 +48,49 @@ package unitdata
 
 		public function Spell(own:Unit, nid:String) 
 		{
-			id=nid;
-			owner=own;
+			id = nid;
+			owner = own;
 			if (owner && owner.player) 
 			{
 				player = true;
 				gg = owner as UnitPlayer;
 			}
 			
-			xml=AllData.d.item.(@id==id)[0];
-			if (xml.@hp.length()) hp=xml.@hp;
-			if (xml.@mana.length()) mana=xml.@mana;
-			if (xml.@magic.length()) magic=xml.@magic;
-			if (xml.@culd.length()) culd=xml.@culd*Settings.fps;
-			if (xml.@dist.length()) dist=xml.@dist;
-			if (xml.@line.length()) line=xml.@line;
-			if (xml.@rad.length()) rad=xml.@rad;
-			if (xml.@dam.length()) dam=xml.@dam;
-			if (xml.@prod.length()) prod=true;
-			if (xml.@tele.length()) teleSpell=true;
-			if (xml.@atk.length()) atk=true;
-			objectName=Res.txt('i',id);
-			if (xml.@snd.length()) snd=xml.@snd;
+			xml = XmlBook.getXML("items").item.(@id == id)[0];
+			if (xml.@hp.length()) hp = xml.@hp;
+			if (xml.@mana.length()) mana = xml.@mana;
+			if (xml.@magic.length()) magic = xml.@magic;
+			if (xml.@culd.length()) culd = xml.@culd*Settings.fps;
+			if (xml.@dist.length()) dist = xml.@dist;
+			if (xml.@line.length()) line = xml.@line;
+			if (xml.@rad.length()) rad = xml.@rad;
+			if (xml.@dam.length()) dam = xml.@dam;
+			if (xml.@prod.length()) prod = true;
+			if (xml.@tele.length()) teleSpell = true;
+			if (xml.@atk.length()) atk = true;
+			objectName=Res.txt('i', id);
+			if (xml.@snd.length()) snd = xml.@snd;
 			
-			if (id=='sp_mwall') cf=cast_mwall;
-			if (id=='sp_mshit') cf=cast_mshit;
-			if (id=='sp_blast') cf=cast_blast;
-			if (id=='sp_kdash') cf=cast_kdash;
-			if (id=='sp_slow') cf=cast_slow;
-			if (id=='sp_cryst') cf=cast_cryst;
-			if (id=='sp_moon') cf=cast_moon;
-			if (id=='sp_gwall') cf=cast_gwall;
-			if (id=='sp_invulner') cf=cast_invulner;
+			if (id == 'sp_mwall') cf = cast_mwall;
+			if (id == 'sp_mshit') cf = cast_mshit;
+			if (id == 'sp_blast') cf = cast_blast;
+			if (id == 'sp_kdash') cf = cast_kdash;
+			if (id == 'sp_slow') cf = cast_slow;
+			if (id == 'sp_cryst') cf = cast_cryst;
+			if (id == 'sp_moon') cf = cast_moon;
+			if (id == 'sp_gwall') cf = cast_gwall;
+			if (id == 'sp_invulner') cf = cast_invulner;
 		}
 		
 		public function step():void
 		{
-			if (t_culd>0) t_culd--;
+			if (t_culd > 0) t_culd--;
 		}
 		
-		public function cast(nx:Number=0, ny:Number=0):Boolean 
+		public function cast(nx:Number = 0, ny:Number = 0):Boolean 
 		{
 			//проверка возможности магии и наличия маны
-			if (cf==null) return false;
+			if (cf == null) return false;
 			if (player) 
 			{
 				if (Settings.alicorn && id!='sp_mshit') return false;
@@ -103,11 +108,11 @@ package unitdata
 					World.world.gui.bulb(owner.X,owner.Y);
 					return false;
 				}
-				if (t_culd>0) 
+				if (t_culd > 0) 
 				{
 					if (!active) 
 					{
-						if (culd>=100) 
+						if (culd >= 100) 
 						{
 							World.world.gui.infoText('spellCuld',Math.ceil(t_culd/Settings.fps),null,false);
 							World.world.gui.bulb(owner.X,owner.Y-20);
@@ -136,12 +141,13 @@ package unitdata
 			//координаты источника
 			if (owner) 
 			{
-				X=owner.magicX;
-				Y=owner.magicY;
-				room=owner.room;
-				power=owner.spellPower;
-				if (player && teleSpell) {
-					power=gg.pers.telePower;
+				X = owner.magicX;
+				Y = owner.magicY;
+				room = owner.room;
+				power = owner.spellPower;
+				if (player && teleSpell) 
+				{
+					power = gg.pers.telePower;
 				}
 			} 
 			else 
@@ -149,22 +155,24 @@ package unitdata
 				room=World.world.room;
 			}
 			//координаты цели
-			cx=nx, cy=ny;
+			cx = nx;
+			cy = ny;
+
 			//проверка видимости точки цели, если это нужно
-			if (line==1 && owner && !owner.room.isLine(X,Y, cx, cy)) 
+			if (line == 1 && owner && !owner.room.isLine(X, Y, cx, cy)) 
 			{
-				if (player) World.world.gui.infoText('noVisible',null,null,false);
+				if (player) World.world.gui.infoText('noVisible', null, null, false);
 				return false;
 			}
 			//проверка и коррекция дистанции
-			if (dist>0) 
+			if (dist > 0) 
 			{
-				var rasst2=(X-cx)*(X-cx)+(Y-cy)*(Y-cy);
-				if (rasst2>dist*dist) 
+				var rasst2 = (X - cx) * (X - cx) + (Y - cy) * (Y - cy);
+				if (rasst2 > dist * dist) 
 				{
-					var rasst=Math.sqrt(rasst2);
-					cx=X-(X-cx)*dist/rasst;
-					cy=Y-(Y-cy)*dist/rasst;
+					var rasst = Math.sqrt(rasst2);
+					cx = X - (X - cx) * dist / rasst;
+					cy = Y - (Y - cy) * dist / rasst;
 				}
 			}
 			//снять ману

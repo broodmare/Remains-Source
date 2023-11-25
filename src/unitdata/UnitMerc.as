@@ -52,7 +52,7 @@ package unitdata
 				World.world.grafon.canvasLayerArray[layer].removeChild(arm);
 			} catch (err) {}
 		}
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
@@ -64,7 +64,7 @@ package unitdata
 			}
 		}
 		//Set weapon position
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			if (arm==null || arm.parent==null) {
 				super.setWeaponPos(tip);
@@ -104,7 +104,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			var revers:Boolean=false;

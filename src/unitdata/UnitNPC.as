@@ -182,7 +182,7 @@ package unitdata
 			inter.update();
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (t_anim>0) t_anim--;
 			else {
@@ -322,7 +322,7 @@ package unitdata
 		
 		
 		
-		public override function control()
+		public override function control():void
 		{
 			if (t_ref>0) t_ref--;
 			if (World.world.gui.dialScript.running) {

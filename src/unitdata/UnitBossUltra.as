@@ -78,7 +78,7 @@ package unitdata
 			super.dropLoot();
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
@@ -140,7 +140,7 @@ package unitdata
 			return obj;
 		}	
 		
-		public override function animate()
+		public override function animate():void
 		{
 			thWeapon.vis.visible=false;
 			//щит
@@ -162,7 +162,7 @@ package unitdata
 			}
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				if (sost==2) {
@@ -175,7 +175,7 @@ package unitdata
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=vis.x;
 			weaponY=vis.y-110;
@@ -204,7 +204,7 @@ package unitdata
 		//2 - готовится выполнить действие
 		//3 - выполняет действие
 		
-		public override function control()
+		public override function control():void
 		{
 
 			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);

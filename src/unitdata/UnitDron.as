@@ -86,7 +86,7 @@ package unitdata
 			newPart('miniexpl');
 		}
 		
-		public override function forces()
+		public override function forces():void
 		{
 			if (isFly) {
 				if (t_throw<=0 && dx*dx+dy*dy>maxSpeed*maxSpeed) {
@@ -112,7 +112,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			br+=(dx*1.5-br)/4;
 			vis.osn.rotation=br*storona;
@@ -127,7 +127,7 @@ package unitdata
 			//vis.cif.text=aiState;
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-scY/2;
@@ -141,7 +141,7 @@ package unitdata
 		//2 - потерял цель
 		//3 - удаляется для новой атаки
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			if (Settings.enemyAct<=0) {

@@ -8,6 +8,7 @@ package interdata
 	import unitdata.Pers;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.visPipStatItem;
 	
@@ -62,9 +63,9 @@ package interdata
 				arr.push({id:'reput', objectName:Res.txt('p', 'reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
 				var arm:String='';
 				
-				for (var i=0; i<AllData.d.param.length(); i++) 
+				for (var i = 0; i < XmlBook.getXML("parameters").param.length(); i++) 
 				{
-					var xml=AllData.d.param[i];
+    				var xml = XmlBook.getXML("parameters").param[i];
 					if (xml.@show>0) 
 					{
 						if (xml.@show=='2' && gg.armor==0 && gg.marmor==0) continue;
@@ -173,7 +174,7 @@ package interdata
 				for (var pid in pers.perks) 
 				{
 					var maxlvl=1;
-					var xperk=AllData.d.perk.(@id==pid);
+					var xperk = XmlBook.getXML("perks").perk.(@id == pid);
 					if (xperk.length() && xperk.@lvl.length()) maxlvl=xperk.@lvl;
 					var numb=pers.perks[pid];
 					var n:Object={id:pid, objectName:Res.txt('e',pid), lvl:numb, maxlvl:maxlvl, sort:(xperk.@tip=='0'?2:1)};
@@ -240,7 +241,7 @@ package interdata
 				perkPoint=pers.perkPoint;
 				statHead.objectName.text=Res.txt('p', 'is5');
 				statHead.numb.text=Res.txt('p', 'is2');
-				for each(var dp:XML in AllData.d.perk) 
+				for each (var dp:XML in XmlBook.getXML("perks").perk) 
 				{
 					if (dp.@tip==1) 
 					{
@@ -346,7 +347,7 @@ package interdata
 						vis.info.htmlText=Res.txt('p',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
-					var xml=AllData.d.param.(@id==id);
+					var xml = XmlBook.getXML("parameters").param.(@id == id);
 					if (xml.length() && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
 				} 
 				else if (page2==5) 

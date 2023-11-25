@@ -30,7 +30,8 @@ package unitdata
 		var optUncall:Boolean=false;	//отзыв при смерти
 		var optTurn:Boolean=true;	//поворачиваться
 
-		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitPet(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='phoenix';
 			if (cid!=null) id=cid;
@@ -91,7 +92,7 @@ package unitdata
 			if (World.world.room.petOn) super.step();
 		}
 		
-		public override function forces()
+		public override function forces():void
 		{
 			if (isFly) {
 				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
@@ -127,23 +128,26 @@ package unitdata
 		}
 		
 		//настройка силы спутника
-		public override function setLevel(nlevel:int=1)
+		public override function setLevel(nlevel:int=1):void
 		{
 			level = nlevel-1;
 			var koef=hp/maxhp;
-			if (id=='phoenix') {
+			if (id=='phoenix') 
+			{
 				maxhp=gg.pers.petHP*(1+level*0.12);
 				dam=gg.pers.petDam*(1+level*0.1);
 				currentWeapon.damage=gg.pers.petDam*(1+level*0.1);
 				skin=gg.pers.petSkin;
 				allVulnerMult=gg.pers.petVulner;
-			} else if (id=='owl') {
+			} else if (id=='owl') 
+			{
 				maxhp=gg.pers.owlHP*(1+level*0.1);
 				dam=gg.pers.owlDam*(1+level*0.1);
 				currentWeapon.damage=gg.pers.owlDam*(1+level*0.1);
 				skin=gg.pers.owlSkin;
 				allVulnerMult=gg.pers.owlVulner;
-			} else if (id=='moon') {
+			} else if (id=='moon') 
+			{
 				maxhp=gg.pers.moonHP*(1+level*0.1)*gg.spellPower;
 				dam=gg.pers.moonDam*(1+level*0.1)*gg.spellPower;
 			}
@@ -151,7 +155,7 @@ package unitdata
 			hp=koef*maxhp;
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			if (id=='phoenix') {
 				weaponX=X+15*storona;
@@ -164,7 +168,7 @@ package unitdata
 			magicY=weaponY;
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (oduplenie>30) vis.alpha=0;
 			else if (oduplenie>0) vis.alpha=1-oduplenie/30;
@@ -191,14 +195,15 @@ package unitdata
 			}
 			if (hpbar) hpbar.alpha=vis.alpha;
 		}
-		public override function visDetails()
+		public override function visDetails():void
 		{
 			super.visDetails();
 			World.world.gui.setPet();
 		}
 		
 		//найти точку следования
-		function getFlyPoint() {
+		function getFlyPoint():void
+		{
 			var rx:Number=-120;
 			var ry:Number=-80;
 			flyBox=null;
@@ -261,7 +266,7 @@ package unitdata
 		}
 		
 		//приказ двигаться
-		public function moveTo(nx:Number, ny:Number, unmat:Boolean=false)
+		public function moveTo(nx:Number, ny:Number, unmat:Boolean=false):void
 		{
 			if (sost==4 || oduplenie>0) return;
 			tempUnmat=unmat;
@@ -271,7 +276,6 @@ package unitdata
 				//не лететь в неразведанное место
 				return;
 			}
-			//gotoX=nx, gotoY=ny;
 			flyX=nx, flyY=ny+20;
 			aiState=3;
 			if (optTurn) storona=(flyX>X)?1:-1;
@@ -279,17 +283,19 @@ package unitdata
 		}
 		
 		//приказ атаковать
-		public function atk(un:Unit)
+		public function atk(un:Unit):void
 		{
 			tempUnmat=false;
-			if (visCelUnit(un)) {
+			if (visCelUnit(un)) 
+			{
 				setCel(un);
 				flyBox=null;
 				aiState=2;
 			}
 		}
 		
-		public function call() {
+		public function call():void 
+		{
 			active=true;
 			if (hp<=0 && !optAutores) return;
 			if (sost==4 && optAutores) resurrect();
@@ -306,7 +312,8 @@ package unitdata
 		}
 		
 		//отзыв
-		public function recall() {
+		public function recall():void
+		{
 			active=false;
 			sost=4;
 			if (vis.visible) expl();
@@ -336,7 +343,8 @@ package unitdata
 			World.world.gui.setPet();
 		}
 		
-		public function resurrect() {
+		public function resurrect():void
+		{
 			World.world.gui.infoText('petRes', objectName);
 			if (hpbar) hpbar.visible=false;
 			hp=Math.min(100,maxhp/2);
@@ -385,7 +393,7 @@ package unitdata
 		//4 - атакует корпусом
 		//5 - после атаки корпусом
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3 || !active) return;
 			if (stun) {

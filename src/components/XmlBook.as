@@ -94,6 +94,7 @@ package components
 
             xmlBook = new Dictionary();
 
+            //Alldata
             xmlBook["armors"]       = new XML();
             xmlBook["backgrounds"]  = new XML();
             xmlBook["effects"]      = new XML();
@@ -106,6 +107,14 @@ package components
             xmlBook["skills"]       = new XML();
             xmlBook["units"]        = new XML();
             xmlBook["weapons"]      = new XML();
+
+            //GameData
+            xmlBook["levels"]       = new XML();
+            xmlBook["npcs"]         = new XML();
+            xmlBook["scripts"]      = new XML();
+            xmlBook["quests"]       = new XML();
+            xmlBook["vendors"]      = new XML();
+
         }
 
         public static function getXML(xmlKey:String):XML

@@ -7,6 +7,7 @@ package graphdata
 	import servdata.BlitAnim;
 	
 	import components.Settings;
+	import components.XmlBook;
 
 	public class Emitter 
 	{
@@ -109,7 +110,8 @@ package graphdata
 		public static function init():void
 		{
 			arr = new Array();
-			for each(var xml:XML in AllData.d.part) 
+			var particlesXML:XML = XmlBook.getXML("particles");
+			for each (var xml:XML in particlesXML.part) 
 			{
 				var em:Emitter = new Emitter(xml);
 				arr[em.id] = em;

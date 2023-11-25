@@ -31,7 +31,7 @@ package unitdata
 			wPos=BlitAnim.wPosGutsy;
 		}
 		
-		public override function forces()
+		public override function forces():void
 		{
 			super.forces();
 			if (sost<3 && dy>0) {
@@ -39,7 +39,7 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			if (dopWeapon && dopWeapon.tip==0) {
@@ -55,7 +55,7 @@ package unitdata
 			}
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			if (sost==3) { //сдох
@@ -75,7 +75,7 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			var obj:Object=wPos[anims[animState].id][Math.floor(anims[animState].f)];
 			weaponX=X+(obj.x+visBmp.x)*storona;

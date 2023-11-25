@@ -24,7 +24,7 @@ package unitdata
 			if (quiet) id_replic='';
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
@@ -44,7 +44,7 @@ package unitdata
 			} 
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-40;

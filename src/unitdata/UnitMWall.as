@@ -38,12 +38,12 @@ package unitdata
 			if (vis && room && room.roomActive) World.world.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
-		public override function visDetails()
+		public override function visDetails():void
 		{
 		
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			hp-=0.2;
 			if (hp<50) vis.alpha=hp/50;

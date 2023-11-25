@@ -82,7 +82,7 @@ package unitdata
 			coord['liv'+tr]=true;
 		}
 
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
@@ -96,7 +96,7 @@ package unitdata
 			} 
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			var revers:Boolean=false;
@@ -116,7 +116,7 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-scY*0.58;
@@ -165,7 +165,7 @@ package unitdata
 		//1 - летает и атакует
 		//2 - меняет оружие
 		
-		public override function control()
+		public override function control():void
 		{
 			//если сдох, то не двигаться
 			if (sost==3) return;

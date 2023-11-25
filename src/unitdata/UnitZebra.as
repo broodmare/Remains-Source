@@ -33,7 +33,7 @@ package unitdata
 			wPos=BlitAnim.wPosZebra1;
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			super.animate();
 			if (!red) {
@@ -62,7 +62,7 @@ package unitdata
 			}
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (shine<100 && World.world.pers.infravis>0) shine=100;
 			if (sost>1) shine=100;

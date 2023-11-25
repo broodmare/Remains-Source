@@ -18,7 +18,8 @@ package unitdata
 	import stubs.visualPlayer;
 	import stubs.reloadBar;
 	
-	public class UnitPlayer extends UnitPon{
+	public class UnitPlayer extends UnitPon
+	{
 		
 		public var ctr:Ctr;
 		//движение
@@ -186,7 +187,8 @@ package unitdata
 			}
 		}
 		
-		public function UnitPlayer(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitPlayer(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			player=true; id='littlepip';
 			vis=new visualPlayer();
 			vis.osn.body.pip2.visible=false;
@@ -485,7 +487,7 @@ package unitdata
 //
 //**************************************************************************************************************************
 
-		public override function forces()
+		public override function forces():void
 		{
 			grav=1;
 			if (kdash_t>0) {
@@ -589,7 +591,7 @@ package unitdata
 			}
 		}
 		
-		public override function actions()
+		public override function actions():void
 		{
 			super.actions();
 			
@@ -1321,13 +1323,13 @@ package unitdata
 			World.world.pip.gamePause=false;
 		}
 		
-		public override function sit(turn:Boolean)
+		public override function sit(turn:Boolean):void
 		{
 			if (rat) return;
 			super.sit(turn);
 		}
 		
-		public override function control() 
+		public override function control():void
 		{
 			if (!ggControl) 
 			{
@@ -2213,7 +2215,7 @@ package unitdata
 //				Оружие и броня
 //
 //**************************************************************************************************************************
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			if (weaponKrep==0) {			//телекинез
 				if (storona>0 && celX>X2 || storona<0 && celX<X1) weaponX=X+scX*1*storona;
@@ -2418,7 +2420,7 @@ package unitdata
 			if (inf && currentSpell) World.world.gui.infoText('usedSpell',currentSpell.objectName);
 		}
 		
-		public override function setPunchWeaponPos(w:WPunch)
+		public override function setPunchWeaponPos(w:WPunch):void
 		{
 			w.X=X+scX/3*((celX>X)?1:-1);
 			w.Y=Y-scY/2;
@@ -2618,7 +2620,7 @@ package unitdata
 			vis.osn.filters=arr;
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (animOff) return;
 			vis.osn.y=0;
@@ -3139,7 +3141,7 @@ package unitdata
 			teleFilter.color=teleColor;
 		}
 		
-		public override function visDetails()
+		public override function visDetails():void
 		{
 			World.world.gui.setHp();
 		}
@@ -3149,7 +3151,7 @@ package unitdata
 			if (t && t.tileMaterial==1 && t.hp>0) Emitter.emit('electro', room, (t.X+0.5)*Tile.tilePixelWidth, (t.Y+0.5)*Tile.tilePixelHeight);
 		}
 		
-		public override function replic(s:String)
+		public override function replic(s:String):void
 		{
 			if (sost!=1 || id_replic=='') return;
 			if (t_replic>0) return;
@@ -3169,7 +3171,7 @@ package unitdata
 			if (rat>0) return;
 			super.sndStep(faza,tip);
 		}
-		protected override function sndFall()
+		protected override function sndFall():void
 		{
 			if (rat>0) return;
 			super.sndFall();

@@ -11,16 +11,16 @@ package weapondata
 		public var cel:Unit;
 		static var p:Object = {x:0, y:0};
 
-		public function SmartBullet(own:Unit, nx:Number, ny:Number, visClass:Class=null, addobj:Boolean=true) 
+		public function SmartBullet(own:Unit, nx:Number, ny:Number, visClass:Class = null, addobj:Boolean = true) 
 		{
-			super(own,nx,ny,visClass);
-			vRot=true;
+			super(own, nx, ny, visClass);
+			vRot = true;
 		}
 		
-		public function setCel(ncel:Unit, man:Number=3):void
+		public function setCel(ncel:Unit, man:Number = 3):void
 		{
-			cel=ncel;
-			manevr=man;
+			cel = ncel;
+			manevr = man;
 		}
 		
 		public override function step():void

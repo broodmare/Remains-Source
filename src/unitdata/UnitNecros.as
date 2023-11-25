@@ -33,7 +33,7 @@ package unitdata
 			vulner[D_NECRO]=0;
 		}
 
-		public override function forces()
+		public override function forces():void
 		{
 			if (isFly) {
 				if (dx*dx+dy*dy>maxSpeed*maxSpeed || rasst2<100*100) {
@@ -53,7 +53,7 @@ package unitdata
 			isFly=true;
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			vis.scaleX=1;
 			blit(anims[animState].id,Math.floor(anims[animState].f));
@@ -64,7 +64,7 @@ package unitdata
 		//0 - ничего не делает
 		//1 - летит к цели
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			if (Settings.enemyAct<=0) {

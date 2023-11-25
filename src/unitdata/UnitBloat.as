@@ -5,6 +5,7 @@ package unitdata
 	import weapondata.Bullet;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.visualBloat1;
 
@@ -55,7 +56,7 @@ package unitdata
 		{
 			super.getXmlParam('bloat');
 			super.getXmlParam();
-			var node0:XML=AllData.d.unit.(@id==id)[0];
+			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
 			if (node0.un.length()) {
 				if (node0.un.@attr.length()) attRasst=node0.un.@attr;		//дистанция атаки
 				if (node0.un.@attch.length()) attCh=node0.un.@attch;				//шанс атаки
@@ -65,7 +66,7 @@ package unitdata
 			}
 		}
 		//сделать героем
-		public override function setHero(nhero:int=1)
+		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
 			if (hero==1) {
@@ -131,7 +132,7 @@ package unitdata
 			super.incStat(sposob);
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 		}
 		
@@ -142,7 +143,7 @@ package unitdata
 		//0 - летает
 		//1 - видит цель, стреляет
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			if (Settings.enemyAct<=0) {

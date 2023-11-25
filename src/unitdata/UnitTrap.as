@@ -91,7 +91,7 @@ package unitdata
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control()
+		public override function control():void
 		{
 			aiN++;
 			if (sost>1) return;

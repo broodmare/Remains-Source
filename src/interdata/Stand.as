@@ -16,6 +16,7 @@ package interdata
 	import servdata.Item;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class Stand 
 	{
@@ -119,7 +120,7 @@ package interdata
 			trace('Stand.as/createWeaponLists() - Creaeting weapon lists.');
 			var levels:Array=[0, 0, 0, 0, 0, 0, 0];
 			var stolb:int = -1;
-			for each (var weap in AllData.d.weapon.(@tip > 0)) 
+			for each (var weap in XmlBook.getXML("weapons").weapon.(@tip > 0))
 			{
 				if (weap.@nostand>0) continue;
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) 
@@ -238,7 +239,7 @@ package interdata
 			var aid = Appear.ggArmorId;
 			Appear.transp = true;
 
-			for each(var arm in AllData.d.armor) 
+			for each (var arm in XmlBook.getXML("armors").armor)
 			{
 				if (n == 6 && arm.@tip > 1 || n==7 && arm.@tip!=3) continue;
 				var item = new itemArt();
@@ -316,7 +317,7 @@ package interdata
 			if (n < 5) vis.toptext.txt.htmlText = Res.txt('p','infostand', 0, true);
 			if (n == 5) vis.toptext.txt.htmlText = Res.txt('p','infostand', 0, true);
 			vis.toptext.visible=(n<=5);
-			for each (var weap in AllData.d.weapon.(@tip>0)) 
+			for each (var weap in XmlBook.getXML("weapons").weapon.(@tip > 0))
 			{
 				if ((n==0 && weap.@skill==1) || (n==1 && weap.@skill==2) || (n==2 && weap.@skill==4) || (n==3 && weap.@skill==5) || (n==4 && weap.@skill==3) || (n==5 && weap.@skill>=6)) 
 				{
@@ -330,7 +331,7 @@ package interdata
 					else showWeapon(weapons[weap.@id],inv.weapons[weap.@id].variant+1,inv.weapons[weap.@id].respect);
 				}
 			}
-			for each(var arm in AllData.d.armor) 
+			for each (var arm in XmlBook.getXML("armors").armor)
 			{
 				if (armors[arm.@id]) 
 				{

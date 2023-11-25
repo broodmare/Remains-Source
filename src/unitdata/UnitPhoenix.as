@@ -52,7 +52,7 @@ package unitdata
 			newPart('green_spark',25);
 		}
 
-		public override function animate()
+		public override function animate():void
 		{
 			if (aiState==0) animState='stay';
 			else animState='fly';
@@ -105,7 +105,7 @@ package unitdata
 			}
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (!stay) t_fall++;
 			if (t_fall>=3 || dx>1 || dx<-1) die();

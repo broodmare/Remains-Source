@@ -5,6 +5,7 @@ package servdata
 	import unitdata.Invent;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class Item 
 	{
@@ -76,15 +77,15 @@ package servdata
 
 				if (tip == L_ARMOR) 
 				{
-					l = AllData.d.armor.(@id == id);
+					l = XmlBook.getXML("armors").armor.(@id == id);
 				} 
 				else if (tip == L_WEAPON) 
 				{
-					l = AllData.d.weapon.(@id == id);
+					l = XmlBook.getXML("weapons").weapon.(@id == id);
 				} 
 				else 
 				{
-					l = AllData.d.item.(@id == id);
+					l = XmlBook.getXML("items").item.(@id == id);
 				}
 
 				if (l.length()) 
@@ -176,7 +177,7 @@ package servdata
 		public function itemTip():void
 		{
 			var l:XMLList;
-			l = AllData.d.item.(@id == id);
+			l = XmlBook.getXML("items").item.(@id == id);
 			if (l.length()) 
 			{
 				xml = l[0];
@@ -185,7 +186,7 @@ package servdata
 			} 
 			else 
 			{
-				l = AllData.d.weapon.(@id == id);
+				l = XmlBook.getXML("weapons").weapon.(@id == id);
 				if (l.length()) 
 				{
 					xml = l[0];
@@ -193,7 +194,7 @@ package servdata
 				} 
 				else 
 				{
-					l = AllData.d.armor.(@id == id);
+					l = XmlBook.getXML("armors").armor.(@id == id);
 					if (l.length()) 
 					{
 						xml = l[0];

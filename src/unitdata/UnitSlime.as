@@ -84,7 +84,7 @@ package unitdata
 		}
 		
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				if (aiState==1) {
@@ -105,7 +105,7 @@ package unitdata
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000)
+		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void
 		{
 			if (un && isMeet(un)) {
 				celX=un.X, celY=un.Y-un.scY/2;
@@ -127,7 +127,7 @@ package unitdata
 			die();
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>=3) return;
 			if (Settings.enemyAct<=0) {

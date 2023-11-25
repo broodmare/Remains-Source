@@ -8,11 +8,14 @@ package unitdata
 	import weapondata.WThrow;
 	import weapondata.Bullet;
 	
+	import components.XmlBook;
+	
 	import stubs.vismtrap;
 
 	//механизмы, наносящие урон
 	
-	public class UnitDamager extends Unit{
+	public class UnitDamager extends Unit
+	{
 		
 		var tr:String='0';
 		var weap:String;
@@ -31,11 +34,15 @@ package unitdata
 		var destroyExpl:Number=0;
 		var explRadius:Number=0;
 
-		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitDamager(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
-			if (cid==null) {
+			if (cid==null) 
+			{
 				id='damshot';
-			} else {
+			} 
+			else 
+			{
 				id=cid;
 			}
 			mat=1;
@@ -46,15 +53,18 @@ package unitdata
 			doop=true;
 			layer=0;
 			noBox=true;
-			if (loadObj && loadObj.tr!=null) {
+			if (loadObj && loadObj.tr!=null) 
+			{
 				tr=loadObj.tr;
 			}
-			if (xml) {
+			if (xml) 
+			{
 				if (xml.@allid.length()) allid=xml.@allid;
 				if (xml.@tr.length()) tr=xml.@tr;
 			}
 			setWeapon();
-			if (xml) {
+			if (xml) 
+			{
 				if (xml.@kolammo.length()) kolammo=xml.@kolammo;
 				if (xml.@och.length()) och=xml.@och;
 				if (xml.@expl.length()) damageExpl=xml.@expl;
@@ -72,8 +82,10 @@ package unitdata
 			setStatus();
 		}
 		
-		function setWeapon() {
-			if (tipDamager==1) {
+		function setWeapon() 
+		{
+			if (tipDamager==1) 
+			{
 				if (tr=='0') tr=Math.floor(Math.random()*5+1).toString();
 				if (tr=='1') weap='lshot';
 				else if (tr=='2') weap='hunt';
@@ -82,18 +94,21 @@ package unitdata
 				else if (tr=='5') weap='flamer';
 				else weap=tr;
 			}
-			if (tipDamager==2) {
+			if (tipDamager==2) 
+			{
 				if (tr=='0') weap='hgren';
 				else weap=tr;
 				kolammo=och=3;
 			}
-			if (tipDamager==3) {
+			if (tipDamager==3) 
+			{
 				damageExpl=250;
 				destroyExpl=1000;
 				explRadius=200;
 				kolammo=1;
 			}
-			if (tipDamager==1 || tipDamager==2) {
+			if (tipDamager==1 || tipDamager==2) 
+			{
 				currentWeapon=Weapon.create(this,weap);
 				if (currentWeapon==null) currentWeapon=Weapon.create(this,'lshot');
 				currentWeapon.hold=currentWeapon.holder;
@@ -121,22 +136,24 @@ package unitdata
 		public override function getXmlParam(mid:String=null)
 		{
 			super.getXmlParam();
-			var node0:XML=AllData.d.unit.(@id==id)[0];
-			if (node0.un.length()) {
+			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
+			if (node0.un.length()) 
+			{
 				if (node0.un.@tip.length()) tipDamager=node0.un.@tip;		//требуемый скилл
 				if (node0.un.@skill.length()) needSkill=node0.un.@skill;		//требуемый скилл
 
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			level+=nlevel;
 			var sk:int=Math.round(level*0.25*(Math.random()*0.7+0.3));
 			if (sk<1) sk=1;
 			if (sk>5) sk=5;
 			inter.needSkillLvl=sk;
-			if (currentWeapon) {
+			if (currentWeapon) 
+			{
 				currentWeapon.damage*=(1+level*0.05);
 				currentWeapon.damageExpl*=(1+level*0.05);
 			}
@@ -145,17 +162,22 @@ package unitdata
 		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
 		{
 			super.putLoc(newRoom,nx,ny);
-			if (room.mirror) {
+			if (room.mirror) 
+			{
 				storona=-storona;
 				aiNapr=storona;
 			}
-			if (currentWeapon) {
-				if (tipDamager==2) {
+			if (currentWeapon) 
+			{
+				if (tipDamager==2) 
+				{
 					celX=X, celY=Y;
 					currentWeapon.rot=Math.PI/2;
 					currentWeapon.rapid=1;
 					(currentWeapon as WThrow).detTime=45;
-				} else if (tipDamager==1) {
+				} 
+				else if (tipDamager==1) 
+				{
 					celX=X+200*storona, celY=Y-scY/2;
 					currentWeapon.rot=(storona<0)?Math.PI:0;
 				}
@@ -249,13 +271,13 @@ package unitdata
 		}
 		
 		//не искать цели
-		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000)
+		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void
 		{
 		}
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public override function control()
+		public override function control():void
 		{
 			if (sost>1 || status==2 || kolammo<=0) return;
 			aiN++;

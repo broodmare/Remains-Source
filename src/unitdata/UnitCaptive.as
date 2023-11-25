@@ -70,7 +70,7 @@ package unitdata
 			return obj;
 		}	
 	
-		public override function animate()
+		public override function animate():void
 		{
 		}
 		
@@ -98,7 +98,7 @@ package unitdata
 			statusCapt=1;
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (statusCapt>0 || novoi) return;
 			t_replic--;

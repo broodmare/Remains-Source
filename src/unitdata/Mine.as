@@ -6,6 +6,7 @@ package unitdata
 	import locdata.Room;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.vismine;
 
@@ -43,28 +44,28 @@ package unitdata
 			} 
 			else if (cid) 
 			{
-				id=cid;
+				id = cid;
 			} 
 			else 
 			{
-				tr=1;
+				tr = 1;
 			}
-			if (tr>0) 
+			if (tr > 0) 
 			{
-				id='hmine';
-				if (tr==1) id='hmine';
-				if (tr==2) id='mine';
-				if (tr==3) id='plamine';
-				if (tr==4) id='impmine';
-				if (tr==5) id='zebmine';
-				if (tr==6) id='balemine';
+				id = 'hmine';
+				if (tr == 1) id = 'hmine';
+				if (tr == 2) id = 'mine';
+				if (tr == 3) id = 'plamine';
+				if (tr == 4) id = 'impmine';
+				if (tr == 5) id = 'zebmine';
+				if (tr == 6) id = 'balemine';
 			}
 			vis=Res.getVis('vis'+id,vismine);
 			
 			if (reloadTime) vis.gotoAndStop(1);
 			else vis.gotoAndStop(2);
 			setVis(false);
-			var node:XML=AllData.d.weapon.(@id==id)[0];
+			var node:XML = XmlBook.getXML("weapons").weapon.(@id == id)[0];
 			objectName=Res.txt('w',id);
 			scX=node.@sX;
 			scY=node.@sY;
@@ -89,7 +90,7 @@ package unitdata
 			massa=massaFix;
 			
 			damage1*=(Math.random()*0.3+0.85);
-			node=AllData.d.weapon.(@id==id)[0].vis[0];
+			node = XmlBook.getXML("weapons").weapon.(@id == id)[0].vis[0];
 			if (node.@tipdec.length()) tipDecal=node.@tipdec;
 			
 			aiState=1;
@@ -136,7 +137,7 @@ package unitdata
 			if (room.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			if (nlevel>10) damage1*=(1+(nlevel-10)*0.1);
@@ -156,7 +157,7 @@ package unitdata
 			return obj;
 		}	
 		
-		public function setVis(v:Boolean)
+		public function setVis(v:Boolean):void
 		{
 			isVis=v;
 			levitPoss=v;
@@ -171,7 +172,7 @@ package unitdata
 		
 		var aiN:int=Math.floor(Math.random()*5);
 		
-		public function remine()
+		public function remine():void
 		{
 			inter.active=false;
 			if (!room.train) LootGen.lootId(room,X,Y,id);
@@ -181,7 +182,7 @@ package unitdata
 			room.remObj(this);
 		}
 		
-		public function activate()
+		public function activate():void
 		{
 			inter.active=0;
 			aiState=2;
@@ -194,7 +195,7 @@ package unitdata
 			super.die(0);
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			aiN++;
 			if (levit || !stay && !fixed && oduplenie<=0 || !stay && fraction==F_PLAYER) 

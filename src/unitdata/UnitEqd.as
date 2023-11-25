@@ -31,7 +31,7 @@ package unitdata
 			super.dropLoot();
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			var revers:Boolean=false;
@@ -75,7 +75,7 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-40;

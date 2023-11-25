@@ -74,7 +74,7 @@ package unitdata
 		}
 		
 
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
@@ -89,7 +89,7 @@ package unitdata
 			} 
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (sost==3) { //сдох
 				if (animState!='die') {
@@ -148,7 +148,7 @@ package unitdata
 			//World.world.gui.vis.hpbarboss.hpNum.text='('+aiState+') '+aiTCh+' '+atk_t;
 		}
 		
-		public override function setWeaponPos(tip:int=0)
+		public override function setWeaponPos(tip:int=0):void
 		{
 			weaponX=X;
 			weaponY=Y-scY*0.58;
@@ -204,7 +204,7 @@ package unitdata
 		//2 - атакует
 		//3 - защита
 		
-		public override function control()
+		public override function control():void
 		{
 			var t:Tile;
 			//если сдох, то не двигаться

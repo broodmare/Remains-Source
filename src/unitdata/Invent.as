@@ -11,6 +11,7 @@ package unitdata
 	import locdata.Loot;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class Invent 
 	{
@@ -54,13 +55,13 @@ package unitdata
 			fav=new Array();
 			
 			itemsId=new Array();
-			for each (var node in AllData.d.item) 
+			for each (var node:XML in XmlBook.getXML("items").item) 
 			{
-				var item:Item=new Item(node.@tip, node.@id, 0, 0, node);
-				items[node.@id]=item;
-				if (node.@us>=2) itemsId.push(node.@id);
-				if (item.invCat==1 && item.mass>0 && node.@perk.length()==0) eqip.push(node.@id);
-				if (node.@base.length()) ammos[node.@base]=0;
+				var item:Item = new Item(node.@tip, node.@id, 0, 0, node);
+				items[node.@id] = item;
+				if (node.@us >= 2) itemsId.push(node.@id);
+				if (item.invCat == 1 && item.mass > 0 && node.@perk.length() == 0) eqip.push(node.@id);
+				if (node.@base.length()) ammos[node.@base] = 0;
 			}
 			money=items['money'];
 			pin=items['pin'];
@@ -115,7 +116,7 @@ package unitdata
 				nhp=gg.pers.inMaxHP-gg.pers.legsHP;
 			} 
 			else return '';
-			var list:XMLList=AllData.d.item;
+			var list:XMLList = XmlBook.getXML("items").item;
 			var minRazn:Number=10000;
 			var nci:String='';
 			for each (var pot in list) 
@@ -151,7 +152,7 @@ package unitdata
 			}
 			if (ci==null) 	//применить наиболее подходящее зелье
 			{
-				var list:XMLList=AllData.d.item;
+				var list:XMLList = XmlBook.getXML("items").item;
 				var minRazn:Number=10000;
 				var nci:String='';
 				for each (pot in list) {
@@ -176,7 +177,7 @@ package unitdata
 			}
 			if (ci=='mana') 	//применить наиболее подходящее зелье маны
 			{
-				list=AllData.d.item;
+				list = XmlBook.getXML("items").item;
 				var minRazn:Number=10000;
 				need1=gg.pers.inMaxMana-gg.pers.manaHP;
 				if (need1<1) return false;
@@ -202,22 +203,22 @@ package unitdata
 				} 
 				else ci=nci;
 			}
-			if (ci=='potion_swim') 
+			if (ci == 'potion_swim') 
 			{
-				gg.h2o=1000;
+				gg.h2o = 1000;
 			}
-			pot=AllData.d.item.(@id==ci);
-			if (pot.length()==0) return false;
+			pot = XmlBook.getXML("items").item.(@id == ci);
+			if (pot.length() == 0) return false;
 			
 			if (Settings.alicorn) 
 			{
-				if (pot.@tip=='pot' || pot.@tip=='him' || pot.@tip=='food') 
+				if (pot.@tip == 'pot' || pot.@tip == 'him' || pot.@tip == 'food') 
 				{
-					World.world.gui.infoText('alicornNot',null,null,false);
+					World.world.gui.infoText('alicornNot', null, null, false);
 					return false;
 				}
 			}
-			if (pot.@heal=='rad' && gg.rad<1) 
+			if (pot.@heal == 'rad' && gg.rad < 1) 
 			{
 				World.world.gui.infoText('noMedic',Res.txt('i',ci));
 				return false;
@@ -535,21 +536,26 @@ package unitdata
 		
 		public function useFav(n:int) 
 		{
-			var ci:String=fav[n];
-			if (ci==null) return;
-			var item=AllData.d.weapon.(@id==ci);
+			var ci:String = fav[n];
+			if (ci == null) return;
+
+			var item:XMLList;
+
+			item = XmlBook.getXML("weapons").weapon.(@id == ci);
 			if (item.length()) 
 			{
 				gg.changeWeapon(ci);
 				return;
 			}
-			item=AllData.d.armor.(@id==ci);
+
+			item = XmlBook.getXML("armors").armor.(@id == ci);
 			if (item.length()) 
 			{
 				gg.changeArmor(ci);
 				return;
 			}
-			item=AllData.d.item.(@id==ci);
+
+			item = XmlBook.getXML("items").item.(@id == ci);
 			if (item.length()) 
 			{
 				useItem(ci);
@@ -695,7 +701,7 @@ package unitdata
 			}
 			if (cell<29 && cell>=25) 
 			{
-				var xml=AllData.d.item.(@id==id);
+				var xml:XMLList = XmlBook.getXML("items").item.(@id == id);
 				if (xml.length()==0 || xml.@tip!='spell') 
 				{
 					World.world.gui.infoText('onlySpell');
@@ -716,7 +722,7 @@ package unitdata
 		public function addArmor(id:String, hp:int=0xFFFFFF, nlvl:int = 0):Armor 
 		{
 			if (armors[id]) return null;
-			var node=AllData.d.armor.(@id == id);
+			var node:XMLList = XmlBook.getXML("armors").armor.(@id == id);
 			if (!node) return null;
 			var w:Armor=new Armor(id, nlvl);
 			w.hp=hp;
@@ -743,7 +749,7 @@ package unitdata
 		
 		public function addAllSpells() 
 		{
-			for each(var sp in AllData.d.item.(@tip=='spell')) 
+			for each (var sp:XML in XmlBook.getXML("items").item.(@tip == 'spell')) 
 			{
 				addSpell(sp.@id);
 			}
@@ -761,8 +767,9 @@ package unitdata
 					var patron=l.xml.a[0];
 					if (tr==0 && patron && patron!='recharg') 
 					{
-						kol=Math.floor(Math.random()*AllData.d.item.(@id==patron).@kol)+1;
-						items[patron].kol+=kol;
+						var itemXML:XMLList = XmlBook.getXML("items").item.(@id == patron);
+						kol = Math.floor(Math.random() * itemXML.@kol) + 1;
+						items[patron].kol += kol;
 					}
 					var hp:int;
 					if (l.variant>0 && l.xml.char[l.variant].@maxhp.length()) hp=Math.round(l.xml.char[l.variant].@maxhp*l.sost*l.multHP);
@@ -782,7 +789,7 @@ package unitdata
 					} 
 					else 
 					{
-						if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
+						if (tr == 0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
 						addWeapon(l.id, hp, 0,0, l.variant);
 						takeScript(l.id);
 						if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
@@ -1119,7 +1126,7 @@ package unitdata
 			else 
 			{
 				World.world.pip.onoff(-1);
-				var xml1=GameData.d.scr.(@id=='smokeRollup')
+				var xml1 = XmlBook.getXML("scripts").scr.(@id == 'smokeRollup');
 				if (xml1.length()) 
 				{
 					xml1=xml1[0];
@@ -1201,7 +1208,7 @@ package unitdata
 
 		public function addAllArmor() 
 		{
-			for each(var arm in AllData.d.armor) 
+			for each (var arm:XML in XmlBook.getXML("armors").armor)
 			{
 				addArmor(arm.@id);
 			}

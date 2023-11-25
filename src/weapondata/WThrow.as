@@ -8,6 +8,7 @@ package weapondata
 	import unitdata.Mine;
 
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class WThrow  extends Weapon
 	{
@@ -30,7 +31,7 @@ package weapondata
 			vis.gotoAndStop(1);
 			holder=1;
 			ammo=id;
-			var node:XML = AllData.d.weapon.(@id==id)[0];
+			var node:XML = XmlBook.getXML("weapons").weapon.(@id == id)[0];
 			if (node.@throwtip>0) throwTip=node.@throwtip;
 			if (throwTip>0) lvlNoUse=true;
 			if (node.char.length() && node.char[0].@time>0) detTime=node.char[0].@time;

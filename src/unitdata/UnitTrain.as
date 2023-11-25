@@ -33,7 +33,7 @@ package unitdata
 			//dodge=0.2;
 		}
 
-		public override function control()
+		public override function control():void
 		{
 			hp=maxhp;
 		}
@@ -46,11 +46,11 @@ package unitdata
 		{
 			hp=maxhp;
 		}
-		public override function visDetails()
+		public override function visDetails():void
 		{
 			if (hpbar) hpbar.visible=false;
 		}
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			
 		}

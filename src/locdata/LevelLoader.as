@@ -9,6 +9,7 @@ package locdata
 	import flash.events.IOErrorEvent;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public class LevelLoader 
 	{
@@ -25,12 +26,14 @@ package locdata
 		
 		public var allroom:XML;
 		
-		private static const roomsURL:String = Settings.levelPath + roomsFile + ".xml";
+		
 
 		public function LevelLoader(nid:String) 
 		{
+			var roomsURL:String = Settings.levelPath + roomsFile + ".xml";
+
 			id = nid;
-			roomsFile = GameData.d.level.(@id == id).@file;
+			roomsFile = XmlBook.getXML("levels").level.(@id == id).@file;
 			// Source of room templates
 			
 			request = new URLRequest(roomsURL); 

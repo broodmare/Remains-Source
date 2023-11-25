@@ -44,7 +44,7 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1)
+		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
 			if (hero==1) {
@@ -117,7 +117,7 @@ package unitdata
 		//4 - стоит на месте и стреляет
 		//5 - увидел цель, тупит какое-то время
 		
-		public override function control() 
+		public override function control():void
 		{
 			//если сдох, то не двигаться
 			if (sost==3) return;

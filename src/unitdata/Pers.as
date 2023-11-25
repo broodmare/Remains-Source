@@ -6,6 +6,7 @@ package unitdata
 	import flash.display.MovieClip;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	public dynamic class Pers 
 	{
@@ -303,7 +304,7 @@ package unitdata
 			addictions=new Array();
 			var ndif:int=2;
 			ndif=World.world.game.globalDif;
-			for each (var sk in AllData.d.skill) 
+			for each (var sk in XmlBook.getXML("skills").skill)
 			{
 				skill_ids.push({id:sk.@id, sort:sk.@sort, post:sk.@post});
 				if (loadObj==null || loadObj.skills[sk.@id]==null) 
@@ -401,16 +402,19 @@ package unitdata
 			{
 				perks['levitation']=1;
 			}
-			xml_head=AllData.d.perk.(@id=='trauma_head')[0]
-			xml_tors=AllData.d.perk.(@id=='trauma_tors')[0]
-			xml_legs=AllData.d.perk.(@id=='trauma_legs')[0]
-			xml_blood=AllData.d.perk.(@id=='trauma_blood')[0]
-			xml_mana=AllData.d.perk.(@id=='trauma_mana')[0]
+			xml_head = XmlBook.getXML("perks").perk.(@id == 'trauma_head')[0];
+			xml_tors = XmlBook.getXML("perks").perk.(@id == 'trauma_tors')[0];
+			xml_legs = XmlBook.getXML("perks").perk.(@id == 'trauma_legs')[0];
+			xml_blood = XmlBook.getXML("perks").perk.(@id == 'trauma_blood')[0];
+			xml_mana = XmlBook.getXML("perks").perk.(@id == 'trauma_mana')[0];
 
-			factor=new Array();
-			for each (var param in AllData.d.param) {
-
-				if (param.@f>0 && param.@v.length() && param.@v!='')	factor[param.@v]=new Array();
+			factor = new Array();
+			for each (var param in XmlBook.getXML("parameters").param) 
+			{
+				if (param.@f > 0 && param.@v.length() && param.@v != '') 
+				{
+					factor[param.@v] = new Array();
+				}
 			}
 		}
 		
@@ -461,7 +465,7 @@ package unitdata
 			
 		}
 		
-		public function setGlobalDif(ndif:int=2)
+		public function setGlobalDif(ndif:int=2):void
 		{
 			//trace('difff',ndif);
 			if (ndif==0) 
@@ -530,7 +534,7 @@ package unitdata
 			}
 		}
 		
-		public function defaultParams()
+		public function defaultParams():void
 		{
 			//параметры по умолчанию
 			gg.maxhp=begHP;
@@ -656,14 +660,14 @@ package unitdata
 		}
 		
 		//получение опыта
-		public function expa(dxp:int, nx:Number=-1, ny:Number=-1)
+		public function expa(dxp:int, nx:Number=-1, ny:Number=-1):void
 		{
-			if (dxp<=0) return;
-			xpCur+=dxp;
-			if (nx<0 || ny<0) 
+			if (dxp <= 0) return;
+			xpCur += dxp;
+			if (nx < 0 || ny < 0) 
 			{
-				nx=gg.X;
-				ny=gg.Y-gg.scY;
+				nx = gg.X;
+				ny = gg.Y - gg.scY;
 			}
 			if (World.world.testLoot) 
 			{
@@ -673,44 +677,44 @@ package unitdata
 			{
 				gg.numbEmit.cast(gg.room,nx,ny,{txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
 			}
-			if (xpCur>=xpNext) upLevel();
+			if (xpCur >= xpNext) upLevel();
 			World.world.gui.setXp();
 		}
 		
 		//вернуть уровень навыка в зависимости от вложенных очков
 		public function getSkLevel(n:int):int 
 		{
-			if (n>=20) return 5;
-			if (n>=14) return 4;
-			if (n>=9) return 3;
-			if (n>=5) return 2;
-			if (n>=2) return 1;
+			if (n >= 20) return 5;
+			if (n >= 14) return 4;
+			if (n >=  9) return 3;
+			if (n >=  5) return 2;
+			if (n >=  2) return 1;
 			return 0;
 		}
 		public function getSkBonus(n:int):int 
 		{
-			if (n==20) return 5;
-			if (n==14) return 4;
-			if (n==9) return 3;
-			if (n==5) return 2;
-			if (n==2) return 1;
+			if (n == 20) return 5;
+			if (n == 14) return 4;
+			if (n ==  9) return 3;
+			if (n ==  5) return 2;
+			if (n ==  2) return 1;
 			return 0;
 		}
 		
 		//пост-скиллы
-		public var postSkTab:Array=[5,11,18,26,35,45,56,68,82,100];
+		public var postSkTab:Array = [5, 11, 18, 26, 35, 45, 56, 68, 82, 100];
 		public function skillIsPost(id:String):Boolean 
 		{
-			if (id=='attack' || id=='defense' || id=='knowl') return true;
+			if (id == 'attack' || id == 'defense' || id == 'knowl') return true;
 			return false;
 		}
 		public function getPostSkLevel(n:int):int 
 		{
-			if (n<postSkTab[0]) return 0;
-			var res=0;
-			for (var i=0; i<postSkTab.length; i++) 
+			if (n < postSkTab[0]) return 0;
+			var res = 0;
+			for (var i:int = 0; i < postSkTab.length; i++) 
 			{
-				if (n>=postSkTab[i]) res=i+1;
+				if (n >= postSkTab[i]) res = i + 1;
 			}
 			return res;
 		}
@@ -718,24 +722,24 @@ package unitdata
 		//вернуть уровень, соответствующий параметру skill оружия
 		public function getWeapLevel(sk:int):int
 		{
-			if (sk==1) return getSkLevel(skills['melee']);
-			if (sk==2) return getSkLevel(skills['smallguns']);
-			if (sk==3) return getSkLevel(skills['repair']);
-			if (sk==4) return getSkLevel(skills['energy']);
-			if (sk==5) return getSkLevel(skills['explosives']);
-			if (sk==6) return getSkLevel(skills['magic']);
-			if (sk==7) return getSkLevel(skills['tele']);
+			if (sk == 1) return getSkLevel(skills['melee']);
+			if (sk == 2) return getSkLevel(skills['smallguns']);
+			if (sk == 3) return getSkLevel(skills['repair']);
+			if (sk == 4) return getSkLevel(skills['energy']);
+			if (sk == 5) return getSkLevel(skills['explosives']);
+			if (sk == 6) return getSkLevel(skills['magic']);
+			if (sk == 7) return getSkLevel(skills['tele']);
 			return 100;
 		}
 		//вернуть уровень скилла по его названию
 		public function getSkillLevel(sk:String):int 
 		{
-			if (skills[sk]==undefined) return 0;
+			if (skills[sk] == undefined) return 0;
 			return getSkLevel(skills[sk]);
 		}
 		
 		//принудительно установить уровень перса
-		public function setForcLevel(lvl:int)
+		public function setForcLevel(lvl:int):void
 		{
 			trace('Установлен уровень',lvl);
 			level=lvl;
@@ -743,7 +747,7 @@ package unitdata
 			xpNext=xpProgress(lvl);
 		}
 		
-		public function upLevel()
+		public function upLevel():void
 		{
 			xpPrev=xpProgress(level);
 			level++;
@@ -772,7 +776,7 @@ package unitdata
 		}
 		
 		//принудительно установить количество опыта для сейва старой версии
-		public function recalcXP()
+		public function recalcXP():void
 		{
 			if (xpVer==0) 
 			{
@@ -783,7 +787,7 @@ package unitdata
 		}
 		
 		//добавить скиллпоинты, если dop==true, не повышать левел
-		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true)
+		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true):void
 		{
 			skillPoint+=numb;
 			if (numb==1) World.world.gui.infoText('skillPoint');
@@ -793,7 +797,7 @@ package unitdata
 		}
 		
 		//поднять скилл
-		public function addSkill(id:String, numb:int, minus:Boolean=false)
+		public function addSkill(id:String, numb:int, minus:Boolean=false):void
 		{
 			if (minus && numb>skillPoint) numb=skillPoint;
 			if (numb<=0) return;
@@ -860,7 +864,7 @@ package unitdata
 		}
 		
 		//установить уровень скилла принудительно
-		public function setSkill(id:String, n:int)
+		public function setSkill(id:String, n:int):void
 		{
 			if (n<0) n=0;
 			if (n>maxSkLvl) n=maxSkLvl;
@@ -869,9 +873,9 @@ package unitdata
 			World.world.gui.setAll();
 		}
 		
-		public function addPerk(id:String, minus:Boolean=false)
+		public function addPerk(id:String, minus:Boolean=false):void
 		{
-			var maxlvl=AllData.d.perk.(@id==id).@lvl;
+			var maxlvl:int = XmlBook.getXML("perks").perk.(@id == id).@lvl;
 			if (!(maxlvl>0)) maxlvl=1;
 			if (perks[id]) 
 			{
@@ -899,7 +903,7 @@ package unitdata
 		}
 		
 		//рандомная прокачка
-		function autoPump()
+		function autoPump():void
 		{
 			var n:int=1000;
 			while (skillPoint>0 && n>0) 
@@ -932,7 +936,7 @@ package unitdata
 			while (perkPoint>0 && n>0) 
 			{
 				dost=new Array();
-				for each(var dp:XML in AllData.d.perk) 
+				for each(var dp:XML in XmlBook.getXML("perks").perk) 
 				{
 					if (dp.@tip==1) 
 					{
@@ -950,7 +954,7 @@ package unitdata
 		//вернуть -1 если перк уже вкачан по максимуму, вернуть 0 если не выполнены условия, вернуть 1 если условия выполнены
 		public function perkPoss(nid:String, dp:XML=null):int 
 		{
-			if (dp==null) dp=AllData.d.perk.(@id==nid)[0];
+			if (dp == null) dp = XmlBook.getXML("perks").perk.(@id == nid)[0];
 			if (dp==null) return -1;
 			var numb=perks[nid];
 			if (numb==null) numb=0;
@@ -983,7 +987,7 @@ package unitdata
 		}
 		
 		//lvl1-уровень основных параметров, lvl2-уровень дополнительных параметров с тегом dop=1
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0)
+		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void
 		{
 			for each(var sk in xml.sk) 
 			{
@@ -1032,18 +1036,18 @@ package unitdata
 			}
 		}
 		
-		function setBegFactor(id:String, res)
+		function setBegFactor(id:String, res):void
 		{
 			if ((factor[id] is Array) && factor[id].length == 0) factor[id].push({id:'beg', res:res});
 		}
 		
-		function setFactor(id:String, fact:String, ref:String, val, res, tip=null)
+		function setFactor(id:String, fact:String, ref:String, val, res, tip=null):void
 		{
 			if (ref=='add' && val==0 || ref=='mult' && val==1) return;
 			if (factor[id] is Array) factor[id].push({id:fact, ref:ref, val:val, res:res, tip:tip});
 		}
 		
-		function setAllSt()
+		function setAllSt():void
 		{
 			headSt=4-Math.ceil(headHP/inMaxHP*4);
 			torsSt=4-Math.ceil(torsHP/inMaxHP*4);
@@ -1052,7 +1056,7 @@ package unitdata
 			manaSt=4-Math.ceil(manaHP/inMaxMana*4);
 		}
 		
-		public function setPonpon(mc:MovieClip)
+		public function setPonpon(mc:MovieClip):void
 		{
 			mc.tors.gotoAndStop(torsSt+1);
 			mc.head.gotoAndStop(headSt+1);
@@ -1067,7 +1071,7 @@ package unitdata
 			}
 		}
 		
-		function trauma(st:int, organ:int)
+		function trauma(st:int, organ:int):void
 		{
 			if (st>4) st=4;
 			if (organ==3 && st==4) st=3;
@@ -1085,7 +1089,7 @@ package unitdata
 			}
 		}
 		
-		public function damage(dam:Number, tip:int, isDie:Boolean=false)
+		public function damage(dam:Number, tip:int, isDie:Boolean=false):void
 		{
 			if (isDie) dam=dieDamage*inMaxHP;
 			if (dam<=0 || tip==Unit.D_INSIDE || tip==Unit.D_BLEED) return;
@@ -1147,7 +1151,7 @@ package unitdata
 			else gg.sost=3;
 		}
 		
-		public function bloodDamage(dam:Number, tip:int)
+		public function bloodDamage(dam:Number, tip:int):void
 		{
 			if (dam<=0) return;
 			dam*=3;
@@ -1169,7 +1173,7 @@ package unitdata
 			}
 		}
 		
-		public function manaDamage(dam:Number)
+		public function manaDamage(dam:Number):void
 		{
 			if (dam<=0) return;
 			if (gg.room.train) return;
@@ -1186,7 +1190,7 @@ package unitdata
 		}
 		
 		//исцеление 0-самого повреждённого места, 1-голова, 2-корпус, 3-ноги, 4-всё, 5-кровь, 6-мана
-		public function heal(hhp:Number, tip:int)
+		public function heal(hhp:Number, tip:int):void
 		{
 			var sst:int;
 			if (hhp==0) return;
@@ -1240,7 +1244,7 @@ package unitdata
 			}
 		}
 		
-		public function healAll()
+		public function healAll():void
 		{
 			headHP=inMaxHP;
 			torsHP=inMaxHP;
@@ -1249,7 +1253,7 @@ package unitdata
 			manaHP=inMaxMana;
 		}
 		
-		public function checkHP()
+		public function checkHP():void
 		{
 			if (headHP>inMaxHP) headHP=inMaxHP;
 			if (torsHP>inMaxHP) torsHP=inMaxHP;
@@ -1258,7 +1262,7 @@ package unitdata
 			if (manaHP>inMaxMana) manaHP=inMaxMana;
 		}
 		
-		function traumaParameters()
+		public function traumaParameters():void
 		{
 			if (headSt>0) setSkillParam(xml_head, Math.min(headSt,3));
 			if (torsSt>0) setSkillParam(xml_tors, Math.min(torsSt,3));
@@ -1275,7 +1279,7 @@ package unitdata
 		
 		//function armorParam(fact:String, arm:Armor, ref:String
 		
-		public function armorParameters(arm:Armor) 
+		public function armorParameters(arm:Armor):void
 		{
 			if (arm.dexter!=0) 
 			{
@@ -1334,7 +1338,7 @@ package unitdata
 		}
 		
 		//вычислить и установить штрафы на перегрузку
-		public function invMassParam()
+		public function invMassParam():void
 		{
 			var inv:Invent=World.world.invent;
 			maxSpeed=100;
@@ -1393,15 +1397,15 @@ package unitdata
 		//инструменты и артефакты
 		//восст. хп
 		
-		public function setParameters()
+		public function setParameters():void
 		{
 			//запомнить процент ХП
-			var procHP=gg.hp/gg.maxhp;
-			var procHead=headHP/inMaxHP;
-			var procTors=torsHP/inMaxHP;
-			var procLegs=legsHP/inMaxHP;
-			var procBlood=bloodHP/inMaxHP;
-			var procMana=manaHP/inMaxMana;
+			var procHP:Number 	 = gg.hp   / gg.maxhp;
+			var procHead:Number  = headHP  / inMaxHP;
+			var procTors:Number  = torsHP  / inMaxHP;
+			var procLegs:Number  = legsHP  / inMaxHP;
+			var procBlood:Number = bloodHP / inMaxHP;
+			var procMana:Number  = manaHP  / inMaxMana;
 			//параметры по умолчанию
 			defaultParams();
 
@@ -1415,13 +1419,13 @@ package unitdata
 				var lvl=0;
 				if (skillIsPost(id)) lvl=getPostSkLevel(skills[id]); //trace(id,lvl);
 				else lvl=getSkLevel(skills[id]);
-				xml=AllData.d.skill.(@id==id)[0];
+				xml = XmlBook.getXML("skills").skill.(@id == id)[0];
 				setSkillParam(xml, lvl, skills[id]);
 			}
 			//перки
 			for (id in perks) 
 			{
-				xml=AllData.d.perk.(@id==id)[0];
+				xml = XmlBook.getXML("perks").perk.(@id == id)[0];
 				setSkillParam(xml, perks[id]);
 			}
 			//trace('et2',runSpeedMult,stamRun);
@@ -1441,7 +1445,7 @@ package unitdata
 			{
 				id=eff.id;
 				if (eff.vse) continue;
-				xml=AllData.d.eff.(@id==id)[0];
+				xml = XmlBook.getXML("effects").eff.(@id == id)[0];
 				setSkillParam(xml, eff.vse?0:eff.lvl);
 			}
 			//броня и защиты
@@ -1469,7 +1473,7 @@ package unitdata
 			} 
 			else 
 			{
-				xml=AllData.d.eff.(@id=='alicorn')[0];
+				xml = XmlBook.getXML("effects").eff.(@id == 'alicorn')[0];
 				setSkillParam(xml, 1);
 				
 				setBegFactor('skin',gg.skin);
@@ -1508,7 +1512,7 @@ package unitdata
 			invMassParam();
 		}
 		
-		public function setInvParameters(inv:Invent)
+		public function setInvParameters(inv:Invent):void
 		{
 			if (inv==null) return;
 			
@@ -1522,7 +1526,7 @@ package unitdata
 					} 
 					else 
 					{
-						var xml=AllData.d.eff.(@id==w);
+						var xml = XmlBook.getXML("effects").eff.(@id == w);
 						if (xml.length()) setSkillParam(xml[0], 1);
 					}
 				}
@@ -1558,7 +1562,7 @@ package unitdata
 			return 100;
 		}
 		
-		public function setRoboowl()
+		public function setRoboowl():void
 		{
 			owlhp=0;
 			owlhpProc=1;

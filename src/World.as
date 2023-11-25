@@ -31,6 +31,8 @@ package
 	import weapondata.Weapon;
 
 	import components.Settings;
+	import components.XmlBook;
+	
 	import systems.Languages;
 
 	import stubs.*;
@@ -315,7 +317,9 @@ package
 			//loading room maps
 			landData = new Array();
 			trace('World.as/init2() - Creating landData array and Processing levelData in GameData.d.level.');
-			for each(var levelData:XML in GameData.d.level) 
+			var levelsXML:XML = XmlBook.getXML("levels");
+
+			for each(var levelData:XML in levelsXML.level) 
 			{
 				var levelLoader:LevelLoader = new LevelLoader(levelData.@id);
 
@@ -1356,10 +1360,17 @@ package
 		{
 			var un:Unit = new Unit();
 			var s:String = '';
-			for each (var w in AllData.d.weapon.(@tip > 0)) 
+
+			// Retrieve the XML file for weapons
+			var weaponsXML:XML = XmlBook.getXML("weapons");
+
+			// Iterate over weapon elements in the weapons XML
+			for each (var w:XML in weaponsXML.weapon.(@tip > 0)) 
 			{
 				var weap:Weapon = new Weapon(un, w.@id, 0);
 				s += weap.write() + '\n';
+
+				// Check if the weapon has 'com' element with 'uniq' attribute
 				if (w.com.length() && w.com.@uniq.length()) 
 				{
 					weap = new Weapon(un, w.@id, 1);

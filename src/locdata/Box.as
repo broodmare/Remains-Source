@@ -16,6 +16,7 @@ package locdata
 	import unitdata.Mine;
 	
 	import components.Settings;
+	import components.XmlBook;
 	
 	import stubs.visbox0;
 	
@@ -104,7 +105,7 @@ package locdata
 			shad.gotoAndStop(vis.currentFrame);
 			shad.filters = [dsf];
 			
-			var node:XML = AllData.d.obj.(@id == id)[0];
+			var node:XML = XmlBook.getXML("objects").obj.(@id == id)[0];
 			
 			X 	 = nx;
 			begX = nx; 

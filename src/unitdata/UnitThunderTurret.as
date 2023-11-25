@@ -40,19 +40,19 @@ package unitdata
 			hp=maxhp=maxhp*10;
 		}
 		
-		public override function run(div:int=1)
+		public override function run(div:int=1):void
 		{
-			if (head) {
+			if (head) 
+			{
 				X=head.X+bindX;
 				Y=head.Y+bindY;
 			}
 			Y1=Y-scY, Y2=Y;
 			X1=X-scX/2, X2=X+scX/2;
-			//setWeaponPos();
 			setVisPos();
 		}
 		
-		public override function control()
+		public override function control():void
 		{
 			if (head==null || room==null) return;
 			if (sost>1 || head.sost>1) return;
@@ -74,7 +74,7 @@ package unitdata
 			}
 		}
 		
-		public override function setLevel(nlevel:int=0)
+		public override function setLevel(nlevel:int=0):void
 		{
 			if (World.world.game.globalDif==3) {
 				hp=maxhp=hp*1.5;
@@ -90,7 +90,7 @@ package unitdata
 			newPart('metal',4);
 			newPart('expl');
 		}
-		public override function animate()
+		public override function animate():void
 		{
 			if (sost>1) return;
 			try 
@@ -103,7 +103,7 @@ package unitdata
 			}
 		}
 
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				vis.x=X,vis.y=Y;
@@ -111,11 +111,11 @@ package unitdata
 				currentWeapon.vis.y=Y-scY/2;
 			}
 		}
-		public override function makeNoise(n:int, hlup:Boolean=false)
+		public override function makeNoise(n:int, hlup:Boolean=false):void
 		{
 
 		}
-		public override function setHpbarPos() 
+		public override function setHpbarPos():void
 		{
 			hpbar.y=Y-140;
 			hpbar.x=X;

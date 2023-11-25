@@ -74,7 +74,7 @@ package unitdata
 		var t_laz:int=0;	//прошло времени с начала лазения
 		var r_laz:int=0;	//изменений направления лазения
 		
-		public override function control()
+		public override function control():void
 		{
 			var t:Tile;
 			//если сдох, то не двигаться
@@ -373,7 +373,7 @@ package unitdata
 			} else return super.look(ncel, over, visParam, nDist);
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			if (sost==2 || sost==3) { //сдох

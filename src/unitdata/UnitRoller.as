@@ -51,7 +51,7 @@ package unitdata
 			newPart('miniexpl');
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			vis.x=X,vis.y=Y-scY/2;
 		}
@@ -62,7 +62,7 @@ package unitdata
 			super.dropLoot();
 		}
 		
-		public override function animate()
+		public override function animate():void
 		{
 			if (aiState==0) {
 				if (vis.osn.currentFrame!=1) {
@@ -102,7 +102,7 @@ package unitdata
 		//0 - стоит на месте
 		//1 - видит цель, катится к ней, атакует
 		
-		public override function control()
+		public override function control():void
 		{
 			var t:Tile;
 			//если сдох, то не двигаться

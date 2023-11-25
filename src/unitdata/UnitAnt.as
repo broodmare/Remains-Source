@@ -49,7 +49,7 @@ package unitdata
 		}
 		
 		//сделать героем
-		public override function setHero(nhero:int=1)
+		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
 			if (hero==1) {
@@ -79,7 +79,7 @@ package unitdata
 			super.expl();
 		}
 		
-		public override function setVisPos()
+		public override function setVisPos():void
 		{
 			if (vis) {
 				if (isLaz==0) {
@@ -100,7 +100,7 @@ package unitdata
 				}
 			}
 		}
-		public override function animate()
+		public override function animate():void
 		{
 			var cframe:int;
 			if (trup && (sost==2 || sost==3)) { //сдох
@@ -157,7 +157,7 @@ package unitdata
 		//2 - видит цель, бежит к ней, атакует
 		//3 - атакует оружием
 		
-		public override function control()
+		public override function control():void
 		{
 			var t:Tile;
 			//если сдох, то не двигаться
