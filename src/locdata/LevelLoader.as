@@ -30,12 +30,17 @@ package locdata
 
 		public function LevelLoader(nid:String) 
 		{
-			var roomsURL:String = Settings.levelPath + roomsFile + ".xml";
+			trace('LevelLoader.as/LevelLoader() - Attemping to load levels...');
+
+
+			
 
 			id = nid;
 			roomsFile = XmlBook.getXML("levels").level.(@id == id).@file;
-			// Source of room templates
+			var roomsURL:String = Settings.levelPath + roomsFile + ".xml";
 			
+			trace('LevelLoader.as/LevelLoader() - id: "' + id + '" roomsURL: "' + roomsURL + '" roomsFile: "' + roomsFile + '"');
+
 			request = new URLRequest(roomsURL); 
 			loader_rooms = new URLLoader(request);
 
@@ -57,7 +62,7 @@ package locdata
 		private function ioErrorHandler(event:IOErrorEvent):void 
 		{
 			trace('LevelLoader.as/onCompleteLoadRooms() - Rooms failed to load, IO Error.');
-			World.world.load_log += 'IOerror ' + roomsFile + '\n';
+			World.world.load_log += 'IOerror loading roomsFile.\n';
         }
 		
 	}
