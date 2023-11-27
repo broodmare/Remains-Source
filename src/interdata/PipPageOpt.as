@@ -72,7 +72,7 @@ package interdata
 				nSave				= -1;
 				trace('PipPageOpt.as/setSubPages() - Sucessfully cleared data.');
 			}
-			catch (err)
+			catch (err:Error)
 			{
 				trace('PipPageOpt.as/setSubPages() - Failed clearing data.');
 			}
@@ -85,34 +85,72 @@ package interdata
 					{
 						trace('PipPageOpt.as/setSubPages() - statHead is null.');
 					}
+					
+					trace('PipPageOpt.as/setSubPages() - Step 01/17 - setting statHead text.');
+
 					statHead.objectName.text = ''; 
 					statHead.numb.text = '';
+
+
 
 					if (arr == null)
 					{
 						trace('PipPageOpt.as/setSubPages() - arr is null.');
 					}
+
+					trace('PipPageOpt.as/setSubPages() - Step 02/17 - push "fullscreen".');
 					arr.push({id:'fullscreen'});
+
+					trace('PipPageOpt.as/setSubPages() - Step 03/17 - push "zoom100".');
 					arr.push({id:'zoom100', 	check:Settings.zoom100});
+
+					trace('PipPageOpt.as/setSubPages() - Step 04/17 - push "quake".');
 					arr.push({id:'quake', 		check:Settings.quakeCam});
+
+					trace('PipPageOpt.as/setSubPages() - Step 05/17 - push "opt1_1".');
 					arr.push({id:'opt1_1', 		numb:Math.round(Snd.globalVol * 100)});
+
+					trace('PipPageOpt.as/setSubPages() - Step 06/17 - push "opt1_2".');
 					arr.push({id:'opt1_2', 		numb:Math.round(Snd.musicVol  * 100)});
+
+					trace('PipPageOpt.as/setSubPages() - Step 07/17 - push "opt1_3".');
 					arr.push({id:'opt1_3', 		numb:Math.round(Snd.stepVol   * 100)});
+
+					trace('PipPageOpt.as/setSubPages() - Step 08/17 - push "help_mess".');
 					arr.push({id:'help_mess', 	check:Settings.helpMess});
+
+					trace('PipPageOpt.as/setSubPages() - Step 09/17 - push "dial_on".');
 					arr.push({id:'dial_on', 	check:Settings.dialOn});
+
+					trace('PipPageOpt.as/setSubPages() - Step 10/17 - push "show_hit1".');
 					arr.push({id:'show_hit1', 	check:Settings.showHit > 0});
+
+					trace('PipPageOpt.as/setSubPages() - Step 11/17 - push "show_hit2".');
 					arr.push({id:'show_hit2', 	check:Settings.showHit == 2});
+
+					trace('PipPageOpt.as/setSubPages() - Step 12/17 - push "hint_tele".');
 					arr.push({id:'hint_tele', 	check:Settings.hintTele});
+
+					trace('PipPageOpt.as/setSubPages() - Step 13/17 - push "sys_cur".');
 					arr.push({id:'sys_cur', 	check:Settings.systemCursor});
+
+					trace('PipPageOpt.as/setSubPages() - Step 14/17 - push "show_favs".');
 					arr.push({id:'show_favs', 	check:Settings.showFavs});
+
+					trace('PipPageOpt.as/setSubPages() - Step 15/17 - push "mat_filter".');
 					arr.push({id:'mat_filter', 	check:Settings.matFilter});
+
+					trace('PipPageOpt.as/setSubPages() - Step 16/17 - push "err_show".');
 					arr.push({id:'err_show', 	check:Settings.errorShowOpt});
+
+					trace('PipPageOpt.as/setSubPages() - Step 17/17 - push "autotake".');
 					arr.push({id:'autotake'});
+
 					trace('PipPageOpt.as/setSubPages() - Sucessfully updated page 2.');
 				}
-				catch (err)
+				catch (err:Error)
 				{
-					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
+					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '". Error: "' + err.message + '".');
 				}
 
 			}
@@ -141,7 +179,7 @@ package interdata
 					arr.push({id:'vsIngr', 		check:Settings.vsIngr});
 					trace('PipPageOpt.as/setSubPages() - Sucessfully updated page 2.');
 				}
-				catch (err)
+				catch (err:Error)
 				{
 					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
 				}
@@ -167,7 +205,7 @@ package interdata
 					vis.butDef.text.text = Res.txt('p', 'default');
 					trace('PipPageOpt.as/setSubPages() - Sucessfully updated page 2.');
 				}
-				catch (err)
+				catch (err:Error)
 				{
 					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
 				}
@@ -234,7 +272,7 @@ package interdata
 					pip.helpText = Res.txt('p','helpSave', 0, true);
 					trace('PipPageOpt.as/setSubPages() - Sucessfully updated page 2.');
 				}
-				catch (err)
+				catch (err:Error)
 				{
 					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
 				}
@@ -247,9 +285,9 @@ package interdata
 			var obj:Object={id:n};
 			if (save == null || save.est == null) 
 			{
-				obj.objectName=Res.txt('p', 'freeslot');
-				obj.gg='';
-				obj.date='';
+				obj.objectName = Res.txt('p', 'freeslot');
+				obj.gg = '';
+				obj.date = '';
 			} 
 			else 
 			{
@@ -343,7 +381,7 @@ package interdata
 			try {
 				vis.txt.text=World.world.ctr.keyNames[n];
 			} 
-			catch(err) 
+			catch(err:Error) 
 			{
 				vis.gotoAndStop(n);
 			}
@@ -541,7 +579,7 @@ package interdata
 						vis.butOk.visible=false;
 						setStatus();
 					}
-					catch (err) 
+					catch (err:Error) 
 					{
 						World.world.gui.infoText('noSaveGame');
 					}

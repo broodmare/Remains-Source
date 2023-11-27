@@ -9,12 +9,34 @@ package servdata
 	
 	public class Item 
 	{
+		//aliases
+		public static const L_ITEM:String ='item';
+		public static const L_ARMOR:String ='armor';
+		public static const L_UNIQ:String ='uniq';
+		public static const L_POT:String ='pot';
+		public static const L_FOOD:String ='food';
+		public static const L_SPEC:String ='spec';
+		public static const L_INSTR:String ='instr';
+		public static const L_STUFF:String ='stuff';
 
-		public static const L_ITEM:String ='item', 
-			L_ARMOR:String ='armor', L_WEAPON:String ='weapon', L_UNIQ:String ='uniq', L_SPELL:String ='spell', L_AMMO:String ='a', L_EXPL:String ='e',
-			L_MED:String ='med', L_BOOK:String ='book', L_HIM:String ='him', L_POT:String ='pot', L_FOOD:String ='food', L_SCHEME:String ='scheme', L_PAINT:String ='paint',
-			L_COMPA:String ='compa', L_COMPW:String ='compw', L_COMPE:String ='compe',  L_COMPM:String ='compm',  L_COMPP:String ='compp',
-			L_SPEC:String ='spec', L_INSTR:String ='instr', L_STUFF:String ='stuff', L_ART:String ='art', L_IMPL:String ='impl', L_KEY:String ='key';
+		//itemTip aliases
+		public static const L_WEAPON:String ='weapon';
+		public static const L_SPELL:String ='spell';
+		public static const L_AMMO:String ='a';
+		public static const L_EXPL:String ='e';
+		public static const L_MED:String ='med';
+		public static const L_BOOK:String ='book';
+		public static const L_HIM:String ='him';
+		public static const L_SCHEME:String ='scheme';
+		public static const L_COMPA:String ='compa';
+		public static const L_COMPW:String ='compw';
+		public static const L_COMPE:String ='compe'; 
+		public static const L_COMPM:String ='compm'; 
+		public static const L_COMPP:String ='compp';
+		public static const L_PAINT:String ='paint';
+		public static const L_ART:String ='art';
+		public static const L_IMPL:String ='impl';
+		public static const L_KEY:String ='key';
 
 		public static var itemTip:Array = ['weapon', 'spell', 'a', 'e', 'med', 'book', 'him', 'scheme', 'compa', 'compw', 'compe', 'compm', 'compp', 'paint', 'art', 'impl', 'key']
 		
@@ -166,11 +188,11 @@ package servdata
 
 			if (xml) 
 			{
-				if (xml.@invcat.length()) invCat 	= xml.@invcat;
-				if (xml.@invis.length()) invis 	= true;
-				if (xml.@fc.length()) fc 			= xml.@fc;
-				if (xml.@mess.length()) mess 		= xml.@mess;
-				if (xml.@m.length()) mass 		= xml.@m;
+				if (xml.@invcat.length()) invCat = xml.@invcat;
+				if (xml.@invis.length()) invis = true;
+				if (xml.@fc.length()) fc = xml.@fc;
+				if (xml.@mess.length()) mess = xml.@mess;
+				if (xml.@m.length()) mass = xml.@m;
 			}
 		}
 
@@ -302,16 +324,16 @@ package servdata
 					if (w.tip <= 3 && (w.respect == 0 || w.respect == 2) && w.ammoBase != '' && (w.ammoBase == xml.@id || w.ammoBase == xml.@base)) return true;
 				}
 			}
-			if (Settings.vsExplAll && tip==L_EXPL) return true;
-			if (Settings.vsMedAll && (tip==L_MED || tip==L_POT)) return true;
-			if (Settings.vsHimAll && tip==L_HIM) return true;
-			if (Settings.vsEqipAll && tip=='equip') return true;
-			if (Settings.vsStuffAll && invCat==3) return true;
-			if (Settings.vsVal && tip=='valuables') return true;
-			if (Settings.vsBook && (tip=='book' || tip=='sphera')) return true;
-			if (Settings.vsFood && (tip=='food' || tip=='eda')) return true;
-			if (Settings.vsComp && (tip=='stuff' || tip=='compa' || tip=='compw' || tip=='compe' || tip=='compm')) return true;
-			if (Settings.vsIngr && tip=='compp') return true;
+			if (Settings.vsExplAll && tip == L_EXPL) return true;
+			if (Settings.vsMedAll && (tip == L_MED || tip==L_POT)) return true;
+			if (Settings.vsHimAll && tip == L_HIM) return true;
+			if (Settings.vsEqipAll && tip == 'equip') return true;
+			if (Settings.vsStuffAll && invCat == 3) return true;
+			if (Settings.vsVal && tip == 'valuables') return true;
+			if (Settings.vsBook && (tip =='book' || tip == 'sphera')) return true;
+			if (Settings.vsFood && (tip =='food' || tip == 'eda')) return true;
+			if (Settings.vsComp && (tip =='stuff' || tip == 'compa' || tip == 'compw' || tip == 'compe' || tip == 'compm')) return true;
+			if (Settings.vsIngr && tip =='compp') return true;
 			return false;
 		}
 		

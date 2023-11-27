@@ -32,41 +32,40 @@ package interdata
 	public class PipPage 
 	{
 
-		//Setting all variables to public.
 
-		public var vis:MovieClip;
+		var vis:MovieClip;
 
-		public var arr:Array;
-		public var statArr:Array;
-		public var statHead:MovieClip;
-		public var pageClass:Class;
-		public var itemClass:Class;
+		var arr:Array;
+		var statArr:Array;
+		var statHead:MovieClip;
+		var pageClass:Class;
+		var itemClass:Class;
 
-		public var maxrows:int = 18;
-		public var selItem:MovieClip;
+		var maxrows:int = 18;
+		var selItem:MovieClip;
 		
-		public var pip:PipBuck;
-		public var inv:Invent;
-		public var gg:UnitPlayer;
+		var pip:PipBuck;
+		var inv:Invent;
+		var gg:UnitPlayer;
 		
-		public var isLC:Boolean = false;
-		public var isRC:Boolean = false; //реакция на клик
+		var isLC:Boolean = false;
+		var isRC:Boolean = false; //реакция на клик
 		
-		public var signs:Array = [0, 0, 0, 0, 0, 0];
+		var signs:Array = [0, 0, 0, 0, 0, 0];
 		
-		public var page2:int = 1;
-		public var scrl:int = 0;
+		var page2:int = 1;
+		var scrl:int = 0;
 		
-		public var infIco:MovieClip;
-		public var itemFilter:GlowFilter 		= new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
-		public var itemTrans:ColorTransform 	= new ColorTransform(1, 1, 1);
+		var infIco:MovieClip;
+		var itemFilter:GlowFilter 		= new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
+		var itemTrans:ColorTransform 	= new ColorTransform(1, 1, 1);
 		
-		public var pp:String; //pipPage
+		var pp:String; //pipPage
 		
-		public var kolCats:int=6;
-		public var cat:Array=[0, 0, 0, 0, 0, 0, 0];
-		public var curTip = '';
-		public var tips:Array = [[]];
+		var kolCats:int=6;
+		var cat:Array=[0, 0, 0, 0, 0, 0, 0];
+		var curTip = '';
+		var tips:Array = [[]];
 		
 		//setStatItems - update all elements without reloading the page
 		//setStatus - fully refresh the page"
@@ -99,7 +98,7 @@ package interdata
 				item.y = 100 + i * 30;
 				if (item.objectName) setStyle(item.objectName);
 				vis.addChild(item);
-				if (item.ramka) item.ramka.visible=false;
+				if (item.ramka) item.ramka.visible = false;
 				if (i < 0) 
 				{
 					item.back.visible = false;
@@ -114,12 +113,12 @@ package interdata
 				}
 			}
 
-			for (var j:int  = 1; j <= 5; j++) 
+			for (var i:int  = 1; i <= 5; i++) 
 			{
-				item = vis.getChildByName('but' + j) as MovieClip;
+				item = vis.getChildByName('but' + i) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK, page2Click);
-				item.text.text = Res.txt('p', pp + j);
-				item.id.text = j;
+				item.text.text = Res.txt('p', pp + i);
+				item.id.text = i;
 				item.id.visible = false;
 			}
 
@@ -205,7 +204,6 @@ package interdata
 		
 		public function setStatus(flop:Boolean = true):void
 		{
-			trace('PipPage.as/setStatus() - setStatus is executing.');
 
 			//Clear text
 			try
@@ -239,24 +237,21 @@ package interdata
 					vis.emptytext.text = '';
 				}
 				
-				trace('PipPage.as/setStatus() - Text cleared successfully.');
+
 			}
 			catch (err)
 			{
-				trace('PipPage.as/setStatus() - Error clearing text.');
+				trace('PipPage.as/setStatus() - Error clearing text. Error: "' + err.message + '".');
 			}
 
-			
-			trace('PipPage.as/setStatus() - Creating new array.');
 			arr = new Array();
 
 			if (flop) scrl = 0; // Reset scroll
 			if (vis.scText) vis.scText.visible = false;
 			
-			trace('PipPage.as/setStatus() - Assigning player and inventory.');
 			gg = pip.gg;
 			inv = pip.inv;
-			trace('PipPage.as/setStatus() - Disabling text visibility.');
+
 			pip.vis.toptext.visible = false;
 			pip.vis.butHelp.visible = false;
 			pip.vis.butMass.visible = false;
@@ -265,12 +260,13 @@ package interdata
 			trace('PipPage.as/setStatus() - Setting subPages.');
 			setSubPages();
 
-			trace('PipPage.as/setStatus() - setting StatItems.');
+			trace('PipPage.as/setStatus() - Setting StatItems.');
 			setStatItems(flop ? 0 : -1);
 
+			trace('PipPage.as/setStatus() - Scrollbar initiailization.');
 			var sc:ScrollBar = vis.scBar;
 
-			trace('PipPage.as/setStatus() - "sc" stuff(?)');
+			
 			if (arr.length > maxrows) 
 			{
 				sc.visible 			 = true;

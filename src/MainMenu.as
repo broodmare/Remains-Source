@@ -32,7 +32,7 @@ package
 	public class MainMenu 
 	{
 
-		public var version:String = '1.0.4 (woons)';
+		public var version:String = '1.1.3';
 		public var mainMenu:MovieClip; 			// Create a container for the main menu sprite
 		public var main:Sprite;
 		public var world:World;
@@ -465,7 +465,6 @@ package
 
 			mainMenu.dialLoad.butCancel.addEventListener(MouseEvent.CLICK, 	funLoadCancel);
 			mainMenu.dialLoad.butFile.addEventListener(MouseEvent.CLICK, 	funLoadFile);
-			trace('Animation off.');
 			animOn = false;
 		}
 		
@@ -487,7 +486,6 @@ package
 					slot.removeEventListener(MouseEvent.MOUSE_OVER, funOverSlot);
 				}
 			}
-			trace('Animation on.');
 			animOn = true;
 		}
 		
@@ -568,7 +566,6 @@ package
 			updNewMode();
 			mainMenu.dialNew.pers.gotoAndStop(2);
 			mainMenu.dialNew.pers.gotoAndStop(1);
-			trace('Animation off.');
 			animOn = false;
 		}
 
@@ -587,7 +584,6 @@ package
 					mainMenu.dialNew['dif' + i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
 				}
 			}
-			trace('Animation on.');
 			animOn = true;
 		}
 
