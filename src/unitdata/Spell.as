@@ -195,7 +195,7 @@ package unitdata
 		}
 		
 		//создать магическую стену
-		function cast_mwall()
+		public function cast_mwall()
 		{
 			var un:Unit=room.createUnit('mwall',cx,cy+60,true);
 			if (owner) un.fraction=owner.fraction;
@@ -204,13 +204,13 @@ package unitdata
 		}
 		
 		//магический щит
-		function cast_mshit()
+		public function cast_mshit()
 		{
 			if (owner.player && Settings.alicorn) owner.shithp=World.world.pers.alicornShitHP;
 			else owner.shithp=hp*power;
 		}
 		//магический щит
-		function cast_cryst()
+		public function cast_cryst()
 		{
 			est=1;
 			if (player) 
@@ -221,7 +221,7 @@ package unitdata
 		}
 		
 		//кинетический рывок
-		function cast_kdash()
+		public function cast_kdash()
 		{
 			if (!owner.room.levitOn) return;
 			var dx:Number=(cx-owner.X);
@@ -245,7 +245,7 @@ package unitdata
 		}
 		
 		//кинетический взрыв
-		function cast_blast()
+		public function cast_blast()
 		{
 			if (room==null) return;
 			X=owner.X;
@@ -273,13 +273,13 @@ package unitdata
 		}
 		
 		//замедляющее поле
-		function cast_slow()
+		public function cast_slow()
 		{
 			if (owner) owner.addEffect('inhibitor',rad*power);
 		}
 		
 		//лунный клинок
-		function cast_moon()
+		public function cast_moon()
 		{
 			if (gg.currentPet!='moon') {
 				gg.pets['moon'].hp=gg.pets['moon'].maxhp;
@@ -306,7 +306,7 @@ package unitdata
 			Emitter.emit('gwall',room,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight);
 		}
 		
-		function cast_gwall()
+		public function cast_gwall()
 		{
 			est=0;
 			gwall(cx,cy-40);				
@@ -316,7 +316,7 @@ package unitdata
 		}
 		
 		//замедляющее поле
-		function cast_invulner()
+		public function cast_invulner()
 		{
 			if (owner && player) 
 			{

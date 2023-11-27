@@ -58,10 +58,10 @@ package components
         {
             
 
-            var currentLoader =  event.currentTarget;
+            var currentLoader:Object =  event.currentTarget;
             currentLoader.removeEventListener(XMLLoader.XML_LOADED, initializeXmlPage);
 
-            var currentXML = currentLoader.xmlData
+            var currentXML:XML = currentLoader.xmlData
             var currentKey:String = currentXML.name().localName;   // Get the name of the root node in the XML to use as a key in the XmlBook Dictionary, Eg. <armors>
 
 

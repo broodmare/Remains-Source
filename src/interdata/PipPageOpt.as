@@ -55,8 +55,9 @@ package interdata
 			trace('PipPageOpt.as/PipPageOpt() - Created PipPageOpt page.');
 		}
 
+		//set public
 		//подготовка страниц
-		override function setSubPages():void
+		public override function setSubPages():void
 		{
 			trace('PipPageOpt.as/setSubPages() - updating subPages.');
 
@@ -273,8 +274,9 @@ package interdata
 
 		}		
 		
+		//set public
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object):void
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			if (obj.id!=null) item.id.text=obj.id;
 			else item.id.text='';
@@ -331,8 +333,9 @@ package interdata
 			}
 		}
 		
+		//set public 
 		//установить визуальное отображение клавиши
-		function setVisKey(n,vis):void
+		public function setVisKey(n,vis):void
 		{
 			vis.txt.text='';
 			vis.gotoAndStop(1);
@@ -461,8 +464,8 @@ package interdata
 			pip.isSaveConf=true;
 		}
 		
-		
-		override function itemClick(event:MouseEvent):void
+		//set public
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (World.world.ctr.setkeyOn) return;
 			if (page2 == 3) 
@@ -503,8 +506,9 @@ package interdata
 			}
 		}
 		
+		//set public
 		//применить настройки
-		function transOk(event:MouseEvent):void
+		public function transOk(event:MouseEvent):void
 		{
 			if (page2==4) 
 			{
@@ -563,7 +567,8 @@ package interdata
 			trace('Error load');
        }		
 		
-		function gotoDef(event:MouseEvent):void
+		//set public
+		public function gotoDef(event:MouseEvent):void
 		{
 			if (page2==4) {
 				World.world.ctr.gotoDef();
@@ -632,8 +637,9 @@ package interdata
 			}
 		}
 		
+		//set public
 		//информация об элементе
-		override function statInfo(event:MouseEvent):void
+		public override function statInfo(event:MouseEvent):void
 		{
 			if (page2==3 || page2==6) 
 			{

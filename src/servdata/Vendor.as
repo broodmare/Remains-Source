@@ -67,34 +67,35 @@ package servdata
 			if (Math.random()<0.2) money*=2;
 		}
 		
-		public function setRndBuys(lvl:int=0, rndtip:String='vendor'):void 
+		public function setRndBuys(lvl:int = 0, rndtip:String = 'vendor'):void 
 		{
-			if (Math.random()<0.7) 
+			if (Math.random() < 0.7) 
 			{
-				multPrice=Math.floor(Math.random()*6+8)/10;
+				multPrice = Math.floor(Math.random() * 6 + 8) / 10;
 			}
 			var num:int;
-			if (rndtip=='random') num=30;
-			else if (rndtip=='doctor') num=5+3*World.world.pers.barterLvl;
-			else num=10+6*World.world.pers.barterLvl;
-			num=Math.round(num*(0.5+Math.random()*0.7));
-			var num2:int=num*(0.1+Math.random()*0.3);
+			if (rndtip == 'random') num = 30;
+			else if (rndtip == 'doctor') num = 5 + 3 * World.world.pers.barterLvl;
+			else num = 10 + 6 * World.world.pers.barterLvl;
+			num = Math.round(num * (0.5 + Math.random() * 0.7));
+			var num2:int = num * (0.1 + Math.random() * 0.3);
 			var item:Item;
 			var cid:String;
-			for (var i=0; i<num; i++) 
+			for (var i:int = 0; i < num; i++) 
 			{
-				if (i<num2 && rndtip!='doctor') 
+				if (i < num2 && rndtip != 'doctor') 
 				{
-					cid=LootGen.getRandom(Item.L_WEAPON,1+lvl/4);
-					item=new Item(Item.L_WEAPON, cid, 1)
-					if (buys2[cid]==null) {
-						if (Math.random()<0.2) 
+					cid = LootGen.getRandom(Item.L_WEAPON, 1 + lvl / 4);
+					item = new Item(Item.L_WEAPON, cid, 1)
+					if (buys2[cid] == null) 
+					{
+						if (Math.random() < 0.2) 
 						{
-							item.barter=Math.floor(Math.random()*lvl/4+1);
-							if (item.barter>5) item.barter=5;
+							item.barter = Math.floor(Math.random() * lvl / 4 + 1);
+							if (item.barter > 5) item.barter = 5;
 						}
 						buys.push(item);
-						buys2[cid]=item;
+						buys2[cid] = item;
 					}
 				} 
 				else 
@@ -103,42 +104,44 @@ package servdata
 					var t:int=Math.floor(Math.random()*110);
 					if (rndtip=='doctor') 
 					{
-						if (t<70) tip=Item.L_MED;
-						else tip=Item.L_HIM;
+						if (t < 70) tip = Item.L_MED;
+						else tip = Item.L_HIM;
 					} 
 					else 
 					{
-						if (t<5) tip=Item.L_UNIQ;
-						else if (t<10) tip=Item.L_SCHEME;
-						else if (t<25) tip=Item.L_MED;
-						else if (t<35) tip=Item.L_HIM;
-						else if (t<55) tip=Item.L_EXPL;
-						else if (t<60) tip=Item.L_COMPA;
-						else if (t<65) tip=Item.L_COMPW;
-						else if (t<70) tip=Item.L_COMPE;
-						else if (t<75) tip=Item.L_COMPM;
-						else tip=Item.L_AMMO;
+						if (t < 5) tip = Item.L_UNIQ;
+						else if (t < 10) tip = Item.L_SCHEME;
+						else if (t < 25) tip = Item.L_MED;
+						else if (t < 35) tip = Item.L_HIM;
+						else if (t < 55) tip = Item.L_EXPL;
+						else if (t < 60) tip = Item.L_COMPA;
+						else if (t < 65) tip = Item.L_COMPW;
+						else if (t < 70) tip = Item.L_COMPE;
+						else if (t < 75) tip = Item.L_COMPM;
+						else tip = Item.L_AMMO;
 					}
-					cid=LootGen.getRandom(tip,lvl);
-					if (cid==null) continue;
-					item=new Item(tip, cid);
-					if (buys2[cid]==null) 
+					cid = LootGen.getRandom(tip, lvl);
+					if (cid == null) continue;
+					item = new Item(tip, cid);
+					if (buys2[cid] == null) 
 					{
-						if (Math.random()<0.3) 
+						if (Math.random() < 0.3) 
 						{
-							item.lvl=Math.floor(Math.random()*lvl+1);
-							if (item.lvl>5) item.lvl=5;
+							item.lvl = Math.floor(Math.random() * lvl + 1);
+							if (item.lvl > 5) item.lvl = 5;
 						}
-						if (tip==Item.L_AMMO) 
+						if (tip == Item.L_AMMO) 
 						{
-							item.kol=Math.round(item.kol*(3+Math.random()*12));
-						} else if (tip!=Item.L_UNIQ && tip!=Item.L_SCHEME) {
-							item.kol=Math.round(item.kol*(1+Math.random()*4));
+							item.kol=Math.round(item.kol*(3+Math.random() * 12));
+						} 
+						else if (tip != Item.L_UNIQ && tip != Item.L_SCHEME) 
+						{
+							item.kol = Math.round(item.kol * (1 + Math.random() * 4));
 						}
 						buys.push(item);
-						buys2[cid]=item;
+						buys2[cid] = item;
 					} 
-					else if (tip!=Item.L_UNIQ && tip!=Item.L_SCHEME) 
+					else if (tip != Item.L_UNIQ && tip != Item.L_SCHEME) 
 					{
 						buys2[cid].kol+=item.kol;
 					}
@@ -149,7 +152,7 @@ package servdata
 		public function reset():void 
 		{
 			kolBou=0;
-			for (var i:String in buys) buys[i].bou=0;
+			for (var i:String in buys) buys[i].bou = 0;
 		}
 		
 		public function refill():void 

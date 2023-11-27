@@ -7,13 +7,15 @@ package unitdata
 	import graphdata.Emitter;
 	import servdata.LootGen;
 	
-	public class UnitRanger extends UnitRaider{
+	public class UnitRanger extends UnitRaider
+	{
 		
 		var dopWeapon1:Weapon;
 		var dopWeapon2:Weapon;
 		var t_gren:int=Math.round(Math.random()*120+50);
 		
-		public function UnitRanger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitRanger(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			parentId='ranger';
 			kolTrs=3;
 			super(cid, ndif, xml, loadObj);
@@ -33,7 +35,7 @@ package unitdata
 			plusObserv=5;
 		}
 		
-		public override function attack()
+		public override function attack():void
 		{
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными

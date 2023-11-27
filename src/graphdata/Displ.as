@@ -15,33 +15,37 @@ package graphdata
 	
 	// This class is responsible for the main menu animation
 	
+	import stubs.displVolna;
+	import stubs.visWav;
+	import stubs.visSerost;
+
 	public class Displ 
 	{
+		//Setting all variables as public.
+		public var mm:MovieClip;
+		public var gr:MovieClip;
 		
-		var mm:MovieClip;
-		var gr:MovieClip;
+		public var displFilter1:DisplacementMapFilter;
+		public var displFilter2:DisplacementMapFilter;
+		public var displBmpd:BitmapData;
+		public var displStamp:MovieClip;
+		public var displPoint:Point = new Point(0, 0);
+		public var displMatrix:Matrix = new Matrix();
+		public var displX:Number = 10;
+		public var displY:Number = 15;
+		public var disp_t:int = 0;
 		
-		var displFilter1:DisplacementMapFilter;
-		var displFilter2:DisplacementMapFilter;
-		var displBmpd:BitmapData;
-		var displStamp:MovieClip;
-		var displPoint:Point = new Point(0, 0);
-		var displMatrix:Matrix = new Matrix();
-		var displX:Number = 10;
-		var displY:Number = 15;
-		var disp_t:int = 0;
+		public var wavKol:int = 10;
+		public var wavArr:Array = new Array();
+		public var disX:int = 200;
+		public var disY:int = 250;
+		public var spd:Number = 1;
 		
-		var wavKol:int = 10;
-		var wavArr:Array = new Array();
-		var disX = 200
-		var disY = 250;
-		var spd:Number = 1;
-		
-		var t_anim:int = 0;
-		var t_klip:int = 60;
-		var t_groza:int = 120;
-		var p_x:Number;
-		var p_y:Number;
+		public var t_anim:int = 0;
+		public var t_klip:int = 60;
+		public var t_groza:int = 120;
+		public var p_x:Number;
+		public var p_y:Number;
 		
 		public function Displ(nmm:MovieClip, ngr:MovieClip=null) 
 		{
@@ -76,7 +80,7 @@ package graphdata
 			}
 		}
 		
-		public function anim() 
+		public function anim():void
 		{
 			t_anim++;
 			t_klip--;
@@ -87,7 +91,7 @@ package graphdata
 			}
 			for (var i:int = 0; i < wavKol; i++) 
 			{
-				var v:MovieClip=wavArr[i];
+				var v:MovieClip = wavArr[i];
 				v.x -= (spd + i / 2);
 				v.y += (spd + i / 2) * 0.3;
 				if (v.x < -disX * 2) 

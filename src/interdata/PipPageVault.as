@@ -17,6 +17,8 @@ package interdata
 	import locdata.LevelTemplate;
 	
 	import components.Settings;
+
+	import stubs.visPipVaultItem;
 	
 	public class PipPageVault extends PipPage
 	{
@@ -53,8 +55,9 @@ package interdata
 			trace('PipPageVault.as/PipPageVault() - Created PipPageVault page.');
 		}
 
+		//set public
 		//подготовка страниц
-		override function setSubPages():void
+		public override function setSubPages():void
 		{
 			trace('PipPageVault.as/setSubPages() - updating subPages.');
 
@@ -103,14 +106,16 @@ package interdata
 			trace('PipPageVault.as/setSubPages() - Finished updating subPages.');
 		}
 		
-		function showBottext():void
+		//set public
+		public function showBottext():void
 		{
 			if (Settings.hardInv) vis.bottext.text=inv.retMass(page2);
 			else vis.bottext.text='';
 		}
 		
+		//set public
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object):void
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
 			item.id.visible=false;
@@ -136,13 +141,15 @@ package interdata
 			item.ns.value=obj.vault;
 		}
 		
+		//set public
 		//информация об элементе
-		override function statInfo(event:MouseEvent):void
+		public override function statInfo(event:MouseEvent):void
 		{
 			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text);
 		}
 		
-		function chKol(mc, n:int=0):void
+		//set public
+		public function chKol(mc, n:int=0):void
 		{
 			var obj=assArr[mc.id.text]
 			var item:Item=inv.items[mc.id.text];
@@ -168,17 +175,20 @@ package interdata
 		}
 		
 		
-		function nsClick(event:MouseEvent):void
+		//set public
+		public function nsClick(event:MouseEvent):void
 		{
 			event.stopPropagation();
 		}
 
-		function nsCh(event:Event):void
+		//set public
+		public function nsCh(event:Event):void
 		{
 			chKol(event.currentTarget.parent, event.currentTarget.value);
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		//set public
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (event.ctrlKey) chKol(event.currentTarget, 0);
 			else chKol(event.currentTarget, int.MAX_VALUE);
@@ -188,7 +198,8 @@ package interdata
 			event.stopPropagation();
 		}
 
-		override function itemRightClick(event:MouseEvent):void
+		//set public
+		public override function itemRightClick(event:MouseEvent):void
 		{
 			chKol(event.currentTarget, 0);
 			pip.snd(1);
@@ -197,7 +208,8 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		function checkAmmo(item:Item):Boolean 
+		//set public
+		public function checkAmmo(item:Item):Boolean 
 		{
 			var ab:String=item.id;
 			if (item.tip=='a' && item.xml && item.xml.@base.length()) ab=item.xml.@base;
@@ -211,7 +223,8 @@ package interdata
 			return false;
 		}
 
-		function sbrosHlam():void
+		//set public
+		public function sbrosHlam():void
 		{
 			for (var s in arr) {
 				if (arr[s].tip!='food' && arr[s].tip!='book' && arr[s].tip!='sphera' && arr[s].tip!='valuables' && !arr[s].keep) {
@@ -231,7 +244,8 @@ package interdata
 			pip.setRPanel();
 		}
 		
-		function transOk(event:MouseEvent):void
+		//set public
+		public function transOk(event:MouseEvent):void
 		{
 			if (page2==2 || page2==3) 
 			{

@@ -32,39 +32,41 @@ package interdata
 	public class PipPage 
 	{
 
-		var vis:MovieClip;
+		//Setting all variables to public.
 
-		var arr:Array;
-		var statArr:Array;
-		var statHead:MovieClip;
-		var pageClass:Class;
-		var itemClass:Class;
+		public var vis:MovieClip;
 
-		var maxrows:int = 18;
-		var selItem:MovieClip;
+		public var arr:Array;
+		public var statArr:Array;
+		public var statHead:MovieClip;
+		public var pageClass:Class;
+		public var itemClass:Class;
+
+		public var maxrows:int = 18;
+		public var selItem:MovieClip;
 		
-		var pip:PipBuck;
-		var inv:Invent;
-		var gg:UnitPlayer;
+		public var pip:PipBuck;
+		public var inv:Invent;
+		public var gg:UnitPlayer;
 		
-		var isLC:Boolean = false;
-		var isRC:Boolean = false; //реакция на клик
+		public var isLC:Boolean = false;
+		public var isRC:Boolean = false; //реакция на клик
 		
-		var signs:Array = [0, 0, 0, 0, 0, 0];
+		public var signs:Array = [0, 0, 0, 0, 0, 0];
 		
-		var page2:int = 1;
-		var scrl:int = 0;
+		public var page2:int = 1;
+		public var scrl:int = 0;
 		
-		var infIco:MovieClip;
-		var itemFilter:GlowFilter 		= new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
-		var itemTrans:ColorTransform 	= new ColorTransform(1, 1, 1);
+		public var infIco:MovieClip;
+		public var itemFilter:GlowFilter 		= new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
+		public var itemTrans:ColorTransform 	= new ColorTransform(1, 1, 1);
 		
-		var pp:String; //pipPage
+		public var pp:String; //pipPage
 		
-		var kolCats:int=6;
-		var cat:Array=[0, 0, 0, 0, 0, 0, 0];
-		var curTip = '';
-		var tips:Array = [[]];
+		public var kolCats:int=6;
+		public var cat:Array=[0, 0, 0, 0, 0, 0, 0];
+		public var curTip = '';
+		public var tips:Array = [[]];
 		
 		//setStatItems - update all elements without reloading the page
 		//setStatus - fully refresh the page"
@@ -174,7 +176,7 @@ package interdata
 		public function updateLang():void
 		{
 			trace('PipPage.as/updateLang() - PipPage: "' + pp + '" updating button langauge.');
-			for (var i = 1; i <= 5; i++) 
+			for (var i:int = 1; i <= 5; i++) 
 			{
 				var item = vis.getChildByName('but' + i) as MovieClip;
 				item.text.text = Res.txt('p', pp + i);
@@ -289,40 +291,47 @@ package interdata
 		}
 		
 		
-		function setSubPages():void // Preparation of pages
+		//Set public
+		public function setSubPages():void // Preparation of pages
 		{
 
 		}
 		
-		function setSigns():void // Which buttons are highlighted.
+		//Set public
+		public function setSigns():void // Which buttons are highlighted.
 		{
 			signs = [0, 0, 0, 0, 0, 0];
 		}
 		
+		//Set public
 		// Display of a single element
-		function setStatItem(item:MovieClip, obj:Object):void
+		public function setStatItem(item:MovieClip, obj:Object):void
 		{
 
 		}
 		
+		//Set public
 		// Information about the element
-		function statInfo(event:MouseEvent):void
+		public function statInfo(event:MouseEvent):void
 		{
 
 		}
 		
-		function itemClick(event:MouseEvent):void
+		//Set public
+		public function itemClick(event:MouseEvent):void
 		{
 
 		}
 
-		function itemRightClick(event:MouseEvent):void
+		//Set public
+		public function itemRightClick(event:MouseEvent):void
 		{
 
 		}
 		
 		// Show all elements
-		function setStatItems(n:int = -1):void
+		//Set public
+		public function setStatItems(n:int = -1):void
 		{
 			if (n >= 0) scrl = n;
 			for (var i:int = 0; i < statArr.length; i++) 
@@ -339,7 +348,8 @@ package interdata
 			}
 		}
 		
-		function setIco(tip:int = 0, id:String = ''):void
+		//Set public
+		public function setIco(tip:int = 0, id:String = ''):void
 		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
 			vis.pers.visible = vis.skill.visible = false;
@@ -796,7 +806,8 @@ package interdata
 			return s;
 		}
 		
-		function infoItem(tip:String, id:String, objectName:String, craft:int=0):void
+		//set public
+		public function infoItem(tip:String, id:String, objectName:String, craft:int=0):void
 		{
 			vis.objectName.text = objectName;
 			var s:String = '';
@@ -1113,7 +1124,8 @@ package interdata
 			return true;
 		}
 		
-		function initCats():void
+		//Set public
+		public function initCats():void
 		{
 			for (var i:int = 0; i<=kolCats; i++) 
 			{
@@ -1123,7 +1135,8 @@ package interdata
 		}
 		
 		//установить кнопки категорий
-		function setCats():void
+		//Set public
+		public function setCats():void
 		{
 			var arr = tips[page2];
 			if (arr == null) {
@@ -1176,7 +1189,8 @@ package interdata
 		}
 		
 		//проверить соответствии категории
-		function checkCat(tip:String):Boolean 
+		//Set public
+		public function checkCat(tip:String):Boolean 
 		{
 			if (curTip == '' || curTip == null || curTip == tip) return true;
 			if (curTip is Array) 
@@ -1186,12 +1200,14 @@ package interdata
 			return false;
 		}
 		
-		function statScroll(event:ScrollEvent):void
+		//Set public
+		public function statScroll(event:ScrollEvent):void
 		{
 			setStatItems(event.position);
 		}
 
-		function onMouseWheel1(event:MouseEvent):void 
+		//Set public
+		public function onMouseWheel1(event:MouseEvent):void 
 		{
 			if (World.world.ctr.setkeyOn) return;
 			try 

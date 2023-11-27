@@ -11,7 +11,8 @@ package unitdata
 	
 	import components.Settings;
 	
-	public class UnitBossEncl extends UnitPon{
+	public class UnitBossEncl extends UnitPon
+	{
 		
 		public var tr:int=1;
 		var weap:String;
@@ -21,7 +22,8 @@ package unitdata
 		public var called:int=0;
 		public var coord:Object;
 
-		public function UnitBossEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBossEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='bossencl';
 			if (xml && xml.@tr.length()) {	//из настроек карты
@@ -72,10 +74,11 @@ package unitdata
 			coord['liv'+tr]=false;
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
-			if (newRoom.unitCoord==null) {
+			if (newRoom.unitCoord==null) 
+			{
 				newRoom.unitCoord=new Coord(newRoom);
 			}
 			coord=newRoom.unitCoord;
@@ -122,7 +125,7 @@ package unitdata
 			weaponY=Y-scY*0.58;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			super.dropLoot();
 			if (currentWeapon) {
@@ -133,7 +136,8 @@ package unitdata
 			}
 		}
 
-		function emit() {
+		public function emit():void
+		{
 			var un:Unit=room.createUnit('vortex',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
@@ -233,8 +237,10 @@ package unitdata
 
 		}
 		
-		public function attack() {
-			if (celUnit) {	//атака холодным оружием без левитации или корпусом
+		public function attack():void
+		{
+			if (celUnit) 
+			{	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit);
 				if (coord.tr==tr && coord.t1>45) currentWeapon.attack();
 			}
@@ -242,10 +248,13 @@ package unitdata
 		
 		public override function command(com:String, val:String=null):void
 		{
-			if (com=='off') {
+			if (com=='off') 
+			{
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			} 
+			else if (com=='on') 
+			{
 				controlOn=true;
 			}
 		}

@@ -6,14 +6,16 @@ package unitdata
 	
 	import stubs.visualCaptive;
 	
-	public class UnitCaptive extends Unit{
+	public class UnitCaptive extends Unit
+	{
 		
 		var tr:int=1;
 		var sr:int=0;
 		var statusCapt=0;
 		var novoi:Boolean=false;
 		
-		public function UnitCaptive(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitCaptive(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='captive';
 			//if (questId==null) questId=id;
@@ -79,7 +81,8 @@ package unitdata
 			inter.command(com,val);
 		}
 		
-		public function free() {
+		public function free():void
+		{
 			if (statusCapt>0) return;
 			sound('metal_door_open');
 			t_replic=0;

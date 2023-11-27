@@ -9,7 +9,8 @@ package unitdata
 	
 	import stubs.visualBloat1;
 
-	public class UnitBloat extends Unit{
+	public class UnitBloat extends Unit
+	{
 		
 		public var tr:int;
 		var cDam:Number;
@@ -18,7 +19,8 @@ package unitdata
 		var isGryz:Boolean=false;
 		var shootCh:Number=0.1;
 		
-		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBloat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -52,7 +54,7 @@ package unitdata
 			if (currentWeapon) childObjs=new Array(currentWeapon);
 		}
 
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam('bloat');
 			super.getXmlParam();
@@ -90,23 +92,24 @@ package unitdata
 			return obj;
 		}
 		
-		public override function otbros(bul:Bullet)
+		public override function otbros(bul:Bullet):void
 		{
 			if (bul && bul.knockx!=0 || bul.knocky!=0) isGryz=false;
 			super.otbros(bul);
 		}
 		
-		function emit() {
+		public function emit():void
+		{
 			var un:Unit=room.createUnit('bloat',X,Y,true,null,'0');
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('shmatok',4,2);
 			newPart('bloat_kap',Math.floor(Math.random()*3+4));
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			super.dropLoot();
 			var un:Unit
@@ -116,17 +119,19 @@ package unitdata
 				un=room.createUnit('bloat',X,Y,true,null,String(tr-1));
 				un.questId=questId;
 			} 
-			if (isEmit) {
+			if (isEmit) 
+			{
 				emit();
 				emit();
-				if (hero) {
+				if (hero) 
+				{
 					emit();
 					emit();
 				}
 			}
 		}
 		
-		public override function incStat(sposob:int=0)
+		public override function incStat(sposob:int=0):void
 		{
 			if (tr>=7 && tr<10) return;
 			super.incStat(sposob);
@@ -179,10 +184,12 @@ package unitdata
 				}
 			}
 			//поиск цели
-			if (Settings.enemyAct>1 && aiTCh%10==1) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) 
+			{
 				findCel();
 			}
-			if (isPlav) {
+			if (isPlav) 
+			{
 				turnY=-1;
 			}
 			if (levit) isGryz=false;
@@ -203,19 +210,25 @@ package unitdata
 			
 			if (isGryz) {
 				if (celUnit && isMeet(celUnit)) {
-					if ((celUnit.X-X)*(celUnit.X-X)+(celUnit.Y-Y)*(celUnit.Y-Y)>10000) {
+					if ((celUnit.X-X)*(celUnit.X-X)+(celUnit.Y-Y)*(celUnit.Y-Y)>10000) 
+					{
 						isGryz=false;
-					} else {
+					} 
+					else 
+					{
 						dx=celUnit.X-X;
 						dy=celUnit.Y-celUnit.scY/2-Y+scY/2;
 					}
-				} else {
+				} 
+				else 
+				{
 					isGryz=false;
 				}
 			}
 			
 			//атака
-			if (Settings.enemyAct>=3 && celUnit && shok<=0) {
+			if (Settings.enemyAct>=3 && celUnit && shok<=0) 
+			{
 				if (aiState==1 && currentWeapon) if (isrnd(shootCh)) currentWeapon.attack();
 				var atk=attKorp(celUnit);
 				if (atk && gryz) isGryz=true;

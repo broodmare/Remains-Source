@@ -12,7 +12,8 @@ package unitdata
 		var spd:Object;
 		var br:Number=0;
 
-		public function UnitNecros(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitNecros(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='necros';
 			getXmlParam();
@@ -47,7 +48,7 @@ package unitdata
 			} else super.forces();
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('black',24);
 			isFly=true;

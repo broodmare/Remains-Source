@@ -41,7 +41,7 @@ package unitdata
 				}
 		}
 		
-		public function weaponLevit() 
+		public function weaponLevit():void
 		{
 			if (!currentWeapon || !teleFilter) return;
 			if (weaponKrep==0 && currentWeapon.tip!=5) 
@@ -52,7 +52,7 @@ package unitdata
 		}
 		
 		
-		public function sndStep(faza:int,tip:int=0) 
+		public function sndStep(faza:int,tip:int=0):void
 		{
 			if (room==null || !room.roomActive) return;
 			var nstep:int;

@@ -50,7 +50,7 @@ package unitdata
 		{
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			cel=World.world.gg;
@@ -66,7 +66,7 @@ package unitdata
 			if (vis.vzz.alpha<1) vis.vzz.alpha+=0.02;
 		}
 		
-		public function getNapr()  
+		public function getNapr():void
 		{
 			if (cel==null) return;
 			var napr2=Math.atan2(cel.X-X,cel.Y-Y);

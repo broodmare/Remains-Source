@@ -49,7 +49,8 @@ package unitdata
 		var floatX:Number=1, floatY:Number=0;
 		
 		
-		public function UnitRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (parentId==null) parentId='raider';
@@ -156,7 +157,7 @@ package unitdata
 			if (sndDie=='rm' && !msex) sndDie='rw';
 		}
 		
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam(parentId);
 			super.getXmlParam();
@@ -265,7 +266,7 @@ package unitdata
 		}
 		
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
@@ -281,7 +282,7 @@ package unitdata
 			}
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			super.dropLoot();
 			if (currentWeapon) {
@@ -304,7 +305,8 @@ package unitdata
 			}
 		}
 
-		function emit() {
+		function emit():void
+		{
 			var un:Unit=room.createUnit('vortex',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
@@ -866,7 +868,8 @@ package unitdata
 			super.replic(s);
 		}
 		
-		public function attack() {
+		public function attack():void
+		{
 			if ((attackerType==0 || aiState==8) && celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
 				if (attKorp(celUnit,(Math.abs(dx)>8)?1:0.5)) {
 					if (aiState==8) aiTCh=5;

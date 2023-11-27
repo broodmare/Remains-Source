@@ -8,7 +8,8 @@ package unitdata
 	{
 		
 		public var owner:Obj;
-		var nTipDam:int;
+		//set public
+		public var nTipDam:int;
 
 		public function VirtualUnit(cid:String) 
 		{

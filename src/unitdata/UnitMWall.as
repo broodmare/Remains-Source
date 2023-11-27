@@ -11,7 +11,8 @@ package unitdata
 		
 		var rearm:Boolean=false;
 
-		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitMWall(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			if (cid==null) {
 				id='mwall';
 			} else id=cid
@@ -27,7 +28,7 @@ package unitdata
 			transT=true;
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			Emitter.emit('pole',room,X,Y-scY/2,{kol:12,rx:scX, ry:scY});
 		}

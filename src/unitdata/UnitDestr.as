@@ -5,12 +5,14 @@ package unitdata
 
 	import stubs.visualStolp;
 
-	public class UnitDestr extends Unit{
+	public class UnitDestr extends Unit
+	{
 		
 		var tr:int=1;
 		var t_part:int=10;
 		
-		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitDestr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='destr';
 			if (cid!=null) tr=int(cid);

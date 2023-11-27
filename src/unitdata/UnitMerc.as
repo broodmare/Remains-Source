@@ -9,13 +9,15 @@ package unitdata
 	
 	import stubs.visualGrifArm1;
 
-	public class UnitMerc extends UnitRaider{
+	public class UnitMerc extends UnitRaider
+	{
 		
 		var arm:MovieClip;
 		var thWeapon:Weapon;
 		var t_gren:int=Math.round(Math.random()*150+50);
 		
-		public function UnitMerc(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitMerc(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			parentId='merc';
 			flyer=true;
 			kolTrs=1;
@@ -78,14 +80,14 @@ package unitdata
 			weaponY=p1.y;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			budilo(2000);
 			arm.visible = false;
 			super.dropLoot();
 		}
 		
-		public override function attack()
+		public override function attack():void
 		{
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными

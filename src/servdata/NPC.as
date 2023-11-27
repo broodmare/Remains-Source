@@ -26,9 +26,11 @@ package servdata
 		public var ndial:String;	// dialogue when there's nothing more to say
 		
 		
-		public function NPC(nxml:XML, loadObj:Object=null, nvid:String=null, ndif:int=100) {
+		public function NPC(nxml:XML, loadObj:Object=null, nvid:String=null, ndif:int=100) 
+		{
 			xml=nxml;
-			if (xml) {
+			if (xml) 
+			{
 				id=xml.@id;
 				if (xml.@vendor.length()) vid=xml.@vendor;
 				if (xml.@inter.length()) npcInter=xml.@inter;
@@ -36,26 +38,38 @@ package servdata
 				if (xml.@ua2.length()) userAction2=xml.@ua2;
 				if (xml.@ndial.length()) ndial=xml.@ndial;
 			}
-			if (loadObj) {
+
+			if (loadObj) 
+			{
 				if (loadObj.rep!=null) rep=loadObj.rep;
 			}
+
 			if (nvid!=null) vid=nvid;
+
 			// Create a vendor object
-			if (vid!=null && vid!='') {
-				if (World.world.game.vendors[vid]){
+			if (vid!=null && vid!='') 
+			{
+				if (World.world.game.vendors[vid])
+				{
 					vendor = World.world.game.vendors[vid];
-				} else {
+				} 
+				else 
+				{
 					vendor = new Vendor(ndif, null, null, vid);
-					if (vid=='doctor') {
+					if (vid=='doctor') 
+					{
 						npcInter='doc';
-					} else {
+					} 
+					else 
+					{
 						npcInter='vr';
 					}
 				}
 			}
 		}
 
-		public function save():Object {
+		public function save():Object 
+		{
 			var obj:Object = new Object();
 			obj.rep=rep;
 			return obj;
@@ -68,9 +82,12 @@ package servdata
 		}
 		
 		// This function is called when the unit is created
-		public function init() {
-			if (id=='calam') {
-				if (rep==0 || trig('rbl_visited')>0) {
+		public function init():void
+		{
+			if (id=='calam') 
+			{
+				if (rep==0 || trig('rbl_visited')>0) 
+				{
 					hidden=true;
 				}
 				if (rep==1) (owner as UnitNPC).aiTip='agro';
@@ -78,7 +95,8 @@ package servdata
 			if (id=='steel2') refresh();
 		}
 		
-		function trig(s:String):* 
+		//set public
+		public function trig(s:String):* 
 		{
 			return World.world.game.triggers[s];
 		}
@@ -118,23 +136,38 @@ package servdata
 		public function activate():void
 		{
 			if (check(true) && npcInter!='patient') return;
-			if (npcInter=='travel') {
+
+			if (npcInter=='travel') 
+			{
 				World.world.pip.travel=true;
 				World.world.pip.onoff(3,3);
 				World.world.pip.travel=true;
-			} else if (npcInter=='doc' || npcInter=='vdoc') {
+			} 
+			else if (npcInter=='doc' || npcInter=='vdoc') 
+			{
 				pip(6);
-			} else if (npcInter=='adoc') {
-				if (rep<=1)	{
+			} 
+			else if (npcInter=='adoc') 
+			{
+				if (rep<=1)	
+				{
 					repair();
-				} else {
+				} 
+				else 
+				{
 					pip(6);
 				}
-			} else if (npcInter=='patient') {
+			} 
+			else if (npcInter=='patient') 
+			{
 				patient();
-			} else if (vendor) {
+			} 
+			else if (vendor) 
+			{
 				pip(4);
-			} else {
+			} 
+			else 
+			{
 				if (ndial) World.world.gui.dialog(ndial);
 				else if (owner) owner.command('tell','dial');
 			}
@@ -151,16 +184,23 @@ package servdata
 		
 		
 		// Check for quest actions, if 'us', perform actions; if not, only set the status
-		public function check(us:Boolean=false):Boolean {
-			if (xml && xml.dial.length()) {
-				for each (var dial in xml.dial) {
+		public function check(us:Boolean=false):Boolean 
+		{
+			if (xml && xml.dial.length()) 
+			{
+				for each (var dial in xml.dial) 
+				{
 					if (trig('dial_'+dial.@id)) continue;
 					if (dial.@lvl.length() && dial.@lvl>World.world.pers.level) continue; 
 					if (dial.@barter.length() && dial.@barter>World.world.pers.getSkLevel(World.world.pers.skills['barter'])) continue; 
-					if (dial.@trigger.length()) {
-						if (dial.@n.length()) {
+					if (dial.@trigger.length()) 
+					{
+						if (dial.@n.length()) 
+						{
 							if (trig(dial.@trigger)!=dial.@n) continue;
-						} else {
+						} 
+						else 
+						{
 							if (trig(dial.@trigger)!=1) continue;
 						}
 					}
@@ -168,31 +208,41 @@ package servdata
 					if (dial.@level.length() && !World.world.game.levelArray[dial.@level].access) continue; 
 					if (dial.@armor.length() && (World.world.gg.currentArmor==null || World.world.gg.currentArmor.id!=dial.@armor)) continue; 
 					if (dial.@pet.length() && World.world.gg.currentPet!=dial.@pet) continue; 
-					if (dial.@quest.length()) {						 // If a quest is active
+					if (dial.@quest.length()) 
+					{						 // If a quest is active
 						var quest=World.world.game.quests[dial.@quest];
 						if (quest==null || quest.state!=1) continue; 
-						if (dial.@sub.length()) {					// If there is a visible sub-quest
+						if (dial.@sub.length()) 
+						{					// If there is a visible sub-quest
 							if (quest.subsId[dial.@sub]==null || quest.subsId[dial.@sub].invis) continue; 
 						}
 					}
-					if (us) {
-						if (dial.scr.length()) {
+					if (us) 
+					{
+						if (dial.scr.length()) 
+						{
 							var scr:Script=new Script(dial.scr[0],World.world.level,owner,true);
-							if (Settings.dialOn) {
+							if (Settings.dialOn) 
+							{
 								var did:String=dial.@id;
 								scr.acts.unshift({act:'dialog', val:did, t:0, n:-1, opt1:0, opt2:0, targ:""});
 							}
 							scr.acts.push({act:'trigger', val:('dial_'+dial.@id), t:0, n:1, opt1:0, opt2:0, targ:""});
 							scr.acts.push({act:'checkall', val:0, t:0, n:1, opt1:0, opt2:0, targ:""});
 							scr.start();
-						} else {
+						} 
+						else 
+						{
 							if (Settings.dialOn) World.world.gui.dialog(dial.@id);
 							World.world.game.setTrigger('dial_'+dial.@id);
 
 						}
-						if (dial.reward.length()) {
-							for each(var rew:XML in dial.reward) {
-								if (rew.@id.length()) {
+						if (dial.reward.length()) 
+						{
+							for each(var rew:XML in dial.reward) 
+							{
+								if (rew.@id.length()) 
+								{
 									var item:Item;
 									if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
 									else item=new Item('', rew.@id);
@@ -200,11 +250,14 @@ package servdata
 								}
 							}
 						}
-						if (dial.@music.length()) {
+						if (dial.@music.length()) 
+						{
 							Snd.playMusic(dial.@music);
 						}
 						check();
-					} else {
+					} 
+					else 
+					{
 						if (dial.@imp.length()) setStatus(2);
 						else setStatus(1);
 					}
@@ -215,30 +268,46 @@ package servdata
 			return false;
 		}
 		
-		public function setStatus(dial:int=0) {
-			if (dial>0) {
+		public function setStatus(dial:int=0) 
+		{
+			if (dial > 0) 
+			{
 				setIco('dial'+dial);
 				if (userAction1) inter.userAction=userAction1;
 				else inter.userAction='dial';
 				owner.command('sign');
-			} else {
+			} 
+			else 
+			{
 				if (userAction2) inter.userAction=userAction2;
-				else if (npcInter=='doc' || npcInter=='vdoc') {
+				else if (npcInter=='doc' || npcInter=='vdoc') 
+				{
 					inter.userAction='therapy';
-				} else if (npcInter=='patient') {
-					if (trig('patient_tr2')=='1') {//cured
+				} 
+				else if (npcInter=='patient') 
+				{
+					if (trig('patient_tr2')=='1') 
+					{//cured
 						inter.t_action=0;
 						inter.userAction='dial';
-					} else {
+					} 
+					else 
+					{
 						inter.t_action=30;
 						inter.userAction='see';
 					}
-				} else if (npcInter=='adoc') {
+				} 
+				else if (npcInter=='adoc') 
+				{
 					if (rep<=1)	inter.userAction='repair';
 					else inter.userAction='therapy';
-				} else if (vendor) {
+				} 
+				else if (vendor) 
+				{
 					inter.userAction='trade';
-				} else {
+				} 
+				else 
+				{
 					inter.userAction='dial';
 				}
 				setIco();
@@ -247,16 +316,26 @@ package servdata
 		}
 		
 		// Set the top icon
-		function setIco(n:String=null) {
-			try {
+		//set public
+		public function setIco(n:String=null) 
+		{
+			try 
+			{
 				if (n==null) owner['ico'].gotoAndStop(owner['icoFrame']);
 				else owner['ico'].gotoAndStop(n);
-			} catch (err) {}
+			} 
+			catch (err) 
+			{
+
+			}
 		}
 		
-		public function repair() {
-			if (xml && xml.quest.length()) {
-				if (World.world.game.quests[xml.quest.@id]==null) {
+		public function repair() 
+		{
+			if (xml && xml.quest.length()) 
+			{
+				if (World.world.game.quests[xml.quest.@id]==null) 
+				{
 					World.world.game.addQuest(xml.quest.@id);
 					return;
 				}

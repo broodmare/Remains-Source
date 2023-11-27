@@ -1003,12 +1003,14 @@ package unitdata
 		}
 		
 		//расход магии при ударах по левитируемому ящику
-		public function otbrosTele(knock:Number) {
-			mana-=pers.teleMult*knock*5;
+		public function otbrosTele(knock:Number):void
+		{
+			mana -= pers.teleMult * knock * 5;
 		}
 		
 		//активировать заклинание телепорта
-		function actPort() {
+		public function actPort():void
+		{
 			if (!room.portOn) return;
 			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
 				World.world.gui.infoText('overMana',null,null,false);
@@ -1031,7 +1033,8 @@ package unitdata
 			}
 		}
 		
-		function alicornPort() {
+		public function alicornPort():void
+		{
 			if (mana<pers.alicornPortMana && mana<maxmana*0.99) {
 				World.world.gui.infoText('overMana',null,null,false);
 				World.world.gui.bulb(X,Y-20);
@@ -1052,7 +1055,8 @@ package unitdata
 		}
 		
 		//проверить возможность телепорта
-		public function checkPort():Boolean {
+		public function checkPort():Boolean
+		{
 			if (mana<pers.portMana*pers.allDManaMult) return false;
 			if (room.sky) return true;
 			var nx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
@@ -1065,7 +1069,8 @@ package unitdata
 		}
 		
 		//снять нужное количество маны, установить время перезарядки
-		function manaSpell(dmag:Number, dm:Number) {
+		public function manaSpell(dmag:Number, dm:Number):void
+		{
 			//if (culd>0) t_culd=Math.floor(pers.spellDown*culd);
 			mana-=dmag*pers.allDManaMult;
 			pers.manaDamage(dm*pers.allDManaMult);
@@ -1073,21 +1078,25 @@ package unitdata
 			if (teleObj) dropTeleObj();
 		}
 		
-		function castSpell(sid:String=null) {
+		public function castSpell(sid:String=null):void
+		{
 			
 		}
 		
-		function spellDisact() {
-			ctr.keyStates.keyDef=false;
+		public function spellDisact():void
+		{
+			ctr.keyStates.keyDef = false;
 		}
 		
-		public function bindChain(nx:Number, ny:Number) {
+		public function bindChain(nx:Number, ny:Number):void
+		{
 			addEffect('fetter',0,10,false);
 			fetX=nx, fetY=ny;
 		}
 		
 		//включить или выключить левитацию объекта при нажатой клавише левитации
-		function actTele() {
+		public function actTele():void
+		{
 			//двойной клик
 			if (t_dclick>0) {
 			}
@@ -1147,7 +1156,8 @@ package unitdata
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
+		public function throwTele():void
+		{
 			if (teleObj) {
 				if (pers.spellsPoss<=0) {
 					dropTeleObj();
@@ -1184,7 +1194,8 @@ package unitdata
 			}
 		}
 		
-		public function throwForceRelat():Number {
+		public function throwForceRelat():Number
+		{
 			if (teleObj) {
 				var dm:Number=teleObj.massa*pers.throwDmagic*pers.allDManaMult;
 				if (dm>mana) return mana/dm;
@@ -1194,7 +1205,8 @@ package unitdata
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
+		public function dropTeleObj():void
+		{
 			if (teleObj) {
 				if (teleObj.vis) {
 					teleObj.vis.filters=[];
@@ -1208,7 +1220,7 @@ package unitdata
 		
 		
 		//действие с активным объектом при удерживаемой клавише действия
-		function actAction() 
+		public function actAction():void
 		{
 			if (actionObj) 
 			{
@@ -1279,7 +1291,7 @@ package unitdata
 			}
 		}
 		
-		function crackAction()
+		public function crackAction():void
 		{
 			if (actionReady && room.celObj && room.celObj.onCursor && room.celDist<=Settings.actionDist)
 			{
@@ -1289,7 +1301,9 @@ package unitdata
 				}
 			}
 		}
-		function chit() {
+
+		public function chit():void
+		{
 			if (Settings.chit=='fly') isFly=!isFly;
 			if (Settings.chit=='port') {
 				var tx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
@@ -1302,7 +1316,8 @@ package unitdata
 		}
 		
 		//включить неуязвимость, отключить управление
-		public function controlOff() {
+		public function controlOff():void
+		{
 			ctr.clearAll();
 			ggControl=false;
 			dropTeleObj();
@@ -1315,7 +1330,8 @@ package unitdata
 		}
 		
 		//вернуть обычный режим
-		public function controlOn() {
+		public function controlOn():void
+		{
 			if (pers.dead) return;
 			invulner=false;
 			ggControl=true;
@@ -1867,7 +1883,8 @@ package unitdata
 		
 		
 		//смотреть на целевую точку
-		public function lineCel(rdx:int=0, rdy:int=0):int {
+		public function lineCel(rdx:int=0, rdy:int=0):int 
+		{
 			var res=0;
 			var ndx=(celX+rdx-X);
 			var ndy=(celY+rdy-Y+scY/2);
@@ -1885,7 +1902,8 @@ package unitdata
 			return 1;
 		}
 		
-		function lurk() {
+		public function lurk():void
+		{
 			lurkTip=0;
 			if (stay && !isSit && dx<5 && dx>-5 && stayPhis>=1 && work=='')	{
 				lurkBox=null;
@@ -1926,12 +1944,14 @@ package unitdata
 			}
 		}
 		
-		function unlurk() {
-			if (lurked && stay) {
-				t_work=10;
-				work='unlurk';
+		public function unlurk():void
+		{
+			if (lurked && stay) 
+			{
+				t_work = 10;
+				work = 'unlurk';
 			}
-			lurked=false;
+			lurked = false;
 		}
 		
 		
@@ -1942,28 +1962,35 @@ package unitdata
 //
 //**************************************************************************************************************************
 		// Установить зависимости
-		public function setAddictions() {
-			for (var ad in pers.addictions) {
-				if (pers.addictions[ad]>=pers.ad1) {
-					var eff:Effect=addEffect(ad);
-					if (pers.addictions[ad]>=pers.ad2) eff.lvl=2;
-					if (pers.addictions[ad]>=pers.ad3) eff.lvl=3;
-					eff.forever=true;
+		public function setAddictions():void
+		{
+			for (var ad in pers.addictions) 
+			{
+				if (pers.addictions[ad]>=pers.ad1) 
+				{
+					var eff:Effect = addEffect(ad);
+					if (pers.addictions[ad]>=pers.ad2) eff.lvl = 2;
+					if (pers.addictions[ad]>=pers.ad3) eff.lvl = 3;
+					eff.forever = true;
 				}
 			}
 			if (World.world.game.triggers['curse']>0) addEffect('curse');
 		}
 
-		function endAllEffect() {
-			if (effects.length > 0) {
+		public function endAllEffect():void
+		{
+			if (effects.length > 0) 
+			{
 				for each (var eff in effects) eff.unsetEff();
-				effects=new Array();
+				effects = new Array();
 			}
 		}
 		
-		function clearAddictions() {
-			for (var ad in pers.addictions) {
-				pers.addictions[ad]=0;
+		public function clearAddictions():void
+		{
+			for (var ad in pers.addictions) 
+			{
+				pers.addictions[ad] = 0;
 			}
 		}
 
@@ -1977,29 +2004,32 @@ package unitdata
 		//оно увеличивается в зависимости от соотношения скрытности героя и наблюдательности врага
 		//nlook - базовое значение, на которое увеличивается obs, зависит от расстояния до врага и параметров видимости
 		//nobs - наблюдательность врага. если она не передаётся, то рассчёт соотношения скрытности героя и наблюдательности врага не производится
-		public function observation(nlook:Number, nobs:Number=-1000):Boolean {
-			var nsneak=sneak-demask/20;
-			//if (lurked) nsneak+=pers.sneakLurk*2.5;
-			//if (isSit) nsneak+=pers.sneakLurk;
-			if (nsneak<0) nsneak=0;
-			if (nobs>-1000) {
-				if (nobs>nsneak) {
-					nlook*=(1+(nobs-nsneak)*0.2);
-				} else if (nobs<nsneak) {
-					nlook/=(1-(nobs-nsneak)*0.3);
+		public function observation(nlook:Number, nobs:Number = -1000):Boolean 
+		{
+			var nsneak = sneak - demask / 20;
+			if (nsneak < 0) nsneak = 0;
+			if (nobs > -1000) 
+			{
+				if (nobs > nsneak) 
+				{
+					nlook *= (1 + (nobs - nsneak) * 0.2);
+				} 
+				else if (nobs < nsneak) 
+				{
+					nlook /= (1 - (nobs - nsneak) * 0.3);
 				}
 			}
-			nlook*=pers.visiMult*stealthMult;
-			if (lurked) nlook-=pers.sneakLurk;
-			if (isSit) nlook-=pers.sneakLurk/5;
-			if (nlook<0) nlook=0;
-			obs+=nlook;
-			if (nlook>0) isObs=30;
-			if (obs>maxObs*2) obs=maxObs*2;
-			return obs>=maxObs;
+			nlook *= pers.visiMult * stealthMult;
+			if (lurked) nlook -= pers.sneakLurk;
+			if (isSit) nlook -= pers.sneakLurk / 5;
+			if (nlook < 0) nlook = 0;
+			obs += nlook;
+			if (nlook > 0) isObs = 30;
+			if (obs > maxObs * 2) obs = maxObs * 2;
+			return obs >= maxObs;
 		}
 
-		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true)
+		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true):void
 		{
 			if (hl==0) return;
 			if (tip==0) {				//мгновенное лечение
@@ -2039,7 +2069,8 @@ package unitdata
 		}
 		
 		//урон от радиации и прочий урон на расстоянии
-		public function raddamage(koef:Number, dam:Number, tip:int=0) {
+		public function raddamage(koef:Number, dam:Number, tip:int=0):void
+		{
 			if (t_nogas>0) return;
 			if (tip==0) {
 				World.world.gg.drad+=dam*koef;
@@ -2102,7 +2133,8 @@ package unitdata
 			return pdam;
 		}
 		
-		public function electroDamage(dam:Number=-1, nx=null, ny=null) {
+		public function electroDamage(dam:Number=-1, nx=null, ny=null):void
+		{
 			if (dam<0) dam=room.electroDam;
 			if (pinok>0) dam*=2;
 			if (pers.potShad==0) {
@@ -2172,7 +2204,8 @@ package unitdata
 		}
 		
 		//восстановиться после смерти
-		public function resurect() {
+		public function resurect():void
+		{
 			lurked=false;
 			sost=1;
 			sit(false);
@@ -2239,62 +2272,80 @@ package unitdata
 				p=vis.parent.globalToLocal(p);
 				magicX=p.x;
 				magicY=p.y;
-				if (room.getAbsTile(magicX,magicY).phis==1) {
+				if (room.getAbsTile(magicX,magicY).phis==1) 
+				{
 					if (isSit) magicY=Y-35;
 					else magicY=Y-75;
 				}
-			} catch (err) {
+			} catch (err) 
+			{
 				magicX=X;
 				magicY=Y-scY/2;
 			}
 		}
 		
-		
+		//TODO: Fix this, why is it returning a false?
 		//Смена оружия по цифровой клавише или идентификатору
-		public function changeWeapon(nid:String, moment:Boolean=false) {
+		public function changeWeapon(nid:String, moment:Boolean=false)
+		{
 			var nw;
 			if (sats && sats.que.length > 0) sats.clearAll();
-			if (nid=='not') {
-				nw=null;
-			} else if (nid==null || nid=='' || attackForever>0 || atkPoss==0) {
+			if (nid == 'not') {
+				nw = null;
+			} 
+			else if (nid == null || nid == '' || attackForever > 0 || atkPoss == 0) 
+			{
 				return false;
-			} else {
-				if (currentWeapon && nid==currentWeapon.id) {
+			} 
+			else 
+			{
+				if (currentWeapon && nid==currentWeapon.id) 
+				{
 					nw=null;	
-				} else {
+				} 
+				else 
+				{
 					nw=invent.weapons[nid];
 				}
 			}
-			if (nw is Weapon) {
-				if (nw.respect==1 || nw.alicorn && !Settings.alicorn) {
+			if (nw is Weapon) 
+			{
+				if (nw.respect==1 || nw.alicorn && !Settings.alicorn) 
+				{
 					if (nw.tip==5) World.world.gui.infoText('disSpell',null,null,false);
 					else World.world.gui.infoText('disWeapon',null,null,false);
 					return;
 				}
-				if (nw.spell) {
+				if (nw.spell) 
+				{
 					if (nw.respect==0) nw.respect=2;
 					invent.useItem(nid);
 					return;
 				}
-				if (Settings.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) {
-					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) {
+				if (Settings.weaponsLevelsOff && nw.lvl>pers.getWeapLevel(nw.skill)) 
+				{
+					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) 
+					{
 						World.world.gui.infoText('weaponSkillLevel',null,null,false);
-						//return false;
 					}
 				}
 			}
-			if (moment) {
+			if (moment) 
+			{
 				newWeapon=nw;
 				changeWeaponNow(1);
 				changeWeaponNow(2);
-			} else {
+			} 
+			else 
+			{
 				work='change';
 				t_work=changeWeaponTime1;
 				newWeapon=nw;
 			}
 		}
 		
-		public function changePaintWeapon(npaint:String, ncolor:uint, nblend:String=null) {
+		public function changePaintWeapon(npaint:String, ncolor:uint, nblend:String=null):void
+		{
 			(paintWeapon as WPaint).setPaint(npaint, ncolor, nblend);
 			if (sats && sats.que.length > 0) sats.clearAll();
 			newWeapon=paintWeapon;
@@ -2303,7 +2354,8 @@ package unitdata
 		}
 		
 		//непосредственно замена оружия
-		private function changeWeaponNow(st:int) {
+		private function changeWeaponNow(st:int):void
+		{
 			//trace(st,currentWeapon,newWeapon);
 			vision=1;
 			if (st==1) {
@@ -2332,7 +2384,8 @@ package unitdata
 		
 		//вернуть нужное количество боеприпасов из инвентаря, или сколько есть
 		//вернуть -1, если не хватает даже на 1 заряд
-		public function getInvAmmo(ammoId:String, need:int=1, needmin:int=1, minus:Boolean=false):int {
+		public function getInvAmmo(ammoId:String, need:int=1, needmin:int=1, minus:Boolean=false):int 
+		{
 			if (invent==null) return -1;
 			if (invent.items[ammoId].kol<needmin) return -1;
 			var res:int=0;
@@ -2346,7 +2399,8 @@ package unitdata
 			return res;
 		}
 		
-		public function changeArmor (nid:String='', forced:Boolean=false):Boolean {
+		public function changeArmor (nid:String='', forced:Boolean=false):Boolean 
+		{
 			if (Settings.alicorn && nid!='' && !forced) {
 				World.world.gui.infoText('alicornNot',null,null,false);
 				return false;
@@ -2408,12 +2462,12 @@ package unitdata
 					currentAmul.active=true;
 				}
 			}
-//			vis.osn.body.stop();
 			pers.setParameters();
 			return true;
 		}
 		
-		public function changeSpell (nid:String='', inf:Boolean=true) {
+		public function changeSpell (nid:String='', inf:Boolean=true):void
+		{
 			//if (invent.spells[nid]==null) invent.addSpell(nid);
 			if (currentSpell==invent.spells[nid]) currentSpell=null;
 			else currentSpell=invent.spells[nid];
@@ -2428,62 +2482,87 @@ package unitdata
 		}
 		
 		//особая функция брони
-		public function armorAbil() {
-			if (currentArmor==null || currentArmor.abil==null) return;
-			if (!currentArmor.abilActive) {
-				if (currentArmor.dmana_act<currentArmor.mana) {
-					currentArmor.mana-=currentArmor.dmana_act;
-					armorEffect=addEffect(currentArmor.abil);
-					currentArmor.abilActive=true;
+		public function armorAbil():void
+		{
+			if (currentArmor == null || currentArmor.abil == null) return;
+
+			if (!currentArmor.abilActive) 
+			{
+				if (currentArmor.dmana_act < currentArmor.mana) 
+				{
+					currentArmor.mana -= currentArmor.dmana_act;
+					armorEffect = addEffect(currentArmor.abil);
+					currentArmor.abilActive = true;
 				}
-			} else {
+			} 
+			else 
+			{
 				if (armorEffect) armorEffect.unsetEff(true, false, true);
-				armorEffect=null;
-				currentArmor.abilActive=false;
+				armorEffect = null;
+				currentArmor.abilActive = false;
 			}
 		}
 		
 		//призыв и отзыв спутника, f=true - принудительно
-		public function callPet(npet:String, f:Boolean=false) {
-			if (noPet>0 && !f) {
-				World.world.gui.infoText('petNot',null,null,false);
+		public function callPet(npet:String, f:Boolean = false):void
+		{
+			if (noPet > 0 && !f) 
+			{
+				World.world.gui.infoText('petNot', null, null, false);
 				return;
 			}
-			if (noPet2>0 && !f || !atkPoss || Settings.alicorn) {
-				World.world.gui.infoText('petNot2',null,null,false);
+
+			if (noPet2 > 0 && !f || !atkPoss || Settings.alicorn) 
+			{
+				World.world.gui.infoText('petNot2', null, null, false);
 				return;
 			}
-			if (npet=='owl' && currentPet=='owl' && pets[npet] && pets[npet].hp<=0 && !f) {
+
+			if (npet == 'owl' && currentPet == 'owl' && pets[npet] && pets[npet].hp <= 0 && !f) 
+			{
 				World.world.gui.infoText('petNot3',null,null,false);
 				return;
 			}
-			noPet2=5*30;
-			if (pet) {
-				World.world.gui.infoText('petRecall',pet.objectName);
+
+			noPet2 = 150;
+
+			if (pet) 
+			{
+				World.world.gui.infoText('petRecall', pet.objectName);
 				pet.recall();
-				pet=null;
-				childObjs[2]=null;
+				pet = null;
+				childObjs[2] = null;
 			}
-			retPet='';
-			if (currentPet==npet) {
-				currentPet='';
-			} else {
-				if (!room.petOn) {
-					World.world.gui.infoText('noPetCall',null,null,false);
-				} else {
-					currentPet=npet;
-					pet=pets[currentPet];
-					childObjs[2]=pet;
-					pet.X=X, pet.Y=Y-20;
-					pet.room=room;
+
+			retPet = '';
+
+			if (currentPet == npet) 
+			{
+				currentPet = '';
+			} 
+			else 
+			{
+				if (!room.petOn) 
+				{
+					World.world.gui.infoText('noPetCall', null, null, false);
+				} 
+				else 
+				{
+					currentPet = npet;
+					pet = pets[currentPet];
+					childObjs[2] = pet;
+					pet.X = X; 
+					pet.Y = Y - 20;
+					pet.room = room;
 					pet.call();
-					World.world.gui.infoText('petCall',pet.objectName);
+					World.world.gui.infoText('petCall', pet.objectName);
 				}
 			}
 			World.world.gui.setPet();
 		}
 		
-		public function uncallPet(ret:Boolean=false) {
+		public function uncallPet(ret:Boolean=false):void
+		{
 			if (pet) {
 				if (ret && currentPet!='moon') retPet=currentPet;
 				World.world.gui.infoText('petRecall',pet.objectName);
@@ -2495,7 +2574,8 @@ package unitdata
 			World.world.gui.setPet();
 		}
 		
-		public function alicornOn(eff:Boolean=true) {
+		public function alicornOn(eff:Boolean=true):void
+		{
 			Settings.alicorn=true;
 			if (armorEffect) {
 				armorEffect.unsetEff(true,false,true);
@@ -2520,7 +2600,8 @@ package unitdata
 			refreshVis();
 		}
 		
-		public function alicornOff() {
+		public function alicornOff():void
+		{
 			Settings.alicorn=false;
 			isFly=false;
 			changeWeapon('not',true);
@@ -2528,7 +2609,8 @@ package unitdata
 			refreshVis();
 		}
 		
-		public function ratOn() {
+		public function ratOn():void
+		{
 			unlurk();
 			uncallPet(true);
 			changeWeapon('not');
@@ -2545,7 +2627,8 @@ package unitdata
 			newPart('black',30);
 			rat=1;
 		}
-		public function ratOff():Boolean {
+		public function ratOff():Boolean
+		{
 			scX=stayX, scY=stayY;
 			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
 			if (collisionAll()) {
@@ -2578,7 +2661,8 @@ package unitdata
 //
 //**************************************************************************************************************************
 		
-		public function anim(dey:String=null, ok:Boolean=false) {
+		public function anim(dey:String=null, ok:Boolean=false):void
+		{
 			if (dey==null || dey=='') {
 				animOff=false;
 				return;
@@ -2596,14 +2680,16 @@ package unitdata
 			otherVisual();
 		}
 		
-		function chLayer(n:int) {
+		function chLayer(n:int):void
+		{
 			if (layer==n) return;
 			remVisual();
 			layer=n;
 			addVisual();
 		}
 		
-		public function setFilters() {
+		public function setFilters():void
+		{
 			var arr:Array;
 			if (f_levit) {
 				if (levit>=1 && fracLevit!=fraction && levitFilter2) arr=[levitFilter2];
@@ -3009,11 +3095,13 @@ package unitdata
 			//trace(animState +'  ' + vis.body.currentFrame);
 		}
 		
-		public function stopAnim() {
+		public function stopAnim():void
+		{
 			vis.osn.body.stop();
 		}
 		
-		function getStayFrame():int {
+		public function getStayFrame():int
+		{
 			if (shX2>=1 && shX2>=1) return isSit?2:1;  
 			if (storona>0) {
 				if (isSit) {
@@ -3036,7 +3124,8 @@ package unitdata
 		}
 		
 		
-		function otherVisual() {
+		public function otherVisual():void
+		{
 			if (levit!=prev_levit) setFilters();
 			prev_levit=levit;
 			//trace(f_levit, levit)
@@ -3132,7 +3221,8 @@ package unitdata
 			}
 		}
 		
-		public function refreshVis() {
+		public function refreshVis():void
+		{
 			var dez=vis.osn.currentFrameLabel;
 			vis.osn.gotoAndStop('nope');
 			vis.osn.gotoAndStop(dez);
@@ -3166,7 +3256,7 @@ package unitdata
 			}
 		}
 		
-		public override function sndStep(faza:int,tip:int=0)
+		public override function sndStep(faza:int,tip:int=0):void
 		{
 			if (rat>0) return;
 			super.sndStep(faza,tip);

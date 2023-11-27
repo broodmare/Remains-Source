@@ -11,7 +11,8 @@ package unitdata
 		var jump_n:int=100;
 		var jump_m:int=90;
 		
-		public function UnitProtect(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitProtect(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='protect';
 			if (tr>0) id+=tr;
@@ -26,7 +27,7 @@ package unitdata
 			if (quiet) id_replic='';
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			currentWeapon.vis.visible=false;
 			super.dropLoot();
@@ -85,11 +86,12 @@ package unitdata
 			weaponY=Y-40;
 		}
 		
-		public override function jump(v:Number=1)
+		public override function jump(v:Number=1):void
 		{
 			if (stay) jump_n=jump_m;
 			else jump_n--;
-			if (dy>-jumpdy && jump_n>0) {
+			if (dy>-jumpdy && jump_n>0) 
+			{
 				dy-=jumpdy*v/4;
 			}
 		}

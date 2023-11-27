@@ -69,7 +69,8 @@ package interdata
 		}
 		
 
-		override function setSubPages():void
+		//set public
+		public override function setSubPages():void
 		{
 			trace('PipPageInfo.as/setSubPages() - updating subPages.');
 
@@ -243,7 +244,8 @@ package interdata
             return (element.kol >= 0 || element.cat == '1');
         }		
 		//один эемент списка
-		override function setStatItem(item:MovieClip, obj:Object):void
+		//set public
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text 			= obj.id;
 			item.id.visible 		= false;
@@ -293,7 +295,8 @@ package interdata
 		}
 
 		
-		override function statInfo(event:MouseEvent):void //информация об элементе
+		//set public
+		public override function statInfo(event:MouseEvent):void //информация об элементе
 		{
 			vis.info.y=vis.ico.y;
 			if (page2==2) 
@@ -353,7 +356,8 @@ package interdata
 			}
 		}
 		
-		function getParam(un, pun, cat:String, param:String):* 
+		//set public
+		public function getParam(un, pun, cat:String, param:String):* 
 		{
 			if (un.length()==0) return null;
 			if (un[cat].length() && un[cat].attribute(param).length()) return un[cat].attribute(param);
@@ -362,7 +366,8 @@ package interdata
 			return null;
 		}
 		
-		function infoUnit(id:String, kol):String 
+		//set public
+		public function infoUnit(id:String, kol):String 
 		{
 			var n:int=0, delta;
 			//юнит
@@ -481,13 +486,15 @@ package interdata
 			return s;
 		}
 		
-		function vulner(n:int, val:Number):String 
+		//set public
+		public function vulner(n:int, val:Number):String 
 		{
 			return blue(Res.txt('p', 'tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
 		}
 		
 		
-		override function itemClick(event:MouseEvent):void
+		//set public
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{
@@ -520,7 +527,8 @@ package interdata
 			}
 		}
 		
-		function transOk(event:MouseEvent):void
+		//set public
+		public function transOk(event:MouseEvent):void
 		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
@@ -576,7 +584,8 @@ package interdata
 			visMap.vmap.y=visMap.fon.height/2-plTag.y;
 		}
 		
-		function setMapSize(cx:Number=350, cy:Number=285):void
+		//set public
+		public function setMapSize(cx:Number=350, cy:Number=285):void
 		{
 			if (mapScale>6) mapScale=6;
 			if (mapScale<1) mapScale=1;
@@ -600,11 +609,14 @@ package interdata
 			}
 		}
 
-		function funWMapClick(event:MouseEvent):void
+		//set public
+		public function funWMapClick(event:MouseEvent):void
 		{
 			trace(event.currentTarget.name);
 		}
-		function funWMapOver(event:MouseEvent):void
+
+		//set public
+		public function funWMapOver(event:MouseEvent):void
 		{
 			//trace(event.currentTarget.name);
 		}

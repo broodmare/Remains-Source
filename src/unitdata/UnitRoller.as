@@ -45,7 +45,7 @@ package unitdata
 			storona=1;
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',4);
 			newPart('miniexpl');
@@ -56,7 +56,7 @@ package unitdata
 			vis.x=X,vis.y=Y-scY/2;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			if (tr==2) explosion(dam*4,Unit.D_PLASMA,150,0,20,30,9);
 			super.dropLoot();
@@ -87,7 +87,8 @@ package unitdata
 			if (f) aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 			}
@@ -197,7 +198,8 @@ package unitdata
 			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
 		}
 		
-		public function attack() {
+		public function attack():void
+		{
 			if (celUnit && shok<=0) {	//атака корпусом
 				attKorp(celUnit,1);
 			}

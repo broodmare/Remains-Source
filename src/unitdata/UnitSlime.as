@@ -20,7 +20,8 @@ package unitdata
 		var explDist:Number=80;
 		var isExpl:Boolean=false;
 
-		public function UnitSlime(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitSlime(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			if (xml && xml.@tr.length()) {
 				tr=xml.@tr;
@@ -69,7 +70,7 @@ package unitdata
 			oduplenie=Settings.oduplenie/2;
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			if (isMine) {
@@ -98,7 +99,8 @@ package unitdata
 			}
 		}
 		
-		public function setVis(v:Boolean) {
+		public function setVis(v:Boolean):void
+		{
 			isVis=v;
 			//levitPoss=v;
 			vis.visible=v;
@@ -118,7 +120,8 @@ package unitdata
 			celDY=celY-Y+scY;
 		}
 		
-		public function activate() {
+		public function activate():void
+		{
 			if (sost>1) return;
 			setVis(true);
 			xp=0;

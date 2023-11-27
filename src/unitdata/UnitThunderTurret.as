@@ -16,7 +16,8 @@ package unitdata
 		var attTurN:int=15;
 		var t_wait:int=0;
 
-		public function UnitThunderTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitThunderTurret(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='ttur';
 			tr=int(cid);
@@ -34,7 +35,8 @@ package unitdata
 			t_wait=Math.round(Math.random()*100);
 		}
 		
-		public function mega() {
+		public function mega():void
+		{
 			vis.osn.pole.visible=true;
 			invulner=true;
 			hp=maxhp=maxhp*10;
@@ -76,15 +78,17 @@ package unitdata
 		
 		public override function setLevel(nlevel:int=0):void
 		{
-			if (World.world.game.globalDif==3) {
+			if (World.world.game.globalDif==3) 
+			{
 				hp=maxhp=hp*1.5;
 			}
-			if (World.world.game.globalDif==4) {
+			if (World.world.game.globalDif==4) 
+			{
 				hp=maxhp=hp*2;
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			head.dieTurret();
 			newPart('metal',4);

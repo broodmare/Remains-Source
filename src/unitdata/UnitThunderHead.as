@@ -114,7 +114,7 @@ package unitdata
 		}
 		
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			createTurret(1,-850,-340,0);
@@ -165,7 +165,8 @@ package unitdata
 			super.setNull(f);
 		}
 
-		function createTurret(n:int,bindX:Number, bindY:Number, rot:int=0, mega:Boolean=false) {
+		public function createTurret(n:int,bindX:Number, bindY:Number, rot:int=0, mega:Boolean=false):void
+		{
 			var un:Unit=room.createUnit('ttur',0,0,true,null,n.toString());
 			(un as UnitThunderTurret).head=this;
 			(un as UnitThunderTurret).bindX=bindX*3;
@@ -176,13 +177,15 @@ package unitdata
 			turrets.push(un);
 		}
 		
-		public function dieTurret() {
-			reloadDiv+=0.1;
+		public function dieTurret():void
+		{
+			reloadDiv += 0.1;
 		}
 		
 		public override function setVisPos():void
 		{
-			if (vis) {
+			if (vis) 
+			{
 				vis.x=X,vis.y=Y;
 			}
 		}
@@ -193,7 +196,8 @@ package unitdata
 			Y1=Y-scY/2+170*3, Y2=Y1+580*3;
 		}
 		
-		function setUgolPos() {
+		public function setUgolPos():void
+		{
 			var def:Number=Math.sin(ugol/45*Math.PI);
 			var dif:Number=Math.sin(ugol/90*Math.PI);
 			var ugol2:Number=-def*12+ugol;
@@ -207,12 +211,14 @@ package unitdata
 		
 		public override function setLevel(nlevel:int=0):void
 		{
-			if (World.world.game.globalDif==3) {
+			if (World.world.game.globalDif==3) 
+			{
 				kol_emit=3;
 				max_emit=18;
 				hp=maxhp=hp*1.1;
 			}
-			if (World.world.game.globalDif==4) {
+			if (World.world.game.globalDif==4) 
+			{
 				kol_emit=1;
 				max_emit=21;
 				hp=maxhp=hp*1.2;
@@ -359,7 +365,8 @@ package unitdata
 			}
 		}
 		
-		function emit() {
+		public function emit():void
+		{
 			var nx:Number=X;
 			var ny:Number=Y;
 			if (nx<200) nx=200;
@@ -375,7 +382,8 @@ package unitdata
 			kol_emit++;
 		}
 		
-		public function vzdrzhne(n:Number=0) {
+		public function vzdrzhne(n:Number=0):void
+		{
 			if (n>10) n=10-n/10;
 			dieTransform.redMultiplier=1+n/15;
 			dieTransform.greenOffset=1+n/10;
@@ -383,7 +391,8 @@ package unitdata
 			vis.transform.colorTransform=dieTransform;
 		}
 		
-		public function vsos(n:Number=0, klob:Boolean=false) {
+		public function vsos(n:Number=0, klob:Boolean=false):void
+		{
 			if (!room.roomActive) return;
 			p.x=X-World.world.gg.X;
 			p.y=Y-World.world.gg.Y;

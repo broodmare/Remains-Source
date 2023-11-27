@@ -33,7 +33,7 @@ package graphdata
 			Y = ny;
 
 			var node:XML = XmlBook.getXML("backgrounds").back.(@id == id)[0];
-			var wid = node.@x2 * Settings.tilePixelWidth;
+			var wid:int = node.@x2 * Settings.tilePixelWidth;
 			if (xml && xml.@w.length()) wid = xml.@w * Settings.tilePixelWidth
 			if (!(wid > 0)) wid = Settings.tilePixelWidth;
 			if (newRoom && newRoom.mirror) 
@@ -89,7 +89,7 @@ package graphdata
 			if (node.@lon.length()) frameOn = node.@lon;
 		}
 		
-		public function onoff(n:int) 
+		public function onoff(n:int):void
 		{
 			if (n > 0 && frameOn) frame = frameOn;
 			if (n < 0 && frameOff) frame = frameOff;

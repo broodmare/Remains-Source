@@ -83,7 +83,7 @@ package unitdata
 			weaponR=obj.r;
 		}
 		
-		public override function jump(v:Number=1)
+		public override function jump(v:Number=1):void
 		{
 			if (dy>-jumpdy) {
 				dy-=jumpdy*v/4;
@@ -91,7 +91,7 @@ package unitdata
 		}
 
 		
-		public override function attack()
+		public override function attack():void
 		{
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
 			if (celDX<300 && celDX>-300 && celDY<300 && celDY>-300 || aiAttackT>0) {

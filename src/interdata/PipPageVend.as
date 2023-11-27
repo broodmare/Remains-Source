@@ -77,8 +77,9 @@ package interdata
 			trace('PipPageVend.as/PipPageVend() - Created PipPageVend page.');
 		}
 
+		//set public
 		//подготовка страниц
-		override function setSubPages():void
+		public override function setSubPages():void
 		{
 			trace('PipPageVend.as/setSubPages() - updating subPages.');
 
@@ -323,7 +324,8 @@ package interdata
 			trace('PipPageVend.as/setSubPages() - Finished updating subPages.');
 		}
 		
-		override function setSigns():void
+		//set public
+		public override function setSigns():void
 		{
 			if (vend==null) return;
 			super.setSigns();
@@ -367,8 +369,8 @@ package interdata
 			}
 		}
 		
-	
-		function showBottext():void
+		//set public 
+		public function showBottext():void
 		{
 			if (page2==1 && vend) 
 			{
@@ -384,8 +386,9 @@ package interdata
 			if (page2==3) vis.bottext.htmlText=Res.txt('p', 'caps')+': '+yel(inv.money.kol);
 		}
 		
+		//set public
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object):void
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
 			item.id.visible=false;
@@ -474,8 +477,9 @@ package interdata
 			}
 		}
 		
+		//set public
 		//информация об элементе
-		override function statInfo(event:MouseEvent):void
+		public override function statInfo(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2 || page2==3) 
 			{
@@ -495,7 +499,8 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		function selBuy(buy:Object, n:int=1):void
+		//set public
+		public function selBuy(buy:Object, n:int=1):void
 		{
 			if (selall) vis.butOk.text.text=Res.txt('p', 'transaction');
 			selall=false;
@@ -525,7 +530,8 @@ package interdata
 			if (page2==2) vend.kolSell+=buy.price*n;
 		}
 		
-		function unselBuy(buy:Object, n:int=1):void
+		//set public
+		public function unselBuy(buy:Object, n:int=1):void
 		{
 			if (buy==null || buy.bou<=0) return;
 			if (buy.bou<n) n=buy.bou;
@@ -534,12 +540,14 @@ package interdata
 			if (page2==2) vend.kolSell-=buy.price*n;
 		}
 		
-		function nsClick(event:MouseEvent):void
+		//set public
+		public function nsClick(event:MouseEvent):void
 		{
 			event.stopPropagation();
 		}
 
-		function nsCh(event:Event):void
+		//set public
+		public function nsCh(event:Event):void
 		{
 			if (page2==1 || page2==2) 
 			{
@@ -555,7 +563,8 @@ package interdata
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		//set public
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) 
 			{
@@ -631,7 +640,9 @@ package interdata
 			showBottext();
 			event.stopPropagation();
 		}
-		override function itemRightClick(event:MouseEvent):void
+
+		//set public
+		public override function itemRightClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) 
 			{
@@ -646,7 +657,8 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		function transOk(event:MouseEvent):void
+		//set public
+		public function transOk(event:MouseEvent):void
 		{
 			if (page2==1) 
 			{

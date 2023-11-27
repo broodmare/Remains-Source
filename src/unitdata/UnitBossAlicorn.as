@@ -106,7 +106,7 @@ package unitdata
 			} 
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			newPart('bloodblast');
 			Snd.ps('bale_e');
@@ -126,12 +126,12 @@ package unitdata
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('blood',100);
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			setCel(null,nx+200*storona, ny-50);
@@ -353,11 +353,15 @@ package unitdata
 			attack();
 			
 
-			if (teleObj) {
-				if (teleObj is Unit) {
+			if (teleObj) 
+			{
+				if (teleObj is Unit) 
+				{
 					teleX=X+storona*150;
 					teleY=Y-40;
-				} else {
+				} 
+				else 
+				{
 					teleX=X+storona*80;
 					teleY=Y-40;
 				} 				
@@ -365,15 +369,18 @@ package unitdata
 				if (teleObj.X>teleX+derp && teleObj.dx>-teleSpeed) teleObj.dx-=teleAccel;
 				if (teleObj.Y<teleY-derp && teleObj.dy<teleSpeed) teleObj.dy+=teleAccel;
 				if (teleObj.Y>teleY+derp && teleObj.dy>-teleSpeed) teleObj.dy-=teleAccel;
-				if (teleObj.levit==1) {
+				if (teleObj.levit==1) 
+				{
 					dropTeleObj();
 				}
 			}
 		}
 		
-		public function attack() {
+		public function attack():void 
+		{
 			if (sost!=1) return;
-			if (aiState==3) {							//пальба
+			if (aiState==3) //пальба
+			{
 				if (attState<=2 || attState==5) currentWeapon.attack();
 				if (attState==4 && aiTCh%30==1) emit();
 				if (attState!=4 && (dist2<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
@@ -381,19 +388,25 @@ package unitdata
 		}
 		
 		//найти подходящий для телекинеза ящик и поднять его
-		function findBox():Obj {
-			if (celUnit && isrnd(0.5)) {
+		public function findBox():Obj 
+		{
+			if (celUnit && isrnd(0.5)) 
+			{
 				upTeleObj(celUnit);
-				if (teleObj is UnitPlayer) {
+				if (teleObj is UnitPlayer) 
+				{
 					(teleObj as UnitPlayer).levitFilter2=teleFilter;
 					(teleObj as UnitPlayer).isLaz=0;
 				}
 				return teleObj;
 			}
-			for each (var b:Box in room.objs) {
-				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) {
+			for each (var b:Box in room.objs) 
+			{
+				if (b.levitPoss && b.wall==0 && b.levit==0 && b.massa>=1 && isrnd(0.3)) 
+				{
 					if (getRasst2(b)>optDistTele*optDistTele) continue;
-					if (room.isLine(X,Y-scY/2,b.X,b.Y-b.scY/2)) {
+					if (room.isLine(X,Y-scY/2,b.X,b.Y-b.scY/2)) 
+					{
 						upTeleObj(b);
 						return b;
 					}
@@ -402,10 +415,12 @@ package unitdata
 			return null;
 		}
 		//подянть объект телекинезом
-		function upTeleObj(obj:Obj) {
+		public function upTeleObj(obj:Obj):void
+		{
 			if (obj==null) return;
 			teleObj=obj;
-			if (!(teleObj is UnitPlayer) && teleObj.vis) {
+			if (!(teleObj is UnitPlayer) && teleObj.vis) 
+			{
 				teleObj.vis.filters=[teleFilter];
 			}
 			teleObj.fracLevit=fraction;
@@ -414,31 +429,38 @@ package unitdata
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
-			if (teleObj) {
-				if (!(teleObj is UnitPlayer) && teleObj.vis) {
+		public function dropTeleObj():void
+		{
+			if (teleObj) 
+			{
+				if (!(teleObj is UnitPlayer) && teleObj.vis) 
+				{
 					teleObj.vis.filters=[];
-					//if (teleObj.cTransform) teleObj.vis.transform.colorTransform=teleObj.cTransform;
 				}
-				teleObj.levit=0;
-				teleObj=null;
+				teleObj.levit = 0;
+				teleObj = null;
 			}
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
-			if (teleObj) {
-				//noBox=true;//!!!
+		function throwTele():void
+		{
+			if (teleObj) 
+			{
 				var p:Object;
 				var tspeed:Number=throwForce;
 				if (teleObj.massa>1) tspeed=throwForce/Math.sqrt(teleObj.massa);
 				if (teleObj.X<200 || teleObj.X>room.roomPixelWidth-200) tspeed*=0.6;
-				if (teleObj is Unit) {
+				if (teleObj is Unit) 
+				{
 					p={x:100*storona, y:-30};
-				} else {
+				} 
+				else 
+				{
 					p={x:(celX-teleObj.X), y:(celY-(teleObj.Y-teleObj.scY/2)-Math.abs(celX-teleObj.X)/4)};
 				}
-				if (teleObj is UnitPlayer) {
+				if (teleObj is UnitPlayer) 
+				{
 					(teleObj as UnitPlayer).damWall=dam/2;
 					(teleObj as UnitPlayer).t_throw=30;
 				}
@@ -458,7 +480,8 @@ package unitdata
 			dropTeleObj();
 
 			isBlast=false;
-			if (isShit) {
+			if (isShit) 
+			{
 				isShit=false;
 				visshit.gotoAndPlay(2);
 				hp=maxhp-0.1;
@@ -472,15 +495,19 @@ package unitdata
 				mat=0;
 				timerDie=90;
 				for (var i=0; i<6; i++) emit(i);
-			} else super.die();
+			} 
+			else super.die();
 		}
 		
 		public override function command(com:String, val:String=null):void
 		{
-			if (com=='off') {
+			if (com == 'off') 
+			{
 				walk=0;
 				controlOn=false;
-			} else if (com=='on') {
+			} 
+			else if (com == 'on') 
+			{
 				controlOn=true;
 			}
 		}

@@ -156,17 +156,21 @@ package interdata
 
 		public var keyboardMode:int = 0;
 		
-		const dubleT:int = 5;		
+		//set private
+		private const dubleT:int = 5;		
 		private var kR_t:int = 10, kL_t:int = 10, kD_t:int = 10, scr_t:int = 0;
 		
 		public var active:Boolean = true;
 		
-		var KeyboardA = Keyboard.A, KeyboardZ = Keyboard.Z, KeyboardW = Keyboard.W, KeyboardQ = Keyboard.Q;
+		//set private
+		private var KeyboardA = Keyboard.A, KeyboardZ = Keyboard.Z, KeyboardW = Keyboard.W, KeyboardQ = Keyboard.Q;
 		
 		
 		public var setkeyOn:Boolean 	= false;
 		public var setkeyRequest		= null;
-		var setkeyFun:Function;
+		
+		//set private
+		private var setkeyFun:Function;
 		
 		public var keyPressed:Boolean	= false;
 		public var keyPressed2:Boolean	= false;
@@ -570,12 +574,13 @@ package interdata
 							World.world.pip.assignKey(i+(keyStates.keyRun ? 12 : 0));
 						}
 					}
-					for (var i:int = 1; i <= 4; i++) 
+					//Changed 'i' to 'j'.
+					for (var j:int = 1; j <= 4; j++) 
 					{
-						if (this['keySpell' + i]) 
+						if (this['keySpell' + j]) 
 						{
-							this['keySpell' + i] = false;
-							World.world.pip.assignKey(24 + i);
+							this['keySpell' + j] = false;
+							World.world.pip.assignKey(24 + j);
 						}
 					}
 					if (keyStates.keyGrenad) 

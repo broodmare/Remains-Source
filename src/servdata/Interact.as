@@ -714,7 +714,7 @@ package servdata
 						} 
 						else if (lockTip==4) 
 						{		//отключение с помощью навыка ремонт
-							var lockDam:Number = (lockDam1+Math.random()*lockDam2);
+							lockDam = (lockDam1+Math.random()*lockDam2);
 							lockHP -= lockDam;
 							//trace(lockDam,lockHP);
 							if (lockHP <= 0) 
@@ -1349,7 +1349,8 @@ package servdata
 			
 		}
 		
-		function replic(s:String):void
+		//set public
+		public function replic(s:String):void
 		{
 			if (Math.random() < 0.25) World.world.gg.replic(s);
 		}	

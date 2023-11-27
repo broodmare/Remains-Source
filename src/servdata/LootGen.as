@@ -241,14 +241,14 @@ package servdata
 			else if (cont == 'expl') 
 			{
 				kol = Math.floor(Math.random() * 4 - 1);
-				for (var i:int = 0; i <= kol; i++) newLoot(1, Item.L_EXPL);
+				for (var j:int = 0; j <= kol; j++) newLoot(1, Item.L_EXPL);
 				newLoot(0.5, Item.L_COMPE);
 				if (World.world.pers.freel) newLoot(0.5, Item.L_EXPL);
 			} 
 			else if (cont == 'bigexpl') 
 			{
 				kol = Math.floor(Math.random() * 4 + 2);
-				for (var i:int = 0; i <= kol; i++) newLoot(1, Item.L_EXPL);
+				for (var k:int = 0; k <= kol; k++) newLoot(1, Item.L_EXPL);
 				if (World.world.pers.freel) newLoot(0.5,Item.L_EXPL);
 				newLoot(0.5, Item.L_COMPE);
 			} 
@@ -442,7 +442,7 @@ package servdata
 			else if (cont == 'cryo') 
 			{
 				kol = Math.floor(Math.random() * 3);
-				for (var i:int = 0; i <= kol; i++) newLoot(1, Item.L_ITEM, 'pcryo');
+				for (var k:int = 0; k <= kol; k++) newLoot(1, Item.L_ITEM, 'pcryo');
 				newLoot(0.5, Item.L_ITEM, 'gel');
 			} 
 			else if (cont == 'chest') 

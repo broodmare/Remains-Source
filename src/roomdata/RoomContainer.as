@@ -1,4 +1,5 @@
-package roomdata {
+package roomdata 
+{
 	
 	public class RoomContainer 
   {

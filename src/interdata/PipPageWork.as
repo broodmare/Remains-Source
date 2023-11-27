@@ -32,8 +32,9 @@ package interdata
 														
 		}
 
+		//set public
 		//подготовка страниц
-		override function setSubPages():void
+		public override function setSubPages():void
 		{
 			trace('PipPageWork.as/setSubPages() - updating subPages.');
 
@@ -217,8 +218,9 @@ package interdata
 			trace('PipPageWork.as/setSubPages() - Finished updating subPages.');
 		}
 		
+		//set public
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object):void
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.rid.visible=false;
 			item.id.text=obj.id;
@@ -248,8 +250,9 @@ package interdata
 		}
 		
 		
+		//set public
 		//информация об элементе
-		override function statInfo(event:MouseEvent):void
+		public override function statInfo(event:MouseEvent):void
 		{
 			assId=null;
 			if (page2==1) 
@@ -283,7 +286,8 @@ package interdata
 			}
 		}
 		
-		function showBottext(cid):void
+		//set public
+		public function showBottext(cid):void
 		{
 			if (inv.items[cid]) 
 			{
@@ -296,7 +300,8 @@ package interdata
 			}
 		}
 		
-		function checkScheme(sch:XML):Boolean
+		//set public
+		public function checkScheme(sch:XML):Boolean
 		{
 			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
 				World.world.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
@@ -311,8 +316,9 @@ package interdata
 			return true;
 		}
 		
+		//set public
 		//вычесть нужное для крафта количество компонентов
-		function minusCraftComp(sch):void
+		public function minusCraftComp(sch):void
 		{
 			for each(var c in sch.craft) 
 			{
@@ -320,7 +326,8 @@ package interdata
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		//set public
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{

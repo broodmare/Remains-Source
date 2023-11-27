@@ -80,7 +80,7 @@ package unitdata
 			sost=4;
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			if (id=='phoenix')	newPart('green_spark',25);
 			if (id=='owl')	newPart('orange_spark',25);
@@ -95,20 +95,23 @@ package unitdata
 		public override function forces():void
 		{
 			if (isFly) {
-				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
+				if (dx*dx+dy*dy>maxSpeed*maxSpeed)
+				{
 					dx*=0.8;
 					dy*=0.8;
 				}
-				if (isPlav) {
+				if (isPlav) 
+				{
 					dy*=0.9;
 					dx*=0.9;
 					if (mater) dy+=Settings.ddy*ddyPlav;
 				}
-			} else super.forces();
+			} 
+			else super.forces();
 		}
 		
 		//лечение 0-предметами, 1-радиацией
-		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true)
+		public override function heal(hl:Number, tip:int=0, ismess:Boolean=true):void
 		{
 			if (tip==1 && (id!='phoenix' || sost>=3)) return;
 			hp+=hl;
@@ -202,7 +205,7 @@ package unitdata
 		}
 		
 		//найти точку следования
-		function getFlyPoint():void
+		public function getFlyPoint():void
 		{
 			var rx:Number=-120;
 			var ry:Number=-80;
@@ -239,7 +242,7 @@ package unitdata
 			flyY=gg.Y-1;
 		}
 		
-		function visCelUnit(un:Unit):Boolean 
+		public function visCelUnit(un:Unit):Boolean 
 		{
 			return room.isLine(X,Y-30,un.X,un.Y-un.scY/2);
 		}

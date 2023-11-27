@@ -46,7 +46,8 @@ package unitdata
 		protected var shadowFilter:DropShadowFilter;
 		protected var ghostFilter:GlowFilter;
 
-		public function UnitBossNecr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBossNecr(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='bossnecr';
 			vis=new visualNecrBoss();
@@ -139,9 +140,11 @@ package unitdata
 					vis.osn.body.gotoAndStop(cframe);
 				}
 			} 
-			if (superInvis && World.world.pers.infravis==0) {
+			if (superInvis && World.world.pers.infravis==0) 
+			{
 				celA=0;
-			} else celA=100;
+			} 
+			else celA=100;
 			if (curA>celA) curA-=5;
 			if (curA<celA) curA+=5;
 			vis.alpha=curA/100;
@@ -158,7 +161,8 @@ package unitdata
 		{
 			var td:Number=super.damage(dam, tip, bul,tt);
 			if (aiState==0) aiState=1;
-			if (protculd_t<=0 && td>0 && aiState!=3 && aiState!=2) {
+			if (protculd_t<=0 && td>0 && aiState!=3 && aiState!=2) 
+			{
 				aiState=3;
 				aiTCh=30;
 			}
@@ -188,11 +192,14 @@ package unitdata
 			aiState=aiSpok=0;
 		}
 		
-		public function jump(v:Number=1) {
-			if (stay) {		//прыжок
+		public function jump(v:Number=1):void
+		{
+			if (stay) 
+			{		//прыжок
 				dy=-jumpdy*v;
 			}
-			if (stay) {
+			if (stay) 
+			{
 				if (aiNapr==-1) dx*=0.8;
 				else dx+=storona*accel*2;
 			}
@@ -394,7 +401,8 @@ package unitdata
 			}
 		}
 		
-		public function castProtect(n:int=0) {
+		public function castProtect(n:int=0):void
+		{
 			protculd_t=timeProtectCuld;
 			newPart('black',20);
 			if (n==0 && prot_n==0) {
@@ -416,7 +424,8 @@ package unitdata
 			if (prot_n>=3) prot_n=0;
 		}
 		
-		function spawn(n:int=0) {
+		public function spawn(n:int=0):void
+		{
 			if (kolChild>=kol_emit) return;
 			room.resetUnits();
 			for (var i=0; i<3; i++) {
@@ -444,7 +453,8 @@ package unitdata
 			}
 		}
 
-		public function castCurse(n:int=0, otlozh:int=0) {
+		public function castCurse(n:int=0, otlozh:int=0):void
+		{
 			var nx:Number=room.gg.X+room.gg.dx*15+(Math.random()-0.5)*50;
 			var ny:Number=room.gg.Y-room.gg.scY/2+room.gg.dy*15+(Math.random()-0.5)*30;
 			if (n==2) {
@@ -462,14 +472,16 @@ package unitdata
 			var ms:MagSymbol=new MagSymbol(this,curses[Math.floor(Math.random()*(phase==2?9:5))],nx,ny,otlozh);
 		}
 		
-		public function resetProtect():void {
+		public function resetProtect():void
+		{
 			superInvis=false;
 			isVis=levitPoss=true;
 			isShadow=invulner=transp=false;
 			setVis();
 		}
 		
-		public function setVis() {
+		public function setVis():void
+		{
 			vis.blendMode='normal';
 			if (isShadow) vis.filters=[shadowFilter];
 			else if (phase==2) {
@@ -478,7 +490,7 @@ package unitdata
 			} else vis.filters=[];
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			newPart('necrblast');
 			Snd.ps('unreal');

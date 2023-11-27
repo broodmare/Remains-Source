@@ -15,7 +15,8 @@ package unitdata
 	import stubs.visualRaiderBoss;
 	import stubs.visualRaiderBoss2;
 
-	public class UnitBossRaider extends UnitPon{
+	public class UnitBossRaider extends UnitPon
+	{
 		
 		public var tr:int=1;
 		var weap:String;
@@ -24,10 +25,12 @@ package unitdata
 		public var kol_emit=8;
 		public var called:int=0;
 
-		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBossRaider(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='bossraider';
-			if (xml && xml.@tr.length()) {	//из настроек карты
+			if (xml && xml.@tr.length()) 
+			{	//из настроек карты
 				tr=xml.@tr;
 			}
 			//взять параметры из xml
@@ -44,18 +47,21 @@ package unitdata
 			aiTCh=80;
 			
 			//дать оружие
-			if (tr==1) {
+			if (tr==1) 
+			{
 				currentWeapon=Weapon.create(this,'carbine');
 				aiDist=2000;
 			}
-			if (tr==2) {
+			if (tr==2) 
+			{
 				currentWeapon=Weapon.create(this,'flamer');
 				aiDist=500;
 			}
 			if (currentWeapon) weap=currentWeapon.id;
 			else weap='';
 			if (currentWeapon) childObjs=new Array(currentWeapon);
-			if (currentWeapon && currentWeapon.uniq) {
+			if (currentWeapon && currentWeapon.uniq) 
+			{
 				currentWeapon.updVariant(1);
 			}
 			
@@ -93,30 +99,44 @@ package unitdata
 					vis.osn.gotoAndStop('die');
 					animState='die';
 				}
-			} else if (aiState==4 || aiState==6) {
+			} else if (aiState==4 || aiState==6) 
+			{
 				if (animState!='bac') {
 					vis.osn.gotoAndStop('bac');
 					animState='bac';
 				}
-			} else if (stay) {
-				if (dx<1 && dx>-1) {
-					if (animState!='stay') {
+			} 
+			else if (stay) 
+			{
+				if (dx<1 && dx>-1) 
+				{
+					if (animState!='stay') 
+					{
 						vis.osn.gotoAndStop('stay');
 						animState='stay';
 					}
-				} else if (aiState==1) {
-					if (animState!='run') {
+				} 
+				else if (aiState==1) 
+				{
+					if (animState!='run') 
+					{
 						vis.osn.gotoAndStop('run');
 						animState='run';
 					}
-				} else {
-					if (animState!='trot') {
+				} 
+				else 
+				{
+					if (animState!='trot') 
+					{
 						vis.osn.gotoAndStop('trot');
 						animState='trot';
 					}
 				}
-			} else {
-				if (animState!='jump') {
+			} 
+			else 
+			{
+				if (animState!='jump') 
+				{
 					vis.osn.gotoAndStop('jump');
 					animState='jump';
 					var cframe=Math.round(16+dy);
@@ -133,7 +153,7 @@ package unitdata
 			weaponY=Y-scY*0.58;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			super.dropLoot();
 			if (currentWeapon) {
@@ -142,8 +162,10 @@ package unitdata
 				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;
 				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,cid,0);
 			}
-			if (attackerType==3) {
-				for (var i=0; i<3; i++) {
+			if (attackerType==3) 
+			{
+				for (var i:int = 0; i < 3; i++) 
+				{
 					setCel(null,X+Math.random()*30-15,Y-Math.random()*15);
 					currentWeapon.attack();
 				}
@@ -163,7 +185,8 @@ package unitdata
 			return td;
 		}
 
-		function emit() {
+		public function emit():void
+		{
 			var un:Unit=room.createUnit('vortex',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
@@ -334,7 +357,8 @@ package unitdata
 
 		}
 		
-		public function attack() {
+		public function attack():void
+		{
 			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,(Math.abs(dx-celUnit.dx)>8)?1:0.5);
 			} else if (aiState==3) {							//пальба
@@ -358,7 +382,8 @@ package unitdata
 			}
 		}
 		
-		function quake() {
+		function quake():void
+		{
 			room.earthQuake(40);
 			Emitter.emit('quake',room,X+Math.random()*40-20,Y);
 		}

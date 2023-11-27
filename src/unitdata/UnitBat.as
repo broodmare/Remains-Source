@@ -11,7 +11,8 @@ package unitdata
 		var bleedDamage=5;
 		var tr:int=1;
 		
-		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBat(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			if (cid) tr=int(cid);
 			if (xml && xml.@tr.length()) tr=xml.@tr;
@@ -73,10 +74,11 @@ package unitdata
 				}
 			//vis.gotoAndStop(aiState+1);
 		}
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			super.alarma(nx,ny);
-			if (sost==1 && aiState<=1) {
+			if (sost==1 && aiState<=1) 
+			{
 				aiSpok=maxSpok-1;
 				aiState=2;
 				budilo(250);

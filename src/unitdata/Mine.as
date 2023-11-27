@@ -16,14 +16,15 @@ package unitdata
 		public var explRadius:Number=0;	//радиус взрыва, если 0, то взрыва нет
 		public var wdestroy:Number=10;	//урон блокам
 		public var damage1:Number=12;	//урон юнитам
-		public var otbros1:Number=5;		//отброс
+		public var otbros1:Number=5;	//отброс
 		public var tipDecal:int=0;		//тип оставляемых следов		
 		public var explTime:int=15;		//задержка перед взрывом
 		public var reloadTime:int=0;	//время на зарядку после установки
 		public var sens:int=100;
 		public var otschet:int=10;		//срабатывание вражеских мин при взятой способности лёгкий шаг
 		
-		public var sndSens:String='', sndDem:String='';
+		public var sndSens:String='';
+		public var sndDem:String='';
 		public var tr:int=0;	
 		
 		public var chain:Boolean=false;
@@ -131,7 +132,7 @@ package unitdata
 			//fixed=1;
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			if (room.tipEnemy==2 && fraction==F_RAIDER) fraction=Unit.F_ROBOT;
@@ -165,7 +166,7 @@ package unitdata
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			explosion(damage1,tipDamage,explRadius,0,otbros1,wdestroy,tipDecal);
 		}

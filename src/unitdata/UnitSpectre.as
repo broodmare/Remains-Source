@@ -16,7 +16,8 @@ package unitdata
 		var br:Number=0;
 		var iskr:Emitter;
 
-		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitSpectre(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='spectre';
 			vis=new visualSpectre();
@@ -41,16 +42,20 @@ package unitdata
 
 		public override function forces():void
 		{
-			if (isFly) {
-				if (dx*dx+dy*dy>maxSpeed*maxSpeed) {
+			if (isFly) 
+			{
+				if (dx*dx+dy*dy>maxSpeed*maxSpeed) 
+				{
 					dx*=0.8;
 					dy*=0.8;
 				}
-				if (isPlav) {
+				if (isPlav) 
+				{
 					dy*=0.9;
 					dx*=0.9;
 				}
-			} else super.forces();
+			} 
+			else super.forces();
 		}
 		
 		public override function udarBullet(bul:Bullet, sposob:int=0):int
@@ -85,20 +90,25 @@ package unitdata
 			}
 			aiTCh++;
 			//поиск цели
-			if (Settings.enemyAct>1 && aiTCh%10==1) {
-				if (findCel() && !World.world.gg.invulner) {
+			if (Settings.enemyAct>1 && aiTCh%10==1) 
+			{
+				if (findCel() && !World.world.gg.invulner) 
+				{
 					aiSpok=maxSpok+10;
 					aiState=1;
 					vis.visible=true;
 					if (maxSpeed<runSpeed) maxSpeed+=0.01;
-				} else {
+				} 
+				else 
+				{
 					celX=World.world.gg.X
 					celY=World.world.gg.Y-World.world.gg.scY/2;
 				}
 				storona=(celX>X)?1:-1;
 			}
 			
-			if (aiState==1 && World.world.gg.room==room) {
+			if (aiState==1 && World.world.gg.room==room) 
+			{
 				spd.x=celX-X;
 				spd.y=celY-(Y-scY/2);
 				norma(spd,accel);
@@ -107,17 +117,20 @@ package unitdata
 				if (celUnit && celUnit.player && aiTCh%30==1) celUnit.addEffect('horror',1,3);
 			}
 	
-			if (turnX!=0) {
+			if (turnX!=0) 
+			{
 				storona=turnX;
 				aiTCh=0
 				turnX=0;
 			}
-			if (turnY!=0) {
+			if (turnY!=0) 
+			{
 				dy=-dy*0.5;
 				turnY=0;
 			}
 			//атака
-			if (Settings.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) {
+			if (Settings.enemyAct>=3 && aiState==1 && celUnit && celUnit.sost==1) 
+			{
 				if (attKorp(celUnit,1)) celUnit.addEffect('curse');
 			}
 		}

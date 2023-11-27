@@ -71,11 +71,10 @@ package unitdata
 			timerDie=150;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			newPart('baleblast');
 			Snd.ps('bale_e');
-			//currentWeapon.vis.visible=false;
 			super.dropLoot();
 		}
 		
@@ -95,9 +94,9 @@ package unitdata
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
-			newPart('metal',22);
+			newPart('metal', 22);
 		}
 		
 		public override function setNull(f:Boolean=false):void
@@ -150,7 +149,7 @@ package unitdata
 			}
 		}
 		
-		public function emit() 
+		public function emit():void
 		{
 			if (kolChild>=kol_emit) return;
 			var un:Unit=room.createUnit('dron',X,Y-scY/2,true);
@@ -234,7 +233,7 @@ package unitdata
 			}
 		}
 		
-		function castShit() 
+		function castShit():void
 		{
 			if (shithp<=0 && t_shit<=0 && (World.world.game.globalDif==4 || World.world.game.globalDif==3 && hp<maxhp/2)) {
 				shithp=shitMaxHp;
@@ -242,7 +241,7 @@ package unitdata
 			}
 		}
 		
-		public function attack()
+		public function attack():void
 		{
 			if (sost!=1) return;
 			if (aiState==1 && celUnit) 

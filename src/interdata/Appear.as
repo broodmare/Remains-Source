@@ -63,7 +63,7 @@ package interdata
 		{
 			vis = new dialVid();
 
-			for each(var l in clist) 
+			for each(var l:String in clist) 
 			{
 				this['t' + l] = this['c' + l];
 			}
@@ -119,7 +119,7 @@ package interdata
 			vis.butOk.addEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.addEventListener(MouseEvent.CLICK, buttonCancel);
 			vis.butDef.addEventListener(MouseEvent.CLICK, buttonDef);
-			for each(var l in clist) 
+			for each(var l:String in clist) 
 			{
 				vis['color' + l].addEventListener(ColorPickerEvent.CHANGE, changeHandler);
 				vis['color' + l].addEventListener(Event.OPEN, openHandler);
@@ -133,13 +133,14 @@ package interdata
 			vis.b1Hair.addEventListener(MouseEvent.CLICK, chBut);
 			vis.b2Hair.addEventListener(MouseEvent.CLICK, chBut);
 		}
+
 		public function funcOff():void
 		{
 			if (!vis.butOk.hasEventListener(MouseEvent.CLICK)) return;
 			vis.butOk.removeEventListener(MouseEvent.CLICK, buttonOk);
 			vis.butCancel.removeEventListener(MouseEvent.CLICK, buttonCancel);
 			vis.butDef.removeEventListener(MouseEvent.CLICK, buttonDef);
-			for each(var l in clist) 
+			for each(var l:String in clist) 
 			{
 				vis['color' + l].removeEventListener(ColorPickerEvent.CHANGE, changeHandler);
 				vis['color' + l].removeEventListener(Event.OPEN, openHandler);
@@ -184,7 +185,7 @@ package interdata
 		public function setColors():void
 		{
 			trace('Appear.as/setColors() - setColors() Executing.');
-			for each(var l in clist) 
+			for each(var l:String in clist) 
 			{
 				vis['color' + l].selectedColor = this['c' + l];
 			}
@@ -195,7 +196,7 @@ package interdata
 		// Convert all colors to transforms
 		public function setTransforms():void
 		{
-			for each(var l in clist) 
+			for each(var l:String in clist) 
 			{
 				colorToTransform(this['c' + l], Appear['tr' + l]);
 			}
@@ -210,7 +211,7 @@ package interdata
 				load(saved);
 			}
 			var obj:Object = new Object;
-			for each(var l in clist) 
+			for each(var l:String in clist) 
 			{
 				obj['c' + l] = this['c' + l];
 			}
@@ -233,7 +234,7 @@ package interdata
 			if (obj == null) 
 			{
 				trace('Appear.as/load() - Obj is null.');
-				for each(var i in clist) 
+				for each(var i:String in clist) 
 				{
 					this['c' + i] = this['t' + i];
 				}
@@ -244,7 +245,7 @@ package interdata
 			else 
 			{
 				trace('Appear.as/load() - Obj found, loading appearance');
-				for each(var j in clist) 
+				for each(var j:String in clist) 
 				{
 					this['c'+j] = obj['c' + j];
 				}

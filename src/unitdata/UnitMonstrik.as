@@ -7,7 +7,8 @@ package unitdata
 	
 	import components.Settings;
 	
-	public class UnitMonstrik extends Unit{
+	public class UnitMonstrik extends Unit
+	{
 
 		var optDistAtt:int=100;
 		var optJumping:Boolean=false;
@@ -15,7 +16,8 @@ package unitdata
 		var optAnimAtt:Boolean=false;
 		var t_punch:int=0;
 		
-		public function UnitMonstrik(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitMonstrik(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id=cid;
 			if (id=='scorp') id+=Math.floor(Math.random()*2+1);
@@ -64,7 +66,7 @@ package unitdata
 			}
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
@@ -75,7 +77,7 @@ package unitdata
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			super.expl();
 			if (id=='tarakan') {
@@ -117,7 +119,8 @@ package unitdata
 			anims[animState].step();
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
 				dx+=storona*accel*5;
@@ -335,7 +338,8 @@ package unitdata
 			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
 		}
 		
-		public function attack() {
+		public function attack():void
+		{
 			if (celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,1);
 			}

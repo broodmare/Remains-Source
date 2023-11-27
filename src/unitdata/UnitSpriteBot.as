@@ -11,7 +11,8 @@ package unitdata
 		
 		var cDam:Number;
 
-		public function UnitSpriteBot(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitSpriteBot(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='spritebot';
 			vis=new visualSpriteBot();
@@ -28,7 +29,7 @@ package unitdata
 			childObjs=new Array(currentWeapon);
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',4);
 			newPart('miniexpl');
@@ -59,7 +60,7 @@ package unitdata
 			weaponY=Y-1;
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			super.alarma(nx,ny);
 			if (sost==1) {
@@ -72,7 +73,8 @@ package unitdata
 		{
 		}
 		
-		public function zlo() {
+		public function zlo():void
+		{
 			vision=1;
 			aiState=1;
 			if (vis.osn.currentFrame!=2) vis.osn.gotoAndStop(2);

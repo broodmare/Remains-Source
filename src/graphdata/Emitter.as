@@ -82,7 +82,7 @@ package graphdata
 
 		public function Emitter(xml:XML) 
 		{
-			for (var i in xml.attributes()) 
+			for (var i:String in xml.attributes()) 
 			{
 				var att:String = xml.attributes()[i].name();
 				if (this.hasOwnProperty(att)) 

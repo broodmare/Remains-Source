@@ -11,7 +11,8 @@ package unitdata
 		
 		var tr:int=0;
 		
-		public function UnitTrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTrain(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			id='training';
 			if (xml) {
 				if (xml.@turn.length()) {

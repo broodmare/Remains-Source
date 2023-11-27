@@ -10,7 +10,8 @@ package unitdata
 		
 		var rearm:Boolean=false;
 
-		public function UnitTrap(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTrap(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			if (cid==null) {
 				id='mtrap';
 			}
@@ -41,11 +42,12 @@ package unitdata
 			inter.update();
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',3);
 		}
-		public function setVis(v:Boolean)
+
+		public function setVis(v:Boolean):void
 		{
 			isVis=v;
 			levitPoss=v;
@@ -53,7 +55,8 @@ package unitdata
 			vis.alpha=v?1:0.1;
 		}
 		
-		function disarm() {
+		public function disarm():void
+		{
 			if (aiState==1) {
 				klac();
 			} else if (aiState==2) {
@@ -69,6 +72,7 @@ package unitdata
 				inter.update();
 			}
 		}
+
 		public override function save():Object
 		{
 			var obj:Object=super.save();
@@ -79,7 +83,8 @@ package unitdata
 			return obj;
 		}	
 		
-		function klac() {
+		public function klac():void
+		{
 			aiState=2;
 			sound('trap_a');
 			vis.gotoAndPlay(1);

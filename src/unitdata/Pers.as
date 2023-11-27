@@ -903,7 +903,7 @@ package unitdata
 		}
 		
 		//рандомная прокачка
-		function autoPump():void
+		public function autoPump():void
 		{
 			var n:int=1000;
 			while (skillPoint>0 && n>0) 
@@ -987,7 +987,7 @@ package unitdata
 		}
 		
 		//lvl1-уровень основных параметров, lvl2-уровень дополнительных параметров с тегом dop=1
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void
+		public function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void
 		{
 			for each(var sk in xml.sk) 
 			{
@@ -1036,18 +1036,18 @@ package unitdata
 			}
 		}
 		
-		function setBegFactor(id:String, res):void
+		public function setBegFactor(id:String, res):void
 		{
 			if ((factor[id] is Array) && factor[id].length == 0) factor[id].push({id:'beg', res:res});
 		}
 		
-		function setFactor(id:String, fact:String, ref:String, val, res, tip=null):void
+		public function setFactor(id:String, fact:String, ref:String, val, res, tip=null):void
 		{
 			if (ref=='add' && val==0 || ref=='mult' && val==1) return;
 			if (factor[id] is Array) factor[id].push({id:fact, ref:ref, val:val, res:res, tip:tip});
 		}
 		
-		function setAllSt():void
+		public function setAllSt():void
 		{
 			headSt=4-Math.ceil(headHP/inMaxHP*4);
 			torsSt=4-Math.ceil(torsHP/inMaxHP*4);
@@ -1071,7 +1071,7 @@ package unitdata
 			}
 		}
 		
-		function trauma(st:int, organ:int):void
+		public function trauma(st:int, organ:int):void
 		{
 			if (st>4) st=4;
 			if (organ==3 && st==4) st=3;

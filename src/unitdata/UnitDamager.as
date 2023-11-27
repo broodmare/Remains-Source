@@ -82,7 +82,7 @@ package unitdata
 			setStatus();
 		}
 		
-		function setWeapon() 
+		public function setWeapon():void
 		{
 			if (tipDamager==1) 
 			{
@@ -133,7 +133,7 @@ package unitdata
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam();
 			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
@@ -159,7 +159,7 @@ package unitdata
 			}
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			if (room.mirror) 
@@ -184,7 +184,7 @@ package unitdata
 			}
 		}
 
-		function setStatus()
+		public function setStatus():void
 		{
 			if (status>0) {
 				warn=0;
@@ -197,7 +197,7 @@ package unitdata
 			inter.update();
 		}
 		
-		public function setVis(v:Boolean)
+		public function setVis(v:Boolean):void
 		{
 			isVis=v;
 			vis.visible=v;
@@ -208,13 +208,14 @@ package unitdata
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',3);
 		}
 		
 		//обезвредить
-		function disarm() {
+		public function disarm():void
+		{
 			if (tipDamager==1) {
 				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,'frag',1);
 				if (kolammo>0) LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.ammo,kolammo);
@@ -231,14 +232,15 @@ package unitdata
 		}
 		
 		//взорвать при нанесении урона
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			super.dropLoot();
 			if ((tipDamager==2 || tipDamager==3) && kolammo>0) iExpl();
 			if (tipDamager==1) LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,'frag',1);
 		}
 		
-		function iExpl() {
+		public function iExpl():void
+		{
 			var bul:Bullet;
 			if (tipDamager==2) {
 				damageExpl=currentWeapon.damageExpl*kolammo;
@@ -251,7 +253,8 @@ package unitdata
 		}
 		
 		//активировать
-		function activate() {
+		public function activate():void
+		{
 			if (status!=0 || sost>1) return;
 			if (tipDamager==3) {
 				iExpl();

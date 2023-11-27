@@ -36,7 +36,7 @@ package unitdata
 			sndVolkoef=0;
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',4);
 			newPart('miniexpl');
@@ -71,7 +71,7 @@ package unitdata
 			super.setNull(f);
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			super.alarma(nx,ny);
 			if (sost==1) 

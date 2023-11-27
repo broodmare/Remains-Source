@@ -37,7 +37,8 @@ package interdata
 		}
 
 		//подготовка страниц
-		override function setSubPages():void
+		//set public
+		public override function setSubPages():void
 		{
 			trace('PipPageMed.as/setSubPages() - updating subPages.');
 
@@ -113,7 +114,8 @@ package interdata
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object):void
+		//set public
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			if (obj.id != null) item.id.text = obj.id;
 			else item.id.text 		= '';
@@ -133,7 +135,8 @@ package interdata
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent):void
+		//set public
+		public override function statInfo(event:MouseEvent):void
 		{
 				if (event.currentTarget.id.text!='') 
 				{
@@ -165,14 +168,16 @@ package interdata
 			}
 		}
 
-		function showBottext():void
+		//set public
+		public function showBottext():void
 		{
 			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('i','gel')+': '+yel(plata.kol);
 			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('i','good')+': '+yel(plata.kol);
 			else vis.bottext.htmlText=Res.txt('p', 'caps')+': '+yel(plata.kol);
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		//set public
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{

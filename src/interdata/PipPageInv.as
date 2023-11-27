@@ -31,6 +31,7 @@ package interdata
 		{
 			isLC = true;
 			isRC = true;
+			
 			itemClass = visPipInvItem;
 			super(npip,npp);
 
@@ -48,7 +49,8 @@ package interdata
 		}
 		
 		//подготовка страниц
-		override function setSubPages():void
+		//set public
+		public override function setSubPages():void
 		{
 			trace('PipPageInv.as/setSubPages() - updating subPages.');
 
@@ -210,7 +212,8 @@ package interdata
 
 		}
 		
-		function showBottext():void
+		//set public
+		public function showBottext():void
 		{
 			vis.bottext.htmlText=Res.txt('p', 'caps') + ': '+yel(pip.money);
 			if (Settings.hardInv) 
@@ -224,7 +227,8 @@ package interdata
 		
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object):void
+		//set public
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
 			item.id.visible=item.rid.visible=item.cat.visible=false;
@@ -308,7 +312,8 @@ package interdata
 		
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent):void
+		//set public
+		public override function statInfo(event:MouseEvent):void
 		{
 			assId=null;
 			if (page2==1) 
@@ -341,7 +346,8 @@ package interdata
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		//set public
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{
@@ -415,7 +421,8 @@ package interdata
 			showBottext();
 		}
 		
-		override function itemRightClick(event:MouseEvent):void
+		//set public
+		public override function itemRightClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{
@@ -466,7 +473,8 @@ package interdata
 			assId=temp;
 		}
 		
-		function showH(event:MouseEvent):void
+		//set public
+		public function showH(event:MouseEvent):void
 		{
 			if (actCurrent=='showhidden') 
 			{			//показать скрытое оружие
@@ -495,7 +503,8 @@ package interdata
 			}
 		}
 		
-		function buttonOk(act:String):void
+		//set public
+		public function buttonOk(act:String):void
 		{
 			vis.butOk.visible=true;
 			vis.butOk.text.text=Res.txt('p', act);

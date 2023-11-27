@@ -17,7 +17,8 @@ package unitdata
 		var weap:String;
 		var cep:int=0; //способ прикрепления 0-обычный, 1-к потолку, 2- к стене слева, 3-к стене справа
 		
-		public function UnitMsp(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitMsp(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -43,7 +44,7 @@ package unitdata
 		}
 
 		//поместить созданный юнит в локацию
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			if (newRoom.getAbsTile(nx, ny+10).phis==0) {
 				if (newRoom.getAbsTile(nx, ny-50).phis) {
@@ -63,7 +64,7 @@ package unitdata
 			super.putLoc(newRoom, nx, ny);
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',4);
 			newPart('miniexpl');
@@ -118,13 +119,15 @@ package unitdata
 			} 
 		}
 		
-		public function jump(v:Number=1) {
-			if (stay) {		//прыжок
+		public function jump(v:Number=1):void
+		{
+			if (stay) 
+			{		//прыжок
 				dy=-jumpdy*v;
 			}
 			
 		}
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			explosion(dam,tipDamage,150,0,20,30,9);
 		}

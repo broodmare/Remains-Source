@@ -32,7 +32,8 @@ package interdata
 			pip.onoff(-1);
 		}
 
-		override function setSubPages():void
+		//set public
+		public override function setSubPages():void
 		{
 			trace('PipPageApp.as/setSubPages() - updating subPages.');
 

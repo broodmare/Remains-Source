@@ -425,7 +425,7 @@ package unitdata
 			return obj;
 		}
 		
-		public function getXmlParam(mid:String=null)
+		public function getXmlParam(mid:String=null):void
 		{
 			var setOpts:Boolean=false;
 			if (opts[id]) 
@@ -668,7 +668,7 @@ package unitdata
 		}
 		
 		//поместить созданный юнит в локацию
-		public function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			if (room!=null) return;
 			room=newRoom;
@@ -1862,7 +1862,7 @@ package unitdata
 
 		}
 		
-		function sndRunPlay():void
+		public function sndRunPlay():void
 		{
 				if (rasst2 < sndRunDist * sndRunDist) 
 				{
@@ -1873,7 +1873,7 @@ package unitdata
 				}
 		}
 		
-		function newPart(nid:String, kol:int = 1, frame:int = 0):void
+		public function newPart(nid:String, kol:int = 1, frame:int = 0):void
 		{
 			Emitter.emit(nid, room, X, Y - scY / 2,{kol:kol, frame:frame});
 		}
@@ -2201,7 +2201,7 @@ package unitdata
 			}
 		}
 		
-		function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void
+		public function setSkillParam(xml:XML, lvl1:int, lvl2:int=0):void
 		{
 			if (xml==null) return;
 			for each(var sk in xml.sk) 
@@ -2579,7 +2579,7 @@ package unitdata
 		}
 		
 		// Hit the wall: 1 - right, 2 - left, 3 - bottom, 4 - top
-		public function damageWall(napr:int=0)
+		public function damageWall(napr:int=0):void
 		{
 			t_throw=0;
 			if (damWall>0) 
@@ -2601,7 +2601,7 @@ package unitdata
 			}
 		}
 		
-		public function heal(hl:Number, tip:int=0, ismess:Boolean=true)
+		public function heal(hl:Number, tip:int=0, ismess:Boolean=true):void
 		{
 			if (hp==maxhp) return;
 			if (hl>maxhp-hp) 
@@ -2749,7 +2749,7 @@ package unitdata
 			return 2;
 		}
 		// Bullet recoil effect
-		public function otbros(bul:Bullet)
+		public function otbros(bul:Bullet):void
 		{
 			if (invulner) return;
 			var sila=Math.random()*0.4+0.8;
@@ -2764,7 +2764,7 @@ package unitdata
 		}
 		
 		// Activation from passive mode
-		public function alarma(nx:Number=-1,ny:Number=-1)
+		public function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			oduplenie = 0;
 			if (nx>0 && ny>0 && celUnit == null) 
@@ -2773,7 +2773,7 @@ package unitdata
 			}
 		}
 		// Awaken everyone around
-		public function budilo(rad:Number=500)
+		public function budilo(rad:Number=500):void
 		{
 			makeNoise(noiseRun * 1.2);
 			//trace('budilo');
@@ -2796,7 +2796,7 @@ package unitdata
 			}
 		}
 		// Deactivation (for security systems)
-		public function hack(sposob:int = 0)
+		public function hack(sposob:int = 0):void
 		{
 
 		}
@@ -2885,7 +2885,7 @@ package unitdata
 		}
 		
 		// Destroy, remove from the world
-		public function exterminate()
+		public function exterminate():void
 		{
 			radioactiv=0;
 			levitPoss=false;
@@ -2895,7 +2895,7 @@ package unitdata
 		}
 		
 		// Explosion, guts, or other effect after death
-		public function expl()
+		public function expl():void
 		{
 			if (blood) 
 			{
@@ -2909,7 +2909,7 @@ package unitdata
 			}
 		}
 		// Called in any case at the moment of death, only once!
-		public function dropLoot()
+		public function dropLoot():void
 		{
 			if (inter) inter.loot();
 			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(room,X,Y-scY/2,'essence');
@@ -2920,7 +2920,7 @@ package unitdata
 			}
 		}
 		
-		public function initBurn(sposob:int)
+		public function initBurn(sposob:int):void
 		{
 			if (burn!=null) return;
 			remVisual();
@@ -2933,7 +2933,7 @@ package unitdata
 			setVisPos();
 		}
 
-		public function runScript()
+		public function runScript():void
 		{
 			if (scrDie) scrDie.start();
 			if (questId) 
@@ -2950,7 +2950,7 @@ package unitdata
 		}
 
 		// Modify statistics
-		public function incStat(sposob:int=0)
+		public function incStat(sposob:int=0):void
 		{
 			if (World.world.game) 
 			{
@@ -3000,51 +3000,52 @@ package unitdata
 		public function look(ncel:Unit, over:Boolean=true, visParam:Number=0, nDist:Number=0):Number 
 		{
 			if (ncel==null || nDist<=0 && visParam<=0 && vision<=0) return 0;
-			var cx=(ncel.X-eyeX);
-			var cy=(ncel.Y-ncel.scY*0.6-eyeY);
-			if (eyeX==-1000 || eyeY==-1000) 
+			var cx=(ncel.X - eyeX);
+			var cy=(ncel.Y - ncel.scY * 0.6 - eyeY);
+			if (eyeX == -1000 || eyeY == -1000) 
 			{
-				eyeX=X,eyeY=Y-30;
+				eyeX = X;
+				eyeY = Y - 30;
 				//trace('Point of view not set', objectName);
 			}
 			// Visibility distance
-			var distVis=nDist;		// take from parameter
-			if (nDist<=0) distVis=(ncel.visibility*ncel.stealthMult*room.visMult+ncel.demask)*(visParam?visParam:vision);	//или вычислить
+			var distVis = nDist;		// take from parameter
+			if (nDist <= 0) distVis = (ncel.visibility * ncel.stealthMult * room.visMult + ncel.demask) * (visParam ? visParam:vision);	//или вычислить
 			// if there's no vision behind, and the object is above or below 45 degrees, reduce the distance
-			if (vKonus==0 && !over && cy*cy>cx*cx && cy>0) 
+			if (vKonus == 0 && !over && cy * cy > cx * cx && cy > 0) 
 			{
-				distVis*=(0.5+0.5*Math.abs(cx/cy));
+				distVis *= (0.5 + 0.5 * Math.abs(cx / cy));
 			}
 			// if the distance is greater than the visibility distance, return 0
-			var r2:Number=cx*cx+cy*cy;
-			if (r2>distVis*distVis*16) return 0;
+			var r2:Number = cx * cx + cy * cy;
+			if (r2 > distVis * distVis * 16) return 0;
 			// if there's no vision behind, and the object is behind, return 0
-			if (vKonus==0 && !over && cx*storona<0 && r2>detecting*detecting) return 0;
+			if (vKonus == 0 && !over && cx * storona < 0 && r2 > detecting * detecting) return 0;
 			// vision cone
-			if (vKonus>0) 
+			if (vKonus > 0) 
 			{
-				var ug:Number=Math.atan2(cy,cx);
-				var dug:Number=vAngle-ug;
-				if (dug>Math.PI) dug-=Math.PI*2;
-				if (dug<-Math.PI) dug+=Math.PI*2;
-				if (Math.abs(dug)>vKonus/2) return 0;
+				var ug:Number = Math.atan2(cy, cx);
+				var dug:Number = vAngle - ug;
+				if (dug >  Math.PI) dug -= Math.PI * 2;
+				if (dug < -Math.PI) dug += Math.PI * 2;
+				if (Math.abs(dug) > vKonus / 2) return 0;
 			}
 			
 			// Check the line of sight
-			var div=Math.floor(Math.max(Math.abs(cx),Math.abs(cy))/Settings.maxdelta)+1;
-			for (var i=(mater?1:4); i<div; i++) 
+			var div:Number = Math.floor(Math.max(Math.abs(cx),Math.abs(cy))/Settings.maxdelta)+1;
+			for (var i:Number = (mater ? 1:4); i < div; i++) 
 			{
-				var nx=X+scX*0.25*storona+cx*i/div;
-				var ny=Y-scY*0.75+cy*i/div;
+				var nx:Number =X+scX*0.25*storona+cx*i/div;
+				var ny:Number =Y-scY*0.75+cy*i/div;
 				var t:Tile=World.world.room.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) 
 				{
 					return 0;
 				}
 			}
-			if (r2<ncel.detecting*ncel.detecting) return 20;
-			if (r2<distVis*distVis) return 4;
-			return (distVis*distVis)/r2*4;
+			if (r2 < ncel.detecting * ncel.detecting) return 20;
+			if (r2 < distVis * distVis) return 4;
+			return (distVis * distVis) / r2 * 4;
 		}
 		// Get a target for AI
 		public function findCel(over:Boolean=false):Boolean 
@@ -3078,18 +3079,18 @@ package unitdata
 			} 
 			else 
 			{
-				if (look(ncel,overLook || over)>0.5) 
+				if (look(ncel, overLook || over) > 0.5) 
 				{
 					setCel(ncel);
 					return true;
 				}
 			}
-			celUnit=null;
-			priorUnit=null;
+			celUnit = null;
+			priorUnit = null;
 			return false;
 		}
 		// Set a target to a unit or a point
-		public function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void
+		public function setCel(un:Unit = null, cx:Number = -10000, cy:Number = -10000):void
 		{
 			if (un && isMeet(un)) 
 			{

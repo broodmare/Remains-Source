@@ -47,7 +47,7 @@ package unitdata
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('green_spark',25);
 		}
@@ -82,7 +82,8 @@ package unitdata
 			if (World.world.game.triggers['tame']>=5) die();
 		}
 		
-		function tame() {
+		public function tame():void
+		{
 			if (!questOk) World.world.game.addQuest('tamePhoenix');
 			storona=(X>World.world.gg.X)?-1:1;
 			if (World.world.invent.items['radcookie'].kol>0) {

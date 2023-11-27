@@ -155,7 +155,7 @@ package unitdata
 			mblast=new Spell(this,'sp_blast');
 		}
 		
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam('alicorn');
 			super.getXmlParam();
@@ -176,7 +176,7 @@ package unitdata
 			shitMaxHp*=(1+level*0.1);
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			unsit();
@@ -256,7 +256,7 @@ package unitdata
 			}*/
 		}
 		
-		public override function budilo(rad:Number=500)
+		public override function budilo(rad:Number=500):void
 		{
 			if (celUnit==null) {
 				celX=X,celY=Y;
@@ -268,7 +268,7 @@ package unitdata
 			}
 		}
 		
-		public function telepat()
+		public function telepat():void
 		{
 			for each(var un:Unit in room.units) {
 				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres && un.celUnit==null) {
@@ -291,7 +291,7 @@ package unitdata
 			return super.damage(dam,tip,bul,tt);
 		}
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			//trace('alarm',aiState)
 			if (sost==1 && aiState<=1) {
@@ -695,20 +695,23 @@ package unitdata
 			}
 		}
 		
-		function castShit() {
+		public function castShit():void
+		{
 			curA=100;
 			shithp=shitMaxHp;
 			t_shit=1000;
 			visDetails();
 		}
 		
-		function castNomater() {
+		public function castNomater():void
+		{
 			mater=false;
 			t_nomater=0;
 			t_gotov=tNomater;
 		}
 		
-		function superSila() {
+		public function superSila():void
+		{
 			if (superSilaTip==1) {
 				superInvis=true;
 				isVis=false;
@@ -722,7 +725,8 @@ package unitdata
 			t_super=tSuper;
 		}
 		
-		function superSilaVse() {
+		public function superSilaVse():void
+		{
 			if (superSilaTip==1) {
 				superInvis=false;
 				isVis=true;
@@ -730,7 +734,8 @@ package unitdata
 		}
 		
 		//найти подходящий для телекинеза ящик и поднять его
-		function findBox():Obj {
+		public function findBox():Obj
+		{
 			if (celUnit && isrnd(0.25)) {
 				upTeleObj(celUnit);
 				if (teleObj is UnitPlayer) {
@@ -752,7 +757,8 @@ package unitdata
 		}
 		
 		//подянть объект телекинезом
-		function upTeleObj(obj:Obj) {
+		public function upTeleObj(obj:Obj):void
+		{
 			if (obj==null) return;
 			teleObj=obj;
 			if (!(teleObj is UnitPlayer) && teleObj.vis) {
@@ -764,7 +770,8 @@ package unitdata
 		}
 		
 		//уронить левитируемый объект
-		public function dropTeleObj() {
+		public function dropTeleObj():void
+		{
 			if (teleObj) {
 				if (!(teleObj is UnitPlayer) && teleObj.vis) {
 					teleObj.vis.filters=[];
@@ -776,7 +783,8 @@ package unitdata
 		}
 		
 		//бросок телекинезом
-		function throwTele() {
+		public function throwTele():void
+		{
 			if (teleObj) {
 				var p:Object;
 				var tspeed:Number=throwForce;
@@ -799,7 +807,8 @@ package unitdata
 			}
 		}
 		
-		public function actPort(rnd:Boolean=false) {
+		public function actPort(rnd:Boolean=false):void
+		{
 			var cel:Unit=World.world.gg;
 			//var dx:Number=0, dy:Number=0;
 			var nx:Number=0;
@@ -827,7 +836,8 @@ package unitdata
 					teleport(nx,ny,1);
 					dx=dy=0;
 					setWeaponPos();
-					if (findCel(true) && celUnit) {
+					if (findCel(true) && celUnit) 
+					{
 						aiSpok=0;
 						storona=(celX>X)?1:-1;
 					}

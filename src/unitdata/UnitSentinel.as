@@ -31,7 +31,7 @@ package unitdata
 			if (quiet) id_replic='';
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			newPart('expl');
 			currentWeapon.vis.visible=false;
@@ -46,7 +46,7 @@ package unitdata
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',12);
 		}
@@ -87,7 +87,7 @@ package unitdata
 			weaponY=Y-90;
 		}
 		
-		public override function jump(v:Number=1)
+		public override function jump(v:Number=1):void
 		{
 			if (stay) jump_n=90;
 			else jump_n--;
@@ -96,7 +96,7 @@ package unitdata
 			}
 		}
 		//атака
-		public override function attack()
+		public override function attack():void
 		{
 			if (celDX<100 && celDX>-100 && celDY<80 && celDY>-80 && celUnit) attKorp(celUnit,1);
 			currentWeapon.attack();

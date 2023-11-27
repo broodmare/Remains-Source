@@ -13,11 +13,9 @@ package systems
 
 		//Language settings
 		public static var languageName:String = 'en';
-
+		
 		public static var languageListDictionary:Dictionary;
 		public static var languageCount:int = -1; //Set to -1 instead of 0 since the language count starts by incrementing by 1.
-
-
 		
 		//Loading info
 		public static var currentLanguageData:XML;
@@ -52,17 +50,15 @@ package systems
 			}
 		}
 
+		//TODO: un-hardcode english.
         public static function languageSetup(event:Event):void
         {
 
 
-			var currentLoader =  event.currentTarget;
+			var currentLoader:Object = event.currentTarget;
 			currentLoader.removeEventListener(XMLLoader.XML_LOADED, languageSetup);
 
-			trace('Languages.as/languageSetup() - currentLoader.xmlData.lang.@id: "' + currentLoader.xmlData.lang.@id + '"');
             var language:String = currentLoader.xmlData.lang.@id;
-
-
             var languageData:XML = currentLoader.xmlData;
 
 			trace('Languages.as/languageSetup() - Adding language "' + language + '" to language dictionary.');
@@ -84,10 +80,9 @@ package systems
 			languageName = currentLanguageData.lang.@id;
 
 			
-			trace('Languages.as/applyLanguage() - Lanuage applied: "' + languageName + '." Updating "Res.as" to use currentLanguageData for the localization file.');
+			trace('Languages.as/applyLanguage() - Lanuage applied: "' + languageName + '."');
 			Res.localizationFile = currentLanguageData;
 			
-
 			textLoaded = true;
 			trace('Languages.as/applyLanguage() - Language setup complete.');
 		}
@@ -95,24 +90,17 @@ package systems
 
 		public static function changeLanguage(languageID:String):void
 		{
-
-			// Update the current language
 			languageName = languageID;
-
-			// Fetch the file URL for the new language
 			var languageFileURL:String = languageListDictionary[languageID].file;
 
 			trace('Languages.as/changeLanguage() - Loading new language into memory. languageName: "' + languageName + '" URL: "' + languageFileURL + '"');
-	
-			// Load the new language into memory
 			applyLanguage(languageFileURL);
-			// Save the new configuration
+
 			World.world.saveConfig();
-
-
 		}
 
-		private static function initializeLanguageDictionary()
+		//TODO: un-hardcode supported languages.
+		private static function initializeLanguageDictionary():void
 		{
 			languageListDictionary = new Dictionary();
 			

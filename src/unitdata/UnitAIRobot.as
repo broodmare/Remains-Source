@@ -74,7 +74,7 @@ package unitdata
 			return obj;
 		}	
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',4);
 			newPart('miniexpl');
@@ -88,13 +88,13 @@ package unitdata
 			return super.damage(dam, tip, bul,tt);
 		}
 				
-		public override function budilo(rad:Number=500)
+		public override function budilo(rad:Number=500):void
 		{
 			super.budilo(rad);
 			room.robocellActivate();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			if (sost==1 && aiState<=1) 
 			{
@@ -315,7 +315,8 @@ package unitdata
 
 		}
 		
-		public function actPort(rnd:Boolean=false) {
+		public function actPort(rnd:Boolean=false):void
+		{
 			var cel:Unit=World.world.gg;
 			//var dx:Number=0, dy:Number=0;
 			var nx:Number=0;
@@ -359,16 +360,19 @@ package unitdata
 		}
 		
 		//прыжок
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void 
+		{
 			if (stay) {		
 				dy=-jumpdy*v;
 			}
 		}
 		
 		//атака
-		public function attack() {
+		public function attack():void 
+		{
 			if (aiAttackOch==0 && shok<=0 && isrnd(0.1)) currentWeapon.attack();	//стрельба одиночными
-			if (aiAttackOch>0) {										//стрельба очередями
+			if (aiAttackOch>0) 
+			{										//стрельба очередями
 				if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
 				if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
 				aiAttackT--;

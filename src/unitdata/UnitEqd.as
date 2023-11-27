@@ -5,11 +5,13 @@ package unitdata
 	import servdata.LootGen;
 	import servdata.BlitAnim;
 	
-	public class UnitEqd extends UnitAIRobot{
+	public class UnitEqd extends UnitAIRobot
+	{
 
 		var jump_n:int=100;
 		
-		public function UnitEqd(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitEqd(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='eqd';
 			getXmlParam();
@@ -25,7 +27,7 @@ package unitdata
 			isPort=true;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			currentWeapon.vis.visible=false;
 			super.dropLoot();

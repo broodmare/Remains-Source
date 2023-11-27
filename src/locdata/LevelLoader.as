@@ -14,54 +14,54 @@ package locdata
 	public class LevelLoader 
 	{
 
-		public var id:String;
 		
-		public var roomsFile:String;
+		
+		public var roomsFile:String;	//TODO: Remove this.
+
 		public var request:URLRequest;
-		public var loader_rooms:URLLoader; 
-		
-		
-		public var loaded:Boolean 	= false; //I don't think these are used.
-		public var errLoad:Boolean 	= false; //I don't think these are used.
-		
-		public var allroom:XML;
+		public var loader:URLLoader;
+
+
+		public var id:String;	//ID of the level.
+		public var allroom:XML;	//Stores the XML data containing all rooms in a level.
 		
 		
 
 		public function LevelLoader(nid:String) 
 		{
-			trace('LevelLoader.as/LevelLoader() - Attemping to load levels...');
-
-
-			
-
 			id = nid;
+
 			roomsFile = XmlBook.getXML("levels").level.(@id == id).@file;
 			var roomsURL:String = Settings.levelPath + roomsFile + ".xml";
-			
-			trace('LevelLoader.as/LevelLoader() - id: "' + id + '" roomsURL: "' + roomsURL + '" roomsFile: "' + roomsFile + '"');
 
 			request = new URLRequest(roomsURL); 
-			loader_rooms = new URLLoader(request);
+			loader = new URLLoader(request);
 
 
-			loader_rooms.addEventListener(Event.COMPLETE, onCompleteLoadRooms); 
-			loader_rooms.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
+			loader.addEventListener(Event.COMPLETE, onCompleteLoadRooms); 
+			loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); 
 
 		}
 
 		public function onCompleteLoadRooms(event:Event):void  
 		{
-			loaded = true;
+			event.target.removeEventListener(Event.COMPLETE, onCompleteLoadRooms);
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+
+			trace('LevelLoader.as/onCompleteLoadRooms() - roomsFile "' + roomsFile + '", loaded.');
 			World.world.load_log += 'roomsFile ' + roomsFile + ' loaded.\n';
-			allroom = new XML(loader_rooms.data);
+			allroom = new XML(loader.data);
+			
 			World.world.levelsLoaded++
-			World.world.roomsLoadOk();
+			World.world.allLevelsLoadedCheck();
 		}
 		
 		private function ioErrorHandler(event:IOErrorEvent):void 
 		{
-			trace('LevelLoader.as/onCompleteLoadRooms() - Rooms failed to load, IO Error.');
+			event.target.removeEventListener(Event.COMPLETE, onCompleteLoadRooms);
+			event.target.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+
+			trace('LevelLoader.as/ioErrorHandler() - Rooms failed to load, IO Error.');
 			World.world.load_log += 'IOerror loading roomsFile.\n';
         }
 		

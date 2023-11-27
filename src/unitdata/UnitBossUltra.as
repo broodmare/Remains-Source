@@ -29,7 +29,8 @@ package unitdata
 		var visshit:MovieClip;
 		var usil:Boolean=false;
 
-		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitBossUltra(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
+		{
 			super(cid, ndif, xml, loadObj);
 			id='bossultra';
 			tr=1;
@@ -70,7 +71,7 @@ package unitdata
 			timerDie=150;
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			newPart('baleblast');
 			Snd.ps('bale_e');
@@ -106,12 +107,12 @@ package unitdata
 			} 
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',22);
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			setCel(null,nx+200*storona, ny-50);
@@ -144,17 +145,20 @@ package unitdata
 		{
 			thWeapon.vis.visible=false;
 			//щит
-			if (visshit && !visshit.visible && shithp>0) {
+			if (visshit && !visshit.visible && shithp>0) 
+			{
 				visshit.visible=true;
 				visshit.gotoAndPlay(1);
 			}
-			if (visshit && visshit.visible && shithp<=0) {
+			if (visshit && visshit.visible && shithp<=0) 
+			{
 				visshit.visible=false;
 				visshit.gotoAndStop(1);
 				Emitter.emit('pole',room,X,Y-50,{kol:12,rx:100, ry:100});
 			}
 			if (sost==2) {
-				if (isrnd(0.3-timerDie/500)) {
+				if (isrnd(0.3-timerDie/500)) 
+				{
 					Emitter.emit('expl',room,X+Math.random()*120-60,Y-Math.random()*120);
 					newPart('metal');
 					Snd.ps('expl_e');
@@ -181,7 +185,8 @@ package unitdata
 			weaponY=vis.y-110;
 		}
 		
-		function emit() {
+		public function emit():void
+		{
 			var un:Unit=room.createUnit('vortex',X,Y-scY/2,true);
 			un.fraction=fraction;
 			un.oduplenie=0;
@@ -315,14 +320,16 @@ package unitdata
 			}
 		}
 		
-		function castShit() {
+		public function castShit():void
+		{
 			if (shithp<=0 && t_shit<=0 && (World.world.game.globalDif==4 || World.world.game.globalDif==3 && hp<maxhp/2)) {
 				shithp=shitMaxHp;
 				t_shit=1000;
 			}
 		}
 		
-		public function attack() {
+		public function attack():void
+		{
 			if (sost!=1) return;
 			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,1);

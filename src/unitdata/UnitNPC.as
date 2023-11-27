@@ -173,7 +173,8 @@ package unitdata
 			inter.active=isVis;
 		}
 		
-		public function setInter() {
+		public function setInter():void
+		{
 			inter.action=100;
 			inter.active=true;
 			inter.cont=null;
@@ -211,7 +212,8 @@ package unitdata
 		}
 		
 		
-		function hide() {
+		function hide():void
+		{
 			inter.active=false;
 			isVis=false;
 			if (vis) vis.visible=false;
@@ -219,7 +221,8 @@ package unitdata
 		}
 		
 		
-		public function npcFun() {
+		public function npcFun():void
+		{
 			if (zanyato || t_ref>0) return;
 			t_ref=16;
 			if (!noTurn) {
@@ -273,7 +276,8 @@ package unitdata
 		}
 		
 		//команды, выполняющиеся в очереди
-		function analiz(q) {
+		function analiz(q):void
+		{
 			//реплика
 			if (q.com=='tell') {
 				t_replic=0;

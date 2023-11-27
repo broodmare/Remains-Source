@@ -57,13 +57,13 @@ package unitdata
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam('ant');
 			super.getXmlParam();
 		}
 
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			if (sost==1 && aiState<=1) {
 				super.alarma(nx,ny);
@@ -74,25 +74,31 @@ package unitdata
 			}
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			super.expl();
 		}
 		
 		public override function setVisPos():void
 		{
-			if (vis) {
-				if (isLaz==0) {
+			if (vis) 
+			{
+				if (isLaz==0) 
+				{
 					vis.x=X,vis.y=Y;
 					vis.scaleX=storona;
 					vis.scaleY=1;
 					vis.rotation=0;
-				} else if (isLaz==1) {
+				} 
+				else if (isLaz==1) 
+				{
 					vis.x=X2;
 					vis.y=Y-scY/2;
 					vis.rotation=-90;
 					vis.scaleX=-vstorona;
-				} else if (isLaz==-1) {
+				} 
+				else if (isLaz==-1) 
+				{
 					vis.x=X1;
 					vis.y=Y-scY/2;
 					vis.rotation=90;
@@ -100,6 +106,7 @@ package unitdata
 				}
 			}
 		}
+		
 		public override function animate():void
 		{
 			var cframe:int;

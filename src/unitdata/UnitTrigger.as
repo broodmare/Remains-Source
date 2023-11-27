@@ -11,7 +11,8 @@ package unitdata
 
 	//различные ловушки, активирующиеся если войти в зону их действия - нажимные плиты, растяжки, лазерные датчики
 	
-	public class UnitTrigger extends Unit{
+	public class UnitTrigger extends Unit
+	{
 		
 		var status:int=0;	//0 - взведён, 1 - активирован, 2 - отключён
 		var trapT:int=0;	//тип области
@@ -74,7 +75,7 @@ package unitdata
 			return obj;
 		}
 		
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam();
 			var node0:XML = XmlBook.getXML("units").unit.(@id == id)[0];
@@ -89,7 +90,7 @@ package unitdata
 			}
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			setArea();
@@ -106,7 +107,7 @@ package unitdata
 			inter.needSkillLvl=sk;
 		}
 		
-		function setDamager() 
+		public function setDamager():void
 		{
 			if (res=='noise' || res=='') return;
 			var i:int=1;
@@ -180,7 +181,7 @@ package unitdata
 			}
 		}
 
-		function setStatus():void
+		public function setStatus():void
 		{
 			if (status>0) {
 				warn=0;
@@ -199,20 +200,20 @@ package unitdata
 			if (status==0) activate();
 		}
 		
-		public function setVis(v:Boolean)
+		public function setVis(v:Boolean):void
 		{
 			isVis=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
 		}
 		
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',3);
 		}
 		
 		//установить границы активации
-		function setArea():void
+		public function setArea():void
 		{
 			if (id=='trigridge' || id=='triglaser') {
 				ax1=X-5
@@ -236,7 +237,7 @@ package unitdata
 		}
 		
 		//обезвредить
-		function disarm():void
+		public function disarm():void
 		{
 			status=2;
 			setStatus();
@@ -244,14 +245,14 @@ package unitdata
 		}
 		
 		//реактивировать
-		function rearm():void
+		public function rearm():void
 		{
 			status=0;
 			setStatus();
 		}
 		
 		//активировать
-		function activate():void
+		public function activate():void
 		{
 			if (status!=0) return;
 			setVis(true);

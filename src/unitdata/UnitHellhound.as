@@ -33,19 +33,20 @@ package unitdata
 			aiNapr=storona;
 			sit(true);
 		}
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam('hellhound');
 			super.getXmlParam();
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			unsit();
 		}
 		//проверка возможности прыжка
-		function checkJump():Boolean {
+		public function checkJump():Boolean 
+		{
 			if (room.getAbsTile(X,Y-85).phis!=0) return false;
 			if (room.getAbsTile(X,Y-125).phis!=0) return false;
 			if (room.getAbsTile(X+40*storona,Y-85).phis!=0) return false;
@@ -53,7 +54,8 @@ package unitdata
 			return true;
 		}
 		
-		public function jump(v:Number=1) {
+		public function jump(v:Number=1):void
+		{
 			if (stay || isLaz) {		//прыжок
 				dy=-jumpdy*v;
 				isLaz=0;

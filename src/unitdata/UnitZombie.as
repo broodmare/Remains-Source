@@ -102,7 +102,7 @@ package unitdata
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null)
+		public override function getXmlParam(mid:String=null):void
 		{
 			super.getXmlParam('zombie');
 			super.getXmlParam();
@@ -222,7 +222,7 @@ package unitdata
 		}
 		
 		
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			//trace('alarm',aiState)
 			if (digger==3) return;
@@ -272,7 +272,7 @@ package unitdata
 			visDetails();
 		}
 		
-		public function jump(v:Number=1) 
+		public function jump(v:Number=1):void
 		{
 			if (stay) {		//прыжок
 				dy=-jumpdy*v;
@@ -284,14 +284,14 @@ package unitdata
 			}
 		}
 		
-		public override function initBurn(sposob:int)
+		public override function initBurn(sposob:int):void
 		{
 			if (burn!=null) return;
 			if (vlight) vlight.visible=false;
 			super.initBurn(sposob);
 		}
 		
-		public function zakop() 
+		public function zakop():void
 		{
 			knocked=0;
 			aiState=5;
@@ -321,7 +321,7 @@ package unitdata
 				vlight.y=0;
 			}
 		}
-		public function vykop() 
+		public function vykop():void
 		{
 			knocked=knocked2;
 			scY=stayY;
@@ -340,7 +340,7 @@ package unitdata
 		}
 		
 		//проверка возможности прыжка
-		function checkJump():Boolean 
+		public function checkJump():Boolean 
 		{
 			if (room.getAbsTile(X,Y-85).phis!=0) return false;
 			if (room.getAbsTile(X,Y-125).phis!=0) return false;
@@ -358,7 +358,7 @@ package unitdata
 			return super.destroyWall(t, napr);
 		}
 		
-		function resurrect()
+		public function resurrect():void
 		{
 			hp=maxhp;
 			sost=1;
@@ -376,7 +376,7 @@ package unitdata
 			}
 		}
 		
-		function quake(n:Number)
+		public function quake(n:Number):void
 		{
 			room.budilo(X,Y,500);
 			room.earthQuake(n*superQuake);
@@ -637,7 +637,8 @@ package unitdata
 				//World.world.gui.vis.sist.text=teleUnit+' '+celUnit+' '+aiZlo;
 		}
 		
-		function setSuper() {
+		public function setSuper():void
+		{
 			if (superSilaTip==1) {	//суперпрыжок
 				tPrepSuper=30;
 				tSuper=20;
@@ -708,7 +709,8 @@ package unitdata
 			}
 		}
 		
-		function findSuper() {
+		public function findSuper():void
+		{
 			superX=-1;
 			var nx:int=Math.floor(celX/Settings.tilePixelWidth);
 			var ny:int=Math.floor((celY+40)/Settings.tilePixelHeight);
@@ -746,7 +748,8 @@ package unitdata
 		}
 		
 		//суперсила в начальный момент
-		function superSila() {
+		public function superSila():void
+		{
 			super_on=true;
 			if (superSilaTip==1) {
 				if (superX>0 && superY>0 && stay) {
@@ -780,7 +783,8 @@ package unitdata
 		}
 		
 		//суперсила в действии
-		function superSila2() {
+		public function superSila2():void
+		{
 			if (superSilaTip==1) {
 				grav=0;
 			} else if (superSilaTip==2 || superSilaTip==7) {
@@ -809,7 +813,8 @@ package unitdata
 		}
 		
 		//суперсила в конце
-		function superSilaVse() {
+		public function superSilaVse():void
+		{
 			super_on=false;
 			if (superSilaTip==1) {
 				maxSpeed=vJump+3;
@@ -823,7 +828,7 @@ package unitdata
 			}
 		}
 		
-		public override function dropLoot()
+		public override function dropLoot():void
 		{
 			super.dropLoot();
 			if (superSilaTip==8) explosion(dam*0.4,19,150,15);

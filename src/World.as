@@ -119,8 +119,8 @@ package
 		
 
 		//Maps
-		public var levelPath:String;
-		public var landData:Array;
+		public var levelPath:String;					//
+		public var landData:Array;						//Stores all rooms for the current level as an array of XMLs.
 		public var levelsFound:int = 0;
 		public var levelsLoaded:int = 0;
 		public var allLevelsLoaded:Boolean = false;
@@ -274,7 +274,7 @@ package
 				if (allLevelsLoaded == false)
 				{
 					trace('World.as/init2() - Checking if all rooms are loaded.');
-					roomsLoadOk()
+					allLevelsLoadedCheck();
 				}
 				
 
@@ -322,7 +322,7 @@ package
 			for each(var levelData:XML in levelsXML.level) 
 			{
 				var levelLoader:LevelLoader = new LevelLoader(levelData.@id);
-
+				trace('World.as/init2() - Level: "' + levelData.@id + '" found. Loading and incrementing levelFound counter.');
 				levelsFound++;
 				landData[levelData.@id] = levelLoader;
 			}
@@ -406,12 +406,12 @@ package
 			trace('World.as/configObjSetup() - Finished setup.');
 		}
 
-		public function roomsLoadOk():void
+		//TODO: The 'If' check completes early. Investigate.
+		public function allLevelsLoadedCheck():void
 		{
-			//trace('World.as/roomsLoadOk() - Checking if all levels are loaded. Levels found: "' + levelsFound + '" Levels Loaded: "' + levelsLoaded + '"');
-			if (levelsFound == levelsLoaded) 
+			if (levelsFound >= levelsLoaded) 
 			{
-				trace('World.as/roomsLoadOk() - All levels loaded, setting allLevelsLoaded to true. Levels found: "' + levelsFound + '" Levels Loaded: "' + levelsLoaded + '"');
+				//trace('World.as/allLevelsLoadedCheck() - All levels loaded, setting allLevelsLoaded to true. Levels found: "' + levelsFound + '" Levels Loaded: "' + levelsLoaded + '"');
 				allLevelsLoaded = true;
 			}
 		}
@@ -481,15 +481,17 @@ package
 				allStat = -1;
 				opt = nopt;
 				newName = nnewName;
+
+				trace('World.as/startNewGame() - Creating new "Game()".');
 				game = new Game();
 				newGame = nload < 0;
 				if (newGame) 
 				{
 					if (opt && opt.autoSaveN) 
 					{
-						autoSaveN=opt.autoSaveN;
-						saveObj=saveArr[autoSaveN];
-						nload=autoSaveN;
+						autoSaveN = opt.autoSaveN;
+						saveObj = saveArr[autoSaveN];
+						nload = autoSaveN;
 					} 
 					else nload = 0;
 					saveObj.clear();
@@ -504,33 +506,39 @@ package
 				trace('World.as/startNewGame() - Calling pip.toNormalMode().');
 				pip.toNormalMode();
 				pip.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
+
 				// create SATS interface
 				trace('World.as/startNewGame() - Creating new SATS.');
 				sats = new Sats(vsats);
 				
-				// create game
+				// Load save data from file or slot.
 				if (nload == 99) 
 				{
+					trace('World.as/startNewGame() - Loading data.');
 					data = loaddata;	// loaded from file
 				} 
 				else 
 				{
-					data=saveArr[nload].data; // loaded from slot
+					trace('World.as/startNewGame() - Loading data.');
+					data = saveArr[nload].data; // loaded from slot
 				}
 
+				// Start new game
 				if (newGame)	
 				{
+					trace('World.as/startNewGame() - Calling "game.init()".');
 					game.init(null, opt); 
 				}
 				else 
 				{
+					trace('World.as/startNewGame() - Calling "game.init()".');
 					game.init(data.game);
 				}
 				ng_wait = 1;
 			} 
 			catch (err) 
 			{
-				trace('World.as/startNewGame() - Something fucked up starting a new game.');
+				trace('World.as/startNewGame() - Something fucked up starting a new game. Error: "' + err.message + '".');
 				showError(err);
 			}
 		}
@@ -788,8 +796,8 @@ package
 			}
 		}
 		
-		
-		function exitStep():void
+		//Set private
+		private function exitStep():void
 		{
 			try 
 			{
@@ -832,7 +840,8 @@ package
 			}
 		}
 		
-		function ggDieStep():void
+		//Set private
+		private function ggDieStep():void
 		{
 			try 
 			{

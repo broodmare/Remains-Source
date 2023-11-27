@@ -109,7 +109,7 @@ package unitdata
 			return obj;
 		}
 		
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
 			if (mxml) inter=new Interact(this,null,mxml,null);
@@ -210,7 +210,7 @@ package unitdata
 				osnova=room.getAbsTile(X, Y-50);
 			}
 		}
-		public override function alarma(nx:Number=-1,ny:Number=-1)
+		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
 			super.alarma(nx,ny);
 			if (turrettip==3) return;
@@ -238,7 +238,7 @@ package unitdata
 			}
 		}
 		
-		public override function hack(sposob:int=0)
+		public override function hack(sposob:int=0):void
 		{
 			if (sposob==0) 
 			{
@@ -265,7 +265,7 @@ package unitdata
 			}
 			warn=0;
 		}
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal', 4);
 			newPart('miniexpl');

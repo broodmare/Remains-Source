@@ -18,7 +18,8 @@ package unitdata
 		var prevKoef:Number=0;
 		var cep:int=-1;
 
-		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitTransmitter(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			id='transmitter';
 			vis=new visualTransmitter();
@@ -30,7 +31,7 @@ package unitdata
 			aiState=1;
 		}
 		//поместить созданный юнит в локацию
-		public override function putLoc(newRoom:Room, nx:Number, ny:Number)
+		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			if (cep<0 && newRoom.getAbsTile(nx, ny+10).phis==0) {
 				if (newRoom.getAbsTile(nx, ny-50).phis) {
@@ -55,7 +56,7 @@ package unitdata
 			super.putLoc(newRoom, nx, ny);
 		}
 
-		public override function expl()
+		public override function expl():void
 		{
 			newPart('metal',4);
 			//if (shum) shum.stop();

@@ -10,12 +10,14 @@ package unitdata
 
 	import stubs.visencl;
 	
-	public class UnitEncl extends UnitRaider{
+	public class UnitEncl extends UnitRaider
+	{
 		
 		var thWeapon:Weapon;
 		var t_gren:int=Math.round(Math.random()*150+50);
 		
-		public function UnitEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitEncl(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			parentId='encl';
 			flyer=true;
 			kolTrs=1;
@@ -64,7 +66,7 @@ package unitdata
 			}			
 		}
 		
-		public override function attack()
+		public override function attack():void
 		{
 			if (!sniper) mazil=(aiState==4)?5:16;		//стоя на месте стрельба точнее
 			if (aiAttackOch==0 && shok<=0 && (celUnit!=null && isrnd(0.1) || celUnit==null && isrnd(0.03))) currentWeapon.attack();	//стрельба одиночными

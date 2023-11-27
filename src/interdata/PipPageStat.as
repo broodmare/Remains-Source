@@ -38,8 +38,9 @@ package interdata
 			trace('PipPageStat.as/PipPageStat() - Created PipPageStat page.');
 		}
 		
+		//set public
 		//подготовка страниц
-		override function setSubPages():void
+		public override function setSubPages():void
 		{
 			trace('PipPageStat.as/setSubPages() - updating subPages.');
 
@@ -266,7 +267,8 @@ package interdata
 
 		}
 		
-		override function setSigns():void
+		//set public 
+		public override function setSigns():void
 		{
 			super.setSigns();
 			if (pers.skillPoint>0) signs[2]=1;
@@ -276,7 +278,8 @@ package interdata
 		}
 		
 		//показ одного элемента
-		override function setStatItem(item:MovieClip, obj:Object):void
+		//set public 
+		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			if (obj.id!=null) item.id.text=obj.id; else item.id.text='';
 			if (obj.cat!=null) item.cat.text=obj.cat; else item.cat.text='';
@@ -325,7 +328,8 @@ package interdata
 		}
 		
 		//информация об элементе
-		override function statInfo(event:MouseEvent):void
+		//set public 
+		public override function statInfo(event:MouseEvent):void
 		{
 			var id:String=event.currentTarget.id.text;
 			var objectName:String=event.currentTarget.objectName.text;
@@ -449,7 +453,8 @@ package interdata
 			}
 		}
 		
-		function selSkill(id:String):void
+		//set public 
+		public function selSkill(id:String):void
 		{
 			if (pers.skillIsPost(id) && skills[id].lvl<Pers.maxPostSkLvl || skills[id].lvl<maxSkLvl) {
 				if (skillPoint>0) {
@@ -461,7 +466,9 @@ package interdata
 				}
 			}
 		}
-		function unselSkill(id:String):void
+
+		//set public 
+		public function unselSkill(id:String):void
 		{
 			if (skills[id].lvl>skills[id].minlvl) 
 			{
@@ -470,7 +477,8 @@ package interdata
 			}
 		}
 		
-		function showBottext():void
+		//set public 
+		public function showBottext():void
 		{
 			vis.bottext.text='';
 			if (page2==1) vis.bottext.htmlText=Res.txt('p', 'tgame')+': '+World.world.game.gameTime();
@@ -534,7 +542,8 @@ package interdata
 			}
 		}
 		
-		override function itemClick(event:MouseEvent):void
+		//set public 
+		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
 			{
@@ -616,7 +625,8 @@ package interdata
 			showBottext();
 		}
 
-		override function itemRightClick(event:MouseEvent):void
+		//set public 
+		public override function itemRightClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
@@ -631,7 +641,8 @@ package interdata
 			showBottext();
 		}
 
-		function transOk(event:MouseEvent):void
+		//set public 
+		public function transOk(event:MouseEvent):void
 		{
 			if (pip.gamePause) {
 				World.world.gui.infoText('gamePause');
@@ -664,7 +675,9 @@ package interdata
 			}
 			setStatus();
 		}
-		function gotoDef(event:MouseEvent):void
+		
+		//set public 
+		public function gotoDef(event:MouseEvent):void
 		{
 			if (page2==6) {
 				page2=3;

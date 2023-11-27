@@ -30,6 +30,9 @@ package graphdata
 	import components.XmlBook;
 	import systems.TileFilter;
 
+	import stubs.visBlack;
+	import stubs.tileFront;
+	import stubs.tileVoda
 	import stubs.tileGwall;
 
 	public class Grafon 
@@ -137,7 +140,7 @@ package graphdata
 		
 		public var nn:int;									// Something for side quests? Why is this here?
 
-		public var waterMovieClip;  						// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
+		public var waterMovieClip:MovieClip;  						// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
 
 
 		public function Grafon(nvis:Sprite)
@@ -356,9 +359,9 @@ package graphdata
 		public function allProgress():void
 		{
 			progressLoad = 0; //Clear the current progress.
-			for (var i in grLoaderArray) //for each loader in the array of loaders...
+			for (var loaderID:String in grLoaderArray) //for each loader in the array of loaders...
 			{
-				progressLoad += grLoaderArray[i].progressLoad; //Add the progress of the loader to the total progress.
+				progressLoad += grLoaderArray[loaderID].progressLoad; //Add the progress of the loader to the total progress.
 			}
 			
 			progressLoad /= GrLoader.instanceCount;
@@ -1200,6 +1203,7 @@ package graphdata
 			if (recurs) drawWater(room.getTile(tile.X, tile.Y+1), false);
 		}
 			
+		//TODO: See what the fuck is going on with this.
 		public function tileDie(tile:Tile, tip:int):void
 		{
 			var erC:Class = block_dyr;
@@ -1303,7 +1307,7 @@ package graphdata
 				} 
 				else if (tip == 9) // explosion
 				{					
-					if (!soft && Math.random()*0.5<ver) drC = expl_tre;
+					if (!soft && Math.random() * 0.5 < ver) drC = expl_tre;
 					centr = true;
 				}
 				if (tip<10 && !soft)
@@ -1322,7 +1326,7 @@ package graphdata
 			} 
 			else if (tip == 12 || tip == 13) // lasers
 			{		
-				if (soft && Math.random()*0.2>ver)
+				if (soft && Math.random() * 0.2 > ver)
 				{
 					drC = fire_soft;
 				} 
@@ -1435,21 +1439,21 @@ package graphdata
 			var dy:Number = (ny2 - ny1) / kol;
 			
 			var rx1:int, rx2:int, ry1:int, ry2:int;
-			if (nx1<nx2)
+			if (nx1 < nx2)
 			{
-				rx1 = nx1-25, rx2 = nx2+25;
+				rx1 = nx1 - 25, rx2 = nx2 + 25;
 			} 
 			else 
 			{
-				rx1 = nx2-25, rx2 = nx1+25;
+				rx1 = nx2 - 25, rx2 = nx1 + 25;
 			}
 			if (ny1<ny2)
 			{
-				ry1 = ny1-25, ry2 = ny2+25;
+				ry1 = ny1 - 25, ry2 = ny2 + 25;
 			} 
 			else 
 			{
-				ry1 = ny2-25, ry2 = ny1+25;
+				ry1 = ny2 - 25, ry2 = ny1 + 25;
 			}
 			
 			brPoint.x = 0, brPoint.y = 0;

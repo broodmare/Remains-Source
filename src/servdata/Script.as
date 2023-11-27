@@ -38,7 +38,8 @@ package servdata
 			if (level && onTimer) level.scripts.push(this);
 		}
 		
-		function analiz(xml:XML):void
+		//set public
+		public function analiz(xml:XML):void
 		{
 			var act:String, targ:String, val:String, t:int = 0, n:String = '-1', opt1:int = 0, opt2:int = 0;
 			if (xml.@act.length()) // Command
@@ -128,7 +129,8 @@ package servdata
 		}
 		
 		// Command execution
-		function com(obj:Object):void
+		//set public
+		public function com(obj:Object):void
 		{
 			if (obj == null) return;
 			//trace('SCR', obj.targ, obj.act, obj.val);
