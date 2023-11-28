@@ -109,23 +109,25 @@ package unitdata
 		
 		public override function expl():void
 		{
-			newPart('metal',22);
+			newPart('metal', 22);
 		}
 		
 		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
-			setCel(null,nx+200*storona, ny-50);
+			setCel(null,nx+200*storona, ny - 50);
 		}
 		
 		public override function setNull(f:Boolean=false):void
 		{
-			if (sost==1) {
+			if (sost==1) 
+			{
 				if (dopWeapon) dopWeapon.setNull();
 			}
 			super.setNull(f);
 			aiState=aiSpok=0;
-			if (hp>maxhp/2) {
+			if (hp>maxhp/2) 
+			{
 				usil=false;
 				currentWeapon.vis.visible=true;
 				currentWeapon2.vis.visible=false;
@@ -156,7 +158,8 @@ package unitdata
 				visshit.gotoAndStop(1);
 				Emitter.emit('pole',room,X,Y-50,{kol:12,rx:100, ry:100});
 			}
-			if (sost==2) {
+			if (sost==2) 
+			{
 				if (isrnd(0.3-timerDie/500)) 
 				{
 					Emitter.emit('expl',room,X+Math.random()*120-60,Y-Math.random()*120);
@@ -168,21 +171,25 @@ package unitdata
 		
 		public override function setVisPos():void
 		{
-			if (vis) {
-				if (sost==2) {
-					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
-					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;
-				} else {
-					vis.x=X,vis.y=Y;
+			if (vis) 
+			{
+				if (sost==2) 
+				{
+					vis.x = X + (Math.random() - 0.5) * (150 - timerDie) / 15;
+					vis.y = Y + (Math.random() - 0.5) * (150 - timerDie) / 15;
+				} 
+				else 
+				{
+					vis.x = X, vis.y = Y;
 				}
 				vis.scaleX=storona;
 			}
 		}
 		
-		public override function setWeaponPos(tip:int=0):void
+		public override function setWeaponPos(tip:int = 0):void
 		{
-			weaponX=vis.x;
-			weaponY=vis.y-110;
+			weaponX = vis.x;
+			weaponY = vis.y - 110;
 		}
 		
 		public function emit():void
@@ -214,10 +221,11 @@ package unitdata
 
 			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);
 			//если сдох, то не двигаться
-			if (sost==3) return;
-			if (sost==2) {
-				dx=0;
-				dy=0;
+			if (sost == 3) return;
+			if (sost == 2) 
+			{
+				dx = 0;
+				dy = 0;
 				return;
 			}
 			
@@ -226,9 +234,10 @@ package unitdata
 			//return;
 			
 			if (room.gg.invulner) return;
-			if (Settings.enemyAct<=0) {
-				celY=Y-scY;
-				celX=X+scX*storona*2;
+			if (Settings.enemyAct <= 0) 
+			{
+				celY = Y - scY;
+				celX = X + scX * storona * 2;
 				return;
 			}
 			if (t_shit>0) t_shit--;

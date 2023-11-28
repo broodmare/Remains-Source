@@ -127,9 +127,9 @@ package unitdata
 		
 		public override function save():Object
 		{
-			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
-			obj.tr=tr;
+			var obj:Object = super.save();
+			if (obj == null) obj = new Object();
+			obj.tr = tr;
 			return obj;
 		}
 		
@@ -186,10 +186,13 @@ package unitdata
 
 		public function setStatus():void
 		{
-			if (status>0) {
+			if (status>0) 
+			{
 				warn=0;
 				inter.active=false;
-			} else {
+			} 
+			else 
+			{
 				warn=1;
 				inter.active=true;
 			}
@@ -202,7 +205,8 @@ package unitdata
 			isVis=v;
 			vis.visible=v;
 			vis.alpha=v?1:0.1;
-			if (currentWeapon) {
+			if (currentWeapon) 
+			{
 				currentWeapon.vis.visible=v;
 				currentWeapon.vis.alpha=v?1:0.1;
 			}
@@ -210,20 +214,25 @@ package unitdata
 		
 		public override function expl():void
 		{
-			newPart('metal',3);
+			newPart('metal', 3);
 		}
 		
 		//обезвредить
 		public function disarm():void
 		{
-			if (tipDamager==1) {
+			if (tipDamager==1) 
+			{
 				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,'frag',1);
 				if (kolammo>0) LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.ammo,kolammo);
-			} else if (tipDamager==2 && kolammo>0) {
+			} 
+			else if (tipDamager==2 && kolammo>0) 
+			{
 				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
 				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
 				LootGen.lootId(room,currentWeapon.X,currentWeapon.Y,currentWeapon.id,1);
-			} else if (tipDamager==3 && kolammo>0) {
+			} 
+			else if (tipDamager==3 && kolammo>0) 
+			{
 				LootGen.lootCont(room,X,Y-20,'bomb');
 			}
 			sost=4;
@@ -242,7 +251,8 @@ package unitdata
 		public function iExpl():void
 		{
 			var bul:Bullet;
-			if (tipDamager==2) {
+			if (tipDamager==2) 
+			{
 				damageExpl=currentWeapon.damageExpl*kolammo;
 				destroyExpl=currentWeapon.destroy;
 				explRadius=currentWeapon.explRadius;
@@ -256,11 +266,14 @@ package unitdata
 		public function activate():void
 		{
 			if (status!=0 || sost>1) return;
-			if (tipDamager==3) {
+			if (tipDamager==3) 
+			{
 				iExpl();
 				kolammo=0;
 				disarm();
-			} else {
+			} 
+			else 
+			{
 				status=1;
 				noch=0;
 				setVis(true);
@@ -270,41 +283,47 @@ package unitdata
 		//команда
 		public override function command(com:String, val:String=null):void
 		{
-			if (com=='dam') activate();
+			if (com == 'dam') activate();
 		}
 		
 		//не искать цели
-		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void
+		public override function setCel(un:Unit = null, cx:Number = -10000, cy:Number = -10000):void
 		{
 		}
 		
-		var aiN:int=Math.floor(Math.random()*5);
+		var aiN:int = Math.floor(Math.random() * 5);
 		
 		public override function control():void
 		{
-			if (sost>1 || status==2 || kolammo<=0) return;
+			if (sost > 1 || status == 2 || kolammo <= 0) return;
 			aiN++;
-			if (isShoot) {
+			if (isShoot) 
+			{
 				noch++;
 				kolammo--;
-				if (noch>=och) {
+				if (noch>=och) 
+				{
 					status=0;
-					//currentWeapon.initReload();
 				}
-				if (kolammo<=0) {
+				if (kolammo<=0) 
+				{
 					disarm();
 				}
 				isShoot=false;
 			}
-			if (status==1) {
-				if (tipDamager==2) {
+			if (status==1) 
+			{
+				if (tipDamager==2) 
+				{
 					celX=X+Math.random()*80-40;
 				}
 				if (currentWeapon) currentWeapon.attack();
 			}
-			if (aiN%10==0 && !isVis) {
-				isVis=World.world.gg.lookInvis(this);
-				if (isVis) {
+			if (aiN%10 == 0 && !isVis) 
+			{
+				isVis = World.world.gg.lookInvis(this);
+				if (isVis) 
+				{
 					setVis(true);
 				}
 			}

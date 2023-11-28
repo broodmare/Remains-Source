@@ -233,7 +233,7 @@ package unitdata
 			}
 		}
 		
-		function castShit():void
+		public function castShit():void
 		{
 			if (shithp<=0 && t_shit<=0 && (World.world.game.globalDif==4 || World.world.game.globalDif==3 && hp<maxhp/2)) {
 				shithp=shitMaxHp;

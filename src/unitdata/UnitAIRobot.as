@@ -19,7 +19,8 @@ package unitdata
 		var t_port:int=0;
 		var kol_port:int=5;
 		
-		public function UnitAIRobot(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
+		public function UnitAIRobot(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
 			super(cid, ndif, xml, loadObj);
 			//определить разновидность tr
 			if (loadObj && loadObj.tr) {			//из загружаемого объекта
@@ -31,7 +32,8 @@ package unitdata
 			} else {								//случайно по параметру ndif
 				tr=0;
 			}
-			if (aiTip=='quiet') {
+			if (aiTip=='quiet') 
+			{
 				stroll=false;
 				quiet=true;
 			}
@@ -47,19 +49,24 @@ package unitdata
 		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
-			if (hero==1) {
+			if (hero==1) 
+			{
 				kol_port=20;
 			}
 		}
 		
 		//дать оружие
-		public function getWeapon(ndif:int, xml:XML=null, loadObj:Object=null) {
-			if (loadObj && loadObj.weap) {
+		public function getWeapon(ndif:int, xml:XML=null, loadObj:Object=null) 
+		{
+			if (loadObj && loadObj.weap) 
+			{
 				if (loadObj.weap!='') currentWeapon=Weapon.create(this,loadObj.weap);
-			} else currentWeapon=getXmlWeapon(ndif);
+			} 
+			else currentWeapon=getXmlWeapon(ndif);
 			if (currentWeapon) weap=currentWeapon.id;
 			else weap='';
-			if (currentWeapon) {
+			if (currentWeapon) 
+			{
 				childObjs=new Array(currentWeapon);
 				currentWeapon.hold=currentWeapon.holder;
 			}
@@ -76,7 +83,7 @@ package unitdata
 
 		public override function expl():void
 		{
-			newPart('metal',4);
+			newPart('metal', 4);
 			newPart('miniexpl');
 		}
 		
@@ -139,7 +146,6 @@ package unitdata
 			if (t_port>0) t_port--;
 			t_replic--;
 			var jmp:Number=0;
-			//return;
 			
 			if (Settings.enemyAct<=0) 
 			{

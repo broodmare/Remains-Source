@@ -290,50 +290,69 @@ package unitdata
 				if (dx>0.5) storona=1; 
 				if (dx<-0.5) storona=-1;
 				walk=0;
-			} else if (aiState==1 || (aiState==2 || aiState==3) && Math.abs(celDX)>aiDist) {
-				destroy=50;
-				//определить, куда двигаться
-				//if (aiVNapr<0 && aiJump<=0 && aiTCh%2==1 && checkJump()) jmp=1;	
-				if (aiTCh%15==1 && aiState!=6) {
-					if (isrnd(0.5)) {
+			} else if (aiState==1 || (aiState==2 || aiState==3) && Math.abs(celDX)>aiDist) 
+			{
+				destroy = 50;
+
+				if (aiTCh%15 == 1 && aiState != 6) 
+				{
+					if (isrnd(0.5)) 
+					{
 						if (celDX>100) aiNapr=storona=1;
 						if (celDX<-100) aiNapr=storona=-1;
 					}
 				}
 
-				if (levit) {
-					if (aiNapr==-1) {
+				if (levit) 
+				{
+					if (aiNapr == -1) 
+					{
 						if (dx>-maxSpeed) dx-=levitaccel;
-					} else {
+					} 
+					else 
+					{
 						if (dx<maxSpeed) dx+=levitaccel;
 					}
-				} else if (stay || isPlav) {
-					if (aiNapr==-1) {
-						if (dx>-maxSpeed) dx-=accel;
-						walk=-1;
-					} else {
-						if (dx<maxSpeed) dx+=accel;
-						walk=1;
+				} 
+				else if (stay || isPlav) 
+				{
+					if (aiNapr == -1) 
+					{
+						if (dx > -maxSpeed) dx -= accel;
+						walk = -1;
+					} 
+					else 
+					{
+						if (dx < maxSpeed) dx += accel;
+						walk = 1;
 					}
-				} else {
-					if (aiNapr==-1) {
+				} 
+				else 
+				{
+					if (aiNapr == -1) 
+					{
 						if (dx>-maxSpeed) dx-=accel/4;
-					} else  if (aiNapr==1){
+					} 
+					else if (aiNapr==1)
+					{
 						if (dx<maxSpeed) dx+=accel/4;
 					}
 				}
 				if (stay && isrnd(0.5) && aiVNapr<=0 && (shX1>0.5 && aiNapr<0 || shX2>0.5 && aiNapr>0)) jmp=0.5;
 				if (stay && Y-begY>=40) jmp=1;
 				if (stay && tr==2 && celDY<-100) jmp=1;
-				if (turnX!=0) {
-					if (celDX*aiNapr<0) {				//повернуться, если цель сзади
+				if (turnX!=0) 
+				{
+					if (celDX*aiNapr<0) 
+					{				//повернуться, если цель сзади
 						aiNapr=storona=turnX;
 						aiTTurn=Math.floor(Math.random()*20)+5;
-					} else {							//попытаться перепрыгнуть, если цель спереди
+					} 
+					else 
+					{							//попытаться перепрыгнуть, если цель спереди
 						aiTTurn--;
-						//if (isrnd(0.1) || turnY>0 || celDY>100 || !checkJump()) aiTTurn-=10;
-						//else jmp=1;
-						if (aiTTurn<0) {
+						if (aiTTurn<0) 
+						{
 							aiNapr=storona=turnX;
 							aiTTurn=Math.floor(Math.random()*20)+5;
 						}
@@ -345,10 +364,13 @@ package unitdata
 					jump(jmp);
 					jmp=0;
 				}
-			} else if (aiState==3 || aiState==2) {
+			} 
+			else if (aiState==3 || aiState==2) 
+			{
 				walk=0;
 				aiNapr=storona=(celX>X)?1:-1;
-				if (celDX*celDX+celDY*celDY<200*200) {
+				if (celDX*celDX+celDY*celDY<200*200) 
+				{
 					aiState=1;
 				}
 			}
@@ -359,11 +381,15 @@ package unitdata
 		
 		public function attack():void
 		{
-			if (aiState==1 && celUnit) {	//атака холодным оружием без левитации или корпусом
+			if (aiState==1 && celUnit) 
+			{	//атака холодным оружием без левитации или корпусом
 				attKorp(celUnit,(Math.abs(dx-celUnit.dx)>8)?1:0.5);
-			} else if (aiState==3) {							//пальба
+			} 
+			else if (aiState==3) 
+			{							//пальба
 				mazil=10;		//стоя на месте стрельба точнее
-				if (aiAttackOch>0) {										//стрельба очередями
+				if (aiAttackOch>0) 
+				{										//стрельба очередями
 					if (aiAttackT<=0) aiAttackT=Math.round((Math.random()*0.4+0.8)*aiAttackOch);
 					if (aiAttackT>aiAttackOch*0.25) currentWeapon.attack();
 					aiAttackT--;
@@ -382,19 +408,22 @@ package unitdata
 			}
 		}
 		
-		function quake():void
+		public function quake():void
 		{
 			room.earthQuake(40);
-			Emitter.emit('quake',room,X+Math.random()*40-20,Y);
+			Emitter.emit('quake', room, X + Math.random() * 40 - 20, Y);
 		}
 		
 		public override function command(com:String, val:String=null):void
 		{
-			if (com=='off') {
-				walk=0;
-				controlOn=false;
-			} else if (com=='on') {
-				controlOn=true;
+			if (com == 'off') 
+			{
+				walk = 0;
+				controlOn = false;
+			} 
+			else if (com == 'on') 
+			{
+				controlOn = true;
 			}
 		}
 		

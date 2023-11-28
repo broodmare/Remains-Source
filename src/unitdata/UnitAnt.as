@@ -52,12 +52,13 @@ package unitdata
 		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
-			if (hero==1) {
-				skin+=4;
+			if (hero == 1) 
+			{
+				skin += 4;
 			}
 		}
 		
-		public override function getXmlParam(mid:String=null):void
+		public override function getXmlParam(mid:String = null):void
 		{
 			super.getXmlParam('ant');
 			super.getXmlParam();
@@ -65,7 +66,8 @@ package unitdata
 
 		public override function alarma(nx:Number=-1,ny:Number=-1):void
 		{
-			if (sost==1 && aiState<=1) {
+			if (sost==1 && aiState<=1) 
+			{
 				super.alarma(nx,ny);
 				aiSpok=maxSpok;
 				aiState=2;
@@ -73,11 +75,7 @@ package unitdata
 				budilo(250);
 			}
 		}
-		
-		public override function expl():void
-		{
-			super.expl();
-		}
+
 		
 		public override function setVisPos():void
 		{

@@ -128,7 +128,8 @@ package unitdata
 		public override function dropLoot():void
 		{
 			super.dropLoot();
-			if (currentWeapon) {
+			if (currentWeapon) 
+			{
 				if (currentWeapon.vis) currentWeapon.vis.visible=false;
 				var cid:String=currentWeapon.id;
 				if (currentWeapon.variant>0) cid+='^'+currentWeapon.variant;

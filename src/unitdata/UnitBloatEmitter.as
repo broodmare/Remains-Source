@@ -48,15 +48,18 @@ package unitdata
 		{
 			var un:Unit;
 			var emitTr:String='0';
-			if (emitId=='bloat') {
+			if (emitId=='bloat') 
+			{
 				if (room.locDifLevel>3) emitTr=room.randomCid(emitId);
 				un=room.createUnit(emitId,X,Y,true,null,emitTr);
 			}
-			if (emitId=='ant') {
+			if (emitId=='ant') 
+			{
 				emitTr=room.randomCid(emitId);
 				un=room.createUnit(emitId,X,Y-40,true,null,emitTr);
 			}
-			if (un && d) {
+			if (un && d)
+			{
 				kolChild++;
 				un.mother=this;
 			}

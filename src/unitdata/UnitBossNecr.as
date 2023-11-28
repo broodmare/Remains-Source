@@ -393,8 +393,11 @@ package unitdata
 				timeCurseCuld=220;
 				dexter=2;
 				blood=0;
-			} else {
-				for each(var un:Unit in room.units) {
+			} 
+			else 
+			{
+				for each(var un:Unit in room.units) 
+				{
 					if (un.mother==this) un.die();
 				}
 				super.die();
@@ -408,13 +411,17 @@ package unitdata
 			if (n==0 && prot_n==0) {
 				heal(healHp);
 				this.visDetails();
-			} else if (n==1 || prot_n==1) {
+			} 
+			else if (n==1 || prot_n==1) 
+			{
 				isShadow=invulner=transp=true;
 				levitPoss=false;
 				setVis();
 				prot_t=timeProtect;
 				atk_t=5;
-			} else {
+			} 
+			else 
+			{
 				superInvis=true;
 				isVis=false;
 				curA=celA=0;
@@ -428,7 +435,8 @@ package unitdata
 		{
 			if (kolChild>=kol_emit) return;
 			room.resetUnits();
-			for (var i=0; i<3; i++) {
+			for (var i=0; i<3; i++) 
+			{
 				var xmlun:XML;
 				if (n==1) xmlun=<un id='zombie' tr='7' hpmult='0.85'/>;
 				else if (n==3) xmlun=<un id='zombie' tr='8' hpmult='0.75'/>;
@@ -457,11 +465,13 @@ package unitdata
 		{
 			var nx:Number=room.gg.X+room.gg.dx*15+(Math.random()-0.5)*50;
 			var ny:Number=room.gg.Y-room.gg.scY/2+room.gg.dy*15+(Math.random()-0.5)*30;
-			if (n==2) {
+			if (n==2) 
+			{
 				nx=room.gg.X+room.gg.dx*15+(otlozh-8)*20*((Math.floor(room.gg.X)%2==0)?1:-1);
 				ny=room.gg.Y-room.gg.scY/2+room.gg.dy*15;
 			}
-			if (n==1) {
+			if (n==1) 
+			{
 				nx+=Math.random()*200-100;
 				ny+=Math.random()*100-50;
 			}

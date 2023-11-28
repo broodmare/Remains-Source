@@ -27,17 +27,18 @@ package unitdata
 			durak=false;
 			allLink=true;
 			maxSpok=50;
-			//if (msex) wPos=BlitAnim.wPosEncl1;
-			//else wPos=BlitAnim.wPosEncl2;
 			wPos=BlitAnim.wPosEncl1;
-			if (grenader>0) {
+			if (grenader>0) 
+			{
 				thWeapon=Weapon.create(this,'mercgr');
 				(thWeapon as WThrow).kolAmmo=grenader;
 				childObjs.push(thWeapon);
 			}
-			if (enclWeap) {
+			if (enclWeap) 
+			{
 				isDropArm=false;
-				if (currentWeapon) {
+				if (currentWeapon) 
+				{
 					currentWeapon.svis='encl';
 					currentWeapon.vis=new visencl();
 				}
@@ -52,7 +53,8 @@ package unitdata
 			trigDis=!checkTrig();
 			if (trigDis) return;
 			super.addVisual();
-			if (currentWeapon) {
+			if (currentWeapon) 
+			{
 				currentWeapon.recoil=0;
 				currentWeapon.recoilUp*=0.25;
 			}
@@ -61,7 +63,8 @@ package unitdata
 		public override function setLevel(nlevel:int=0):void
 		{
 			super.setLevel(nlevel);
-			if (currentWeapon) {
+			if (currentWeapon) 
+			{
 				currentWeapon.damage*=1.25;
 			}			
 		}
@@ -76,9 +79,11 @@ package unitdata
 				aiAttackT--;
 			}
 			if ((celDX*celDX+celDY*celDY<100*100) && isrnd(0.1)) attKorp(celUnit,0.5);
-			if (thWeapon) {
+			if (thWeapon) 
+			{
 				t_gren--;
-				if (t_gren<=0) {
+				if (t_gren<=0) 
+				{
 					if (celUnit && isrnd()) thWeapon.attack();
 					t_gren=Math.round(Math.random()*150+50);
 				}
@@ -88,37 +93,56 @@ package unitdata
 		public override function animate():void
 		{
 			var cframe:int;
-			var revers:Boolean=false;
+			var revers:Boolean = false;
 			//поворот
-			if (sost==2 || sost==3) { //сдох
-				if (stay) {
-					if (animState=='fall') {
-					} else if (animState=='death') animState='fall';
-					else animState='die';
-				} else animState='death';
-			} else {
-				if (stay) {
-					if  (dx==0) {
-						animState='stay';
-					} else if (walker && (aiState<=1 || aiState==4)) {
+			if (sost == 2 || sost == 3) 
+			{ //сдох
+				if (stay) 
+				{
+					if (animState == 'fall') 
+					{
+
+					} 
+					else if (animState == 'death') animState = 'fall';
+					else animState = 'die';
+				} 
+				else animState = 'death';
+			} 
+			else 
+			{
+				if (stay) 
+				{
+					if  (dx == 0) 
+					{
+						animState = 'stay';
+					} else if (walker && (aiState <= 1 || aiState == 4)) 
+					{
 						animState='walk';
 						sndStep(anims[animState].f,1);
-					} else {
+					} 
+					else 
+					{
 						animState='trot';
 						if (aiNapr*storona<0) revers=true;
 						sndStep(anims[animState].f,1);
 					}
-				} else if (isFly || aiPlav || levit) {
+				} 
+				else if (isFly || aiPlav || levit) 
+				{
 					animState='fly';
-				} else {
+				} 
+				else 
+				{
 					animState='stay';
 				}
 			}
-			if (animState!=animState2) {
+			if (animState!=animState2) 
+			{
 				anims[animState].restart();
 				animState2=animState;
 			}
-			if (!anims[animState].st) {
+			if (!anims[animState].st) 
+			{
 				if (revers) blit(anims[animState].id,anims[animState].maxf-anims[animState].f-1);
 				else blit(anims[animState].id,anims[animState].f);
 			}

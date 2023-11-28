@@ -71,19 +71,22 @@ package unitdata
 		public override function setHero(nhero:int=1):void
 		{
 			super.setHero(nhero);
-			if (hero==1) {
-				//vis.osn.scaleX=vis.osn.scaleY=vis.osn.scaleX*1.2;
+			if (hero==1) 
+			{
 				shootCh=0.3;
 			}
 		}
+
 		public override function setNull(f:Boolean=false):void
 		{
 			super.setNull(f);
-			if (f) {
+			if (f) 
+			{
 				aiState=0;
 				aiTCh=Math.floor(Math.random()*10)+5;
 			}
 		}
+
 		public override function save():Object
 		{
 			var obj:Object=super.save();
@@ -113,7 +116,8 @@ package unitdata
 		{
 			super.dropLoot();
 			var un:Unit
-			if (tr>=8) {
+			if (tr>=8) 
+			{
 				un=room.createUnit('bloat',X,Y,true,null,String(tr-1));
 				un.questId=questId;
 				un=room.createUnit('bloat',X,Y,true,null,String(tr-1));
@@ -135,10 +139,6 @@ package unitdata
 		{
 			if (tr>=7 && tr<10) return;
 			super.incStat(sposob);
-		}
-		
-		public override function animate():void
-		{
 		}
 		
 		var aiDx:Number=0, aiDy:Number=0, aiRasst:Number;
