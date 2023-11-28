@@ -31,8 +31,7 @@ package
 
 	public class MainMenu 
 	{
-
-		public var version:String = '1.1.3';
+		
 		public var mainMenu:MovieClip; 			// Create a container for the main menu sprite
 		public var main:Sprite;
 		public var world:World;
@@ -342,7 +341,7 @@ package
 			mainMenu.dialNew.title.text 			= Res.txt('g', 'newgame');
 			mainMenu.dialLoad.title.text 			= Res.txt('g', 'loadgame');
 			mainMenu.dialLoad.title2.text 			= Res.txt('g', 'select_slot');
-			mainMenu.version.htmlText 				= '<b>' + Res.txt('g', 'version') + ' ' + version + '</b>';
+			mainMenu.version.htmlText 				= '<b>' + Res.txt('g', 'version') + ' ' + Settings.version + '</b>';
 			mainMenu.dialLoad.butCancel.text.text 	= Res.txt('g', 'cancel');
 			mainMenu.dialNew.butCancel.text.text 	= Res.txt('g', 'cancel');
 			mainMenu.dialLoad.butFile.text.text 	= Res.txt('p', 'loadfile');

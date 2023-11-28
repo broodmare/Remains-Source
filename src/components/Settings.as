@@ -5,6 +5,9 @@ package components
     public class Settings
     {
 
+		//Main Menu
+		public static var version:String = '1.1.3';
+
 
 		//Global constants
         public static var actionDist:int = 40000;

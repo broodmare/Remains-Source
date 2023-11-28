@@ -98,13 +98,20 @@ package systems
 
 		public static function changeLanguage(languageID:String):void
 		{
-			languageName = languageID;
-			var languageFileURL:String = languageListDictionary[languageID].file;
+			if (languageListDictionary[languageID] != null)
+			{
+				languageName = languageID;
 
-			trace('Languages.as/changeLanguage() - Loading new language into memory. languageName: "' + languageName + '" URL: "' + languageFileURL + '"');
-			applyLanguage(languageFileURL);
-
-			World.world.saveConfig();
+				trace('Languages.as/changeLanguage() - Changing language to: "' + languageName + '" and saving.');
+				
+				applyLanguage(languageName);
+				World.world.saveConfig();
+			}
+			else 
+			{
+				trace('Languages.as/changeLanguage() - Language ID: "' + languageName + '" not recognized, failed to change language.');
+			}
+			
 		}
 
 		//TODO: un-hardcode supported languages.
@@ -119,7 +126,7 @@ package systems
 			languageListDictionary["jp"] = new XML();
 			languageListDictionary["pl"] = new XML();
 			languageListDictionary["ru"] = new XML();
-			languageListDictionary["zh"] = new XML();
+			languageListDictionary["ch"] = new XML();
 		}
 		
 	}

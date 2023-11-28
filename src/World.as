@@ -1283,7 +1283,7 @@ package
 			data.date 		= now.time;
 			data.n 			= autoSaveN;
 			data.hardInv 	= Settings.hardInv;
-			data.ver 		= mainMenu.version;
+			data.ver 		= Settings.version;
 			data.est 		= 1;
 		}
 		

@@ -22,16 +22,16 @@ package locdata
 		public var loader:URLLoader;
 
 
-		public var id:String;	//ID of the level.
+		public var levelName:String;	//Name (id) of the level.
 		public var allroom:XML;	//Stores the XML data containing all rooms in a level.
 		
 		
 
 		public function LevelLoader(nid:String) 
 		{
-			id = nid;
+			levelName = nid;
 
-			roomsFile = XmlBook.getXML("levels").level.(@id == id).@file;
+			roomsFile = XmlBook.getXML("levels").level.(@id == levelName).@file;
 			var roomsURL:String = Settings.levelPath + roomsFile + ".xml";
 
 			request = new URLRequest(roomsURL); 
@@ -48,8 +48,6 @@ package locdata
 			event.target.removeEventListener(Event.COMPLETE, onCompleteLoadRooms);
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
 
-			trace('LevelLoader.as/onCompleteLoadRooms() - roomsFile "' + roomsFile + '", loaded.');
-			World.world.load_log += 'roomsFile ' + roomsFile + ' loaded.\n';
 			allroom = new XML(loader.data);
 			
 			World.world.levelsLoaded++
@@ -60,9 +58,8 @@ package locdata
 		{
 			event.target.removeEventListener(Event.COMPLETE, onCompleteLoadRooms);
 			event.target.removeEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
-
+			
 			trace('LevelLoader.as/ioErrorHandler() - Rooms failed to load, IO Error.');
-			World.world.load_log += 'IOerror loading roomsFile.\n';
         }
 		
 	}
