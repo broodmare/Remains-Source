@@ -42,7 +42,7 @@ package unitdata
 			getXmlParam();
 		}
 		
-		function getXmlParam() 
+		public function getXmlParam():void
 		{
 			t=1;
 			post=null;
@@ -82,7 +82,7 @@ package unitdata
 			}
 		}
 		
-		public function setEff() 
+		public function setEff():void
 		{
 			if (del.length) 
 			{
@@ -152,7 +152,7 @@ package unitdata
 		}
 		
 		// Check the level of the effect
-		public function checkT() 
+		public function checkT():void
 		{
 			if (lvl1>0) 
 			{
@@ -169,7 +169,8 @@ package unitdata
 			}
 		}
 		
-		public function visEff() {
+		public function visEff():void
+		{
 			if (id=='potion_shadow' && player) 
 			{
 				(owner as UnitPlayer).f_shad=true;
@@ -191,7 +192,7 @@ package unitdata
 			}
 		}
 		
-		public function unsetEff(onPost:Boolean=true, inf:Boolean=true, setParam:Boolean=true) 
+		public function unsetEff(onPost:Boolean=true, inf:Boolean=true, setParam:Boolean=true):void 
 		{
 			if (id=='potion_rat') 
 			{
@@ -206,7 +207,8 @@ package unitdata
 				}
 			}
 			vse=true;
-			if (player && inf && se) {
+			if (player && inf && se) 
+			{
 				if (tip==3) World.world.gui.infoText('endFoodEffect',Res.txt('e',id));
 				else World.world.gui.infoText('endEffect',Res.txt('e',id));
 			}
@@ -278,7 +280,7 @@ package unitdata
 			}
 		}
 		
-		public function secEffect() 
+		public function secEffect():void
 		{
 			checkT();
 			if (id == 'burning') 
@@ -334,7 +336,7 @@ package unitdata
 			}
 		}
 
-		public function stepEffect() 
+		public function stepEffect():void
 		{
 			if (id == 'burning') 
 			{

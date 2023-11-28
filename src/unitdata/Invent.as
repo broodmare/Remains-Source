@@ -80,7 +80,7 @@ package unitdata
 			cItemMax = itemsId.length;
 		}
 		
-		public function nextItem(n:int=1) 
+		public function nextItem(n:int=1):void
 		{
 			var ci=cItem+n;
 			if (ci>=cItemMax) ci=0;
@@ -534,7 +534,7 @@ package unitdata
 		}
 		
 		
-		public function useFav(n:int) 
+		public function useFav(n:int):void
 		{
 			var ci:String = fav[n];
 			if (ci == null) return;
@@ -581,7 +581,7 @@ package unitdata
 			return w;
 		}
 		
-		public function remWeapon(id:String) 
+		public function remWeapon(id:String):void
 		{
 			if (weapons[id]) 
 			{
@@ -596,7 +596,7 @@ package unitdata
 			}
 		}
 		
-		public function updWeapon(id:String, nvar:int) 
+		public function updWeapon(id:String, nvar:int):void
 		{
 			if (weapons[id]==null) addWeapon(id);
 			weapons[id].updVariant(nvar);
@@ -647,7 +647,7 @@ package unitdata
 			return true;
 		}
 		
-		public function repairWeapon(id:String, kol:int) 
+		public function repairWeapon(id:String, kol:int):void
 		{
 			if (kol==undefined || isNaN(kol)) return;
 			var hpw=(weapons[id] as Weapon).hp;
@@ -665,7 +665,7 @@ package unitdata
 				if(!World.world.testLoot) World.world.gui.infoText('take',Res.txt('i','frag')+((n>1)?(' ('+n+')'):''));
 			}
 		}
-		public function favItem(id:String, cell:int) 
+		public function favItem(id:String, cell:int):void
 		{
 			if (gg && (cell==29 || cell==30)) 
 			{
@@ -747,7 +747,7 @@ package unitdata
 			return sp;
 		}
 		
-		public function addAllSpells() 
+		public function addAllSpells():void
 		{
 			for each (var sp:XML in XmlBook.getXML("items").item.(@tip == 'spell')) 
 			{
@@ -756,7 +756,7 @@ package unitdata
 		}
 		
 		// Add to the inventory, tr = 1 if the item was purchased, 2 if it was obtained as a reward
-		public function take(l:Item, tr:int = 0) 
+		public function take(l:Item, tr:int = 0):void
 		{
 			var kol:int=0;
 			var color:int=-1;
@@ -921,7 +921,7 @@ package unitdata
 			World.world.calcMass=true;
 		}
 		
-		function plus(l:Item, tr:int=0) 
+		public function plus(l:Item, tr:int = 0):void
 		{
 			if (l.id!='money') 
 			{
@@ -939,24 +939,24 @@ package unitdata
 		}
 		
 		//увеличить количество предметов
-		public function plusItem(ci:String, n:int=1) 
+		public function plusItem(ci:String, n:int=1):void
 		{
-			if (items[ci]==null) 
+			if (items[ci] == null) 
 			{
-				trace('Ошибка увеличения количества',ci);
+				trace('Ошибка увеличения количества', ci);
 				return;
 			}
-			if (ci!='money') 
+			if (ci != 'money') 
 			{
-				if (items[ci].kol==0) items[ci].nov=1;
-				else if (items[ci].nov==0) items[ci].nov=2;
-				items[ci].dat=new Date().getTime();
+				if (items[ci].kol == 0) items[ci].nov = 1;
+				else if (items[ci].nov == 0) items[ci].nov = 2;
+				items[ci].dat = new Date().getTime();
 			}
-			items[ci].kol+=n;
+			items[ci].kol += n;
 		}
 		
 		//уменьшить количество предметов
-		public function minusItem(ci:String, n:int=1, snd:Boolean=true) 
+		public function minusItem(ci:String, n:int=1, snd:Boolean=true):void
 		{
 			if (items[ci]==null) 
 			{
@@ -998,7 +998,7 @@ package unitdata
 			return false;
 		}
 		
-		public function calcMass() 
+		public function calcMass():void
 		{
 			mass[1]=mass[2]=mass[3]=0;
 			for each (var item:Item in items) 
@@ -1009,7 +1009,7 @@ package unitdata
 			World.world.pers.invMassParam();
 		}
 		
-		public function calcWeaponMass() 
+		public function calcWeaponMass():void
 		{
 			massW=massM=0;
 			for each (var w:Weapon in weapons) 
@@ -1023,7 +1023,7 @@ package unitdata
 		}
 		
 		//уничтожение экипировки
-		public function damageItems(dam:Number, destr:Boolean=true) 
+		public function damageItems(dam:Number, destr:Boolean=true):void
 		{
 			if (!destr && !World.world.room.base && !Settings.alicorn) dam=5;
 			if (mass[1]<=World.world.pers.maxm1 || dam<=0) return;
@@ -1083,7 +1083,7 @@ package unitdata
 		}
 		
 		//выкинуть вещи
-		public function drop(nid:String, kol:int=1) 
+		public function drop(nid:String, kol:int=1):void
 		{
 			if (World.world.room.base || Settings.alicorn) 
 			{
@@ -1097,7 +1097,7 @@ package unitdata
 		}
 		
 		//вызвать прикреплённый скрипт
-		public function takeScript(id:String) 
+		public function takeScript(id:String):void
 		{
 			if (World.world.level.itemScripts[id]) 
 			{
@@ -1106,7 +1106,7 @@ package unitdata
 		}
 		
 		//рассчитать количество патронов по их базе
-		public function getKolAmmos() 
+		public function getKolAmmos():void
 		{
 			for (var s in ammos) ammos[s]=0;
 			for each (var ammo:Item in items) 
@@ -1116,7 +1116,7 @@ package unitdata
 		}
 		
 		//выкурить косяк
-		function useRollup():Boolean 
+		public function useRollup():Boolean 
 		{
 			if (!World.world.room.base) 
 			{
@@ -1138,7 +1138,7 @@ package unitdata
 			}
 		}
 	
-		public function addMin() 
+		public function addMin():void
 		{
 			addWeapon('r32');
 			addWeapon('rech');
@@ -1160,13 +1160,13 @@ package unitdata
 			favItem('r32',2);
 		}
 		
-		public function addBegin() 
+		public function addBegin():void
 		{
 			addArmor('pip');
 			cArmorId='pip';
 		}
 		
-		public function addAllWeapon() 
+		public function addAllWeapon():void
 		{
 			var w;
 			//for each (w in LootGen.arr['weapon']) updWeapon(w.id,1);
@@ -1175,14 +1175,14 @@ package unitdata
 			for each (w in LootGen.arr['magic']) addWeapon(w.id);
 		}
 
-		public function addAllAmmo() 
+		public function addAllAmmo():void
 		{
 			var w;
 			for each (w in LootGen.arr['a']) items[w.id].kol=10000;
 			for each (w in LootGen.arr['e']) items[w.id].kol=10000;
 		}
 
-		public function addAllItem() 
+		public function addAllItem():void
 		{
 			var w;
 			for each (w in LootGen.arr['med']) items[w.id].kol=1000;
@@ -1206,7 +1206,7 @@ package unitdata
 			items['screwdriver'].kol=1;
 		}
 
-		public function addAllArmor() 
+		public function addAllArmor():void
 		{
 			for each (var arm:XML in XmlBook.getXML("armors").armor)
 			{
@@ -1214,7 +1214,7 @@ package unitdata
 			}
 		}
 		
-		public function addAll() 
+		public function addAll():void
 		{
 			addAllWeapon();
 			addAllAmmo();
@@ -1222,7 +1222,7 @@ package unitdata
 			addAllArmor();
 		}
 
-		public function addLoad(obj:Object) 
+		public function addLoad(obj:Object):void
 		{
 			if (obj==null) return;
 			var w;

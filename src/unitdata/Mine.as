@@ -171,7 +171,7 @@ package unitdata
 			explosion(damage1,tipDamage,explRadius,0,otbros1,wdestroy,tipDecal);
 		}
 		
-		var aiN:int=Math.floor(Math.random()*5);
+		var aiN:int = Math.floor(Math.random() * 5);
 		
 		public function remine():void
 		{

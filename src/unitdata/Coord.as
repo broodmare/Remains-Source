@@ -30,7 +30,7 @@ package  unitdata
 			rndOpened();
 		}
 		
-		function rndOpened() 
+		function rndOpened():void
 		{
 			for (var i=1;i<=kolAll;i++) 
 			{

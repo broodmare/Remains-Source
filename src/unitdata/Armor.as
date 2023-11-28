@@ -89,7 +89,7 @@ package unitdata
 			else getXmlParam(xml.upd[0])
 		}
 		
-		public function getXmlParam(node:XML) 
+		public function getXmlParam(node:XML):void
 		{
 			if (node.@armor.length()) armor = (node.@armor);
 			if (node.@marmor.length()) marmor = (node.@marmor);
@@ -129,7 +129,7 @@ package unitdata
 			if (lvl > 0) objectName += ' - ' + lvl;
 		}
 		
-		public function setArmor() 
+		public function setArmor():void
 		{
 			if (owner && active) 
 			{
@@ -141,7 +141,7 @@ package unitdata
 			}
 		}
 		
-		public function damage(dam:Number, tip:int) 
+		public function damage(dam:Number, tip:int):void
 		{
 			if (und) return;
 			if (tip != Unit.D_VENOM && tip != Unit.D_EMP && tip != Unit.D_POISON && tip != Unit.D_BLEED && tip != Unit.D_INSIDE) 
@@ -159,7 +159,7 @@ package unitdata
 			setArmor();
 		}
 		
-		public function repair(nhp:int) 
+		public function repair(nhp:int):void
 		{
 			hp += nhp;
 			if (hp > maxhp) hp = maxhp;
@@ -172,7 +172,7 @@ package unitdata
 			else return 0;
 		}
 		
-		public function upgrade() 
+		public function upgrade():void
 		{
 			if (lvl >= maxlvl) return;
 			lvl++;

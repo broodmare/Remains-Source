@@ -418,7 +418,7 @@ package weapondata
 			
 		}
 		
-		function sound(res:int):void
+		public function sound(res:int):void
 		{
 			if (weap && weap.sndHit != '') 
 			{
@@ -488,7 +488,7 @@ package weapondata
 		
 		
 		//поражение всех стен в радиусе
-		function explDestroy():void
+		public function explDestroy():void
 		{
 			for (var i:Number = Math.floor((X - explRadius) / Tile.tilePixelWidth); i <= Math.floor((X + explRadius) / Tile.tilePixelWidth); i++) 
 			{
@@ -503,7 +503,7 @@ package weapondata
 		}
 		
 		//поражение всех юнитов, попавших в радиус, без отбрасывания и учёта стен
-		function explGas():void
+		public function explGas():void
 		{
 			for each(var un:Unit in room.units) 
 			{
@@ -530,7 +530,7 @@ package weapondata
 		}
 		
 		// Damage all units with virtual fragments, taking into account wall protection
-		function explBlast():void
+		public function explBlast():void
 		{
 			var tx,ty;
 			if (room!=owner.room) return;
@@ -562,7 +562,7 @@ package weapondata
 		}
 		
 		// Create a fragment
-		function explBullet(tx:Number, ty:Number, er:Number):Bullet 
+		public function explBullet(tx:Number, ty:Number, er:Number):Bullet 
 		{
 			var rasst=Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
@@ -596,7 +596,7 @@ package weapondata
 		}
 		
 		// Visual and sound effect of explosion
-		function explVis():void
+		public function explVis():void
 		{
 			if (weap && weap.visexpl) 
 			{
@@ -707,7 +707,7 @@ package weapondata
 			if (otbros>0)	World.world.quake((Math.random()*8-4)*otbros,otbros*0.8);
 		}
 
-		function explLiquid(liq:String, ndy:int=0):void
+		public function explLiquid(liq:String, ndy:int=0):void
 		{
 			for (var i=Math.floor((X-explRadius)/Tile.tilePixelWidth); i<=Math.floor((X+explRadius)/Tile.tilePixelWidth); i++) 
 			{

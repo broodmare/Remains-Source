@@ -1577,7 +1577,7 @@ package unitdata
 		//определить необходимое для действия время
 		public function getLockPickTime(lock:int, lockTip:int):int 
 		{
-			var pick=getLockTip(lockTip);
+			var pick = getLockTip(lockTip);
 			if (lock<pick) return lockPickTime*0.6;
 			return lockPickTime;
 		}

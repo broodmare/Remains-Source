@@ -9,7 +9,8 @@ package weapondata
 		public var manevr:Number = 3;
 		public var maxVel:Number = 150;
 		public var cel:Unit;
-		static var p:Object = {x:0, y:0};
+		//set private
+		private static var p:Object = {x:0, y:0};
 
 		public function SmartBullet(own:Unit, nx:Number, ny:Number, visClass:Class = null, addobj:Boolean = true) 
 		{
@@ -37,7 +38,7 @@ package weapondata
 				dx=p.x, dy=p.y;
 			}
 			super.step();
-			rot=Math.atan2(dy,dx);
+			rot = Math.atan2(dy,dx);
 			if (vis) 
 			{
 				vis.rotation=rot*180/Math.PI;
