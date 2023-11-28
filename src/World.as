@@ -120,7 +120,7 @@ package
 
 		//Maps
 		public var levelPath:String;					//
-		public var landData:Array;						//Stores all rooms for the current level as an array of XMLs.
+		public var allLevelsArray:Array;						//Stores all rooms for the current level as an array of XMLs.
 		public var levelsFound:int = 0;
 		public var levelsLoaded:int = 0;
 		public var allLevelsLoaded:Boolean = false;
@@ -315,20 +315,19 @@ package
 			if (Settings.systemCursor == false) Mouse.cursor = 'arrow';
 			
 			//loading room maps
-			landData = new Array();
-			trace('World.as/init2() - Creating landData array and Processing levelData in GameData.d.level.');
+			allLevelsArray = new Array();
+			trace('World.as/init2() - Creating allLevelsArray and loading all level XMLs from the XMLbook.');
 			var levelsXML:XML = XmlBook.getXML("levels");
 
 			for each(var levelData:XML in levelsXML.level) 
 			{
 				var levelLoader:LevelLoader = new LevelLoader(levelData.@id);
-				trace('World.as/init2() - Level: "' + levelData.@id + '" found. Loading and incrementing levelFound counter.');
 				levelsFound++;
-				landData[levelData.@id] = levelLoader;
+				allLevelsArray[levelData.@id] = levelLoader;
 			}
-			trace('World.as/init2() - Finished processing levelData.');
-			trace('World.as/init2() - Levels loaded: "' + levelsFound + '."');
 
+			trace('World.as/init2() - Levels found: "' + levelsFound + '."');
+			
 			load_log += 'Stage 3 Ok\n';
 
 			trace('World.as/init2() - Calling Sound/loadMusic.');
@@ -1176,7 +1175,7 @@ package
 		}
 		
 		// Enable waiting for a click
-		function waitLoadClick():void
+		public function waitLoadClick():void
 		{
 			loadingScreen.story.lmb.play();
 			loadingScreen.story.lmb.visible = true;
@@ -1302,7 +1301,9 @@ package
 			if (t_save < 100 && n == -1 && !pers.hardcoreMode) return;
 			if (pip.gamePause) return;
 			if (n == -1) n = autoSaveN;
-			var save = saveArr[n];
+
+			save = saveArr[n];
+
 			if (save is SharedObject) 
 			{
 				saveToObj(save.data);
@@ -1365,7 +1366,7 @@ package
 			}
 		}
 		
-		function weaponWrite():void //Debug function?
+		public function weaponWrite():void //Debug function?
 		{
 			var un:Unit = new Unit();
 			var s:String = '';

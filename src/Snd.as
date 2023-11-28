@@ -179,13 +179,13 @@ package
 			trace('Snd.as/loadMusicCont() - music tracks found: "' + Settings.musicTracksFound + '".'); 
 
 			var loadingCount:int = 0;
-			for each (var track in musicList.s) 
+			for each (var track:XML in musicList.s) 
 			{
-				var trackName = track.@id;
+				var trackName:String = track.@id;
 
 
 				var soundURL:URLRequest = new URLRequest(Settings.musicPath + trackName + ".mp3");
-				var soundData = new Sound(soundURL);
+				var soundData:Sound = new Sound(soundURL);
 
 				soundData.addEventListener(IOErrorEvent.IO_ERROR, musicEventHandler);
 				soundData.addEventListener(Event.COMPLETE, musicEventHandler);

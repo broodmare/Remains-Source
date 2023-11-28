@@ -15,7 +15,7 @@ package systems
 		public static var languageName:String = 'en';
 		
 		public static var languageListDictionary:Dictionary;
-		public static var languageCount:int = -1; //Set to -1 instead of 0 since the language count starts by incrementing by 1.
+		public static var languageCount:int = 0;
 		
 		//Loading info
 		public static var currentLanguageData:XML;
@@ -62,14 +62,22 @@ package systems
             var languageData:XML = currentLoader.xmlData;
 
 			trace('Languages.as/languageSetup() - Adding language "' + language + '" to language dictionary.');
-            languageListDictionary[language] = languageData;
-
-			//Hardcoded just to get this shit to work first.
-			if (language == "en")
+			if (languageListDictionary[language] != null)
 			{
-				trace('Languages.as/languageSetup() - English text file loaded, calling applyLanguage().');
-				applyLanguage(language); 
+				languageListDictionary[language] = languageData;
+
+				//Hardcoded just to get this shit to work first.
+				if (language == "en")
+				{
+					trace('Languages.as/languageSetup() - English text file loaded, calling applyLanguage().');
+					applyLanguage(language); 
+				}
 			}
+			else 
+			{
+				trace('Languages.as/languageSetup() - Language file: "' + language + '" not recognized, discarding.');
+			}
+
 			
         }
 

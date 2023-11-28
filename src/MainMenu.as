@@ -281,24 +281,38 @@ package
 
 				try
 				{
-					for each(var language in Languages.languageListDictionary) 
+					for each(var language:XML in Languages.languageListDictionary) 
 					{
 						
-						Languages.languageCount++;
-						var button:MovieClip = new butLang();
-
 						var languageId:String = language.lang.@id;
 						var languageName:String = language.lang.text();
+						if(languageId != "" && languageName != "") 
+						{
+							Languages.languageCount++;
+							var button:MovieClip = new butLang();
 
-						trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
+							var languageId:String = language.lang.@id;
+							var languageName:String = language.lang.text();
 
-						// Set the button properties
-						button.lang.text = languageName;
-						button.y = -Languages.languageCount * 40;
-						button.n.text = languageId;
-						button.n.visible = false; 
-						button.addEventListener(MouseEvent.CLICK, languageButtonPress);
-						mainMenu.lang.addChild(button)
+							trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
+
+							// Set the button properties
+							button.lang.text = languageName;
+							button.y = -Languages.languageCount * 40;
+							button.n.text = languageId;
+							button.n.visible = false; 
+							button.addEventListener(MouseEvent.CLICK, languageButtonPress);
+							mainMenu.lang.addChild(button)
+						}
+						else // Check languageListDictionary length and output error about a blank entry.
+						{
+							var dictionaryLength:int = 0;
+							for (var key:* in Languages.languageListDictionary) 
+							{
+								dictionaryLength++;
+							}
+							trace('MainMenu.as/setLangButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
+						}
 					}
 				}
 				catch(err:Error)

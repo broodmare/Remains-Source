@@ -56,9 +56,9 @@ package locdata
 			for each (var xl in XmlBook.getXML("levels").level)
 			{
 				var level:LevelTemplate = new LevelTemplate(xl);
-				if (World.world.landData[xl.@id] && World.world.landData[xl.@id].allroom) 
+				if (World.world.allLevelsArray[xl.@id] && World.world.allLevelsArray[xl.@id].allroom) 
 				{
-					level.allroom = World.world.landData[xl.@id].allroom;
+					level.allroom = World.world.allLevelsArray[xl.@id].allroom;
 					level.loaded = true;
 				}
 				if (level.prob == 0) levelArray[level.id] = level;

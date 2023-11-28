@@ -194,6 +194,7 @@ Unit --
 World --
 	ativateLand() -> activateLevel().
 	allLandsLoaded -> allLevelsLoaded
+	landData -> allLevelsArray
 	vfon -> skybox.
 	main -> mainDisplay
 	kolLands -> levelsFound
@@ -246,9 +247,10 @@ Script.com - 79
 GUI.setCelObj - 79
 PipPageInv.setSubPages - 75
 
+
+
 ```
-<<<<<<< HEAD
 
 
 =======
->>>>>>> 9e6dc3d18a2b8593e1d470612194cb8d972cceb2
+
