@@ -13,24 +13,29 @@ package weapondata
 	public class WThrow  extends Weapon
 	{
 		
-		public var kolAmmo:int=4;
-		public var detTime:int=75;
-		var throwTip:int = 0;
-		var radio:Boolean = false;
-		
-		var brake = 2, skok:Number = 0.4, tormoz:Number = 0.6, bumc:Boolean = false;
+		public var kolAmmo:int =  4;
+		public var detTime:int = 75;
+
+		//Setting these six to public
+		public var throwTip:int = 0;
+		public var radio:Boolean = false;
+		public var brake:Number = 2;
+		public var skok:Number = 0.4;
+		public var tormoz:Number = 0.6;
+		public var bumc:Boolean = false;
+
 		public var sndFall:String = '';
 		
 		
 		public function WThrow(own:Unit, nid:String, nvar:int=0) 
 		{
 			super(own,nid,nvar);
-			noPerc=true;
-			vBullet=vWeapon;
-			animated=false;
+			noPerc = true;
+			vBullet = vWeapon;
+			animated = false;
 			vis.gotoAndStop(1);
-			holder=1;
-			ammo=id;
+			holder = 1;
+			ammo = id;
 			var node:XML = XmlBook.getXML("weapons").weapon.(@id == id)[0];
 			if (node.@throwtip>0) throwTip=node.@throwtip;
 			if (throwTip>0) lvlNoUse=true;
@@ -60,21 +65,21 @@ package weapondata
 				} 
 				else 
 				{
-					var razn = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
-					if (razn==1) skillConf=0.75;
-					else if (razn==2) skillConf=0.5;
-					else if (razn>2) 
+					var razn:Number = lvl - (owner as UnitPlayer).pers.getWeapLevel(skill);
+					if (razn == 1) skillConf = 0.75;
+					else if (razn == 2) skillConf = 0.5;
+					else if (razn > 2) 
 					{
 						World.world.gui.infoText('weaponSkillLevel');
 						return false;
 					}
 				}
 			}
-			if (t_attack<=0) 
+			if (t_attack <= 0) 
 			{
 				if (getAmmo()) 
 				{
-					t_attack=rapid;
+					t_attack = rapid;
 				}
 			}
 			return true;
@@ -86,7 +91,7 @@ package weapondata
 		}
 		private function getRot(rx:Number, ry:Number, rvel:Number):Number 
 		{
-			return -rx/(rvel+0.0001)/100;
+			return -rx / (rvel + 0.0001) / 100;
 		}
 		
 		protected override function shoot():Bullet 
@@ -97,10 +102,10 @@ package weapondata
 				sk=owner.weaponSkill;
 				if (owner.player) sk=weaponSkill;
 			}
-			var r:Number = (Math.random()-0.5)*(deviation/(sk+0.01)+owner.mazil)*3.1415/180;
-			var rasstx:Number = owner.celX-X;
-			var rassty:Number = owner.celY-Y;
-			if (throwTip==1) 
+			var r:Number = (Math.random() - 0.5) * (deviation / (sk + 0.01) + owner.mazil) * 3.1415 / 180;
+			var rasstx:Number = owner.celX - X;
+			var rassty:Number = owner.celY - Y;
+			if (throwTip == 1) 
 			{
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
@@ -138,7 +143,7 @@ package weapondata
 				b.objectName=objectName;
 				(b as PhisBullet).skok=skok;
 				(b as PhisBullet).tormoz=tormoz;
-				(b as PhisBullet).brake=brake;
+				(b as PhisBullet).brake = brake;
 				setBullet(b);
 				(b as PhisBullet).dr=(throwTip==2)?0:b.dx;
 				(b as PhisBullet).lip=(throwTip==2);
@@ -179,7 +184,7 @@ package weapondata
 			trasser.ddy=Settings.ddy;
 			trasser.skok=skok;
 			trasser.tormoz=tormoz;
-			trasser.brake=brake;
+			trasser.brake = brake;
 			var bvel:int = 0;
 			if (owner.player) bvel=getVel(rasstx, rassty, weaponSkill*skillConf);
 			else bvel=getVel(rasstx, rassty, owner.weaponSkill*skillConf);

@@ -18,7 +18,9 @@ package weapondata
 		public var sled:Array;
 		public var explRadius:Number=0;	// Explosion radius, if 0, then there is no explosion
 		
-		var brake:int = 2, skok:Number = 0.5, tormoz:Number = 0.7;
+		public var brake:int = 2;
+		public var skok:Number = 0.5;
+		public var tormoz:Number = 0.7;
 
 		public function Trasser() 
 		{

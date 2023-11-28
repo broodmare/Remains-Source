@@ -67,16 +67,15 @@ package
 
 		public function MainMenu(nmain:MovieClip) 
 		{
-			trace('MainMenu.as/MainMenu() - Running mainMenu constructor.');
-			trace('MainMenu.as/MainMenu() - Calling Settings.as/settingsSetup().');
+			trace('MainMenu.as/MainMenu() - Main Menu Starting, Calling Settings.as/settingsSetup().');
 			Settings.settingsSetup();
+
 			trace('MainMenu.as/MainMenu() - Calling XmlBook.as/xmlBookSetup().');
 			XmlBook.xmlBookSetup();
 
 			main = nmain;
 			
-			trace('MainMenu.as/MainMenu() - Creating new video object from .swf file');
-			mainMenu = new visMainMenu();   //Linkage defined in pfe.fla
+			mainMenu = new visMainMenu(); //Linkage
 
 			mainMenu.dialLoad.visible 		= false;
 			mainMenu.dialNew.visible 		= false;
@@ -174,32 +173,17 @@ package
 
 		public function mainMenuListenerToggle(enabled:Boolean):void
 		{
+			var mainFivebuttons:Array = [mainMenu.butContGame, mainMenu.butLoadGame, mainMenu.butNewGame, mainMenu.butOpt, mainMenu.butAbout];
+
 			var toggle:Function;
 			
-			toggle = enabled ? mainMenu.butNewGame.addEventListener : mainMenu.butNewGame.removeEventListener;
-			toggle(MouseEvent.MOUSE_OVER, funOver);
-			toggle(MouseEvent.MOUSE_OUT, funOut);
-			toggle(MouseEvent.CLICK, funNewGame);
-
-			toggle = enabled ? mainMenu.butLoadGame.addEventListener : mainMenu.butLoadGame.removeEventListener;
-			toggle(MouseEvent.MOUSE_OVER, funOver);
-			toggle(MouseEvent.MOUSE_OUT, funOut);
-			toggle(MouseEvent.CLICK, funLoadGame);
-
-			toggle = enabled ? mainMenu.butContGame.addEventListener : mainMenu.butContGame.removeEventListener;
-			toggle(MouseEvent.MOUSE_OVER, funOver);
-			toggle(MouseEvent.MOUSE_OUT, funOut);
-			toggle(MouseEvent.CLICK, funContGame);
-
-			toggle = enabled ? mainMenu.butOpt.addEventListener : mainMenu.butOpt.removeEventListener;
-			toggle(MouseEvent.MOUSE_OVER, funOver);
-			toggle(MouseEvent.MOUSE_OUT, funOut);
-			toggle(MouseEvent.CLICK, funOpt);
-
-			toggle = enabled ? mainMenu.butAbout.addEventListener : mainMenu.butAbout.removeEventListener;
-			toggle(MouseEvent.MOUSE_OVER, funOver);
-			toggle(MouseEvent.MOUSE_OUT, funOut);
-			toggle(MouseEvent.CLICK, funAbout);
+			for each (var mainFiveButton:Object in mainFivebuttons) 
+			{
+				toggle = enabled ? mainFiveButton.addEventListener : mainFiveButton.removeEventListener;
+				toggle(MouseEvent.MOUSE_OVER, funOver);
+				toggle(MouseEvent.MOUSE_OUT, funOut);
+				toggle(MouseEvent.CLICK, mainMenuButtonPress);
+    		}
 
 			toggle = enabled ? mainMenu.adv.addEventListener : mainMenu.adv.removeEventListener;
 			toggle(MouseEvent.CLICK, funAdv);
@@ -211,52 +195,77 @@ package
 		}
 
 
-
-
-
-		public function funNewGame(event:MouseEvent):void
+		private function mainMenuButtonPress(event:MouseEvent):void
 		{
-			world.mmArmor = false;
-			mainLoadOff();
-			mainNewOn();
-		}
-
-		public function funLoadGame(event:MouseEvent):void
-		{
-			world.mmArmor = true;
-			mainNewOff();
-			loadReg = 0;
-			mainLoadOn();
-		}
-
-		//продолжить игру
-		public function funContGame(event:MouseEvent):void
-		{
-			var n:int = 0;
-			var maxDate:Number = 0;
-			for (var i:int = 0; i <= world.saveCount; i++) 
+			trace('MainMenu.as/mainMenuButtonPress() - "' + event.currentTarget.name + '" pressed.');
+			switch(event.currentTarget.name)
 			{
-				var save:Object = World.world.getSave(i);
-				if (save && save.est && save.date > maxDate) 
-				{
-					n = i;
-					maxDate = save.date;
-				}
+        		case "butContGame":
+					trace('MainMenu.as/funContGame() - Opening Continue Game window.');
+					var n:int = 0;
+					var maxDate:Number = 0;
+					for (var i:int = 0; i <= world.saveCount; i++) 
+					{
+						var save:Object = World.world.getSave(i);
+						if (save && save.est && save.date > maxDate) 
+						{
+							n = i;
+							maxDate = save.date;
+						}
+					}
+
+					save = World.world.getSave(n);
+
+					if (save && save.est) 
+					{
+						mainMenuOff();
+						loadCell = n;
+						command  = 3;
+					} 
+					else 
+					{
+						mainNewOn();
+						mainLoadOff();
+					}
+           			break;
+
+        		case "butLoadGame":
+					trace('MainMenu.as/funLoadGame() - Opening Load Game window.');
+					world.mmArmor = true;
+					mainNewOff();
+					loadReg = 0;
+					mainLoadOn();
+					break;
+				case "butNewGame":
+					trace('MainMenu.as/funNewGame() - Opening New Game window.');
+					world.mmArmor = false;
+					mainLoadOff();
+					mainNewOn();
+					break;
+				case "butOpt":
+					trace('MainMenu.as/funOpt() - Options window?');
+					mainNewOff();
+					mainLoadOff();
+					world.pip.onoff();
+					break;
+				case "butAbout":
+					trace('MainMenu.as/funAbout() - Executing funAbout().');
+					mainMenu.dialAbout.title.text = Res.txt('g', 'about');
+					var s:String = Res.formatText(Res.txt('g','about', 1));
+					s += '<br><br>' + Res.txt('g', 'usedmusic') + '<br>';
+					s += "<br><span class='music'>" + Res.formatText(Res.localizationFile.gui.(@id == 'usedmusic').info[0]) + "</span>"
+					s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
+					mainMenu.dialAbout.txt.styleSheet 	= style;
+					mainMenu.dialAbout.txt.htmlText 	= s;
+					mainMenu.dialAbout.visible 			= true;
+					mainMenu.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
+					mainMenu.dialAbout.scroll.maxScrollPosition = mainMenu.dialAbout.txt.maxScrollV;
+					break;
+				default:
+           			trace("Unknown button pressed");
+            		break;
 			}
 
-			save = World.world.getSave(n);
-
-			if (save && save.est) 
-			{
-				mainMenuOff();
-				loadCell = n;
-				command  = 3;
-			} 
-			else 
-			{
-				mainNewOn();
-				mainLoadOff();
-			}
 		}
 
 		public function funOver(event:MouseEvent):void //Mouseover
@@ -282,9 +291,6 @@ package
 				{
 					for each(var language:XML in Languages.languageListDictionary) 
 					{
-						
-						var languageId:String = language.lang.@id;
-						var languageName:String = language.lang.text();
 						if(languageId != "" && languageName != "") 
 						{
 							Languages.languageCount++;
@@ -296,7 +302,7 @@ package
 							trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
 
 							// Set the button properties
-							button.lang.text = languageName;
+							button.languageButtonTextField.text = languageName;
 							button.y = -Languages.languageCount * 40;
 							button.n.text = languageId;
 							button.n.visible = false; 
@@ -417,19 +423,16 @@ package
 		
 		public function setScrollInfo():void
 		{
-			trace('MainMenu.as/setScrollInfo() - Executing setScrollInfo().');
 			if (mainMenu.info.txt.height < mainMenu.info.txt.textHeight) 
 			{
 				mainMenu.info.scroll.maxScrollPosition = mainMenu.info.txt.maxScrollV;
 				mainMenu.info.scroll.visible = true;
 			} 
 			else mainMenu.info.scroll.visible = false;
-			trace('MainMenu.as/setScrollInfo() - Finished.');
 		}
 		
 		public function resizeDisplay(event:Event):void
 		{
-			trace('MainMenu.as/resizeDisplay() - Executing resizeDisplay().');
 			world.resizeScreen();
 			if (active) setMenuSize();
 		}
@@ -678,7 +681,7 @@ package
 
 		public function updNewMode():void
 		{
-			trace('MainMenu.as/updNewMode() - Updatin game difficulty.');
+			trace('MainMenu.as/updNewMode() - Updating game difficulty.');
 
 			mainMenu.dialNew.dif0.fon.gotoAndStop(1);
 			mainMenu.dialNew.dif1.fon.gotoAndStop(1);
@@ -694,26 +697,16 @@ package
 
 		public function infoMode(event:MouseEvent):void
 		{
-			trace('MainMenu.as/infoMode() - Executing infoMode().');
 			mainMenu.dialNew.modeinfo.htmlText = event.currentTarget.modeinfo.text;
 		}
 
 		public function infoOpt(event:MouseEvent):void
 		{
-			trace('MainMenu.as/infoOpt() - Executing infoOpt().');
-
 			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length - 1));
 			mainMenu.dialNew.modeinfo.htmlText = Res.formatText(Res.txt('g', 'opt' + n, 1));
 		}
 		
-		public function funOpt(event:MouseEvent):void
-		{
-			trace('MainMenu.as/funOpt() - Executing funOpt().');
 
-			mainNewOff();
-			mainLoadOff();
-			world.pip.onoff();
-		}
 
 		public function languageButtonPress(event:MouseEvent):void //What to do when a langauge button is pressed.
 		{
@@ -748,22 +741,7 @@ package
 			trace('MainMenu.as/showMainButtons() - Turned main buttons ' + (bool ? 'on' : 'off') + '.');
 		}
 
-		//creators
-		public function funAbout(event:MouseEvent):void
-		{
-			trace('MainMenu.as/funAbout() - Executing funAbout().');
 
-			mainMenu.dialAbout.title.text = Res.txt('g', 'about');
-			var s:String = Res.formatText(Res.txt('g','about', 1));
-			s += '<br><br>' + Res.txt('g', 'usedmusic') + '<br>';
-			s += "<br><span class='music'>" + Res.formatText(Res.localizationFile.gui.(@id == 'usedmusic').info[0]) + "</span>"
-			s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
-			mainMenu.dialAbout.txt.styleSheet 	= style;
-			mainMenu.dialAbout.txt.htmlText 	= s;
-			mainMenu.dialAbout.visible 			= true;
-			mainMenu.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
-			mainMenu.dialAbout.scroll.maxScrollPosition = mainMenu.dialAbout.txt.maxScrollV;
-		}
 		
 		public function funAboutOk(event:MouseEvent):void
 		{

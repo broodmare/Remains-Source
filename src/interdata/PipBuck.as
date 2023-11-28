@@ -112,18 +112,18 @@ package interdata
 				new PipPageApp(this,  'app'),
 				new PipPageVault(this,'vault')
 			];
-			trace('PipBuck/PipBuck() - PipBuck() Finished creating pages.');
+			trace('PipBuck.as/PipBuck() - PipBuck() Finished creating pages.');
 
 			page = kolPages;
 			currentPage = pages[page];
 
-			trace('PipBuck/PipBuck() - Creating visHelp....');
+			trace('PipBuck.as/PipBuck() - Creating visHelp....');
 			vishelp = new visPipHelp();
 			vishelp.x = 168;
 			vishelp.y = 138;
 			vis.addChild(vishelp);
 
-			trace('PipBuck/PipBuck() - Creating setKey...');
+			trace('PipBuck.as/PipBuck() - Creating setKey...');
 			vissetkey = new visSetKey();
 			vissetkey.visible = false;
 			vissetkey.x = 600;
@@ -131,7 +131,7 @@ package interdata
 			vis.addChild(vissetkey);
 
 			vishelp.visible = false;
-			trace('PipBuck/PipBuck() - Setting pipbuck style on vishelp...');
+			trace('PipBuck.as/PipBuck() - Setting pipbuck style on vishelp...');
 			PipPage.setStyle(vishelp.txt);
 
 			vis.butHelp.addEventListener(MouseEvent.MOUSE_OVER, helpShow);
@@ -139,27 +139,27 @@ package interdata
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OVER, massShow);
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OUT,  massUnshow);
 
-			trace('PipBuck/PipBuck() - Setting pipbuck style on toptext...');
+			trace('PipBuck.as/PipBuck() - Setting pipbuck style on toptext...');
 			PipPage.setStyle(vis.toptext.txt);
 			
 			vis.pr.visible = false;
 			
-			trace('PipBuck/PipBuck() - Creating ritems array...');
+			trace('PipBuck.as/PipBuck() - Creating ritems array...');
 			ritems = new Array();
-			for (var i:int = 0; i < kolRItems; i++) 
+			for (var j:int = 0; j < kolRItems; j++) 
 			{
 				item = new visPipRItem();
-				ritems[i] = item;
+				ritems[j] = item;
 				vis.pr.addChild(item);
 				item.x = 5;
-				item.y = 40 + i * 30;
+				item.y = 40 + j * 30;
 				PipPage.setStyle(item.txt);
-				item.trol.gotoAndStop(i + 1);
+				item.trol.gotoAndStop(j + 1);
 				//item.objectName.visible = false; (This was breaking loading the main menu, but present in original code.)
 				item.visible = false;
 			}
 
-			trace('PipBuck/PipBuck() - PipBuck constructor finished.');
+			trace('PipBuck.as/PipBuck() - PipBuck constructor finished.');
 		}
 		
 		public function updateLang():void
@@ -241,7 +241,7 @@ package interdata
 		//Показать/скрыть
 		public function onoff(turn:int = 0, p2:int = 0):void
 		{
-			trace('PipBuck/onoff() - Toggling pipbuck on/off...');
+			trace('PipBuck.as/onoff() - Toggling pipbuck on/off...');
 
 			reqKey = false;
 
@@ -339,7 +339,7 @@ package interdata
 		//коррекция размеров
 		public function resizeScreen(nx:int, ny:int):void
 		{
-			trace('PipBuck/resizeScreen() - resizeScreen executing...');
+			trace('PipBuck.as/resizeScreen() - resizeScreen executing...');
 			if (nx >= 1200 && ny >= 800) 
 			{
 				if (nx > 1320) 
@@ -432,15 +432,18 @@ package interdata
 			vishelp.txt.htmlText = helpText;
 			vishelp.visible = true;
 		}
+
 		public function helpUnshow(event:MouseEvent):void
 		{
 			vishelp.visible = false;
 		}
+
 		public function massShow(event:MouseEvent):void
 		{
 			vishelp.txt.htmlText = massText;
 			vishelp.visible = true;
 		}
+
 		public function massUnshow(event:MouseEvent):void
 		{
 			vishelp.visible = false;
@@ -448,40 +451,52 @@ package interdata
 		
 		public function allItems():void
 		{
-			trace('PipBuck/allItems() - allItems being setup...');
+			trace('PipBuck.as/allItems() - Creating weapon/armor arrays and the owner unit.');
 			arrWeapon = new Array();
 			arrArmor = new Array();
 			var owner:Unit = new Unit();
+
 			var w:Weapon;
 			var a:Armor;
 
-			// Retrieve the XML files for weapons and armors
+			trace('PipBuck.as/allItems() - Retreiving weapon and armor XML files from XmlBook.');
 			var weaponsXML:XML = XmlBook.getXML("weapons");
 			var armorsXML:XML  = XmlBook.getXML("armors");
 
-			// Iterate over weapon elements in the weapons XML
-			for each (var weap:XML in weaponsXML.weapon.(@tip > 0))
+
+			trace('PipBuck.as/allItems() - Iterating through weapons...');
+			for each (var weap in weaponsXML.weapon.(@tip > 0))
 			{
-				w = Weapon.create(owner, weap.@id, 0);
-				arrWeapon[weap.@id] = w;
-				if (weap.char.length() > 1) 
+				try
 				{
-					w = Weapon.create(owner, weap.@id, 1);
-					arrWeapon[weap.@id + '^' + 1] = w;
+					w = Weapon.create(owner, weap.@id, 0);
+					arrWeapon[weap.@id] = w;
+					if (weap.char.length() > 1) 
+					{
+						w = Weapon.create(owner, weap.@id, 1);
+						arrWeapon[weap.@id + '^' + 1] = w;
+					}
 				}
+				catch(err:Error)
+				{
+					trace('PipBuck.as/allItems() - Error creating weapon: "' + weap.@id + '".');
+				}
+
 			}
 
-			// Iterate over armor elements in the armors XML
-			for each (var armor:XML in armorsXML.armor)
+			trace('PipBuck.as/allItems() - Iterating through armor sets...');
+			for each (var armor in armorsXML.armor)
 			{
 				a = new Armor(armor.@id);
 				arrArmor[armor.@id] = a;
 			}
+
+			trace('PipBuck.as/allItems() - Finished setting up all items');
 		}
 		
 		public function setRPanel():void
 		{
-			trace('PipBuck/setRPanel() - setRPanel() executing...');
+			trace('PipBuck.as/setRPanel() - setRPanel() executing...');
 			if (light || !active) return;
 			var gg:UnitPlayer = World.world.gg;
 			var pers:Pers 	  = World.world.pers;
@@ -524,7 +539,7 @@ package interdata
 			ritem3(14,inv.mass[3], pers.maxm3, Settings.hardInv);
 		}
 		
-		function ritem1(n:int, hp:Number, maxhp:Number, usl = true):void
+		public function ritem1(n:int, hp:Number, maxhp:Number, usl = true):void
 		{
 			ritems[n].visible = usl;
 			if (usl) 
@@ -537,7 +552,7 @@ package interdata
 			}
 		}
 
-		function ritem2(n:int, hp:Number, maxhp:Number, usl = true):void
+		public function ritem2(n:int, hp:Number, maxhp:Number, usl = true):void
 		{
 			ritems[n].visible = usl;
 			if (usl) 
@@ -550,7 +565,7 @@ package interdata
 			}
 		}
 
-		function ritem3(n:int, hp:Number, maxhp:Number, usl = true):void
+		public function ritem3(n:int, hp:Number, maxhp:Number, usl = true):void
 		{
 			ritems[n].visible=usl;
 			if (usl) 
@@ -563,7 +578,7 @@ package interdata
 			}
 		}
 		
-		function med(hp:Number, maxhp:Number):String
+		public function med(hp:Number, maxhp:Number):String
 		{
 			if (hp < maxhp * 0.25) return 'red';
 			else if (hp < maxhp * 0.5) return 'or';

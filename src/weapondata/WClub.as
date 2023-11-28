@@ -14,34 +14,37 @@ package weapondata
 
 	public class WClub extends Weapon 
 	{
+		//setting to public 
+		public var anim:Number=0;
+		public var rapid_act:Number=10;	//актуальная скорость атаки
+		public var sin0:Number,cos0:Number,sin1:Number,cos1:Number,sin2:Number,cos2:Number;
+		public var vzz:Array;
+		public var kolvzz:int=0;
+		public var visvzz:MovieClip;	//шлейф за оружием
+		public var stepdlina:int=10;
+		public var del:Object={x:0, y:0};
+		public var lasM:Boolean=false;
+		public var mtip:int=0;		//тип холодного оружия
 		
-		var anim:Number=0;
-		var rapid_act:Number=10;	//актуальная скорость атаки
-		var sin0:Number,cos0:Number,sin1:Number,cos1:Number,sin2:Number,cos2:Number;
-		var vzz:Array;
-		var kolvzz:int=0;
-		var visvzz:MovieClip;	//шлейф за оружием
-		var stepdlina:int=10;
-		var del:Object={x:0, y:0};
-		var lasM:Boolean=false;
-		var mtip:int=0;		//тип холодного оружия
+		public var powerMult:Number=1;
+		public var curDam:Number=0;
+		public var combo:int=0;
+		public var t_combo:int=0;
+		public var sndPl:Boolean=false;
 		
-		var powerMult:Number=1;
-		var curDam:Number=0;
-		var combo:int=0;
-		var t_combo:int=0;
-		var sndPl:Boolean=false;
-		
-		var blumR:Number=0;
-		var plX:Number=0, plY:Number=0;
-		var atDlina:Number=100;
-		var celRX:Number=0, celRY:Number=0;
+		public var blumR:Number=0;
+		public var plX:Number=0, plY:Number=0;
+		public var atDlina:Number=100;
+		public var celRX:Number=0, celRY:Number=0;
 
-		var celX:Number, celY:Number;
-		var meleeR:Number=1;	//радиус действия телекинеза
-		var levitRun:Number=10;	//скорость перемещения телекинезом
+		public var celX:Number, celY:Number;
+		public var meleeR:Number=1;	//радиус действия телекинеза
+		public var levitRun:Number=10;	//скорость перемещения телекинезом
 		
-		var rapidMult:Number=1;
+		public var rapidMult:Number=1;
+		//end of set to public 
+
+
 		public var quakeX:Number=0;
 		public var quakeY:Number=0;
 		

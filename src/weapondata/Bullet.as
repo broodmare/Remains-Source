@@ -532,14 +532,15 @@ package weapondata
 		// Damage all units with virtual fragments, taking into account wall protection
 		public function explBlast():void
 		{
-			var tx,ty;
+			var tx;
+			var ty;
 			if (room!=owner.room) return;
 			for each(var un:Unit in room.units) 
 			{
 				if (un.sost == 4 || un.invulner || un.disabled || un.trigDis || un.room!=room) continue;
-				var tx = un.X - X;
-				var ty = un.Y - un.scY / 2 - Y;
-				var b:Bullet=explBullet(tx, ty, explRadius+un.scX);
+				tx = un.X - X;
+				ty = un.Y - un.scY / 2 - Y;
+				var b:Bullet = explBullet(tx, ty, explRadius + un.scX);
 				if (b) 
 				{
 					b.targetObj = un;

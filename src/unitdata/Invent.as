@@ -42,20 +42,20 @@ package unitdata
 		public var massW:int=0;
 		public var massM:int=0;
 		
-		public function Invent(own:Unit,loadObj:Object=null, opt:Object=null) 
+		public function Invent(own:Unit,loadObj:Object = null, opt:Object = null) 
 		{
-			owner=own;
-			weapons=new Array();
-			favIds=new Array();
-			armors=new Array();
-			spells=new Array();
-			items=new Array();
-			eqip=new Array();
-			ammos=new Array();
-			fav=new Array();
+			owner = own;
+			weapons = new Array();
+			favIds = new Array();
+			armors = new Array();
+			spells = new Array();
+			items = new Array();
+			eqip = new Array();
+			ammos = new Array();
+			fav = new Array();
 			
-			itemsId=new Array();
-			for each (var node:XML in XmlBook.getXML("items").item) 
+			itemsId = new Array();
+			for each (var node in XmlBook.getXML("items").item) 
 			{
 				var item:Item = new Item(node.@tip, node.@id, 0, 0, node);
 				items[node.@id] = item;
@@ -82,19 +82,19 @@ package unitdata
 		
 		public function nextItem(n:int=1):void
 		{
-			var ci=cItem+n;
-			if (ci>=cItemMax) ci=0;
-			if (ci<0) ci=cItemMax-1;
-			for (var i=0; i<cItemMax; i++) 
+			var ci = cItem + n;
+			if (ci >= cItemMax) ci = 0;
+			if (ci < 0) ci = cItemMax - 1;
+			for (var i:int = 0; i < cItemMax; i++) 
 			{
-				if (items[itemsId[ci]].kol>0) 
+				if (items[itemsId[ci]].kol > 0) 
 				{
-					cItem=ci;
+					cItem = ci;
 					break;
 				}
-				ci+=n;
-				if (ci>=cItemMax) ci=0;
-				if (ci<0) ci=cItemMax-1;
+				ci += n;
+				if (ci >= cItemMax) ci = 0;
+				if (ci < 0) ci = cItemMax - 1;
 			}
 			World.world.gui.setItems();
 		}
@@ -102,34 +102,34 @@ package unitdata
 		//выбрать подходящий мед. прибор
 		public function getMed(n:int):String 	//$$$
 		{
-			var nhp:Number=0;
-			if (n==1) 
+			var nhp:Number = 0;
+			if (n == 1) 
 			{
-				nhp=gg.pers.inMaxHP-gg.pers.headHP;
+				nhp = gg.pers.inMaxHP - gg.pers.headHP;
 			} 
-			else if (n==2) 
+			else if (n == 2) 
 			{
-				nhp=gg.pers.inMaxHP-gg.pers.torsHP;
+				nhp = gg.pers.inMaxHP - gg.pers.torsHP;
 			} 
-			else if (n==3) 
+			else if (n == 3) 
 			{
-				nhp=gg.pers.inMaxHP-gg.pers.legsHP;
+				nhp = gg.pers.inMaxHP - gg.pers.legsHP;
 			} 
 			else return '';
-			var list:XMLList = XmlBook.getXML("items").item;
+			var list = XmlBook.getXML("items").item;
 			var minRazn:Number=10000;
 			var nci:String='';
 			for each (var pot in list) 
 			{
-				if (pot.@heal=='organ' && items[pot.@id].kol>0 && (pot.@minmed.length()==0 || pot.@minmed<=gg.pers.medic)) 
+				if (pot.@heal=='organ' && items[pot.@id].kol > 0 && (pot.@minmed.length() == 0 || pot.@minmed <= gg.pers.medic)) 
 				{
-					var hhp=0;
-					if (pot.@horgan.length()) hhp=pot.@horgan;
-					var razn=Math.abs(hhp-nhp+25);
-					if (razn<minRazn) 
+					var hhp = 0;
+					if (pot.@horgan.length()) hhp = pot.@horgan;
+					var razn = Math.abs(hhp - nhp + 25);
+					if (razn < minRazn) 
 					{
-						minRazn=razn;
-						nci=pot.@id;
+						minRazn = razn;
+						nci = pot.@id;
 					}
 				}
 			}
@@ -733,17 +733,35 @@ package unitdata
 		
 		public function addSpell(id:String):Spell 
 		{
-			if (id==null) return null;
+			if (spells == null)
+			{
+				trace('Invent.as/addSpell() - ERROR: inventory spells is null.');
+				return null;
+			}
+			if (id == null) 
+			{
+				trace('Invent.as/addSpell() - ERROR: spell ID is null.');
+				return null;
+			}
 			if (spells[id]) 
 			{
 				return spells[id];
 			}
-			var sp:Spell=new Spell(owner, id);
-			if (sp==null) return null;
-			spells[id]=sp;
-			var w:Weapon=addWeapon(id);
-			w.spell=true;
-			w.objectName=sp.objectName;
+			var sp:Spell = new Spell(owner, id);
+			if (sp == null) 
+			{
+				trace('Invent.as/addSpell() - ERROR: New spell is null.');
+				return null;
+			}
+			spells[id] = sp;
+			var w:Weapon = addWeapon(id);
+			if (w = null) 
+			{
+				trace('Invent.as/addSpell() - ERROR: New weapon is null.');
+				return null;
+			}
+			w.spell = true;
+			w.objectName = sp.objectName;
 			return sp;
 		}
 		

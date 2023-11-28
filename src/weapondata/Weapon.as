@@ -37,8 +37,10 @@ package weapondata
 		public var flare:String;				//flash
 		public var visexpl:String;				//explosion
 		
-		var is_attack:Boolean  = false;
-		var is_pattack:Boolean = false;	//	is the attack key pressed
+		//set these two to public
+		public var is_attack:Boolean  = false;
+		public var is_pattack:Boolean = false;	//	is the attack key pressed
+
 		public var t_attack:int=0;
 		public var t_prep:int=0;
 		public var t_reload:int=0;
@@ -50,8 +52,11 @@ package weapondata
 		public var skillConf:Number=1;			//modifier depends on the skill level, 1 - normal, 0.8 - skill level 1 below, 0.6 - skill level 2 below
 		public var skillPlusDam:Number=1;		// weapon reinforcement for low-level weapons
 		public var weaponSkill:Number=1;	 // skill for character
-		var t_ret:int=0;
-		var rotUp:Number=0;
+		
+		//set these two to public
+		public var t_ret:int=0;
+		public var rotUp:Number=0;
+		
 		public var jammed:Boolean=false;	 // weapon jammed
 		public var kol_shoot:int=0;	// number of shots made
 		public var ready:Boolean=false;  // weapon aimed at target
@@ -151,7 +156,9 @@ package weapondata
 		public var shell:Boolean=false;	//ejects casing
 		public var fromWall:Boolean=false;	//shoot from wall
 		public var bulBlend:String='screen';
-		var emitShell:Emitter=Emitter.arr['gilza'];
+
+		//set to public
+		public var emitShell:Emitter = Emitter.arr['gilza'];
 		
 		//Additional effects
 		public var dopEffect:String;		//effect
@@ -205,11 +212,16 @@ package weapondata
 		public var sndHit:String='';
 		public var snd_t_prep1:int=0;
 		public var snd_t_prep2:int=0;
-		var sndCh:SoundChannel;
+
+		//set to public 
+		public var sndCh:SoundChannel;
 		
-		public var hp:int, maxhp:int=100;
-		public var price:int=0;
-		var breaking:Number=0;
+		public var hp:int; 
+		public var maxhp:int = 100;
+		public var price:int = 0;
+
+		//set to public 
+		public var breaking:Number = 0;
 
 		public function Weapon(own:Unit, nid:String, nvar:int=0) 
 		{
@@ -226,49 +238,59 @@ package weapondata
 			if (!own.player) auto=true;
 		}
 		
-		public static function create(owner:Unit, id:String, nvar:int=0):Weapon 
+		public static function create(owner:Unit, id:String, nvar:int = 0):Weapon 
 		{
-			if (id.charAt(id.length - 2)=='^') 
-			{
-				id=id.substr(0,id.length - 2);
-				nvar=1;
-			}
-			var xl:XMLList = XmlBook.getXML("weapons").weapon.(@id == id);
-			if (xl.length() == 0) return null;
-			var node:XMLList = XmlBook.getXML("weapons").weapon.(@id == id);
-			if (node.length() == 0) return null;
-			node = node[0];
 			var w:Weapon;
-			if (node.@tip==1) 
+
+			try
 			{
-				w = new WClub(owner, id, nvar);
-			} 
-			else if (node.@tip == 12) 
-			{
-				w = new WPaint(owner, id, nvar);
-			} 
-			else if (node.@tip == 4) 
-			{
-				w = new WThrow(owner, id, nvar);
-			} 
-			else if (node.@tip == 5) 
-			{
-				w = new WMagic(owner, id, nvar);
-			} 
-			else if (node.@punch > 0)
-			{
-				w = new WPunch(owner, id, nvar);
-			} 
-			else 
-			{
-				w = new Weapon(owner, id, nvar);
+				if (id.charAt(id.length - 2)=='^') 
+				{
+					id=id.substr(0,id.length - 2);
+					nvar=1;
+				}
+				var xl = XmlBook.getXML("weapons").weapon.(@id == id);
+				if (xl.length() == 0) return null;
+				var node = XmlBook.getXML("weapons").weapon.(@id == id);
+				if (node.length() == 0) return null;
+				node = node[0];
+				if (node.@tip==1) 
+				{
+					w = new WClub(owner, id, nvar);
+				} 
+				else if (node.@tip == 12) 
+				{
+					w = new WPaint(owner, id, nvar);
+				} 
+				else if (node.@tip == 4) 
+				{
+					w = new WThrow(owner, id, nvar);
+				} 
+				else if (node.@tip == 5) 
+				{
+					w = new WMagic(owner, id, nvar);
+				} 
+				else if (node.@punch > 0)
+				{
+					w = new WPunch(owner, id, nvar);
+				} 
+				else 
+				{
+					w = new Weapon(owner, id, nvar);
+				}
 			}
+			catch(err:Error)
+			{
+				trace('Weapon.as/create() - ERROR while creating weapon: "' + id + '" on unit: ' + owner + '".');
+			}
+
 			return w;
+
 		}
 		
 		public override function err():String 
 		{
-			return 'Error weapon '+objectName+':'+(owner?owner.objectName:'????');
+			return 'Error weapon ' + objectName + ':' + (owner ? owner.objectName:'????');
 		}
 		
 		public function getXmlParam():void
@@ -280,27 +302,27 @@ package weapondata
 			if (variant==0)	objectName=Res.txt('w',id);
 			else 
 			{
-				if (Res.istxt('w',id+'^'+variant)) objectName=Res.txt('w',id+'^'+variant);
-				else objectName=Res.txt('w',id)+variant2;
+				if (Res.istxt('w', id + '^' + variant)) objectName = Res.txt('w', id + '^' + variant);
+				else objectName = Res.txt('w', id) + variant2;
 			}
-			cat=node.@cat;
-			skill=node.@skill;
+			cat = node.@cat;
+			skill = node.@skill;
 			if (node.@perk.length())
 			{
-				opt.perk=node.@perk;
-				opt[node.@perk]=true;
+				opt.perk = node.@perk;
+				opt[node.@perk] = true;
 			}
-			lvl=node.@lvl;
-			perslvl=node.@perslvl;
-			if (node.@alicorn>0) alicorn=true;
+			lvl = node.@lvl;
+			perslvl = node.@perslvl;
+			if (node.@alicorn > 0) alicorn = true;
 			
 			//ЗПС
 			if (node.sats.length()) 
 			{
 				if (node.sats[0].@que.length()) satsQue=node.sats[0].@que;
 				if (node.sats[0].@cons.length()) satsCons=node.sats[0].@cons;
-				if (node.sats[0].@no.length()) noSats=true;
-				if (node.sats[0].@noperc.length()) noPerc=true;
+				if (node.sats[0].@no.length()) noSats = true;
+				if (node.sats[0].@noperc.length()) noPerc = true;
 			}
 
 			//цена и ремонт
@@ -313,28 +335,28 @@ package weapondata
 			}
 
 			//визуал
-			svis='vis'+id;
-			if (tip==0) svisv=null; 
-			else if (variant>0) svisv=svis+'_'+variant;
-			else svisv=svis;
+			svis = 'vis' + id;
+			if (tip == 0) svisv = null; 
+			else if (variant > 0) svisv = svis + '_' + variant;
+			else svisv = svis;
 			if (node.vis.length()) 
 			{
 				getVisParam(node.vis[0])
-				if (variant>0) getVisParam(node.vis[variant]);
+				if (variant > 0) getVisParam(node.vis[variant]);
 			}
-			if (tip>0 || svisv) 
+			if (tip > 0 || svisv) 
 			{
-				vWeapon=Res.getClass(svisv, svis, visp10mm);
-				vis=new vWeapon();
+				vWeapon = Res.getClass(svisv, svis, visp10mm);
+				vis = new vWeapon();
 			}
-			if (owner && owner.weaponKrep>0) krep=owner.weaponKrep;
-			if (vis && vis.totalFrames>1) animated=true;
-			if (flare==null) flare=visbul;
+			if (owner && owner.weaponKrep>0) krep = owner.weaponKrep;
+			if (vis && vis.totalFrames > 1) animated = true;
+			if (flare == null) flare = visbul;
 			if (visbul) 
 			{ 
 				try 
 				{
-					vBullet = getDefinitionByName('visbul'+visbul) as Class;
+					vBullet = getDefinitionByName('visbul' + visbul) as Class;
 				} 
 				catch (err:ReferenceError) 
 				{
@@ -394,22 +416,22 @@ package weapondata
 			}
 		}
 		
-		function getVisParam(node:XML):void
+		public function getVisParam(node:XML):void
 		{
-			if (node==null) return;
-			if (node.@vweap.length()>0) svisv=node.@vweap;
-			if (node.@tipdec.length()) tipDecal=node.@tipdec;
-			if (node.@shell.length()) shell=true;
-			if (node.@spring.length()) spring=node.@spring;
-			if (node.@bulanim.length()) bulAnim=true;
-			if (node.@phisbul.length()) bulBlend='normal';
-			if (node.@visexpl.length()) visexpl=node.@visexpl;
-			if (node.@shine.length()) shine=node.@shine;
-			if (node.@vbul.length()) visbul=node.@vbul;
-			if (node.@flare.length()) flare=node.@flare;
+			if (node == null) return;
+			if (node.@vweap.length() > 0) svisv = node.@vweap;
+			if (node.@tipdec.length()) tipDecal = node.@tipdec;
+			if (node.@shell.length()) shell = true;
+			if (node.@spring.length()) spring = node.@spring;
+			if (node.@bulanim.length()) bulAnim = true;
+			if (node.@phisbul.length()) bulBlend = 'normal';
+			if (node.@visexpl.length()) visexpl = node.@visexpl;
+			if (node.@shine.length()) shine = node.@shine;
+			if (node.@vbul.length()) visbul = node.@vbul;
+			if (node.@flare.length()) flare = node.@flare;
 		}
 		
-		function getSndParam(node:XML):void
+		public function getSndParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@shoot.length()) sndShoot=node.@shoot;
@@ -422,7 +444,7 @@ package weapondata
 			if (node.@noise.length()) noise=node.@noise;
 		}
 		
-		function getDopParam(node:XML):void
+		public function getDopParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@vision.length()) visionMult=node.@vision;
@@ -432,7 +454,7 @@ package weapondata
 			if (node.@probiv.length()) probiv=node.@probiv;
 		}
 		
-		function getPhisParam(node:XML):void
+		public function getPhisParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@massa>0) massa=node.@massa/50;
@@ -452,7 +474,7 @@ package weapondata
 			if (node.@volna.length()) volna=true;
 		}
 		
-		function getCharParam(node:XML):void
+		public function getCharParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@maxhp.length()) maxhp=node.@maxhp;
@@ -481,7 +503,7 @@ package weapondata
 			if (node.@auto.length()) auto=(node.@auto!='0');
 		}
 		
-		function getAmmoParam(node:XML):void
+		public function getAmmoParam(node:XML):void
 		{
 			if (node==null) return;
 			if (node.@holder.length()) holder=node.@holder;

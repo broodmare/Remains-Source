@@ -472,74 +472,67 @@ package
 			trace('World.as/startNewGame() - Starting a new game.');
 			if (Settings.testMode && !Settings.chitOn) 
 			{
+				trace('World.as/startNewGame() - Tried starting new game with test mode on.');
 				loadingScreen.progres.text = 'error';
 				return;
 			}
-			try
+			allStat = -1;
+			opt = nopt;
+			newName = nnewName;
+
+			trace('World.as/startNewGame() - Creating new "Game()".');
+			game = new Game();
+			newGame = nload < 0;
+			if (newGame) 
 			{
-				allStat = -1;
-				opt = nopt;
-				newName = nnewName;
-
-				trace('World.as/startNewGame() - Creating new "Game()".');
-				game = new Game();
-				newGame = nload < 0;
-				if (newGame) 
+				if (opt && opt.autoSaveN) 
 				{
-					if (opt && opt.autoSaveN) 
-					{
-						autoSaveN = opt.autoSaveN;
-						saveObj = saveArr[autoSaveN];
-						nload = autoSaveN;
-					} 
-					else nload = 0;
-					saveObj.clear();
-				}
-				
-				// create GUI
-				trace('World.as/startNewGame() - Creating new GUI.');
-				gui = new GUI(vgui);
-				gui.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
-
-				// switch PipBuck to normal mode
-				trace('World.as/startNewGame() - Calling pip.toNormalMode().');
-				pip.toNormalMode();
-				pip.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
-
-				// create SATS interface
-				trace('World.as/startNewGame() - Creating new SATS.');
-				sats = new Sats(vsats);
-				
-				// Load save data from file or slot.
-				if (nload == 99) 
-				{
-					trace('World.as/startNewGame() - Loading data.');
-					data = loaddata;	// loaded from file
+					autoSaveN = opt.autoSaveN;
+					saveObj = saveArr[autoSaveN];
+					nload = autoSaveN;
 				} 
-				else 
-				{
-					trace('World.as/startNewGame() - Loading data.');
-					data = saveArr[nload].data; // loaded from slot
-				}
-
-				// Start new game
-				if (newGame)	
-				{
-					trace('World.as/startNewGame() - Calling "game.init()".');
-					game.init(null, opt); 
-				}
-				else 
-				{
-					trace('World.as/startNewGame() - Calling "game.init()".');
-					game.init(data.game);
-				}
-				ng_wait = 1;
-			} 
-			catch (err) 
-			{
-				trace('World.as/startNewGame() - Something fucked up starting a new game. Error: "' + err.message + '".');
-				showError(err);
+				else nload = 0;
+				saveObj.clear();
 			}
+			
+			// create GUI
+			trace('World.as/startNewGame() - Creating new GUI.');
+			gui = new GUI(vgui);
+			gui.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
+
+			// switch PipBuck to normal mode
+			trace('World.as/startNewGame() - Calling pip.toNormalMode().');
+			pip.toNormalMode();
+			pip.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
+
+			// create SATS interface
+			trace('World.as/startNewGame() - Creating new SATS.');
+			sats = new Sats(vsats);
+			
+			// Load save data from file or slot.
+			if (nload == 99) 
+			{
+				trace('World.as/startNewGame() - Loading data.');
+				data = loaddata;	// loaded from file
+			} 
+			else 
+			{
+				trace('World.as/startNewGame() - Loading data.');
+				data = saveArr[nload].data; // loaded from slot
+			}
+
+			// Start new game
+			if (newGame)	
+			{
+				trace('World.as/startNewGame() - Calling "game.init()".');
+				game.init(null, opt); 
+			}
+			else 
+			{
+				trace('World.as/startNewGame() - Calling "game.init()".');
+				game.init(data.game);
+			}
+			ng_wait = 1;
 		}
 		
 		// stage 1 - create character and inventory
@@ -547,43 +540,41 @@ package
 		{
 			trace('World.as/newGame1() - newGame1 is executing.');
 
-			try 
+			if (!newGame) app.load(data.app);
+			if (data.hardInv == true) Settings.hardInv = true; else Settings.hardInv = false;
+			if (opt && opt.hardinv) Settings.hardInv = true;
+
+			// create character
+			trace('World.as/newGame1() - Creating Pers');
+			pers = new Pers(data.pers, opt);
+			if (newGame) pers.persName=newName;
+
+			// create player character
+			trace('World.as/newGame1() - Creating Player.');
+			gg = new UnitPlayer();
+			gg.ctr = ctr;
+			gg.sats = sats;
+			sats.gg = gg;
+			gui.gg = gg;
+
+			// create inventory
+			trace('World.as/newGame1() - Creating inventory');
+			invent = new Invent(gg, data.invent, opt);
+			stand = new Stand(vstand,invent);
+			gg.attach();
+
+			// auto save slot number
+			trace('World.as/newGame1() - Autosave setup');
+			if (!newGame && data.n != null) 
 			{
-				if (!newGame) app.load(data.app);
-				if (data.hardInv == true) Settings.hardInv = true; else Settings.hardInv = false;
-				if (opt && opt.hardinv) Settings.hardInv = true;
-
-				// create character
-				pers = new Pers(data.pers, opt);
-				if (newGame) pers.persName=newName;
-
-				// create player character
-				gg = new UnitPlayer();
-				gg.ctr = ctr;
-				gg.sats = sats;
-				sats.gg = gg;
-				gui.gg = gg;
-
-				// create inventory
-				invent = new Invent(gg, data.invent, opt);
-				stand = new Stand(vstand,invent);
-				gg.attach();
-
-				// auto save slot number
-				if (!newGame && data.n != null) 
-				{
-					autoSaveN = data.n;
-				}
-				Unit.txtMiss = Res.txt('g', 'miss');
-				
-				waitLoadClick();
-				ng_wait = 2;
-			} 
-			catch (err) 
-			{
-				trace('World.as/newGame1() - Something fucked up.');
-				showError(err);
+				autoSaveN = data.n;
 			}
+			Unit.txtMiss = Res.txt('g', 'miss');
+			
+			trace('World.as/newGame1() - waitLoadClick()');
+			waitLoadClick();
+			ng_wait = 2;
+
 		}
 		
 		// Stage 2 - create a terrain and enter it
@@ -682,6 +673,8 @@ package
 				invent = new Invent(gg, data.invent);
 				if (stand) stand.inv = invent;
 				else stand = new Stand(vstand,invent);
+
+				trace('World.as/loadGame() - Attaching inventory to player.');
 				gg.attach();
 
 				// auto-save cell number
@@ -795,8 +788,7 @@ package
 			}
 		}
 		
-		//Set private
-		private function exitStep():void
+		public function exitStep():void
 		{
 			try 
 			{
@@ -839,8 +831,7 @@ package
 			}
 		}
 		
-		//Set private
-		private function ggDieStep():void
+		public function ggDieStep():void
 		{
 			try 
 			{

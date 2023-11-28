@@ -13,10 +13,10 @@ package weapondata
 
 	public class WPaint extends Weapon 
 	{
-		
-		var del:Object={x:0, y:0};
-		var celX:Number, celY:Number;
-		var pX:Number=-1, pY:Number=-1;
+		//Setting these three to public
+		public var del:Object={x:0, y:0};
+		public var celX:Number, celY:Number;
+		public var pX:Number=-1, pY:Number=-1;
 		
 		public var color:int=1;
 		public var paintId:String='p_black';

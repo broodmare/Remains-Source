@@ -58,36 +58,50 @@ package unitdata
 		
 		public var id:String;
 		var mapxml:XML;
-		var uniqName:Boolean=false;
+		var uniqName:Boolean = false;
 		
 		// Coordinates and sizes
-		public var sitY:Number=40, stayY:Number=40, sitX:Number=40, stayX:Number=40;	// Dimensions
-		public var begX:Number=-1, begY:Number=-1; 		// Initial point
-		public var rasst:Number=0;	// Distance to the player character
-		
-		public var level:int=0;
-		public var hero:int=0;
-		public var boss:Boolean=false;
+		public var sitY:Number = 40;	// Dimensions
+		public var stayY:Number = 40;	// Dimensions
+		public var sitX:Number = 40;	// Dimensions
+		public var stayX:Number = 40;	// Dimensions
+		public var begX:Number = -1; 	// Initial point
+		public var begY:Number = -1; 	// Initial point
+		public var rasst:Number = 0;	// Distance to the player character
+		public var level:int = 0;
+		public var hero:int = 0;
+		public var boss:Boolean = false;
+
 		// Health points (HP)
-		public var maxhp:Number=100;
-		public var hpmult:Number=1;
-		public var hp:Number=100;
-		public var cut:Number=0;	// Wounds
-		public var poison:Number=0;	// Poison
-		public var critHeal:Number=0.2;
-		public var shithp:Number=0;
+		public var maxhp:Number = 100;
+		public var hpmult:Number = 1;
+		public var hp:Number = 100;
+		public var cut:Number = 0;	// Wounds
+		public var poison:Number = 0;	// Poison
+		public var critHeal:Number = 0.2;
+		public var shithp:Number = 0;
 		var t_hp:int;
-		public var mana:Number=1000, maxmana:Number=1000, dmana:Number=1;
+		public var mana:Number = 1000;
+		public var maxmana:Number = 1000;
+		public var dmana:Number = 1;
+
 		// Armor and vulnerabilities
 		public var invulner:Boolean=false;
 		public var allVulnerMult:Number=1;
-		public var skin:Number=0, armor:Number=0, marmor:Number=0, armor_hp:Number=0, armor_maxhp:Number=0, armor_qual:Number=0;		// Skin, armor, probability that it will work
-		public var shitArmor:Number=20;
+		public var skin:Number = 0;
+		public var armor:Number = 0;
+		public var marmor:Number = 0;
+		public var armor_hp:Number = 0;
+		public var armor_maxhp:Number = 0;
+		public var armor_qual:Number = 0;		// Skin, armor, probability that it will work
+		public var shitArmor:Number = 20;
 		public var vulner:Array;		
 		public var begvulner:Array;
-		public static var begvulners:Array=new Array();
-		public var dexter:Number=1, dexterPlus:Number=0;			// Evasion, 1 - standard, greater than 1 - more, 0 - always hit	
-		public var dodge:Number=0, undodge:Number=0;			// Probability to dodge in close combat, bonus to hit probability, 1 - always
+		public static var begvulners:Array = new Array();
+		public var dexter:Number = 1;
+		public var dexterPlus:Number = 0;			// Evasion, 1 - standard, greater than 1 - more, 0 - always hit	
+		public var dodge:Number=0;
+		public var undodge:Number=0;			// Probability to dodge in close combat, bonus to hit probability, 1 - always
 		public var transp:Boolean=false;	// Transparent to bullets that do not cause damage
 		public var damWall:Number=0;		// Damage from hitting a wall
 		public var damWallSpeed:Number=12;
@@ -186,24 +200,24 @@ package unitdata
 		public var postDie:Boolean=false;	// Initially a corpse
 		
 		// Options
-		public var blood:int=0; // Blood: 0 - none, 1 - regular, 2 - green
-		public var mat:int=0; // 0 - flesh, 1 - metal
-		public var acidDey:Number=0;	// Armor corrosion by acid
-		public var trup:Boolean=true; // Leave a corpse or destroy it
-		public var overLook:Boolean=true; // Can see what's behind
-		public var plav:Boolean=true; // If true - floats, otherwise walks on the bottom
+		public var blood:int=0; 			// Blood: 0 - none, 1 - regular, 2 - green
+		public var mat:int=0; 				// 0 - flesh, 1 - metal
+		public var acidDey:Number=0;		// Armor corrosion by acid
+		public var trup:Boolean=true; 		// Leave a corpse or destroy it
+		public var overLook:Boolean=true; 	// Can see what's behind
+		public var plav:Boolean=true; 		// If true - floats, otherwise walks on the bottom
 		public var showNumbs:Boolean=true;	// Display damage
-		public var activateTrap:int=2;	// Activate traps and mines
-		public var isSats:Boolean=true;	// Be a target for GPS
+		public var activateTrap:int=2;		// Activate traps and mines
+		public var isSats:Boolean=true;		// Be a target for GPS
 		public var msex:Boolean=true;		// Male gender
-		public var doop:Boolean=false;	// True is set for those who do not track targets
-		public var plaKap:Boolean=true;	// Splashes
-		public var noBox:Boolean=false;	// Does not receive blows from boxes
+		public var doop:Boolean=false;		// True is set for those who do not track targets
+		public var plaKap:Boolean=true;		// Splashes
+		public var noBox:Boolean=false;		// Does not receive blows from boxes
 		public var areaTestTip:String;
-		public var mHero:Boolean=false;	// Can become a hero
-		public var isRes:Boolean=false;	// Resurrects after death
-		public var mech:Boolean=false;	// Mechanism
-		public var noDestr:Boolean=false; // Do not destroy after death
+		public var mHero:Boolean=false;		// Can become a hero
+		public var isRes:Boolean=false;		// Resurrects after death
+		public var mech:Boolean=false;		// Mechanism
+		public var noDestr:Boolean=false; 	// Do not destroy after death
 		
 		public var opt:Object;
 		public static var opts:Array=new Array();
@@ -243,51 +257,58 @@ package unitdata
 		// Visual part
 		// Blitting
 		var blitId:String;		// Bitmap ID
-		public var animState:String='',animState2:String='';
+		public var animState:String = '';
+		public var animState2:String = '';
 		public var blitData:BitmapData;
-		var blitX:int=120, blitY:int=120;
-		var blitDX:int=-1, blitDY:int=-1;
+		var blitX:int = 120;
+		var blitY:int = 120;
+		var blitDX:int = -1;
+		var blitDY:int = -1;
 		var blitRect:Rectangle;
 		var blitPoint:Point;
 		var visData:BitmapData;
 		var visBmp:Bitmap;
 		var anims:Array;
 		
-		var ctrans:Boolean=true;	// Apply color filter
+		var ctrans:Boolean = true;	// Apply color filter
 		// Health bar
 		public var hpbar:MovieClip;
-		public static var heroTransforms=[new ColorTransform(1,0.8,0.8,1,64,0,0,0),new ColorTransform(0.8,1,1,1,0,32,64,0),new ColorTransform(1,0.8,1,1,32,0,64,0),new ColorTransform(0.8,1,0.8,1,0,64,0,0)];
+		public static var heroTransforms = [new ColorTransform(1,0.8,0.8,1,64,0,0,0), new ColorTransform(0.8,1,1,1,0,32,64,0), new ColorTransform(1,0.8,1,1,32,0,64,0), new ColorTransform(0.8,1,0.8,1,0,64,0,0)];
 		// Deadly effects
-		var timerDie:int=0;	// Delayed death
+		var timerDie:int = 0;	// Delayed death
 		var burn:Desintegr;
 		var bloodEmit:Emitter;
 		var numbEmit:Emitter;
-		var hitPart:Part, t_hitPart:int=0, hitSumm:Number=0, t_mess:int=0;
+		var hitPart:Part;
+		var t_hitPart:int = 0;
+		var hitSumm:Number = 0;
+		var t_mess:int = 0;
 		// Sounds
 		public var sndMusic:String;
-		var sndMusicPrior:int=0;
+		var sndMusicPrior:int = 0;
 		public var sndDie:String;
 		public var sndRun:String;
-		public var sndRunDist:Number=800;
-		public var sndRunOn:Boolean=false;
-		var sndVolkoef:Number=1;
+		public var sndRunDist:Number = 800;
+		public var sndRunOn:Boolean = false;
+		var sndVolkoef:Number = 1;
 
 		// Parent
 		var mother:Unit;
-		var kolChild:int=0;
+		var kolChild:int = 0;
 
-		public var scrDie:Script, scrAlarm:Script;
+		public var scrDie:Script;
+		public var scrAlarm:Script;
 		public var questId:String;	// ID for a collectible quest
 		
 		public var trig:String;		// Appearance condition
 		public var trigDis:Boolean=false;	// Disabled by trigger
 		
-		public var xp:int=0;	// Experience
+		public var xp:int = 0;	// Experience
 		
-		static var ppp:Point=new Point();
+		static var ppp:Point = new Point();
 		
-		static const robotKZ=75;
-		static const damWallStun=45;
+		static const robotKZ = 75;
+		static const damWallStun = 45;
 
 
 
@@ -296,17 +317,22 @@ package unitdata
 		// dif - difficulty level for this unit
 		// xml - individual parameters taken from the map
 		// loadObj - object for loading the unit's state
-		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) {
-			vulner=new Array();
-			inter=new Interact(this,null,xml,loadObj);
-			inter.active=false;
-			for (var i=0; i<kolVulners; i++) vulner[i]=1;
-			vulner[D_EMP]=0;
-			effects=new Array();
-			layer=2, prior=1, warn=1;
-			numbEmit=Emitter.arr['numb'];
-			if (xml) {
-				if (xml.@turn.length()) {
+		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
+		{
+			vulner = new Array();
+			inter = new Interact(this,null,xml,loadObj);
+			inter.active = false;
+			for (var i:int = 0; i < kolVulners; i++) vulner[i] = 1;
+			vulner[D_EMP] = 0;
+			effects = new Array();
+			layer = 2;
+			prior = 1;
+			warn = 1;
+			numbEmit = Emitter.arr['numb'];
+			if (xml) 
+			{
+				if (xml.@turn.length()) 
+				{
 					if (xml.@turn>0) storona=1;
 					if (xml.@turn<0) storona=-1;
 				} else {
@@ -355,83 +381,83 @@ package unitdata
 				return null;
 			}
 			var uc:Class;
-			var cn:String=node.@cl;
+			var cn:String = node.@cl;
 			switch (cn) 
 			{
-				case 'Mine': uc=Mine;break;
-				case 'UnitTrap': uc=UnitTrap;break;
-				case 'UnitTrigger': uc=UnitTrigger;break;
-				case 'UnitDamager': uc=UnitDamager;break;
-				case 'UnitRaider': uc=UnitRaider;break;
-				case 'UnitSlaver': uc=UnitSlaver;break;
-				case 'UnitZebra': uc=UnitZebra;break;
-				case 'UnitRanger': uc=UnitRanger;break;
-				case 'UnitEncl': uc=UnitEncl;break;
-				case 'UnitMerc': uc=UnitMerc;break;
-				case 'UnitZombie': uc=UnitZombie;break;
-				case 'UnitAlicorn': uc=UnitAlicorn;break;
-				case 'UnitHellhound': uc=UnitHellhound;break;
-				case 'UnitRobobrain': uc=UnitRobobrain;break;
-				case 'UnitProtect': uc=UnitProtect;break;
-				case 'UnitGutsy': uc=UnitGutsy;break;
-				case 'UnitEqd': uc=UnitEqd;break;
-				case 'UnitSentinel': uc=UnitSentinel;break;
-				case 'UnitTurret':uc=UnitTurret;break;
-				case 'UnitBat': uc=UnitBat;break;
-				case 'UnitFish': uc=UnitFish;break;
-				case 'UnitBloat': uc=UnitBloat;break;
-				case 'UnitBloatEmitter': uc=UnitBloatEmitter;break;
-				case 'UnitSpriteBot': uc=UnitSpriteBot;break;
-				case 'UnitDron': uc=UnitDron;break;
-				case 'UnitVortex': uc=UnitVortex;break;
-				case 'UnitMonstrik': uc=UnitMonstrik;break;
-				case 'UnitAnt': uc=UnitAnt;break;
-				case 'UnitSlime': uc=UnitSlime;break;
-				case 'UnitRoller': uc=UnitRoller;break;
-				case 'UnitNPC': uc=UnitNPC;break;
-				case 'UnitCaptive': uc=UnitCaptive;break;
-				case 'UnitPonPon': uc=UnitPonPon;break;
-				case 'UnitTrain': uc=UnitTrain;break;
-				case 'UnitMsp': uc=UnitMsp;break;
-				case 'UnitTransmitter': uc=UnitTransmitter;break;
-				case 'UnitNecros': uc=UnitNecros;break;
-				case 'UnitSpectre': uc=UnitSpectre;break;
-				case 'UnitBossRaider': uc=UnitBossRaider;break;
-				case 'UnitBossAlicorn': uc=UnitBossAlicorn;break;
-				case 'UnitBossUltra': uc=UnitBossUltra;break;
-				case 'UnitBossNecr': uc=UnitBossNecr;break;
-				case 'UnitBossDron': uc=UnitBossDron;break;
-				case 'UnitBossEncl': uc=UnitBossEncl;break;
-				case 'UnitThunderHead': uc=UnitThunderHead;break;
-				case 'UnitDestr': uc=UnitDestr;break;
+				case 'Mine': uc = Mine;break;
+				case 'UnitTrap': uc = UnitTrap;break;
+				case 'UnitTrigger': uc = UnitTrigger;break;
+				case 'UnitDamager': uc = UnitDamager;break;
+				case 'UnitRaider': uc = UnitRaider;break;
+				case 'UnitSlaver': uc = UnitSlaver;break;
+				case 'UnitZebra': uc = UnitZebra;break;
+				case 'UnitRanger': uc = UnitRanger;break;
+				case 'UnitEncl': uc = UnitEncl;break;
+				case 'UnitMerc': uc = UnitMerc;break;
+				case 'UnitZombie': uc = UnitZombie;break;
+				case 'UnitAlicorn': uc = UnitAlicorn;break;
+				case 'UnitHellhound': uc = UnitHellhound;break;
+				case 'UnitRobobrain': uc = UnitRobobrain;break;
+				case 'UnitProtect': uc = UnitProtect;break;
+				case 'UnitGutsy': uc = UnitGutsy;break;
+				case 'UnitEqd': uc = UnitEqd;break;
+				case 'UnitSentinel': uc = UnitSentinel;break;
+				case 'UnitTurret':uc = UnitTurret;break;
+				case 'UnitBat': uc = UnitBat;break;
+				case 'UnitFish': uc = UnitFish;break;
+				case 'UnitBloat': uc = UnitBloat;break;
+				case 'UnitBloatEmitter': uc = UnitBloatEmitter;break;
+				case 'UnitSpriteBot': uc = UnitSpriteBot;break;
+				case 'UnitDron': uc = UnitDron;break;
+				case 'UnitVortex': uc = UnitVortex;break;
+				case 'UnitMonstrik': uc = UnitMonstrik;break;
+				case 'UnitAnt': uc = UnitAnt;break;
+				case 'UnitSlime': uc = UnitSlime;break;
+				case 'UnitRoller': uc = UnitRoller;break;
+				case 'UnitNPC': uc = UnitNPC;break;
+				case 'UnitCaptive': uc = UnitCaptive;break;
+				case 'UnitPonPon': uc = UnitPonPon;break;
+				case 'UnitTrain': uc = UnitTrain;break;
+				case 'UnitMsp': uc = UnitMsp;break;
+				case 'UnitTransmitter': uc = UnitTransmitter;break;
+				case 'UnitNecros': uc = UnitNecros;break;
+				case 'UnitSpectre': uc = UnitSpectre;break;
+				case 'UnitBossRaider': uc = UnitBossRaider;break;
+				case 'UnitBossAlicorn': uc = UnitBossAlicorn;break;
+				case 'UnitBossUltra': uc = UnitBossUltra;break;
+				case 'UnitBossNecr': uc = UnitBossNecr;break;
+				case 'UnitBossDron': uc = UnitBossDron;break;
+				case 'UnitBossEncl': uc = UnitBossEncl;break;
+				case 'UnitThunderHead': uc = UnitThunderHead;break;
+				case 'UnitDestr': uc = UnitDestr;break;
 			}
-			if (uc==null) 
+			if (uc == null) 
 			{
 				return null;
 			}
-			var cid:String=null;						// Creation identifier
-			if (node.@cid.length()) cid=node.@cid;
-			if (ncid!=null) cid=ncid;
-			var un:Unit=new uc(cid,dif,xml,loadObj);
-			if (xml && xml.@code.length()) un.code=xml.@code;
+			var cid:String = null;						// Creation identifier
+			if (node.@cid.length()) cid = node.@cid;
+			if (ncid != null) cid = ncid;
+			var un:Unit = new uc(cid, dif, xml, loadObj);
+			if (xml && xml.@code.length()) un.code = xml.@code;
 			return un;
 		}
 		
 		public override function save():Object 
 		{
-			var obj:Object=new Object();
-			if (sost>=3 && !postDie) obj.dead=true;
+			var obj:Object = new Object();
+			if (sost >= 3 && !postDie) obj.dead = true;
 			if (inter) inter.save(obj);
 			return obj;
 		}
 		
-		public function getXmlParam(mid:String=null):void
+		public function getXmlParam(mid:String = null):void
 		{
-			var setOpts:Boolean=false;
+			var setOpts:Boolean = false;
 			if (opts[id]) 
 			{
-				opt=opts[id];
-				begvulner=begvulners[id];
+				opt = opts[id];
+				begvulner = begvulners[id];
 			} 
 			else 
 			{
