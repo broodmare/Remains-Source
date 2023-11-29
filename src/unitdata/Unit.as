@@ -148,7 +148,8 @@ package unitdata
 		public var stayOsn:Box=null;
 		public var stayMat:int;
 		public var tykMat:int;
-		protected var shX1:Number, shX2:Number;	// How much you don't fit
+		protected var shX1:Number;
+		protected var shX2:Number;	// How much you don't fit
 		protected var diagon:int=0;
 		public var porog:Number=10, porog_jump:Number=4; // Automatic lifting
 		public var isSit:Boolean=false, isFly:Boolean=false, isRun:Boolean=false, isPlav:Boolean=false, isLaz:int=0, inWater:Boolean=false, isUp:Boolean=false;
@@ -984,8 +985,7 @@ package unitdata
 			Y  = ny;
 			Y1 = Y - scY;
 			Y2 = Y;
-			X1 = X - scX / 2;
-			X2 = X + scX / 2;
+			objXCoordinates = updateXValues(X1,X2,X,scX);
 			setCel();
 		}
 		
@@ -1171,8 +1171,7 @@ package unitdata
 						kray=true;
 					}
 				}
-				X1 = X - scX / 2;
-				X2 = X + scX / 2;
+				objXCoordinates = updateXValues(X1,X2,X,scX);
 				//Move to the left
 				if (dx + osndx < 0) 
 				{
@@ -1237,8 +1236,7 @@ package unitdata
 										dx=Math.abs(dx)*elast;
 										turnX=1;
 										if (t.tileMaterial==1) tykMat=1;
-										X1 = X - scX / 2;
-										X2 = X + scX / 2;
+										objXCoordinates = updateXValues(X1,X2,X,scX);
 									}
 								}
 							}
@@ -1303,8 +1301,7 @@ package unitdata
 										dx=-Math.abs(dx)*elast;
 										turnX=-1;
 										if (t.tileMaterial==1) tykMat=1;
-										X1 = X - scX / 2;
-										X2 = X + scX / 2;
+										objXCoordinates = updateXValues(X1,X2,X,scX);
 									}
 								}
 							}
@@ -1529,8 +1526,7 @@ package unitdata
 				dy=0;
 				turnY=-1;
 			}
-			X1 = X - scX / 2;
-			X2 = X + scX / 2;
+			objXCoordinates = updateXValues(X1,X2,X,scX);
 			Y1 = Y - scY;
 			Y2 = Y;
 		}
@@ -1549,8 +1545,7 @@ package unitdata
 				scX = stayX;
 				scY = stayY;
 			}
-			X1 = X - scX / 2;
-			X2 = X + scX / 2;
+			objXCoordinates = updateXValues(X1,X2,X,scX);
 			Y1 = Y - scY;
 		}
 		
@@ -1609,8 +1604,7 @@ package unitdata
 					isLaz=storona=(room.roomTileArray[i][j] as Tile).stair;
 					if (isLaz==-1) X=(room.roomTileArray[i][j] as Tile).phX1+scX/2;
 					else X=(room.roomTileArray[i][j] as Tile).phX2-scX/2;
-					X1 = X - scX / 2;
-					X2 = X + scX / 2;
+					objXCoordinates = updateXValues(X1,X2,X,scX);
 					stay=false;
 					sit(false);
 					return true;
@@ -2897,8 +2891,7 @@ package unitdata
 				isFly=false;
 				scX = sitX;
 				scY = sitY;
-				X1 = X - scX / 2;
-				X2 = X + scX / 2;
+				objXCoordinates = updateXValues(X1,X2,X,scX);
 				Y1 = Y - scY;
 				fraction = 0;
 				throu = false;
@@ -3283,6 +3276,21 @@ package unitdata
 		}
 		
 		
-	}
 	
+
+//--------------------------------------------------------------------------------------------------------------------
+//				Reduce code repetitions...
+
+		public function updateXValues(X1:Number, X2:Number, X:Number, scX:Number):Array
+		{
+			var halfScX:Number = scX / 2;
+
+			var x1:Number = X - halfScX;
+			var x2:Number = X + halfScX;
+
+			var xArray:Array = [x1, x2];
+			
+			return xArray;
+		}
+	}
 }

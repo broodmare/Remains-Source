@@ -25,25 +25,31 @@ package
 		public var prior:Number 	= 1;
 		public var scX:Number 		= 10;
 		public var scY:Number 		= 10;
-		public var storona:int 		= 1;	//dimensions
-		public var rasst2:Number 	= 0;	//distance to the player square
+		public var storona:int 		= 1;		//dimensions
+		public var rasst2:Number 	= 0;		//distance to the player square
 		public var massa:Number 	= 1;
 		public var levit:int 		= 0;
 		public var levitPoss:Boolean = true;	//ability to move using levitation
-		public var fracLevit:int 	= 0; //was levitated
-		public var radioactiv:Number = 0;	//radioactivity
-		public var radrad:Number 	= 250;	//radioactivity radius
+		public var fracLevit:int 	= 0; 		//was levitated
+		public var radioactiv:Number = 0;		//radioactivity
+		public var radrad:Number 	= 250;		//radioactivity radius
 		public var radtip:int 		= 0;		//0 - radiation, 1 - poison, 2 - pink cloud, 3 - death
-		public var warn:int 		= 0;			//tooltip color
+		public var warn:int 		= 0;		//tooltip color
 		public var objectName:String = '';
 		
 		public var inter:Interact;
 		public var dist2:Number 	= 0;	//distance to the player square
-		public var X1:Number;
-		public var X2:Number;
-		public var Y1:Number;
-		public var Y2:Number;
+
+		//Obj XY Coordinates
+		public var objXCoordinates:Array = new Array(2);
+		public const X1_INDEX:int = 0;
+		public const X2_INDEX:int = 1;
+
+    	public var objYCoordinates:Array = new Array(2);
+		public const Y1_INDEX:int = 0;
+		public const Y2_INDEX:int = 1;
 		
+
 		public var onCursor:Number = 0;
 		
 		public static var nullTransfom:ColorTransform = new ColorTransform();
@@ -54,6 +60,45 @@ package
 
 		}
 		
+
+		public function get X1():Number 
+		{
+			return objXCoordinates[X1_INDEX];
+		}
+		public function set X1(value:Number):void 
+		{
+			objXCoordinates[X1_INDEX] = value;
+		}
+		public function get X2():Number 
+		{
+			return objXCoordinates[X2_INDEX];
+		}
+		public function set X2(value:Number):void 
+		{
+			objXCoordinates[X2_INDEX] = value;
+		}
+		public function get Y1():Number 
+		{
+			return objYCoordinates[Y1_INDEX];
+		}
+		public function set Y1(value:Number):void 
+		{
+			objYCoordinates[Y1_INDEX] = value;
+		}
+		public function get Y2():Number 
+		{
+			return objYCoordinates[Y2_INDEX];
+		}
+		public function set Y2(value:Number):void 
+		{
+			objYCoordinates[Y2_INDEX] = value;
+		}
+
+
+
+
+
+
 		public override function remVisual():void
 		{
 			super.remVisual(); 
