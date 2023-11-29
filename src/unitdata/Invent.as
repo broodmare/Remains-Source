@@ -772,7 +772,7 @@ package unitdata
 
 			trace('Invent.as/addSpell() - 4/7');
 			var w:Weapon = addWeapon(id);
-			if (w = null) 
+			if (w == null)
 			{
 				trace('Invent.as/addSpell() - ERROR: New weapon is null.');
 				return null;
