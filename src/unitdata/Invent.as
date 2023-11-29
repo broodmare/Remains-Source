@@ -1049,7 +1049,6 @@ package unitdata
 				if (items[ci].kol>=n) return true;
 				else return false;
 			}
-			return false;
 		}
 		
 		public function calcMass():void

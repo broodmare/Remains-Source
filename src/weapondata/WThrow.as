@@ -219,7 +219,6 @@ package weapondata
 					return true;
 				}
 			}
-			return false;
 		}
 		
 		

@@ -306,10 +306,9 @@ package interdata
 				obj.time = Res.gameTime(save.game.t_save);
 				obj.ver = save.ver;
 			}
-			return obj;
 
 			trace('PipPageOpt.as/setSubPages() - Finished updating subPages.');
-
+			return obj;
 		}		
 		
 		//set public

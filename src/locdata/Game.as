@@ -283,7 +283,7 @@ package locdata
 			World.world.gg.remEffect('potion_fly');
 			World.world.gui.messText('', Res.txt('m', curLevel.id) + (curLevel.rnd?(' - ' + (curLevel.landStage + 1)):''), World.world.gg.Y < 300);
 			if (!curLevel.rnd) curLevel.visited=true;
-			mReturn = (triggers['noreturn'] > 0) ? false : true;
+			mReturn = (triggers['noreturn'] <= 0);
 			if (curLevel.upStage) 
 			{
 				curLevel.upStage = false;

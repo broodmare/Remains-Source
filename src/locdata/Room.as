@@ -552,8 +552,7 @@ package locdata
 			var q:int;
 			if (fak < 2) return;
 			var dyr:Boolean = false;
-			if (n > 21) return;
-			else if (n >= 17) 
+			if (n >= 17)
 			{
 				q=(n-17)*9+4;
 				dyr=roomTileArray[q+1][0].hole() || dyr;
@@ -626,8 +625,7 @@ package locdata
 				} 
 				if (dyr) addSignPost(roomWidth,q,0);
 				addEnSpawn((roomWidth-1)*Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
-			} 
-			else return;
+			}
 		}
 		
 		// Add transition indicators to neighboring locations

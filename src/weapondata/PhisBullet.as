@@ -84,10 +84,10 @@ package weapondata
 			if (liv<=0) 
 			{ 
 				onCursor=0;
-				vse=true;
+				this.vse = true;
 			}
 			if (explRadius>0) room.warning=10;	// Command for AI to watch out for grenades
-			if (vse) 
+			if (this.vse)
 			{
 				room.remObj(this);
 				room.remGrenade(this);
@@ -105,7 +105,7 @@ package weapondata
 				{
 					explosion();
 					onCursor=0;
-					vse=true;
+					this.vse = true;
 					return true;
 				}
 			}
@@ -174,15 +174,14 @@ package weapondata
 				Y+=dy/div;
 				if (X<0 || X>=room.roomPixelWidth || Y<0 || Y>=room.roomPixelHeight) 
 				{
-					vse=true;
-					return;
+					this.vse = true;
 				}
 			} 
 			else 
 			{
 				if (X<0 || X >= room.roomWidth * Tile.tilePixelWidth) 
 				{
-					vse=true;
+					this.vse = true;
 					return;
 				}
 				if (dx<0) 
@@ -236,11 +235,11 @@ package weapondata
 				var newmy:Number=0;
 				if (dy>0) 
 				{
-					stay=false;
-					Y+=dy/div;
+					stay = false;
+					Y += dy / div;
 					if (Y>=room.roomHeight*Tile.tilePixelHeight) 
 					{
-						vse=true;
+						this.vse = true;
 						return;
 					}
 					if (abstile.phis==1 && Y>=abstile.phY1 && Y<=abstile.phY2 && X>=abstile.phX1 && X<=abstile.phX2) 

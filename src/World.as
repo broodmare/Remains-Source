@@ -1179,19 +1179,24 @@ package
 		// Determine which loading screen to display
 		public function getLoadScreen():int 
 		{
-			return -1;
+			//Changed from just returning -1 by default. The rest of this code was unreachable.
 			try 
 			{
-				var nscr = game.levelArray[game.curLevelID].loadScr;
+				var nscr:int = game.levelArray[game.curLevelID].loadScr;
+
 				if (nscr >= 0 && (game.triggers['loadScr'] == null || game.triggers['loadScr'] < nscr))
 				{
 					game.triggers['loadScr'] = nscr;
 					return nscr;
 				}
+				else
+				{
+					return -1;
+				}
 			} 
 			catch(err) 
 			{
-
+				trace('World.as/getLoadScreen() - ERROR during this function.');
 			}
 			return -1;
 		}

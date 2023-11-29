@@ -418,12 +418,10 @@ package unitdata
 				if (levit==1 && !ctr.keyStates.keyJump) levit=0;
 				return true;
 			} 
-			else 
+			else
 			{
 				return false;
 			}
-			return false;
-			
 		}
 		
 		//Enter the room
