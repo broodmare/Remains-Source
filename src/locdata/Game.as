@@ -43,15 +43,15 @@ package locdata
 		public function Game() 
 		{
 			trace('Game.as/Game() - Running Game constructor.');
-			levelArray  = new Array();
-			probs 		= new Array();
-			notes 		= new Array();
-			vendors 	= new Array();
-			npcs 		= new Array();
-			triggers 	= new Array();
-			limits 		= new Array();
-			quests 		= new Array();
-			names 		= new Array();
+			levelArray  = [];
+			probs 		= [];
+			notes 		= [];
+			vendors 	= [];
+			npcs 		= [];
+			triggers 	= [];
+			limits 		= [];
+			quests 		= [];
+			names 		= [];
 			
 			for each (var xl in XmlBook.getXML("levels").level)
 			{
@@ -74,7 +74,7 @@ package locdata
 			obj.level = curLevelID;
 			World.world.level.saveObjs(objs);	//Save an array of objects with IDs
 			
-			obj.objs = new Array();
+			obj.objs = [];
 			for (var uid in objs) 
 			{
 				var obj1 = objs[uid];
@@ -86,40 +86,40 @@ package locdata
 				obj.objs[uid]=nobj;
 			}
 			
-			obj.vendors = new Array();
+			obj.vendors = [];
 			for (var i in vendors) 
 			{
 				var v = vendors[i].save();
 				if (v != null) obj.vendors[i] = v;
 			}
 
-			obj.npcs = new Array();
+			obj.npcs = [];
 			for (i in npcs) 
 			{
 				var npc=npcs[i].save();
 				if (npc!=null) obj.npcs[i]=npc;
 			}
 
-			obj.triggers = new Array();
+			obj.triggers = [];
 			for (i in triggers) 
 			{
 				obj.triggers[i]=triggers[i];
 			}
 
-			obj.notes = new Array();
+			obj.notes = [];
 			for (i in notes) 
 			{
 				obj.notes[i]=notes[i];
 			}
 
-			obj.quests = new Array();
+			obj.quests = [];
 			for (i in quests) 
 			{
 				var q:Object=quests[i].save();
 				if (q!=null) obj.quests[i]=q;
 			}
 
-			obj.levelArray = new Array();
+			obj.levelArray = [];
 			for (var i in levelArray) 
 			{
 				var l = levelArray[i].save();
@@ -237,16 +237,17 @@ package locdata
 			return true;
 		}
 		
-		public function enterCurrentLevel()
+		public function enterCurrentLevel():void
 		{
 			Level.locN += 5;
 			if (World.world.level && objs) World.world.level.saveObjs(objs);
 
-			///Transition to a random encounter
+			///Check if the game should transition to a random encounter
 			Encounter();
+
 			curLevel = levelArray[curLevelID];
 			if (curLevel == null) curLevel = levelArray['rbl'];
-			var first = false;
+			var first:Boolean = false;
 			if (!curLevel.rnd && !curLevel.visited) first = true;
 
 			if (curLevel.level == null || crea) 
@@ -290,8 +291,10 @@ package locdata
 		}
 		
 		// Redirect to another room
-		function Encounter()
+		public function Encounter():void
 		{
+			trace('');
+
 			switch(curLevelID)
 			{
 				case 'random_canter':
@@ -310,7 +313,7 @@ package locdata
 					break;
 
 				default:
-					trace('Game.as/Encounter() - function called but no suitable case was found. curLevelID: "' + curLevelID + '"');
+					trace('Game.as/Encounter() - curLevelID: "' + curLevelID + '" is not an encounter, returning.');
 					break;
 			}
 }

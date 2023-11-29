@@ -127,7 +127,7 @@ package locdata
 			{
 				invis=loadObj.invis;
 			}
-			var node=Res.localizationFile.txt.(@id==pid);
+			var node = Res.localizationFile.txt.(@id == pid);
 			if (node.length()) 
 			{
 				node=node[0]

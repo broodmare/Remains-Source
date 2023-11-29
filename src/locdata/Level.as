@@ -78,12 +78,12 @@ package locdata
 			template = lt;
 			rnd = template.rnd;
 
-			uidObjs  = new Array();
-			scripts  = new Array();
-			kolAll 	 = new Array();
-			listLocs = new Array();
-			probIds  = new Array();
-			probs 	 = new Array();
+			uidObjs  = [];
+			scripts  = [];
+			kolAll 	 = [];
+			listLocs = [];
+			probIds  = [];
+			probs 	 = [];
 			prepareRooms();
 			if (rnd) 
 			{
@@ -121,7 +121,7 @@ package locdata
 //==============================================================================================================================		
 		
 		//Convert from XML to array
-		public function prepareRooms() 
+		public function prepareRooms():void
 		{
 			allRoom = new Array();
 			for each(var xml in template.allroom.roomTemplate) 
@@ -131,7 +131,7 @@ package locdata
 		}
 		
 		
-		public function buildRandomLand() 
+		public function buildRandomLand():void
 		{
 			if (World.world.landError) 
 			{
@@ -413,7 +413,7 @@ package locdata
 			{
 				for (i=minLocX; i<maxLocX; i++) 
 				{
-					var isBonuses=true;
+					var isBonuses:Boolean = true;
 					roomArray[i][j][0].setObjects();
 					//Create checkpoints
 
@@ -538,7 +538,7 @@ package locdata
 			buildProbs();
 		}
 		
-		public function buildSpecifLevel()
+		public function buildSpecifLevel():void
 		{
 			try
 			{
@@ -594,7 +594,7 @@ package locdata
 		
 		//add trial rooms whose ids were used in the area (doors with prob={id} were involved)
 		//process all added
-		public function buildProbs() 
+		public function buildProbs():void
 		{
 			for each (var s in probIds)	buildProb(s);
 			for each (var room in listLocs) 
@@ -670,7 +670,7 @@ package locdata
 		// create a new room of the specified type, at the given coordinates
 		public function newTipLoc(ntip:String, roomCoordinateX:int, roomCoordinateY:int, opt:Object=null):Room 
 		{
-			rndRoom = new Array();
+			rndRoom = [];
 			for each(var roomTemplate in allRoom) 
 			{
 				if (roomTemplate.tip==ntip) rndRoom.push(roomTemplate); 
@@ -691,7 +691,7 @@ package locdata
 		//create a new random room in the given coordinates
 		public function newRandomLoc(maxlevel:int, roomCoordinateX:int, roomCoordinateY:int, opt:Object=null, ntip:String=null):Room 
 		{
-			rndRoom = new Array();
+			rndRoom = [];
 			var r1:RoomTemplate, r2:RoomTemplate;
 			if (roomCoordinateX > minLocX) r1 = roomArray[roomCoordinateX-1][roomCoordinateY][0].roomTemplate;
 			if (roomCoordinateY > minLocY) r2 = roomArray[roomCoordinateX][roomCoordinateY-1][0].roomTemplate;
@@ -761,7 +761,7 @@ package locdata
 		}
 		
 		// Setting the difficulty level of the room based on the character's level and difficulty gradient
-		function setLocDif(room:Room, deep:Number)
+		public function setLocDif(room:Room, deep:Number):void
 		{
 			var ml:Number = levelDifficultyLevel + deep;
 			room.locDifLevel=ml;
@@ -852,7 +852,7 @@ package locdata
 			}
 		}
 		
-		public function createMap() 
+		public function createMap():void
 		{
 			map=new BitmapData(Settings.roomTileWidth*(maxLocX-minLocX), Settings.roomTileHeight*(maxLocY-minLocY),true,0);
 		}
@@ -862,7 +862,7 @@ package locdata
 //==============================================================================================================================		
 		
 		//enter the level
-		public function enterLevel(first:Boolean = false, coord:String = null)
+		public function enterLevel(first:Boolean = false, coord:String = null):void
 		{
 			template.visited = true;
 			
@@ -895,7 +895,7 @@ package locdata
 			}
 		}
 		
-		public function saveObjs(arr:Array)
+		public function saveObjs(arr:Array):void
 		{
 			if (rnd) return;
 			for (var i:int = minLocX; i<maxLocX; i++) 
@@ -912,7 +912,7 @@ package locdata
 		}
 		
 		//Move the character to the spawn point
-		public function setGGToSpawnPoint() 
+		public function setGGToSpawnPoint():void
 		{
 			var roomCoordinateX:int = 3, roomCoordinateY:int = 3;
 			if (room.spawnPoints.length > 0) 
@@ -963,7 +963,7 @@ package locdata
 		}
 		
 		//Go to room x,y
-		public function gotoXY(roomCoordinateX:int,roomCoordinateY:int)
+		public function gotoXY(roomCoordinateX:int,roomCoordinateY:int):void
 		{
 			if (roomCoordinateX  < minLocX) roomCoordinateX = minLocX;
 			if (roomCoordinateX >= maxLocX) roomCoordinateX = maxLocX - 1;
@@ -1042,7 +1042,7 @@ package locdata
 		}
 		
 		// Go to the test layer nprob, or return to the main layer if the parameter is not specified
-		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1) 
+		public function gotoProb(nprob:String='', nretX:Number=-1, nretY:Number=-1):void
 		{
 			if (nprob == '') 
 			{
@@ -1091,7 +1091,7 @@ package locdata
 			}
 		}
 		
-		public function gotoCheckPoint() 
+		public function gotoCheckPoint():void
 		{
 			var cp:CheckPoint=World.world.pers.currentCP;
 			if (cp == null) 
@@ -1126,7 +1126,7 @@ package locdata
 			gg.dx=3;
 		}
 		
-		public function refill() 
+		public function refill():void
 		{
 			if (isRefill) return;
 			if (summXp*10>allXp || !rnd) 
@@ -1140,13 +1140,13 @@ package locdata
 			}
 		}
 		
-		public function artBabah() 
+		public function artBabah():void
 		{
 			Snd.ps('artfire');
 			World.world.quake(10,3);
 		}
 		
-		public function artStep() 
+		public function artStep():void
 		{
 			art_t--;
 			if (art_t<=0) 

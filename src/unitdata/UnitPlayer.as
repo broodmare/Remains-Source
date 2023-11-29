@@ -173,7 +173,7 @@ package unitdata
 		public var visSel:Boolean=false; //селектор оружия
 		public var animOff:Boolean=false;
 		
-		function testFunction()
+		public function testFunction():void
 		{
 
 			if (Settings.chitOn) 
@@ -242,24 +242,30 @@ package unitdata
 			//destroy=20;
 		}
 		
-		public function attach() {
+		public function attach():void
+		{
+
 			invent = World.world.invent;
-			invent.gg=this;
-			invent.owner=this;
+			invent.gg = this;
+			invent.owner = this;
 			invent.addAllSpells();
-			pers=World.world.pers;
-			pers.gg=this;
-			
-			hp=maxhp=pers.begHP;
-			if (invent.cArmorId!='' && invent.cArmorId!=null && !Settings.alicorn) changeArmor(invent.cArmorId,true);
+			pers = World.world.pers;
+			pers.gg = this;
+
+			hp = pers.begHP;
+			maxhp = pers.begHP;
+
+			if (invent.cArmorId != '' && invent.cArmorId != null && !Settings.alicorn) changeArmor(invent.cArmorId, true);
 			else pers.setParameters();
-			if (invent.cAmulId!='' && invent.cAmulId!=null) changeArmor(invent.cAmulId,true);
-			if (!pers.dead && invent.cWeaponId!='' && invent.cWeaponId!=null) changeWeapon(invent.cWeaponId);
-			if (invent.cSpellId!='' && invent.cSpellId!=null) changeSpell(invent.cSpellId, false);
-			prevArmor=invent.prevArmor;
-			punchWeapon=new WKick(this,'punch');
-			paintWeapon=new WPaint(this,'paint');
-			childObjs=new Array(currentWeapon,punchWeapon);
+
+			if (invent.cAmulId != '' && invent.cAmulId != null) changeArmor(invent.cAmulId, true);
+			if (!pers.dead && invent.cWeaponId != '' && invent.cWeaponId != null) changeWeapon(invent.cWeaponId);
+			if (invent.cSpellId != '' && invent.cSpellId != null) changeSpell(invent.cSpellId, false);
+			prevArmor = invent.prevArmor;
+			punchWeapon = new WKick(this, 'punch');
+			paintWeapon = new WPaint(this, 'paint');
+			childObjs = new Array(currentWeapon, punchWeapon);
+
 			if (invent.fav[29]) 
 			{
 				throwWeapon=invent.weapons[invent.fav[29]];
@@ -296,7 +302,8 @@ package unitdata
 			pet=null;
 			neujazMax=pers.neujazMax;
 			
-			if (pers.dead) {
+			if (pers.dead) 
+			{
 				hp=0;
 				controlOff();
 				anim('die',true);
@@ -304,7 +311,8 @@ package unitdata
 			else 
 			{
 				currentPet=pers.currentPet;
-				if (currentPet!='' && currentPet!=null && currentPet!='moon') {
+				if (currentPet!='' && currentPet!=null && currentPet!='moon') 
+				{
 					pet=pets[currentPet];
 					childObjs[2]=pet;
 					pet.call();
@@ -313,10 +321,13 @@ package unitdata
 				invent.nextItem(1);
 				weaponLevit();
 			}
-			World.world.calcMassW=World.world.calcMass=true;
+
+			World.world.calcMassW = true;
+			World.world.calcMass = true;
 			setAddictions();
 			if (Settings.alicorn) alicornOn(false);
 			else pers.setParameters();
+
 		}
 		
 		public override function setNull(f:Boolean=false):void
@@ -330,7 +341,6 @@ package unitdata
 			dropTeleObj();
 			actionObj=null;
 			isLaz=0;
-			//t_work=0;
 			levit=0;
 			f_stealth=stealthMult<1;
 			f_die=f_levit=f_dash=f_inv=false;
@@ -377,25 +387,29 @@ package unitdata
 			var outP:Object=World.world.level.gotoLoc(napr, portX, portY);
 			if (outP!=null) 
 			{
-				if (outP.die) {						//смерть от падения в бездну (переход на кт)
-					//damage(10000,Unit.D_INSIDE);
+				if (outP.die) 
+				{						//смерть от падения в бездну (переход на кт)
 					die(-1);
 					vis.visible=false;
 					return false;
 				}
-				//if (napr!=5) teleport(outP.x,outP.y);
-				if (napr==3 || napr==4) {
+				if (napr==3 || napr==4) 
+				{
 					if (laz!=0) {
 						checkStairs();
 						if (!isLaz) checkStairs(1,-Tile.tilePixelWidth*laz);
 						if (!isLaz) checkStairs(1,Tile.tilePixelWidth*laz);
 					}
 				} 
-				if (napr==4) {
-					if (!isLaz && !isFly && lev==0) {
+				if (napr==4) 
+				{
+					if (!isLaz && !isFly && lev==0) 
+					{
 						dy=-jumpdy;
 						dx=maxSpeed*storona;
-					} else if (isFly || lev==1) {
+					} 
+					else if (isFly || lev==1) 
+					{
 						dy=-jumpdy;
 					}
 				}
@@ -403,7 +417,9 @@ package unitdata
 				if (sats.que.length > 0) sats.clearAll();
 				if (levit==1 && !ctr.keyStates.keyJump) levit=0;
 				return true;
-			} else {
+			} 
+			else 
+			{
 				return false;
 			}
 			return false;
@@ -462,10 +478,12 @@ package unitdata
 		public override function addVisual():void
 		{
 			super.addVisual();
-			if (throwWeapon) {
+			if (throwWeapon) 
+			{
 				throwWeapon.addVisual2();
 			}
-			if (magicWeapon) {
+			if (magicWeapon) 
+			{
 				magicWeapon.addVisual2();
 			}
 		}
@@ -496,41 +514,60 @@ package unitdata
 		public override function forces():void
 		{
 			grav=1;
-			if (kdash_t>0) {
-				if (kdash_t==1) {
+			if (kdash_t>0) 
+			{
+				if (kdash_t==1)
+				{
 					dx*=0.3;
 					dy*=0.3;
 				}
-			} else if (isLaz!=0) {
+			} 
+			else if (isLaz!=0) 
+			{
 				dy=0;
 				dx*=0.8;
-			} else if (levit) {
+			} 
+			else if (levit) 
+			{
 				dy*=0.8;
 				dx*=0.8;
-			} else if (isFly) {
-				if (ctr.keyStates.keyRun) {
+			} 
+			else if (isFly)
+			{
+				if (ctr.keyStates.keyRun) 
+				{
 					dy*=0.96;
 					dx*=0.96;
-				} else if (t_throw<=0){
+				} else if (t_throw<=0)
+				{
 					dy*=0.9;
 					dx*=0.9;
 				}
 				t_fly+=0.1;
-				if (room.electroDam>0) {
+				if (room.electroDam>0) 
+				{
 					dy+=Math.sin(t_fly)*0.7;
 					dx+=storona*Math.cos(t_fly)*0.5;
-				} else {
+				} 
+				else 
+				{
 					dy+=Math.sin(t_fly)/5;
 				}
-			} else {
+			} 
+			else 
+			{
 				var brake1=brake;
 				if (inWater && !isPlav) dx*=0.5;
-				if (isPlav) {
+				if (isPlav) 
+				{
 					dy+=Settings.ddy*ddyPlav;
 					dy*=0.8;
-				} else {
+				} 
+				else 
+				{
 					var t:Tile=room.getAbsTile(X,Y-scY/4);
-					if (t.grav>0 && dy<room.maxdy*t.grav || t.grav<0 && dy>room.maxdy*t.grav) {
+					if (t.grav>0 && dy<room.maxdy*t.grav || t.grav<0 && dy>room.maxdy*t.grav) 
+					{
 						if (dash_t>dash_maxt-11) dy+=Settings.ddy*t.grav*0.1;
 						else dy+=Settings.ddy*t.grav;
 					}
@@ -539,22 +576,28 @@ package unitdata
 				}
 				//торможение
 				if (isSit) brake1=0.4*brake;
-				if (!stay) {
+				if (!stay) 
+				{
 					brake1=0.1*brake;
 				}
-				//if (stay) {
-					if (walk<0) {
+					if (walk<0) 
+					{
 						if (dx<-maxSpeed) dx+=brake1;
-					} else if (walk>0) {
+					} else if (walk>0) 
+					{
 						if (dx>maxSpeed) dx-=brake1;
-					} else {
+					} 
+					else 
+					{
 						if (dx>-brake1 && dx<brake1) dx=0;
 						else if (dx>0) dx-=brake1;
 						else if (dx<0) dx+=brake1;
 					}
-				if (stay) {
+				if (stay) 
+				{
 					dx*=tormoz;
-					if (room.quake && massa<=2) {
+					if (room.quake && massa<=2) 
+					{
 						var pun:Number=(1+(2-massa)/2)*room.quake;
 						if (pun>10) pun=10;
 						dy=-pun*Math.random();
@@ -563,31 +606,41 @@ package unitdata
 				}
 			}
 			osndx=osndy=0;
-			if (stayOsn) {
-				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) {
+			if (stayOsn) 
+			{
+				if (stayOsn.cdx>10 || stayOsn.cdx<-10 || stayOsn.cdy>10 || stayOsn.cdy<-10) 
+				{
 					stay=false;
-				} else {
+				} 
+				else 
+				{
 					osndx=stayOsn.cdx;
 					osndy=stayOsn.cdy;
 				}
 			}
 			stayOsn=null;
 			//оковы
-			if (isFetter>0) {
+			if (isFetter>0) 
+			{
 				isLaz=0;
 				dfx=fetX-X;
 				dfy=fetY-Y+30;
 				rfetter=Math.sqrt(dfx*dfx+dfy*dfy);
-				if (rfetter>isFetter*2) {
+				if (rfetter>isFetter*2) 
+				{
 					fetX=X;
 					fetY=Y;
 					dfx=dfy=rfetter=0;
 				} 
-				if (rfetter>isFetter*0.95) {
-					if (rfetter>isFetter) {
+				if (rfetter>isFetter*0.95) 
+				{
+					if (rfetter>isFetter) 
+					{
 						dx+=dfx/20;
 						dy+=dfy/20;
-					} else {
+					} 
+					else 
+					{
 						dx+=dfx/20*(rfetter/isFetter*20-19);
 						dy+=dfy/20*(rfetter/isFetter*20-19);
 					}
@@ -601,32 +654,29 @@ package unitdata
 		{
 			super.actions();
 			
-			//взаимодействие с объектами
-			/*for each(var obj:Obj in room.objs) {
-				if (obj.radioactiv) {
-					if (obj.rasst2<obj.radioactiv*obj.radioactiv) {
-						drad+=(obj.radioactiv-Math.sqrt(obj.rasst2))/200;
-					}
-				}
-			}*/
-			
 			inBattle=World.world.t_battle>0 || Settings.testBattle;
 			
 			//захват лута
 			if (isTake>0) isTake--;
 			//радиация
-			if (noRad) {
+			if (noRad) 
+			{
 				noRad=false;
-			} else {
+			} 
+			else 
+			{
 				drad+=room.rad;
 				if (inWater) drad+=room.wrad;
 			}
-			if (drad2>0) {
+			if (drad2>0) 
+			{
 				drad+=drad2;
 				drad2-=0.1;
 			}
-			if (drad>0) {
-				if (radX>0 && !invulner && !Settings.godMode) {
+			if (drad>0) 
+			{
+				if (radX>0 && !invulner && !Settings.godMode) 
+				{
 					rad+=drad/30*radX;
 					if (pers.radChild>0 && rad>maxhp*(1-pers.radChild)) rad=maxhp*(1-pers.radChild);
 					if (hp>maxhp-rad) {
@@ -773,14 +823,16 @@ package unitdata
 				} else {			
 					sats.unsetCel(true);	//иначе отменить цель
 				}
-			} else if (attackForever) {
-				if (isrnd(0.05)) {
-					//celX=World.world.celX+Math.random()*600-300;
-					//celY=World.world.celY+Math.random()*600-300;
+			} else if (attackForever) 
+			{
+				if (isrnd(0.05)) 
+				{
 					celX=Math.random()*room.roomPixelWidth;
 					celY=Math.random()*room.roomPixelHeight;
 				}
-			} else {
+			} 
+			else 
+			{
 				celX=World.world.celX;
 				celY=World.world.celY;
 			}
@@ -1069,16 +1121,13 @@ package unitdata
 			var nx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
 			var ny=Math.round(World.world.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
 			var t:Tile=room.getAbsTile(World.world.celX,World.world.celY);
-			//if (!room.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			if (t.visi>=0.8 && !room.collisionUnit(nx, ny,stayX,stayY)) return true;
-			//if (t.visi>=0.8 && !collisionAll(nx-X, ny-Y)) return true;
 			return false;
 		}
 		
 		//снять нужное количество маны, установить время перезарядки
 		public function manaSpell(dmag:Number, dm:Number):void
 		{
-			//if (culd>0) t_culd=Math.floor(pers.spellDown*culd);
 			mana-=dmag*pers.allDManaMult;
 			pers.manaDamage(dm*pers.allDManaMult);
 			dmana=0;
@@ -1197,7 +1246,6 @@ package unitdata
 					Emitter.emit('throw',room,teleObj.X,teleObj.Y-teleObj.scY/2,{rotation:Math.atan2(teleObj.dy,teleObj.dx)*180/Math.PI});
 					Snd.ps('dash',teleObj.X,teleObj.Y);
 				}
-				//Emitter.emit('magrun',room,teleObj.X,teleObj.Y-teleObj.scY/2,{dx:teleObj.dx, dy:teleObj.dx});
 				dropTeleObj();
 			}
 		}
@@ -1276,7 +1324,6 @@ package unitdata
 					else if (room.celObj.inter.lock>0) 	//взлом
 					{
 						if (room.celObj.inter.lockTip==0) return;
-						//if (pers.possLockPick<=0) return;
 						room.celObj.inter.unlock=pers.getLockTip(room.celObj.inter.lockTip);
 						room.celObj.inter.master=pers.getLockMaster(room.celObj.inter.lockTip);
 						t_action=room.celObj.inter.t_action+pers.getLockPickTime(room.celObj.inter.lock, room.celObj.inter.lockTip);
@@ -1454,7 +1501,7 @@ package unitdata
 					if (!currentSpell.castSpell(World.world.celX, World.world.celY)) ctr.keyStates.keyDef=false;
 					if (!currentSpell.prod) ctr.keyStates.keyDef=false;
 				} else ctr.keyStates.keyDef=false;
-			} //else if (currentSpell) currentSpell.active=false;
+			}
 			for (var i=1; i<=Settings.kolQS; i++) {
 				if (ctr['keySpell'+i]) {
 					if (invent.fav[Settings.kolHK*2+i]!=null) {
@@ -1623,7 +1670,7 @@ package unitdata
 				maxSpeed=sitSpeed;
 			}
 			porog=0;
-			porog_jump=0;//(dy>=0)?5:0;
+			porog_jump=0;
 			
 			if ((isRun || ctr.keyStates.keyBeUp)&& jumpNumb==0) porog_jump=10;
 
@@ -1673,11 +1720,10 @@ package unitdata
 					dash_t=dash_maxt;
 					jumpNumb=2;
 					dJump=false;
-					//if (!room.levitOn) {
 						stay=false;
 						jumpp=0;
 						ctr.keyStates.keyJump=false;
-					//}
+
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
 				ctr.keyStates.keyDubRight=ctr.keyStates.keyDubLeft=ctr.keyStates.keyDash=false;
@@ -1690,11 +1736,11 @@ package unitdata
 					dash_t=dash_maxt;
 					jumpNumb=2;
 					dJump=false;
-					//if (!room.levitOn) {
+
 						stay=false;
 						jumpp=0;
 						ctr.keyStates.keyJump=false;
-					//}
+
 					if (inBattle) stam-=pers.stamRun*pers.stamDash*dstam;
 				}
 				ctr.keyStates.keyDubLeft=ctr.keyStates.keyDubRight=ctr.keyStates.keyDash=false;
@@ -1702,7 +1748,6 @@ package unitdata
 			
 			//прыг
 			if (levit==1) levit=0;
-			//throu=(ctr.keyStates.keyJump || isLaz)&&ctr.keyStates.keySit || isPlav;
 			throu=(ctr.keyStates.keyJump || !stay)&&ctr.keyStates.keySit || isPlav || kdash_t>3 || pinok>70;
 			if (stay && !ctr.keyStates.keyJump || isLaz) {
 				jumpp=maxjumpp;//пока стоим, прыжок заряжен полностью
@@ -1734,7 +1779,7 @@ package unitdata
 				if (stay && Settings.hardInv) invent.damageItems(0,false);
 				if (isPlav) {
 					dy-=plavdy*pers.speedPlavMult;
-				} else if (jumpp>0) { //&& !isSit
+				} else if (jumpp>0) {
 					if (isSit) unsit();
 					if (!isSit) {
 						spellDisact();
@@ -1802,7 +1847,7 @@ package unitdata
 			}
 			//плавание
 			//присесть
-			if (ctr.keyStates.keySit) {// !isSit &&!levit &&!isLaz &&!isPlav) {
+			if (ctr.keyStates.keySit) {
 				porog=0;
 				if (stay && diagon==0 && runForever<=0 && !inWater && isFetter<=0 && !noStairs && rat==0) {
 					if (checkStairs(2)) {	//проверить лестницу
@@ -2476,7 +2521,6 @@ package unitdata
 		
 		public function changeSpell (nid:String='', inf:Boolean=true):void
 		{
-			//if (invent.spells[nid]==null) invent.addSpell(nid);
 			if (currentSpell==invent.spells[nid]) currentSpell=null;
 			else currentSpell=invent.spells[nid];
 			if (inf && currentSpell) World.world.gui.infoText('usedSpell',currentSpell.objectName);
@@ -2704,7 +2748,7 @@ package unitdata
 			otherVisual();
 		}
 		
-		function chLayer(n:int):void
+		public function chLayer(n:int):void
 		{
 			if (layer==n) return;
 			remVisual();
@@ -2819,8 +2863,8 @@ package unitdata
 
 			var cframe:int;
 			if (t_work && work=='punch') freeAnim=0;
-			if (t_work && work=='punch' && animState!='punch') {
-				//if (storona>0 && celX>X || storona<0 && celX<X) vis.osn.gotoAndStop('punch');
+			if (t_work && work=='punch' && animState!='punch') 
+			{
 				if (!ctr.keyStates.keyRun) vis.osn.gotoAndStop('punch');
 				else vis.osn.gotoAndStop('kick');
 				animState='punch';
@@ -3084,17 +3128,20 @@ package unitdata
 			if (levit>0 && t_levitfilter<=20) t_levitfilter+=2;
 			if (dJump2 && t_levitfilter<=20) t_levitfilter+=10;
 			if (levit==0 && !dJump2 && t_levitfilter>=0) t_levitfilter--;
-			if (t_levitfilter==0) {
+			if (t_levitfilter==0) 
+			{
 				f_levit=false;
 				setFilters();
-			} else if (t_levitfilter>0 && t_levitfilter<=20) {
+			} 
+			else if (t_levitfilter>0 && t_levitfilter<=20) 
+			{
 				levitFilter1.alpha=t_levitfilter/20;
-				//levitFilter.strength=t_levitfilter/20;
 				levitFilter1.blurX=levitFilter1.blurY=t_levitfilter/4+2;
 				f_levit=true;
 				setFilters();
 			}
-			if (dash_t>=dash_maxt-20) {
+			if (dash_t>=dash_maxt-20) 
+			{
 				dashFilter.blurX=Math.min(dash_t-dash_maxt+20,10)/2;
 				setFilters();
 			}
@@ -3115,7 +3162,6 @@ package unitdata
 				if (vis.osn.body.head.morda.eye.eye.zrak.x>-11) vis.osn.body.head.morda.eye.eye.zrak.x=-11;
 				vis.osn.body.head.morda.eye.eye.zrak.y+=Math.random()*4-2;
 			}
-			//if (currentWeapon) currentWeapon.animate();
 			//trace(animState +'  ' + vis.body.currentFrame);
 		}
 		
@@ -3225,11 +3271,13 @@ package unitdata
 				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=false;
 			}
 			//щит
-			if (vis.shit && !vis.shit.visible && shithp>0) {
+			if (vis.shit && !vis.shit.visible && shithp>0) 
+			{
 				vis.shit.visible=true;
 				vis.shit.gotoAndPlay(1);
 			}
-			if (vis.shit && vis.shit.visible && shithp<=0) {
+			if (vis.shit && vis.shit.visible && shithp<=0) 
+			{
 				vis.shit.visible=false;
 				vis.shit.gotoAndStop(1);
 			}
@@ -3260,7 +3308,8 @@ package unitdata
 			World.world.gui.setHp();
 		}
 		
-		public function showElectroBlock() {
+		public function showElectroBlock():void
+		{
 			var t:Tile=room.getAbsTile(X+Math.random()*320-160, Y-scY/2+Math.random()*320-160);
 			if (t && t.tileMaterial==1 && t.hp>0) Emitter.emit('electro', room, (t.X+0.5)*Tile.tilePixelWidth, (t.Y+0.5)*Tile.tilePixelHeight);
 		}

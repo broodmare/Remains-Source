@@ -71,7 +71,6 @@ package
 			XmlBook.xmlBookSetup();
 
 			main = nmain;
-			
 			mainMenu = new visMainMenu(); //Linkage
 
 			mainMenu.dialLoad.visible 		= false;
@@ -171,7 +170,6 @@ package
 		public function mainMenuListenerToggle(enabled:Boolean):void
 		{
 			var mainFivebuttons:Array = [mainMenu.butContGame, mainMenu.butLoadGame, mainMenu.butNewGame, mainMenu.butOpt, mainMenu.butAbout];
-
 			var toggle:Function;
 			
 			for each (var mainFiveButton:Object in mainFivebuttons) 
@@ -198,7 +196,7 @@ package
 			switch(event.currentTarget.name)
 			{
         		case "butContGame":
-					trace('MainMenu.as/funContGame() - Opening Continue Game window.');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening Continue Game window.');
 					var n:int = 0;
 					var maxDate:Number = 0;
 					for (var i:int = 0; i <= world.saveCount; i++) 
@@ -227,26 +225,26 @@ package
            			break;
 
         		case "butLoadGame":
-					trace('MainMenu.as/funLoadGame() - Opening Load Game window.');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening Load Game window.');
 					world.mmArmor = true;
 					mainNewOff();
 					loadReg = 0;
 					mainLoadOn();
 					break;
 				case "butNewGame":
-					trace('MainMenu.as/funNewGame() - Opening New Game window.');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening New Game window.');
 					world.mmArmor = false;
 					mainLoadOff();
 					mainNewOn();
 					break;
 				case "butOpt":
-					trace('MainMenu.as/funOpt() - Options window?');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening Options window.');
 					mainNewOff();
 					mainLoadOff();
 					world.pip.onoff();
 					break;
 				case "butAbout":
-					trace('MainMenu.as/funAbout() - Executing funAbout().');
+					trace('MainMenu.as/mainMenuButtonPress() - Executing funAbout().');
 					mainMenu.dialAbout.title.text = Res.txt('g', 'about');
 					var s:String = Res.formatText(Res.txt('g','about', 1));
 					s += '<br><br>' + Res.txt('g', 'usedmusic') + '<br>';
@@ -259,7 +257,7 @@ package
 					mainMenu.dialAbout.scroll.maxScrollPosition = mainMenu.dialAbout.txt.maxScrollV;
 					break;
 				default:
-           			trace("Unknown button pressed");
+           			trace("MainMenu.as/mainMenuButtonPress() - Unknown button pressed");
             		break;
 			}
 
@@ -280,54 +278,52 @@ package
 		public function setLangButtons():void
 		{
 			trace('MainMenu.as/setLangButtons() - Creating language buttons.');
+			languageButtons = [];
 
-
-				languageButtons = [];
-
-				try
+			try
+			{
+				for each(var language:XML in Languages.languageListDictionary)
 				{
-					for each(var language:XML in Languages.languageListDictionary)
+					if(language.lang.@id != "" && language.lang.text() != "")
 					{
-						if(language.lang.@id != "" && language.lang.text() != "")
+						Languages.languageCount++;
+						var button = new butLang();
+
+						var languageId:String = language.lang.@id;
+						var languageName:String = language.lang.text();
+
+						trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
+
+						// Set the button properties
+						button.languageButtonTextField.text = languageName;
+						button.y = -Languages.languageCount * 40;
+						button.n.text = languageId;
+						button.n.visible = false;
+						button.addEventListener(MouseEvent.CLICK, languageButtonPress);
+						mainMenu.lang.addChild(button)
+					}
+					else // Check languageListDictionary length and output error about a blank entry.
+					{
+						var dictionaryLength:int = 0;
+						for (var key:* in Languages.languageListDictionary)
 						{
-							Languages.languageCount++;
-							var button = new butLang();
-
-							var languageId:String = language.lang.@id;
-							var languageName:String = language.lang.text();
-
-							trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
-
-							// Set the button properties
-							button.languageButtonTextField.text = languageName;
-							button.y = -Languages.languageCount * 40;
-							button.n.text = languageId;
-							button.n.visible = false;
-							button.addEventListener(MouseEvent.CLICK, languageButtonPress);
-							mainMenu.lang.addChild(button)
+							dictionaryLength++;
 						}
-						else // Check languageListDictionary length and output error about a blank entry.
-						{
-							var dictionaryLength:int = 0;
-							for (var key:* in Languages.languageListDictionary)
-							{
-								dictionaryLength++;
-							}
-							trace('MainMenu.as/setLangButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
-						}
+						trace('MainMenu.as/setLangButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
 					}
 				}
-				catch(err:Error)
-				{
-					trace('MainMenu.as/setLangButtons() - ERROR: Failed to create language buttons. Error: "' + err.message + '."');
-				}
+			}
+			catch(err:Error)
+			{
+				trace('MainMenu.as/setLangButtons() - ERROR: Failed to create language buttons. Error: "' + err.message + '."');
+			}
 
-				trace('MainMenu.as/setLangButtons() - Created: "' + Languages.languageCount + '" language buttons.');
+			trace('MainMenu.as/setLangButtons() - Created: "' + Languages.languageCount + '" language buttons.');
 
-				if (Languages.languageCount > -1 ) //-1 is the starting value.
-				{
-					langButtonsLoaded = true;
-				}
+			if (Languages.languageCount > -1 ) //-1 is the starting value.
+			{
+				langButtonsLoaded = true;
+			}
 		}
 		
 		//Language
@@ -551,7 +547,7 @@ package
 					com = 'load';
 				}
 			} 
-			catch(err) 
+			catch(err:Error) 
 			{
 				trace('MainMenu.as/completeHandler() - Error load');
 			}
@@ -625,7 +621,6 @@ package
 			mainNewOff();
 		}
 
-		
 		public function funNewOk(event:MouseEvent):void //click OK in the new game window
 		{
 			trace('MainMenu.as/funNewOk() - Executing funNewOk().');
@@ -703,8 +698,6 @@ package
 			mainMenu.dialNew.modeinfo.htmlText = Res.formatText(Res.txt('g', 'opt' + n, 1));
 		}
 		
-
-
 		public function languageButtonPress(event:MouseEvent):void //What to do when a langauge button is pressed.
 		{
 			trace('MainMenu.as/languageButtonPress() - Language : "' + event.currentTarget.n.text + '" pressed. Current Language: "' + Languages.languageName + '."');
@@ -738,8 +731,6 @@ package
 			trace('MainMenu.as/showMainButtons() - Turned main buttons ' + (bool ? 'on' : 'off') + '.');
 		}
 
-
-		
 		public function funAboutOk(event:MouseEvent):void
 		{
 			mainMenu.dialAbout.visible = false;
@@ -760,19 +751,15 @@ package
 				world.pip.updateLang();
 				updateMainMenuLanguage();
 
-				return;
-
 			}
 			
+			//TODO: This is probably better as a switch-case
 			if (loaded) 
 			{
-
-				//trace('MainMenu.as/step() - mainMenu.loaded is true...');
 				if (animOn && !world.pip.active) displ.anim();
 
 				if (world.allLevelsLoaded && Languages.textLoaded)
 				{
-					//trace('MainMenu.as/step() - world.allLevelsLoaded and Languages.textLoaded are true.');
 					if (Settings.musicTracksFound > Settings.musicTracksLoaded) 
 					{
 						trace('MainMenu.as/step() - Waiting on music to load, updating loading display.');
@@ -791,30 +778,21 @@ package
 				{
 					mainMenu.loading.text = '';
 				}
-				return;
-
 			}
-
-
 
 			if (!world.constructorFinished && Languages.textLoaded)
 			{
 				trace('MainMenu.as/step() - Language data finished loading, continuing world construction.');
-				
 				world.constructorFinished = true;
 				world.continueLoadingWorld();
 			}
 
-			
 			if (world.constructorFinished && !mainMenuLoaded)
 			{
 				trace('MainMenu.as/step() - world finished loading. Starting main menu loading stage 2.');
-				
-				
 				mainMenuLoaded = true;
 				continueLoading();
 			}
-			
 
 			if (world.grafon != null)
 			{
@@ -831,12 +809,9 @@ package
 						return;
 					}
 
-
 					if (Languages.textLoaded && world.allLevelsLoaded) 
 					{
-						trace('MainMenu.as/step() - Languages.textLoaded and world.allLevelsLoaded are true.');
-						trace('MainMenu.as/step() - Checking if language buttons are loaded...');
-
+						trace('MainMenu.as/step() - Languages.textLoaded and world.allLevelsLoaded are true, Checking if language buttons are loaded.');
 						if (!langButtonsLoaded)
 						{
 							trace('MainMenu.as/step() - No language buttons found, creating new Menu buttons array.');
@@ -844,14 +819,8 @@ package
 							updateMainMenuLanguage(); //I put this in here as a quick hacky fix.
 						}
 
-						
-						
-						trace('MainMenu.as/step() - Everything loaded! Showing Buttons and returning...');
-
 						loaded = true; // ALL loading is finished.
 						showMainButtons(true); 
-						
-						trace('MainMenu.as/step() - Buttons turned on, returning.');
 					}
 
 				}
@@ -868,13 +837,6 @@ package
 		{
 			mainMenu.loading.text += s + '; ';
 		}
-
-
-
-
-
-
-
 
 		public function mainStep(event:Event):void  // Runs when entering the frame.
 		{
@@ -897,25 +859,18 @@ package
 					
 					var opt:Object;
 					if (com == 'new') 
-					{
-						//skipTraining - option 1 - skip training
-						//hardcoreMode - option 2
-						//fastxp - option 3, 40% less experience needed
-						//randomizeLevelUpSkills - option 4, randomize what skillpoints are assigned to when leveling up.
-						//hardskills - give 3 sp per level (instead of?)
-						//autoSaveN - autosave cell
-						//limitedInventory
+					{	
 						opt =
 						{
 							dif:newGameDif,
-							skipTraining:mainMenu.dialNew.checkOpt1.selected,
-							hardcore:mainMenu.dialNew.checkOpt2.selected,
-							fastxp:mainMenu.dialNew.checkOpt3.selected,
-							rndpump:mainMenu.dialNew.checkOpt4.selected,
-							hardskills:mainMenu.dialNew.checkOpt5.selected,
-							hardinv:mainMenu.dialNew.checkOpt6.selected
+							skipTraining:mainMenu.dialNew.checkOpt1.selected,	//skipTraining - option 1 - skip training
+							hardcore:mainMenu.dialNew.checkOpt2.selected,		//hardcoreMode - option 2
+							fastxp:mainMenu.dialNew.checkOpt3.selected,			//fastxp - option 3, 40% less experience needed
+							rndpump:mainMenu.dialNew.checkOpt4.selected, 		//randomizeLevelUpSkills - option 4, randomize what skillpoints are assigned to when leveling up.
+							hardskills:mainMenu.dialNew.checkOpt5.selected, 	//hardskills - give 3 sp per level (instead of?)
+							hardinv:mainMenu.dialNew.checkOpt6.selected 		//limitedInventory
 						};
-						if (opt.hardcore) opt.autoSaveN = loadCell;
+						if (opt.hardcore) opt.autoSaveN = loadCell; 			//autoSaveN - autosave cell
 						loadCell = -1;
 					}
 					world.startNewGame(loadCell, mainMenu.dialNew.inputName.text, opt);

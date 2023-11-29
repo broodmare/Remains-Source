@@ -562,22 +562,32 @@ package unitdata
 			}
 		}
 		
-		public function addWeapon(id:String, hp:int=0xFFFFFF, hold:int=0, respect:int=0, nvar:int=0):Weapon 
+		public function addWeapon(id:String, hp:int = 0xFFFFFF, hold:int = 0, respect:int = 0, nvar:int = 0):Weapon 
 		{
-			if (id==null) return null;
+			if (id == null) return null;
 			if (weapons[id]) 
 			{
 				weapons[id].repair(hp);
 				return weapons[id];
 			}
-			var w:Weapon=Weapon.create(owner,id,nvar);
-			if (w==null) return null;
-			if (w.tip==5 || hp==0xFFFFFF) w.hp=w.maxhp;
+
+			var w:Weapon = Weapon.create(owner, id, nvar);
+
+			if (w == null)
+			{
+				trace ('Invent.as/addWeapon() - ERROR while attempting to add weapon: "' + id + '". Weapon.create() failed, Weapon is null.')
+				return null;
+			} 
+
+			if (w.tip == 5 || hp == 0xFFFFFF) w.hp = w.maxhp;
 			else w.hp=hp;
+
 			if (hold>0) w.hold=hold;
 			if (w.tip==4 && respect==3) respect=0;
+
 			w.respect=respect;
 			weapons[id]=w;
+
 			return w;
 		}
 		
@@ -733,6 +743,8 @@ package unitdata
 		
 		public function addSpell(id:String):Spell 
 		{
+			trace('Invent.as/addSpell() - 1/7 Adding spell...');
+
 			if (spells == null)
 			{
 				trace('Invent.as/addSpell() - ERROR: inventory spells is null.');
@@ -747,30 +759,54 @@ package unitdata
 			{
 				return spells[id];
 			}
+			trace('Invent.as/addSpell() - 2/7');
 			var sp:Spell = new Spell(owner, id);
+
+			trace('Invent.as/addSpell() - 3/7');
 			if (sp == null) 
 			{
 				trace('Invent.as/addSpell() - ERROR: New spell is null.');
 				return null;
 			}
 			spells[id] = sp;
+
+			trace('Invent.as/addSpell() - 4/7');
 			var w:Weapon = addWeapon(id);
 			if (w = null) 
 			{
 				trace('Invent.as/addSpell() - ERROR: New weapon is null.');
 				return null;
 			}
+
+			trace('Invent.as/addSpell() - 5/7 w.objectName: "' + w.objectName + '", w.spell: "' + w.spell + '".');
+
 			w.spell = true;
+
+			trace('Invent.as/addSpell() - 6/7');
 			w.objectName = sp.objectName;
+
+			trace('Invent.as/addSpell() - 7/7 Done! Returning spell');
 			return sp;
 		}
 		
 		public function addAllSpells():void
 		{
-			for each (var sp:XML in XmlBook.getXML("items").item.(@tip == 'spell')) 
+			for each (var sp in XmlBook.getXML("items").item.(@tip == 'spell')) 
 			{
-				addSpell(sp.@id);
+				trace('Invent.as/addAllSpells() - Adding spell: "' + sp.@id + '".')
+				try
+				{
+					addSpell(sp.@id);
+					trace('Invent.as/addAllSpells() - Sucessful!');
+				}
+				catch(err:Error)
+				{
+					trace('Invent.as/addAllSpells() - ERROR while adding spell: "' + sp.@id + '".');
+				}
+				
+				
 			}
+			trace('Invent.as/addAllSpells() - Finished adding spells.')
 		}
 		
 		// Add to the inventory, tr = 1 if the item was purchased, 2 if it was obtained as a reward

@@ -10,9 +10,9 @@ package locdata
 	{
 
 		public var id:String;
-		public var tip:String='';
+		public var tip:String = '';
 		public var level:Level;
-		public var loaded:Boolean=false;
+		public var loaded:Boolean = false;
 		
 		public var levelData:XML;
 		public var allroom:XML;

@@ -23,7 +23,8 @@ package locdata
 		
 		
 		//set public
-		public const osnRad = 50, actRad = 250;
+		public const osnRad = 50;
+		public const actRad = 250;
 
 
 		public var vClass:Class;

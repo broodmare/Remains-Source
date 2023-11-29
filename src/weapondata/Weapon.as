@@ -62,8 +62,10 @@ package weapondata
 		public var ready:Boolean=false;  // weapon aimed at target
 		public var is_shoot:Boolean=false; // shot fired
 		protected var animated:Boolean=false;
+
 		// mounting type
 		public var krep:int=0;
+
 		// remaining in the magazine
 		public var hold:int=0;
 
@@ -84,57 +86,61 @@ package weapondata
 		//3 - heavy
 		//4 - explosive
 		public var tip:int=0;
+
 		//Category
-		public var cat:int=0;
+		public var cat:int = 0;
+
 		//Inventory
-		//public var fav:int=0;
 		public var respect:int=0;		//relation 0-new, 1-hidden, 2-used, 3-schema
+
 		//Required skill
 		public var skill:int=0;
+
 		//Skill level
 		public var lvl:int=0;
 		public var lvlNoUse:Boolean=false;	//prevent use if skill level is not enough
 		public var perslvl:int=0;
-		public var spell:Boolean=false;		//is a defensive spell
-		public var alicorn:Boolean=false;	//available in alicorn mode
-		public var rep_eff:Number=1;	//repair efficiency by gunsmithing
+		public var spell:Boolean = false;		//is a defensive spell
+		public var alicorn:Boolean = false;		//available in alicorn mode
+		public var rep_eff:Number=1;			//repair efficiency by gunsmithing
 		
-		public var auto:Boolean=false;	//automatic attack
-		public var rapid:int=5;			//ticks per shot, 30=1s
-		public var speed:Number=100;	// bullet speed
-		public var volna:Boolean=false;	// if true, bullet speed will not be random
-		public var deviation:Number=0; 	// spread angle
-		public var precision:Number=0;	// accuracy, indicates the distance at which the hit will be 100%
-		public var antiprec:Number=0;	// for sniper rifles, indicates the distance at which accuracy will start to decrease
-		public var dlina:int=50, mindlina:int=50;			// length of melee weapon
-		public var mass:int=1;			// occupies space
-		public var drot:Number=0;		// weapon rotation speed, 0 - instant
-		public var drot2:Number=0;		// weapon rotation speed during attack
-		public var prep:int=0;			// ticks for spinning up
+		public var auto:Boolean = false;		//automatic attack
+		public var rapid:int=5;					//ticks per shot, 30=1s
+		public var speed:Number=100;			// bullet speed
+		public var volna:Boolean=false;			// if true, bullet speed will not be random
+		public var deviation:Number=0; 			// spread angle
+		public var precision:Number=0;			// accuracy, indicates the distance at which the hit will be 100%
+		public var antiprec:Number=0;			// for sniper rifles, indicates the distance at which accuracy will start to decrease
+		public var dlina:int=50; 				// length of melee weapon
+		public var mindlina:int=50;				// length of melee weapon
+		public var mass:int=1;					// occupies space
+		public var drot:Number=0;				// weapon rotation speed, 0 - instant
+		public var drot2:Number=0;				// weapon rotation speed during attack
+		public var prep:int=0;					// ticks for spinning up
 		
-		public var explRadius:Number=0;	// explosion radius, if 0, there is no explosion
-		public var explTip:int=1;		// explosion type, 1-normal, 2-gas cloud
-		public var explKol:int=0;		// number of explosions, interval 1s, 0 - instant explosion
-		public var destroy:Number=10;	// damage to blocks
-		public var damage:Number=0;		// damage to units
-		public var damageExpl:Number=0;	// area damage
-		public var tipDamage:int=0;		// type of damage
-		public var pier:Number=0;		// armor penetration
-		public var critCh:Number=0.1;	// critical chance
-		public var critM:Number=0;		// additional critical
-		public var critDamPlus:Number=0;// addition to critical damage modifier
-		public var distExpl:Boolean=false;	// bullets explode after a certain time
-		public var navod:Number=0;		// homing
+		public var explRadius:Number=0;			// explosion radius, if 0, there is no explosion
+		public var explTip:int=1;				// explosion type, 1-normal, 2-gas cloud
+		public var explKol:int=0;				// number of explosions, interval 1s, 0 - instant explosion
+		public var destroy:Number=10;			// damage to blocks
+		public var damage:Number=0;				// damage to units
+		public var damageExpl:Number=0;			// area damage
+		public var tipDamage:int=0;				// type of damage
+		public var pier:Number=0;				// armor penetration
+		public var critCh:Number=0.1;			// critical chance
+		public var critM:Number=0;				// additional critical
+		public var critDamPlus:Number=0;		// addition to critical damage modifier
+		public var distExpl:Boolean=false;		// bullets explode after a certain time
+		public var navod:Number=0;				// homing
 
-		public var otbros:Number=0;		//recoil
-		public var kol:Number=1;		//number of bullets per shot
-		public var dkol:Number=0;		//burst fire
-		public var rashod:Number=1;		//ammo consumption per shot
-		public var opt:Object;		//options
-		public var recoil:int=0;		//recoil backwards
-		public var recoilUp:int=0;		//recoil upwards
-		public var recoilMult:int=1;	//recoil multiplier
-		public var desintegr:Number=0;	//disintegration probability
+		public var otbros:Number=0;				//recoil
+		public var kol:Number=1;				//number of bullets per shot
+		public var dkol:Number=0;				//burst fire
+		public var rashod:Number=1;				//ammo consumption per shot
+		public var opt:Object;					//options
+		public var recoil:int=0;				//recoil backwards
+		public var recoilUp:int=0;				//recoil upwards
+		public var recoilMult:int=1;			//recoil multiplier
+		public var desintegr:Number=0;			//disintegration probability
 		
 		public var holder:int=0;		//magazine
 		public var ammoBase:String='';	//base ammo type
@@ -240,37 +246,40 @@ package weapondata
 		
 		public static function create(owner:Unit, id:String, nvar:int = 0):Weapon 
 		{
+
 			var w:Weapon;
 
 			try
 			{
-				if (id.charAt(id.length - 2)=='^') 
+				if (id.charAt(id.length - 2) == '^') 
 				{
-					id=id.substr(0,id.length - 2);
-					nvar=1;
+					id = id.substr(0, id.length - 2);
+					nvar = 1;
 				}
-				var xl = XmlBook.getXML("weapons").weapon.(@id == id);
-				if (xl.length() == 0) return null;
+
 				var node = XmlBook.getXML("weapons").weapon.(@id == id);
+
 				if (node.length() == 0) return null;
-				node = node[0];
-				if (node.@tip==1) 
+
+				node = node[0]; //Create Default weapon
+
+				if (node.@tip == 1) 
 				{
 					w = new WClub(owner, id, nvar);
 				} 
-				else if (node.@tip == 12) 
+				else if (node.@tip == 12) //Create Paint weapon
 				{
 					w = new WPaint(owner, id, nvar);
 				} 
-				else if (node.@tip == 4) 
+				else if (node.@tip == 4) //Create Thrown weapon
 				{
-					w = new WThrow(owner, id, nvar);
+					w = new WThrow(owner, id, nvar); 
 				} 
-				else if (node.@tip == 5) 
+				else if (node.@tip == 5) //Create Magic weapon
 				{
 					w = new WMagic(owner, id, nvar);
 				} 
-				else if (node.@punch > 0)
+				else if (node.@punch > 0) //Create punching weapon
 				{
 					w = new WPunch(owner, id, nvar);
 				} 
@@ -281,7 +290,8 @@ package weapondata
 			}
 			catch(err:Error)
 			{
-				trace('Weapon.as/create() - ERROR while creating weapon: "' + id + '" on unit: ' + owner + '".');
+				trace('Weapon.as/create() - ERROR while attempting to create weapon ID: "' + id + '", with owner: "' + owner.objectName + '". Error: "' + err.message + '".');
+
 			}
 
 			return w;

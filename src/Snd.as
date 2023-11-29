@@ -351,7 +351,6 @@ package
 		
 		public static function step():void
 		{
-			trace('Snd.as/step() - sound stepping...');
 			var trans:SoundTransform;
 			if (t_hit > 0) t_hit--;
 			if (t_music > 0 && musicPrevCh) 

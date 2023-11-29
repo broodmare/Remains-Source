@@ -1035,7 +1035,7 @@ package unitdata
 			}
 			if (isPlav) 
 			{
-				if (!levit) dy+=Settings.ddy*ddyPlav;
+				if (!levit) dy += Settings.ddy * ddyPlav;
 				dy *= 0.8;
 				dx *= 0.8;
 			} 

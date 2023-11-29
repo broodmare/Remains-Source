@@ -449,12 +449,13 @@ package interdata
 			vishelp.visible = false;
 		}
 		
+
 		public function allItems():void
 		{
-			trace('PipBuck.as/allItems() - Creating weapon/armor arrays and the owner unit.');
-			arrWeapon = new Array();
-			arrArmor = new Array();
-			var owner:Unit = new Unit();
+			trace('PipBuck.as/allItems() - Creating arrays for the pipbuck to hold all armor sets and weapons.');
+			arrWeapon = [];
+			arrArmor  = [];
+			var owner:Unit = new Unit(); // Placeholder empty unit.
 
 			var w:Weapon;
 			var a:Armor;
@@ -464,7 +465,7 @@ package interdata
 			var armorsXML:XML  = XmlBook.getXML("armors");
 
 
-			trace('PipBuck.as/allItems() - Iterating through weapons...');
+			trace('PipBuck.as/allItems() - Iterating through weapons and placing them in the weaponArray.');
 			for each (var weap in weaponsXML.weapon.(@tip > 0))
 			{
 				try
@@ -484,14 +485,22 @@ package interdata
 
 			}
 
-			trace('PipBuck.as/allItems() - Iterating through armor sets...');
+			trace('PipBuck.as/allItems() - Iterating through armor sets and placing them in the armorArray.');
 			for each (var armor in armorsXML.armor)
 			{
-				a = new Armor(armor.@id);
-				arrArmor[armor.@id] = a;
+				try
+				{
+					a = new Armor(armor.@id);
+					arrArmor[armor.@id] = a;
+				}
+				catch(err:Error)
+				{
+					trace('PipBuck.as/allItems() - Error creating armor: "' + armor.@id + '".');
+				}
+
 			}
 
-			trace('PipBuck.as/allItems() - Finished setting up all items');
+			trace('PipBuck.as/allItems() - Finished setting up all armor sets and weapons for the pipbuck.');
 		}
 		
 		public function setRPanel():void

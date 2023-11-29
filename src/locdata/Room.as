@@ -182,20 +182,20 @@ package locdata
 			roomPixelHeight = roomHeight * Settings.tilePixelHeight;
 			otstoy=new Tile(-1,-1);
 
-			units 			= new Array();
-			ups 			= new Array();
-			objs 			= new Array();
-			activeObjects 	= new Array();
-			areas 			= new Array();
-			saves 			= new Array();
-			enspawn 		= new Array();
-			backobjs 		= new Array();
-			roomTileArray 	= new Array();
-			signposts 		= new Array();
-			recalcTiles 	= new Array();
-			spawnPoints 	= new Array();
-			grenades 		= new Array();
-			bonuses 		= new Array();
+			units 			= [];
+			ups 			= [];
+			objs 			= [];
+			activeObjects 	= [];
+			areas 			= [];
+			saves 			= [];
+			enspawn 		= [];
+			backobjs 		= [];
+			roomTileArray 	= [];
+			signposts 		= [];
+			recalcTiles 	= [];
+			spawnPoints 	= [];
+			grenades 		= [];
+			bonuses 		= [];
 			maxdy 			= Settings.maxdy;
 
 			if (rnd) ramka=1;
@@ -212,14 +212,14 @@ package locdata
 				if (opt.home) homeStable = true;
 				if (opt.atk) homeAtk = true;
 			}
-			for (var i = 0; i < kolEn.length; i++) ups[i] = new Array();
+			for (var i:int = 0; i < kolEn.length; i++) ups[i] = new Array();
 			noHolesPlace = rnd;
 			
 			buildLoc(nroom);
 		}
 
 		// Add the player character to the units array
-		public function addPlayer(un:UnitPlayer) 
+		public function addPlayer(un:UnitPlayer):void
 		{
 			gg = un;
 			units.push(un);
@@ -227,7 +227,7 @@ package locdata
 		}
 		
 		// Build according to the xml map
-		public function buildLoc(nroom:XML) 
+		public function buildLoc(nroom:XML):void
 		{
 			// Create an array of tiles
 			for (var i = 0; i < roomWidth; i++) 
@@ -719,14 +719,14 @@ package locdata
 		// Create random enemies in their spawn points
 		public function setRandomUnits():void
 		{
-			for (var i=1; i<kolEn.length; i++) 
+			for (var i:int = 1; i < kolEn.length; i++) 
 			{
 				if (kolEn[i]>0 && ups[i].length) 
 				{
 					// Remove points near passages
 					if (noHolesPlace) 
 					{
-						for (var j=0; j<ups[i].length; j++) 
+						for (var j:int = 0; j < ups[i].length; j++) 
 						{
 							if (!roomTileArray[ups[i][j].x][ups[i][j].y].place) 
 							{
@@ -737,9 +737,9 @@ package locdata
 					}
 					if (ups[i].length > 0) 
 					{
-						for (j=0; j<kolEn[i]; j++) 
+						for (j = 0; j < kolEn[i]; j++) 
 						{
-							var n=Math.floor(Math.random()*ups[i].length);
+							var n:int = Math.floor(Math.random()*ups[i].length);
 							createUnit(tipEn[i],ups[i][n].x,ups[i][n].y, false, ups[i][n].xml);
 							if (ups[i].length <= 1) 
 							{
@@ -752,11 +752,11 @@ package locdata
 				}
 			}
 			// Add hidden enemies
-			if (kolEnHid>0 && ups[2].length > 0) 
+			if (kolEnHid > 0 && ups[2].length > 0) 
 			{
-				for (j=0; j<kolEnHid; j++) 
+				for (j = 0; j < kolEnHid; j++) 
 				{
-					n=Math.floor(Math.random()*ups[2].length );
+					n = Math.floor(Math.random() * ups[2].length );
 					createHidden(ups[2][n].x,ups[2][n].y);
 					if (ups[2].length <= 1) break;
 					else ups[2].splice(n,1);
@@ -767,11 +767,11 @@ package locdata
 		// Create random loot
 		public function putRandomLoot():void
 		{
-			var nx:int=Math.floor(Math.random()*(roomWidth-2)+1);
-			var ny:int=Math.floor(Math.random()*(roomHeight-2)+1);
+			var nx:int = Math.floor(Math.random() * (roomWidth - 2) + 1);
+			var ny:int = Math.floor(Math.random() * (roomHeight - 2) + 1);
 			if (roomTileArray[nx][ny].phis==0) 
 			{
-				LootGen.lootCont(this,(nx+0.5)*Tile.tilePixelWidth,(ny+0.8)*Tile.tilePixelHeight,'metal');
+				LootGen.lootCont(this, (nx + 0.5) * Tile.tilePixelWidth, (ny + 0.8) * Tile.tilePixelHeight, 'metal');
 			}
 		}
 		
@@ -779,11 +779,11 @@ package locdata
 		// emerg>0 - smooth appearance over X ticks
 		public function createUnit(tip:String,nx:int,ny:int,abs:Boolean=false,xml:XML=null,cid:String=null, emerg:int=0):Unit 
 		{
-			if (tip=='mines') 
+			if (tip == 'mines') 
 			{
-				createUnit('mine',nx,ny);
-				createUnit('mine',nx+2,ny);
-				createUnit('mine',nx+4,ny);
+				createUnit('mine', nx, ny);
+				createUnit('mine', nx + 2, ny);
+				createUnit('mine', nx + 4, ny);
 				return null;
 			}
 
@@ -846,7 +846,7 @@ package locdata
 				} 
 				else 
 				{
-					var size=Math.floor((un.scX-1)/40)+1;
+					var size = Math.floor((un.scX-1)/40)+1;
 					un.putLoc(this,(nx+0.5*size)*Tile.tilePixelWidth,(ny+1)*Tile.tilePixelHeight-1);
 				}
 				if (roomActive) 
@@ -1365,16 +1365,16 @@ package locdata
 		{
 			if (spawnPoints.length > 0) 
 			{
-				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
-				var id='checkpoint';
-				if (!act && level.rnd && Math.random()<0.5) 
+				var sp = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+				var id = 'checkpoint';
+				if (!act && level.rnd && Math.random() < 0.5) 
 				{
-					id+=Math.floor(Math.random()*5+1);
+					id += Math.floor(Math.random() * 5 + 1);
 				}
-				cp=createObj(id,'checkpoint',sp.x,sp.y) as CheckPoint;
-				if (level.template.landStage==0 && act) cp.teleOn=true;
+				cp = createObj(id, 'checkpoint', sp.x, sp.y) as CheckPoint;
+				if (level.template.landStage == 0 && act) cp.teleOn = true;
 				if (act) cp.activate(true);
-				isCheck=true;
+				isCheck = true;
 			}
 		}
 		//создание выхода в случайной точке появления
@@ -1382,7 +1382,7 @@ package locdata
 		{
 			if (spawnPoints.length > 0) 
 			{
-				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
+				var sp = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
 				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={level.template.exitProb+s} time='20' inter='8' sign='1'/>);
 				isCheck=true;
 			}
@@ -1392,9 +1392,9 @@ package locdata
 		{
 			if (spawnPoints.length > 0) 
 			{
-				var sp=spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
+				var sp = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
 				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} objectName={Res.txt('m',nprob)} time='20' inter='8'/>);
-				isCheck=true;
+				isCheck = true;
 				return true;
 			}
 			return false;
@@ -1408,34 +1408,34 @@ package locdata
 			var mesto:int=4;
 			var n:int=5;
 			maxXp=kol;
-			for (var i=1; i<=100; i++) 
+			for (var i:int = 1; i <= 100; i++) 
 			{
 				x1 = 2;
 				y1 = 2;
 				x2 = roomWidth - 2;
 				y2 = roomHeight - 2;
-				if (mesto==4) 
+				if (mesto == 4) 
 				{
 					x2 = roomWidth / 2;
 					y2 = roomHeight / 2;
 				} 
-				else if (mesto==3) 
+				else if (mesto == 3) 
 				{
-					x1=roomWidth/2;
-					y2=roomHeight/2;
+					x1 = roomWidth / 2;
+					y2 = roomHeight / 2;
 				} 
-				else if (mesto==2) 
+				else if (mesto == 2) 
 				{
-					x2=roomWidth/2;
-					y1=roomHeight/2;
+					x2 = roomWidth / 2;
+					y1 = roomHeight / 2;
 				} 
-				else if (mesto==1) 
+				else if (mesto == 1) 
 				{
-					x1=roomWidth/2;
-					y1=roomHeight/2;
+					x1=roomWidth / 2;
+					y1=roomHeight / 2;
 				}
-				nx=Math.floor(x1+Math.random()*(x2-x1));
-				ny=Math.floor(y1+Math.random()*(y2-y1));
+				nx = Math.floor(x1 + Math.random() * (x2 - x1));
+				ny = Math.floor(y1 + Math.random() * (y2 - y1));
 				if (getTile(nx,ny).phis==0 && (getTile(nx-1,ny).phis==0 || getTile(nx+1,ny).phis==0)) 
 				{
 					createObj('xp','bonus',nx,ny);
@@ -1636,7 +1636,8 @@ package locdata
 		public function tileKontur(tx:int, ty:int, tile:Tile):void
 		{
 			var a0:Boolean,a1:Boolean,a2:Boolean,a3:Boolean,a4:Boolean,a5:Boolean,a6:Boolean,a7:Boolean;
-			if (tile.phis==1) {
+			if (tile.phis==1) 
+			{
 				a0 = uslKontur(tx - 1, ty - 1);
 				a1 = uslKontur(tx, ty - 1);
 				a2 = uslKontur(tx + 1, ty - 1);
@@ -1710,7 +1711,7 @@ package locdata
 		}
 		
 		// Tile damage
-		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9) 
+		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9):void
 		{
 			// Damage from falling
 			if (tip == 100 && hit <= 50 && (t.damageThreshold > 0 || t.indestruct)) return;
@@ -1814,10 +1815,13 @@ package locdata
 					tr = getTile(t.X + 1, t.Y);
 					tt = getTile(t.X, t.Y - 1);
 					tb = getTile(t.X, t.Y + 1);
-					if ((tb.phis==1 || tb.water==1) && (tr.phis==1 || tr.water==1) && (tl.phis==1 || tl.water==1) && (tl.water==1 || tr.water==1 || tt.water==1)) {
+					if ((tb.phis==1 || tb.water==1) && (tr.phis==1 || tr.water==1) && (tl.phis==1 || tl.water==1) && (tl.water==1 || tr.water==1 || tt.water==1)) 
+					{
 						t.water=1;
 						if (roomActive) grafon.drawWater(t);
-					} else {
+					} 
+					else 
+					{
 						if (tl.water>0 && t.phis!=1) 
 						{
 							tl.water=0;
@@ -1844,7 +1848,8 @@ package locdata
 				}
 			}
 			var obj:Pt=firstObj;
-			while (obj) {
+			while (obj) 
+			{
 				if (obj is Obj) (obj as Obj).checkStay();
 				obj=obj.nobj;
 			}
@@ -2125,11 +2130,11 @@ package locdata
 		// Process ghost walls
 		public function gwalls():void
 		{
-			var est = false;
+			var est:Boolean = false;
 			var t:Tile;
-			for (var i = 0; i < roomWidth; i++) 
+			for (var i:int = 0; i < roomWidth; i++) 
 			{
-				for (var j = 0; j < roomHeight; j++) 
+				for (var j:int = 0; j < roomHeight; j++) 
 				{
 					t = roomTileArray[i][j];
 					if (t.phis == 3) 
@@ -2179,9 +2184,9 @@ package locdata
 			}
 			var n1:Number, n2:Number;
 			relight_t = 10;
-			for (var i = 1; i < roomWidth; i++) 
+			for (var i:int = 1; i < roomWidth; i++) 
 			{
-				for (var j = 1; j < roomHeight; j++) 
+				for (var j:int = 1; j < roomHeight; j++) 
 				{
 					n1 = roomTileArray[i][j].visi;
 					if (!retDark && n1 >= 1) continue;
@@ -2198,7 +2203,7 @@ package locdata
 						}
 						continue;
 					}
-					var rasst1=Math.sqrt(rasst);
+					var rasst1:Number = Math.sqrt(rasst);
 					if (rasst1<=dist1) n2=1;
 					else n2=(dist2-rasst1)/(dist2-dist1);
 					//видимость по линии
@@ -2234,7 +2239,7 @@ package locdata
 							}
 							maxe=dy/dey;
 						}
-						for (var e=1; e<=maxe; e++) 
+						for (var e:int = 1; e <= maxe; e++) 
 						{
 							var t:Tile=getAbsTile(nx+e*dex, ny+e*dey);
 							var opac:Number=t.opac;
@@ -2307,7 +2312,7 @@ package locdata
 		{
 			//for each (var un:Unit in units) if (!un.player) un.step();
 			//for each (var obj:Obj in objs) obj.step();
-			var numb=0;
+			var numb:int = 0;
 			var obj:Pt=firstObj;
 			if (warning>0) warning--;
 			while (obj) 
@@ -2339,7 +2344,7 @@ package locdata
 			gg.step(); 
 			if (prob) prob.step();
 			// Iterate through a chain of objects
-			var numb=0;
+			var numb:int = 0;
 			var obj:Pt=firstObj;
 			if (warning>0) warning--;
 			while (obj) 
@@ -2444,7 +2449,7 @@ package locdata
 			if (grenades[0] == null) grenades[0] = g;
 			else 
 			{
-				for (var i = 1; i < 10; i++) 
+				for (var i:int = 1; i < 10; i++) 
 				{
 					if (grenades[i] == null) grenades[i] = g;
 				}
@@ -2455,7 +2460,7 @@ package locdata
 			if (grenades[0] == g) grenades[0] = null;
 			else 
 			{
-				for (var i = 1; i < 10; i++) 
+				for (var i:int = 1; i < 10; i++) 
 				{
 					if (grenades[i] == g) grenades[i] = null;
 				}

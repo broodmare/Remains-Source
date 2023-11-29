@@ -12,8 +12,8 @@ package weapondata
 		
 		public function WMagic(own:Unit, nid:String, nvar:int=0) 
 		{
-			super(own,nid,nvar);
-			if (prep) animated=false;
+			super(own, nid, nvar);
+			if (prep) animated = false;
 		}
 
 		public override function attack(waitReady:Boolean=false):Boolean 

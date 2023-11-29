@@ -270,15 +270,7 @@
 		<item id='sp_moon' tip='spell' us='1' price='3000' atk='1' magic='800' mana='300' snd='crystal' culd='60' mess='spell' pet_info='moon'/>
 		<item id='sp_gwall' tip='spell' us='1' price='3000' atk='1' magic='500' mana='50' hp='100' dam='10' dist='300' line='1' snd='mwall' culd='6' mess='spell'/>
 		<item id='sp_invulner' tip='spell' us='1' price='4000' atk='1' dam='50' magic='800' mana='200' snd='mshit' culd='12' mess='spell'/>
-		<weapon id='sp_slow' tip='5' skill='6' perslvl='3' spell='1'/>
-		<weapon id='sp_mwall' tip='5' skill='6' perslvl='6' spell='1'/>
-		<weapon id='sp_blast' tip='5' skill='7' perslvl='9' spell='1'/>
-		<weapon id='sp_cryst' tip='5' skill='6' perslvl='12' spell='1'/>
-		<weapon id='sp_kdash' tip='5' skill='7' perslvl='15' spell='1'/>
-		<weapon id='sp_mshit' tip='5' skill='6' perslvl='18' spell='1'/>
-		<weapon id='sp_moon' tip='5' skill='6' perslvl='20' spell='1'/>
-		<weapon id='sp_gwall' tip='5' skill='6' perslvl='21' spell='1'/>
-		<weapon id='sp_invulner' tip='5' skill='6' perslvl='24' spell='1'/>
+
 
 		<!--       Ценные вещи        -->
 		<item id='bit' tip='valuables' sell='1' fall='fall_caps' fc='2'/>

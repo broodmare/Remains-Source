@@ -552,17 +552,49 @@ package
 
 			// create player character
 			trace('World.as/newGame1() - Creating Player.');
-			gg = new UnitPlayer();
-			gg.ctr = ctr;
-			gg.sats = sats;
-			sats.gg = gg;
-			gui.gg = gg;
+			try
+			{
+				gg = new UnitPlayer();
+				gg.ctr = ctr;
+				gg.sats = sats;
+			}
+			catch(err:Error)
+			{
+				trace('World.as/newGame1() - ERROR: Unable to create player');
+				showError(err);
+			}
+
+			trace('World.as/newGame1() - Setting up player SATS and GUI.');
+			try
+			{
+				sats.gg = gg;
+				gui.gg = gg;
+			}
+			catch(err:Error)
+			{
+				trace('World.as/newGame1() - ERROR: Unable to set up player SATS and GUI');
+				showError(err);
+			}
+
 
 			// create inventory
-			trace('World.as/newGame1() - Creating inventory');
+			trace('World.as/newGame1() - Creating Inventory');
 			invent = new Invent(gg, data.invent, opt);
+
+			trace('World.as/newGame1() - Creating Stand');
 			stand = new Stand(vstand,invent);
-			gg.attach();
+
+			trace('World.as/newGame1() - Attaching inventory to player');
+			try
+			{
+				gg.attach();
+			}
+			catch(err:Error)
+			{
+				trace('World.as/newGame1() - ERROR: Player is null');
+				showError(err);
+			}
+			
 
 			// auto save slot number
 			trace('World.as/newGame1() - Autosave setup');
@@ -714,11 +746,12 @@ package
 		// Call when entering a specific level
 		public function activateLevel(l:Level):void
 		{
-			trace('World.as/activateLevel() - Activating level: "' + l + '."');
+			trace('World.as/activateLevel() - Activating level ID: "' + l.template.id + '", Type: ' + l.template.tip + '".');
 			try 
 			{
 				level = l;
 				grafon.drawSkybox(skybox, level.template.skybox);
+				trace('World.as/activateLevel() - Success.');
 			} 
 			catch (err) 
 			{
@@ -875,7 +908,6 @@ package
 		// Main loop
 		public function step():void
 		{
-			trace('World.as/step() - World stepping.');
 
 			if (verror.visible) 
 			{
@@ -886,11 +918,9 @@ package
 				trace('World.as/step() - Language data still loading, waiting.');
 				return;
 			}
-			
-			trace('World.as/step() - Controller step.');
+
 			ctr.step();	//Process controls
 
-			trace('World.as/step() - Sound step.');
 			Snd.step(); //Process sound
 
 			if (ng_wait > 0) 
