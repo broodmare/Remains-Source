@@ -222,7 +222,6 @@ package unitdata
 			weaponKrep=0;	//0 - левитация оружия, 1 - держать
 			
 			teleColor=World.world.app.cMagic;
-			//levitFilter=new GradientGlowFilter(0,0,[teleColor,teleColor,teleColor],[0,1,0],[0,100,255],6,6,1,3,"outer");
 			levitFilter1=new GlowFilter(teleColor,0,6,6,2,3);
 			teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
 			dieFilter=new GlowFilter(0xCC00FF,0,6,6,2,3);
@@ -239,7 +238,7 @@ package unitdata
 			doop=true;
 			transT=true;
 			fraction=F_PLAYER;
-			//destroy=20;
+
 		}
 		
 		public function attach():void
@@ -1492,39 +1491,55 @@ package unitdata
 				} else ctr.keyStates.keyMagic=false;
 			}
 			//заклинание
-			if (ctr.keyStates.keyDef && rat==0) { //&& !room.base
+			if (ctr.keyStates.keyDef && rat==0)
+			{
 				if (sats.que.length > 0) sats.clearAll();
 				if (Settings.alicorn) currentSpell=invent.spells['sp_mshit'];
-				if (currentSpell) {
+				if (currentSpell)
+				{
 					if (!currentSpell.castSpell(World.world.celX, World.world.celY)) ctr.keyStates.keyDef=false;
 					if (!currentSpell.prod) ctr.keyStates.keyDef=false;
-				} else ctr.keyStates.keyDef=false;
+				}
+				else ctr.keyStates.keyDef=false;
 			}
-			for (var i=1; i<=Settings.kolQS; i++) {
-				if (ctr['keySpell'+i]) {
-					if (invent.fav[Settings.kolHK*2+i]!=null) {
+			for (var i:int = 1; i <= Settings.kolQS; i++)
+			{
+				if (ctr['keySpell' + i])
+				{
+					if (invent.fav[Settings.kolHK * 2 + i] != null)
+					{
 						if (sats.que.length > 0) sats.clearAll();
-						var sp:Spell=invent.spells[invent.fav[Settings.kolHK*2+i]];
-						if (sp) {
-							if (!sp.castSpell(World.world.celX, World.world.celY)) ctr['keySpell'+i]=false;
-							if (!sp.prod) ctr['keySpell'+i]=false;
-						} else ctr['keySpell'+i]=false;
-					} else ctr['keySpell'+i]=false;
+						var sp:Spell = invent.spells[invent.fav[Settings.kolHK * 2 + i]];
+						if (sp)
+						{
+							if (!sp.castSpell(World.world.celX, World.world.celY)) ctr['keySpell' + i] = false;
+							if (!sp.prod) ctr['keySpell' + i] = false;
+						}
+						else ctr['keySpell' + i] = false;
+					}
+					else ctr['keySpell' + i] = false;
 				}
 			}
 			//спутник
-			if (ctr.keyStates.keyPet) { //&& !room.base
+			if (ctr.keyStates.keyPet)
+			{
 				k_pet++;
-				if (k_pet>20) {
-					if (pet) {
-						pet.moveTo(X,Y-40,true);		//отзыв назад
+				if (k_pet>20)
+				{
+					if (pet) //отзыв назад
+					{
+						pet.moveTo(X,Y-40,true);
 					}
 					k_pet=0;
 					ctr.keyStates.keyPet=false;
 				}
-			} else {
-				if (k_pet>0) {				//приказ
-					if (pet) {
+			}
+			else
+			{
+				if (k_pet>0)
+				{				//приказ
+					if (pet)
+					{
 						if (room.celObj && room.celObj is Unit && (room.celObj as Unit).fraction!=fraction) pet.atk((room.celObj as Unit));
 						else pet.moveTo(celX,celY);
 					}
@@ -1532,21 +1547,30 @@ package unitdata
 				k_pet=0;
 			}
 			//атака
-			if ((ctr.keyStates.keyAttack || autoAttack) && (!room.base || visSel) && atkPoss && (atkWeapon==0 || atkWeapon==1)) {
-				if (visSel) {
+			if ((ctr.keyStates.keyAttack || autoAttack) && (!room.base || visSel) && atkPoss && (atkWeapon==0 || atkWeapon==1))
+			{
+				if (visSel)
+				{
 					World.world.gui.unshowSelector(1);
 					ctr.keyStates.keyAttack=false;
-				} else if (ctr.keyStates.keyTele) {
+				}
+				else if (ctr.keyStates.keyTele)
+				{
 					ctr.keyStates.keyTele=false;
 					ctr.keyStates.keyAttack=false;
 					t_port=0;
 					spellDisact();
-				} else if (currentWeapon && t_work<=0) {
-					if (sats.que.length > 0) {
+				}
+				else if (currentWeapon && t_work<=0)
+				{
+					if (sats.que.length > 0)
+					{
 						sats.clearAll();
 						ctr.keyStates.keyAttack=false;
-					} else {
-						weaponSkill=pers.weaponSkills[currentWeapon.skill];
+					}
+					else
+					{
+						weaponSkill = pers.weaponSkills[currentWeapon.skill];
 						if (!currentWeapon.attack()) ctr.keyStates.keyAttack=false;
 						World.world.gui.setWeapon();
 						spellDisact();
@@ -1554,20 +1578,25 @@ package unitdata
 				}
 			}
 			//перезарядка
-			if (ctr.keyStates.keyReload && currentWeapon && attackForever<=0) {
+			if (ctr.keyStates.keyReload && currentWeapon && attackForever<=0)
+			{
 				//return;
-				if (t_reload>=30) {
+				if (t_reload>=30)
+				{
 					currentWeapon.unloadWeapon();
 					ctr.keyStates.keyReload=false;
 				}
 				if (currentWeapon.detonator()) ctr.keyStates.keyReload=false;
 				t_reload++;
-			} else {
+			}
+			else
+			{
 				if (currentWeapon && t_reload>0 && t_reload<10) currentWeapon.initReload();
 				t_reload=0;
 			}
 			//пинок
-			if (ctr.keyStates.keyPunch && Settings.alicorn) {
+			if (ctr.keyStates.keyPunch && Settings.alicorn)
+			{
 				ctr.keyStates.keyPunch=false;
 				alicornPort();
 			}
@@ -1585,47 +1614,59 @@ package unitdata
 			}
 			if (rat==0) {
 			//смена оружия
-				if (t_work<=0 && attackForever<=0) {
-					for (var i=1; i<=Settings.kolHK; i++) {
-						if (ctr['keyWeapon'+i]) {
-							ctr['keyWeapon'+i]=false;
-							invent.useFav(i+(ctr.keyStates.keyRun?Settings.kolHK:0));
+				if (t_work<=0 && attackForever<=0)
+				{
+					for (var j:int = 1; j <= Settings.kolHK; j++)
+					{
+						if (ctr['keyWeapon' + j])
+						{
+							ctr['keyWeapon' + j] = false;
+							invent.useFav(j + (ctr.keyStates.keyRun ? Settings.kolHK:0));
 							if (visSel) World.world.gui.unshowSelector(0);
-							if (currentSpell) currentSpell.active=false;
-							ctr.keyStates.keyDef=ctr.keyStates.keyAttack=false;
+							if (currentSpell) currentSpell.active = false;
+							ctr.keyStates.keyDef = false;
+							ctr.keyStates.keyAttack = false;
 						}
 					}
 				}
-				if (ctr.keyStates.keyScrDown && !autoAttack) {
+				if (ctr.keyStates.keyScrDown && !autoAttack)
+				{
 					World.world.gui.showSelector(1, ctr.keyStates.keyRun?1:0);
 					ctr.keyStates.keyScrDown=ctr.keyStates.keyScrUp=false;
 				}
-				if (ctr.keyStates.keyScrUp && !autoAttack) {
+				if (ctr.keyStates.keyScrUp && !autoAttack)
+				{
 					World.world.gui.showSelector(-1, ctr.keyStates.keyRun?1:0);
 					ctr.keyStates.keyScrDown=ctr.keyStates.keyScrUp=false;
 				}
 				//вещи
-				if (ctr.keyStates.keyItemNext) {
+				if (ctr.keyStates.keyItemNext)
+				{
 					invent.nextItem(1);
 					ctr.keyStates.keyItemNext=ctr.keyStates.keyItemPrev=false;
 				}
-				if (ctr.keyStates.keyItemPrev) {
+				if (ctr.keyStates.keyItemPrev)
+				{
 					invent.nextItem(-1);
 					ctr.keyStates.keyItemNext=ctr.keyStates.keyItemPrev=false;
 				}
-				if (ctr.keyStates.keyItem) {
+				if (ctr.keyStates.keyItem)
+				{
 					invent.useItem();
 					ctr.keyStates.keyItem=false;
 				}
-				if (ctr.keyStates.keyPot) {
+				if (ctr.keyStates.keyPot)
+				{
 					invent.usePotion();
 					ctr.keyStates.keyPot=false;
 				}
-				if (ctr.keyStates.keyMana) {
+				if (ctr.keyStates.keyMana)
+				{
 					invent.usePotion('mana');
 					ctr.keyStates.keyMana=false;
 				}
-				if (ctr.keyStates.keyArmor) {
+				if (ctr.keyStates.keyArmor)
+				{
 					armorAbil();
 					ctr.keyStates.keyArmor=false;
 				}

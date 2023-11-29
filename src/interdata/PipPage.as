@@ -113,12 +113,12 @@ package interdata
 				}
 			}
 
-			for (var i:int  = 1; i <= 5; i++) 
+			for (var j:int  = 1; j <= 5; j++)
 			{
-				item = vis.getChildByName('but' + i) as MovieClip;
+				item = vis.getChildByName('but' + j) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK, page2Click);
-				item.text.text = Res.txt('p', pp + i);
-				item.id.text = i;
+				item.text.text = Res.txt('p', pp + j);
+				item.id.text = j;
 				item.id.visible = false;
 			}
 

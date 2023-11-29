@@ -21,7 +21,7 @@ package roomdata
 		public function RoomContainer() 
     {
 
-			roomContainer = new Array();
+			roomContainer = [];
 
 
 			l_plant       = new RoomsPlant();

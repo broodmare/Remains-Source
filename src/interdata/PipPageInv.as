@@ -431,7 +431,7 @@ package interdata
 			}
 			if (page2==1) 
 			{
-				var obj=assArr[event.currentTarget.id.text];
+				var obj = assArr[event.currentTarget.id.text];
 				obj.respect=World.world.invent.respectWeapon(event.currentTarget.id.text);
 				setStatItem(event.currentTarget as MovieClip, obj);
 				pip.setRPanel();
@@ -445,7 +445,7 @@ package interdata
 					World.world.gui.infoText('noDrop1',null,null,false);
 					return;
 				}
-				var obj=assArr[event.currentTarget.id.text];
+				obj = assArr[event.currentTarget.id.text];
 				if (obj.mass>0 && obj.tip!='book' && obj.tip!='sphera') 
 				{
 					if (event.shiftKey) obj.drop=obj.kol;

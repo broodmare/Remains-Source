@@ -261,8 +261,8 @@ package interdata
 					for (var i:int = 0; i <= World.world.saveCount; i++) 
 					{
 						var save:Object = World.world.getSave(i);
-						var obj:Object = saveObj(save,i);
-						arr.push(obj);
+						var obj1:Object = saveObj(save,i);
+						arr.push(obj1);
 					}
 					if (page2 == 2 && World.world.pers.hardcoreMode) 
 					{
