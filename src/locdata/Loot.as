@@ -51,15 +51,18 @@ package locdata
 			room=newRoom;
 			item=nitem;
 			if (room.cTransform) cTransform=room.cTransform;
-			layer=2, prior=3;
-			X=nx, Y=ny;
+			layer = 2;
+			prior = 3;
+			X = nx;
+			Y = ny;
 			krit=nkrit;
 			if (nx<Tile.tilePixelWidth) nx=Tile.tilePixelWidth;
 			if (nx>(room.roomWidth-1)*Tile.tilePixelWidth) nx=(room.roomWidth-1)*Tile.tilePixelWidth;
 			if (ny>(room.roomHeight-1)*Tile.tilePixelHeight) ny=(room.roomHeight-1)*Tile.tilePixelHeight;
 			massa=0.1;
 			objectName=item.objectName;
-			scX=30, scY=20;
+			scX = 30;
+			scY = 20;
 			if (item.tip==Item.L_WEAPON) 
 			{
 				if (item.xml.vis.length() && item.xml.vis.@loot.length()) 
@@ -148,7 +151,8 @@ package locdata
 				vis.x=X;
 				vis.y=Y;
 				vis.cacheAsBitmap=true;
-				scX=vis.width, scY=vis.height;
+				scX = vis.width;
+				scY = vis.height;
 			}
 			if (jump) 
 			{

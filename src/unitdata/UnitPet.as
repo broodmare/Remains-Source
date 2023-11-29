@@ -279,7 +279,8 @@ package unitdata
 				//не лететь в неразведанное место
 				return;
 			}
-			flyX=nx, flyY=ny+20;
+			flyX=nx;
+			flyY=ny+20;
 			aiState=3;
 			if (optTurn) storona=(flyX>X)?1:-1;
 			aiTCh=100;
@@ -308,7 +309,8 @@ package unitdata
 			aiState=1;
 			sost=1;
 			addVisual();
-			flyX=gg.X, flyY=gg.Y-20;
+			flyX=gg.X;
+			flyY=gg.Y-20;
 			setLevel(gg.pers.level);
 			if (room && room.units) room.units[1] = this;
 			//damage(40,Unit.D_INSIDE);
@@ -353,7 +355,8 @@ package unitdata
 			hp=Math.min(100,maxhp/2);
 			setLevel(gg.pers.level);
 			visDetails();
-			X=gg.X, Y=gg.Y-20;
+			X=gg.X;
+			Y=gg.Y-20;
 			oduplenie=60;
 			vis.alpha=0;
 			cut=poison=stun=0;
@@ -376,7 +379,8 @@ package unitdata
 					World.world.gui.infoText('petRes', objectName);
 					setLevel(gg.pers.level);
 					visDetails();
-					X=gg.X, Y=gg.Y-20;
+					X=gg.X;
+					Y=gg.Y-20;
 					oduplenie=60;
 					vis.alpha=0;
 					cut=poison=stun=0;
@@ -537,8 +541,10 @@ package unitdata
 	
 			//атака
 			if (aiState==2 && celUnit && !isPlav) {
-				celX=celUnit.X, celY=celUnit.Y-celUnit.scY/2;
-				flyX=celUnit.X, flyY=celUnit.Y-80;
+				celX=celUnit.X;
+				celY=celUnit.Y-celUnit.scY/2;
+				flyX=celUnit.X;
+				flyY=celUnit.Y-80;
 				if (flyR<=rasstWeap && currentWeapon) currentWeapon.attack();
 			}
 		}

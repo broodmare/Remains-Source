@@ -38,13 +38,15 @@ package servdata
 			burnBmp=new BitmapData(owner.vis.width,owner.vis.height,true,0);
 			var m:Matrix=new Matrix();
 			var rect:Rectangle=owner.vis.getBounds(owner.vis);
-			m.tx=-rect.left, m.ty=-rect.top;
+			m.tx = -rect.left;
+			m.ty = -rect.top;
 			burnBmp.draw(owner.vis,m);
 			
 			owner.vis=new MovieClip();
 			burnBm=new Bitmap(burnBmp);
 			owner.vis.addChild(burnBm);
-			burnBm.x=rect.left, burnBm.y=rect.top;
+			burnBm.x = rect.left;
+			burnBm.y = rect.top;
 			if (burnTip == 1) 
 			{
 				burnCt=new ColorTransform(1,1,1,1,255/burnTime1,100/burnTime1,0,0);

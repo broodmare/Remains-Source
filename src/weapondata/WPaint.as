@@ -72,7 +72,8 @@ package weapondata
 				{
 					norma(del,20);
 				}
-				pX=X, pY=Y;
+				pX=X;
+				pY=Y;
 				X+=del.x;
 				Y+=del.y;
 			}

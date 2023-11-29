@@ -1032,8 +1032,10 @@ package locdata
 
 			if (newRoom.collisionUnit(outP.x,outP.y,scX-4,scY)) return null;
 			
-			loc_t=150;
-			locX=newX, locY=newY, locZ=newZ;
+			loc_t = 150;
+			locX = newX;
+			locY = newY;
+			locZ = newZ;
 			activateRoom();
 			gg.setLocPos(outP.x,outP.y);
 			return outP;

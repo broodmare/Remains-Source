@@ -83,7 +83,8 @@ package unitdata
 			{
 				if (isLaz==0) 
 				{
-					vis.x=X,vis.y=Y;
+					vis.x = X;
+					vis.y = Y;
 					vis.scaleX=storona;
 					vis.scaleY=1;
 					vis.rotation=0;
@@ -418,9 +419,10 @@ package unitdata
 		//поиск лестницы
 		public override function checkStairs(ny:int=-1, nx:int=0):Boolean
 		{
-			try {
-				var i=Math.floor((X+nx)/Tile.tilePixelWidth);
-				var j=Math.floor((Y+ny)/Tile.tilePixelHeight);
+			try
+			{
+				var i:int = Math.floor((X+nx)/Tile.tilePixelWidth);
+				var j:int = Math.floor((Y+ny)/Tile.tilePixelHeight);
 				if (j>=room.roomHeight) j=room.roomHeight-1;
 				if (room.roomTileArray[i][j].phis>=1) {
 					isLaz=0;
@@ -435,8 +437,9 @@ package unitdata
 					storona=isLaz;
 					if (isLaz==-1) X=(room.roomTileArray[i][j] as Tile).phX1+scX/2;
 					else X=(room.roomTileArray[i][j] as Tile).phX2-scX/2;
-					X1=X-scX/2, X2=X+scX/2;
-					stay=false;
+					X1 = X - scX / 2;
+					X2 = X + scX / 2;
+					stay = false;
 					return true;
 				}
 			} catch (err) {
@@ -445,8 +448,10 @@ package unitdata
 			return false;
 		}
 		
-		public function attack() {
-			if (celUnit && shok<=0) {	//атака холодным оружием без левитации или корпусом
+		public function attack()
+		{
+			if (celUnit && shok<=0)	//атака холодным оружием без левитации или корпусом
+			{
 				attKorp(celUnit,1);
 			}
 			if (optJumpAtt && isLaz==0) jump(0.5);

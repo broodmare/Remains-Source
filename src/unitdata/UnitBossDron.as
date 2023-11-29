@@ -144,7 +144,8 @@ package unitdata
 				} 
 				else 
 				{
-					vis.x=X,vis.y=Y;
+					vis.x = X;
+					vis.y = Y;
 				}
 			}
 		}
@@ -225,7 +226,8 @@ package unitdata
 				
 				if (dist<1000) 
 				{
-					dx*=0.8, dy*=0.8;
+					dx *= 0.8;
+					dy *= 0.8;
 				}
 				attack();
 				emit_t--;

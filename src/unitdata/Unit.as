@@ -25,6 +25,10 @@ package unitdata
 
 	import stubs.hpBar;
 
+	//TODO: 		X1 = X - scX / 2;
+	// 				X2 = X + scX / 2;
+	// into function...
+
 	public class Unit extends Obj
 	{
 		
@@ -717,7 +721,8 @@ package unitdata
 				inter.loot(true);	//если состояние 2, сгенерировать критичный лут
 			}
 			if (sost>=3) return;
-			begX=X, begY=Y;
+			begX = X;
+			begY = Y;
 			if (hero==0) cTransform=room.cTransform;
 			else cTransform=heroTransforms[hero-1];
 			if (room.biom==5) 
@@ -975,8 +980,12 @@ package unitdata
 		//Move to a point
 		public function setPos(nx:Number,ny:Number):void
 		{
-			X=nx, Y=ny;
-			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
+			X  = nx;
+			Y  = ny;
+			Y1 = Y - scY;
+			Y2 = Y;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
 			setCel();
 		}
 		
@@ -1124,8 +1133,10 @@ package unitdata
 				{
 					X+=dx/div;
 					Y-=dx/div*diagon;
-					Y1=Y-scY, Y2=Y;
-					X1=X-scX/2, X2=X+scX/2;
+					Y1=Y-scY;
+					Y2=Y;
+					X1=X-scX / 2;
+					X2 = X + scX / 2;
 					dy=0;
 					checkDiagon(0);
 				} 
@@ -1160,7 +1171,8 @@ package unitdata
 						kray=true;
 					}
 				}
-				X1 = X - scX / 2, X2 = X + scX / 2;
+				X1 = X - scX / 2;
+				X2 = X + scX / 2;
 				//Move to the left
 				if (dx + osndx < 0) 
 				{
@@ -1180,7 +1192,8 @@ package unitdata
 						if (newmy > 0) 
 						{
 							Y = newmy;
-							Y1 = Y - scY, Y2 = Y;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
 					if (player && isUp && stay && !isSit) 
@@ -1224,7 +1237,8 @@ package unitdata
 										dx=Math.abs(dx)*elast;
 										turnX=1;
 										if (t.tileMaterial==1) tykMat=1;
-										X1=X-scX/2, X2=X+scX/2;
+										X1 = X - scX / 2;
+										X2 = X + scX / 2;
 									}
 								}
 							}
@@ -1238,8 +1252,9 @@ package unitdata
 						newmy=checkDiagon(-5);
 						if (newmy>0) 
 						{
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+							Y = newmy;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
 					if (player && !isSit && !isFly && !isPlav && !levit && (!stay || isUp || shX2>0.5)) 
@@ -1247,8 +1262,9 @@ package unitdata
 						newmy=checkDiagon(-2,1);
 						if (newmy>0) 
 						{
-							Y=newmy;
-							Y1=Y-scY, Y2=Y;
+							Y = newmy;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
 					if (player && isUp && stay && !isSit) 
@@ -1287,14 +1303,16 @@ package unitdata
 										dx=-Math.abs(dx)*elast;
 										turnX=-1;
 										if (t.tileMaterial==1) tykMat=1;
-										X1=X-scX/2, X2=X+scX/2;
+										X1 = X - scX / 2;
+										X2 = X + scX / 2;
 									}
 								}
 							}
 						}
 					}
 				}
-				Y1=Y-scY, Y2=Y;
+				Y1 = Y - scY;
+				Y2 = Y;
 			}
 			// Repulsion
 			
@@ -1323,7 +1341,8 @@ package unitdata
 							turnY=-1;
 						}
 					}
-					Y1=Y-scY, Y2=Y;
+					Y1 = Y - scY;
+					Y2 = Y;
 					if (mater) 
 					{
 						for (i=Math.floor(X1/Tile.tilePixelWidth); i<=Math.floor(X2/Tile.tilePixelWidth); i++) 
@@ -1331,8 +1350,9 @@ package unitdata
 							t=room.roomTileArray[i][Math.floor(Y2/Tile.tilePixelHeight)];
 							if (collisionTile(t)) 
 							{
-								Y=t.phY1;
-								Y1=Y-scY, Y2=Y;
+								Y = t.phY1;
+								Y1 = Y-scY;
+								Y2 = Y;
 								dy=0;
 								turnY=-1;
 								if (t.tileMaterial==1) tykMat=1;
@@ -1381,8 +1401,9 @@ package unitdata
 					}
 					if (newmy) 
 					{
-						Y=newmy;
-						Y1=Y-scY, Y2=Y;
+						Y = newmy;
+						Y1 = Y-scY;
+						Y2 = Y;
 						if (dy>16) makeNoise(noiseRun,true);
 						else if (dy>9) makeNoise(noiseRun/2,true);
 						if (dy>5) sndFall();
@@ -1403,15 +1424,17 @@ package unitdata
 					else 
 					{
 						Y+=dy/div;
-						Y1=Y-scY, Y2=Y;
+						Y1 = Y-scY;
+						Y2 = Y;
 					}
 					if (Y>room.roomPixelHeight) 
 					{
 						if (!outLoc(3)) 
 						{
-							Y=room.roomPixelHeight-1;
-							turnY=-1;
-							Y1=Y-scY, Y2=Y;
+							Y = room.roomPixelHeight - 1;
+							turnY = -1;
+							Y1 = Y - scY;
+							Y2 = Y;
 						}
 					}
 				}
@@ -1438,16 +1461,18 @@ package unitdata
 					newmy=checkShelf(dy/div, osndy/div);
 					if (newmy) 
 					{
-						Y=newmy;
-						Y1=Y-scY, Y2=Y;
-						dy=0;
-						stay=true;
+						Y = newmy;
+						Y1 = Y - scY;
+						Y2 = Y;
+						dy = 0;
+						stay = true;
 					}
 				} 
 				else 
 				{
-					Y+=(dy+osndy)/div;
-					Y1=Y-scY, Y2=Y;
+					Y += (dy+osndy)/div;
+					Y1 = Y - scY;
+					Y2 = Y;
 				}
 				if (mater) 
 				{
@@ -1459,7 +1484,8 @@ package unitdata
 							if (t_throw>0 && dy<-damWallSpeed && damWall) damageWall(4);
 							if (destroy>0) destroyWall(t,4);
 							Y=t.phY2+scY;
-							Y1=Y-scY, Y2=Y;
+							Y1 = Y - scY;
+							Y2 = Y;
 							dy=0;
 							turnY=1;
 							if (t.tileMaterial==1) tykMat=1;
@@ -1503,8 +1529,10 @@ package unitdata
 				dy=0;
 				turnY=-1;
 			}
-			X1=X-scX/2, X2=X+scX/2;
-			Y1=Y-scY, Y2=Y;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
+			Y1 = Y - scY;
+			Y2 = Y;
 		}
 		
 		public function sit(turn:Boolean):void
@@ -1513,13 +1541,17 @@ package unitdata
 			isSit=turn;
 			if (isSit) 
 			{
-				scX=sitX, scY=sitY;
+				scX = sitX;
+				scY = sitY;
 			} 
 			else 
 			{
-				scX=stayX, scY=stayY;
+				scX = stayX;
+				scY = stayY;
 			}
-			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
+			Y1 = Y - scY;
 		}
 		
 		public function unsit():void
@@ -1577,7 +1609,8 @@ package unitdata
 					isLaz=storona=(room.roomTileArray[i][j] as Tile).stair;
 					if (isLaz==-1) X=(room.roomTileArray[i][j] as Tile).phX1+scX/2;
 					else X=(room.roomTileArray[i][j] as Tile).phX2-scX/2;
-					X1=X-scX/2, X2=X+scX/2;
+					X1 = X - scX / 2;
+					X2 = X + scX / 2;
 					stay=false;
 					sit(false);
 					return true;
@@ -1835,7 +1868,8 @@ package unitdata
 		
 		public function blit(blstate:int, blframe:int)
 		{
-			blitRect.x=blframe*blitX, blitRect.y=blstate*blitY;
+			blitRect.x = blframe * blitX;
+			blitRect.y = blstate * blitY;
 			visData.copyPixels(blitData,blitRect,blitPoint);
 		}
 		
@@ -2701,13 +2735,15 @@ package unitdata
 				if (Settings.showHit>=1)	numbEmit.cast(room,X,Y-scY/2,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
 				return false;
 			}
-			var sila=Math.random()*0.4+0.8;
-			if (un.collisionTip==1) 
+			var sila = Math.random() * 0.4 + 0.8;
+			if (un.collisionTip == 1)
 			{
-				var ndx=(un.dx*un.massa+dx*massa)/(un.massa+massa);
-				var ndy=(un.dy*un.massa+dy*massa)/(un.massa+massa);
-				dx=(-dx+ndx)*knocked+ndx, dy=(-dy+ndy)*knocked+ndy;
-				un.dx=(-un.dx+ndx)*un.knocked+ndx, un.dy=(-un.dy+ndy)*un.knocked+ndy;
+				var ndx = (un.dx * un.massa + dx * massa) / (un.massa + massa);
+				var ndy = (un.dy * un.massa + dy * massa) / (un.massa + massa);
+				dx = (-dx + ndx) * knocked + ndx;
+				dy = (-dy + ndy) * knocked + ndy;
+				un.dx = (-un.dx + ndx) * un.knocked + ndx;
+				un.dy = (-un.dy + ndy) * un.knocked + ndy;
 			}
 			if (un.currentWeapon && un.currentWeapon.tip==1) 
 			{
@@ -2762,8 +2798,10 @@ package unitdata
 			{
 				var ndx=(un.dx*un.massa+dx*massa)/(un.massa+massa);
 				var ndy=(un.dy*un.massa+dy*massa)/(un.massa+massa);
-				dx=(-dx+ndx)*knocked+ndx, dy=(-dy+ndy)*knocked+ndy;
-				un.dx=(-un.dx+ndx)*0.25+ndx, un.dy=(-un.dy+ndy)*0.25+ndy;
+				dx = (-dx + ndx) * knocked + ndx;
+				dy = (-dy + ndy) * knocked + ndy;
+				un.dx=(-un.dx+ndx)*0.25+ndx;
+				un.dy=(-un.dy+ndy)*0.25+ndy;
 			} 
 			else 
 			{
@@ -2857,11 +2895,14 @@ package unitdata
 			{
 				replic('die');
 				isFly=false;
-				scX=sitX, scY=sitY;
-				X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
-				fraction=0;
-				throu=false;
-				porog=0;
+				scX = sitX;
+				scY = sitY;
+				X1 = X - scX / 2;
+				X2 = X + scX / 2;
+				Y1 = Y - scY;
+				fraction = 0;
+				throu = false;
+				porog = 0;
 				sost=3;
 			} 
 			else if (trup && blood>0) 		// There is blood
@@ -3120,9 +3161,11 @@ package unitdata
 		{
 			if (un && isMeet(un)) 
 			{
-				celX=un.X+un.scX/4*un.storona, celY=un.Y-un.scY/2;
+				celX = un.X+un.scX/4*un.storona;
+				celY = un.Y-un.scY/2;
 				celUnit=un;
-				if (un.player) {
+				if (un.player)
+				{
 					World.world.t_battle=Settings.battleNoOut;
 					World.world.cur();
 					room.detecting=true;
@@ -3131,21 +3174,23 @@ package unitdata
 			} 
 			else if (cx>-10000 && cy>-10000) 
 			{
-				celX=cx, celY=cy;
-				celUnit=null;
+				celX = cx;
+				celY = cy;
+				celUnit = null;
 			} 
 			else 
 			{
-				celX=X, celY=Y-scY/2;
+				celX = X;
+				celY = Y - scY / 2;
 				celUnit=null;
 			}
-			celDX=celX-X;
-			celDY=celY-Y+scY;
+			celDX = celX - X;
+			celDY = celY - Y + scY;
 		}
 		
 		public function findGrenades():Boolean 
 		{
-			for (var i=0; i<10; i++) 
+			for (var i:int = 0; i < 10; i++)
 			{
 				if (room.grenades[i]==null) continue;
 				var gx:Number=room.grenades[i].X-X;

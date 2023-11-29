@@ -187,11 +187,17 @@ package interdata
 		{
 			if (keyboardMode == 0) 
 			{
-				KeyboardA = Keyboard.A, KeyboardZ = Keyboard.Z, KeyboardW = Keyboard.W, KeyboardQ = Keyboard.Q;
+				KeyboardA = Keyboard.A;
+				KeyboardZ = Keyboard.Z;
+				KeyboardW = Keyboard.W;
+				KeyboardQ = Keyboard.Q;
 			}
 			if (keyboardMode == 1) 
 			{
-				KeyboardA = Keyboard.Q, KeyboardZ = Keyboard.W, KeyboardW = Keyboard.Z, KeyboardQ = Keyboard.A;
+				KeyboardA = Keyboard.Q;
+				KeyboardZ = Keyboard.W;
+				KeyboardW = Keyboard.Z;
+				KeyboardQ = Keyboard.A;
 			}
 		}
 		
@@ -202,7 +208,7 @@ package interdata
 			trace('Ctr.as/Ctr - Ctr() Naming keys...');
 			keyNames 	= new Vector.<String>(256);
 			keyDowns 	= new Vector.<Boolean>(256);
-			mbNames 	= new Array();
+			mbNames 	= [];
 
 			for (var i = Keyboard.A; i <= Keyboard.Z; i++) 
 			{

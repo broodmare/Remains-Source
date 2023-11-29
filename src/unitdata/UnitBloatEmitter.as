@@ -25,7 +25,8 @@ package unitdata
 		
 		public override function setVisPos():void
 		{
-			vis.x=X,vis.y=Y;
+			vis.x = X;
+			vis.y = Y;
 		}
 		
 		public override function setNull(f:Boolean=false):void

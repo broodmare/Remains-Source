@@ -212,7 +212,9 @@ package unitdata
 			critCh=0.05;
 			
 			brake=2;
-			maxjumpp=8, plavdy=accel*0.5, levidy=accel*0.25;
+			maxjumpp=8;
+			plavdy=accel*0.5;
+			levidy=accel*0.25;
 			if (Settings.alicorn) levidy=accel*0.5;
 			hp=maxhp;
 			reloadbar.y=-scY-10;
@@ -319,7 +321,10 @@ package unitdata
 		
 		public override function setNull(f:Boolean=false):void
 		{
-			Y1=Y-scY, Y2=Y, X1=X-scX/2, X2=X+scX/2;
+			Y1=Y-scY;
+			Y2=Y;
+			X1=X-scX/2;
+			X2=X+scX/2;
 			setWeaponPos();
 			if (currentWeapon) currentWeapon.setNull();
 			dropTeleObj();
@@ -469,7 +474,8 @@ package unitdata
 		//Set position on entering the room
 		public function setLocPos(nx:Number,ny:Number)
 		{
-			X=nx, Y=ny;
+			X=nx;
+			Y=ny;
 			setNull();
 			if (pet) 
 			{
@@ -779,7 +785,8 @@ package unitdata
 				celY=World.world.celY;
 			}
 			//модификатор точности precMult, только если стрельба не через зпс
-			precMult=pers.allPrecMult, mazil=pers.mazilAdd;
+			precMult=pers.allPrecMult;
+			mazil=pers.mazilAdd;
 			if (sats.que.length == 0 && !lurked) {
 				if (pers.runPenalty>0 && (dx>10 || dx<-10 || dy>10 || dy<-10))  precMult*=(1-pers.runPenalty);
 				if (!stay) precMult*=(1-pers.jumpPenalty);
@@ -1091,7 +1098,8 @@ package unitdata
 		public function bindChain(nx:Number, ny:Number):void
 		{
 			addEffect('fetter',0,10,false);
-			fetX=nx, fetY=ny;
+			fetX=nx;
+			fetY=ny;
 		}
 		
 		//включить или выключить левитацию объекта при нажатой клавише левитации
@@ -2621,7 +2629,9 @@ package unitdata
 			actionObj=null;
 			scX=ratX;
 			scY=ratY;
-			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
+			X1=X-scX/2;
+			X2=X+scX/2;
+			Y1=Y-scY;
 			vis.osn.visible=false;
 			vis.rat.visible=true;
 			newPart('black',30);
@@ -2629,22 +2639,36 @@ package unitdata
 		}
 		public function ratOff():Boolean
 		{
-			scX=stayX, scY=stayY;
-			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
-			if (collisionAll()) {
-				if (collisionAll(15)) {
-					if (collisionAll(-15)) {
+			scX=stayX;
+			scY=stayY;
+			X1=X-scX/2;
+			X2=X+scX/2;
+			Y1=Y-scY;
+			if (collisionAll())
+			{
+				if (collisionAll(15))
+				{
+					if (collisionAll(-15))
+					{
 						scX=ratX;
 						scY=ratY;
-						X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY;
+						X1=X-scX/2;
+						X2=X+scX/2;
+						Y1=Y-scY;
 						return false;
-					} else {
-						X-=15;
-						X1=X-scX/2, X2=X+scX/2;
 					}
-				} else {
-					X+=15;
-					X1=X-scX/2, X2=X+scX/2;
+					else
+					{
+						X-=15;
+						X1=X-scX/2;
+						X2=X+scX/2;
+					}
+				}
+				else
+				{
+					X += 15;
+					X1 = X - scX / 2;
+					X2 = X + scX / 2;
 				}
 			}
 			vis.osn.visible=true;

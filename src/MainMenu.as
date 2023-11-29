@@ -32,12 +32,11 @@ package
 	public class MainMenu 
 	{
 		
-		public var mainMenu:MovieClip; 			// Create a container for the main menu sprite
+		public var mainMenu; 			// Create a container for the main menu sprite
 		public var main:Sprite;
 		public var world:World;
 		public var active:Boolean 		= true;
 		public var loaded:Boolean 		= false;	// If ALL resources (language, levels, grafon) are done loading.
-		public var newGameMode:int 		= 2;
 		public var newGameDif:int 		= 2;
 		public var loadCell:int 		= -1;
 		public var loadReg:int 			= 0;	// loading mode, 0 - loading, 1 - slot selection for autosave
@@ -54,18 +53,16 @@ package
 		
 		public var languageButtons:Array;
 
-		public var stn:int 					= 0;
 		public var style:StyleSheet 		= new StyleSheet(); 
-		public var styleObj:Object 			= new Object(); 
+		public var styleObj:Object 			= {};
 		public var format:TextFormat 		= new TextFormat();
 		public var file:FileReference 		= new FileReference();
 		public var ffil:Array;
-		public var arr:Array				= new Array();
-		public var mainTimer:Timer;
+		public var arr:Array				= [];
 		
 		public var mainMenuLoaded:Boolean = false;
 
-		public function MainMenu(nmain:MovieClip) 
+		public function MainMenu(nmain:Sprite)
 		{
 			trace('MainMenu.as/MainMenu() - Main Menu Starting, Calling Settings.as/settingsSetup().');
 			Settings.settingsSetup();
@@ -285,16 +282,16 @@ package
 			trace('MainMenu.as/setLangButtons() - Creating language buttons.');
 
 
-				languageButtons = new Array();
+				languageButtons = [];
 
 				try
 				{
-					for each(var language:XML in Languages.languageListDictionary) 
+					for each(var language:XML in Languages.languageListDictionary)
 					{
-						if(languageId != "" && languageName != "") 
+						if(language.lang.@id != "" && language.lang.text() != "")
 						{
 							Languages.languageCount++;
-							var button:MovieClip = new butLang();
+							var button = new butLang();
 
 							var languageId:String = language.lang.@id;
 							var languageName:String = language.lang.text();
@@ -305,14 +302,14 @@ package
 							button.languageButtonTextField.text = languageName;
 							button.y = -Languages.languageCount * 40;
 							button.n.text = languageId;
-							button.n.visible = false; 
+							button.n.visible = false;
 							button.addEventListener(MouseEvent.CLICK, languageButtonPress);
 							mainMenu.lang.addChild(button)
 						}
 						else // Check languageListDictionary length and output error about a blank entry.
 						{
 							var dictionaryLength:int = 0;
-							for (var key:* in Languages.languageListDictionary) 
+							for (var key:* in Languages.languageListDictionary)
 							{
 								dictionaryLength++;
 							}
@@ -449,7 +446,8 @@ package
 			mainMenu.dialLoad.objectName.text 	= '';
 			mainMenu.dialLoad.pers.visible 		= false;
 
-			arr = new Array();
+			arr = [];
+
 			for (var i:int = 0; i <= world.saveCount; i++) 
 			{
 				var slot:MovieClip = mainMenu.dialLoad['slot' + i];
@@ -551,7 +549,6 @@ package
 					mainMenuOff();
 					command = 3;
 					com = 'load';
-					return;
 				}
 			} 
 			catch(err) 
@@ -800,7 +797,7 @@ package
 
 
 
-			if (world.constructorFinished == false && Languages.textLoaded == true)
+			if (!world.constructorFinished && Languages.textLoaded)
 			{
 				trace('MainMenu.as/step() - Language data finished loading, continuing world construction.');
 				
@@ -809,7 +806,7 @@ package
 			}
 
 			
-			if (world.constructorFinished == true && mainMenuLoaded == false)
+			if (world.constructorFinished && !mainMenuLoaded)
 			{
 				trace('MainMenu.as/step() - world finished loading. Starting main menu loading stage 2.');
 				
@@ -826,7 +823,7 @@ package
 					mainMenu.loading.text = 'Loading...\n';
 					trace('MainMenu.as/step() - Resources loaded. Languages.textloaded = "' + Languages.textLoaded + '" world.init2Done: "' + world.init2Done + '" world.allLevelsLoaded: ' + world.allLevelsLoaded + '"');
 					
-					if (Languages.textLoaded && world.init2Done == false) 
+					if (Languages.textLoaded && !world.init2Done)
 					{
 						trace('MainMenu.as/step() - Languages.textLoaded are true, calling world.init2().');
 						world.init2Done = true
@@ -840,7 +837,7 @@ package
 						trace('MainMenu.as/step() - Languages.textLoaded and world.allLevelsLoaded are true.');
 						trace('MainMenu.as/step() - Checking if language buttons are loaded...');
 
-						if (langButtonsLoaded == false)
+						if (!langButtonsLoaded)
 						{
 							trace('MainMenu.as/step() - No language buttons found, creating new Menu buttons array.');
 							setLangButtons();
@@ -855,7 +852,6 @@ package
 						showMainButtons(true); 
 						
 						trace('MainMenu.as/step() - Buttons turned on, returning.');
-						return;
 					}
 
 				}

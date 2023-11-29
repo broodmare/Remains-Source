@@ -222,7 +222,8 @@ package interdata
 			vis.visibility.y=ny-50;
 			vis.selector.x=nx/2;
 			vis.selector.y=ny/2;
-			vis.sats.scaleX=nx/100, vis.sats.scaleY=ny/100;
+			vis.sats.scaleX=nx/100;
+			vis.sats.scaleY=ny/100;
 			vis.hpbarboss.x=nx/2;
 			var r:Number = nx - 275 * 2;
 
@@ -1068,7 +1069,8 @@ package interdata
 				bulbText=s;
 				info.htmlText+=bulbText+"<br>";
 				if (addlog) World.world.log+=bulbText+"<br>";
-				kolStr++, t_info=150;
+				kolStr++;
+				t_info=150;
 				if (kolStr>6) remStr();
 			}
 			prevInfoText=s;
@@ -1079,7 +1081,8 @@ package interdata
 			var s:String=Res.txt('e',id,2);
 			if (s==null || s=='') return;
 			info.htmlText+=(s+"<br>");
-			kolStr++, t_info=150;
+			kolStr++;
+			t_info=150;
 			if (kolStr>6) remStr();
 			//trace(s);
 		}

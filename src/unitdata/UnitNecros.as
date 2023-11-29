@@ -90,7 +90,8 @@ package unitdata
 						if (celY<0) celX=200;
 						if (celY>room.roomPixelHeight) celY=room.roomPixelHeight-200;
 					} else {
-						celX=X, celY=Y-scY/2;
+						celX=X;
+						celY=Y-scY/2;
 					}
 				}
 			}

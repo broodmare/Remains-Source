@@ -185,12 +185,17 @@ package unitdata
 		
 		public override function setVisPos():void
 		{
-			if (vis) {
-				if (sost==2) {
+			if (vis)
+			{
+				if (sost==2)
+				{
 					vis.x=X+(Math.random()-0.5)*(150-timerDie)/15;
 					vis.y=Y+(Math.random()-0.5)*(150-timerDie)/15;
-				} else {
-					vis.x=X,vis.y=Y;
+				}
+				else
+				{
+					vis.x = X;
+					vis.y = Y;
 				}
 				vis.scaleX=storona;
 			}
@@ -322,16 +327,18 @@ package unitdata
 				if (attState<2 && room.gg.pet && room.gg.pet.sost==1 && isrnd(0.2)) setCel(room.gg.pet);
 				else setCel(room.gg);
 			}
-			if (isFly) {
+			if (isFly)
+			{
 				t_float+=0.0726;
 				floatX=Math.sin(t_float)*2;
 				floatY=Math.cos(t_float)*2;
-				dx*=0.9, dy*=0.9
-				dx+=floatX;
-				dy+=floatY;
+				dx *= 0.9;
+				dy *= 0.9
+				dx += floatX;
+				dy += floatY;
 			}
-			celDX=celX-X;
-			celDY=celY-Y;
+			celDX = celX-X;
+			celDY = celY-Y;
 			var dist2:Number=celDX*celDX+celDY*celDY;
 			var dist:Number=(moveX-X)*(moveX-X)+(moveY-Y)*(moveY-Y);
 			//поведение при различных состояниях

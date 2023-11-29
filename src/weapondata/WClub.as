@@ -94,7 +94,8 @@ package weapondata
 			checkLine=true;
 			b.checkLine=checkLine;
 			rot=-Math.PI/2-(Math.PI/6)*storona;
-			cos0=Math.cos(rot), sin0=Math.sin(rot);
+			cos0=Math.cos(rot);
+			sin0=Math.sin(rot);
 			for (var i:int = 0; i<=kolvzz; i++) 
 			{
 				var nx:int = X+cos2*(mindlina+i*stepdlina)+anim*storona*(mindlina+i*stepdlina);
@@ -286,13 +287,15 @@ package weapondata
 								visvzz.gotoAndStop(1);
 							}
 						}
-						cos2=Math.cos(rot), sin2=Math.sin(rot);
+						cos2=Math.cos(rot);
+						sin2=Math.sin(rot);
 						for (var i:int=0; i<=kolvzz; i++) 
 						{
 							var nx:int=X+cos2*(mindlina+i*stepdlina);
 							var ny:int=Y+sin2*(mindlina+i*stepdlina);
 							if (!isPow) b.bindMove(nx,ny, vzz[i].X, vzz[i].Y);
-							vzz[i].X=nx, vzz[i].Y=ny;
+							vzz[i].X=nx;
+							vzz[i].Y=ny;
 						}
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) 
@@ -310,7 +313,8 @@ package weapondata
 				else if (mtip==1) 
 				{
 					rot=Math.atan2(celY-(owner.Y-owner.scY/2),celX-owner.X);
-					cos2=Math.cos(rot), sin2=Math.sin(rot);
+					cos2=Math.cos(rot);
+					sin2=Math.sin(rot);
 					plX=cos2*anim*atDlina;
 					plY=sin2*anim*atDlina;
 					if (t_attack>=rapid_act/2 && t_attack<rapid_act*5/6) 
@@ -318,7 +322,8 @@ package weapondata
 						nx=X+cos2*dlina+plX;
 						ny=Y+sin2*dlina+plY;
 						if (!isPow) b.bindMove(nx,ny, vzz[0].X, vzz[0].Y);
-						vzz[0].X=nx, vzz[0].Y=ny;
+						vzz[0].X=nx;
+						vzz[0].Y=ny;
 						if (lasM) vis.gotoAndStop(3);
 						if (!isPow && sndShoot!='' && !sndPl) 
 						{
@@ -335,10 +340,12 @@ package weapondata
 				else if (mtip==2) 
 				{
 					rot=Math.atan2(celY-(owner.Y-owner.scY/2),celX-owner.X);
-					cos2=Math.cos(rot), sin2=Math.sin(rot);
+					cos2=Math.cos(rot);
+					sin2=Math.sin(rot);
 					if (t_attack==1) 
 					{
-						cos2=Math.cos(rot), sin2=Math.sin(rot);
+						cos2=Math.cos(rot);
+						sin2=Math.sin(rot);
 						b.bindMove(X+cos2*mindlina, Y+sin2*mindlina, X+cos2*dlina, Y+sin2*dlina);
 						if (lasM) vis.gotoAndStop(3);
 						if (sndShoot!='' && !sndPl) 
@@ -441,7 +448,8 @@ package weapondata
 			} 
 			else 
 			{
-				cos2=Math.cos(rot), sin2=Math.sin(rot);
+				cos2=Math.cos(rot);
+				sin2=Math.sin(rot);
 				vzz[0].X=X+cos2*(dlina-0.25*atDlina);
 				vzz[0].Y=Y+sin2*(dlina-0.25*atDlina);
 			}

@@ -132,7 +132,8 @@ package unitdata
 					} 
 					else 
 					{
-						celX=X, celY=Y-scY/2;
+						celX=X;
+						celY=Y-scY/2;
 					}
 				}
 			}

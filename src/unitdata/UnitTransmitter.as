@@ -65,7 +65,8 @@ package unitdata
 		public override function setVisPos():void
 		{
 			if (vis) {
-				vis.x=X,vis.y=Y;
+				vis.x=X;
+				vis.y=Y;
 			}
 		}
 		

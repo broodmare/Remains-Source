@@ -35,7 +35,8 @@ package weapondata
 				p.y+=dy;
 				if (vel<maxVel)	vel+=accel;
 				norma(p,vel);
-				dx=p.x, dy=p.y;
+				dx = p.x;
+				dy = p.y;
 			}
 			super.step();
 			rot = Math.atan2(dy,dx);

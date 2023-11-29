@@ -180,7 +180,8 @@ package unitdata
 				} 
 				else 
 				{
-					vis.x = X, vis.y = Y;
+					vis.x = X;
+					vis.y = Y;
 				}
 				vis.scaleX=storona;
 			}
@@ -255,7 +256,8 @@ package unitdata
 					if (nmp==mp) nmp++;
 					if (nmp>=5) nmp=0;
 					mp=nmp;
-					moveX=movePoints[mp].x*40+20, moveY=movePoints[mp].y*40+40;
+					moveX = movePoints[mp].x*40+20;
+					moveY = movePoints[mp].y*40+40;
 					aiTCh=60;
 					castShit();
 				} else if (aiState==2) {
@@ -298,25 +300,34 @@ package unitdata
 				dx+=spd.x;
 				dy+=spd.y;
 				if (dist<1000) {
-					dx*=0.8, dy*=0.8;
+					dx *= 0.8;
+					dy *= 0.8;
 				}
-			} else if (aiState>=2) {
-				dx*=0.7, dy*=0.7;
 			}
-			if (aiState==2 && aiTCh%5==1) {
+			else if (aiState >= 2)
+			{
+				dx*=0.7;
+				dy*=0.7;
+			}
+			if (aiState==2 && aiTCh%5==1)
+			{
 				if (attState==0) Emitter.emit('laser',room,celX+Math.random()*100-50,celY-Math.random()*50);
 				if (attState==1) Emitter.emit('plasma',room,celX+Math.random()*50-25,celY-Math.random()*20);
 				if (attState==4) Emitter.emit('spark',room,celX+Math.random()*100-50,celY-Math.random()*50);
 			}
-			if (aiState>0 && !(aiState==3 && attState==2)) {
+			if (aiState>0 && !(aiState==3 && attState==2))
+			{
 				aiNapr=(celX>X)?1:-1;
-				if (storona!=aiNapr) {
+				if (storona!=aiNapr)
+				{
 					t_turn--;
-					if (t_turn<=0) {
-						storona=aiNapr;
-						t_turn=15;
+					if (t_turn <= 0)
+					{
+						storona = aiNapr;
+						t_turn = 15;
 					}
-				} else t_turn=15;
+				}
+				else t_turn = 15;
 			}
 			attack();
 			

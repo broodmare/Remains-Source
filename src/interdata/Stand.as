@@ -266,7 +266,8 @@ package interdata
 
 				if (stolb >= 6) 
 				{
-					stolb = 0, str++;
+					stolb = 0;
+					str++;
 				}
 
 

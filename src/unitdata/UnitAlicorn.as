@@ -258,11 +258,15 @@ package unitdata
 		
 		public override function budilo(rad:Number=500):void
 		{
-			if (celUnit==null) {
-				celX=X,celY=Y;
+			if (celUnit==null)
+			{
+				celX = X;
+				celY = Y;
 			}
-			for each(var un:Unit in room.units) {
-				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres) {
+			for each(var un:Unit in room.units)
+			{
+				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres)
+				{
 					un.alarma(celX,celY);
 				}
 			}
@@ -271,7 +275,8 @@ package unitdata
 		public function telepat():void
 		{
 			for each(var un:Unit in room.units) {
-				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres && un.celUnit==null) {
+				if (un!=this && un.fraction==fraction && un.sost==1 && !un.unres && un.celUnit==null)
+				{
 					un.setCel(celUnit);
 				}
 			}

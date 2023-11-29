@@ -86,7 +86,8 @@ package graphdata
 		
 		public function blit(blframe:int):void
 		{
-			blitRect.x = blframe * blitX, blitRect.y = 0;
+			blitRect.x = blframe * blitX;
+			blitRect.y = 0;
 			visData.copyPixels(blitData, blitRect, blitPoint);
 		}
 		

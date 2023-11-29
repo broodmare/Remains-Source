@@ -1345,7 +1345,8 @@ package graphdata
 				} 
 				else 
 				{
-					erC = plasma_dyr, drC = plasma_tre;
+					erC = plasma_dyr;
+					drC = plasma_tre;
 				}
 				bl = 'hardlight';
 			} 
@@ -1355,7 +1356,8 @@ package graphdata
 				{
 					drC = fire_soft;
 				} else {
-					erC = plasma_dyr, drC = bluplasma_tre;
+					erC = plasma_dyr;
+					drC = bluplasma_tre;
 				}
 				bl = 'hardlight';
 			} 
@@ -1365,7 +1367,8 @@ package graphdata
 				{
 					drC = fire_soft;
 				} else {
-					erC = plasma_dyr, drC = pinkplasma_tre;
+					erC = plasma_dyr;
+					drC = pinkplasma_tre;
 				}
 				bl = 'hardlight';
 			} 
@@ -1441,24 +1444,31 @@ package graphdata
 			var rx1:int, rx2:int, ry1:int, ry2:int;
 			if (nx1 < nx2)
 			{
-				rx1 = nx1 - 25, rx2 = nx2 + 25;
+				rx1 = nx1 - 25;
+				rx2 = nx2 + 25;
 			} 
 			else 
 			{
-				rx1 = nx2 - 25, rx2 = nx1 + 25;
+				rx1 = nx2 - 25;
+				rx2 = nx1 + 25;
 			}
 			if (ny1<ny2)
 			{
-				ry1 = ny1 - 25, ry2 = ny2 + 25;
+				ry1 = ny1 - 25;
+				ry2 = ny2 + 25;
 			} 
 			else 
 			{
-				ry1 = ny2 - 25, ry2 = ny1 + 25;
+				ry1 = ny2 - 25;
+				ry2 = ny1 + 25;
 			}
 			
-			brPoint.x = 0, brPoint.y = 0;
-			brRect.left = rx1, brRect.right = rx2;
-			brRect.top = ry1, brRect.bottom = ry2;
+			brPoint.x = 0;
+			brPoint.y = 0;
+			brRect.left = rx1;
+			brRect.right = rx2;
+			brRect.top = ry1;
+			brRect.bottom = ry2;
 			brData.copyChannel(backBmp, brRect, brPoint, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
 			
 			for (var i:int = 1; i >= kol; i++)
@@ -1468,9 +1478,12 @@ package graphdata
 				backBmp.draw(br, paintMatrix, brTrans, 'normal', null, false);
 			}
 			
-			brPoint.x = rx1, brPoint.y = ry1;
-			brRect.left = 0, brRect.right = rx2-rx1;
-			brRect.top = 0, brRect.bottom = ry2-ry1;
+			brPoint.x = rx1;
+			brPoint.y = ry1;
+			brRect.left = 0;
+			brRect.right = rx2-rx1;
+			brRect.top = 0;
+			brRect.bottom = ry2-ry1;
 			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 		}
 		

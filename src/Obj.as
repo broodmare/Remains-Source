@@ -130,15 +130,26 @@ package
 		//Forced Movement
 		public function bindMove(nx:Number, ny:Number, ox:Number=-1, oy:Number=-1):void
 		{
-			X=nx, Y=ny;
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+			X = nx;
+			Y = ny;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
+			Y1 = Y - scY;
+			Y2 = Y;
 		}
 		
 		//copying the state into another object
 		public function copy(un:Obj):void
 		{
-			un.X=X, un.Y = Y, un.scX = scX, un.scY = scY;
-			un.Y1 = Y1, un.Y2 = Y2, un.X1 = X1, un.X2 = X2;
+			un.X=X;
+			un.Y = Y;
+			un.scX = scX;
+			un.scY = scY;
+
+			un.Y1 = Y1;
+			un.Y2 = Y2;
+			un.X1 = X1;
+			un.X2 = X2;
 			un.storona = storona;
 		}
 		

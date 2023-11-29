@@ -516,7 +516,8 @@ package servdata
 			if (newRoom==null) return false;
 			lootBroken=false;
 			room=newRoom;
-			nx=nnx, ny=nny;
+			nx = nnx;
+			ny = nny;
 			is_loot=0;
 			//монстры
 			if (cont=='scorp') {

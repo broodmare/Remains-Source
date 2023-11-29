@@ -321,7 +321,8 @@ package locdata
 				onCursor=0;
 				return;
 			}
-			stX=X, stY=Y;
+			stX=X;
+			stY=Y;
 			if (inter) inter.step();
 			if (radioactiv) 
 			{
@@ -368,7 +369,10 @@ package locdata
 					{
 						X+=osnova.cdx;
 						Y+=osnova.cdy;
-						X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+						X1=X-scX/2;
+						X2=X+scX/2;
+						Y1=Y-scY;
+						Y2=Y;
 						if (vis) runVis()
 					}
 				}
@@ -392,7 +396,8 @@ package locdata
 				if (vis) runVis();
 				if (inter) {inter.X=X; inter.Y=Y;}
 			}
-			cdx=X-stX, cdy=Y-stY;
+			cdx = X - stX;
+			cdy = Y - stY;
 			if (t_throw>0) t_throw--;
 			onCursor=(X1<World.world.celX && X2>World.world.celX && Y1<World.world.celY && Y2>World.world.celY)?prior:0;
 		}
@@ -864,7 +869,9 @@ package locdata
 		
 		public function runVis()
 		{
-			vis.x=shad.x=X,vis.y=Y,shad.y=Y+(wall?2:6);
+			vis.x = shad.x = X;
+			vis.y = Y;
+			shad.y = Y + (wall ? 2:6);
 		}
 		
 		public function sound(sid:String, msec:Number = 0, vol:Number = 1):* 

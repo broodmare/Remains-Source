@@ -214,7 +214,8 @@ package interdata
 			}
 			world.mainCanvas.x=world.sats.vis.x=vx+quakeX;
 			world.mainCanvas.y=world.sats.vis.y=vy+quakeY;
-			Snd.centrX=X, Snd.centrY=Y;
+			Snd.centrX = X;
+			Snd.centrY = Y;
 			
 			world.celX=(celX-vx)/scaleV;
 			world.celY=(celY-vy)/scaleV;

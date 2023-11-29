@@ -117,7 +117,8 @@ package servdata
 		{
 			owner=own;
 			room=owner.room;
-			X=own.X, Y=own.Y;
+			X = own.X;
+			Y = own.Y;
 			xml=nxml;
 			var rnd:Boolean = true;
 			if (xml && xml.@set.length()) rnd=false;	// if the set property is specified as '1', there won't be random parameters
@@ -232,7 +233,8 @@ package servdata
 				if (xml.move.length()) 
 				{
 					isMove=true;
-					begX=X, begY=Y;
+					begX = X;
+					begY = Y;
 					if (xml.move.@dx.length()) 
 					{
 						if (room && room.mirror) endX=X-xml.move.@dx*Settings.tilePixelWidth;
@@ -558,7 +560,8 @@ package servdata
 			} 
 			else if (mine>0) 
 			{
-					verZhopa=0, verFail=0;
+					verZhopa=0;
+					verFail=0;
 					if (mine>unlock) verZhopa=(mine-unlock+1)*0.15;
 					verFail=(mine-unlock+2)*0.2;
 					if (Math.random()<verZhopa)  // Critical failure
@@ -1289,7 +1292,8 @@ package servdata
 				var nx:Number=begX+(endX-begX)*f;
 				var ny:Number=begY+(endY-begY)*f;
 				owner.bindMove(nx,ny);
-				X=nx, Y=ny;
+				X=nx;
+				Y=ny;
 				t_move+=dt_move;
 				if (t_move>=(tStay+tMove)*2) t_move=0;
 			}
@@ -1363,7 +1367,8 @@ package servdata
 		public function loot(impOnly:Boolean=false):void
 		{
 			if (room==null || cont=='empty') return;
-			X=owner.X, Y=owner.Y-owner.scY/2;
+			X = owner.X;
+			Y = owner.Y - owner.scY / 2;
 			var kol:int, imp:int;
 			var is_loot:Boolean = false;
 			var imp_loot:int = 1;

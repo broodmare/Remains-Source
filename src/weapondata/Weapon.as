@@ -861,16 +861,19 @@ package weapondata
 					var p:Point=new Point(vis.emit.x,vis.emit.y);
 					var p1:Point=vis.localToGlobal(p);
 					p1=vis.parent.globalToLocal(p1);
-					bulX=p1.x,bulY=p1.y;
+					bulX=p1.x;
+					bulY=p1.y;
 				} 
 				else 
 				{
-					bulX=X,bulY=Y;
+					bulX=X;
+					bulY=Y;
 				}
 			} 
 			catch (err) 
 			{
-				bulX=X,bulY=Y;
+				bulX=X;
+				bulY=Y;
 			}
 		}
 		

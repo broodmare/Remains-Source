@@ -87,13 +87,19 @@ package unitdata
 		
 		public override function setVisPos():void
 		{
-			if (vis) {
-				if (aiState==1) {
+			if (vis)
+			{
+				if (aiState==1)
+				{
 					vis.rotation=180;
-					vis.x=X,vis.y=Y-40;
-				} else {
+					vis.x = X;
+					vis.y = Y-40;
+				}
+				else
+				{
 					vis.rotation=0;
-					vis.x=X,vis.y=Y;
+					vis.x=X;
+					vis.y=Y;
 					vis.scaleX=storona;
 				}
 			}
@@ -109,12 +115,20 @@ package unitdata
 		
 		public override function setCel(un:Unit=null, cx:Number=-10000, cy:Number=-10000):void
 		{
-			if (un && isMeet(un)) {
-				celX=un.X, celY=un.Y-un.scY/2;
-			} else if (cx>-10000 && cy>-10000) {
-				celX=cx, celY=cy;
-			} else {
-				celX=X, celY=Y-scY/2;
+			if (un && isMeet(un))
+			{
+				celX=un.X;
+				celY=un.Y - un.scY / 2;
+			}
+			else if (cx>-10000 && cy>-10000)
+			{
+				celX=cx;
+				celY=cy;
+			}
+			else
+			{
+				celX=X;
+				celY=Y-scY/2;
 			}
 			celDX=celX-X;
 			celDY=celY-Y+scY;

@@ -311,7 +311,8 @@ package interdata
 			var satsBmp:BitmapData=new BitmapData(un.vis.width,un.vis.height,true,0);
 			var m:Matrix=new Matrix();
 			var rect:Rectangle=un.vis.getBounds(un.vis);
-			m.tx=-rect.left, m.ty=-rect.top;
+			m.tx = -rect.left;
+			m.ty = -rect.top;
 			var hpoff:Boolean=false;
 			if (un.hpbar && un.hpbar.visible) hpoff=true;
 			if (hpoff) un.hpbar.visible=false;
@@ -319,10 +320,13 @@ package interdata
 			if (hpoff) un.hpbar.visible=true;
 			
 			var mc:MovieClip=new MovieClip();
-			mc.scaleX=un.vis.scaleX, mc.scaleY=un.vis.scaleY, mc.rotation=un.vis.rotation;
+			mc.scaleX = un.vis.scaleX;
+			mc.scaleY = un.vis.scaleY;
+			mc.rotation = un.vis.rotation;
 			var bm:Bitmap=new Bitmap(satsBmp);
 			mc.addChild(bm);
-			bm.x=rect.left, bm.y=rect.top;
+			bm.x = rect.left;
+			bm.y = rect.top;
 			
 			mc.addEventListener(MouseEvent.MOUSE_OVER,mOver);
 			mc.addEventListener(MouseEvent.MOUSE_OUT,mOut);
@@ -385,7 +389,8 @@ package interdata
 				}
 				if (gg.look(un)<=0 || !un.getTileVisi()) continue;
 				var mc:MovieClip=new MovieClip();
-				mc.x=un.vis.x, mc.y=un.vis.y;
+				mc.x = un.vis.x;
+				mc.y = un.vis.y;
 				vis.addChild(mc);
 				var du:MovieClip=drawUnit(un);
 				var su:MovieClip=new satsUnit();

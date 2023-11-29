@@ -38,7 +38,8 @@ package locdata
 			if (vis) 
 			{
 				vis.bonus.cacheAsBitmap=true;
-				vis.x=X, vis.y=Y;
+				vis.x=X
+				vis.y=Y;
 			}
 		}
 		

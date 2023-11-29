@@ -395,7 +395,8 @@ package locdata
 			lDist2 *= visMult;
 			if (isNaN(lDist1)) 
 			{
-				lDist1 = 300, lDist2 = 1000;
+				lDist1 = 300;
+				lDist2 = 1000;
 			}
 			// Color filter
 			cTransform = colorFilter(color);
@@ -633,8 +634,10 @@ package locdata
 		private function addSignPost(nx:int,ny:int,r:int):void
 		{
 			var sign:MovieClip;
-			sign=new signPost();
-			sign.x=nx*Tile.tilePixelWidth, sign.y=ny*Tile.tilePixelHeight, sign.rotation=r;
+			sign = new signPost();
+			sign.x=nx*Tile.tilePixelWidth;
+			sign.y=ny*Tile.tilePixelHeight;
+			sign.rotation=r;
 			signposts.push(sign);
 		}
 		
@@ -651,7 +654,8 @@ package locdata
 			} 
 			else 
 			{
-				obj.x=nx, obj.y=ny;
+				obj.x = nx;
+				obj.y = ny;
 			}
 			enspawn.push(obj);
 		}
@@ -1406,11 +1410,14 @@ package locdata
 			maxXp=kol;
 			for (var i=1; i<=100; i++) 
 			{
-				x1=2, y1=2, x2=roomWidth-2, y2=roomHeight-2;
+				x1 = 2;
+				y1 = 2;
+				x2 = roomWidth - 2;
+				y2 = roomHeight - 2;
 				if (mesto==4) 
 				{
-					x2=roomWidth/2;
-					y2=roomHeight/2;
+					x2 = roomWidth / 2;
+					y2 = roomHeight / 2;
 				} 
 				else if (mesto==3) 
 				{

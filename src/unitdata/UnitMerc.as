@@ -57,8 +57,9 @@ package unitdata
 		public override function setVisPos():void
 		{
 			if (vis) {
-				vis.x=X,vis.y=Y;
-				vis.scaleX=storona;
+				vis.x = X;
+				vis.y = Y;
+				vis.scaleX = storona;
 			}
 			if (arm) {
 				if (currentWeapon) arm.rotation=currentWeapon.rot*180/Math.PI+90*(1-storona);

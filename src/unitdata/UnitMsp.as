@@ -73,18 +73,26 @@ package unitdata
 		public override function setVisPos():void
 		{
 			if (vis) {
-				if (cep==0) {
-					vis.x=X,vis.y=Y;
+				if (cep==0)
+				{
+					vis.x = X;
+					vis.y = Y;
 					vis.rotation=0;
-				} else if (cep==1) {
+				}
+				else if (cep==1)
+				{
 					vis.x=X;
 					vis.y=Y1;
 					vis.rotation=180;
-				} else if (cep==3) {
+				}
+				else if (cep==3)
+				{
 					vis.x=X2;
 					vis.y=Y-scY/2;
 					vis.rotation=-90;
-				} else if (cep==2) {
+				}
+				else if (cep==2)
+				{
 					vis.x=X1;
 					vis.y=Y-scY/2;
 					vis.rotation=90;

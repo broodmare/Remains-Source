@@ -470,48 +470,60 @@ package unitdata
 			//trace('difff',ndif);
 			if (ndif==0) 
 			{
-				begHP=200, lvlHP=25;
+				begHP=200;
+				lvlHP=25;
 				organMult=0.2;
 				dieDamage=0;
 				critHeal=0.2;
 				teleMana=0;
-				priceBlood=priceOrgan=0.5, priceRad=1, pricePoison=priceCut=4;
+				priceBlood = priceOrgan = 0.5;
+				priceRad=1;
+				pricePoison = priceCut = 4;
 				difCapsMult=1;
 				himBadDif=1;
 				petRes=20;
 			} 
 			else if (ndif==1) 
 			{
-				begHP=150, lvlHP=25;
+				begHP=150;
+				lvlHP=25;
 				organMult=0.5;
 				dieDamage=0;
 				critHeal=0.2;
 				teleMana=0;
-				priceBlood=priceOrgan=0.5, priceRad=1, pricePoison=priceCut=4;
+				priceBlood = priceOrgan = 0.5;
+				priceRad = 1;
+				pricePoison = priceCut = 4;
 				difCapsMult=1;
 				himBadDif=1;
 				petRes=20;
 			} 
 			else if (ndif==2) 
 			{
-				begHP=100, lvlHP=20;
-				organMult=1;
-				dieDamage=0.15;
-				critHeal=0.2;
-				teleMana=0.5;
-				priceBlood=priceOrgan=0.5, priceRad=1, pricePoison=priceCut=4;
+				begHP=100;
+				lvlHP=20;
+				organMult = 1;
+				dieDamage = 0.15;
+				critHeal = 0.2;
+				teleMana = 0.5;
+				priceBlood = priceOrgan = 0.5;
+				priceRad=1;
+				pricePoison = priceCut = 4;
 				difCapsMult=1;
 				himBadDif=1.3;
 				petRes=30;
 			} 
 			else if (ndif==3) 
 			{
-				begHP=70, lvlHP=15;
+				begHP=70;
+				lvlHP=15;
 				organMult=1;
 				dieDamage=0.25;
 				critHeal=0.1;	//восстановление от критических эффектов
 				teleMana=1;
-				priceBlood=priceOrgan=1, priceRad=1.5,	pricePoison=priceCut=6;
+				priceBlood=priceOrgan=1;
+				priceRad=1.5;
+				pricePoison = priceCut = 6;
 				difCapsMult=1;
 				himBadDif=2;
 				petRes=60;
@@ -520,12 +532,15 @@ package unitdata
 			} 
 			else if (ndif==4) 
 			{
-				begHP=40, lvlHP=10;
+				begHP=40;
+				lvlHP=10;
 				organMult=1;
 				dieDamage=0.35;
 				critHeal=0.1;	//восстановление от критических эффектов
 				teleMana=1;
-				priceBlood=priceOrgan=1, priceRad=1.5,	pricePoison=priceCut=6;
+				priceBlood = priceOrgan = 1;
+				priceRad=1.5;
+				pricePoison = priceCut = 6;
 				difCapsMult=0.5;
 				himBadDif=2.5;
 				petRes=90;

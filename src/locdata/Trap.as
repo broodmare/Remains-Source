@@ -34,7 +34,8 @@ package locdata
 			layer=0;
 			prior=1;
 			id=nid;
-			X=nx, Y=ny;
+			X = nx;
+			Y = ny;
 			var vClass:Class  = Res.getClass('vistrap' + id, null, vistrapspikes);
 			var vClass2:Class = Res.getClass('vistrap' + id + '2', null, null);
 			vis  = new vClass();

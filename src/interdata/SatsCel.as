@@ -20,9 +20,10 @@ package interdata
 			if (nUn==null) 
 			{
 				vis=new satsCel();
-				X=nx, Y=ny;
-				vis.x=X;
-				vis.y=Y;
+				X = nx;
+				Y = ny;
+				vis.x = X;
+				vis.y = Y;
 			} 
 			else 
 			{

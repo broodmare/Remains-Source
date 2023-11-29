@@ -358,7 +358,8 @@ package unitdata
 					storona=isLaz;
 					if (isLaz==-1) X=(room.roomTileArray[i][j] as Tile).phX1+scX/2;
 					else X=(room.roomTileArray[i][j] as Tile).phX2-scX/2;
-					X1=X-scX/2, X2=X+scX/2;
+					X1 = X - scX / 2;
+					X2 = X + scX / 2;
 					stay=false;
 					return true;
 				}

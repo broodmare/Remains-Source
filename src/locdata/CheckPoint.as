@@ -37,16 +37,22 @@ package locdata
 			levitPoss=false;
 			var node:XML = XmlBook.getXML("objects").obj.(@id == id)[0];
 			
-			X=nx, Y=ny;
+			X = nx;
+			Y = ny;
 			scX=node.@size*Settings.tilePixelWidth;
 			scY=node.@wid*Settings.tilePixelHeight;
 			objectName=Res.txt('o','checkpoint');
 			
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
-			X=nx, Y=ny;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
+			Y1 = Y - scY;
+			Y2 = Y;
+			X=nx;
+			Y=ny;
 			var vClass:Class=Res.getClass('vischeckpoint', null, vischeckpoint);
 			vis=new vClass();
-			vis.x=X, vis.y=Y;
+			vis.x=X;
+			vis.y=Y;
 
 			vis.gotoAndStop(1);
 			try {
@@ -56,7 +62,10 @@ package locdata
 				} else vis.lock.visible=false;
 			} catch (err) {}
 
-			X1=X-scX/2, X2=X+scX/2, Y1=Y-scY, Y2=Y;
+			X1 = X - scX / 2;
+			X2 = X + scX / 2;
+			Y1 = Y - scY;
+			Y2 = Y;
 			cTransform=room.cTransform;
 			room.getAbsTile(X-20,Y+10).shelf=true;
 			room.getAbsTile(X+20,Y+10).shelf=true;

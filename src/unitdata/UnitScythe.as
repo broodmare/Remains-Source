@@ -83,7 +83,10 @@ package unitdata
 				Y+=dy/div;
 				if (X>=room.roomPixelWidth || X<=0 || Y>=room.roomPixelHeight || Y<=0) die();
 			}
-			X1=X-scX/2, X2=X+scX/2,	Y1=Y-scY, Y2=Y;
+			X1=X-scX/2;
+			X2=X+scX/2;
+			Y1=Y-scY;
+			Y2=Y;
 		}
 		
 		public override function control():void

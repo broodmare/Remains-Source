@@ -49,8 +49,10 @@ package unitdata
 				X=head.X+bindX;
 				Y=head.Y+bindY;
 			}
-			Y1=Y-scY, Y2=Y;
-			X1=X-scX/2, X2=X+scX/2;
+			Y1=Y-scY;
+			Y2=Y;
+			X1=X-scX/2;
+			X2=X+scX/2;
 			setVisPos();
 		}
 		
@@ -110,7 +112,8 @@ package unitdata
 		public override function setVisPos():void
 		{
 			if (vis) {
-				vis.x=X,vis.y=Y;
+				vis.x=X;
+				vis.y=Y;
 				currentWeapon.vis.x=X;
 				currentWeapon.vis.y=Y-scY/2;
 			}

@@ -53,7 +53,8 @@ package unitdata
 		
 		public override function setVisPos():void
 		{
-			vis.x=X,vis.y=Y-scY/2;
+			vis.x = X;
+			vis.y = Y - scY / 2;
 		}
 		
 		public override function dropLoot():void

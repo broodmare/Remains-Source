@@ -210,7 +210,8 @@ package unitdata
 				if (reloadTime==1) vis.gotoAndStop(2);
 				return;
 			}
-			inter.X=X, inter.Y=Y;
+			inter.X = X;
+			inter.Y = Y;
 			if (aiState==1 && oduplenie<=0 && sens>0) //взведена, поиск целей
 			{ 
 				if (aiN%4==0) 

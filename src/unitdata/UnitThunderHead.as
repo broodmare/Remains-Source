@@ -186,14 +186,17 @@ package unitdata
 		{
 			if (vis) 
 			{
-				vis.x=X,vis.y=Y;
+				vis.x=X;
+				vis.y=Y;
 			}
 		}
 		
 		public override function run(div:int=1):void
 		{
-			X1=X-scX/2+300*3, X2=X1+1370*3;
-			Y1=Y-scY/2+170*3, Y2=Y1+580*3;
+			X1 = X-scX/2+300*3;
+			X2 = X1+1370*3;
+			Y1 = Y-scY/2+170*3;
+			Y2 = Y1+580*3;
 		}
 		
 		public function setUgolPos():void
@@ -291,8 +294,11 @@ package unitdata
 				ugol+=90/moveTime;
 				if (ugol>=360) ugol-=360;
 				isAtt=true;
-			} else if (aiState>=2) {
-				dx*=0.7, dy*=0.7;
+			}
+			else if (aiState>=2)
+			{
+				dx*=0.7;
+				dy*=0.7;
 				if (dx<5 && dx>-5) dx=0;
 				if (dy<5 && dy>-5) dy=0;
 				isAtt=true;

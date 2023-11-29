@@ -171,14 +171,16 @@ package unitdata
 			{
 				if (tipDamager==2) 
 				{
-					celX=X, celY=Y;
+					celX=X;
+					celY=Y;
 					currentWeapon.rot=Math.PI/2;
 					currentWeapon.rapid=1;
 					(currentWeapon as WThrow).detTime=45;
 				} 
 				else if (tipDamager==1) 
 				{
-					celX=X+200*storona, celY=Y-scY/2;
+					celX = X + 200 * storona;
+					celY = Y - scY / 2;
 					currentWeapon.rot=(storona<0)?Math.PI:0;
 				}
 			}

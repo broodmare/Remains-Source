@@ -220,12 +220,19 @@ package unitdata
 				ax2=X+5;
 				ay1=Y-30;
 				ay2=Y-20;
-			} else if (id=='trigplate') {
-				ax1=X1, ax2=X2;
+			}
+			else if (id=='trigplate')
+			{
+				ax1=X1;
+				ax2=X2;
 				ay1=ay2=Y-1;
-			} else {
-				ax1=X1, ax2=X2;
-				ay1=Y1, ay2=Y2;
+			}
+			else
+			{
+				ax1=X1;
+				ax2=X2;
+				ay1=Y1;
+				ay2=Y2;
 			}
 		}
 		
