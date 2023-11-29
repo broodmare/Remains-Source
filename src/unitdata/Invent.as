@@ -734,7 +734,7 @@ package unitdata
 			if (armors[id]) return null;
 			var node:XMLList = XmlBook.getXML("armors").armor.(@id == id);
 			if (!node) return null;
-			var w:Armor=new Armor(id, nlvl);
+			var w:Armor = new Armor(id, nlvl);
 			w.hp=hp;
 			if (w.hp>w.maxhp) w.hp=w.maxhp;
 			armors[id]=w;
@@ -743,7 +743,6 @@ package unitdata
 		
 		public function addSpell(id:String):Spell 
 		{
-			trace('Invent.as/addSpell() - 1/7 Adding spell...');
 
 			if (spells == null)
 			{
@@ -759,10 +758,9 @@ package unitdata
 			{
 				return spells[id];
 			}
-			trace('Invent.as/addSpell() - 2/7');
+
 			var sp:Spell = new Spell(owner, id);
 
-			trace('Invent.as/addSpell() - 3/7');
 			if (sp == null) 
 			{
 				trace('Invent.as/addSpell() - ERROR: New spell is null.');
@@ -770,7 +768,6 @@ package unitdata
 			}
 			spells[id] = sp;
 
-			trace('Invent.as/addSpell() - 4/7');
 			var w:Weapon = addWeapon(id);
 			if (w == null)
 			{
@@ -778,14 +775,9 @@ package unitdata
 				return null;
 			}
 
-			trace('Invent.as/addSpell() - 5/7 w.objectName: "' + w.objectName + '", w.spell: "' + w.spell + '".');
-
 			w.spell = true;
-
-			trace('Invent.as/addSpell() - 6/7');
 			w.objectName = sp.objectName;
 
-			trace('Invent.as/addSpell() - 7/7 Done! Returning spell');
 			return sp;
 		}
 		
@@ -793,11 +785,10 @@ package unitdata
 		{
 			for each (var sp in XmlBook.getXML("items").item.(@tip == 'spell')) 
 			{
-				trace('Invent.as/addAllSpells() - Adding spell: "' + sp.@id + '".')
+
 				try
 				{
 					addSpell(sp.@id);
-					trace('Invent.as/addAllSpells() - Sucessful!');
 				}
 				catch(err:Error)
 				{
@@ -806,7 +797,6 @@ package unitdata
 				
 				
 			}
-			trace('Invent.as/addAllSpells() - Finished adding spells.')
 		}
 		
 		// Add to the inventory, tr = 1 if the item was purchased, 2 if it was obtained as a reward

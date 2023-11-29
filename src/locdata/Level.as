@@ -14,7 +14,7 @@ package locdata
 	public class Level 
 	{
 		
-		public var template:LevelTemplate;		//template based on which the level was created
+		public var levelTemplate:LevelTemplate;		//Which template the level was created with
 		
 		public var rnd:Boolean = false;			//true if the terrain has random generation
 		public var room:Room;					//current room
@@ -22,8 +22,8 @@ package locdata
 		public var roomArray:Array;				//three-dimensional map of all locations
 		public var probs:Array;					//trial locations
 		public var listLocs:Array;				//linear array of locations
-		public var locX:int;
-		public var locY:int;
+		public var locX:int = 0;
+		public var locY:int = 0;
 		public var locZ:int = 0;				//coordinates of the active room
 		public var retLocX:int = 0;				//room coordinates for returning to the main layer
 		public var retLocY:int = 0;				//room coordinates for returning to the main layer
@@ -58,6 +58,9 @@ package locdata
 		
 		var allRoom:Array;						//array of all rooms taken from xml
 		var rndRoom:Array;						//array used for random generation
+
+
+
 		public var kolAll:Array;				//number of each type of object
 		
 		public var uidObjs:Array;				//all objects with uid
@@ -74,9 +77,10 @@ package locdata
 		//lvl - character level-1
 		public function Level(ngg:UnitPlayer, lt:LevelTemplate, lvl:int) 
 		{
+			trace('Level.as/Level() - Setting up level...')
 			gg = ngg;
-			template = lt;
-			rnd = template.rnd;
+			levelTemplate = lt;
+			rnd = levelTemplate.rnd;
 
 			uidObjs  = [];
 			scripts  = [];
@@ -85,27 +89,28 @@ package locdata
 			probIds  = [];
 			probs 	 = [];
 			prepareRooms();
+
 			if (rnd) 
 			{
 				levelDifficultyLevel = lvl;	//difficulty is determined by the given parameter
-				if (levelDifficultyLevel < template.dif) levelDifficultyLevel = template.dif;	//if the difficulty is less than the minimum, set it to the minimum
-				maxLocX = template.mLocX;	//dimensions are taken from the level settings
-				maxLocY = template.mLocY;
+				if (levelDifficultyLevel < levelTemplate.dif) levelDifficultyLevel = levelTemplate.dif;	//if the difficulty is less than the minimum, set it to the minimum
+				maxLocX = levelTemplate.mLocX;	//dimensions are taken from the level settings
+				maxLocY = levelTemplate.mLocY;
 				buildRandomLand();
 			} 
 			else 
 			{
-				levelDifficultyLevel = template.dif;	//difficulty is taken from the level settings
-				if (template.autoLevel) levelDifficultyLevel = lvl;
+				levelDifficultyLevel = levelTemplate.dif;	//difficulty is taken from the level settings
+				if (levelTemplate.autoLevel) levelDifficultyLevel = lvl;
 				maxLocX = 1;	//dimensions are determined according to the map
 				maxLocY = 1;	//dimensions are determined according to the map
 				buildSpecifLevel();
 			}
 			lootLimit = lvl + 3;
-			gameStage = template.gameStage;	//story stage is taken from the level settings
+			gameStage = levelTemplate.gameStage;	//story stage is taken from the level settings
 			//attached scripts
 			itemScripts = [];
-			for each(var xl in template.levelData.scr) 
+			for each(var xl in levelTemplate.levelData.scr) 
 			{
 				if (xl.@eve == 'take' && xl.@item.length()) 
 				{
@@ -123,11 +128,25 @@ package locdata
 		//Convert from XML to array
 		public function prepareRooms():void
 		{
-			allRoom =[];
-			for each(var xml in template.allroom.roomTemplate) 
+			trace('Level.as/prepareRooms() - Loading all rooms from the level template into the allRoom array.');
+			allRoom = [];
+			if (levelTemplate != null)
 			{
-				allRoom.push(new RoomTemplate(xml));
+				var roomsFound:int = 0;
+
+				for each(var roomNode in levelTemplate.allroom.room) 
+				{
+					allRoom.push(new RoomTemplate(roomNode));
+					roomsFound++;
+				}
+				trace('Level.as/prepareRooms() - Rooms added to allRoom: "' + roomsFound + '".');
+
 			}
+			else
+			{
+				trace('Level.as/prepareRooms() - ERROR: Level template is null!');
+			}
+
 		}
 		
 		
@@ -139,7 +158,7 @@ package locdata
 				roomArray = [];
 			}
 			roomArray = [];
-			if (template.conf==0 && template.landStage<=0) maxLocY=3;
+			if (levelTemplate.conf==0 && levelTemplate.landStage<=0) maxLocY=3;
 			var loc1:Room;
 			var loc2:Room;
 			var opt:Object = {};
@@ -154,33 +173,33 @@ package locdata
 					opt.backform = 0;
 					opt.transparentBackground = false;
 					//Flooded rooms
-					if (template.conf == 2) 
+					if (levelTemplate.conf == 2) 
 					{
 						if (j == 1) opt.water = 17;
 						if (j > 1) opt.water = 0;
 					}
-					if (template.conf==5) 
+					if (levelTemplate.conf==5) 
 					{
 						if (j == 2) opt.water = 21;
 						if (j > 2) opt.water = 0;
 					}
 					//buildings
-					if (template.conf == 3) 
+					if (levelTemplate.conf == 3) 
 					{
 						
 					}
 
 					roomArray[i][j] = [];
 					
-					if (template.conf == 0 && j == 0 && !template.visited) 
+					if (levelTemplate.conf == 0 && j == 0 && !levelTemplate.visited) 
 					{ //initial rooms
 						opt.mirror = false;
 						loc1 = newTipLoc('beg' + i, i, j, opt);	
 					} 
-					else if ((template.conf == 2 || template.conf == 1 || template.conf == 5) && j == 0 && i == 0 && !template.visited) 
+					else if ((levelTemplate.conf == 2 || levelTemplate.conf == 1 || levelTemplate.conf == 5) && j == 0 && i == 0 && !levelTemplate.visited) 
 					{ //initial rooms
 						opt.mirror = false;
-						if (template.conf == 5) 
+						if (levelTemplate.conf == 5) 
 						{
 							opt.ramka = 3;
 							opt.backform = 3;
@@ -188,7 +207,7 @@ package locdata
 						}
 						loc1=newTipLoc('beg0', i, j, opt);	
 					} 
-					else if (template.conf == 3) 
+					else if (levelTemplate.conf == 3) 
 					{ //Manehattan
 						opt.transparentBackground = true;
 						if (i == 2) 
@@ -201,22 +220,22 @@ package locdata
 							else 
 							{
 								opt.ramka = 5;
-								loc1 = newRandomLoc(template.landStage, i, j, opt, 'pass');
+								loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt, 'pass');
 							}
 							loc1.bezdna = true;
 						} 
 						else if (j == 0) 
 						{
 							opt.ramka = 6;
-							loc1 = newRandomLoc(template.landStage, i, j, opt, 'roof');
+							loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt, 'roof');
 						} 
 						else 
 						{
-							loc1=newRandomLoc(template.landStage,i,j,opt);
+							loc1=newRandomLoc(levelTemplate.landStage,i,j,opt);
 							if (i > 2 && loc1.backwall == 'tWindows') loc1.backwall = 'tWindows2';
 						}
 					} 
-					else if (template.conf == 4) 
+					else if (levelTemplate.conf == 4) 
 					{ //military base
 						if (i == 0) 
 						{
@@ -246,7 +265,7 @@ package locdata
 						} 
 						else loc1 = newRandomLoc(0, i, j, opt);
 					} 
-					else if (template.conf == 7) 
+					else if (levelTemplate.conf == 7) 
 					{ //bunker
 						if (i == 0) 
 						{
@@ -268,26 +287,26 @@ package locdata
 						} 
 						else loc1=newRandomLoc(1,i,j,opt);
 					} 
-					else if (template.conf == 5) 
+					else if (levelTemplate.conf == 5) 
 					{ //canterlot
 						if (j == 0) 
 						{
 							opt.ramka = 3;
 							opt.backform = 3;
 							opt.transparentBackground = true;
-							loc1=newRandomLoc(template.landStage, i, j, opt, 'surf');
+							loc1=newRandomLoc(levelTemplate.landStage, i, j, opt, 'surf');
 							loc1.visMult = 2;
 						} 
 						else 
 						{
-							loc1=newRandomLoc(template.landStage,i,j,opt);
+							loc1=newRandomLoc(levelTemplate.landStage,i,j,opt);
 						}
 						loc1.gas=1;
 					} 
-					else if (template.conf == 10) 
+					else if (levelTemplate.conf == 10) 
 					{ //stable
 						opt.home = true;
-						if (i == template.begLocX && j == template.begLocY) 
+						if (i == levelTemplate.begLocX && j == levelTemplate.begLocY) 
 						{
 							opt.mirror = false;
 							loc1 = newTipLoc('beg0', i, j, opt);
@@ -302,7 +321,7 @@ package locdata
 							loc1=newRandomLoc(10, i, j, opt);
 						}
 					} 
-					else if (template.conf == 11) 
+					else if (levelTemplate.conf == 11) 
 					{ // attacked stable
 						opt.atk = true;
 						if (i == 5 && j == 0)
@@ -312,12 +331,12 @@ package locdata
 						} 
 						else 
 						{
-							loc1 = newRandomLoc(template.landStage, i, j, opt);
+							loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt);
 						}
 					} 
 					else 
 					{
-						loc1 = newRandomLoc(template.landStage, i, j, opt);
+						loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt);
 					}
 					// add a room on the second level
 					roomArray[i][j][0] = loc1;
@@ -405,9 +424,9 @@ package locdata
 				}
 			}
 			//sewer camp
-			if (template.conf==2) newRandomProb(roomArray[3][0][0], template.landStage, true);
+			if (levelTemplate.conf==2) newRandomProb(roomArray[3][0][0], levelTemplate.landStage, true);
 			//Manehattan camp
-			if (template.conf==3 && template.landStage>=1) newRandomProb(roomArray[1][4][0], template.landStage, true);
+			if (levelTemplate.conf==3 && levelTemplate.landStage>=1) newRandomProb(roomArray[1][4][0], levelTemplate.landStage, true);
 			//arrange objects
 			for (j=maxLocY-1; j>=minLocY; j--) 
 			{
@@ -419,13 +438,13 @@ package locdata
 
 					//Create exit points
 					//factory and stable configuration
-					if (template.conf==0 || template.conf==1) 
+					if (levelTemplate.conf==0 || levelTemplate.conf==1) 
 					{	
 						if ((i+j)%2==0) 
 						{
 							if (j==maxLocY-1) 
 							{
-								if (template.conf==0 && template.landStage>=2 || template.conf==1 && template.landStage>=1) 
+								if (levelTemplate.conf==0 && levelTemplate.landStage>=2 || levelTemplate.conf==1 && levelTemplate.landStage>=1) 
 								{
 									roomArray[i][j][0].createExit('1');		//Exit points on the lower level
 								} 
@@ -434,92 +453,92 @@ package locdata
 									roomArray[i][j][0].createExit();			//Exit points on the lower level
 								}
 							} 
-							else roomArray[i][j][0].createCheck(i==template.begLocX && j==template.begLocY);	//checkpoints  
+							else roomArray[i][j][0].createCheck(i==levelTemplate.begLocX && j==levelTemplate.begLocY);	//checkpoints  
 						} 
 						else 
 						{
-							if (j==maxLocY-1) newRandomProb(roomArray[i][j][0], template.landStage, true);
-							else if (Math.random()<0.3) newRandomProb(roomArray[i][j][0], template.landStage, false);
+							if (j==maxLocY-1) newRandomProb(roomArray[i][j][0], levelTemplate.landStage, true);
+							else if (Math.random()<0.3) newRandomProb(roomArray[i][j][0], levelTemplate.landStage, false);
 						}
 					}
 					//sewer and Canterlot configuration
-					if (template.conf==2 || template.conf==5) 	//exit points on the right edge
+					if (levelTemplate.conf==2 || levelTemplate.conf==5) 	//exit points on the right edge
 					{
 						if (i!=0 || j!=0) roomArray[i][j][0].createClouds(j);
-						if (template.conf==2 && i==maxLocX-1) roomArray[i][j][0].createExit();
-						if (template.conf==5 && i==maxLocX-1 && j==0) {
-							if (template.landStage>=1) roomArray[i][j][0].createExit('1');
+						if (levelTemplate.conf==2 && i==maxLocX-1) roomArray[i][j][0].createExit();
+						if (levelTemplate.conf==5 && i==maxLocX-1 && j==0) {
+							if (levelTemplate.landStage>=1) roomArray[i][j][0].createExit('1');
 							else roomArray[i][j][0].createExit();
 						} 
 						else if ((i+j)%2==0) 
 						{
-							if (template.conf==2 && j<2 && i<maxLocX-1 || template.conf==5 && (i==0 || j>0)) roomArray[i][j][0].createCheck(i==template.begLocX && j==template.begLocY);
+							if (levelTemplate.conf==2 && j<2 && i<maxLocX-1 || levelTemplate.conf==5 && (i==0 || j>0)) roomArray[i][j][0].createCheck(i==levelTemplate.begLocX && j==levelTemplate.begLocY);
 						}
-						if (template.conf==2 && j>1) roomArray[i][j][0].petOn=false;
-						if ((j>1 && i<maxLocX-1) || (template.conf==2 && i<maxLocX-1 && Math.random()<0.25)) 
+						if (levelTemplate.conf==2 && j>1) roomArray[i][j][0].petOn=false;
+						if ((j>1 && i<maxLocX-1) || (levelTemplate.conf==2 && i<maxLocX-1 && Math.random()<0.25)) 
 						{
-							if ((i+j)%2==1) newRandomProb(roomArray[i][j][0], template.landStage, false);
+							if ((i+j)%2==1) newRandomProb(roomArray[i][j][0], levelTemplate.landStage, false);
 						}
 					}
 					//Manehattan configuration
-					if (template.conf==3 && i!=2) 	//Exit points on the upper level
+					if (levelTemplate.conf==3 && i!=2) 	//Exit points on the upper level
 					{
 						if ((i+j)%2==0) 
 						{
 							if (j==0) 
 							{
-								if (template.landStage>=1) roomArray[i][j][0].createExit('1');
+								if (levelTemplate.landStage>=1) roomArray[i][j][0].createExit('1');
 								else roomArray[i][j][0].createExit();
 							} 
-							else roomArray[i][j][0].createCheck(i==template.begLocX && j==template.begLocY); 
+							else roomArray[i][j][0].createCheck(i==levelTemplate.begLocX && j==levelTemplate.begLocY); 
 						} 
 						else 
 						{
-							if (j==0) newRandomProb(roomArray[i][j][0], template.landStage, true);
-							else if (j!=4 && Math.random()<0.25) newRandomProb(roomArray[i][j][0], template.landStage, false);
+							if (j==0) newRandomProb(roomArray[i][j][0], levelTemplate.landStage, true);
+							else if (j!=4 && Math.random()<0.25) newRandomProb(roomArray[i][j][0], levelTemplate.landStage, false);
 						}	
 					}
 					// military base configuration
-					if (template.conf==4) 
+					if (levelTemplate.conf==4) 
 					{
-						if (i==template.begLocX && j==template.begLocY || i==3) 
+						if (i==levelTemplate.begLocX && j==levelTemplate.begLocY || i==3) 
 						{
-							roomArray[i][j][0].createCheck(i==template.begLocX && j==template.begLocY);
-							if (i==template.begLocX && j==template.begLocY) isBonuses=false;
+							roomArray[i][j][0].createCheck(i==levelTemplate.begLocX && j==levelTemplate.begLocY);
+							if (i==levelTemplate.begLocX && j==levelTemplate.begLocY) isBonuses=false;
 						}
 					}
 					//bunker configuration
-					if (template.conf==7) 
+					if (levelTemplate.conf==7) 
 					{
-						if (i==template.begLocX && j==template.begLocY) 
+						if (i==levelTemplate.begLocX && j==levelTemplate.begLocY) 
 						{
 							roomArray[i][j][0].createCheck(true);
 							isBonuses=false;
 						}
 					}
 					//enclave base configuration
-					if (template.conf==6) 
+					if (levelTemplate.conf==6) 
 					{
 						opt.transparentBackground=true;
 						if (j==0) {
 							if (i==0 || i==2) 
 							{
-								if (template.landStage>=1) roomArray[i][j][0].createExit('1');
+								if (levelTemplate.landStage>=1) roomArray[i][j][0].createExit('1');
 								else roomArray[i][j][0].createExit();
 							}
-							if (i==1) newRandomProb(roomArray[i][j][0], template.landStage, true);
+							if (i==1) newRandomProb(roomArray[i][j][0], levelTemplate.landStage, true);
 						} 
-						else if (i==template.begLocX && j==template.begLocY || i==((7-j)%3)) 
+						else if (i==levelTemplate.begLocX && j==levelTemplate.begLocY || i==((7-j)%3)) 
 						{
-							roomArray[i][j][0].createCheck(i==template.begLocX && j==template.begLocY);
+							roomArray[i][j][0].createCheck(i==levelTemplate.begLocX && j==levelTemplate.begLocY);
 						} 
-						else if (Math.random()<0.25) newRandomProb(roomArray[i][j][0], template.landStage, false);
+						else if (Math.random()<0.25) newRandomProb(roomArray[i][j][0], levelTemplate.landStage, false);
 					}
 					
 					//stable configuration
-					if (template.conf==10 || template.conf==11) 
+					if (levelTemplate.conf==10 || levelTemplate.conf==11) 
 					{
-						if (i==template.begLocX && j==template.begLocY) 
+						if (i==levelTemplate.begLocX && j==levelTemplate.begLocY) 
 						{
 							roomArray[i][j][0].createCheck(true);
 						}
@@ -639,9 +658,9 @@ package locdata
 		{
 			rndRoom = [];
 			var impProb;
-			for each(var xml in template.levelData.prob) 
+			for each(var xml in levelTemplate.levelData.prob) 
 			{
-				if (probs[xml.@id]==null && World.world.game.triggers['prob_'+xml.@id]==null && (xml.@template.length==0 || xml.@template<=maxlevel)) 
+				if (probs[xml.@id]==null && World.world.game.triggers['prob_'+xml.@id]==null && (xml.@levelTemplate.length==0 || xml.@levelTemplate<=maxlevel)) 
 				{
 					rndRoom.push(xml.@id);
 					if (xml.@imp.length()) impProb=xml.@id;
@@ -654,7 +673,7 @@ package locdata
 			else pid=rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			try 
 			{
-				if (template.levelData.prob.(@id==pid).@tip=='2') did='doorboss';
+				if (levelTemplate.levelData.prob.(@id==pid).@tip=='2') did='doorboss';
 			} 
 			catch (err)
 			{
@@ -728,7 +747,7 @@ package locdata
 				roomTemplate = rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			}
 			roomTemplate.kol--;
-			if (template.conf==4) roomTemplate.kol=0;	//rooms on a military base are used only once
+			if (levelTemplate.conf==4) roomTemplate.kol=0;	//rooms on a military base are used only once
 			return newRoom(roomTemplate, roomCoordinateX, roomCoordinateY, 0, opt);
 		}
 		
@@ -737,22 +756,22 @@ package locdata
 		public function newRoom(roomTemplate:RoomTemplate, roomCoordinateX:int, roomCoordinateY:int, roomCoordinateZ:int=0, opt:Object=null):Room 
 		{
 			var room:Room = new Room(this, roomTemplate.xml, rnd, opt);
-			room.biom = template.biom;
+			room.biom = levelTemplate.biom;
 			room.roomTemplate = roomTemplate;
 			room.roomCoordinateX = roomCoordinateX;
 			room.roomCoordinateY = roomCoordinateY;
 			room.roomCoordinateZ = roomCoordinateZ;
 			room.id = 'room' + roomCoordinateX + '_' + roomCoordinateY;
 			if (roomCoordinateZ > 0) room.id += '_' + roomCoordinateZ;
-			room.unXp=template.xp;
+			room.unXp=levelTemplate.xp;
 			
 			// Set the difficulty level gradient
 			var deep:Number=0;
 			if (rnd) 
 			{
-				if (template.conf==0) deep=roomCoordinateY/2;	
-				if (template.conf==1) deep=roomCoordinateY;
-				if (template.conf==2) deep=roomCoordinateY*2.5;
+				if (levelTemplate.conf==0) deep=roomCoordinateY/2;	
+				if (levelTemplate.conf==1) deep=roomCoordinateY;
+				if (levelTemplate.conf==2) deep=roomCoordinateY*2.5;
 			}
 			setLocDif(room,deep);
 			
@@ -774,27 +793,27 @@ package locdata
 			if (World.world.game.globalDif<2) room.earMult*=0.5;
 			if (World.world.game.globalDif>2) room.enemyLevel+=(World.world.game.globalDif-2)*2;	// level of enemies based on difficulty
 			// type of enemies
-			if (template.biom==0 && Math.random()<0.25) room.tipEnemy=1;
+			if (levelTemplate.biom==0 && Math.random()<0.25) room.tipEnemy=1;
 			if (room.tipEnemy<0) room.tipEnemy=Math.floor(Math.random() * 3);
-			if (template.biom==1) room.tipEnemy=0;
-			if (template.biom==2 && room.tipEnemy == 1 && Math.random() < ml / 20) room.tipEnemy = 3;	// slave traders
-			if (template.biom==3) 
+			if (levelTemplate.biom==1) room.tipEnemy=0;
+			if (levelTemplate.biom==2 && room.tipEnemy == 1 && Math.random() < ml / 20) room.tipEnemy = 3;	// slave traders
+			if (levelTemplate.biom==3) 
 			{
 				room.tipEnemy=Math.floor(Math.random()*3)+3;			 // 4-mercenaries, 5-unicorns
 			}
-			if (ml>12 && (template.biom==0 || template.biom==2 || template.biom==3) && Math.random()<0.1) room.tipEnemy=6;	// zebras
-			if (template.biom==4) room.tipEnemy=7;	// steel+robots
-			if (template.biom==5) 
+			if (ml>12 && (levelTemplate.biom==0 || levelTemplate.biom==2 || levelTemplate.biom==3) && Math.random()<0.1) room.tipEnemy=6;	// zebras
+			if (levelTemplate.biom==4) room.tipEnemy=7;	// steel+robots
+			if (levelTemplate.biom==5) 
 			{
 				if (Math.random()<0.3) room.tipEnemy=5;
 				else room.tipEnemy=8;	// pink
 			}
-			if (template.biom==6) 
+			if (levelTemplate.biom==6) 
 			{
 				if (Math.random()>0.3) room.tipEnemy=9;	// enclave
 				else room.tipEnemy=10;// greyhounds
 			}
-			if (template.biom==11) room.tipEnemy=11; // enclave and greyhounds
+			if (levelTemplate.biom==11) room.tipEnemy=11; // enclave and greyhounds
 			// number of enemies
 			// type, minimum, maximum, random increase
 			if (ml<4) 
@@ -846,7 +865,7 @@ package locdata
 			{
 				room.setKolEn(2,1,3,1);
 			}
-			if (template.biom==11) 
+			if (levelTemplate.biom==11) 
 			{
 					room.setKolEn(2,5,8,0);
 			}
@@ -864,10 +883,12 @@ package locdata
 		//enter the level
 		public function enterLevel(first:Boolean = false, coord:String = null):void
 		{
-			template.visited = true;
-			
+			trace('Level.as/enterLevel - Entering level...');
+
+			levelTemplate.visited = true;
 			if (coord != null) 
 			{
+
 				var narr:Array = coord.split(':');
 
 				if (narr.length >= 1) locX = narr[0]; else locX = 0;
@@ -880,16 +901,15 @@ package locdata
 			else if (currentCP && !first) 
 			{
 				World.world.pers.currentCP = currentCP;
-				//trace('currentCP', currentCP);
 				gotoCheckPoint();
 				currentCP.activate();
 			} 
 			else 
 			{
-				locX=template.begLocX;
-				locY=template.begLocY;
-				locZ=0;
-				prob='';
+				locX = levelTemplate.begLocX;
+				locY = levelTemplate.begLocY;
+				locZ = 0;
+				prob = '';
 				activateRoom();
 				setGGToSpawnPoint();
 			}
@@ -914,50 +934,103 @@ package locdata
 		//Move the character to the spawn point
 		public function setGGToSpawnPoint():void
 		{
-			var roomCoordinateX:int = 3, roomCoordinateY:int = 3;
-			if (room.spawnPoints.length > 0) 
+			if (room == null)
+			{
+				trace('Level.as/setGGToSpawnPoint() - ERROR: Room is null.');
+			}
+			trace('Level.as/setGGToSpawnPoint() - Setting player at spawnpoint in room: "' + room.id + '" levelTemplate: "' + room.roomTemplate.id + '".');
+
+			var roomCoordinateX:int = 3;
+			var roomCoordinateY:int = 3;
+
+			trace('Level.as/setGGToSpawnPoint() - Spawnpoints: "' + room.spawnPoints.length + '".');
+			if (room.spawnPoints.length > 0)
 			{
 				var n = Math.floor(Math.random() * room.spawnPoints.length);
 				roomCoordinateX = room.spawnPoints[n].x;
 				roomCoordinateY = room.spawnPoints[n].y;
 			}
-			else trace('No valid spawnpoints found. Room: ', room)
+			else
+			{
+				trace('No valid spawnpoints found. Room: ', room)
+			}
+
 			gg.setLocPos((roomCoordinateX + 1) * Tile.tilePixelWidth, (roomCoordinateY + 1) * Tile.tilePixelHeight - 1);
 			gg.dx = 3;
+
 			room.lighting(gg.X, gg.Y - 75);
-			
+
 		}
 		
+
 		//Activate the room with the current coordinates
 		public function activateRoom():Boolean 
 		{
+			trace('Level.as/activateRoom() - Activating room.');
 			var newRoom:Room;
 
-			if (prob != '' && probs[prob] == null)  return false;
-			try 
+			if (prob != '' && probs[prob] == null)
 			{
-				if (prob!='') newRoom = probs[prob][locX][locY][locZ];	
-				else newRoom = roomArray[locX][locY][locZ];
-			} 
-			catch (err) 
-			{
-				trace('Room not found', template.id, locX, locY, locZ)
-				newRoom = roomArray[0][0][0];
+				trace('Level.as/activateRoom() - Error: Prob null, returning false early.');
+				return false;
 			}
-			
-			if (room == newRoom) return false;
+
+			if (prob != '')
+			{
+				if (probs != null)
+				{
+					newRoom = probs[prob][locX][locY][locZ];
+				}
+				else
+				{
+					trace('Level.as/activateRoom() - Error: Failed to set up new room, probs is null.')
+				}
+				
+			}
+			else
+			{
+				if (roomArray != null)
+				{
+					newRoom = roomArray[locX][locY][locZ];
+				}
+				else
+				{
+					trace('Level.as/activateRoom() - Error: Failed to set up new room, roomArray is null.')
+				}
+				
+			}
+
+
+			if (newRoom != null)
+			{
+				if (room == newRoom)
+				{
+					trace('Level.as/activateRoom() - room == newRoom returning false early.');
+					return false;
+				}
+			}
+			else
+			{
+				trace('Level.as/activateRoom() - ERROR: newRoom is null!');
+			}
+
+
 			locN++; //increment transition timer by 1. (Default is 0)
 			prevloc = room; //Set prevloc variable as the current room.
 			room = newRoom; //Set the current room as the room being loaded.
+
 			gg.inLoc(room);
 			room.reactivate(locN);
 			World.world.activateRoom(room);
+
+
 			if (room.sky) 
 			{
-				gg.isFly=true;
-				gg.stay=false;
+				gg.isFly = true;
+				gg.stay = false;
 				World.world.cam.setZoom(2);
 			}
+
 			room.lightAll();
 			return true;
 		}
@@ -1107,10 +1180,10 @@ package locdata
 			}
 			if (cp.room.level!=this) 
 			{
-				locX=template.begLocX;
-				locY=template.begLocY;
-				locZ=0;
-				prob='';
+				locX = levelTemplate.begLocX;
+				locY = levelTemplate.begLocY;
+				locZ = 0;
+				prob = '';
 				if (!activateRoom()) room.reactivate();
 				setGGToSpawnPoint();
 			} 
@@ -1152,7 +1225,7 @@ package locdata
 			if (art_t<=0) 
 			{
 				art_t=Math.floor(Math.random()*1000+20);
-				if (template.artFire!=null && World.world.game.triggers[template.artFire]!=1) 
+				if (levelTemplate.artFire!=null && World.world.game.triggers[levelTemplate.artFire]!=1) 
 				{
 					artBabah();
 				}

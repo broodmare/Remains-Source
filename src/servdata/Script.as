@@ -317,7 +317,7 @@ package servdata
 				}
 				if (obj.act == 'passed') //местность пройдена
 				{		
-					World.world.level.template.passed = true;
+					World.world.level.levelTemplate.passed = true;
 				}
 				if (obj.act == 'actprob') 
 				{

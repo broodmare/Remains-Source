@@ -746,11 +746,11 @@ package
 		// Call when entering a specific level
 		public function activateLevel(l:Level):void
 		{
-			trace('World.as/activateLevel() - Activating level ID: "' + l.template.id + '", Type: ' + l.template.tip + '".');
+			trace('World.as/activateLevel() - Activating level ID: "' + l.levelTemplate.id + '", Type: ' + l.levelTemplate.tip + '".');
 			try 
 			{
 				level = l;
-				grafon.drawSkybox(skybox, level.template.skybox);
+				grafon.drawSkybox(skybox, level.levelTemplate.skybox);
 				trace('World.as/activateLevel() - Success.');
 			} 
 			catch (err) 

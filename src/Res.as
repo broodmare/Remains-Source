@@ -54,7 +54,7 @@ package
 
 		public static function txt(classDataKey:String, id:String, classDataIndexNumber:int = 0, dop:Boolean = false):String 
 		{
-			//trace('Res.as/txt() - txt() executing with classDataKey: "' + classDataKey + '" String ID: "' + id + '" classDataIndexNumber: "' + classDataIndexNumber + '" dop: "' + dop + '."')
+			trace('Res.as/txt() - txt() executing with classDataKey: "' + classDataKey + '" String ID: "' + id + '" classDataIndexNumber: "' + classDataIndexNumber + '" dop: "' + dop + '."')
 			if (id == '') 
 			{
 				trace('Res.as/txt() - ID is blank, returning.');

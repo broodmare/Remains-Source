@@ -878,7 +878,7 @@ package unitdata
 			var res=false;
 			try 
 			{
-				res = World.world.game.globalDif <= 3 && room && room.level.template.tip != 'base';
+				res = World.world.game.globalDif <= 3 && room && room.level.levelTemplate.tip != 'base';
 			} 
 			catch(err) {}
 			return res;

@@ -166,7 +166,7 @@ package locdata
 			if (code) 
 			{
 				World.world.pers.prevCPCode = code;
-				room.level.template.lastCpCode = code;
+				room.level.levelTemplate.lastCpCode = code;
 			}
 			room.level.currentCP = this;
 			if (first) 

@@ -389,8 +389,6 @@ package
 		
 		public function setMenuSize():void
 		{
-			trace('MainMenu.as/setMenuSize() - Setting menu size.');
-
 			mainMenu.adv.y 		= main.stage.stageHeight - mainMenu.adv.textHeight - 40;
 			mainMenu.version.y 	= main.stage.stageHeight - 58;
 			mainMenu.link.y 	= main.stage.stageHeight - 125;
@@ -799,7 +797,7 @@ package
 				if (world.grafon.resourcesLoaded) 
 				{
 					mainMenu.loading.text = 'Loading...\n';
-					trace('MainMenu.as/step() - Resources loaded. Languages.textloaded = "' + Languages.textLoaded + '" world.init2Done: "' + world.init2Done + '" world.allLevelsLoaded: ' + world.allLevelsLoaded + '"');
+					//trace('MainMenu.as/step() - Resources loaded. Languages.textloaded = "' + Languages.textLoaded + '" world.init2Done: "' + world.init2Done + '" world.allLevelsLoaded: ' + world.allLevelsLoaded + '"');
 					
 					if (Languages.textLoaded && !world.init2Done)
 					{
@@ -809,18 +807,20 @@ package
 						return;
 					}
 
-					if (Languages.textLoaded && world.allLevelsLoaded) 
+					if (Languages.textLoaded && world.allLevelsLoaded)
 					{
-						trace('MainMenu.as/step() - Languages.textLoaded and world.allLevelsLoaded are true, Checking if language buttons are loaded.');
+						//trace('MainMenu.as/step() - Languages.textLoaded and world.allLevelsLoaded are true, Checking if language buttons are loaded.');
 						if (!langButtonsLoaded)
 						{
 							trace('MainMenu.as/step() - No language buttons found, creating new Menu buttons array.');
 							setLangButtons();
 							updateMainMenuLanguage(); //I put this in here as a quick hacky fix.
 						}
-
+						if (!loaded)
+						{
+							showMainButtons(true);
+						}
 						loaded = true; // ALL loading is finished.
-						showMainButtons(true); 
 					}
 
 				}
@@ -846,7 +846,6 @@ package
 			}
 			else if (command > 0) 
 			{
-				trace('MainMenu.as/mainStep() - command > 0 ...');
 				command--;
 				if (command == 1 && !mainMenu.dialNew.checkOpt1.selected && com == 'new') 
 				{
@@ -855,7 +854,7 @@ package
 				
 				if (command == 0) //start the game!!!!
 				{
-					trace('MainMenu.as/mainStep() - command == 0, starting the game.');
+					trace('MainMenu.as/mainStep() - Starting the game.');
 					
 					var opt:Object;
 					if (com == 'new') 

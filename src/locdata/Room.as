@@ -240,18 +240,18 @@ package locdata
 			}
 
 			// Options
-			backwall 	= level.template.backwall;
-			sndMusic  	= level.template.sndMusic;
-			postMusic 	= level.template.postMusic;
-			rad 		= level.template.rad;
-			wrad 		= level.template.wrad;
-			wdam 		= level.template.wdam;
-			wtipdam 	= level.template.wtipdam;
-			tipWater 	= level.template.tipWater;
-			color 		= level.template.color;
-			visMult 	= level.template.visMult;
-			opacWater 	= level.template.opacWater;
-			darkness 	= level.template.darkness;
+			backwall 	= level.levelTemplate.backwall;
+			sndMusic  	= level.levelTemplate.sndMusic;
+			postMusic 	= level.levelTemplate.postMusic;
+			rad 		= level.levelTemplate.rad;
+			wrad 		= level.levelTemplate.wrad;
+			wdam 		= level.levelTemplate.wdam;
+			wtipdam 	= level.levelTemplate.wtipdam;
+			tipWater 	= level.levelTemplate.tipWater;
+			color 		= level.levelTemplate.color;
+			visMult 	= level.levelTemplate.visMult;
+			opacWater 	= level.levelTemplate.opacWater;
+			darkness 	= level.levelTemplate.darkness;
 			if (nroom.options.length()) 
 			{
 				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
@@ -673,7 +673,7 @@ package locdata
 		public function mainFrame():void
 		{
 			var border:String='A';
-			if (level && level.template) border=level.template.border;
+			if (level && level.levelTemplate) border=level.levelTemplate.border;
 			for (var j=0; j<roomWidth; j++) 
 			{
 				if (roomTileArray[j][0].phis>=1) roomTileArray[j][0].mainFrame(border);
@@ -1155,7 +1155,7 @@ package locdata
 				},
 				'ranger': function():int
 				{
-					if (level.template.conf == 7) return Math.floor(randNum * 3 + 1);
+					if (level.levelTemplate.conf == 7) return Math.floor(randNum * 3 + 1);
 					if (roomCoordinateY == 0) return 1;
 					return Math.floor(randNum * 2 + 1);
 				},		
@@ -1302,7 +1302,7 @@ package locdata
 				//создать феникса
 				if (xml && xml.@ph=='1' && !World.world.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
 				if (xml && xml.@transm=='1') createTransmitter((obj as Box));
-				if (level.rnd && level.template.biom==0 && !World.world.game.triggers['pet_phoenix'] && kol_phoenix==0 && level.kol_phoenix<3 && Math.random()<0.02) 
+				if (level.rnd && level.levelTemplate.biom==0 && !World.world.game.triggers['pet_phoenix'] && kol_phoenix==0 && level.kol_phoenix<3 && Math.random()<0.02) 
 				{
 					createPhoenix(obj as Box);
 				}
@@ -1331,13 +1331,13 @@ package locdata
 				obj=new Bonus(this, id,(nx+0.5)*Tile.tilePixelWidth, (ny+0.5)*Tile.tilePixelHeight, xml, loadObj);
 				bonuses.push(obj);
 			}
-			if (xml && xml.@code.length()) // Assignment of checkpoint objects to the currentCP property of the level.template when specific conditions are met.
+			if (xml && xml.@code.length()) // Assignment of checkpoint objects to the currentCP property of the level.levelTemplate when specific conditions are met.
 			{ 
 				saves.push(obj);
 				obj.code=xml.@code;
 				if (tip=='checkpoint' && !level.rnd) //сохранённая контрольная точка
 				{	
-					if (World.world.pers.currentCPCode!=null && obj.code==World.world.pers.currentCPCode || World.world.pers.prevCPCode!=null && obj.code==World.world.pers.prevCPCode || level.template.lastCpCode==obj.code) {
+					if (World.world.pers.currentCPCode!=null && obj.code==World.world.pers.currentCPCode || World.world.pers.prevCPCode!=null && obj.code==World.world.pers.prevCPCode || level.levelTemplate.lastCpCode==obj.code) {
 						level.currentCP=obj as CheckPoint;
 					}
 				}
@@ -1370,7 +1370,7 @@ package locdata
 					id += Math.floor(Math.random() * 5 + 1);
 				}
 				cp = createObj(id, 'checkpoint', sp.x, sp.y) as CheckPoint;
-				if (level.template.landStage == 0 && act) cp.teleOn = true;
+				if (level.levelTemplate.landStage == 0 && act) cp.teleOn = true;
 				if (act) cp.activate(true);
 				isCheck = true;
 			}
@@ -1381,7 +1381,7 @@ package locdata
 			if (spawnPoints.length > 0) 
 			{
 				var sp = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
-				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={level.template.exitProb+s} time='20' inter='8' sign='1'/>);
+				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={level.levelTemplate.exitProb+s} time='20' inter='8' sign='1'/>);
 				isCheck=true;
 			}
 		}

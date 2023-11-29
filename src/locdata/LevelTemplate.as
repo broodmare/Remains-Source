@@ -16,6 +16,8 @@ package locdata
 		
 		public var levelData:XML;
 		public var allroom:XML;
+
+		
 		public var begLocX:int=0;			// Initial location
 		public var begLocY:int=0;
 		public var mLocX:int=1;				// Terrain size

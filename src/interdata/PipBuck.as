@@ -339,7 +339,6 @@ package interdata
 		//коррекция размеров
 		public function resizeScreen(nx:int, ny:int):void
 		{
-			trace('PipBuck.as/resizeScreen() - resizeScreen executing...');
 			if (nx >= 1200 && ny >= 800) 
 			{
 				if (nx > 1320) 

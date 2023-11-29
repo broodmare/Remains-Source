@@ -320,7 +320,7 @@ package servdata
 			} 
 			else if (cont == 'trash') 
 			{
-				if (room.level.template.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
+				if (room.level.levelTemplate.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
 				if (Math.random() < 0.25) 
 				{
 					if (Math.random() < 0.6) room.createUnit('tarakan', nx, ny, true);
@@ -354,7 +354,7 @@ package servdata
 			} 
 			else if (cont == 'food') 
 			{
-				if (room.level.template.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
+				if (room.level.levelTemplate.biom==0) newLoot(0.25, Item.L_FOOD, 'radcookie');
 				if (Math.random() < 0.25) 
 				{
 					if (Math.random() < 0.6) room.createUnit('tarakan', nx, ny, true);
@@ -435,7 +435,7 @@ package servdata
 			} 
 			else if (cont == 'term' || cont == 'info') 
 			{
-				if (newRoom.level.template.id=='minst') newLoot(1,Item.L_ITEM,'datast');
+				if (newRoom.level.levelTemplate.id=='minst') newLoot(1,Item.L_ITEM,'datast');
 				else if (!newLoot(0.25, Item.L_ITEM,'disc')) newLoot(1,Item.L_ITEM,'data');
 				newLoot(0.5, Item.L_COMPM);
 			} 
