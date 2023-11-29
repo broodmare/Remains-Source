@@ -220,7 +220,7 @@ package locdata
 				{
 					var kol:int = Math.floor(t_frec);
 					t_frec -= kol;
-					emit.cast(room,(X1 + X2) / 2,(Y1 + Y2) / 2, {rx:scX, ry:scY, kol:kol});
+					emit.castSpell(room,(X1 + X2) / 2,(Y1 + Y2) / 2, {rx:scX, ry:scY, kol:kol});
 				}
 			}
 

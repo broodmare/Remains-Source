@@ -43,11 +43,11 @@ package
 
 
 
-		public static function istxt(type:String, id:String):Boolean 
+		public static function istxt(stringType:String, id:String):Boolean
 		{
-			    //trace('Res.as/istxt() - istxt() executing with type: ' + type + ' and ID: ' + id + '.');
+			    //trace('Res.as/istxt() - istxt() executing with stringType: ' + stringType + ' and ID: ' + id + '.');
 				if (localizationFile == null) trace('Res.as/istxt() - Game data is null.');
-				var xl:XMLList = localizationFile[classData[type]].(@id == id);
+				var xl:XMLList = localizationFile[classData[stringType]].(@id == id);
 				return (xl.length() > 0);
 		}
 		
@@ -150,7 +150,7 @@ package
 				}
 
 				trace('Res.as/messText() - Checking version...');
-				var type:int = xml.@imp;
+				var stringType:int = xml.@imp;
 
 				if (v == 1) 
 				{
@@ -183,7 +183,7 @@ package
 
 							s1 = s1.replace(/[\b\r\t]/g,'');
 
-							if (type == 1) 
+							if (stringType == 1)
 							{
 								if (node.@p.length() == 0) s += "<span classData='dark'>" + s1 + "</span>"+'<br>';
 								else 

@@ -2564,11 +2564,11 @@ package unitdata
 					{
 						if (bul) 
 						{
-							bloodEmit.cast(room,bul.X,bul.Y,{dx:bul.dx/bul.vel*5, dy:bul.dy/bul.vel*5,kol:Math.floor(Math.random()*5+dam/5)});
+							bloodEmit.castSpell(room,bul.X,bul.Y,{dx:bul.dx/bul.vel*5, dy:bul.dy/bul.vel*5,kol:Math.floor(Math.random()*5+dam/5)});
 						} 
 						else 
 						{
-							bloodEmit.cast(room,X,Y-scY/2,{kol:Math.floor(dam/3)});
+							bloodEmit.castSpell(room,X,Y-scY/2,{kol:Math.floor(dam/3)});
 						}
 						if (blood==1 && tip!=D_BLEED && massa>0.2) 
 						{
@@ -2601,14 +2601,14 @@ package unitdata
 					if (Settings.showHit==1 || tt) 
 					{
 						visDamDY-=15;
-						numbEmit.cast(room,castX,castY+visDamDY,{txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
+						numbEmit.castSpell(room,castX,castY+visDamDY,{txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
 					} 
 					else if (Settings.showHit==2) 
 					{
 						hitSumm+=dam;
 						if (hitPart==null) 
 						{
-							hitPart=numbEmit.cast(room,castX,castY+visDamDY,{txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
+							hitPart=numbEmit.castSpell(room,castX,castY+visDamDY,{txt:Math.round(dam).toString(), frame:vnumb, rx:40, scale:((isCrit==1 || isCrit==3)?1.6:1)});
 						} 
 						else
 						{
@@ -2630,7 +2630,7 @@ package unitdata
 			{
 				if (hp>0 && mess) 
 				{
-					numbEmit.cast(room,X,Y-scY/2,{txt:mess, frame:5, rx:20, ry:20});
+					numbEmit.castSpell(room,X,Y-scY/2,{txt:mess, frame:5, rx:20, ry:20});
 					t_mess=45;
 				}
 			}
@@ -2676,7 +2676,7 @@ package unitdata
 			visDetails();
 			if (Settings.showHit>=1) 
 			{
-				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(room,X,Y-scY/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
+				if ((sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.castSpell(room,X,Y-scY/2,{txt:('+'+Math.round(hl)), frame:4, rx:20, ry:20});
 			}
 		}
 		
@@ -2720,7 +2720,7 @@ package unitdata
 				{
 					visDamDY-=15;
 					t_hitPart=10;
-					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(room,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.castSpell(room,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				return -1;
 			}
@@ -2732,7 +2732,7 @@ package unitdata
 			neujaz=neujazMax;
 			if (dodge-un.undodge>0 && isrnd(dodge-un.undodge)) 
 			{
-				if (Settings.showHit>=1)	numbEmit.cast(room,X,Y-scY/2,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
+				if (Settings.showHit>=1)	numbEmit.castSpell(room,X,Y-scY/2,{txt:txtMiss, frame:10, rx:20, ry:20, alpha:0.5});
 				return false;
 			}
 			var sila = Math.random() * 0.4 + 0.8;
@@ -2972,7 +2972,7 @@ package unitdata
 					if (blood == 2) bloodEmit=Emitter.arr['gblood'];
 					if (blood == 3) bloodEmit=Emitter.arr['pblood'];
 				}
-				bloodEmit.cast(room,X,Y,{kol:massa*50, rx:scX/2, ry:scY/2});
+				bloodEmit.castSpell(room,X,Y,{kol:massa*50, rx:scX/2, ry:scY/2});
 			}
 		}
 		// Called in any case at the moment of death, only once!

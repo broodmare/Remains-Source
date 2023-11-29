@@ -1131,7 +1131,7 @@ package locdata
 		}
 		
 		//определение сid случайного юнита
-		public function randomCid(type:String):String 
+		public function randomCid(stringType:String):String
 		{
 
 			var randNum:Number = Math.random();
@@ -1266,25 +1266,25 @@ package locdata
 					return 'hmine';
 				}
 			}
-			// Check if the 'type' exists in the lookup table
-			if (lookup.hasOwnProperty(type)) 
+			// Check if the 'stringType' exists in the lookup table
+			if (lookup.hasOwnProperty(stringType))
 			{
-				if (type == 'scorp' || type == 'mine') 
+				if (stringType == 'scorp' || stringType == 'mine')
 				{
 					var s:String;
-					s = lookup[type]();  // Special cases, return strings.
+					s = lookup[stringType]();  // Special cases, return strings.
 					return s;
 				}
 			 	else 
 				{
 					var i:Number = 0; // Normal cases, initialize as INT and return.
-					i = lookup[type]();
+					i = lookup[stringType]();
 					return i.toString();
     			}
 			} 
 			else 
 			{
-				return null;  // 'type' not found
+				return null;  // 'stringType' not found
 			}
 		}
 		

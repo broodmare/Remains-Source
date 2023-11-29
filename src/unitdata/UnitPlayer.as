@@ -1451,7 +1451,7 @@ package unitdata
 				if (sats.que.length > 0) sats.clearAll();
 				if (Settings.alicorn) currentSpell=invent.spells['sp_mshit'];
 				if (currentSpell) {
-					if (!currentSpell.cast(World.world.celX, World.world.celY)) ctr.keyStates.keyDef=false;
+					if (!currentSpell.castSpell(World.world.celX, World.world.celY)) ctr.keyStates.keyDef=false;
 					if (!currentSpell.prod) ctr.keyStates.keyDef=false;
 				} else ctr.keyStates.keyDef=false;
 			} //else if (currentSpell) currentSpell.active=false;
@@ -1461,7 +1461,7 @@ package unitdata
 						if (sats.que.length > 0) sats.clearAll();
 						var sp:Spell=invent.spells[invent.fav[Settings.kolHK*2+i]];
 						if (sp) {
-							if (!sp.cast(World.world.celX, World.world.celY)) ctr['keySpell'+i]=false;
+							if (!sp.castSpell(World.world.celX, World.world.celY)) ctr['keySpell'+i]=false;
 							if (!sp.prod) ctr['keySpell'+i]=false;
 						} else ctr['keySpell'+i]=false;
 					} else ctr['keySpell'+i]=false;
@@ -2063,7 +2063,7 @@ package unitdata
 					poison-=hl;
 				}
 			}
-			if (ismess && (sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.cast(room,X,Y-scY/2,{txt:((tip==2)?'-':'+')+Math.round(hl), frame:((tip==2)?7:4), rx:20, ry:20});
+			if (ismess && (sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.castSpell(room,X,Y-scY/2,{txt:((tip==2)?'-':'+')+Math.round(hl), frame:((tip==2)?7:4), rx:20, ry:20});
 			World.world.gui.setHp();
 		}
 		

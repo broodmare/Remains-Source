@@ -162,7 +162,7 @@ package unitdata
 	
 			if (turnX!=0) 
 			{
-				iskr.cast(room,X+15*storona,Y-15,{dx:dx, kol:Math.floor(Math.random()*5+3)});
+				iskr.castSpell(room,X+15*storona,Y-15,{dx:dx, kol:Math.floor(Math.random()*5+3)});
 				Snd.ps('vortex_cut',X,Y,0,sndVolkoef);
 				storona=turnX;
 				aiTCh=0

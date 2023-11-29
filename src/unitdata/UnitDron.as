@@ -252,7 +252,7 @@ package unitdata
 				{
 					visDamDY-=15;
 					t_hitPart=10;
-					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.cast(room,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
+					if (sost<3 && isVis && !invulner && bul.flame==0) numbEmit.castSpell(room,X,Y-scY/2+visDamDY,{txt:txtMiss, frame:10, rx:40, alpha:0.5});
 				}
 				t_krut=45;
 				return -1;

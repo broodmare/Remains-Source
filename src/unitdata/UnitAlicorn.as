@@ -285,7 +285,7 @@ package unitdata
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
 		{
 			if (tr==1 && osob && !blasted && bul && bul.weap && bul.weap.tip==1 && aiState<=1) {
-				mblast.cast(X,Y);
+				mblast.castSpell(X,Y);
 				blasted=true;
 			}
 			if (tr==2 && osob && !blasted && bul && bul.weap && bul.weap.owner && bul.weap.owner.player && aiState<=1) {

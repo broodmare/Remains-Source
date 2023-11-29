@@ -984,7 +984,7 @@ package weapondata
 			}
 			if (shell) 
 			{
-				emitShell.cast(room,X,Y,{dx:-10*vis.scaleX, dy:-10, dr:-15*vis.scaleX});
+				emitShell.castSpell(room,X,Y,{dx:-10*vis.scaleX, dy:-10, dr:-15*vis.scaleX});
 			}
 			if (owner.demask<shine) owner.demask=shine;	//видимость выстрела
 			if (noise>0) owner.makeNoise(noise,true);

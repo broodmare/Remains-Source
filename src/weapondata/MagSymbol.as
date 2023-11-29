@@ -40,7 +40,7 @@ package weapondata
 		{
 			if (liv==20) Emitter.emit('magsymbol',room,X,Y);
 			liv--;
-			if (liv==1) spellCast();
+			if (liv==1) castSpell();
 			if (liv<=0) room.remObj(this);
 		}
 		
@@ -49,7 +49,7 @@ package weapondata
 			room.remObj(this);
 		}
 		
-		public function spellCast():void
+		public function castSpell():void
 		{
 			var cel:Unit=World.world.gg;
 			if (cel.room==room && !cel.invulner && cel.sost<=2) 

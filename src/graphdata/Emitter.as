@@ -122,13 +122,13 @@ package graphdata
 		public static function emit(nid:String, room:Room, nx:Number, ny:Number, param:Object = null):void
 		{
 			var em:Emitter = arr[nid];
-			if (em) em.cast(room, nx, ny, param);
+			if (em) em.castSpell(room, nx, ny, param);
 			else trace ('Нет частицы ' + nid);
 		}
 
 
 
-		public function cast(room:Room, nx:Number, ny:Number, param:Object = null):Part 
+		public function castSpell(room:Room, nx:Number, ny:Number, param:Object = null):Part 
 		{
 			if (room == null || !room.roomActive) return null;
 			if (kol2 > Settings.maxParts && imp == 0) return null;

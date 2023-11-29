@@ -87,7 +87,7 @@ package unitdata
 			if (t_culd > 0) t_culd--;
 		}
 		
-		public function cast(nx:Number = 0, ny:Number = 0):Boolean 
+		public function castSpell(nx:Number = 0, ny:Number = 0):Boolean
 		{
 			//проверка возможности магии и наличия маны
 			if (cf == null) return false;

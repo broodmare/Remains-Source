@@ -4,3 +4,6 @@ src/Remains.swf
 asconfig.json
 .vs/
 .vscode/
+.idea/
+qodana.yaml
+src/.github/

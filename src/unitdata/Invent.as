@@ -298,7 +298,7 @@ package unitdata
 			if (pot.@hhplong.length()) hhplong=pot.@hhplong*gg.pers.healMult;
 			gg.heal(hhp,0,false);
 			gg.heal(hhplong,1,false);
-			if (hhp+hhplong>0) gg.numbEmit.cast(gg.room,gg.X,gg.Y-gg.scY/2,{txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
+			if (hhp+hhplong>0) gg.numbEmit.castSpell(gg.room,gg.X,gg.Y-gg.scY/2,{txt:Math.round(hhp+hhplong), frame:4, rx:20, ry:20});
 			
 			if (pot.@hrad.length()) gg.heal(pot.@hrad*gg.pers.healMult,2);
 			if (pot.@hpoison.length()) gg.heal(pot.@hpoison, 4, false);

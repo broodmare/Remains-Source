@@ -496,7 +496,7 @@ package unitdata
 				aiTCh=10;
 				blood=1;
 				bloodEmit=Emitter.arr['blood'];
-				bloodEmit.cast(room,X,Y-50,{kol:100, rx:scX/2, ry:scY/2});
+				bloodEmit.castSpell(room,X,Y-50,{kol:100, rx:scX/2, ry:scY/2});
 				visDetails();
 				sost=1;
 				mat=0;

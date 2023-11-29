@@ -690,7 +690,7 @@ package unitdata
 			} 
 			else 
 			{
-				gg.numbEmit.cast(gg.room,nx,ny,{txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
+				gg.numbEmit.castSpell(gg.room,nx,ny,{txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
 			}
 			if (xpCur >= xpNext) upLevel();
 			World.world.gui.setXp();
@@ -1251,7 +1251,7 @@ package unitdata
 			}
 			if (tip==6) 
 			{
-				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.room,gg.X,gg.Y-gg.scY/2,{txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
+				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.castSpell(gg.room,gg.X,gg.Y-gg.scY/2,{txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
 				sst = 4 - Math.ceil(manaHP/inMaxMana*4);
 				manaHP+=hhp;
 				if (manaHP>inMaxMana) manaHP=inMaxMana;

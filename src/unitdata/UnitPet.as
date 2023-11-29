@@ -118,7 +118,7 @@ package unitdata
 			if (hp>maxhp) hp=maxhp;
 			if (hl>0) visDetails();
 			if ((tip==0 || hl>=10) && active && ismess) {
-				numbEmit.cast(room,X,Y-scY/2,{txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
+				numbEmit.castSpell(room,X,Y-scY/2,{txt:'+'+Math.round(hl), frame:4, rx:10, ry:10});
 			}
 		}
 		
