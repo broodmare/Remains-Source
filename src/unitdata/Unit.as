@@ -2979,7 +2979,7 @@ package unitdata
 		public function dropLoot():void
 		{
 			if (inter) inter.loot();
-			if (hero>0 && !(opt.robot==true) && isrnd(0.75)) LootGen.lootId(room,X,Y-scY/2,'essence');
+			if (hero > 0 && !opt.robot && isrnd(0.75)) LootGen.lootId(room,X,Y-scY/2,'essence');
 			// Dropping a precious gem
 			if (World.world.pers && World.world.pers.dropTre>0 && xp>0) 
 			{

@@ -270,7 +270,7 @@ package interdata
 					item.ammo.text=item.ammotip.text='';
 				}
 				if (obj.respect==1) item.alpha=0.4;
-				if (obj.avail==false) item.objectName.alpha=0.6;
+				if (!obj.avail) item.objectName.alpha=0.6;
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
 			} 

@@ -808,7 +808,7 @@ package locdata
 			var hero:int=0;
 			var inWater:Boolean=false;
 
-			if ((biom==1 || biom==5) && abs==false) 
+			if ((biom==1 || biom==5) && !abs)
 			{
 				inWater=getTile(nx,ny).water>0;
 			}
@@ -837,7 +837,7 @@ package locdata
 				if (level.rnd && levelProb=='') {//геройский юнит
 					if (Math.random()<Math.min(0.05,locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);	
 				}
-				if (hero==0 && un.boss==false) enl=Math.round(enl*(1.1-Math.random()*0.4));
+				if (hero==0 && !un.boss) enl=Math.round(enl*(1.1-Math.random()*0.4));
 				un.setLevel(enl);
 				un.setHero(hero);
 				if (abs) 
@@ -2166,7 +2166,7 @@ package locdata
 		
 		public function lighting(nx:int = -10000, ny:int = -10000, dist1:int = -1, dist2:int = -1):void
 		{
-			if (roomActive == false) 
+			if (!roomActive)
 			{
 				return;
 			}

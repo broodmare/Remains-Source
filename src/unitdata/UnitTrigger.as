@@ -261,17 +261,17 @@ package unitdata
 		//активировать
 		public function activate():void
 		{
-			if (status!=0) return;
+			if (status != 0) return;
 			setVis(true);
-			status=1;
-			var act=false;
-			if (allact=='spawn') {
+			status = 1;
+			var act = false;
+			if (allact == 'spawn') {
 				room.enemySpawn(true,true);
 				return;
 			}
-			if (allid!=null && allid!='') {
+			if (allid != null && allid!='') {
 				for each (var un:Unit in room.units) {
-					if (un!=this && (un is UnitDamager) && (un as UnitDamager).allid==allid) {
+					if (un != this && (un is UnitDamager) && (un as UnitDamager).allid==allid) {
 						(un as UnitDamager).activate();
 						act=true;
 					}

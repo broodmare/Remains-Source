@@ -33,7 +33,7 @@ package weapondata
 				Snd.ps('nomagic');
 				return false;
 			}
-			if (owner.player && respect==1) 
+			if (owner.player && respect == 1)
 			{
 				World.world.gui.infoText('disSpell',null,null,false);
 				Snd.ps('nomagic');
@@ -44,12 +44,12 @@ package weapondata
 				if (!checkAvail()) return false;
 			}
 			is_attack=true;
-			if (t_prep<prep+10) t_prep+=2;
-			if (t_prep>=prep && t_attack<=0) 
+			if (t_prep < prep + 10) t_prep += 2;
+			if (t_prep>=prep && t_attack<=0)
 			{
 				if (owner.player && dmana>World.world.pers.manaHP) 
 				{
-					t_rel=t_prep*3;
+					t_rel = t_prep * 3;
 					World.world.gui.infoText('noMana');
 					World.world.gui.bulb(X,Y);
 					Snd.ps('nomagic');
@@ -57,11 +57,11 @@ package weapondata
 				else if (dmagic<=owner.mana || owner.mana>=owner.maxmana*0.99) 
 				{
 					if (dkol<=0) t_attack=rapid;
-					else t_attack=rapid*(dkol+1);
+					else t_attack = rapid * (dkol + 1);
 				} 
 				else 
 				{
-					t_rel=t_prep*3;
+					t_rel = t_prep * 3;
 					if (owner.player) 
 					{
 						World.world.gui.infoText('noMana');

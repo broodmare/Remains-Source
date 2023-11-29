@@ -155,7 +155,7 @@ package locdata
 				return;
 			}
 
-			if (active == 0 && first == false) 
+			if (active == 0 && !first)
 			{
 				if (World.world.pers.manaCPres) World.world.pers.heal(World.world.pers.manaCPres, 6);
 				if (World.world.pers.xpCPadd) World.world.pers.expa(room.unXp * 3);

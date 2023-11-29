@@ -28,14 +28,14 @@ package servdata
 		public static function init():void
 		{
 			//var n:Number;
-			arr = new Array();
-			var n:Array = new Array();
+			arr = [];
+			var n:Array = [];
 			//arrWeapon=new Array();
 			n['weapon'] 	= 0;
-			arr['weapon'] 	= new Array();
-			arr['magic'] 	= new Array();
-			arr['uniq'] 	= new Array();
-			arr['pers'] 	= new Array();
+			arr['weapon'] 	= [];
+			arr['magic'] 	= [];
+			arr['uniq'] 	= [];
+			arr['pers'] 	= [];
 			for each (var weap:XML in XmlBook.getXML("weapons").weapon.(@tip > 0 && @tip < 4)) 
 			{
 				if (weap.com.length() == 0) continue;
@@ -70,7 +70,7 @@ package servdata
 			}
 			
 			// проверка рандома
-			var a:Array = new Array();
+			var a:Array = [];
 
 		}
 		

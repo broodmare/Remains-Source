@@ -116,7 +116,7 @@ package graphdata
 				return;
 			} 
 
-			else if (vis.visible == false) 
+			else if (!vis.visible)
 			{
 				vis.visible = true;
 				if (isAnim > 0) vis.play();

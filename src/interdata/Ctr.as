@@ -418,14 +418,7 @@ package interdata
 
 			//indexOf returns the first matched value in an array or -1. If a match is found, it will return something other than -1.
 			//This satisfies the 'if' condition and returns false.
-			if (restrictedKeys.indexOf(key) != -1) 
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+			return restrictedKeys.indexOf(key) == -1;
 			
 		}
 		

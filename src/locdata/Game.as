@@ -202,7 +202,7 @@ package locdata
 				curLevelID = loadObj.level;
 				if (curLevelID != 'rbl') missionId = loadObj.level;
 			} 
-			else if (opt && opt.skipTraining == true) 	// Skip training
+			else if (opt && opt.skipTraining) 	// Skip training
 			{		
 				triggers['dial_dialCalam2'] = 1;
 			} 

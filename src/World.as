@@ -171,7 +171,7 @@ package
 			
 
 			trace('World.as/World() - Checking if language is loaded.');
-			if (Languages.textLoaded == true)
+			if (Languages.textLoaded)
 			{
 				trace('World.as/World() - Language data already done loading, continuing world setup.');
 				continueLoadingWorld()
@@ -271,7 +271,7 @@ package
 			
 			if (consol) 
 			{
-				if (allLevelsLoaded == false)
+				if (!allLevelsLoaded)
 				{
 					trace('World.as/init2() - Checking if all rooms are loaded.');
 					allLevelsLoadedCheck();
@@ -312,7 +312,7 @@ package
 			pip = new PipBuck(vpip);
 			
 			trace('World.as/init2() - Applying mouse settings.');
-			if (Settings.systemCursor == false) Mouse.cursor = 'arrow';
+			if (!Settings.systemCursor) Mouse.cursor = 'arrow';
 			
 			//loading room maps
 			allLevelsArray = new Array();
@@ -542,7 +542,7 @@ package
 			trace('World.as/newGame1() - newGame1 is executing.');
 
 			if (!newGame) app.load(data.app);
-			if (data.hardInv == true) Settings.hardInv = true; else Settings.hardInv = false;
+			if (data.hardInv) Settings.hardInv = true; else Settings.hardInv = false;
 			if (opt && opt.hardinv) Settings.hardInv = true;
 
 			// create character
@@ -645,7 +645,7 @@ package
 				//create game
 				Snd.off = true;
 				cam.showOn = false;
-				if (data.hardInv == true) 
+				if (data.hardInv)
 				{
 					Settings.hardInv = true; 
 				}
@@ -881,7 +881,7 @@ package
 			{
 				return;
 			}
-			if (Languages.textLoaded == false) 
+			if (!Languages.textLoaded)
 			{
 				trace('World.as/step() - Language data still loading, waiting.');
 				return;
