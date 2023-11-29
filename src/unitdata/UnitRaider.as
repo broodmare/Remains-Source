@@ -593,11 +593,13 @@ package unitdata
 			} 
 			//в возбуждённом состоянии наблюдательность увеличивается
 			if (aiSpok==0) {
-				vision=1*visionMult;
+				vision *= visionMult;
 				celY=Y-scY;
 				celX=X+scX*storona*2;
-			} else {
-				vision=1.5*visionMult;
+			}
+			else
+			{
+				vision = 1.5 * visionMult;
 			}
 			
 			//поведение в воде

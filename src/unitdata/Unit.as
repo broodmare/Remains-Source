@@ -577,7 +577,7 @@ package unitdata
 					blitId=node.@blit;
 					if (node.@sprX>0) blitX=node.@sprX;
 					if (node.@sprY>0) blitY=node.@sprY;
-					else blitY=node.@sprX;
+					else blitY=node.@sprY;
 					if (node.@sprDX.length()) blitDX=node.@sprDX;
 					if (node.@sprDY.length()) blitDY=node.@sprDY;
 				}
@@ -745,7 +745,7 @@ package unitdata
 				setCel(null, X+storona*100,Y+50);
 				lootIsDrop=true;
 				die();
-			};
+			}
 		}
 
 		// Set the level of the mob (the value is added to the level set through the map, default is 0)

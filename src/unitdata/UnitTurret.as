@@ -162,7 +162,10 @@ package unitdata
 			}
 			try {
 				vis.osn.puha.gotoAndStop(tr);
-			} catch(err) {};
+			} catch(err)
+			{
+
+			}
 		}
 
 		public override function setLevel(nlevel:int=0):void

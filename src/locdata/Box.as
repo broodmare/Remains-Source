@@ -338,7 +338,11 @@ package locdata
 					try 
 					{
 						vis.gotoAndPlay('moln');
-					} catch(err) {};
+					}
+					catch(err)
+					{
+
+					}
 				}
 			}
 			if (levit) 

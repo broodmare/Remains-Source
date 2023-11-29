@@ -136,9 +136,9 @@ package locdata
 			if (World.world.landError) 
 			{
 				roomArray = null;
-				roomArray[0];
+				roomArray = [];
 			}
-			roomArray = new Array();
+			roomArray = [];
 			if (template.conf==0 && template.landStage<=0) maxLocY=3;
 			var loc1:Room;
 			var loc2:Room;
@@ -656,7 +656,10 @@ package locdata
 			{
 				if (template.levelData.prob.(@id==pid).@tip=='2') did='doorboss';
 			} 
-			catch (err) {};
+			catch (err)
+			{
+
+			}
 			if (!newRoom.createDoorProb(did,pid)) return false;
 			buildProb(pid);
 			//trace(pid);
@@ -1008,13 +1011,13 @@ package locdata
 			} 
 			else if (napr==2) 
 			{
-				outP.x=0+scX/2+9;
+				outP.x=scX/2+9;
 				outP.y=Y-1;
 			} 
 			else if (napr==3) 
 			{
 				outP.x=X;
-				outP.y=0+scY+10;
+				outP.y=scY+10;
 			} 
 			else if (napr==4) 
 			{

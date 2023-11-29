@@ -211,7 +211,8 @@ package unitdata
 			if (!isPlav && aiTCh%10==1) 
 			{
 				aiDy=Math.abs(aiDy);
-				aiState==7;
+				//TODO: Check if changing this from "aiState==7;" was correct.
+				aiState = 7;
 				if (stay) 
 				{
 					jump();

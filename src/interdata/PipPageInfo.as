@@ -451,7 +451,7 @@ package interdata
 								catch (err) 
 								{
 
-								};
+								}
 								wk=true;
 							}
 						}

@@ -891,7 +891,7 @@ package unitdata
 			}
 			//рывок
 			if (dash_t>dash_maxt-10 || kdash_t>0) dodge=1+dodgePlus;
-			else dodge=0+dodgePlus;
+			else dodge=dodgePlus;
 			//броня
 			if (currentArmor && currentArmor.maxmana>0) {
 				if (currentArmor.abilActive) {
