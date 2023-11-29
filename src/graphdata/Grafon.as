@@ -467,13 +467,12 @@ package graphdata
 
 		public function drawLoc(currentLocation:Room):void 
 		{
-			try 
+
+			//####################
+			//      STAGE 1   	
+			//####################
+			try
 			{
-					
-				
-				//####################
-				//      STAGE 1   	
-				//####################
 				World.world.gr_stage = 1; 
 
 				room = currentLocation;
@@ -484,10 +483,20 @@ package graphdata
 				
 				var transparentBackground:Boolean = room.transparentBackground;
 				if (room.backwall == 'sky') transparentBackground = true;	//If the decorative background layer is sky, set traansparentBackground to true.
-				
-				//####################
-				//      STAGE 2  
-				//####################
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 1. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
+			
+
+
+			//####################
+			//      STAGE 2  
+			//####################
+			try
+			{
 				World.world.gr_stage = 2;
 
 				// Borders
@@ -501,13 +510,19 @@ package graphdata
 				borderTop.scaleY = borderBottom.scaleY = 2;
 				borderRight.scaleY = borderLeft.scaleY = room.roomPixelHeight / 100;
 				borderRight.scaleX = borderLeft.scaleX = 2;
-			
-				//Lock all 
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 2. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
 
-				//####################
-				//      STAGE 3   
-				//####################
+			//####################
+			//      STAGE 3   
+			//####################
+			try
+			{
 				World.world.gr_stage = 3;
 				frontBmp.lock();
 				backBmp.lock();
@@ -530,11 +545,19 @@ package graphdata
 				if (darkness < 0) darkness = 0;
 				colorBmp.fillRect(screenArea, darkness*0x1000000); //Black
 				shadBmp.fillRect(screenArea, 0xFFFFFFFF); 		   //White
-			
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 3. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
-				//####################
-				//      STAGE 4   
-				//####################
+				
+			//####################
+			//      STAGE 4   
+			//####################
+			try
+			{
 				World.world.gr_stage = 4; 
 
 				var front:Sprite = new Sprite();	
@@ -554,19 +577,23 @@ package graphdata
 				{
 					backwallArray[j].used = false;
 				}
-
-
-				//####################
-				//      STAGE 5   
-				//####################
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 4. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
+				
+				
+			//####################
+			//      STAGE 5   
+			//####################
+			try
+			{
 				World.world.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
 
 				var tile:Tile; 					//Define a tile as an object to hold the current tile's properties in the grid.
 				var tileSprite:MovieClip; 		//Define a tileSprite as an MovieClip to hold the current tile's sprite.
-
-
-
-
 
 				for (var k:int = 0; k < room.roomWidth; k++) //for each tile in theroom's horizontal rows...
 				{
@@ -617,30 +644,51 @@ package graphdata
 						}
 					}
 				}
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 5. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
-
-
-				//####################
-				//      STAGE 6   
-				//####################
+				
+			//####################
+			//      STAGE 6   
+			//####################
+			try
+			{
 				World.world.gr_stage = 6;
 				vodaBmp.draw(waterMovieClip, null, null, null, null, false);
 				frontBmp.draw(front, null, null, null, null, false);
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 6. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 				
 				
-				//####################
-				//      STAGE 7  		// TILE LAYER
-				//####################
+			//####################
+			//      STAGE 7  		// TILE LAYER
+			//####################
+			try
+			{
 				World.world.gr_stage = 7;
-				drawBackWall(currentLocation.backwall, currentLocation.backform);	
+				drawBackWall(currentLocation.backwall, currentLocation.backform);
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 7. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
+					
 
-
-				//####################
-				//      STAGE 8  		// BACKWALL LAYER
-				//####################
+			//####################
+			//      STAGE 8  		// BACKWALL LAYER
+			//####################
+			try
+			{
 				World.world.gr_stage = 8;  //Draw Background items in backwallArray.
-
-
 				for (var m:int = 0; m < backwallArray.length; m++)
 				{
 					try 
@@ -652,14 +700,20 @@ package graphdata
 						World.world.showError(err, 'Error, Stage 8. Back Layer drawing matterial: ' + backwallArray[m].id);
 					}
 				}
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 8. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
 
-				//####################
-				//      STAGE 9   		// CLIMBABLE LAYER
-				//####################
+			//####################
+			//      STAGE 9   		// CLIMBABLE LAYER
+			//####################
+			try
+			{
 				World.world.gr_stage = 9;  
-
-
 				for (var n:int = 0; n < backwallArray.length; n++)
 				{
 					try 
@@ -671,28 +725,38 @@ package graphdata
 						World.world.showError(err, 'Error, Stage 9. Front Layer drawing matterial: ' + backwallArray[n].id);
 					}
 				}
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 9. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
 
-
-				//####################
-				//      STAGE 10
-				//####################
+			//####################
+			//      STAGE 10
+			//####################
+			try
+			{
 				World.world.gr_stage = 10; 
 				satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 				var darkness2:Number = 1 - (255 - darkness) /150;
 
 				//background objects
 				var ct:ColorTransform = new ColorTransform();
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 10. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
 
-
-
-
-
-				// backBmp matrices are used.
-				//####################
-				//      STAGE 11  
-				//####################
+			//####################
+			//      STAGE 11  
+			//####################
+			try
+			{
 				World.world.gr_stage = 11; // Drawing background object sprites. 
 				for (var o:int = -2; o <= 3; o++) 
 				{
@@ -738,13 +802,20 @@ package graphdata
 						}
 					}
 				}
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 11. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
 
-				//####################
-				//      STAGE 12   - Apply Stage color transforms.
-				//####################
+			//####################
+			//      STAGE 12   - Apply Stage color transforms.
+			//####################
+			try
+			{
 				World.world.gr_stage = 12;    
-
 				if (currentLocation.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
 				{
 					frontBmp.colorTransform(frontBmp.rect, currentLocation.cTransform);
@@ -752,15 +823,20 @@ package graphdata
 				}
 
 				shadBmp.applyFilter(frontBmp, frontBmp.rect, new Point(0, 0), dsFilter);
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 12. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
 
-				//####################
-				//      STAGE 13  - //Lighting
-				//####################
-				World.world.gr_stage = 13;
-				
-				// Darkening the background
-				
+			//####################
+			//      STAGE 13  - //Lighting
+			//####################
+			try
+			{
+				World.world.gr_stage = 13; // Darkening the background
 				if (currentLocation.cTransform) 
 				{
 					backBmp.colorTransform(backBmp.rect, currentLocation.cTransform);
@@ -775,21 +851,36 @@ package graphdata
 						ct.blueMultiplier *= darkness2;
 					}
 
-				
-				
 					backBmp2.colorTransform(backBmp2.rect, ct);
 				}
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 13. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
-				//####################
-				//      STAGE 14  		//Color Filter
-				//####################
+
+			//####################
+			//      STAGE 14  		//Color Filter
+			//####################
+			try
+			{
 				World.world.gr_stage = 14;  
-
 				backBmp2.draw(back, null, currentLocation.cTransform, null, null, false);
-				
-				//####################
-				//      STAGE 15		// SATS 
-				//####################
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 14. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
+
+
+			//####################
+			//      STAGE 15		// SATS 
+			//####################
+			try
+			{
 				World.world.gr_stage = 15; 
 				if (transparentBackground) 
 				{
@@ -803,10 +894,19 @@ package graphdata
 				{
 					backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 				}
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 15. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
+				
 
-				//####################
-				//      STAGE 16 - Render Pink Cloud if it exists.
-				//####################
+			//####################
+			//      STAGE 16 - Render Pink Cloud if it exists.
+			//####################
+			try
+			{
 				World.world.gr_stage = 16;  
 				if (room.gas > 0)
 				{
@@ -814,25 +914,40 @@ package graphdata
 					backgroundMatrix.ty = 520;
 					backBmp2.draw(getObj('back_pink_t', bgObjectCount), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
 				}
-				
-				//####################
-				//      STAGE 17
-				//####################
-				World.world.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 16. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
+
+			//####################
+			//      STAGE 17
+			//####################
+			try
+			{
+				World.world.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 				for (var q:int = 0; q > tileArray.length; q++)
 				{
 					drawTileSprite(tileArray[q], false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
 				}
 
 				backBmp2.draw(back2, null, currentLocation.cTransform, null, null, false); 
-				
-				//####################
-				//      STAGE 18   
-				//####################
-				World.world.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 17. Error: "' + err.message + '".');
+				World.world.showError(err)
+			}
 
-				
+
+			//####################
+			//      STAGE 18   
+			//####################
+			try
+			{
+				World.world.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
 				if (currentLocation.cTransform && currentLocation.cTransformFon) 
 				{
 					skyboxLayer.transform.colorTransform = currentLocation.cTransformFon;
@@ -841,28 +956,22 @@ package graphdata
 				{
 					skyboxLayer.transform.colorTransform = defTransform;
 				}
-				
-			} 
-			catch (err) 
+			}
+			catch (err:Error) 
 			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 18. Error: "' + err.message + '".');
 				World.world.showError(err)
 			}
 
-			finally //Make sure to unlock all bitmaps, even if an error occurs.
-			{
-				frontBmp.unlock();
-				backBmp.unlock();
-				backBmp2.unlock();
-				vodaBmp.unlock();
-			}
-
-
+			frontBmp.unlock();
+			backBmp.unlock();
+			backBmp2.unlock();
+			vodaBmp.unlock();
 
 
 			//####################
 			//      STAGE 19
 			//####################
-
 			World.world.gr_stage = 19;  //Render all game objects.
 			drawAllObjs();  //Draw all active objects
 
@@ -870,7 +979,6 @@ package graphdata
 			//####################
 			//      STAGE 20 FINISHED
 			//####################
-
 			World.world.gr_stage = 0;  //Screen is now rendered.
 		}
 		

@@ -199,9 +199,9 @@ package locdata
 				if (xml.@period.length()) molnPeriod=xml.@period;
 				if (xml.@phase.length()) moln_t=xml.@phase;
 				
-				if (xml.@prob.length && id!='exit') 
+				if (xml.@prob.length && id != 'exit') 
 				{
-					objectName=Res.txt('m',xml.@prob);
+					objectName = Res.txt('m', xml.@prob);
 				}
 				if (xml.@light.length()) light=true;
 				if (xml.@fun.length()) 

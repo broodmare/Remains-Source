@@ -239,6 +239,7 @@ package locdata
 		
 		public function enterCurrentLevel():void
 		{
+			trace('Game.as/enterCurrentLevel() - Entering current level.');
 			Level.locN += 5;
 			if (World.world.level && objs) World.world.level.saveObjs(objs);
 
@@ -281,7 +282,10 @@ package locdata
 				}
 			}
 			World.world.gg.remEffect('potion_fly');
+
+			trace('Game.as/enterCurrentLevel() - Checking if this is causing the empty strings.');
 			World.world.gui.messText('', Res.txt('m', curLevel.id) + (curLevel.rnd?(' - ' + (curLevel.landStage + 1)):''), World.world.gg.Y < 300);
+			
 			if (!curLevel.rnd) curLevel.visited=true;
 			mReturn = (triggers['noreturn'] <= 0);
 			if (curLevel.upStage) 
@@ -293,7 +297,6 @@ package locdata
 		// Redirect to another room
 		public function Encounter():void
 		{
-			trace('');
 
 			switch(curLevelID)
 			{
@@ -327,7 +330,7 @@ package locdata
 			activateRoom();
 		*/
 		
-		public function gotoLevel(newLevel:String, coord:String = null, fast:Boolean = false)
+		public function gotoLevel(newLevel:String, coord:String = null, fast:Boolean = false):void
 		{
 			trace('Game.as/gotoLevel() - Moving to a new level: "' + newLevel + '."');
 
