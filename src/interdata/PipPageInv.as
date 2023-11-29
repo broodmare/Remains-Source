@@ -74,7 +74,7 @@ package interdata
 			if (page2 == 1) 
 			{		//оружие
 				inv.getKolAmmos();
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text=Res.txt('p', 'ii1');
 				statHead.objectName.text=Res.txt('p', 'ii2');
 				statHead.hp.text=Res.txt('p', 'ii3');
@@ -154,7 +154,7 @@ package interdata
 			} 
 			else if (page2==3 || page2==4 || page2==5) 
 			{	//снаряжение
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text=Res.txt('p', 'ii1');
 				statHead.objectName.text=Res.txt('p', 'ii2');
 				statHead.hp.text=Res.txt('p', 'ii5');

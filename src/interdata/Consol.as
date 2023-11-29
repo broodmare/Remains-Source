@@ -69,7 +69,7 @@ package interdata
 		public function Consol(vcons:MovieClip, prev:String = null) 
 		{
 			vis = vcons;
-			ist = new Array();
+			ist = [];
 			if (prev != null) ist.push(prev);
 			vis.visible = false;
 			vis.input.addEventListener(KeyboardEvent.KEY_DOWN,onKeyboardDownEvent);

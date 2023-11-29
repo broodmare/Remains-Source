@@ -264,7 +264,7 @@ package
 			xl = xl[0].name.(@id == id);
 			if (xl.length() == 0) return null;
 			xl = xl[0].r;
-			var arr:Array = new Array();
+			var arr:Array = [];
 			for each (var n:XML in xl) 
 			{
 				arr.push(n.toString());

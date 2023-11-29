@@ -627,7 +627,7 @@ package interdata
 					return;
 				}
 				//сохранить в файл
-				var obj:Object=new Object();
+				var obj:Object={};
 				World.world.saveToObj(obj);
 				var ba:ByteArray=new ByteArray();
 				ba.writeObject(obj);

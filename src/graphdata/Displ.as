@@ -36,7 +36,7 @@ package graphdata
 		public var disp_t:int = 0;
 		
 		public var wavKol:int = 10;
-		public var wavArr:Array = new Array();
+		public var wavArr:Array = [];
 		public var disX:int = 200;
 		public var disY:int = 250;
 		public var spd:Number = 1;

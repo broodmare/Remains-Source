@@ -69,7 +69,7 @@ package interdata
 			statHead.mass.text='';
 			vis.bottext.text='';
 			if (page2==1) {		//крафт
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text='';
 				statHead.objectName.text=Res.txt('p', 'work1');
 				statHead.hp.text=Res.txt('p', 'iv6');
@@ -167,7 +167,7 @@ package interdata
 			} 
 			else if (page2==3) 
 			{	//ремонт
-				assArr=new Array();
+				assArr=[];
 				statHead.fav.text='';
 				statHead.objectName.text=Res.txt('p', 'ii2');
 				statHead.hp.text=Res.txt('p', 'ii3');

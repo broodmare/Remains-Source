@@ -30,7 +30,7 @@ package interdata
 			isLC = true;
 			isRC = true;
 			itemClass = visPipStatItem;
-			skills = new Array();
+			skills = [];
 			super(npip,npp);
 			vis.butOk.addEventListener(MouseEvent.CLICK,  transOk);
 			vis.butDef.addEventListener(MouseEvent.CLICK, gotoDef);

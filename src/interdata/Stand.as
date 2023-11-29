@@ -58,12 +58,12 @@ package interdata
 			trace('Stand.as/Stand() - Stand initializing.');
 			vis=vstand;
 			inv=ninv;
-			pages 	= new Array();
-			buttons = new Array();
-			weapons = new Array();
-			armors 	= new Array();
-			arts 	= new Array();
-			for (var i=0; i<kolPages; i++) 
+			pages 	= [];
+			buttons = [];
+			weapons = [];
+			armors 	= [];
+			arts 	= [];
+			for (var i:int = 0; i < kolPages; i++)
 			{
 				var page:MovieClip = new MovieClip();
 				page.x = 200;

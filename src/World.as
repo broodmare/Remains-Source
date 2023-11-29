@@ -315,7 +315,7 @@ package
 			if (!Settings.systemCursor) Mouse.cursor = 'arrow';
 			
 			//loading room maps
-			allLevelsArray = new Array();
+			allLevelsArray = [];
 			trace('World.as/init2() - Creating allLevelsArray and loading all level XMLs from the XMLbook.');
 			var levelsXML:XML = XmlBook.getXML("levels");
 

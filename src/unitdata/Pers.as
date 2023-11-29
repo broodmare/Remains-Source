@@ -299,9 +299,9 @@ package unitdata
 		
 		public function Pers(loadObj:Object=null, opt:Object=null) 
 		{
-			skill_ids=new Array();
-			skills=new Array();
-			addictions=new Array();
+			skill_ids=[];
+			skills=[];
+			addictions=[];
 			var ndif:int=2;
 			ndif=World.world.game.globalDif;
 			for each (var sk in XmlBook.getXML("skills").skill)
@@ -388,7 +388,7 @@ package unitdata
 				xpNext=xpDelta;
 			}
 			setAllSt();
-			perks=new Array();
+			perks=[];
 			if (loadObj && loadObj.perks) 
 			{
 				for (var pid in loadObj.perks) 
@@ -408,22 +408,22 @@ package unitdata
 			xml_blood = XmlBook.getXML("perks").perk.(@id == 'trauma_blood')[0];
 			xml_mana = XmlBook.getXML("perks").perk.(@id == 'trauma_mana')[0];
 
-			factor = new Array();
+			factor = [];
 			for each (var param in XmlBook.getXML("parameters").param) 
 			{
 				if (param.@f > 0 && param.@v.length() && param.@v != '') 
 				{
-					factor[param.@v] = new Array();
+					factor[param.@v] = [];
 				}
 			}
 		}
 		
 		public function save():Object 
 		{
-			var obj:Object=new Object;
-			obj.skills=new Array();
-			obj.perks=new Array();
-			obj.addictions=new Array();
+			var obj:Object={};
+			obj.skills=[];
+			obj.perks=[];
+			obj.addictions=[];
 			for (var sk in skills) obj.skills[sk]=skills[sk];
 			for (var pid in perks) 
 			{
@@ -671,7 +671,7 @@ package unitdata
 			for (var i in gg.vulner) gg.vulner[i]=1;
 			gg.vulner[Unit.D_EMP]=0;
 			for (i in weaponSkills) weaponSkills[i]=1;
-			for (i in factor) factor[i]=new Array();
+			for (i in factor) factor[i]=[];
 		}
 		
 		//получение опыта
@@ -924,7 +924,7 @@ package unitdata
 			while (skillPoint>0 && n>0) 
 			{
 				//определить скиллы, доступные для увеличения
-				var dost:Array=new Array();
+				var dost:Array=[];
 				var sk;
 				
 				for (sk in skills) 
@@ -952,7 +952,7 @@ package unitdata
 			n=100;
 			while (perkPoint>0 && n>0) 
 			{
-				dost=new Array();
+				dost=[];
 				for each(var dp:XML in XmlBook.getXML("perks").perk) 
 				{
 					if (dp.@tip==1) 

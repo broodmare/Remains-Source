@@ -264,7 +264,7 @@ package unitdata
 			prevArmor = invent.prevArmor;
 			punchWeapon = new WKick(this, 'punch');
 			paintWeapon = new WPaint(this, 'paint');
-			childObjs = new Array(currentWeapon, punchWeapon);
+			childObjs = [currentWeapon, punchWeapon];
 
 			if (invent.fav[29]) 
 			{
@@ -280,8 +280,8 @@ package unitdata
 			}
 			
 			//спутники
-			pets = new Array();
-			pet=new UnitPet('phoenix');
+			pets = [];
+			pet = new UnitPet('phoenix');
 			pet.gg=this;
 			pet.setLevel(pers.level);
 			pets['phoenix']=pet;
@@ -2035,7 +2035,7 @@ package unitdata
 			if (effects.length > 0) 
 			{
 				for each (var eff in effects) eff.unsetEff();
-				effects = new Array();
+				effects = [];
 			}
 		}
 		

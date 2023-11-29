@@ -77,7 +77,7 @@ package unitdata
 		{
 			var obj:Object=super.save();
 			if (rearm) {
-				if (obj==null) obj=new Object();
+				if (obj==null) obj = {};
 				obj.rearm=true;
 			}
 			return obj;

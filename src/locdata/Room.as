@@ -212,7 +212,7 @@ package locdata
 				if (opt.home) homeStable = true;
 				if (opt.atk) homeAtk = true;
 			}
-			for (var i:int = 0; i < kolEn.length; i++) ups[i] = new Array();
+			for (var i:int = 0; i < kolEn.length; i++) ups[i] = [];
 			noHolesPlace = rnd;
 			
 			buildLoc(nroom);
@@ -232,7 +232,7 @@ package locdata
 			// Create an array of tiles
 			for (var i = 0; i < roomWidth; i++) 
 			{
-				roomTileArray[i] = new Array();
+				roomTileArray[i] = [];
 				for (var j = 0; j < roomHeight; j++) 
 				{
 					roomTileArray[i][j] = new Tile(i,j);
@@ -386,7 +386,7 @@ package locdata
 			} 
 			else 
 			{
-				doors = new Array();
+				doors = [];
 				for (i = 0; i < 22; i++) doors[i] = 2;
 			}
 			
@@ -403,7 +403,7 @@ package locdata
 			if (colorfon) cTransformFon=colorFilter(colorfon);
 			
 			// Object spawnpoints
-			objsT = new Array();
+			objsT = [];
 			for each(var obj:XML in nroom.obj) 
 			{
 				var xmll:XML = XmlBook.getXML("objects").obj.(@id == obj.@id)[0];
@@ -644,7 +644,7 @@ package locdata
 		// Add enemy spawn points
 		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null):void
 		{
-			var obj:Object=new Object();
+			var obj:Object = {};
 			if (xmll) 
 			{
 				var size:int=xmll.@size;
@@ -1802,7 +1802,7 @@ package locdata
 		{
 			//trace(recalcTiles.length);
 			var rec:Array = recalcTiles;
-			recalcTiles = new Array();
+			recalcTiles = [];
 			isRecalc = false;
 			var t:Tile, tl:Tile, tr:Tile, tt:Tile, tb:Tile;
 			for (var i in rec) 

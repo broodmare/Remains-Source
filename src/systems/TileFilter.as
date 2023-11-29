@@ -31,7 +31,7 @@ package systems
                 initialized = true;
             }
 
-            var result:Array = new Array();
+            var result:Array = [];
 
             try
             {

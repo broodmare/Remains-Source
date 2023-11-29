@@ -28,7 +28,7 @@ package unitdata
 			mat=1;
 			acidDey=1;
 			elast=0.8;
-			spd=new Object();
+			spd = {};
 			plaKap=true;
 			iskr=Emitter.arr['iskr_bul'];
 			destroy=20;

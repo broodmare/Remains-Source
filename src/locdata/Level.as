@@ -104,7 +104,7 @@ package locdata
 			lootLimit = lvl + 3;
 			gameStage = template.gameStage;	//story stage is taken from the level settings
 			//attached scripts
-			itemScripts = new Array();
+			itemScripts = [];
 			for each(var xl in template.levelData.scr) 
 			{
 				if (xl.@eve == 'take' && xl.@item.length()) 
@@ -123,7 +123,7 @@ package locdata
 		//Convert from XML to array
 		public function prepareRooms():void
 		{
-			allRoom = new Array();
+			allRoom =[];
 			for each(var xml in template.allroom.roomTemplate) 
 			{
 				allRoom.push(new RoomTemplate(xml));
@@ -142,10 +142,10 @@ package locdata
 			if (template.conf==0 && template.landStage<=0) maxLocY=3;
 			var loc1:Room;
 			var loc2:Room;
-			var opt:Object = new Object();
+			var opt:Object = {};
 			for (var i:int = minLocX; i < maxLocX; i++) 
 			{
-				roomArray[i] = new Array();
+				roomArray[i] = [];
 				for (var j:int = minLocY; j<maxLocY; j++) 
 				{
 					opt.mirror = (Math.random() < 0.5);
@@ -170,7 +170,7 @@ package locdata
 						
 					}
 
-					roomArray[i][j] = new Array();
+					roomArray[i][j] = [];
 					
 					if (template.conf == 0 && j == 0 && !template.visited) 
 					{ //initial rooms
@@ -344,8 +344,8 @@ package locdata
 				for (j=minLocY; j<maxLocY; j++) 
 				{
 					loc1=roomArray[i][j][0];
-					loc1.pass_r = new Array();
-					loc1.pass_d = new Array();
+					loc1.pass_r = [];
+					loc1.pass_d = [];
 					if (i < maxLocX - 1) 
 					{
 						loc2 = roomArray[i + 1][j][0];
@@ -557,11 +557,11 @@ package locdata
 					if (roomTemplate.roomCoordinateY + 1 > maxLocY) maxLocY = roomTemplate.roomCoordinateY + 1;
 				}
 
-				roomArray = new Array();
+				roomArray = [];
 				for (i = minLocX; i < maxLocX; i++) 
 				{
-					roomArray[i] = new Array();
-					for (j = minLocY; j < maxLocY; j++) roomArray[i][j] = new Array();
+					roomArray[i] = [];
+					for (j = minLocY; j < maxLocY; j++) roomArray[i][j] = [];
 				}
 
 				//populate array with rooms from the allRoom.
@@ -637,7 +637,7 @@ package locdata
 		// Create a door and a random test room behind it, return false if none were found
 		public function newRandomProb(newRoom:Room, maxlevel:int=100, imp:Boolean=false):Boolean 
 		{
-			rndRoom = new Array();
+			rndRoom = [];
 			var impProb;
 			for each(var xml in template.levelData.prob) 
 			{
@@ -1002,7 +1002,7 @@ package locdata
 			}
 
 			var newRoom:Room = roomArray[newX][newY][newZ];
-			var outP:Object = new Object();
+			var outP:Object = {};
 
 			if (napr == 1) 
 			{

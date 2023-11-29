@@ -19,8 +19,8 @@ package servdata
 		public var multPrice:Number=1;
 
 		public function Vendor(lvl:int=0, nxml:XML=null, loadObj:Array=null, tip:String='vendor') {
-			buys=new Array();
-			buys2=new Array();
+			buys=[];
+			buys2=[];
 			xml=nxml;
 			var item:Item;
 			if (nxml) {
@@ -162,8 +162,8 @@ package servdata
 
 			if (id == 'random') 
 			{
-				buys = new Array();
-				buys2 = new Array();
+				buys = [];
+				buys2 = [];
 				setRndBuys(100, 'random');
 				for (var i:String in buys) 
 				{
@@ -197,7 +197,7 @@ package servdata
 				return null;
 			}
 
-			var arr:Array = new Array();
+			var arr:Array = [];
 
 			for each (var b:Item in buys) 
 			{

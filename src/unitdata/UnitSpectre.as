@@ -27,7 +27,7 @@ package unitdata
 			walkSpeed=maxSpeed;
 			runSpeed=maxSpeed*2;
 			isFly=true;
-			spd=new Object();
+			spd = {};
 			invulner=true;
 			iskr=Emitter.arr['iskr_bul'];
 			destroy=20;

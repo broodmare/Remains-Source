@@ -143,8 +143,8 @@ package locdata
 				if (node && node.info.length())	info=node.info[0];
 				else info='---';
 				main=xml.@main.length()>0;
-				subs=new Array();
-				subsId=new Array();
+				subs=[];
+				subsId=[];
 				nnsub=1;
 				for each(var sxml:XML in xml.q) {
 					var sl:Object;
@@ -162,7 +162,7 @@ package locdata
 			var obj:Object={id:id, state:state, est:est, gived:gived, invis:invis};
 			if (!sub) 
 			{
-				obj.subs=new Array();
+				obj.subs=[];
 				for each(var q:Quest in subs) 
 				{
 					obj.subs[q.id]=q.save();

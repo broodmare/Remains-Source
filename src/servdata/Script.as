@@ -27,7 +27,7 @@ package servdata
 		{
 			level = newLevel;
 			owner = nowner;
-			acts = new Array();
+			acts = [];
 			if (xml.@eve.length()) eve = xml.@eve;
 			if (xml.@act.length()) analiz(xml);
 			if (xml.s.length()) 

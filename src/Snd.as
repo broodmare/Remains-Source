@@ -21,14 +21,14 @@ package
 	public class Snd extends EventDispatcher 
 	{
 
-		public static var soundDataArray:Array 	= new Array(); //An array that holds arrays of loaded '.swf' sound packs. Each array is named after the <res> tag of each '.swf' and contains all sound IDs and data.
+		public static var soundDataArray:Array 	= []; //An array that holds arrays of loaded '.swf' sound packs. Each array is named after the <res> tag of each '.swf' and contains all sound IDs and data.
 		public static var globalVol:Number 			= 0.4;
 		public static var stepVol:Number			= 0.5;
 		public static var musicVol:Number 			= 0.2;
 
 
 		public static var music:Sound;
-		public static var musics:Array			= new Array();
+		public static var musics:Array			= [];
 		public static var sndNames:Array 		= ['mp5'];
 		public static var musicName:String		= '';
 
@@ -51,7 +51,7 @@ package
 		public static var soundInitialized:Boolean = false;
 		public static var off:Boolean 		= true;
 		
-		public static var soundStage:Array 	= new Array();
+		public static var soundStage:Array 	= [];
 
 		//Holds all the XML data for sounds and music.
 		public static const soundLocation:String 	= Settings.soundXMLLocation; 		//Location of sounds XML in game directory.
@@ -225,7 +225,7 @@ package
 
 		public static function save():*
 		{
-			var obj:Object 	= new Object();
+			var obj:Object 	= {};
 			obj.globalVol 	= globalVol;
 			obj.stepVol 	= stepVol;
 			obj.musicVol 	= musicVol;
@@ -335,7 +335,7 @@ package
 			}
 			else if (soundDataArray[txt]) 
 			{
-				shum = new Object();
+				shum = {};
 				shum.txt = txt;
 				shum.curVol = vol;
 				shum.maxVol = vol;

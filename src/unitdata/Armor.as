@@ -82,7 +82,7 @@ package unitdata
 			if (xml.@fly.length()) ableFly = 1;
 			if (xml.@hide.length()) hideMane = xml.@hide;
 			
-			resist = new Array();
+			resist = [];
 			for (var i:int = 0; i < Unit.kolVulners; i++) resist[i] = 0;
 			if (tip == 1) resist[Unit.D_PINK] = -0.5;
 			if (lvl >= 0) getXmlParam(xml.upd[lvl]);

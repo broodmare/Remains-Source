@@ -68,7 +68,7 @@ package locdata
 
 		public function save():Object 
 		{
-			var obj:Object = new Object;
+			var obj:Object = {};
 
 			obj.dif = globalDif;
 			obj.level = curLevelID;
@@ -78,7 +78,7 @@ package locdata
 			for (var uid in objs) 
 			{
 				var obj1 = objs[uid];
-				var nobj = new Object();
+				var nobj = {};
 				for (var n in obj1) 
 				{
 					nobj[n] = obj1[n];
@@ -147,13 +147,13 @@ package locdata
 				else globalDif = 2;
 				triggers['noreturn'] = 1;
 			}
-			objs = new Array();
+			objs = [];
 			if (loadObj && loadObj.objs) 
 			{
 				for (var uid in loadObj.objs) 
 				{
 					var obj = loadObj.objs[uid];
-					var nobj = new Object();
+					var nobj = {};
 					for (var n in obj) 
 					{
 						nobj[n] = obj[n];

@@ -180,7 +180,7 @@ package interdata
 			} 
 			else if (page2 == 4)
 			{	//записи
-				var doparr:Array=new Array();
+				var doparr:Array=[];
 				for each (var note:String in game.notes) 
 				{
 					var xml=Res.localizationFile.txt.(@id==note);

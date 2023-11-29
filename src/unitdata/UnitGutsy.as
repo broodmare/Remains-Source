@@ -25,7 +25,7 @@ package unitdata
 			getWeapon(ndif, xml, loadObj);
 			dopWeapon=Weapon.create(this,'robofire');
 			if (tr==1) dopWeapon.damage*=2;
-			if (currentWeapon) childObjs=new Array(currentWeapon, dopWeapon);
+			if (currentWeapon) childObjs = [currentWeapon, dopWeapon];
 			
 			if (quiet) id_replic='';
 			wPos=BlitAnim.wPosGutsy;

@@ -195,7 +195,7 @@ package locdata
 		
 		public override function save():Object 
 		{
-			var obj:Object = new Object();
+			var obj:Object = {};
 			obj.enabled = enabled;
 			return obj;
 		}

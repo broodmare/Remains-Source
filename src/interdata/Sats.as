@@ -51,8 +51,8 @@ package interdata
 			radius=new satsRadius();
 			vis.addChild(trasser);
 			vis.addChild(radius);
-			que=new Array();
-			units=new Array();
+			que = [];
+			units = [];
 		}
 
 		//Показать/скрыть
@@ -368,9 +368,10 @@ package interdata
 					}
 				}
 			}
-			units=new Array();
-			for each (obj in que) {
-				obj.vis.visible=false;
+			units = [];
+			for each (obj in que)
+			{
+				obj.vis.visible = false;
 			}
 		}
 		

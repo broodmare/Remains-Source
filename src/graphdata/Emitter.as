@@ -76,7 +76,7 @@ package graphdata
 		public var maxkol:int = 0;
 		public var camscale:Boolean = false;
 		
-		public static var fils:Array = new Array();
+		public static var fils:Array = [];
 		fils['bur']  = [new GlowFilter(0xFF7700, 1, 8, 8, 1, 1)];
 		fils['plav'] = [new GlowFilter(0x00FF00, 1, 8, 8, 1, 1)];
 
@@ -109,7 +109,7 @@ package graphdata
 
 		public static function init():void
 		{
-			arr = new Array();
+			arr = [];
 			var particlesXML:XML = XmlBook.getXML("particles");
 			for each (var xml:XML in particlesXML.part) 
 			{

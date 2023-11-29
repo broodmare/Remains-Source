@@ -70,7 +70,7 @@ package unitdata
 		public override function save():Object
 		{
 			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
+			if (obj==null) obj = {};
 			obj.status=status;
 			return obj;
 		}

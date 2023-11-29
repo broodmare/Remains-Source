@@ -79,7 +79,7 @@ package weapondata
 			visvzz.alpha=10/rapid;
 			if (visvzz.alpha>1) visvzz.alpha=1;
 			kolvzz=Math.round((dlina-mindlina)/stepdlina);
-			vzz=new Array();
+			vzz=[];
 			storona=owner.storona;
 			b=new Bullet(own,X-(dlina/2)*storona,Y-dlina,null,false);
 			b.weap=this;

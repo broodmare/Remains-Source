@@ -125,7 +125,7 @@ package locdata
 		
 		public function save():Object 
 		{
-			var obj:Object=new Object();
+			var obj:Object = {};
 			obj.cp = lastCpCode;
 			obj.st = landStage;
 			obj.access = access;

@@ -64,9 +64,9 @@ package unitdata
 			//dopWeapon=Weapon.create(this,'mercgr');
 			thWeapon=Weapon.create(this,'drongr');
 			(thWeapon as WThrow).kolAmmo=100000;
-			childObjs=new Array(currentWeapon, thWeapon);
+			childObjs = [currentWeapon, thWeapon];
 			
-			spd=new Object();
+			spd = {};
 			
 			timerDie=150;
 		}

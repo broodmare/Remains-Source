@@ -44,7 +44,7 @@ package interdata
 		var bulbText = '';
 		
 		public var style:StyleSheet = new StyleSheet(); 
-		var styleObj:Object = new Object(); 
+		var styleObj:Object = {};
 		var kolStr:int = 0, t_info:int = 0, t_sel:int = 0, t_bulb:int = 0, t_visibility:int = 30, float_dy:int = 0;
 		public var t_item:int = 200;
 		public var t_od:int   = 200;
@@ -197,7 +197,7 @@ package interdata
 			dial.txt.styleSheet 	= style;
 			inform.txt.styleSheet 	= style;
 			imp.txt.styleSheet 		= style;
-			veff = new Array();
+			veff = [];
 			for (var i:int = 0; i < kolEff; i++) 
 			{
 				veff[i] = vis['eff' + i];
@@ -267,8 +267,8 @@ package interdata
 			wSelN = 0;
 			var inv:Invent = World.world.invent;
 			inv.getKolAmmos();
-			arr = new Array();
-			arrfav = new Array();
+			arr = [];
+			arrfav = [];
 			if (mode==0) // Choosing a weapon
 			{		
 				for each(var obj in inv.weapons) 

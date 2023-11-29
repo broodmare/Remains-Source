@@ -145,7 +145,7 @@ package interdata
 			vis.pr.visible = false;
 			
 			trace('PipBuck.as/PipBuck() - Creating ritems array...');
-			ritems = new Array();
+			ritems = [];
 			for (var j:int = 0; j < kolRItems; j++) 
 			{
 				item = new visPipRItem();

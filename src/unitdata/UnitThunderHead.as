@@ -48,7 +48,7 @@ package unitdata
 		
 		var kol_emit:int=5, max_emit:int=15;
 		
-		var p=new Object();
+		var p = {};
 		var vsosOn=false;
 		var t_die:int=0;
 		var t_vsos:int=800, vsos_max:int=450, vsos_porog:int=120, vsos_force:Number=3;
@@ -104,9 +104,9 @@ package unitdata
 			dopTestOn=true;
 			friendlyExpl=0;
 			
-			turrets=new Array();
+			turrets = [];
 			
-			spd=new Object();
+			spd = {};
 			
 			aiTCh=150;
 			aiState=0;

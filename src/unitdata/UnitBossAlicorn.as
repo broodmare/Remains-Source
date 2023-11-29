@@ -78,7 +78,7 @@ package unitdata
 			currentWeapon=weaps[0];
 			childObjs=weaps;
 			
-			spd=new Object();
+			spd = {};
 			aiNapr=storona;
 			teleFilter=new GlowFilter(0xFF0000,1,6,6,1,3);
 			

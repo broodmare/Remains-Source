@@ -235,7 +235,7 @@ package weapondata
 			owner=own;
 			id=nid;
 			variant=nvar;
-			opt=new Object();
+			opt = {};
 			
 			trasser=new Trasser();
 			

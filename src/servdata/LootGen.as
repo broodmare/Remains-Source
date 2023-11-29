@@ -52,7 +52,7 @@ package servdata
 				{
 					if (arr[item.@tip] == null) 
 					{
-						arr[item.@tip] = new Array();
+						arr[item.@tip] = [];
 						n[item.@tip] = 0;
 					}
 					arr[item.@tip].push({id: item.@id, st: item.@stage, chance: (item.@chance.length() ? item.@chance : 1), lvl: item.@lvl, r: (n[item.@tip] += Number(item.@chance.length() ? item.@chance : 1))});
@@ -62,7 +62,7 @@ package servdata
 				{
 					if (arr[item.@tip2] == null) 
 					{
-						arr[item.@tip2] = new Array();
+						arr[item.@tip2] = [];
 						n[item.@tip2] = 0;
 					}
 					arr[item.@tip2].push({id: item.@id, st: item.@stage, chance: (item.@chance2.length() ? item.@chance2 : item.@chance), lvl: item.@lvl, r: (n[item.@tip2] += Number(item.@chance2.length() ? item.@chance2 : item.@chance))});
@@ -83,7 +83,7 @@ package servdata
 			if (World.world.level) gameStage = World.world.level.gameStage;
 			if (tip != Item.L_BOOK && (maxlvl > 0 || worth > 0 || gameStage > 0)) 
 			{
-				res = new Array();
+				res = [];
 				for each(var i:Object in a) 
 				{
 					if (
@@ -489,7 +489,7 @@ package servdata
 			else if (cont == 'specweap') 
 			{
 				kol = Math.floor(Math.random() * 4);
-				var vars:Array = new Array();
+				var vars:Array = [];
 				if (World.world.invent.weapons['lsword']==null || World.world.invent.weapons['lsword'].variant==0) vars.push('lsword^1');
 				if (World.world.invent.weapons['antidrak']==null || World.world.invent.weapons['antidrak'].variant==0) vars.push('antidrak^1');
 				if (World.world.invent.weapons['quick']==null || World.world.invent.weapons['quick'].variant==0) vars.push('quick^1');

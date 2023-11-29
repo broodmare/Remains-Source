@@ -88,7 +88,7 @@ package interdata
 			
 			vis.scBar.addEventListener(ScrollEvent.SCROLL, statScroll);
 			vis.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel1);
-			statArr = new Array();
+			statArr = [];
 			var item:MovieClip;
 
 			for (var i:int = -1; i < maxrows; i++) 
@@ -133,7 +133,7 @@ package interdata
 		public static function setStyle(tt:TextField):void
 		{
 			var style:StyleSheet = new StyleSheet(); 
-			var styleObj:Object = new Object(); 
+			var styleObj:Object = {};
 
 			styleObj.color = "#00FF99"; 
 			style.setStyle(".r0", styleObj); 	//по умолчанию зелёный
@@ -244,7 +244,7 @@ package interdata
 				trace('PipPage.as/setStatus() - Error clearing text. Error: "' + err.message + '".');
 			}
 
-			arr = new Array();
+			arr = [];
 
 			if (flop) scrl = 0; // Reset scroll
 			if (vis.scText) vis.scText.visible = false;

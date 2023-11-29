@@ -70,7 +70,7 @@ package servdata
 
 		public function save():Object 
 		{
-			var obj:Object = new Object();
+			var obj:Object = {};
 			obj.rep=rep;
 			return obj;
 		}

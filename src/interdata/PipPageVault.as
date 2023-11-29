@@ -61,7 +61,7 @@ package interdata
 		{
 			trace('PipPageVault.as/setSubPages() - updating subPages.');
 
-			assArr=new Array();
+			assArr=[];
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
 			statHead.objectName.text=Res.txt('p', 'ii2');
 			statHead.kol.text=Res.txt('p', 'ii7');

@@ -120,7 +120,7 @@ package graphdata
 		public var resourcesLoaded:Boolean;					// Have the textures been loaded?
 		public var progressLoad:Number;						// Progess of all loaders as a number.
 
-		public static var spriteLists:Array = new Array();	//Array of all active sprites.
+		public static var spriteLists:Array = [];	//Array of all active sprites.
 		public static var resourceURLArray:Array = ['data/texture.swf', 'data/texture1.swf', 'data/sprite.swf', 'data/sprite1.swf']; //URLs of the files to load
 		
 		
@@ -197,7 +197,7 @@ package graphdata
 			layerLighting 		= new Sprite();
 			layerSats 			= new Sprite();
 
-			canvasLayerArray 	= new Array();
+			canvasLayerArray 	= [];
 
 
 			layerSats.visible 	= false;
@@ -275,7 +275,7 @@ package graphdata
 			mainCanvas.addChild(borderLeft);
 
 			//loader array setup
-			grLoaderArray = new Array();
+			grLoaderArray = [];
 
 
 			
@@ -326,8 +326,8 @@ package graphdata
 		public function materialSetup():void
 		{
 			//tile and backwall arrays
-			tileArray 		= new Array();	//Tiles and climbables
-			backwallArray   = new Array(); 	//Backwalls
+			tileArray 		= [];	//Tiles and climbables
+			backwallArray   = []; 	//Backwalls
 
 			var tileArrayCount:int = 0;
 			var backwallArrayCount:int = 0;

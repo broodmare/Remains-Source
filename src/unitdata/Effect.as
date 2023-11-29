@@ -49,7 +49,7 @@ package unitdata
 			t=1;
 			post=null;
 			postBad=false;
-			del=new Array();
+			del = [];
 			him=0;
 			lvl=1;
 			forever=false;

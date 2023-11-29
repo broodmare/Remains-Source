@@ -45,16 +45,16 @@ package unitdata
 		public function Invent(own:Unit,loadObj:Object = null, opt:Object = null) 
 		{
 			owner = own;
-			weapons = new Array();
-			favIds = new Array();
-			armors = new Array();
-			spells = new Array();
-			items = new Array();
-			eqip = new Array();
-			ammos = new Array();
-			fav = new Array();
+			weapons = [];
+			favIds = [];
+			armors = [];
+			spells = [];
+			items = [];
+			eqip = [];
+			ammos = [];
+			fav = [];
 			
-			itemsId = new Array();
+			itemsId = [];
 			for each (var node in XmlBook.getXML("items").item) 
 			{
 				var item:Item = new Item(node.@tip, node.@id, 0, 0, node);
@@ -1310,12 +1310,12 @@ package unitdata
 
 		public function save():Object 
 		{
-			var obj:Object = new Object;
-			obj.weapons = new Array();
-			obj.armors = new Array();
-			obj.fav = new Array();
-			obj.items = new Array();
-			obj.vault = new Array();
+			var obj:Object = {};
+			obj.weapons = [];
+			obj.armors = [];
+			obj.fav = [];
+			obj.items = [];
+			obj.vault = [];
 			var w;
 			for (w in weapons) 
 			{

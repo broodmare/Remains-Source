@@ -134,7 +134,7 @@ package locdata
 		public override function save():Object 
 		{
 			if (active==0) return null;
-			var obj:Object=new Object();
+			var obj:Object = {};
 			inter.save(obj);
 			obj.act=active;
 			if (used) obj.used=1;

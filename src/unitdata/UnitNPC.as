@@ -41,11 +41,11 @@ package unitdata
 		var t_float:Number=0;
 		var floatX:Number=0, floatY:Number=0;
 		
-		var que:Array=new Array();
+		var que:Array = [];
 		var wait:int=0;
 		var dey:String='';
 		var cx:Number=-1, cy:Number=-1;
-		var dvig:Object=new Object;
+		var dvig:Object = {};
 		
 		public function UnitNPC(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
 		{
@@ -268,7 +268,7 @@ package unitdata
 			} else if (com=='rep') {
 				targNPC.rep=int(val);
 			} else {
-				var q:Object=new Object;
+				var q:Object = {};
 				q.com=com;
 				q.val=val;
 				que.push(q);

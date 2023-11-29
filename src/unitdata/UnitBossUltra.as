@@ -63,9 +63,9 @@ package unitdata
 			thWeapon=Weapon.create(this,'roboplagr');
 			thWeapon.findCel=false;
 			(thWeapon as WThrow).kolAmmo=100000;
-			childObjs=new Array(currentWeapon, currentWeapon2, dopWeapon, gasWeapon, thWeapon);
+			childObjs=[currentWeapon, currentWeapon2, dopWeapon, gasWeapon, thWeapon];
 			
-			spd=new Object();
+			spd= {};
 			aiNapr=storona;
 			
 			timerDie=150;
@@ -137,7 +137,7 @@ package unitdata
 		public override function save():Object
 		{
 			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
+			if (obj==null) obj = {};
 			obj.tr=tr;
 			obj.weap=weap;
 			return obj;

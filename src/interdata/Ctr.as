@@ -322,7 +322,7 @@ package interdata
 		public function updateKeys():void
 		{
 			trace('Ctr.as/Ctr - updateKeys() executing ...');
-			keys = new Array();
+			keys = [];
 			for each(var obj in keyObj) 
 			{
 				if (obj.a1) keys[obj.a1] = obj;
@@ -334,8 +334,8 @@ package interdata
 		public function gotoDef():void
 		{
 			trace('Ctr.as/Ctr - gotoDef() executing...');
-			keyObj = new Array();
-			keyIds = new Array();
+			keyObj = [];
+			keyIds = [];
 			for (var i in keyXML.key) 
 			{
 				var obj:Object = {id:keyXML.key[i].@id};
@@ -348,7 +348,7 @@ package interdata
 		
 		public function save():* 
 		{
-			var arr:Array = new Array();
+			var arr:Array = [];
 			for (var i in keyIds) 
 			{
 				arr[i] = {a1:keyIds[i].a1, a2:keyIds[i].a2};

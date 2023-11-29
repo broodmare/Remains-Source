@@ -50,7 +50,7 @@ package unitdata
 			runSpeed=maxSpeed*2;
 			isFly=true;
 			isSats=false;
-			spd=new Object();
+			spd= {};
 			elast=0.2;
 			plaKap=true;
 			mater=false;

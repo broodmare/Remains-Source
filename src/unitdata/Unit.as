@@ -101,7 +101,7 @@ package unitdata
 		public var shitArmor:Number = 20;
 		public var vulner:Array;		
 		public var begvulner:Array;
-		public static var begvulners:Array = new Array();
+		public static var begvulners:Array = [];
 		public var dexter:Number = 1;
 		public var dexterPlus:Number = 0;			// Evasion, 1 - standard, greater than 1 - more, 0 - always hit	
 		public var dodge:Number=0;
@@ -225,7 +225,7 @@ package unitdata
 		public var noDestr:Boolean=false; 	// Do not destroy after death
 		
 		public var opt:Object;
-		public static var opts:Array=new Array();
+		public static var opts:Array = [];
 		
 		// Faction
 		public var fraction:int=0, player:Boolean=false;
@@ -324,12 +324,12 @@ package unitdata
 		// loadObj - object for loading the unit's state
 		public function Unit(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null) 
 		{
-			vulner = new Array();
+			vulner = [];
 			inter = new Interact(this,null,xml,loadObj);
 			inter.active = false;
 			for (var i:int = 0; i < kolVulners; i++) vulner[i] = 1;
 			vulner[D_EMP] = 0;
-			effects = new Array();
+			effects = [];
 			layer = 2;
 			prior = 1;
 			warn = 1;
@@ -450,7 +450,7 @@ package unitdata
 		
 		public override function save():Object 
 		{
-			var obj:Object = new Object();
+			var obj:Object = {};
 			if (sost >= 3 && !postDie) obj.dead = true;
 			if (inter) inter.save(obj);
 			return obj;
@@ -466,9 +466,9 @@ package unitdata
 			} 
 			else 
 			{
-				opt=new Object();
+				opt = {};
 				opts[id]=opt;
-				begvulner=new Array();
+				begvulner = [];
 				begvulners[id]=begvulner;
 				setOpts=true;
 			}
@@ -649,7 +649,7 @@ package unitdata
 			}
 			if (node0.blit.length()) 
 			{
-				if (anims == null) anims = new Array();
+				if (anims == null) anims = [];
 				for each(var xbl:XML in node0.blit) 
 				{
 					anims[xbl.@id] = new BlitAnim(xbl);
@@ -853,7 +853,7 @@ package unitdata
 					if (effects.length > 0) 
 					{
 						for each (var eff in effects) eff.unsetEff();
-						effects = new Array();
+						effects = [];
 					}
 					stun=cut=poison=0;
 					oduplenie=Math.round(Settings.oduplenie*(Math.random()*0.2+0.9));
@@ -1788,7 +1788,7 @@ package unitdata
 
 		public static function initIcos():void
 		{
-			arrIcos=new Array();
+			arrIcos=[];
 			for each (var xml in XmlBook.getXML("units").unit) 
 			{
 				if (xml.@cat=='3') 
@@ -1822,7 +1822,7 @@ package unitdata
 		
 		public static function initIco(nid:String):void
 		{
-			if (arrIcos==null) arrIcos=new Array();
+			if (arrIcos==null) arrIcos=[];
 			if (arrIcos[nid]) return;
 			var xml = XmlBook.getXML("units").unit.(@id == nid);
 			if (xml.vis.length() && xml.vis.@blit.length()) 

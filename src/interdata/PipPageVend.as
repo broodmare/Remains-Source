@@ -114,7 +114,7 @@ package interdata
 				return;
 			}
 			if (page2==1) {
-				assArr=new Array();
+				assArr=[];
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
 				statHead.objectName.text=Res.txt('p', 'iv1');
@@ -174,7 +174,7 @@ package interdata
 			} 
 			if (page2==2) 
 			{
-				assArr=new Array();
+				assArr=[];
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
 				vend.kolSell=0;
@@ -228,7 +228,7 @@ package interdata
 			}
 			if (page2==3) 
 			{
-				assArr=new Array();
+				assArr=[];
 				setTopText('inforepair');
 				statHead.objectName.text='';
 				statHead.hp.text=Res.txt('p', 'iv2');

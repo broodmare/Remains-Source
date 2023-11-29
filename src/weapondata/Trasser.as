@@ -29,7 +29,7 @@ package weapondata
 		
 		public function trass(gr:Graphics):void
 		{
-			sled = new Array();
+			sled = [];
 			X = begx;
 			Y = begy;
 			dx = begdx;

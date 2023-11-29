@@ -128,7 +128,7 @@ package unitdata
 		public override function save():Object
 		{
 			var obj:Object = super.save();
-			if (obj == null) obj = new Object();
+			if (obj == null) obj = {};
 			obj.tr = tr;
 			return obj;
 		}

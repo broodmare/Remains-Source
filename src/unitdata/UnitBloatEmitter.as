@@ -37,7 +37,7 @@ package unitdata
 					if (effects.length > 0) 
 					{
 						for each (var eff in effects) eff.unsetEff();
-						effects=new Array();
+						effects = [];
 					}
 					oduplenie=Math.round(Settings.oduplenie*(Math.random()*0.2+0.9));
 					disabled=false;		//включить

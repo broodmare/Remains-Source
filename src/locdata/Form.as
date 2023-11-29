@@ -55,8 +55,8 @@ package locdata
 		public static function setForms():void //Populates arrays of all Tiles and Backgrounds.
 		{
 			trace('Form.as/setForms() - Executing...');
-			tileForms = new Array();
-			otherForms = new Array();
+			tileForms = [];
+			otherForms = [];
 			var materialsXML:XML = XmlBook.getXML("materials");
 			if (materialsXML == null)
 			{

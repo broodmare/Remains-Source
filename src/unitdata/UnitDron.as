@@ -50,8 +50,9 @@ package unitdata
 			mat=1;
 			acidDey=1;
 			elast=0.6;
-			spd=new Object();
-			if (tr==100) {
+			spd = {};
+			if (tr==100)
+			{
 				vis.osn.scaleX=vis.osn.scaleY=1.5;
 				aiAgr=true;
 				objectName="";
@@ -74,7 +75,7 @@ package unitdata
 		public override function save():Object
 		{
 			var obj:Object=super.save();
-			if (obj==null) obj=new Object();
+			if (obj==null) obj= {};
 			obj.tr=tr;
 			obj.weap=weap;
 			return obj;

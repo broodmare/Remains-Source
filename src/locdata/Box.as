@@ -248,7 +248,7 @@ package locdata
 		
 		public override function save():Object 
 		{
-			var obj:Object = new Object();
+			var obj:Object = {};
 			if (dead) obj.dead = true;
 			if (inter) inter.save(obj);
 			return obj;
@@ -404,7 +404,7 @@ package locdata
 		
 		public function initDoor()
 		{
-			tiles = new Array();
+			tiles = [];
 			for (var i=Math.floor(X1/Tile.tilePixelWidth+0.5); i<=Math.floor(X2/Tile.tilePixelWidth-0.5); i++) 
 			{
 				for (var j=Math.floor(Y1/Tile.tilePixelHeight+0.5); j<=Math.floor(Y2/Tile.tilePixelHeight-0.5); j++) 

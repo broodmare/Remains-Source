@@ -210,7 +210,7 @@ package interdata
 			{
 				load(saved);
 			}
-			var obj:Object = new Object;
+			var obj:Object = {};
 			for each(var l:String in clist) 
 			{
 				obj['c' + l] = this['c' + l];
