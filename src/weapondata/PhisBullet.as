@@ -12,7 +12,7 @@ package weapondata
 	public class PhisBullet extends Bullet 
 	{
 		
-		var brake = 2;
+		var brake:int = 2;
 		var dr:Number = 0;
 		var lip:Boolean = false;
 		var prilip:Boolean = false;

@@ -258,14 +258,14 @@ package servdata
 			if (tip == L_WEAPON) 
 			{
 				var w = inv.weapons[id];
-				if (w != null && (Settings.vsWeaponRep || m)) 
-				{		// If auto-pickup for repair is enabled or forced call
-					if (w.hp <= w.maxhp && (w.respect == 0 || w.respect == 2 || !Settings.hardInv)) 
-					{	// Auto-pick if weapon exists, it is faulty and (it is selected or inventory is infinite)
+				if (w != null && (Settings.vsWeaponRep || m)) // If auto-pickup for repair is enabled or forced call
+				{		
+					if (w.hp <= w.maxhp && (w.respect == 0 || w.respect == 2 || !Settings.hardInv)) // Auto-pick if weapon exists, it is faulty and (it is selected or inventory is infinite)
+					{
 						return true;
 					} 
-					else if (m && Settings.hardInv) 
-					{	// If there was forced pickup with limited inventory, then activate the picked-up weapon
+					else if (m && Settings.hardInv) // If there was forced pickup with limited inventory, then activate the picked-up weapon
+					{
 						shpun = 2;
 					}
 					return false; 

@@ -26,8 +26,10 @@ package unitdata
 		public var him:int=0;					// Effect caused by chemistry, 1-positive, 2-negative																					
 		public var ad:Boolean=false;			// Dependency on chemistry
 		public var post:String;
-		var postBad:Boolean=false;
-		var del:Array;
+
+		//Setting these two public
+		public var postBad:Boolean=false;
+		public var del:Array;
 		
 		
 		public var vse:Boolean=false;		//действие окончено
@@ -156,12 +158,12 @@ package unitdata
 		{
 			if (lvl1>0) 
 			{
-				var plvl=lvl;
-				lvl=1;
-				if (t/30>lvl1) lvl=2;
-				if (t/30>lvl2) lvl=3;
-				if (t/30>lvl3) lvl=4;
-				if (plvl!=lvl && params) 
+				var plvl:int = lvl;
+				lvl = 1;
+				if (t / 30 > lvl1) lvl = 2;
+				if (t / 30 > lvl2) lvl = 3;
+				if (t / 30 > lvl3) lvl = 4;
+				if (plvl != lvl && params) 
 				{
 					if (player) (owner as UnitPlayer).pers.setParameters();
 					else owner.setEffParams();
@@ -219,11 +221,11 @@ package unitdata
 					getXmlParam();
 					if (isBad) 
 					{
-						var proc=World.world.pers.addictions[id];
-						if (proc>=World.world.pers.ad1) 
+						var proc = World.world.pers.addictions[id];
+						if (proc >= World.world.pers.ad1) 
 						{
-							forever=true;
-							ad=true;
+							forever = true;
+							ad = true;
 						}
 						if (proc>=World.world.pers.ad2) lvl=2;
 						if (proc>=World.world.pers.ad3) lvl=3;

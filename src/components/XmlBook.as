@@ -39,7 +39,6 @@ package components
                     var loader:XMLLoader = new XMLLoader();
 
                     //Creating an anonymouse function for each loader to run after each XML file is finished loading.
-                    //These event listeners are NEVER REMOVED.
                     loader.addEventListener(XMLLoader.XML_LOADED, initializeXmlPage);
 
                     loader.load(xmlBookPageURL, key);

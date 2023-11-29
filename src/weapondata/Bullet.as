@@ -40,7 +40,9 @@ package weapondata
 		public var flare:String;
 		public var outspace:Boolean = false;
 		
-		public var otbros = 0, probiv:Number = 0, parr:Array;
+		public var otbros:Number = 0; 
+		public var probiv:Number = 0;
+		public var parr:Array;
 		
 		public var babah:Boolean = false, tilehit:Boolean = false;
 		public var off:Boolean = false;	//Disable damage to units
@@ -49,7 +51,8 @@ package weapondata
 		
 		public var destroy:Number = 0;	// Damage to blocks
 		public var crack:int = 0;		// Container hacking
-		var box:Box;
+		//set public
+		public var box:Box;
 		public var tilePixelWidth:int  = -1;
 		public var tilePixelHeight:int = -1;	// Damage to blocks for melee weapons (coordinates indicated by the cursor)
 		public var damage:Number = 0;
@@ -74,7 +77,8 @@ package weapondata
 		public var explRadius:Number = 0;	// Explosion radius, if 0, then no explosion
 		public var targetObj:Obj;		// Target object
 		public var inWall:Boolean = false;
-		var expl_t:int = 0;
+		//set public
+		public var expl_t:int = 0;
 		
 		public var retDam:Boolean = false;	// Damage return
 
@@ -494,9 +498,9 @@ package weapondata
 			{
 				for (var j:Number = Math.floor((Y - explRadius) / Tile.tilePixelHeight); j <= Math.floor((Y + explRadius) / Tile.tilePixelHeight); j++) 
 				{
-					var tx = X - (i + 0.5) * Tile.tilePixelWidth;
-					var ty = Y - (j + 0.5) * Tile.tilePixelHeight;
-					var ter = tx * tx + ty * ty;
+					var tx:Number = X - (i + 0.5) * Tile.tilePixelWidth;
+					var ty:Number = Y - (j + 0.5) * Tile.tilePixelHeight;
+					var ter:Number = tx * tx + ty * ty;
 					if (ter < explRadius * explRadius) room.hitTile(room.getTile(i, j), destroy, (i + 0.5) * Tile.tilePixelWidth, (j + 0.5) * Tile.tilePixelHeight, tipDecal);
 				}
 			}
@@ -509,10 +513,10 @@ package weapondata
 			{
 				if (un.sost==4 || un.invulner || un.disabled || un.trigDis || un.room!=room) continue;
 				if (explTip==3 && !un.stay) continue; 
-				var tx=un.X-X;
-				var ty=un.Y-un.scY/2-Y;
-				var rasst=Math.sqrt(tx*tx+ty*ty);
-				var dam=damageExpl*(Math.random()*0.6+0.7);
+				var tx:Number = un.X-X;
+				var ty:Number = un.Y-un.scY/2-Y;
+				var rasst:Number = Math.sqrt(tx*tx+ty*ty);
+				var dam:Number = damageExpl*(Math.random()*0.6+0.7);
 				//дружественный огонь врагов
 				if (weap && weap.owner.fraction == un.fraction && un.fraction != Unit.F_PLAYER) 
 				{
@@ -532,8 +536,8 @@ package weapondata
 		// Damage all units with virtual fragments, taking into account wall protection
 		public function explBlast():void
 		{
-			var tx;
-			var ty;
+			var tx:Number;
+			var ty:Number;
 			if (room!=owner.room) return;
 			for each(var un:Unit in room.units) 
 			{
@@ -565,7 +569,7 @@ package weapondata
 		// Create a fragment
 		public function explBullet(tx:Number, ty:Number, er:Number):Bullet 
 		{
-			var rasst=Math.sqrt(tx*tx+ty*ty);
+			var rasst:Number = Math.sqrt(tx*tx+ty*ty);
 			var b:Bullet;
 			if (rasst < er) 
 			{

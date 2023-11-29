@@ -17,7 +17,7 @@ package locdata
 		public var lvl:int = 0;
 		public var back:String;
 		
-		public var kol = 2;
+		public var kol:int = 2;
 		public var rnd:Boolean = true;	// Can be used as a random one
 		
 		public static var nornd:Array = ["beg0","back","roof","pass","passroof","roofpass","vert","surf"];

@@ -16,7 +16,7 @@ package servdata
 		
 		//public var id:String;
 		
-		var inited:Boolean = false;
+		public var inited:Boolean = false;
 		public var owner:Obj;
 		public var room:Room;
 		public var X:Number, Y:Number;
@@ -81,34 +81,33 @@ package servdata
 		public var area:Area;	// Attached area
 		
 		public var sign:int = 0;	// Pointer
-		var t_sign:int = 0;
+		public var t_sign:int = 0;
 		
 		public var isMove:Boolean=false;		// There is movement
-		var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	// Coordinates of the starting and ending points
-		var t_move:Number=0, dt_move:Number=1;		// Timer
+		public var begX:Number=0, begY:Number=0, endX:Number=0, endY:Number=0, endX2:Number=0;	// Coordinates of the starting and ending points
+		public var t_move:Number=0, dt_move:Number=1;		// Timer
 		public var tStay:int=10, tMove:int=100;		// Time to stay and time to move
 		public var moveSt:int=0;					// Movement mode 0 - stand, 1 - from start to end, 2 - from end to start, 3 - from one end to the other, 4 - continuous
-		var moveP:Boolean=false;					// If true, there is movement at this moment, if false, it stands
+		public var moveP:Boolean=false;					// If true, there is movement at this moment, if false, it stands
 		public var moveCh:SoundChannel;
 		
-		var lootBroken:Boolean=false;
+		public var lootBroken:Boolean=false;
 		
 		public var autoClose:int=0;
-		var t_autoClose:int=0;
-		var t_budilo:int=0;
+		public var t_autoClose:int=0;
+		public var t_budilo:int=0;
 		
 		public var scrAct:Script, scrOpen:Script, scrClose:Script, scrTouch:Script;
 		
 		// Changes to states that are saved
-		var saveMine:int = 0;		// 101 - mine disarmed or exploded
-		var saveLock:int = 0;		// 101 - unlocked, 102 - jammed
-		public var saveLoot:int = 0;		// 1 - loot obtained, 2 - loot obtained, critical loot exists
-		var saveOpen:int = 0;		// 1 - opened
-		var saveExpl:int = 0;
-		//var saveTerm:int=0;		// 1 - activated
+		public var saveMine:int = 0;			// 101 - mine disarmed or exploded
+		public var saveLock:int = 0;			// 101 - unlocked, 102 - jammed
+		public var saveLoot:int = 0;	// 1 - loot obtained, 2 - loot obtained, critical loot exists
+		public var saveOpen:int = 0;			// 1 - opened
+		public var saveExpl:int = 0;
 		
-		public const maxLockLvl = 24;
-		public const maxMechLvl = 7;
+		public const maxLockLvl:int = 24;
+		public const maxMechLvl:int = 7;
 		
 		public static var chanceUnlock:Array=[0.9, 0.75, 0.5, 0.3, 0.15, 0.05, 0.01];
 		public static var chanceUnlock2:Array=[0.95, 0.8, 0.55, 0.35, 0.2, 0.08, 0.03];
@@ -120,7 +119,7 @@ package servdata
 			room=owner.room;
 			X=own.X, Y=own.Y;
 			xml=nxml;
-			var rnd=true;
+			var rnd:Boolean = true;
 			if (xml && xml.@set.length()) rnd=false;	// if the set property is specified as '1', there won't be random parameters
 			// lock type
 			if (node && node.@locktip.length()) lockTip=node.@locktip;
@@ -995,8 +994,8 @@ package servdata
 			if (mineTip==6 && mine>0) return 1;
 			if (noRuna || lock==0) return 0;
 			if (gg.invent==null || mine>0) return 0;
-			var pick = gg.pers.getLockTip(lockTip);
-			var master = gg.pers.getLockMaster(lockTip)
+			var pick:int = gg.pers.getLockTip(lockTip);
+			var master:int = gg.pers.getLockMaster(lockTip)
 			if (lockTip==1 && gg.invent.items['runa'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			if (lockTip==2 && gg.invent.items['reboot'].kol>0 && (lock-pick>1 || lockLevel>master)) return 1;
 			return 0;
@@ -1253,7 +1252,7 @@ package servdata
 			if (isMove && moveSt>0) 
 			{
 				var f:Number=0;
-				var pp=moveP;
+				var pp:Boolean = moveP;
 				if (dt_move<1) dt_move+=0.1;
 				if (t_move>=0 && t_move<tStay) // standing at the beginning
 				{	
@@ -1366,8 +1365,8 @@ package servdata
 			if (room==null || cont=='empty') return;
 			X=owner.X, Y=owner.Y-owner.scY/2;
 			var kol:int, imp:int;
-			var is_loot=false;
-			var imp_loot=1;
+			var is_loot:Boolean = false;
+			var imp_loot:int = 1;
 			if (xml && xml.item.length()) 
 			{
 				for each(var item:XML in xml.item) 

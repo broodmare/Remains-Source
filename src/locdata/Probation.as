@@ -78,7 +78,7 @@ package locdata
 		}
 		
 		//начальная подготовка (один раз)
-		public function prepare() 
+		public function prepare():void
 		{
 			for each (var b:Box in room.objs) 
 			{
@@ -92,7 +92,7 @@ package locdata
 		
 		//вызвать при открывании контейнеров и убийстве мобов
 		//если условия выполнены, то закрыть испытание
-		public function check() 
+		public function check():void
 		{
 			if (closed) return;
 			if (checkAllCon()) 
@@ -102,7 +102,7 @@ package locdata
 		}
 		
 		//проверить все условия закрытия
-		function checkAllCon():Boolean 
+		public function checkAllCon():Boolean 
 		{
 			for each (var node in xml.con) 
 			{
@@ -129,7 +129,7 @@ package locdata
 		}
 		
 		//испытание пройдено
-		public function closeProb() 
+		public function closeProb():void
 		{
 			closed=true;
 			active=false;
@@ -182,14 +182,14 @@ package locdata
 			}
 		}
 		
-		public function showHelp() 
+		public function showHelp():void
 		{
-			var isHelp=(help!='');
+			var isHelp = (help != '');
 			World.world.gui.informText(info+(isHelp?('<br><br>'+Res.txt('g', 'need_help')):''),isHelp);
 		}
 		
 		//активировать испытание
-		public function activateProb() 
+		public function activateProb():void
 		{
 			if (closed || active || !room.roomActive) return;
 			active=true;
@@ -197,14 +197,14 @@ package locdata
 		}
 		
 		//вернуть испытание в исходное состояние
-		public function defaultProb() 
+		public function defaultProb():void
 		{
 			active=false;
 			doorsOnOff(0);
 		}
 
 		//-1 - отключить все выходы, 0 - отключить все выходы, кроме основного, 1-включить все выходы
-		function doorsOnOff(turn:int) 
+		public function doorsOnOff(turn:int):void
 		{
 			for each (var b:Box in room.objs) 
 			{
@@ -228,7 +228,7 @@ package locdata
 			}
 		}
 		
-		public function beginWave() 
+		public function beginWave():void
 		{
 			if (onWave) return;
 			doorsOnOff(-1);
@@ -238,7 +238,7 @@ package locdata
 			t_wave=beg_t;
 		}
 		
-		function createWave() 
+		public function createWave():void
 		{
 			nspawn=0;
 			var w:XML=xml.wave[nwave];
@@ -254,7 +254,7 @@ package locdata
 		}
 		
 		//проверка выполняется при убийстве врага
-		public function checkWave(inc:Boolean=false) 
+		public function checkWave(inc:Boolean=false):void
 		{
 			if (inc) killEn++;
 			if (killEn>=kolEn) 
@@ -265,7 +265,7 @@ package locdata
 			}
 		}
 		
-		function resetWave() 
+		public function resetWave():void
 		{
 			onWave=false;
 			for each (var un:Unit in room.units) 

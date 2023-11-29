@@ -112,7 +112,7 @@ package locdata
 		}
 
 		//посчитать, сколько испытаний завершено
-		public function calcProbs()
+		public function calcProbs():void
 		{
 			kolAllProb = 0;
 			kolClosedProb = 0;

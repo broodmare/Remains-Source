@@ -9,19 +9,19 @@ package servdata
 	public class Script 
 	{
 		
-		var level:Level;
+		public var level:Level;
 		public var owner:Obj;
 		
 		public var eve:String;	// Event that triggers the script
 		public var acts:Array;
-		var actObj:Object;
+		public var actObj:Object;
 		
 		public var onTimer:Boolean = false;	// Are there commands with time delay
 		public var running:Boolean = false;	// Script with time execution is running
-		var wait:Boolean = false;	// Waiting for button press
-		var ncom:int;
-		var tcom:int = 0;
-		var dial_n:int = -1;
+		public var wait:Boolean = false;	// Waiting for button press
+		public var ncom:int;
+		public var tcom:int = 0;
+		public var dial_n:int = -1;
 
 		public function Script(xml:XML, newLevel:Level = null, nowner:Obj = null, tt:Boolean = false) 
 		{
@@ -188,7 +188,7 @@ package servdata
 						World.world.gg.controlOff();
 						wait=true;
 						World.world.ctr.active=false;
-						var str = Res.txt('m', actObj.val) + "\n" + Res.txt('p', 'recLevel') + ': ['+World.world.game.levelArray[actObj.val].dif + "]\n" + Res.txt('p', 'isperslvl') + ': [' + World.world.pers.level + ']';
+						var str:String = Res.txt('m', actObj.val) + "\n" + Res.txt('p', 'recLevel') + ': ['+World.world.game.levelArray[actObj.val].dif + "]\n" + Res.txt('p', 'isperslvl') + ': [' + World.world.pers.level + ']';
 						if (World.world.game.levelArray[actObj.val].dif > World.world.pers.level) 
 						{
 							str += '\n\n' + Res.txt('p', 'wrLevel');

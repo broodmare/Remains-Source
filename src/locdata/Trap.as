@@ -24,7 +24,8 @@ package locdata
 		public var spBind:int=1;	//способ прикрепления
 		public var floor:Boolean = false;
 		
-		var anim:Boolean = false;
+		//Set public
+		public var anim:Boolean = false;
 
 
 		public function Trap(newRoom:Room, nid:String, nx:int=0, ny:int=0) 
@@ -38,8 +39,8 @@ package locdata
 			var vClass2:Class = Res.getClass('vistrap' + id + '2', null, null);
 			vis  = new vClass();
 			vis2 = new vClass2();
-			var n1 = Math.floor(Math.random() * vis.totalFrames) + 1;
-			var n2 = Math.floor(Math.random() * vis.totalFrames) + 1;
+			var n1:int = Math.floor(Math.random() * vis.totalFrames) + 1;
+			var n2:int = Math.floor(Math.random() * vis.totalFrames) + 1;
 			levitPoss = false;
 			vis.gotoAndStop(n1);
 			vis2.gotoAndStop(n2);
@@ -66,7 +67,7 @@ package locdata
 			bindTile();
 		}
 		
-		public function getXmlParam()
+		public function getXmlParam():void
 		{
 			var node:XML = XmlBook.getXML("objects").obj.(@id == id)[0];
 			
@@ -120,7 +121,7 @@ package locdata
 			}
 		}
 		
-		public function bindTile()
+		public function bindTile():void
 		{
 			if (spBind==1) 	//прикрепление к полу
 			{

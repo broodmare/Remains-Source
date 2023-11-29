@@ -442,7 +442,7 @@ package servdata
 			else if (cont == 'cryo') 
 			{
 				kol = Math.floor(Math.random() * 3);
-				for (var k:int = 0; k <= kol; k++) newLoot(1, Item.L_ITEM, 'pcryo');
+				for (var l:int = 0; l <= kol; l++) newLoot(1, Item.L_ITEM, 'pcryo');
 				newLoot(0.5, Item.L_ITEM, 'gel');
 			} 
 			else if (cont == 'chest') 

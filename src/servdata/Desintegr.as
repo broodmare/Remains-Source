@@ -16,17 +16,18 @@ package servdata
 		
 		public var owner:Obj;
 		
-		var burnBmp:BitmapData;
-		var burnBm:Bitmap;
-		var burnN:int = 0;
-		var burnTip:int = 0;
-		var burnPart:String;
-		var burnGlowColor:uint;
-		var burnCt:ColorTransform;
-		var burnRnd:int=Math.random() * int.MAX_VALUE;
-		var burnKolPix:int;
-		var burnTime1:int = 10;
-		var burnTime2:int = 30;
+		//Setting these public
+		public var burnBmp:BitmapData;
+		public var burnBm:Bitmap;
+		public var burnN:int = 0;
+		public var burnTip:int = 0;
+		public var burnPart:String;
+		public var burnGlowColor:uint;
+		public var burnCt:ColorTransform;
+		public var burnRnd:int=Math.random() * int.MAX_VALUE;
+		public var burnKolPix:int;
+		public var burnTime1:int = 10;
+		public var burnTime2:int = 30;
 		
 		public var vse:Boolean = false;
 

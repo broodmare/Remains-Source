@@ -83,7 +83,7 @@ package unitdata
 			if (xml.@hide.length()) hideMane = xml.@hide;
 			
 			resist = new Array();
-			for (var i = 0; i < Unit.kolVulners; i++) resist[i] = 0;
+			for (var i:int = 0; i < Unit.kolVulners; i++) resist[i] = 0;
 			if (tip == 1) resist[Unit.D_PINK] = -0.5;
 			if (lvl >= 0) getXmlParam(xml.upd[lvl]);
 			else getXmlParam(xml.upd[0])
@@ -176,7 +176,7 @@ package unitdata
 		{
 			if (lvl >= maxlvl) return;
 			lvl++;
-			for (var i = 0; i < Unit.kolVulners; i++) resist[i] = 0;
+			for (var i:int = 0; i < Unit.kolVulners; i++) resist[i] = 0;
 			getXmlParam(xml.upd[lvl]);
 		}
 		

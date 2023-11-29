@@ -210,8 +210,8 @@ package servdata
 					if (dial.@pet.length() && World.world.gg.currentPet!=dial.@pet) continue; 
 					if (dial.@quest.length()) 
 					{						 // If a quest is active
-						var quest=World.world.game.quests[dial.@quest];
-						if (quest==null || quest.state!=1) continue; 
+						var quest = World.world.game.quests[dial.@quest];
+						if (quest == null || quest.state != 1) continue; 
 						if (dial.@sub.length()) 
 						{					// If there is a visible sub-quest
 							if (quest.subsId[dial.@sub]==null || quest.subsId[dial.@sub].invis) continue; 
@@ -268,7 +268,7 @@ package servdata
 			return false;
 		}
 		
-		public function setStatus(dial:int=0) 
+		public function setStatus(dial:int=0):void
 		{
 			if (dial > 0) 
 			{
@@ -317,7 +317,7 @@ package servdata
 		
 		// Set the top icon
 		//set public
-		public function setIco(n:String=null) 
+		public function setIco(n:String=null):void
 		{
 			try 
 			{
@@ -330,7 +330,7 @@ package servdata
 			}
 		}
 		
-		public function repair() 
+		public function repair():void
 		{
 			if (xml && xml.quest.length()) 
 			{

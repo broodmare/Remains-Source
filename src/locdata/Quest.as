@@ -172,7 +172,7 @@ package locdata
 		}
 		
 		//проверить, если cid совпадает с collect, увеличить est
-		public function inc(cid:String, kol:int=1) 
+		public function inc(cid:String, kol:int=1):void
 		{
 			if (cid==collect) est+=kol;
 			if (!sub) 
@@ -185,7 +185,7 @@ package locdata
 		}
 		
 		//выдать начальные предметы
-		public function deposit() 
+		public function deposit():void
 		{
 			if (xml.deposit.length()) 
 			{
@@ -271,7 +271,7 @@ package locdata
 		}
 		
 		//проверить на возможность отдать предметы
-		public function chGive(npc:String, us:Boolean=false) 
+		public function chGive(npc:String, us:Boolean=false):Boolean
 		{
 			if (sub) 
 			{
@@ -302,10 +302,10 @@ package locdata
 			} 
 			else 
 			{
-				var ok=false;
+				var ok = false;
 				for each (var q:Quest in subs) 
 				{
-					if (q.chGive(npc,us)) ok=true;
+					if (q.chGive(npc,us)) ok = true;
 				}
 				check(null);
 				return ok;
@@ -338,7 +338,7 @@ package locdata
 		}
 		
 		//проверить все этапы, если все закрыты, то закрыть основной
-		public function isClosed() 
+		public function isClosed():void
 		{
 			var cl:Boolean=true;
 			for each (var q:Quest in subs) 
@@ -348,14 +348,14 @@ package locdata
 			if (cl) close();
 		}
 		
-		public function isResult() 
+		public function isResult():void
 		{
-			for (var i=0; i<subs.length; i++) 
+			for (var i:int = 0; i<subs.length; i++) 
 			{
 				if (subs[i].result) 
 				{
 					var cl:Boolean=true;
-					for (var j=i-1; j>=0; j--) 
+					for (var j = i - 1; j >= 0; j--) 
 					{
 						if (subs[j].state<2) cl=false;
 					}
@@ -366,7 +366,7 @@ package locdata
 		}
 		
 		//закрыть этап
-		public function closeSub(sid:String) 
+		public function closeSub(sid:String):void
 		{
 			if (state==2 || sid==null || sid=='' || subsId[sid]==null) return;
 			subsId[sid].close();
@@ -375,14 +375,14 @@ package locdata
 		}
 		
 		//показать скрытый этап
-		public function showSub(sid:String) 
+		public function showSub(sid:String):void
 		{
 			if (sid==null || sid=='' || subsId[sid]==null) return;
 			subsId[sid].invis=false;
 		}
 		
 		//закрыть квест
-		public function close() 
+		public function close():void
 		{
 			if (state==2) return;
 			state=2;

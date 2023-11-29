@@ -910,14 +910,16 @@ package unitdata
 			{
 				//определить скиллы, доступные для увеличения
 				var dost:Array=new Array();
-				for (var sk in skills) 
+				var sk;
+				
+				for (sk in skills) 
 				{
 					if (skills[sk]<maxSkLvl && !skillIsPost(sk)) dost.push(sk);
 				}
 				//если уже все прокачаны, вкачать дополнительные
 				if (dost.length == 0 || level>=postPersLevel && Math.random()<0.2) 
 				{
-					for (var sk in skills) 
+					for (sk in skills) 
 					{
 						if (skillIsPost(sk) && skills[sk]<maxPostSkLvl) dost.push(sk);
 					}
@@ -955,13 +957,13 @@ package unitdata
 		public function perkPoss(nid:String, dp:XML=null):int 
 		{
 			if (dp == null) dp = XmlBook.getXML("perks").perk.(@id == nid)[0];
-			if (dp==null) return -1;
-			var numb=perks[nid];
-			if (numb==null) numb=0;
-			var maxlvl=1;
+			if (dp == null) return -1;
+			var numb = perks[nid];
+			if (numb == null) numb = 0;
+			var maxlvl:int = 1;
 			if (dp.@lvl.length()) maxlvl=dp.@lvl;
 			if (numb>=maxlvl) return -1;
-			var ok:int=1;
+			var ok:int = 1;
 			if (dp.req.length()) 
 			{
 				for each(var req in dp.req) 
@@ -1066,7 +1068,7 @@ package unitdata
 			mc.armor.gotoAndStop(1);
 			if (gg.currentArmor) 
 			{
-				var armorSt=4-Math.ceil(gg.currentArmor.hp/gg.currentArmor.maxhp*4);
+				var armorSt = 4 - Math.ceil(gg.currentArmor.hp/gg.currentArmor.maxhp*4);
 				mc.armor.gotoAndStop(armorSt+1);
 			}
 		}
@@ -1193,40 +1195,40 @@ package unitdata
 		public function heal(hhp:Number, tip:int):void
 		{
 			var sst:int;
-			if (hhp==0) return;
-			if (tip==0) 
+			if (hhp == 0) return;
+			if (tip == 0) 
 			{
-				if (legsHP<headHP && legsHP<torsHP) tip=3;
-				else if (headHP<torsHP) tip=1;
+				if (legsHP<headHP && legsHP<torsHP) tip = 3;
+				else if (headHP<torsHP) tip = 1;
 				else tip=2;
 			}
-			if (tip==1 || tip==4) 
+			if (tip == 1 || tip == 4) 
 			{
-				sst=4-Math.ceil(headHP/inMaxHP*4);
+				sst = 4 - Math.ceil(headHP/inMaxHP*4);
 				headHP+=hhp;
 				if (headHP>inMaxHP) headHP=inMaxHP;
 				headSt=4-Math.ceil(headHP/inMaxHP*4);
 				if (sst!=headSt) setParameters();
 			}
-			if (tip==2 || tip==4) 
+			if (tip == 2 || tip == 4) 
 			{
-				sst=4-Math.ceil(torsHP/inMaxHP*4);
+				sst = 4 - Math.ceil(torsHP/inMaxHP*4);
 				torsHP+=hhp;
 				if (torsHP>inMaxHP) torsHP=inMaxHP;
 				torsSt=4-Math.ceil(torsHP/inMaxHP*4);
 				if (sst!=torsSt) setParameters();
 			}
-			if (tip==3 || tip==4) 
+			if (tip == 3 || tip == 4) 
 			{
-				sst=4-Math.ceil(legsHP/inMaxHP*4);
+				sst = 4 - Math.ceil(legsHP/inMaxHP*4);
 				legsHP+=hhp;
 				if (legsHP>inMaxHP) legsHP=inMaxHP;
 				legsSt=4-Math.ceil(legsHP/inMaxHP*4);
 				if (sst!=legsSt) setParameters();
 			}
-			if (tip==5) 
+			if (tip == 5) 
 			{
-				var sst:int=4-Math.ceil(bloodHP/inMaxHP*4);
+				sst = 4 - Math.ceil(bloodHP/inMaxHP*4);
 				bloodHP+=hhp;
 				if (bloodHP>inMaxHP) bloodHP=inMaxHP;
 				bloodSt=4-Math.ceil(bloodHP/inMaxHP*4);
@@ -1235,7 +1237,7 @@ package unitdata
 			if (tip==6) 
 			{
 				if (manaHP<inMaxMana && hhp>5) gg.numbEmit.cast(gg.room,gg.X,gg.Y-gg.scY/2,{txt:('+'+Math.round(hhp)), frame:6, rx:20, ry:20});
-				var sst:int=4-Math.ceil(manaHP/inMaxMana*4);
+				sst = 4 - Math.ceil(manaHP/inMaxMana*4);
 				manaHP+=hhp;
 				if (manaHP>inMaxMana) manaHP=inMaxMana;
 				manaSt=4-Math.ceil(manaHP/inMaxMana*4);

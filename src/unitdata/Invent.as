@@ -261,7 +261,7 @@ package unitdata
 			if (pot.@heal=='detoxin') 
 			{
 				var limAddict:int=pot.@detox;
-				for (var j=0; j<5; j++) 
+				for (var j:int = 0; j < 5; j++) 
 				{
 					for (var ad in World.world.pers.addictions) 
 					{
@@ -1186,7 +1186,7 @@ package unitdata
 		
 		public function addAllWeapon():void
 		{
-			var w;
+			var w:Weapon;
 			//for each (w in LootGen.arr['weapon']) updWeapon(w.id,1);
 			for each (w in LootGen.arr['weapon']) addWeapon(w.id);
 			for each (w in LootGen.arr['e']) addWeapon(w.id);
@@ -1195,33 +1195,33 @@ package unitdata
 
 		public function addAllAmmo():void
 		{
-			var w;
+			var w:Weapon;
 			for each (w in LootGen.arr['a']) items[w.id].kol=10000;
 			for each (w in LootGen.arr['e']) items[w.id].kol=10000;
 		}
 
 		public function addAllItem():void
 		{
-			var w;
-			for each (w in LootGen.arr['med']) items[w.id].kol=1000;
-			for each (w in LootGen.arr['compa']) items[w.id].kol=1000;
-			for each (w in LootGen.arr['him']) items[w.id].kol=1000;
-			for each (w in LootGen.arr['book']) items[w.id].kol=10;
-			for each (w in LootGen.arr['scheme']) take(new Item(Item.L_SCHEME,w.id));
-			for each (w in LootGen.arr['spell']) take(new Item(Item.L_SPELL,w.id));
-			for each (w in LootGen.arr['compw']) items[w.id].kol=100;
-			for each (w in LootGen.arr['compe']) items[w.id].kol=100;
-			for each (w in LootGen.arr['compm']) items[w.id].kol=100;
-			for each (w in LootGen.arr['compp']) items[w.id].kol=1000;
-			for each (w in LootGen.arr['stuff']) items[w.id].kol=1000;
-			for each (w in LootGen.arr['paint']) items[w.id].kol=1;
-			for each (w in LootGen.arr['pot']) items[w.id].kol=100;
-			for each (w in LootGen.arr['food']) items[w.id].kol=100;
-			items['stealth'].kol=1000;
-			items['potHP'].kol=1000;
-			items['rep'].kol=1000;
-			items['sphera'].kol=100;
-			items['screwdriver'].kol=1;
+			var w:Weapon;
+			for each (w in LootGen.arr['med']) items[w.id].kol = 1000;
+			for each (w in LootGen.arr['compa']) items[w.id].kol = 1000;
+			for each (w in LootGen.arr['him']) items[w.id].kol = 1000;
+			for each (w in LootGen.arr['book']) items[w.id].kol = 10;
+			for each (w in LootGen.arr['scheme']) take(new Item(Item.L_SCHEME, w.id));
+			for each (w in LootGen.arr['spell']) take(new Item(Item.L_SPELL, w.id));
+			for each (w in LootGen.arr['compw']) items[w.id].kol = 100;
+			for each (w in LootGen.arr['compe']) items[w.id].kol = 100;
+			for each (w in LootGen.arr['compm']) items[w.id].kol = 100;
+			for each (w in LootGen.arr['compp']) items[w.id].kol = 1000;
+			for each (w in LootGen.arr['stuff']) items[w.id].kol = 1000;
+			for each (w in LootGen.arr['paint']) items[w.id].kol = 1;
+			for each (w in LootGen.arr['pot']) items[w.id].kol = 100;
+			for each (w in LootGen.arr['food']) items[w.id].kol = 100;
+			items['stealth'].kol = 1000;
+			items['potHP'].kol = 1000;
+			items['rep'].kol = 1000;
+			items['sphera'].kol = 100;
+			items['screwdriver'].kol = 1;
 		}
 
 		public function addAllArmor():void
@@ -1247,7 +1247,7 @@ package unitdata
 			for each(w in obj.weapons) 
 			{
 				//trace(w.id);
-				var weap:Weapon=addWeapon(w.id,w.hp,w.hold,w.respect,w.variant);
+				var weap:Weapon = addWeapon(w.id,w.hp,w.hold,w.respect,w.variant);
 				if (w.ammo) weap.setAmmo(w.ammo, items[w.ammo].xml);
 			}
 			for each(w in obj.armors) 
@@ -1262,24 +1262,24 @@ package unitdata
 			}
 			for (w in obj.fav) 
 			{
-				favItem(obj.fav[w],w);
+				favItem(obj.fav[w], w);
 			}
-			cWeaponId=obj.cWeaponId;
-			cArmorId=obj.cArmorId;
-			cAmulId=obj.cAmulId;
-			cSpellId=obj.cSpellId;
-			prevArmor=obj.prevArmor;
-			if (prevArmor==null) prevArmor='';
+			cWeaponId = obj.cWeaponId;
+			cArmorId = obj.cArmorId;
+			cAmulId = obj.cAmulId;
+			cSpellId = obj.cSpellId;
+			prevArmor = obj.prevArmor;
+			if (prevArmor == null) prevArmor = '';
 		}
 
 		public function save():Object 
 		{
-			var obj:Object=new Object;
-			obj.weapons=new Array();
-			obj.armors=new Array();
-			obj.fav=new Array();
-			obj.items=new Array();
-			obj.vault=new Array();
+			var obj:Object = new Object;
+			obj.weapons = new Array();
+			obj.armors = new Array();
+			obj.fav = new Array();
+			obj.items = new Array();
+			obj.vault = new Array();
 			var w;
 			for (w in weapons) 
 			{

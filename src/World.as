@@ -459,10 +459,11 @@ package
 //			Game
 //=============================================================================================================
 		
-		var newGame:Boolean;
-		var data:Object;
-		var opt:Object;
-		var newName:String;
+		//Setting these public
+		public var newGame:Boolean;
+		public var data:Object;
+		public var opt:Object;
+		public var newName:String;
 
 		//Start a new game or load a save. Pass the slot number or -1 for a new game
 		//Stage 0 - create HUD, SATS, and pipuck

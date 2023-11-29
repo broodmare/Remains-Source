@@ -16,8 +16,10 @@ package  unitdata
 		public var liv2:Boolean=false;
 		public var liv3:Boolean=false;
 		
-		var kolAll:int=6;
-		var kolClosed:int=3;
+		//Setting these two public
+		public var kolAll:int=6;
+		public var kolClosed:int=3;
+
 		public var opened:Array=[];
 
 		public function Coord(newRoom:Room, ntip:String=null) 
@@ -30,9 +32,9 @@ package  unitdata
 			rndOpened();
 		}
 		
-		function rndOpened():void
+		public function rndOpened():void
 		{
-			for (var i=1;i<=kolAll;i++) 
+			for (var i:int = 1; i <= kolAll; i++) 
 			{
 				opened[i]=true;
 			}
@@ -45,10 +47,10 @@ package  unitdata
 		public function step():void
 		{
 			t1--;
-			if (t1<=0) 
+			if (t1 <= 0) 
 			{
 				t1=Math.floor(Math.random()*60+150);
-				for (var i=1; i<=3; i++) 
+				for (var i:int = 1; i <= 3; i++) 
 				{
 					tr++;
 					if (tr>3) tr=1;
@@ -56,20 +58,20 @@ package  unitdata
 				}
 			}
 			t2--;
-			if (t2==75) 
+			if (t2 == 75) 
 			{
-				for (var i=1;i<=kolAll;i++) 
+				for (var j:int = 1; j <= kolAll; j++) 
 				{
-					room.allAct(null,opened[i]?'red':'green','a'+i);
+					room.allAct(null, opened[j] ? 'red':'green', 'a' + j);
 				}
 			}
-			if (t2==0) 
+			if (t2 == 0) 
 			{
-				for (var i=1;i<=kolAll;i++) 
+				for (var k:int = 1; k <= kolAll; k++) 
 				{
-					room.allAct(null,opened[i]?'open':'close','a'+i);
+					room.allAct(null, opened[k] ? 'open':'close', 'a' + k);
 				}
-				t2=300;
+				t2 = 300;
 				rndOpened();
 			}
 		}

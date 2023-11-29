@@ -22,7 +22,10 @@ package locdata
 		public var item:Item;
 		
 		
-		const osnRad = 50, actRad = 250;
+		//set public
+		public const osnRad = 50, actRad = 250;
+
+
 		public var vClass:Class;
 		public var osnova:Box=null;
 		public var vsos:Boolean=false;
@@ -30,7 +33,11 @@ package locdata
 		public var takeR:int=osnRad;		//радиус взятия
 		
 		private var isTake:Boolean=false;	//взят
-		var actTake:Boolean=false;			//была нажата E
+
+		//set public 
+		public var actTake:Boolean=false;			//была нажата E
+
+
 		public var auto:Boolean=false;		//берётся автоматически
 		public var auto2:Boolean=false;		//берётся автоматически в соответствии с настройками автовзятия
 		public var krit:Boolean=false;		//критически важный
@@ -68,12 +75,12 @@ package locdata
 				{
 					if (item.variant>0) vClass=Res.getClass('vis'+item.id+'_'+item.variant,'vis'+item.id,visp10mm);
 					else vClass=Res.getClass('vis'+item.id,null,visp10mm);
-					var infIco=new vClass();
-					infIco.stop();
-					infIco.x=-infIco.getRect(infIco).left-infIco.width/2;
-					infIco.y=-infIco.height-infIco.getRect(infIco).top+10;
+					var infIco1 = new vClass();
+					infIco1.stop();
+					infIco1.x=-infIco1.getRect(infIco1).left-infIco1.width/2;
+					infIco1.y=-infIco1.height-infIco1.getRect(infIco1).top+10;
 					vis=new MovieClip();
-					vis.addChild(infIco);
+					vis.addChild(infIco1);
 					dery=10;
 				}
 				if (item.variant>0) shine();
@@ -82,12 +89,12 @@ package locdata
 			else if (item.tip==Item.L_EXPL) 
 			{
 				vClass=Res.getClass('vis'+item.id,null,visualAmmo);
-				var infIco=new vClass();
-				infIco.stop();
-				infIco.x=-infIco.getRect(infIco).left-infIco.width/2;
-				infIco.y=-infIco.height-infIco.getRect(infIco).top;
+				var infIco2 = new vClass();
+				infIco2.stop();
+				infIco2.x=-infIco2.getRect(infIco2).left-infIco2.width/2;
+				infIco2.y=-infIco2.height-infIco2.getRect(infIco2).top;
 				vis=new MovieClip();
-				vis.addChild(infIco);
+				vis.addChild(infIco2);
 				if (item.xml.@fall.length()) sndFall=item.xml.@fall;
 			} 
 			else if (item.tip==Item.L_AMMO) 
@@ -170,7 +177,7 @@ package locdata
 			}
 		}
 		
-		function shine()
+		public function shine():void
 		{
 			if (vis) 
 			{
@@ -190,7 +197,7 @@ package locdata
 		}
 
 		//попробовать взять
-		public function take(prinud:Boolean=false)
+		public function take(prinud:Boolean=false):void
 		{
 			if ((ttake>0 || World.world.gg.room!=room || World.world.gg.rat>0) && !prinud) return;
 			var rx=World.world.gg.X-X, ry=World.world.gg.Y-World.world.gg.scY/2-Y;
@@ -263,8 +270,8 @@ package locdata
 				if (Math.abs(dx)<Settings.maxdelta && Math.abs(dy)<Settings.maxdelta)	run();
 				else 
 				{
-					var div=Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
-					for (var i=0; (i<div && !stay && !isTake); i++) run(div);
+					var div:int = Math.floor(Math.max(Math.abs(dx),Math.abs(dy))/Settings.maxdelta)+1;
+					for (var i:int = 0; (i<div && !stay && !isTake); i++) run(div);
 				}
 				checkWater();
 				if (vis) 
@@ -279,7 +286,7 @@ package locdata
 			if (auto && auto2 || actTake) take();
 		}
 		
-		public function run(div:int=1)
+		public function run(div:int=1):void
 		{
 			//движение
 			var t:Tile;var i:int;
@@ -400,8 +407,8 @@ package locdata
 		//поиск жидкости
 		public function checkWater():Boolean 
 		{
-			var pla=isPlav;
-			isPlav=false;
+			var pla:Boolean = isPlav;
+			isPlav = false;
 			try 
 			{
 				if ((room.roomTileArray[Math.floor(X/Tile.tilePixelWidth)][Math.floor(Y/Tile.tilePixelHeight)] as Tile).water>0) 

@@ -433,7 +433,7 @@ package weapondata
 			if (mtip==0) 
 			{
 				sin2=sin0; cos2=cos0;
-				for (var i=0; i<=kolvzz; i++) 
+				for (var i:int = 0; i <= kolvzz; i++) 
 				{
 					vzz[i].X=X+cos2*(mindlina+i*stepdlina);
 					vzz[i].Y=Y+sin2*(mindlina+i*stepdlina);

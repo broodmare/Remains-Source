@@ -121,17 +121,17 @@ package servdata
 			else st=true;
 		}
 		
-		public function restart() 
+		public function restart():void
 		{
-			st=false;
-			f=firstf;
+			st = false;
+			f = firstf;
 		}
 		
-		public function setStab(n:Number) 
+		public function setStab(n:Number):void
 		{
-			if (n<0) n=0;
-			if (n>0.999) n=0.999;
-			f=maxf*n;
+			if (n < 0) n = 0;
+			if (n > 0.999) n = 0.999;
+			f = maxf * n;
 		}
 
 	}

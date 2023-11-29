@@ -445,85 +445,85 @@ package locdata
 			
 			var lookup:Object = 
 			{
-				'green': function() 
+				'green': function():void
 				{
             		red = 0.8;
 					green = 1.16;
 					blue = 0.8;
         		},
-				'red': function() 
+				'red': function():void
 				{
             		red = 1.1;
 					green = 0.9;
 					blue = 0.7;
         		},
-				'fire': function() 
+				'fire': function():void
 				{
             		red = 1.1;
 					green = 0.7;
 					blue = 0.5;
         		},
-				'lab': function() 
+				'lab': function():void
 				{
             		red = 0.9;
 					green = 1.1;
 					blue = 0.7;
         		},
-				'black': function() 
+				'black': function():void
 				{
             		red = 0.5;
 					green = 0.7;
 					blue = 0.6;
         		},
-				'blue': function() 
+				'blue': function():void
 				{
             		red = 0.8;
 					green = 0.8;
 					blue = 1.16;
         		},
-				'sky': function() 
+				'sky': function():void
 				{
             		red = 0.85;
 					green = 1.12;
 					blue = 1.12;
         		},
-				'yellow': function() 
+				'yellow': function():void
 				{
             		red = 1.25;
 					green = 1.2;
 					blue = 0.9;
         		},
-				'purple': function() 
+				'purple': function():void
 				{
             		red = 1.08;
 					green = 0.8;
 					blue = 1.12;
         		},
-				'pink': function() 
+				'pink': function():void
 				{
             		red = 1.1;
 					green = 0.9;
 					blue = 1;
         		},
-				'blood': function() 
+				'blood': function():void
 				{
             		red = 1.08;
 					green = 0.6;
 					blue = 1.08;
         		},
-				'blood2': function() 
+				'blood2': function():void
 				{
             		red = 1;
 					green = 0.1;
 					blue = 0.1;
         		},
-				'dark': function() 
+				'dark': function():void
 				{
             		red = 0;
 					green = 0;
 					blue = 0;
         		},
-				'mf': function() 
+				'mf': function():void
 				{
             		red = 0.5;
 					green = 0.5;
@@ -546,7 +546,7 @@ package locdata
 // Second stage - determine passages, create a frame, and create objects based on difficulty and passages
 
 		// Add a transition with number n
-		public function setDoor(n:int, fak:int = 2) 
+		public function setDoor(n:int, fak:int = 2):void
 		{
 			var q:int;
 			if (fak < 2) return;
@@ -630,7 +630,8 @@ package locdata
 		}
 		
 		// Add transition indicators to neighboring locations
-		private function addSignPost(nx:int,ny:int,r:int) {
+		private function addSignPost(nx:int,ny:int,r:int):void
+		{
 			var sign:MovieClip;
 			sign=new signPost();
 			sign.x=nx*Tile.tilePixelWidth, sign.y=ny*Tile.tilePixelHeight, sign.rotation=r;
@@ -638,7 +639,7 @@ package locdata
 		}
 		
 		// Add enemy spawn points
-		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null) 
+		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null):void
 		{
 			var obj:Object=new Object();
 			if (xmll) 
@@ -656,7 +657,7 @@ package locdata
 		}
 		
 		// Add places where there should be no containers (near passages)
-		private function setNoObj(nx:int, ny:int, dx:int, dy:int) 
+		private function setNoObj(nx:int, ny:int, dx:int, dy:int):void
 		{
 			var i:int;
 			if (dx>0) for (i=nx; i<=nx+dx; i++) roomTileArray[i][ny].place=false;
@@ -667,7 +668,7 @@ package locdata
 		
 		
 		// Main frame, call after creating passages
-		public function mainFrame() 
+		public function mainFrame():void
 		{
 			var border:String='A';
 			if (level && level.template) border=level.template.border;
@@ -684,7 +685,7 @@ package locdata
 		}
 		
 		// Create active objects in their spawn locations, except for places near passages, call after creating passages
-		public function setObjects() 
+		public function setObjects():void
 		{
 			for each (var obj in objsT) 
 			{
@@ -698,7 +699,7 @@ package locdata
 		}
 		
 		// Set the number of random enemies
-		public function setKolEn(en:int, min:int, max:int, spl:int=0) 
+		public function setKolEn(en:int, min:int, max:int, spl:int=0):void
 		{
 			if (en==-1) 
 			{
@@ -712,7 +713,7 @@ package locdata
 		}
 		
 		// Create random enemies in their spawn points
-		public function setRandomUnits() 
+		public function setRandomUnits():void
 		{
 			for (var i=1; i<kolEn.length; i++) 
 			{
@@ -760,7 +761,7 @@ package locdata
 		}
 		
 		// Create random loot
-		public function putRandomLoot() 
+		public function putRandomLoot():void
 		{
 			var nx:int=Math.floor(Math.random()*(roomWidth-2)+1);
 			var ny:int=Math.floor(Math.random()*(roomHeight-2)+1);
@@ -878,7 +879,7 @@ package locdata
 		}
 		
 		//создать феникса, сидящего на ящике
-		function createPhoenix(box:Box):Boolean 
+		public function createPhoenix(box:Box):Boolean 
 		{
 			if (box.wall || !box.shelf) return false;
 			if (collisionUnit(box.X,box.Y1-1,38,38)) return false;
@@ -892,7 +893,7 @@ package locdata
 			return true;
 		}
 		//создать передатчик на ящике
-		function createTransmitter(box:Box):Boolean 
+		public function createTransmitter(box:Box):Boolean 
 		{
 			if (box.wall || !box.shelf) return false;
 			if (level.rnd && Math.random()<0.5) return false;
@@ -906,7 +907,7 @@ package locdata
 		}
 		
 		//создать предмет, стоящий на ящике
-		function createSur(box:Box, nsur:String=null) 
+		public function createSur(box:Box, nsur:String=null):void
 		{
 			if (nsur==null) 
 			{
@@ -926,7 +927,7 @@ package locdata
 		}
 		
 		//создать скрытый юнит или дополнительный объект
-		public function createHidden(nx:int,ny:int) 
+		public function createHidden(nx:int,ny:int):void
 		{
 			if (biom==10 || biom==11) return;
 			if (tipEnemy==0) createUnit('zombie',nx,ny, false, <unit dig='2'/>);
@@ -936,7 +937,7 @@ package locdata
 		}
 		
 		//облака газа
-		public function createClouds(lvl:int, ncloud:String=null) 
+		public function createClouds(lvl:int, ncloud:String=null):void
 		{
 			if (ncloud==null) 
 			{
@@ -1132,51 +1133,51 @@ package locdata
 			var randNum:Number = Math.random();
 			var lookup:Object = 
 			{
-				'raider': function() 
+				'raider': function():int
 				{
             		if (locDifLevel >= 5) return Math.floor(randNum * 9 + 1);
             		if (locDifLevel >= 2) return Math.floor(randNum * 5 + 1);
             		return Math.floor(randNum * 2 + 1);
         		},
-				'slaver': function()
+				'slaver': function():int
 				{
 					if (locDifLevel >= 18) return Math.floor(randNum * 6 + 1);
 					if (locDifLevel >= 15) return Math.floor(randNum * 5 + 1);
 					return Math.floor(randNum * 4 + 1);
 				},
-				'zebra': function()
+				'zebra': function():int
 				{
 					if (locDifLevel >= 25 && randNum < 0.1) return 5; 
 					if (locDifLevel >= 15) return Math.floor(randNum * 4 + 1);
 					return Math.floor(randNum * 2 + 1);
 				},
-				'ranger': function()
+				'ranger': function():int
 				{
 					if (level.template.conf == 7) return Math.floor(randNum * 3 + 1);
 					if (roomCoordinateY == 0) return 1;
 					return Math.floor(randNum * 2 + 1);
 				},		
-				'merc': function()
+				'merc': function():int
 				{
 					if (locDifLevel>=19) return Math.floor(randNum * 5 + 1);
 					if (locDifLevel>=15 && Math.random()>0.5) return Math.floor(randNum * 4 + 1);
 					return Math.floor(randNum * 2 + 1);
 				},
-				'encl': function()
+				'encl': function():int
 				{
 					return Math.floor(randNum * 4 + 1);
 				},
-				'protect': function()
+				'protect': function():int
 				{
 					if (tipEnemy == 7) return 1;
 					return null
 				},
-				'gutsy': function()
+				'gutsy': function():int
 				{
 					if (tipEnemy == 7) return 1;
 					return null
 				},
-				'dron': function()
+				'dron': function():int
 				{
 					if (tipEnemy == 9)
 					{
@@ -1187,12 +1188,12 @@ package locdata
 					}
 					return Math.floor(randNum * 2 + 1);
 				},
-				'roller': function()
+				'roller': function():int
 				{
 					if (biom == 6) return 2;
 					return 1
 				},
-				'zombie': function()
+				'zombie': function():int
 				{
 					if (biom == 5)
 					{
@@ -1204,15 +1205,15 @@ package locdata
 					if (locDifLevel >= 2) return Math.floor(randNum * 4);
 					return 0;
 				},
-				'alicorn': function()
+				'alicorn': function():int
 				{
 					return Math.floor(randNum * 3 + 1);
 				},
-				'hellhound': function()
+				'hellhound': function():int
 				{
 					return 1;
 				},
-				'bloat': function()
+				'bloat': function():int
 				{
 					if (biom == 5) return Math.floor(randNum * 3 + 4);
 					if (locDifLevel >= 10) return Math.floor(randNum * 5);
@@ -1220,40 +1221,40 @@ package locdata
 					if (locDifLevel >= 2) return Math.floor(randNum * 3);
 					return 0;
 				},
-				'ant': function()
+				'ant': function():int
 				{
 					if (biom >= 1 && locDifLevel >= 6) return Math.floor(randNum * 3 + 1);
 					if (locDifLevel>=3) return Math.floor(randNum * 2 + 1);
 					return 1;
 				},
-				'fish': function()
+				'fish': function():int
 				{
 					if (biom == 5) return 3;
 					return Math.floor(randNum * 2 + 1);
 				},
-				'slime': function()
+				'slime': function():int
 				{
 					if (biom == 5) return 2;
 					return 0;
 				},
-				'slmine': function()
+				'slmine': function():int
 				{
 					if (biom == 5) return 12;
 					return 10;
 				},
-				'bloodwing': function()
+				'bloodwing': function():int
 				{
 					if (biom == 5) return 2;
 					return 1;
 				},
-				'scorp': function()
+				'scorp': function():String
 				{
 					var i;
 					if (locDifLevel >= 5) i = Math.floor(randNum * 2 + 1);
 					else i = 1;
 					return 'scorp' + i;
 				},
-				'mine': function()
+				'mine': function():String
 				{
 					if (biom == 4) return 'plamine'
 					if (biom==2 && randNum < Math.min(locDifLevel / 20, 0.4)) return 'plamine';
@@ -1356,7 +1357,7 @@ package locdata
 		}
 		
 		//создание чекпоинта в случайной точке появления
-		public function createCheck(act:Boolean=false) 
+		public function createCheck(act:Boolean=false):void
 		{
 			if (spawnPoints.length > 0) 
 			{
@@ -1373,7 +1374,7 @@ package locdata
 			}
 		}
 		//создание выхода в случайной точке появления
-		public function createExit(s:String='') 
+		public function createExit(s:String=''):void
 		{
 			if (spawnPoints.length > 0) 
 			{
@@ -1396,7 +1397,7 @@ package locdata
 		}
 		
 		// Creates the golden horseshoes I think...
-		public function createXpBonuses(kol:int=5) 
+		public function createXpBonuses(kol:int=5):void
 		{
 			if (homeStable || homeAtk) return;
 			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
@@ -1447,9 +1448,9 @@ package locdata
 			}
 		}
 		
-		public function preStep() 
+		public function preStep():void
 		{
-			for (var i=0; i<30; i++) stepInvis();
+			for (var i:int = 0; i < 30; i++) stepInvis();
 		}
 		
 //**************************************************************************************************************************
@@ -1459,7 +1460,7 @@ package locdata
 //**************************************************************************************************************************
 		
 		// Activate when the player character enters the room
-		public function reactivate(n:int=0) 
+		public function reactivate(n:int=0):void
 		{
 			var obj:Pt=firstObj;
 			while (obj) 
@@ -1479,7 +1480,7 @@ package locdata
 			Snd.resetShum();
 		}
 		
-		public function resetUnits() 
+		public function resetUnits():void
 		{
 			units=units.filter(isAct);
 		}
@@ -1494,7 +1495,7 @@ package locdata
 		// Deactivate the room  This doesn't do anything.
 		//This function is actually overwritten later??? wtf?
 
-		public function unloadRoom() 
+		public function unloadRoom():void
 		{
 			roomActive = false; // Set the Room as inactive.
 
@@ -1515,7 +1516,7 @@ package locdata
 //
 //**************************************************************************************************************************
 		// Add any object to the processing chain
-		public function addObj(obj:Pt) 
+		public function addObj(obj:Pt):void
 		{
 			if (obj.in_chain) return;
 			if (!firstObj) firstObj = obj;
@@ -1531,7 +1532,7 @@ package locdata
 		}
 		
 		// Remove an object from the processing chain
-		public function remObj(obj:Pt) 
+		public function remObj(obj:Pt):void
 		{
 			if (!obj.in_chain) return;
 
@@ -1625,7 +1626,7 @@ package locdata
 		}
 	
 		// Tile contours
-		public function tileKontur(tx:int, ty:int, tile:Tile)
+		public function tileKontur(tx:int, ty:int, tile:Tile):void
 		{
 			var a0:Boolean,a1:Boolean,a2:Boolean,a3:Boolean,a4:Boolean,a5:Boolean,a6:Boolean,a7:Boolean;
 			if (tile.phis==1) {
@@ -1757,7 +1758,7 @@ package locdata
 		}
 		
 		// Destroy a tile
-		public function dieTile(t:Tile) 
+		public function dieTile(t:Tile):void
 		{
 			if (t.indestruct) return;
 			if (t.phis==1) 
@@ -1782,14 +1783,14 @@ package locdata
 		
 		
 		// Called on any change in the roomTileArray
-		private function rebuild() 
+		private function rebuild():void
 		{
 			recalcWater();
 			isRebuild = false;
 		}
 		
 		// Water physics   
-		private function recalcWater() 
+		private function recalcWater():void
 		{
 			//trace(recalcTiles.length);
 			var rec:Array = recalcTiles;
@@ -1862,7 +1863,7 @@ package locdata
 		}
 		
 		// Draw the map on the PipBuck
-		public function drawMap(m:BitmapData) 
+		public function drawMap(m:BitmapData):void
 		{
 			var vid:Number = 1;
 			for (var i = 0; i < roomWidth; i++)
@@ -1929,7 +1930,7 @@ package locdata
 			}
 		}
 		
-		function drawMapObj(m, obj:Obj, color:uint) 
+		public function drawMapObj(m, obj:Obj, color:uint):void
 		{
 			for (var i = (roomCoordinateX - level.minLocX) 		* Settings.roomTileWidth + Math.floor(obj.X1 / Settings.tilePixelWidth + 0.5); i <= (roomCoordinateX - level.minLocX) * Settings.roomTileWidth + Math.floor(obj.X2 / Settings.tilePixelWidth - 0.5); i++) 
 			{
@@ -1946,7 +1947,7 @@ package locdata
 //
 //**************************************************************************************************************************
 		// Command to all objects
-		public function allAct(emit:Obj, allact:String, allid:String='') 
+		public function allAct(emit:Obj, allact:String, allid:String=''):void
 		{
 			var obj:Obj;
 			for each (obj in objs) 
@@ -1964,7 +1965,7 @@ package locdata
 		}
 		
 		// Wake up everyone around
-		public function budilo(nx:Number, ny:Number, rad:Number = 1000, owner:Unit = null) 
+		public function budilo(nx:Number, ny:Number, rad:Number = 1000, owner:Unit = null):void
 		{
 			var r2:Number = rad * rad * earMult * earMult;
 			for each(var un in units) 
@@ -1980,7 +1981,7 @@ package locdata
 			}
 		}
 		
-		public function electroCheck() 
+		public function electroCheck():void
 		{
 			electroDam=0;
 			for each (var obj in objs) 
@@ -1990,7 +1991,7 @@ package locdata
 		}
 		
 		// Activate all robot cells
-		public function robocellActivate() 
+		public function robocellActivate():void
 		{
 			for each(var un in objs) 
 			{
@@ -1999,14 +2000,14 @@ package locdata
 		}
 		
 		// Activate the alarm
-		public function signal(n:int=300) 
+		public function signal(n:int=300):void
 		{
 			t_alarm=n;
 			t_alarmsp=Math.floor(n*Math.random()*0.25+0.25);
 			if (prob && prob.alarmScript) prob.alarmScript.start(); 
 		}
 		// Turn on everything
-		public function allon() 
+		public function allon():void
 		{
 			color='yellow';
 			cTransform=colorFilter(color);
@@ -2033,7 +2034,7 @@ package locdata
 			World.world.redrawLoc();
 		}
 		// Turn off everything
-		public function alloff() 
+		public function alloff():void
 		{
 			color='black';
 			cTransform=colorFilter(color);
@@ -2056,7 +2057,7 @@ package locdata
 		}
 		
 		// Spawn an enemy at the spawn point
-		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null) 
+		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null):void
 		{
 			if (kolEnSpawn<=0 || enspawn==null || enspawn.length == 0) return;
 			kolEnSpawn--;
@@ -2095,7 +2096,7 @@ package locdata
 		}
 		
 		// Cause an earthquake
-		public function earthQuake(n:int) 
+		public function earthQuake(n:int):void
 		{
 			if (quake<n) 
 			{
@@ -2115,7 +2116,7 @@ package locdata
 		}
 		
 		// Process ghost walls
-		function gwalls() 
+		public function gwalls():void
 		{
 			var est = false;
 			var t:Tile;
@@ -2143,7 +2144,7 @@ package locdata
 			if (est) t_gwall = Settings.fps + 1;
 		}
 		
-		public function lightAll() 
+		public function lightAll():void
 		{
 			for each (var cel in objs) 
 			{
@@ -2156,7 +2157,7 @@ package locdata
 			}
 		}
 		
-		public function lighting(nx:int = -10000, ny:int = -10000, dist1:int = -1, dist2:int = -1) 
+		public function lighting(nx:int = -10000, ny:int = -10000, dist1:int = -1, dist2:int = -1):void
 		{
 			if (roomActive == false) 
 			{
@@ -2258,13 +2259,13 @@ package locdata
 			}
 		}
 		
-		public function lighting2() 
+		public function lighting2():void
 		{
 			if (!roomActive) return;
 			relight_t--;
-			for (var i=1; i<roomWidth; i++) 
+			for (var i:int = 1; i < roomWidth; i++) 
 			{
-				for (var j=1; j<roomHeight; j++) 
+				for (var j:int = 1; j < roomHeight; j++) 
 				{
 					if (roomTileArray[i][j].visi!=roomTileArray[i][j].t_visi) 
 					{
@@ -2275,7 +2276,7 @@ package locdata
 		}
 		
 		//дать опыт
-		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false) 
+		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false):void
 		{
 			if (un) 
 			{
@@ -2295,7 +2296,7 @@ package locdata
 		
 		
 		//обработка за кадром
-		public function stepInvis() 
+		public function stepInvis():void
 		{
 			//for each (var un:Unit in units) if (!un.player) un.step();
 			//for each (var obj:Obj in objs) obj.step();
@@ -2350,7 +2351,7 @@ package locdata
 				obj=nextObj;
 				// Check for infinite loop prevention
 				numb++;
-				if (numb>10000) 
+				if (numb > 10000) 
 				{
 					trace('alarma');
 					break;
@@ -2403,7 +2404,7 @@ package locdata
 			return World.world.summxp;
 		}
 		
-		public function openAllPrize() 
+		public function openAllPrize():void
 		{
 			for each (var box:Box in objs) 
 			{
@@ -2413,7 +2414,7 @@ package locdata
 		
 		
 		//дистанция между гг и активным объектом
-		private function getDist() 
+		private function getDist():void
 		{
 			if (getTile(Math.round(World.world.celX/Tile.tilePixelWidth),Math.round(World.world.celY/Tile.tilePixelHeight)).visi<0.1) celObj=null;
 			if (celObj) 
@@ -2425,13 +2426,13 @@ package locdata
 		
 		
 		//показать/скрыть указатели перехода
-		private function showSign(n:Boolean) 
+		private function showSign(n:Boolean):void
 		{
 			for each (var s in signposts) s.visible = n;
 			sign_vis = n;
 		}
 		
-		public function newGrenade(g:Bullet) 
+		public function newGrenade(g:Bullet):void
 		{
 			if (grenades[0] == null) grenades[0] = g;
 			else 
@@ -2442,7 +2443,7 @@ package locdata
 				}
 			}
 		}
-		public function remGrenade(g:Bullet) 
+		public function remGrenade(g:Bullet):void
 		{
 			if (grenades[0] == g) grenades[0] = null;
 			else 
@@ -2455,7 +2456,7 @@ package locdata
 		}
 		
 		// Save all objects
-		public function saveObjs(arr:Array) 
+		public function saveObjs(arr:Array):void
 		{
 			for each (var obj:Obj in saves) 
 			{

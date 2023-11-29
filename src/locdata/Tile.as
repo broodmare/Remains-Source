@@ -172,7 +172,7 @@ package  locdata
 			}
 			if (s.length > 1) 
 			{
-				for (var i = 1; i < s.length; i++) 
+				for (var i:int = 1; i < s.length; i++) 
 				{
 					fr = s.charCodeAt(i);
 					var tileSymbol:String = s.charAt(i);
