@@ -1000,7 +1000,6 @@ package locdata
 				
 			}
 
-
 			if (newRoom != null)
 			{
 				if (room == newRoom)
@@ -1009,12 +1008,7 @@ package locdata
 					return false;
 				}
 			}
-			else
-			{
-				trace('Level.as/activateRoom() - ERROR: newRoom is null!');
-			}
-
-
+			
 			locN++; //increment transition timer by 1. (Default is 0)
 			prevloc = room; //Set prevloc variable as the current room.
 			room = newRoom; //Set the current room as the room being loaded.
@@ -1022,7 +1016,6 @@ package locdata
 			gg.inLoc(room);
 			room.reactivate(locN);
 			World.world.activateRoom(room);
-
 
 			if (room.sky) 
 			{
