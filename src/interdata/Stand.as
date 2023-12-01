@@ -75,7 +75,7 @@ package interdata
 				but.id.text = i;
 				but.id.visible = false;
 				but.ico.gotoAndStop(i + 2);
-				but.text.text = Res.txt('g', 'stand' + i);
+				but.text.text = Res.txt('gui', 'stand' + i);
 				but.y = 25 + 75 * i;
 				but.x = 20;
 				but.stop();
@@ -85,7 +85,7 @@ package interdata
 			}
 			vis.butclose.addEventListener(MouseEvent.CLICK,standClose);
 			vis.butclose.id.visible=false;
-			vis.butclose.text.text=Res.txt('g', 'close');
+			vis.butclose.text.text=Res.txt('gui', 'close');
 			resizeScreen(1200,800);
 			createWeaponLists(0);
 			createWeaponLists(1);
@@ -152,7 +152,7 @@ package interdata
 					item.id.visible = false;
 					item.dop.visible = false;
 					item.goldstar.stop();
-					item.objectName.text = Res.txt('w', weap.@id);
+					item.objectName.text = Res.txt('weapon', weap.@id);
 
 
 					//изображение
@@ -173,7 +173,7 @@ package interdata
 						item.goldstar.y = -85;
 						item.zad.scaleY = 1.35;
 						item.y = 40 + levels[stolb] * 140;
-						if (weap.@spell > 0) item.objectName.text = Res.txt('i', weap.@id);
+						if (weap.@spell > 0) item.objectName.text = Res.txt('item', weap.@id);
 					} 
 					else 
 					{
@@ -204,8 +204,8 @@ package interdata
 					item.weapon.addChild(infIco);
 					if (weap.char.length()>1) 
 					{
-						if (Res.istxt('w',weap.@id+'^1')) item.objectName2.text = Res.txt('w',weap.@id+'^1');
-						else item.objectName2.text = Res.txt('w',weap.@id) + Weapon.variant2;
+						if (Res.istxt('weapon',weap.@id+'^1')) item.objectName2.text = Res.txt('weapon',weap.@id+'^1');
+						else item.objectName2.text = Res.txt('weapon',weap.@id) + Weapon.variant2;
 						
 						item.dop.text = '1';	//есть уникальный вариант
 						item.goldstar.gotoAndStop(2);
@@ -235,7 +235,7 @@ package interdata
 				item.x = 80 + stolb * 160;
 				item.y = 40;
 				item.art.gotoAndStop(ls[stolb]);
-				item.objectName.text = Res.txt('i', ls[stolb]);
+				item.objectName.text = Res.txt('item', ls[stolb]);
 				item.id.text = ls[stolb];
 				item.id.visible = false;
 				pages[n].addChild(item);
@@ -273,7 +273,7 @@ package interdata
 
 				item.id.text = arm.@id;
 				item.id.visible = false;
-				item.objectName.text = Res.txt('a', arm.@id);
+				item.objectName.text = Res.txt('armor', arm.@id);
 
 				pages[n].addChild(item);
 				armors[arm.@id] = item;
@@ -344,8 +344,8 @@ package interdata
 			}
 			if (Settings.hardInv) showMass();
 			pages[n].visible=true;
-			if (n < 5) vis.toptext.txt.htmlText = Res.txt('p','infostand', 0, true);
-			if (n == 5) vis.toptext.txt.htmlText = Res.txt('p','infostand', 0, true);
+			if (n < 5) vis.toptext.txt.htmlText = Res.txt('pip','infostand', 0, true);
+			if (n == 5) vis.toptext.txt.htmlText = Res.txt('pip','infostand', 0, true);
 			vis.toptext.visible=(n<=5);
 			for each (var weap in XmlBook.getXML("weapons").weapon.(@tip > 0))
 			{

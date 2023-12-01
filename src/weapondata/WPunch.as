@@ -8,12 +8,12 @@ package weapondata
 	public class WPunch extends Weapon 
 	{
 		
-		public var zadok:Boolean=false;	//может действовать назад
+		public var zadok:Boolean = false;	//может действовать назад
 
-		public function WPunch(own:Unit, id:String, nvar:int=0)
+		public function WPunch(own:Unit, id:String, nvar:int = 0)
 		{
 			super(own, id,nvar);
-			vBullet=visualPunch;
+			vBullet = visualPunch;
 		}
 		
 		public override function actions():void
@@ -24,11 +24,11 @@ package weapondata
 			{
 				if (owner.player) 
 				{
-					var deltaX:Number=owner.celX-X;
-					var deltaY:Number=owner.celY-Y;
-					var signY:int=(deltaY>0)?1:-1;
-					if (Math.abs(deltaY)>Math.abs(deltaX)) deltaY=Math.abs(deltaX)*signY;
-					rot=Math.atan2(deltaY, deltaX);
+					var deltaX:Number = owner.celX - X;
+					var deltaY:Number = owner.celY - Y;
+					var signY:int = (deltaY > 0) ? 1:-1;
+					if (Math.abs(deltaY) > Math.abs(deltaX)) deltaY = Math.abs(deltaX) * signY;
+					rot = Math.atan2(deltaY, deltaX);
 				}
 				shoot();
 				if (owner.player) 
@@ -36,19 +36,20 @@ package weapondata
 					b.damage*=World.world.pers.punchDamMult;
 				}
 				b.liv=5;
-				if (zadok && (rot<Math.PI/2 && rot>-Math.PI/2 && owner.storona<0 || (rot>Math.PI/2 || rot<-Math.PI/2) && owner.storona>0)) {	//kick
-					b.otbros=otbros*1.5;
-					b.damage=damage*2*damMult;
+				if (zadok && (rot<Math.PI / 2 && rot > -Math.PI / 2 && owner.storona < 0 || (rot > Math.PI / 2 || rot < -Math.PI / 2) && owner.storona > 0)) //kick
+				{	
+					b.otbros = otbros * 1.5;
+					b.damage = damage * 2 * damMult;
 					if (owner.player) 
 					{
-						b.damage*=World.world.pers.punchDamMult;
-						b.destroy=World.world.pers.kickDestroy;
+						b.damage *= World.world.pers.punchDamMult;
+						b.destroy = World.world.pers.kickDestroy;
 					}
-					Snd.ps('m_big',X,Y,0,Math.random()*0.2+0.1);
+					Snd.ps('m_big', X, Y, 0, Math.random() * 0.2 + 0.1);
 				} 
 				else 
 				{
-					Snd.ps('m_med',X,Y,0,Math.random()*0.2+0.1);
+					Snd.ps('m_med', X, Y, 0, Math.random() * 0.2 + 0.1);
 				}
 				b.probiv=1;
 				b.retDam=true;

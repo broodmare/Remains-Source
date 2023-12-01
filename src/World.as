@@ -602,7 +602,7 @@ package
 			{
 				autoSaveN = data.n;
 			}
-			Unit.txtMiss = Res.txt('g', 'miss');
+			Unit.txtMiss = Res.txt('gui', 'miss');
 			
 			trace('World.as/newGame1() - waitLoadClick()');
 			waitLoadClick();
@@ -1104,10 +1104,10 @@ package
 
 			try 
 			{
-				verror.info.text 			= Res.txt('p', 'error');
-				verror.butClose.text.text 	= Res.txt('p', 'err_close');
-				verror.butForever.text.text = Res.txt('p', 'err_dont_show');
-				verror.butCopy.text.text 	= Res.txt('p', 'err_copy_to_clipboard');
+				verror.info.text 			= Res.txt('pip', 'error');
+				verror.butClose.text.text 	= Res.txt('pip', 'err_close');
+				verror.butForever.text.text = Res.txt('pip', 'err_dont_show');
+				verror.butCopy.text.text 	= Res.txt('pip', 'err_copy_to_clipboard');
 			} 
 			catch (e) 
 			{
@@ -1143,7 +1143,7 @@ package
 			loadingScreen.visible = true;
 			catPause = false;
 			trace('World.as/setLoadScreen() - Calling Res/txt("g", "loading").');
-			loadingScreen.progres.text = Res.txt('g', 'loading');
+			loadingScreen.progres.text = Res.txt('gui', 'loading');
 
 			if (n < 0) 
 			{
@@ -1162,7 +1162,7 @@ package
 
 				if (n == 0) 
 				{
-					loadingScreen.story.txt.htmlText = '<i>' + Res.txt('g', 'story') + '</i>';
+					loadingScreen.story.txt.htmlText = '<i>' + Res.txt('gui', 'story') + '</i>';
 				} 
 				else 
 				{
@@ -1274,18 +1274,18 @@ package
 			if (n == 1) 
 			{
 				showScene('gameover');
-				s = Res.lpName(Res.txt('g', 'end_bad'));
+				s = Res.lpName(Res.txt('gui', 'end_bad'));
 			} 
 			else if (pers.rep>=pers.repGood) 
 			{
 				showScene('endgame');
-				s = Res.lpName(Res.txt('g', 'end_good'));
+				s = Res.lpName(Res.txt('gui', 'end_good'));
 				Snd.playMusic('music_fall_2');
 			} 
 			else 
 			{
 				showScene('endgame');
-				s=Res.lpName(Res.txt('g', 'end_norm'));
+				s=Res.lpName(Res.txt('gui', 'end_norm'));
 			}
 			try 
 			{

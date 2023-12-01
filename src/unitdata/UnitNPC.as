@@ -88,8 +88,8 @@ package unitdata
 				} else visClass=visualVendor;
 				if (npcXML.@noturn.length()) noTurn=true;
 				if (npcXML.@ico.length()) icoFrame=npcXML.@ico;
-				if (Res.istxt('u',npcId)) objectName=Res.txt('u',npcId);
-				if (npcXML.@name.length()) objectName=Res.txt('u',npcXML.@name);
+				if (Res.istxt('unit',npcId)) objectName=Res.txt('unit',npcId);
+				if (npcXML.@name.length()) objectName=Res.txt('unit',npcXML.@name);
 				if (npcXML.@replic.length()) id_replic=npcXML.@replic;
 				if (npcXML.@silent.length()) silent=true;
 				if (npcXML.@weap.length()) weap=npcXML.@weap;

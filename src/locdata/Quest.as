@@ -289,7 +289,7 @@ package locdata
 							if (pay>0) 
 							{
 								World.world.invent.money.kol+=est*pay;
-								World.world.gui.infoText('reward',Res.txt('i','money'),est*pay);
+								World.world.gui.infoText('reward',Res.txt('item','money'),est*pay);
 							}
 							World.world.gui.infoText('withdraw',World.world.invent.items[collect].objectName, est);
 							est=0;

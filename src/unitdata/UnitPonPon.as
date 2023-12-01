@@ -42,13 +42,13 @@ package unitdata
 				if (tr>=4) msex=true;
 				vis=new visualZebPon();
 				//id_replic='';
-				if (!uniqName) objectName=Res.txt('u','zebpon');
+				if (!uniqName) objectName=Res.txt('unit','zebpon');
 				verVis=1;
 			} 
 			else if (cid=='stab') 
 			{
 				vis=new visualStabPon();
-				if (!uniqName) objectName=Res.txt('u','stabpon');
+				if (!uniqName) objectName=Res.txt('unit','stabpon');
 				verVis=1;
 				id_replic='stabpon';
 				if (tr>=17 && tr<=27) msex=true;

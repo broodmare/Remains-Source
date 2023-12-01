@@ -77,14 +77,14 @@ package interdata
 		public function setLang():void
 		{
 			vis.butOk.text.text = 'OK';
-			vis.butCancel.text.text=Res.txt('g', 'cancel');
-			vis.butDef.text.text=Res.txt('p', 'default');
-			vis.title.text=Res.txt('g', 'butvid');
-			vis.tFur.text=Res.txt('g', 'vidfur');
-			vis.tHair.text=Res.txt('g', 'vidhair');
-			vis.tHair1.text=Res.txt('g', 'vidhair1');
-			vis.tEye.text=Res.txt('g', 'videye');
-			vis.tMagic.text=Res.txt('g', 'vidmagic');
+			vis.butCancel.text.text=Res.txt('gui', 'cancel');
+			vis.butDef.text.text=Res.txt('pip', 'default');
+			vis.title.text=Res.txt('gui', 'butvid');
+			vis.tFur.text=Res.txt('gui', 'vidfur');
+			vis.tHair.text=Res.txt('gui', 'vidhair');
+			vis.tHair1.text=Res.txt('gui', 'vidhair1');
+			vis.tEye.text=Res.txt('gui', 'videye');
+			vis.tMagic.text=Res.txt('gui', 'vidmagic');
 		}
 		
 		//присоединить диалоговое окно

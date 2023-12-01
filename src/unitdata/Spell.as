@@ -68,7 +68,7 @@ package unitdata
 			if (xml.@prod.length()) prod = true;
 			if (xml.@tele.length()) teleSpell = true;
 			if (xml.@atk.length()) atk = true;
-			objectName=Res.txt('i', id);
+			objectName=Res.txt('item', id);
 			if (xml.@snd.length()) snd = xml.@snd;
 			
 			if (id == 'sp_mwall') cf = cast_mwall;

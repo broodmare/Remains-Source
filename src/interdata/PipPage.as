@@ -117,7 +117,7 @@ package interdata
 			{
 				item = vis.getChildByName('but' + j) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK, page2Click);
-				item.text.text = Res.txt('p', pp + j);
+				item.text.text = Res.txt('pip', pp + j);
 				item.id.text = j;
 				item.id.visible = false;
 			}
@@ -178,7 +178,7 @@ package interdata
 			for (var i:int = 1; i <= 5; i++) 
 			{
 				var item = vis.getChildByName('but' + i) as MovieClip;
-				item.text.text = Res.txt('p', pp + i);
+				item.text.text = Res.txt('pip', pp + i);
 			}
 		}
 
@@ -468,8 +468,8 @@ package interdata
 		public static function effStr(tip:String, id:String, dlvl:int = 0):String 
 		{
 			var s:String;
-			if (tip == 'item') s = Res.txt('i', id, 1)
-			else s = Res.txt('e', id, 1);
+			if (tip == 'item') s = Res.txt('item', id, 1)
+			else s = Res.txt('eff', id, 1);
 			if (id.substr(-3) == '_ad') id=id.substr(0, id.length - 3);
 			var dp = XmlBook.getXML(tip);
 			if (dp.length() == 0) return s;
@@ -519,7 +519,7 @@ package interdata
 				s += '<br>';
 				for each(var eff in dp.eff) 
 				{
-					s += '<br>' + (eff.@id.length() ? Res.txt('p', eff.@id):Res.txt('p', 'refeff')) + ': ' + yel(eff.attribute('n' + lvl));
+					s += '<br>' + (eff.@id.length() ? Res.txt('pip', eff.@id):Res.txt('pip', 'refeff')) + ': ' + yel(eff.attribute('n' + lvl));
 				}
 			}
 			//добавление эффектов веса
@@ -531,16 +531,16 @@ package interdata
 					if (sk.@tip == 'm') 
 					{
 						var add = mass('+1');
-						if (sk.@vd > 0) add = mass('+' + sk.@vd) + ' '+Res.txt('p', 'perlevel');
+						if (sk.@vd > 0) add = mass('+' + sk.@vd) + ' '+Res.txt('pip', 'perlevel');
 						if (sk.@v1 > 0) add = mass('+' + sk.@v1);
-						s += '<br>' + Res.txt('p', 'add_' + sk.@id)+' ' + add;
+						s += '<br>' + Res.txt('pip', 'add_' + sk.@id)+' ' + add;
 					}
 				}
 			}
 			//добавление требований
 			if (dp.req.length()) 
 			{
-				s += '<br><br>' + Res.txt('p', 'requir');
+				s += '<br><br>' + Res.txt('pip', 'requir');
 				lvl--;
 				for each(var req in dp.req) 
 				{
@@ -551,17 +551,17 @@ package interdata
 					var ok:Boolean = true;
 					if (req.@id == 'level') 
 					{
-						s1 += Res.txt('p', 'level');
+						s1 += Res.txt('pip', 'level');
 						if (pers.level<reqlevel) ok = false;
 					} 
 					else if (req.@id == 'guns') 
 					{
-						s1 += Res.txt('e', 'smallguns') + ' ' + Res.txt('p', 'or') + ' ' + Res.txt('e', 'energy');
+						s1 += Res.txt('eff', 'smallguns') + ' ' + Res.txt('pip', 'or') + ' ' + Res.txt('eff', 'energy');
 						if (pers.getSkLevel(pers.skills['smallguns']) < reqlevel && pers.getSkLevel(pers.skills['energy']) < reqlevel) ok = false;
 					}
 					else 
 					{
-						s1 += Res.txt('e', req.@id);
+						s1 += Res.txt('eff', req.@id);
 						if (pers.getSkLevel(pers.skills[req.@id]) < reqlevel) ok = false;
 					}
 					s1 += ': ' + reqlevel;
@@ -591,14 +591,14 @@ package interdata
 				if (razn == 1) skillConf = 0.75;
 				if (razn >= 2) skillConf = 0.5;
 				w.skillConf = skillConf;
-				s += Res.txt('p', 'weapontip') + ': ' + yel(Res.txt('p', 'weapontip' + w.skill));
+				s += Res.txt('pip', 'weapontip') + ': ' + yel(Res.txt('pip', 'weapontip' + w.skill));
 				if (w.lvl > 0) 
 				{
-					s += '\n' + Res.txt('p', 'lvl') + ': ' + yel(w.lvl);
-					s += '\n' + Res.txt('p', 'islvl') + ': ' + yel(gg.pers.getWeapLevel(w.skill));
+					s += '\n' + Res.txt('pip', 'lvl') + ': ' + yel(w.lvl);
+					s += '\n' + Res.txt('pip', 'islvl') + ': ' + yel(gg.pers.getWeapLevel(w.skill));
 					if (razn > 0) s += "<span class = 'red'>";
 
-					if (w.lvlNoUse && razn > 0 || razn > 2) s += ' ('+Res.txt('p', 'weapnouse') + ')</span>';
+					if (w.lvlNoUse && razn > 0 || razn > 2) s += ' ('+Res.txt('pip', 'weapnouse') + ')</span>';
 					else if (razn > 0)
 					{
 						if (razn == 2) 
@@ -609,20 +609,20 @@ package interdata
 						{
 							s += ' (-20% ';
 						}
-						if (w.tip == 1) s += Res.txt('p', 'rapid')
-						else if (w.tip == 4) s += Res.txt('p', 'distance');
-						else s += Res.txt('p', 'precision');
+						if (w.tip == 1) s += Res.txt('pip', 'rapid')
+						else if (w.tip == 4) s += Res.txt('pip', 'distance');
+						else s += Res.txt('pip', 'precision');
 
 						s += ")</span>";
 					}
 				}
 				if (w.perslvl > 0) 
 				{
-					s += '\n' + Res.txt('p', 'perslvl') + ': ' + yel(w.perslvl);
-					s += '\n' + Res.txt('p', 'isperslvl') + ': ' + yel(gg.pers.level);
-					if (gg.pers.level < w.perslvl) s += red(' (' + Res.txt('p', 'weapnouse') + ')');
+					s += '\n' + Res.txt('pip', 'perslvl') + ': ' + yel(w.perslvl);
+					s += '\n' + Res.txt('pip', 'isperslvl') + ': ' + yel(gg.pers.level);
+					if (gg.pers.level < w.perslvl) s += red(' (' + Res.txt('pip', 'weapnouse') + ')');
 				}
-				s += '\n' + Res.txt('p', 'damage') + ': ';
+				s += '\n' + Res.txt('pip', 'damage') + ': ';
 				var wdam:Number = w.damage, wdamexpl:Number = w.damageExpl;
 				if (w.damage > 0) 
 				{
@@ -642,28 +642,28 @@ package interdata
 					{
 						s += ' ('+yel(Math.round(wdamexpl * 10) / 10)+')';
 					}
-					s += ' ' + Res.txt('p', 'expldam');
+					s += ' ' + Res.txt('pip', 'expldam');
 				}
 				if (w.kol > 1) s += ' [x' + w.kol + ']';
 				if (w.explKol > 1) s+= ' [x' + w.explKol + ']';
 				var wrapid:Number = w.resultRapid(w.rapid);
 				if (w.tip != 4) 
 				{
-					s += '\n'+Res.txt('p', 'aps') + ': ' + yel(Number(Settings.fps / wrapid).toFixed(1));
-					s += '\n'+Res.txt('p', 'dps') + ': ' + yel(Number((wdam + wdamexpl) * w.kol * Settings.fps / wrapid).toFixed(1));
+					s += '\n'+Res.txt('pip', 'aps') + ': ' + yel(Number(Settings.fps / wrapid).toFixed(1));
+					s += '\n'+Res.txt('pip', 'dps') + ': ' + yel(Number((wdam + wdamexpl) * w.kol * Settings.fps / wrapid).toFixed(1));
 					if (w.holder) s += ' (' + yel(Number((wdam + wdamexpl) * w.kol * Settings.fps / (wrapid + w.reload * w.reloadMult / w.holder * w.rashod)).toFixed(1)) + ')';
 				}
-				s += '\n' + Res.txt('p', 'critch') + ': ' + yel(Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + '%');
-				s += '\n' + Res.txt('p', 'tipdam') + ': ' + blue(Res.txt('p', 'tipdam' + w.tipDamage));
-				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('p', 'inv5') + ': ' + yel(Res.txt('i', w.ammo));
-				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('p', 'holder') + ': ' + yel(w.holder);
-				if (w.rashod> 1 ) s += ' (' + yel(w.rashod) + ' ' + Res.txt('p', 'rashod') + ')';
-				if (w.tip == 5) s += '\n' + Res.txt('p', 'dmana') + ': ' + yel(Math.round(w.mana));
-				if (w.precision > 0) s +='\n' + Res.txt('p', 'prec') + ': ' + yel(Math.round(w.precision * w.precMult / 40));
-				if (w.pier+w.pierAdd > 0) s +='\n' + Res.txt('p', 'pier') + ': ' + yel(Math.round(w.pier + w.pierAdd));
+				s += '\n' + Res.txt('pip', 'critch') + ': ' + yel(Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + '%');
+				s += '\n' + Res.txt('pip', 'tipdam') + ': ' + blue(Res.txt('pip', 'tipdam' + w.tipDamage));
+				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('pip', 'inv5') + ': ' + yel(Res.txt('item', w.ammo));
+				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('pip', 'holder') + ': ' + yel(w.holder);
+				if (w.rashod> 1 ) s += ' (' + yel(w.rashod) + ' ' + Res.txt('pip', 'rashod') + ')';
+				if (w.tip == 5) s += '\n' + Res.txt('pip', 'dmana') + ': ' + yel(Math.round(w.mana));
+				if (w.precision > 0) s +='\n' + Res.txt('pip', 'prec') + ': ' + yel(Math.round(w.precision * w.precMult / 40));
+				if (w.pier+w.pierAdd > 0) s +='\n' + Res.txt('pip', 'pier') + ': ' + yel(Math.round(w.pier + w.pierAdd));
 				if (!w.noSats) 
 				{
-					s+='\n'+Res.txt('p', 'ap')+': ';
+					s+='\n'+Res.txt('pip', 'ap')+': ';
 					if (razn>0) s+="<span class = 'red'>";
 					else s+="<span class = 'yel'>";
 					s+=Math.round(w.satsCons*w.consMult/skillConf*gg.pers.satsMult);
@@ -672,46 +672,46 @@ package interdata
 				}
 				if (w.destroy>=100) 
 				{
-					s+='\n'+Res.txt('p', 'destroy');
+					s+='\n'+Res.txt('pip', 'destroy');
 				}
 				if (w.opt && w.opt.perk) 
 				{
-					s+='\n'+Res.txt('p', 'refperk')+': '+pink(Res.txt('e',w.opt.perk));
+					s+='\n'+Res.txt('pip', 'refperk')+': '+pink(Res.txt('eff',w.opt.perk));
 				}
-				var sinf:String = Res.txt('w', id, 1);
-				if (sinf == '') sinf = Res.txt('w', w.id, 1);
-				if (Settings.hardInv && w.tip < 4) s += '\n' + Res.txt('p', 'mass2') + ": <span class = 'mass'>" + w.mass + "</span>";
-				if (Settings.hardInv && w.tip == 4) s += '\n\n' + Res.txt('p', 'mass') + ": <span class = 'mass'>" + inv.items[id].xml.@m + "</span> (" + Res.txt('p', 'vault' + inv.items[id].invCat) + ')';
+				var sinf:String = Res.txt('weapon', id, 1);
+				if (sinf == '') sinf = Res.txt('weapon', w.id, 1);
+				if (Settings.hardInv && w.tip < 4) s += '\n' + Res.txt('pip', 'mass2') + ": <span class = 'mass'>" + w.mass + "</span>";
+				if (Settings.hardInv && w.tip == 4) s += '\n\n' + Res.txt('pip', 'mass') + ": <span class = 'mass'>" + inv.items[id].xml.@m + "</span> (" + Res.txt('pip', 'vault' + inv.items[id].invCat) + ')';
 				s += '\n\n' + sinf;
 			} 
 			else if (tip==Item.L_ARMOR) 
 			{
 				var a:Armor=inv.armors[id];
 				if (a==null) a=pip.arrArmor[id];
-				if (a.armor_qual>0) s+=Res.txt('p', 'aqual')+': '+yel(Math.round(a.armor_qual*100)+'%');
-				if (a.armor>0) s+='\n'+Res.txt('p', 'armor')+': '+yel(Math.round(a.armor));
-				if (a.marmor>0) s+='\n'+Res.txt('p', 'marmor')+': '+yel(Math.round(a.marmor));
-				if (a.dexter!=0) s+='\n'+Res.txt('p', 'dexter')+': '+yel(Math.round(a.dexter*100)+'%');
-				if (a.sneak!=0) s+='\n'+Res.txt('p', 'sneak')+': '+yel(Math.round(a.sneak*100)+'%');
-				if (a.meleeMult!=1) s+='\n'+Res.txt('p', 'meleedamage')+': +'+yel(Math.round((a.meleeMult-1)*100)+'%');
-				if (a.gunsMult!=1) s+='\n'+Res.txt('p', 'gunsdamage')+': +'+yel(Math.round((a.gunsMult-1)*100)+'%');
-				if (a.magicMult!=1) s+='\n'+Res.txt('p', 'spelldamage')+': +'+yel(Math.round((a.magicMult-1)*100)+'%');
-				if (a.crit!=0) s+='\n'+Res.txt('p', 'critch')+': +'+yel(Math.round(a.crit*100)+'%');
-				if (a.radVul<1) s+='\n'+Res.txt('p', 'radx')+': '+yel(Math.round((1-a.radVul)*100)+'%');
-				if (a.resist[Unit.D_BUL]!=0) s+='\n'+Res.txt('p', 'bullet')+': '+yel(Math.round(a.resist[Unit.D_BUL]*100)+'%');
-				if (a.resist[Unit.D_EXPL]!=0) s+='\n'+Res.txt('p', 'expl')+': '+yel(Math.round(a.resist[Unit.D_EXPL]*100)+'%');
-				if (a.resist[Unit.D_PHIS]!=0) s+='\n'+Res.txt('p', 'phis')+': '+yel(Math.round(a.resist[Unit.D_PHIS]*100)+'%');
-				if (a.resist[Unit.D_BLADE]!=0) s+='\n'+Res.txt('p', 'blade')+': '+yel(Math.round(a.resist[Unit.D_BLADE]*100)+'%');
-				if (a.resist[Unit.D_FANG]!=0) s+='\n'+Res.txt('p', 'fang')+': '+yel(Math.round(a.resist[Unit.D_FANG]*100)+'%');
-				if (a.resist[Unit.D_FIRE]!=0) s+='\n'+Res.txt('p', 'fire')+': '+yel(Math.round(a.resist[Unit.D_FIRE]*100)+'%');
-				if (a.resist[Unit.D_LASER]!=0) s+='\n'+Res.txt('p', 'laser')+': '+yel(Math.round(a.resist[Unit.D_LASER]*100)+'%');
-				if (a.resist[Unit.D_PLASMA]!=0) s+='\n'+Res.txt('p', 'plasma')+': '+yel(Math.round(a.resist[Unit.D_PLASMA]*100)+'%');
-				if (a.resist[Unit.D_SPARK]!=0) s+='\n'+Res.txt('p', 'spark')+': '+yel(Math.round(a.resist[Unit.D_SPARK]*100)+'%');
-				if (a.resist[Unit.D_CRIO]!=0) s+='\n'+Res.txt('p', 'crio')+': '+yel(Math.round(a.resist[Unit.D_CRIO]*100)+'%');
-				if (a.resist[Unit.D_VENOM]!=0) s+='\n'+Res.txt('p', 'venom')+': '+yel(Math.round(a.resist[Unit.D_VENOM]*100)+'%');
-				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.txt('p', 'acid')+': '+yel(Math.round(a.resist[Unit.D_ACID]*100)+'%');
-				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.txt('p', 'necro')+': '+yel(Math.round(a.resist[Unit.D_NECRO]*100)+'%');
-				s += '\n\n' + Res.txt('a', id, 1);
+				if (a.armor_qual>0) s+=Res.txt('pip', 'aqual')+': '+yel(Math.round(a.armor_qual*100)+'%');
+				if (a.armor>0) s+='\n'+Res.txt('pip', 'armor')+': '+yel(Math.round(a.armor));
+				if (a.marmor>0) s+='\n'+Res.txt('pip', 'marmor')+': '+yel(Math.round(a.marmor));
+				if (a.dexter!=0) s+='\n'+Res.txt('pip', 'dexter')+': '+yel(Math.round(a.dexter*100)+'%');
+				if (a.sneak!=0) s+='\n'+Res.txt('pip', 'sneak')+': '+yel(Math.round(a.sneak*100)+'%');
+				if (a.meleeMult!=1) s+='\n'+Res.txt('pip', 'meleedamage')+': +'+yel(Math.round((a.meleeMult-1)*100)+'%');
+				if (a.gunsMult!=1) s+='\n'+Res.txt('pip', 'gunsdamage')+': +'+yel(Math.round((a.gunsMult-1)*100)+'%');
+				if (a.magicMult!=1) s+='\n'+Res.txt('pip', 'spelldamage')+': +'+yel(Math.round((a.magicMult-1)*100)+'%');
+				if (a.crit!=0) s+='\n'+Res.txt('pip', 'critch')+': +'+yel(Math.round(a.crit*100)+'%');
+				if (a.radVul<1) s+='\n'+Res.txt('pip', 'radx')+': '+yel(Math.round((1-a.radVul)*100)+'%');
+				if (a.resist[Unit.D_BUL]!=0) s+='\n'+Res.txt('pip', 'bullet')+': '+yel(Math.round(a.resist[Unit.D_BUL]*100)+'%');
+				if (a.resist[Unit.D_EXPL]!=0) s+='\n'+Res.txt('pip', 'expl')+': '+yel(Math.round(a.resist[Unit.D_EXPL]*100)+'%');
+				if (a.resist[Unit.D_PHIS]!=0) s+='\n'+Res.txt('pip', 'phis')+': '+yel(Math.round(a.resist[Unit.D_PHIS]*100)+'%');
+				if (a.resist[Unit.D_BLADE]!=0) s+='\n'+Res.txt('pip', 'blade')+': '+yel(Math.round(a.resist[Unit.D_BLADE]*100)+'%');
+				if (a.resist[Unit.D_FANG]!=0) s+='\n'+Res.txt('pip', 'fang')+': '+yel(Math.round(a.resist[Unit.D_FANG]*100)+'%');
+				if (a.resist[Unit.D_FIRE]!=0) s+='\n'+Res.txt('pip', 'fire')+': '+yel(Math.round(a.resist[Unit.D_FIRE]*100)+'%');
+				if (a.resist[Unit.D_LASER]!=0) s+='\n'+Res.txt('pip', 'laser')+': '+yel(Math.round(a.resist[Unit.D_LASER]*100)+'%');
+				if (a.resist[Unit.D_PLASMA]!=0) s+='\n'+Res.txt('pip', 'plasma')+': '+yel(Math.round(a.resist[Unit.D_PLASMA]*100)+'%');
+				if (a.resist[Unit.D_SPARK]!=0) s+='\n'+Res.txt('pip', 'spark')+': '+yel(Math.round(a.resist[Unit.D_SPARK]*100)+'%');
+				if (a.resist[Unit.D_CRIO]!=0) s+='\n'+Res.txt('pip', 'crio')+': '+yel(Math.round(a.resist[Unit.D_CRIO]*100)+'%');
+				if (a.resist[Unit.D_VENOM]!=0) s+='\n'+Res.txt('pip', 'venom')+': '+yel(Math.round(a.resist[Unit.D_VENOM]*100)+'%');
+				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.txt('pip', 'acid')+': '+yel(Math.round(a.resist[Unit.D_ACID]*100)+'%');
+				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.txt('pip', 'necro')+': '+yel(Math.round(a.resist[Unit.D_NECRO]*100)+'%');
+				s += '\n\n' + Res.txt('armor', id, 1);
 			} 
 			else if (tip == Item.L_AMMO) 
 			{
@@ -719,34 +719,34 @@ package interdata
 
 				if (XmlBook.getXML("weapons").weapon.(@id == id).length()) 
 				{
-					s = Res.txt('w', id, 1);
+					s = Res.txt('weapon', id, 1);
 				} 
 				else if (ammo.@base.length()) 
 				{
-					s = Res.txt('i', ammo.@base, 1);
+					s = Res.txt('item', ammo.@base, 1);
 					if (ammo.@mod > 0) 
 					{
-						s += '\n\n' + Res.txt('p', 'ammomod_' + ammo.@mod, 1);
+						s += '\n\n' + Res.txt('pip', 'ammomod_' + ammo.@mod, 1);
 					}
 				} 
 				else 
 				{
-					s = Res.txt('i', id, 1);
+					s = Res.txt('item', id, 1);
 				}
 
 				s += '\n';
-				if (ammo.@damage.length()) s+='\n'+Res.txt('p', 'damage')+': x'+yel(ammo.@damage);
-				if (ammo.@pier.length()) s+='\n'+Res.txt('p', 'pier')+': '+yel(ammo.@pier);
-				if (ammo.@armor.length()) s+='\n'+Res.txt('p', 'tarmor')+': x'+yel(ammo.@armor);
-				if (ammo.@prec.length()) s+='\n'+Res.txt('p', 'prec')+': x'+yel(ammo.@prec);
-				if (ammo.@det>0) s+='\n'+Res.txt('p', 'det');
-				if (Settings.hardInv && ammo.@m>0) s+='\n\n'+Res.txt('p', 'mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.txt('p', 'vault'+inv.items[id].invCat)+')';
-				if (ammo.@sell>0) s+='\n'+Res.txt('p', 'sell')+": "+yel(ammo.@sell);
+				if (ammo.@damage.length()) s+='\n'+Res.txt('pip', 'damage')+': x'+yel(ammo.@damage);
+				if (ammo.@pier.length()) s+='\n'+Res.txt('pip', 'pier')+': '+yel(ammo.@pier);
+				if (ammo.@armor.length()) s+='\n'+Res.txt('pip', 'tarmor')+': x'+yel(ammo.@armor);
+				if (ammo.@prec.length()) s+='\n'+Res.txt('pip', 'prec')+': x'+yel(ammo.@prec);
+				if (ammo.@det>0) s+='\n'+Res.txt('pip', 'det');
+				if (Settings.hardInv && ammo.@m>0) s+='\n\n'+Res.txt('pip', 'mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.txt('pip', 'vault'+inv.items[id].invCat)+')';
+				if (ammo.@sell>0) s+='\n'+Res.txt('pip', 'sell')+": "+yel(ammo.@sell);
 			} 
 			else 
 			{
 				var hhp:Number=0;
-				s=Res.txt('i',id,1)+'\n';
+				s=Res.txt('item',id,1)+'\n';
 				var pot:XML = inv.items[id].xml;
 				tip=pot.@tip;
 				if (tip=='instr' || tip=='impl'|| tip=='art') 
@@ -756,48 +756,48 @@ package interdata
 				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') 
 				{
 					if (pot.@hhp.length() || pot.@hhplong.length())
-					s+='\n'+Res.txt('p', 'healhp')+': '+yel(Math.round(pot.@hhp*World.world.pers.healMult));
+					s+='\n'+Res.txt('pip', 'healhp')+': '+yel(Math.round(pot.@hhp*World.world.pers.healMult));
 					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*World.world.pers.healMult));
-					if (pot.@hrad.length()) s+='\n'+Res.txt('p', 'healrad')+': '+yel(Math.round(pot.@hrad*World.world.pers.healMult));
-					if (pot.@hcut.length()) s+='\n'+Res.txt('p', 'healcut')+': '+yel(Math.round(pot.@hcut));
-					if (pot.@hpoison.length()) s+='\n'+Res.txt('p', 'healpoison')+': '+yel(Math.round(pot.@hpoison));
-					if (pot.@horgan.length()) s+='\n'+Res.txt('p', 'healorgan')+': '+yel(Math.round(pot.@horgan));
-					if (pot.@horgans.length()) s+='\n'+Res.txt('p', 'healorgans')+': '+yel(Math.round(pot.@horgans));
-					if (pot.@hblood.length()) s+='\n'+Res.txt('p', 'healblood')+': '+yel(Math.round(pot.@hblood));
-					if (pot.@hmana.length()) s+='\n'+Res.txt('p', 'healmana')+': '+yel(Math.round(pot.@hmana*World.world.pers.healManaMult));
-					if (pot.@alc.length()) s+='\n'+Res.txt('p', 'alcohol')+': '+yel(Math.round(pot.@alc));
-					if (pot.@rad.length()) s+='\n'+Res.txt('p', 'rad')+': '+yel(Math.round(pot.@rad));
+					if (pot.@hrad.length()) s+='\n'+Res.txt('pip', 'healrad')+': '+yel(Math.round(pot.@hrad*World.world.pers.healMult));
+					if (pot.@hcut.length()) s+='\n'+Res.txt('pip', 'healcut')+': '+yel(Math.round(pot.@hcut));
+					if (pot.@hpoison.length()) s+='\n'+Res.txt('pip', 'healpoison')+': '+yel(Math.round(pot.@hpoison));
+					if (pot.@horgan.length()) s+='\n'+Res.txt('pip', 'healorgan')+': '+yel(Math.round(pot.@horgan));
+					if (pot.@horgans.length()) s+='\n'+Res.txt('pip', 'healorgans')+': '+yel(Math.round(pot.@horgans));
+					if (pot.@hblood.length()) s+='\n'+Res.txt('pip', 'healblood')+': '+yel(Math.round(pot.@hblood));
+					if (pot.@hmana.length()) s+='\n'+Res.txt('pip', 'healmana')+': '+yel(Math.round(pot.@hmana*World.world.pers.healManaMult));
+					if (pot.@alc.length()) s+='\n'+Res.txt('pip', 'alcohol')+': '+yel(Math.round(pot.@alc));
+					if (pot.@rad.length()) s+='\n'+Res.txt('pip', 'rad')+': '+yel(Math.round(pot.@rad));
 					if (pot.@effect.length()) 
 					{
-						s+='\n'+Res.txt('p', 'refeff')+': '+effStr('eff',pot.@effect);
+						s+='\n'+Res.txt('pip', 'refeff')+': '+effStr('eff',pot.@effect);
 					}
-					if (pot.@perk.length()) s+='\n'+pink(Res.txt('e',pot.@perk))+': '+Res.txt('p', 'level')+' '+(World.world.pers.perks[pot.@perk]>0?World.world.pers.perks[pot.@perk]:'0');
+					if (pot.@perk.length()) s+='\n'+pink(Res.txt('eff',pot.@perk))+': '+Res.txt('pip', 'level')+' '+(World.world.pers.perks[pot.@perk]>0?World.world.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
 				if (tip=='book') {
-					if (World.world.pers.skills[id]!=null) s+='\n'+Res.txt('p', 'skillup')+': '+pink(Res.txt('e',id));
+					if (World.world.pers.skills[id]!=null) s+='\n'+Res.txt('pip', 'skillup')+': '+pink(Res.txt('eff',id));
 				}
 				if (tip=='spell') {
-					s+='\n'+Res.txt('p', 'dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*World.world.pers.allDManaMult))+')';
-					s+='\n'+Res.txt('p', 'culd')+': '+yel(pot.@culd+Res.txt('g', 'sec'))+' ('+yel(Math.round(pot.@culd*World.world.pers.spellDown)+Res.txt('g', 'sec'))+')';
-					s+='\n'+Res.txt('p', 'is1')+': '+pink((pot.@tele>0)?Res.txt('e','tele'):Res.txt('e','magic'));
+					s+='\n'+Res.txt('pip', 'dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*World.world.pers.allDManaMult))+')';
+					s+='\n'+Res.txt('pip', 'culd')+': '+yel(pot.@culd+Res.txt('gui', 'sec'))+' ('+yel(Math.round(pot.@culd*World.world.pers.spellDown)+Res.txt('gui', 'sec'))+')';
+					s+='\n'+Res.txt('pip', 'is1')+': '+pink((pot.@tele>0)?Res.txt('eff','tele'):Res.txt('eff','magic'));
 				}
 				if (id=='rep') {
 					if (pot.@hp.length()) hhp=pot.@hp*gg.pers.repairMult;
-					if (hhp>0) s+='\n'+Res.txt('p', 'effect')+': '+yel(Math.round(hhp));
+					if (hhp>0) s+='\n'+Res.txt('pip', 'effect')+': '+yel(Math.round(hhp));
 				}
 				if (pot.@pet_info.length()) {
 					var pet:UnitPet=gg.pets[pot.@pet_info];
 					if (pet) {
-						s+='\n'+Res.txt('p', 'hp')+': '+yel(Math.round(pet.hp))+'/'+yel(Math.round(pet.maxhp));
-						s+='\n'+Res.txt('p', 'skin')+': '+yel(Math.round(pet.skin));
-						if (pet.allVulnerMult<1) s+='\n'+Res.txt('p', 'allresist')+': '+yel(Math.round((1-pet.allVulnerMult)*100)+'%');
-						s+='\n'+Res.txt('p', 'damage')+': '+yel(Math.round(pet.dam));
+						s+='\n'+Res.txt('pip', 'hp')+': '+yel(Math.round(pet.hp))+'/'+yel(Math.round(pet.maxhp));
+						s+='\n'+Res.txt('pip', 'skin')+': '+yel(Math.round(pet.skin));
+						if (pet.allVulnerMult<1) s+='\n'+Res.txt('pip', 'allresist')+': '+yel(Math.round((1-pet.allVulnerMult)*100)+'%');
+						s+='\n'+Res.txt('pip', 'damage')+': '+yel(Math.round(pet.dam));
 					}
 				}
-				if (tip=='paint') s=Res.txt('p','paint',1);
-				if (Settings.hardInv && pot.@m>0) s+='\n\n'+Res.txt('p', 'mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.txt('p', 'vault'+inv.items[id].invCat)+')';
-				if (pot.@sell>0) s+='\n'+Res.txt('p', 'sell')+": "+yel(pot.@sell);
+				if (tip=='paint') s=Res.txt('pip','paint',1);
+				if (Settings.hardInv && pot.@m>0) s+='\n\n'+Res.txt('pip', 'mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.txt('pip', 'vault'+inv.items[id].invCat)+')';
+				if (pot.@sell>0) s+='\n'+Res.txt('pip', 'sell')+": "+yel(pot.@sell);
 			}
 			return s;
 		}
@@ -839,7 +839,7 @@ package interdata
 				{
 					var cid:String=a.idComp;
 					var kolcomp:int=a.needComp();
-					s+="\n\n<span class = 'or'>"+Res.txt('i',cid)+ " - "+kolcomp+" <span ";
+					s+="\n\n<span class = 'or'>"+Res.txt('item',cid)+ " - "+kolcomp+" <span ";
 					if (!World.world.room.base && kolcomp>inv.items[cid].kol || World.world.room.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
 					s+="> ("+inv.items[cid].kol;
 					if (World.world.room.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
@@ -851,11 +851,11 @@ package interdata
 			{
 				var ammo=inv.items[id].xml;
 				if (ammo.@base.length()) {
-					vis.objectName.text=Res.txt('i',ammo.@base);
+					vis.objectName.text=Res.txt('item',ammo.@base);
 					if (ammo.@mod>0) {
-						vis.objectName.text+='\n'+Res.txt('p', 'ammomod_'+ammo.@mod);
+						vis.objectName.text+='\n'+Res.txt('pip', 'ammomod_'+ammo.@mod);
 					} else {
-						vis.objectName.text+='\n'+Res.txt('p', 'ammomod_0');
+						vis.objectName.text+='\n'+Res.txt('pip', 'ammomod_0');
 					}
 				}
 				setIco();
@@ -889,16 +889,16 @@ package interdata
 			var kol:int=1;
 			if (sch.@kol.length()) kol=sch.@kol;
 			if (sch.@perk=='potmaster' && gg.pers.potmaster) kol*=2;
-			if (kol>1) s+=Res.txt('p', 'crekol')+": "+kol+"\n";
+			if (kol>1) s+=Res.txt('pip', 'crekol')+": "+kol+"\n";
 			if (sch.@skill.length() && sch.@lvl.length()) {
-				s+="\n"+Res.txt('p', 'needskill')+": <span class = '";
+				s+="\n"+Res.txt('pip', 'needskill')+": <span class = '";
 				if (gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) s+="red";
 				else s+="pink";
-				s+="'>"+Res.txt('e',sch.@skill)+" - "+sch.@lvl+"</span>\n";
+				s+="'>"+Res.txt('eff',sch.@skill)+" - "+sch.@lvl+"</span>\n";
 			}
 			for each(var c in sch.craft) 
 			{
-				s+="\n<span class = 'or'>"+Res.txt('i',c.@id)+ " - "+c.@kol+" <span ";
+				s+="\n<span class = 'or'>"+Res.txt('item',c.@id)+ " - "+c.@kol+" <span ";
 				if (!World.world.room.base && c.@kol>inv.items[c.@id].kol
 				  || World.world.room.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
 				s+=">("+inv.items[c.@id].kol;
@@ -914,7 +914,7 @@ package interdata
 				if (q==null) return '';
 				vis.objectName.text=q.objectName;
 				var s:String=q.info;
-				if (q.empl) s+='<br><br>'+Res.txt('u',q.empl);
+				if (q.empl) s+='<br><br>'+Res.txt('unit',q.empl);
 				s+='\n';
 				var n:int=1;
 				for each(var st:Quest in q.subs) 
@@ -934,7 +934,7 @@ package interdata
 						} 
 						else s += ' ('+yel(st.est + '/' + st.kol) + ')';
 					}
-					if (st.nn) s += ' (' + Res.txt('p', 'nn') + ')';
+					if (st.nn) s += ' (' + Res.txt('pip', 'nn') + ')';
 					if (st.state==2) s += "</span>";
 					n++;
 				}
@@ -952,7 +952,7 @@ package interdata
 			
 			if (World.world.pers.factor[id] is Array) 
 			{
-				if (xmlTip == '4') lines.push('- ' + Res.txt('p', 'begvulner') + ': ' + yel('100%'));
+				if (xmlTip == '4') lines.push('- ' + Res.txt('pip', 'begvulner') + ': ' + yel('100%'));
 				
 				for each (var obj in World.world.pers.factor[id]) 
 				{
@@ -977,13 +977,13 @@ package interdata
 				
 				if (obj && (xmlTip == '3' || xmlTip == '4')) 
 				{
-					lines.push('- ' + Res.txt('p', 'result') + ': 100% - ' + yel(Res.numb(obj.res * 100) + '%') + ' = ' + yel(Res.numb((1 - obj.res) * 100) + '%'));
+					lines.push('- ' + Res.txt('pip', 'result') + ': 100% - ' + yel(Res.numb(obj.res * 100) + '%') + ' = ' + yel(Res.numb((1 - obj.res) * 100) + '%'));
 				}
 			}
 			
 			if (ok) 
 			{
-				lines.unshift(Res.txt('p', 'factor') + ':');
+				lines.unshift(Res.txt('pip', 'factor') + ':');
 				return lines.join('\n');
 			}
 			
@@ -995,15 +995,15 @@ package interdata
 			var s:String = '';
 			if (xmlTip == '0') 
 			{
-				if (obj.res != 0) s = Res.txt('p', 'begval') + ': ' + yel(Res.numb(obj.res));
+				if (obj.res != 0) s = Res.txt('pip', 'begval') + ': ' + yel(Res.numb(obj.res));
 			} 
 			else if (xmlTip == '3') 
 			{
-				s = Res.txt('p', 'begvulner') + ': ' + yel(Res.numb(obj.res * 100) + '%');
+				s = Res.txt('pip', 'begvulner') + ': ' + yel(Res.numb(obj.res * 100) + '%');
 			} 
 			else 
 			{
-				s = Res.txt('p', 'begval') + ': ' + yel(Res.numb(obj.res * 100) + '%');
+				s = Res.txt('pip', 'begval') + ': ' + yel(Res.numb(obj.res * 100) + '%');
 			}
 			return s;
 		}
@@ -1012,12 +1012,12 @@ package interdata
 		{
 			var s1:String, s:String = '';
 			if (obj.tip != null) s1 = Res.txt(obj.tip, obj.id);
-			else if (Res.istxt('e', obj.id)) s1 = Res.txt('e', obj.id);
-			else if (Res.istxt('i', obj.id)) s1 = Res.txt('i', obj.id);
-			else if (Res.istxt('a', obj.id)) s1 = Res.txt('a', obj.id);
+			else if (Res.istxt('eff', obj.id)) s1 = Res.txt('eff', obj.id);
+			else if (Res.istxt('item', obj.id)) s1 = Res.txt('item', obj.id);
+			else if (Res.istxt('armor', obj.id)) s1 = Res.txt('armor', obj.id);
 			else s1 = '???';
 			
-			if (s1.substr(0, 6) == '*eff_f') s1 = Res.txt('e', 'food');
+			if (s1.substr(0, 6) == '*eff_f') s1 = Res.txt('eff', 'food');
 			s += s1 + ': ';
 			
 			if (obj.ref == 'add') 
@@ -1091,7 +1091,7 @@ package interdata
 					else 
 					{
 						pip.vis.toptext.visible=true;
-						var ins:String=Res.txt('p',s,0,true);
+						var ins:String=Res.txt('pip',s,0,true);
 						var myPattern:RegExp = /@/g; 
 						pip.vis.toptext.txt.htmlText=ins.replace(myPattern,'\n');
 					}

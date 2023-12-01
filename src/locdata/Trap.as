@@ -72,7 +72,7 @@ package locdata
 		{
 			var node:XML = XmlBook.getXML("objects").obj.(@id == id)[0];
 			
-			objectName = Res.txt('u', id);
+			objectName = Res.txt('unit', id);
 			if (node.@sX > 0) scX = node.@sX; 
 			else scX = node.@size * Settings.tilePixelWidth;
 

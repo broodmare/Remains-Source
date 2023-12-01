@@ -67,7 +67,7 @@ package unitdata
 			else vis.gotoAndStop(2);
 			setVis(false);
 			var node:XML = XmlBook.getXML("weapons").weapon.(@id == id)[0];
-			objectName=Res.txt('w',id);
+			objectName=Res.txt('weapon',id);
 			scX=node.@sX;
 			scY=node.@sY;
 			

@@ -309,11 +309,11 @@ package weapondata
 			var node:XML = XmlBook.getXML("weapons").weapon.(@id == id)[0];
 			
 			if (node.@tip.length()) tip=node.@tip;
-			if (variant==0)	objectName=Res.txt('w',id);
+			if (variant==0)	objectName=Res.txt('weapon',id);
 			else 
 			{
-				if (Res.istxt('w', id + '^' + variant)) objectName = Res.txt('w', id + '^' + variant);
-				else objectName = Res.txt('w', id) + variant2;
+				if (Res.istxt('weapon', id + '^' + variant)) objectName = Res.txt('weapon', id + '^' + variant);
+				else objectName = Res.txt('weapon', id) + variant2;
 			}
 			cat = node.@cat;
 			skill = node.@skill;
@@ -1340,14 +1340,14 @@ package weapondata
 			s+='\t';
 			s+=Number(30/rapid).toFixed(1)+'\t';
 			s+=Number((damage+damageExpl)*kol*30/rapid).toFixed(1)+'\t';
-			s+=Res.txt('p', 'tipdam'+tipDamage)+'\t';
+			s+=Res.txt('pip', 'tipdam'+tipDamage)+'\t';
 			s+=Math.round(critCh*100)+'%\t';
 			s+=Math.round(precision/40)+'\t';
 			s+=pier+'\t';
 			if (tip==5) s+='магия\t'+mana+'\t';
 			else 
 			{
-				if (ammo!='') s+=Res.txt('i',ammo)+'\t';
+				if (ammo!='') s+=Res.txt('item',ammo)+'\t';
 				else s+='\t';
 				if (holder>0) 
 				{
@@ -1359,7 +1359,7 @@ package weapondata
 			s+=satsCons;
 			if (satsQue>1) s+=' [x'+satsQue+']';
 			s+='\t';
-			if (opt && opt.perk) s+=Res.txt('e',opt.perk);
+			if (opt && opt.perk) s+=Res.txt('eff',opt.perk);
 			s+='\t';
 			if (tip<4) s+=maxhp+'\t';
 			else s+='\t';

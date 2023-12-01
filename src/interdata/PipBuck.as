@@ -96,7 +96,7 @@ package interdata
 			vis.but0.addEventListener(MouseEvent.CLICK, pipClose);
 
 			trace('PipBuck.as/PipBuck() - Calling Res/txt().');
-			vis.but0.text.text = Res.txt('p', 'mainclose');
+			vis.but0.text.text = Res.txt('pip', 'mainclose');
 
 			trace('PipBuck.as/PipBuck() - Creating pipbuck pages...');
 			pages =
@@ -167,7 +167,7 @@ package interdata
 			trace('Pipbuck.as/updateLang() - Attempting to update each pipPage language.');
 			
 
-			vis.but0.text.text = Res.txt('p', 'mainclose');
+			vis.but0.text.text = Res.txt('pip', 'mainclose');
 
 			for each(var p in pages) //Run the language update function in every pipbuck page.
 			{
@@ -189,11 +189,11 @@ package interdata
 			{
 				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
 				item.addEventListener(MouseEvent.CLICK,pageClick);
-				item.text.text = Res.txt('p', 'main' + i);
+				item.text.text = Res.txt('pip', 'main' + i);
 				item.id.text = i;
 				item.visible = true;
 			}
-			vis.but0.text.text = Res.txt('p', 'main0');
+			vis.but0.text.text = Res.txt('pip', 'main0');
 			page = 1;
 			allItems();
 		}
@@ -272,7 +272,7 @@ package interdata
 			if (turn == 4 || (turn >= 6 && turn <= 9)) 
 			{
 				vis.but4.id.text 	= turn;
-				vis.but4.text.text 	= Res.txt('p', 'main' + turn);
+				vis.but4.text.text 	= Res.txt('pip', 'main' + turn);
 				vis.but4.visible 	= true;
 			}
 			vis.visible = active;
@@ -380,8 +380,8 @@ package interdata
 				currentPage.vis.visible = false;
 				vis.toptext.visible 	= false;
 				vis.pipError.visible 	= true;
-				vis.pipError.objectName.text = Res.txt('p', 'piperror');
-				var s:String = Res.txt('p', 'piperror', 1);
+				vis.pipError.objectName.text = Res.txt('pip', 'piperror');
+				var s:String = Res.txt('pip', 'piperror', 1);
 				vis.pipError.info.text = s.replace(/[\b\r\t]/g, '');
 			} 
 			else 

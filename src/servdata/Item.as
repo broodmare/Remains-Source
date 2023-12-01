@@ -144,18 +144,18 @@ package servdata
 
 			if (tip == L_WEAPON || tip == L_EXPL) 
 			{
-				if (variant == 0)	objectName = Res.txt('w', id);
+				if (variant == 0)	objectName = Res.txt('weapon', id);
 				else 
 				{
-					if (Res.istxt('w' , id + '^' + variant)) objectName = Res.txt('w', id + '^' + variant);
-					else objectName = Res.txt('w', id) + ' - II';
+					if (Res.istxt('weapon' , id + '^' + variant)) objectName = Res.txt('weapon', id + '^' + variant);
+					else objectName = Res.txt('weapon', id) + ' - II';
 				}
 				if (tip == L_EXPL) wtip = 'w5';
 				else wtip = 'w' + l.@skill;
 			} 
 			else if (tip == L_ARMOR) 
 			{
-				objectName = Res.txt('a', id);
+				objectName = Res.txt('armor', id);
 				if (xml && xml.@tip.length()) 
 				{
 					wtip = 'armor' + xml.@tip;
@@ -165,17 +165,17 @@ package servdata
 			else if (xml && xml.@base.length()) 
 			{
 				base = xml.@base;
-				objectName = Res.txt('i', base);
-				if (xml.@mod.length()) objectName += ' (' + Res.txt('p', 'am_' + xml.@mod) + ')';
+				objectName = Res.txt('item', base);
+				if (xml.@mod.length()) objectName += ' (' + Res.txt('pip', 'am_' + xml.@mod) + ')';
 			} 
-			else objectName = Res.txt('i', id);
+			else objectName = Res.txt('item', id);
 
 			if (tip == L_ITEM && xml && xml.@tip.length()) tip = xml.@tip;
-			if (tip == L_SCHEME && !Res.istxt('i', id)) 
+			if (tip == L_SCHEME && !Res.istxt('item', id)) 
 			{
 				var wid:String = id.substr(2);
-				if (xml.@work == 'work') objectName = Res.txt('p', 'scheme1') + ' «' + Res.txt('i', wid) + '»';
-				else objectName = Res.txt('p', 'recipe') + ' «' + Res.txt('i', wid) + '»';
+				if (xml.@work == 'work') objectName = Res.txt('pip', 'scheme1') + ' «' + Res.txt('item', wid) + '»';
+				else objectName = Res.txt('pip', 'recipe') + ' «' + Res.txt('item', wid) + '»';
 			}
 			if (tip == L_AMMO || tip == L_EXPL) invCat = 2;
 			if (xml && xml.@us > 0 && tip != L_FOOD && tip != 'eda' && tip != L_BOOK) invCat = 1;

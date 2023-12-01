@@ -220,17 +220,17 @@ package unitdata
 			}
 			if (pot.@heal == 'rad' && gg.rad < 1) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('i',ci));
+				World.world.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='poison' && gg.poison<0.1) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('i',ci));
+				World.world.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='blood' && (gg.pers.inMaxHP-gg.pers.bloodHP<1)) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('i',ci));
+				World.world.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='organ' && (gg.pers.inMaxHP-gg.pers.headHP<1) && (gg.pers.inMaxHP-gg.pers.torsHP<1) && (gg.pers.inMaxHP-gg.pers.legsHP<1)) 
@@ -240,7 +240,7 @@ package unitdata
 			} 
 			else if (pot.@heal=='mana' && (gg.pers.inMaxMana-gg.pers.manaHP<1)) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('i',ci));
+				World.world.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='pet') 	//лечение феникса
@@ -248,14 +248,14 @@ package unitdata
 				pet=gg.pets[pot.@pet];
 				if (pet==null || pet.maxhp-pet.hp<1) 
 				{
-					World.world.gui.infoText('noMedic',Res.txt('i',ci));
+					World.world.gui.infoText('noMedic',Res.txt('item',ci));
 					return false;
 				}
 			}
 			//проверить соответствие уровню навыка
 			if (pot.@minmed.length() && pot.@minmed>gg.pers.medic) 
 			{
-				 World.world.gui.infoText('needSkill',Res.txt('e','medic'),pot.@minmed);
+				 World.world.gui.infoText('needSkill',Res.txt('eff','medic'),pot.@minmed);
 				  return false;
 			}
 			if (pot.@heal=='detoxin') 
@@ -359,17 +359,17 @@ package unitdata
 				var prev:int=gg.pers.addictions[pot.@ad];
 				gg.pers.addictions[pot.@ad]+=n;
 				if (gg.pers.addictions[pot.@ad]>gg.pers.admax) gg.pers.addictions[pot.@ad]=gg.pers.admax;
-				if (prev<gg.pers.ad3 && prev+n>=gg.pers.ad3) World.world.gui.infoText('addiction3',Res.txt('i',ci));
-				else if (prev<gg.pers.ad2 && prev+n>=gg.pers.ad2) World.world.gui.infoText('addiction2',Res.txt('i',ci));
-				else if (prev<gg.pers.ad1 && prev+n>=gg.pers.ad1) World.world.gui.infoText('addiction1',Res.txt('i',ci));
+				if (prev<gg.pers.ad3 && prev+n>=gg.pers.ad3) World.world.gui.infoText('addiction3',Res.txt('item',ci));
+				else if (prev<gg.pers.ad2 && prev+n>=gg.pers.ad2) World.world.gui.infoText('addiction2',Res.txt('item',ci));
+				else if (prev<gg.pers.ad1 && prev+n>=gg.pers.ad1) World.world.gui.infoText('addiction1',Res.txt('item',ci));
 			}
 			if (pot.@tip=='food') 
 			{
-				if (pot.@ftip=='1') World.world.gui.infoText('usedfood2',Res.txt('i',ci));
-				else World.world.gui.infoText('usedfood',Res.txt('i',ci));
+				if (pot.@ftip=='1') World.world.gui.infoText('usedfood2',Res.txt('item',ci));
+				else World.world.gui.infoText('usedfood',Res.txt('item',ci));
 			} 
-			else if (pot.@heal=='organ') World.world.gui.infoText('usedheal',Res.txt('i',ci));
-			else World.world.gui.infoText('heal',Res.txt('i',ci));
+			else if (pot.@heal=='organ') World.world.gui.infoText('usedheal',Res.txt('item',ci));
+			else World.world.gui.infoText('heal',Res.txt('item',ci));
 			if (pot.@inf>0) return true;
 			minusItem(ci);
 			return true;
@@ -524,7 +524,7 @@ package unitdata
 			else if (item.@chdif.length()) 	//карта судьбы
 			{
 				if (!World.world.game.changeDif(item.@chdif)) return false;
-				World.world.gui.infoText('changeDif',Res.txt('g', 'dif'+item.@chdif));
+				World.world.gui.infoText('changeDif',Res.txt('gui', 'dif'+item.@chdif));
 			} 
 			else return false;
 			minusItem(ci);
@@ -672,7 +672,7 @@ package unitdata
 				if (n<1 && n<Math.random()) return;
 				n=Math.round(n);
 				items['frag'].kol+=n;
-				if(!World.world.testLoot) World.world.gui.infoText('take',Res.txt('i','frag')+((n>1)?(' ('+n+')'):''));
+				if(!World.world.testLoot) World.world.gui.infoText('take',Res.txt('item','frag')+((n>1)?(' ('+n+')'):''));
 			}
 		}
 		public function favItem(id:String, cell:int):void
@@ -947,7 +947,7 @@ package unitdata
 					if (l.mess!=null && !(World.world.game.triggers['mess_'+l.mess]>0)) 
 					{
 						World.world.game.triggers['mess_'+l.mess]=1;
-						World.world.gui.impMess(Res.txt('i',l.mess),Res.txt('i',l.mess,2),l.mess);
+						World.world.gui.impMess(Res.txt('item',l.mess),Res.txt('item',l.mess,2),l.mess);
 					}
 				}
 				//если объект критичный, подтвердить получение
@@ -1122,7 +1122,7 @@ package unitdata
 				maxm=gg.pers.maxmM;
 			}
 			if (m>maxm) cl='red';
-			return Res.txt('p', txt)+": <span class = '"+cl+"'>"+Res.numb(m)+'/'+Math.round(maxm)+"</span>";
+			return Res.txt('pip', txt)+": <span class = '"+cl+"'>"+Res.numb(m)+'/'+Math.round(maxm)+"</span>";
 		}
 		
 		//выкинуть вещи

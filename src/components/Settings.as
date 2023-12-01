@@ -6,7 +6,7 @@ package components
     {
 
 		//Main Menu
-		public static var version:String = '1.1.3';
+		public static var version:String = '1.1.0';
 
 
 		//Global constants

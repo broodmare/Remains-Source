@@ -88,7 +88,7 @@ package weapondata
 		public function setPaint(npaint:String, ncolor:uint, nblend:String):void
 		{
 			paintId=npaint;
-			paintNazv=Res.txt('i',paintId);
+			paintNazv=Res.txt('item',paintId);
 			World.world.grafon.brTrans.color=ncolor
 
 		}

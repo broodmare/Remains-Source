@@ -39,7 +39,7 @@ package unitdata
 			vis.stop();
 			runSpeed=0;
 			getXmlParam();
-			if (tr>=7) objectName=Res.txt('u','bloat10');
+			if (tr>=7) objectName=Res.txt('unit','bloat10');
 			maxSpeed=maxSpeed*(0.9+Math.random()*0.2);
 			sitSpeed=maxSpeed*0.5;
 			walkSpeed=maxSpeed;

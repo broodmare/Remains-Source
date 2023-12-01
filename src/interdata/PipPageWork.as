@@ -59,7 +59,7 @@ package interdata
 				page2 = 1;
 			}
 			
-			vis.bottext.text = Res.txt('p', 'caps') + ': ' + pip.money;
+			vis.bottext.text = Res.txt('pip', 'caps') + ': ' + pip.money;
 			vis.butOk.visible=false;
 			statHead.cat.visible=false;
 			setIco();
@@ -71,8 +71,8 @@ package interdata
 			if (page2==1) {		//крафт
 				assArr=[];
 				statHead.fav.text='';
-				statHead.objectName.text=Res.txt('p', 'work1');
-				statHead.hp.text=Res.txt('p', 'iv6');
+				statHead.objectName.text=Res.txt('pip', 'work1');
+				statHead.hp.text=Res.txt('pip', 'iv6');
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
 				for (var s:String in inv.items) 
@@ -88,7 +88,7 @@ package interdata
 						{
 							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) 
 							{
-								n={tip:Item.L_WEAPON, id:wid, objectName:Res.txt('w',wid), ok:ok ,sort:node.@skill+node.@lvl};
+								n={tip:Item.L_WEAPON, id:wid, objectName:Res.txt('weapon',wid), ok:ok ,sort:node.@skill+node.@lvl};
 								if (inv.items[wid] && inv.items[wid].kol>0) n.kol=inv.items[wid].kol;
 								arr.push(n);
 								assArr[n.id]=n;
@@ -98,7 +98,7 @@ package interdata
 						{
 							if (inv.armors[wid].lvl<0) 
 							{
-								n={tip:Item.L_ARMOR, id:wid, objectName:Res.txt('a',wid), ok:ok ,sort:node.@skill+node.@lvl};
+								n={tip:Item.L_ARMOR, id:wid, objectName:Res.txt('armor',wid), ok:ok ,sort:node.@skill+node.@lvl};
 								arr.push(n);
 							}
 						} 
@@ -107,7 +107,7 @@ package interdata
 							var node1 = XmlBook.getXML("items").item.(@id == wid);
 							if (node1.length()==0) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
-							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, objectName:Res.txt('i',wid), ok:ok , sort:node.@skill+node.@lvl};
+							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, objectName:Res.txt('item',wid), ok:ok , sort:node.@skill+node.@lvl};
 							arr.push(n);
 							assArr[n.id]=n;
 						}
@@ -121,7 +121,7 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.txt('p', 'emptycreate');
+					vis.emptytext.text=Res.txt('pip', 'emptycreate');
 					statHead.visible=false;
 				}
 					
@@ -129,7 +129,7 @@ package interdata
 			else if (page2==2) 
 			{	//улучшение
 				statHead.fav.text='';
-				statHead.objectName.text='';//Res.txt('p', 'ii2');
+				statHead.objectName.text='';//Res.txt('pip', 'ii2');
 				statHead.hp.text='';
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
@@ -161,7 +161,7 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.txt('p', 'emptyupgrade');
+					vis.emptytext.text=Res.txt('pip', 'emptyupgrade');
 					statHead.visible=false;
 				}
 			} 
@@ -169,10 +169,10 @@ package interdata
 			{	//ремонт
 				assArr=[];
 				statHead.fav.text='';
-				statHead.objectName.text=Res.txt('p', 'ii2');
-				statHead.hp.text=Res.txt('p', 'ii3');
+				statHead.objectName.text=Res.txt('pip', 'ii2');
+				statHead.hp.text=Res.txt('pip', 'ii3');
 				statHead.ammo.text='';
-				statHead.ammotip.text=Res.txt('p', 'repairto');
+				statHead.ammotip.text=Res.txt('pip', 'repairto');
 				setTopText('inforepair');
 				if (inv.items['owl'] && inv.items['owl'].kol) 
 				{
@@ -211,7 +211,7 @@ package interdata
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.txt('p', 'emptyrep');
+					vis.emptytext.text=Res.txt('pip', 'emptyrep');
 					statHead.visible=false;
 				}
 			}
@@ -291,8 +291,8 @@ package interdata
 		{
 			if (inv.items[cid]) 
 			{
-				vis.bottext.htmlText=Res.txt('i',cid)+ ': '+yel(inv.items[cid].kol);
-				if (World.world.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.txt('p', 'invault')+')';
+				vis.bottext.htmlText=Res.txt('item',cid)+ ': '+yel(inv.items[cid].kol);
+				if (World.world.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.txt('pip', 'invault')+')';
 			} 
 			else 
 			{
@@ -304,7 +304,7 @@ package interdata
 		public function checkScheme(sch:XML):Boolean
 		{
 			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
-				World.world.gui.infoText('needSkill', Res.txt('e',sch.@skill), sch.@lvl);	//требуется навык
+				World.world.gui.infoText('needSkill', Res.txt('eff',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
 			}
 			for each(var c in sch.craft) {
@@ -406,7 +406,7 @@ package interdata
 					if (lmess!=null && !(World.world.game.triggers['mess_'+lmess]>0)) 
 					{
 						World.world.game.triggers['mess_'+lmess]=1;
-						World.world.gui.impMess(Res.txt('i',lmess),Res.txt('i',lmess,2),lmess);
+						World.world.gui.impMess(Res.txt('item',lmess),Res.txt('item',lmess,2),lmess);
 						pip.onoff(-1);
 					}
 				}

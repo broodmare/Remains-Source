@@ -166,7 +166,7 @@ package servdata
 			{
 				item.tip = 'scheme';
 				var wid:String = id.substr(2);
-				item.objectName = Res.txt('p', 'recipe') + ' «' + Res.txt('i', wid) + '»';
+				item.objectName = Res.txt('pip', 'recipe') + ' «' + Res.txt('item', wid) + '»';
 			}
 			item.multHP = mn;
 			item.imp = imp;

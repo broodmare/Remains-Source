@@ -152,33 +152,33 @@ package interdata
 			vis.portCel.visible = false;
 
 			trace('GUI.as/GUI() -  Calling Res.txt() to set pipbuck GUI text.');
-			txtTele			= Res.txt('g', 'tele');
-			txtOpen			= Res.txt('g', 'open');
-			txtSoft			= Res.txt('g', 'soft');
-			txtHard			= Res.txt('g', 'hard');
-			txtVeryHard		= Res.txt('g', 'veryhard');
-			txtUnreal		= Res.txt('g', 'unreal');
-			txtUndef0		= Res.txt('g', 'undef0');
-			txtUndef1		= Res.txt('g', 'undef1');
-			txtUndef2		= Res.txt('g', 'undef2');
-			txtClose		= Res.txt('g', 'close');
-			txtUnlock		= Res.txt('g', 'unlock');
-			txtRemine		= Res.txt('g', 'remine');
-			txtUse			= Res.txt('g', 'use');
-			txtLock			= Res.txt('g', 'lock');
-			txtZhopa		= Res.txt('g', 'zhopa');
-			txtEmpty		= Res.txt('g', 'empty');
-			txtDrop			= Res.txt('g', 'drop');
-			txtHold			= Res.txt('g', 'hold');
-			txtHeavy		= Res.txt('g', 'heavy');
-			txtMagia		= Res.txt('g', 'magia');
-			txtArmorMana	= Res.txt('g', 'armormana');
-			txtChance		= Res.txt('g', 'chance');
-			txtMagiaOver	= Res.txt('g', 'magiaover');
-			txtH2o			= Res.txt('g', 'h2o');
-			txtH2oOver		= Res.txt('g', 'h2over');
-			txtStam			= Res.txt('g', 'stam');
-			txtOd			= Res.txt('p', 'ap');
+			txtTele			= Res.txt('gui', 'tele');
+			txtOpen			= Res.txt('gui', 'open');
+			txtSoft			= Res.txt('gui', 'soft');
+			txtHard			= Res.txt('gui', 'hard');
+			txtVeryHard		= Res.txt('gui', 'veryhard');
+			txtUnreal		= Res.txt('gui', 'unreal');
+			txtUndef0		= Res.txt('gui', 'undef0');
+			txtUndef1		= Res.txt('gui', 'undef1');
+			txtUndef2		= Res.txt('gui', 'undef2');
+			txtClose		= Res.txt('gui', 'close');
+			txtUnlock		= Res.txt('gui', 'unlock');
+			txtRemine		= Res.txt('gui', 'remine');
+			txtUse			= Res.txt('gui', 'use');
+			txtLock			= Res.txt('gui', 'lock');
+			txtZhopa		= Res.txt('gui', 'zhopa');
+			txtEmpty		= Res.txt('gui', 'empty');
+			txtDrop			= Res.txt('gui', 'drop');
+			txtHold			= Res.txt('gui', 'hold');
+			txtHeavy		= Res.txt('gui', 'heavy');
+			txtMagia		= Res.txt('gui', 'magia');
+			txtArmorMana	= Res.txt('gui', 'armormana');
+			txtChance		= Res.txt('gui', 'chance');
+			txtMagiaOver	= Res.txt('gui', 'magiaover');
+			txtH2o			= Res.txt('gui', 'h2o');
+			txtH2oOver		= Res.txt('gui', 'h2over');
+			txtStam			= Res.txt('gui', 'stam');
+			txtOd			= Res.txt('pip', 'ap');
 
 			vis.odBar.txt.text		= txtOd;
 			vis.selector.visible	= false;
@@ -205,7 +205,7 @@ package interdata
 			informScript = new Script(<scr act = "inform" val = "id"/>);
 			dialScript 	 = new Script(<scr act = "dialog" val = "id"/>);
 			vis.inform.but0.addEventListener(MouseEvent.MOUSE_DOWN, showHelp);
-			vis.inform.but0.text.text = Res.txt('g', 'help');
+			vis.inform.but0.text.text = Res.txt('gui', 'help');
 			vis.blood.visible = false;
 			vis.blood.stop();
 		}
@@ -329,9 +329,9 @@ package interdata
 							n={id:gg.currentSpell.id, objectName:gg.currentSpell.objectName, fav:i};
 							if (gg.currentSpell.t_culd>0) 
 							{
-								n.ammo=Math.ceil(gg.currentSpell.t_culd/Settings.fps)+' '+Res.txt('g', 'sec');
+								n.ammo=Math.ceil(gg.currentSpell.t_culd/Settings.fps)+' '+Res.txt('gui', 'sec');
 							} 
-							else n.ammo=Res.txt('g', 'ready')
+							else n.ammo=Res.txt('gui', 'ready')
 						} 
 						else continue;
 					} 
@@ -339,11 +339,11 @@ package interdata
 					{
 						if (arrfav[i] || inv.fav[i]==null) continue;
 						n={id:inv.fav[i], fav:i};
-						n.objectName=Res.txt('i',n.id);
+						n.objectName=Res.txt('item',n.id);
 
-						if (!Res.istxt('i',n.id)) 
+						if (!Res.istxt('item',n.id)) 
 						{
-							n.objectName=Res.txt('a',n.id);
+							n.objectName=Res.txt('armor',n.id);
 						} 
 						else if (inv.items[n.id]!=null) 
 						{
@@ -359,9 +359,9 @@ package interdata
 						{
 							if (inv.spells[n.id].t_culd>0) 
 							{
-								n.ammo=Math.ceil(inv.spells[n.id].t_culd/Settings.fps)+' '+Res.txt('g', 'sec');
+								n.ammo=Math.ceil(inv.spells[n.id].t_culd/Settings.fps)+' '+Res.txt('gui', 'sec');
 							} 
-							else n.ammo=Res.txt('g', 'ready')
+							else n.ammo=Res.txt('gui', 'ready')
 						}
 					}
 					arrfav[i]=n;
@@ -639,7 +639,7 @@ package interdata
 				{
 					vitem.gotoAndStop(1);
 				}
-				item.text = Res.txt('i', ci) + ' ('+World.world.invent.items[ci].kol + ')';
+				item.text = Res.txt('item', ci) + ' ('+World.world.invent.items[ci].kol + ')';
 			}
 			setOtstup();
 		}
@@ -720,7 +720,7 @@ package interdata
 			vis.xpBar.xp.scaleX=prun;
 		}
 		
-		function setOtstup():void
+		public function setOtstup():void
 		{
 			if (pet.visible) 
 			{
@@ -781,7 +781,7 @@ package interdata
 			if (s!='') 
 			{
 				vis.toptext.visible=true;
-				var ins:String=Res.txt('g',s,0,true);
+				var ins:String=Res.txt('gui', s, 0, true);
 				var myPattern:RegExp = /@/g; 
 				vis.toptext.txt.htmlText=ins.replace(myPattern,'\n');
 			} 
@@ -942,10 +942,10 @@ package interdata
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
 							if (Settings.hintKeys) s+=World.world.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
-							s+=Res.txt('g', 'usekey');
+							s+=Res.txt('gui', 'usekey');
 						 // Locked, key needed, but not available
 						} else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
-							s+="\n(<span class = 'r5'>"+Res.txt('g', 'required')+' '+Res.txt('i',celObj.inter.lockKey)+"</span>)"; 
+							s+="\n(<span class = 'r5'>"+Res.txt('gui', 'required')+' '+Res.txt('item',celObj.inter.lockKey)+"</span>)"; 
 						// Jammed
 						} else if (celObj.inter.lock>=100) {
 							//s+="\n(<span class = 'warn'>"+txtNoUnlock+"</span>)"; 
@@ -970,7 +970,7 @@ package interdata
 							}
 							//заколки
 							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.world.invent && World.world.invent.pin.kol>0) s+=" {<span class = 'r2'>"+World.world.invent.pin.kol+"</span>}";
-							if (celObj.inter.cons) s+='\n('+Res.txt('g', 'required')+': '+Res.txt('i',celObj.inter.cons)+')';
+							if (celObj.inter.cons) s+='\n('+Res.txt('gui', 'required')+': '+Res.txt('item',celObj.inter.cons)+')';
 						}
 					} else {
 						s+='\n';
@@ -986,11 +986,11 @@ package interdata
 					acts="\n<span class = 'r3'>";
 					if (Settings.hintKeys) acts+=World.world.ctr.keyStates.retKey('keyCrack')+' - ';
 					if (celObj.inter.mineTip==6 && celObj.inter.mine>0) {
-						s+=acts+Res.txt('g', 'actalarm')+"</span>";
+						s+=acts+Res.txt('gui', 'actalarm')+"</span>";
 					} else if (celObj.inter.lockTip==1 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.txt('g', 'runa')+"</span>";
+						s+=acts+Res.txt('gui', 'runa')+"</span>";
 					} else if (celObj.inter.lockTip==2 && celObj.inter.needRuna(gg)) {
-						s+=acts+Res.txt('g', 'reboot')+"</span>";
+						s+=acts+Res.txt('gui', 'reboot')+"</span>";
 					}
 				}
 				if (gg.showObsInd && (celObj is Unit) && (celObj as Unit).fraction!=Unit.F_PLAYER && !(celObj as Unit).doop && (celObj as Unit).observ>gg.sneak+1) {
@@ -1010,7 +1010,7 @@ package interdata
 			prevObj=celObj;
 		}
 		
-		function dif(lock:int, lockTip:int):String 
+		public function dif(lock:int, lockTip:int):String 
 		{
 			var pick=World.world.pers.getLockTip(lockTip);
 			var s:String='';
@@ -1022,7 +1022,7 @@ package interdata
 			else return '';
 		}
 		
-		function diflock(n:Number):String 
+		public function diflock(n:Number):String 
 		{
 			var s:String=txtChance+': ';
 			if (n<0.1) s+="<span class = 'warn'>";
@@ -1045,7 +1045,7 @@ package interdata
 			setPet();
 		}
 		
-		function showPortCel():void
+		public function showPortCel():void
 		{
 			vis.portCel.visible=true;
 			var nx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth;
@@ -1061,7 +1061,7 @@ package interdata
 		
 		public function infoText(id:String, p1=0, p2=null, addlog:Boolean=true):void
 		{
-			var s:String=Res.txt('f',id);
+			var s:String=Res.txt('info', id);
 			s=s.replace('@1','<b>'+p1+'</b>');
 			if (p2!=null) s=s.replace('@2',p2);
 			if (s!=prevInfoText) 
@@ -1078,7 +1078,7 @@ package interdata
 		
 		public function infoEffText(id:String):void
 		{
-			var s:String=Res.txt('e',id,2);
+			var s:String=Res.txt('eff',id,2);
 			if (s==null || s=='') return;
 			info.htmlText+=(s+"<br>");
 			kolStr++;

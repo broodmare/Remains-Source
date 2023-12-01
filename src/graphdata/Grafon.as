@@ -1123,10 +1123,6 @@ package graphdata
 			var floor:Sprite 		= new Sprite();
 			var fmaska:Sprite 		= new Sprite();
 			
-
-
-
-			
 			
 			if (material.texture == null) tileTexture.graphics.beginFill(0x666666);
 			else if (room.homeStable && material.alttexture != null) 

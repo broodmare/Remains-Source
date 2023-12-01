@@ -164,7 +164,7 @@ package
 			}
 			if (main.contains(mainMenu)) main.removeChild(mainMenu);
 			world.loadingScreen.visible = true;
-			world.loadingScreen.progres.text = Res.txt('g', 'loading');
+			world.loadingScreen.progres.text = Res.txt('gui', 'loading');
 		}
 
 		public function mainMenuListenerToggle(enabled:Boolean):void
@@ -245,9 +245,9 @@ package
 					break;
 				case "butAbout":
 					trace('MainMenu.as/mainMenuButtonPress() - Executing funAbout().');
-					mainMenu.dialAbout.title.text = Res.txt('g', 'about');
-					var s:String = Res.formatText(Res.txt('g','about', 1));
-					s += '<br><br>' + Res.txt('g', 'usedmusic') + '<br>';
+					mainMenu.dialAbout.title.text = Res.txt('gui', 'about');
+					var s:String = Res.formatText(Res.txt('gui','about', 1));
+					s += '<br><br>' + Res.txt('gui', 'usedmusic') + '<br>';
 					s += "<br><span class='music'>" + Res.formatText(Res.localizationFile.gui.(@id == 'usedmusic').info[0]) + "</span>"
 					s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
 					mainMenu.dialAbout.txt.styleSheet 	= style;
@@ -331,39 +331,39 @@ package
 		{
 			trace('MainMenu.as/updateMainMenuLanguage() - Updating language on mainMenu buttons.');
 
-			setMainButton(mainMenu.butContGame, Res.txt	('g', 'contgame'));
-			setMainButton(mainMenu.butNewGame, 	Res.txt	('g', 'newgame'));
-			setMainButton(mainMenu.butLoadGame, Res.txt	('g', 'loadgame'));
-			setMainButton(mainMenu.butOpt, 		Res.txt	('g', 'options'));
-			setMainButton(mainMenu.butAbout, 	Res.txt	('g', 'about'));
+			setMainButton(mainMenu.butContGame, Res.txt('gui', 'contgame'));
+			setMainButton(mainMenu.butNewGame, 	Res.txt('gui', 'newgame'));
+			setMainButton(mainMenu.butLoadGame, Res.txt('gui', 'loadgame'));
+			setMainButton(mainMenu.butOpt, 		Res.txt('gui', 'options'));
+			setMainButton(mainMenu.butAbout, 	Res.txt('gui', 'about'));
 
-			mainMenu.dialNew.title.text 			= Res.txt('g', 'newgame');
-			mainMenu.dialLoad.title.text 			= Res.txt('g', 'loadgame');
-			mainMenu.dialLoad.title2.text 			= Res.txt('g', 'select_slot');
-			mainMenu.version.htmlText 				= '<b>' + Res.txt('g', 'version') + ' ' + Settings.version + '</b>';
-			mainMenu.dialLoad.butCancel.text.text 	= Res.txt('g', 'cancel');
-			mainMenu.dialNew.butCancel.text.text 	= Res.txt('g', 'cancel');
-			mainMenu.dialLoad.butFile.text.text 	= Res.txt('p', 'loadfile');
-			mainMenu.dialLoad.warn.text 			= Res.txt('g', 'loadwarn');
-			mainMenu.dialNew.warn.text 				= Res.txt('g', 'loadwarn');
-			mainMenu.dialNew.infoName.text 			= Res.txt('g', 'inputname');
-			mainMenu.dialNew.hardOpt.text 			= Res.txt('g', 'hardopt');
+			mainMenu.dialNew.title.text 			= Res.txt('gui', 'newgame');
+			mainMenu.dialLoad.title.text 			= Res.txt('gui', 'loadgame');
+			mainMenu.dialLoad.title2.text 			= Res.txt('gui', 'select_slot');
+			mainMenu.version.htmlText 				= '<b>' + Res.txt('gui', 'version') + ' ' + Settings.version + '</b>';
+			mainMenu.dialLoad.butCancel.text.text 	= Res.txt('gui', 'cancel');
+			mainMenu.dialNew.butCancel.text.text 	= Res.txt('gui', 'cancel');
+			mainMenu.dialLoad.butFile.text.text 	= Res.txt('pip', 'loadfile');
+			mainMenu.dialLoad.warn.text 			= Res.txt('gui', 'loadwarn');
+			mainMenu.dialNew.warn.text 				= Res.txt('gui', 'loadwarn');
+			mainMenu.dialNew.infoName.text 			= Res.txt('gui', 'inputname');
+			mainMenu.dialNew.hardOpt.text 			= Res.txt('gui', 'hardopt');
 			mainMenu.dialNew.butOk.text.text 		= 'OK';
-			mainMenu.dialNew.inputName.text 		= Res.txt('u','littlepip');
+			mainMenu.dialNew.inputName.text 		= Res.txt('unit','littlepip');
 			mainMenu.dialNew.maxChars = 32;
 
 			for (var i:int = 0; i < kolDifs; i++) 
 			{
-				mainMenu.dialNew['dif' + i].mode.text 		= Res.txt('g', 'dif' + i);
-				mainMenu.dialNew['dif' + i].modeinfo.text 	= Res.formatText(Res.txt('g', 'dif' + i, 1));
+				mainMenu.dialNew['dif' + i].mode.text 		= Res.txt('gui', 'dif' + i);
+				mainMenu.dialNew['dif' + i].modeinfo.text 	= Res.formatText(Res.txt('gui', 'dif' + i, 1));
 			}
 
 			for (var j:int = 1; j <= kolOpts; j++) 
 			{
-				mainMenu.dialNew['infoOpt' + j].text = Res.txt('g', 'opt' + j);
+				mainMenu.dialNew['infoOpt' + j].text = Res.txt('gui', 'opt' + j);
 			}
 			
-			mainMenu.dialNew.butVid.mode.text = Res.txt('g', 'butvid');
+			mainMenu.dialNew.butVid.mode.text = Res.txt('gui', 'butvid');
 
 			world.app.setLang();
 
@@ -371,7 +371,7 @@ package
 			mainMenu.adv.y 				= main.stage.stageHeight - mainMenu.adv.textHeight - 40;
 
 
-			mainMenu.info.txt.htmlText 	= Res.txt('g', 'inform') + '<br>' + Res.txt('g', 'inform', 1);
+			mainMenu.info.txt.htmlText 	= Res.txt('gui', 'inform') + '<br>' + Res.txt('gui', 'inform', 1);
 			mainMenu.info.visible 		= (mainMenu.info.txt.text.length > 0);
 
 
@@ -452,17 +452,17 @@ package
 				slot.id.visible = false;
 				if (save != null && save.est != null) 
 				{
-					slot.objectName.text = (i == 0)?Res.txt('p', 'autoslot'):(Res.txt('p', 'saveslot') + ' ' + i);
+					slot.objectName.text = (i == 0)?Res.txt('pip', 'autoslot'):(Res.txt('pip', 'saveslot') + ' ' + i);
 					slot.ggName.text = (save.pers.persName == null) ? '-------':save.pers.persName;
 					if (save.pers.level != null) slot.ggName.text += ' ('+save.pers.level+')';
 					if (save.pers.dead) slot.objectName.text += ' [†]';
 					else if (save.pers.hardcore) slot.objectName.text += ' {!}';
 					slot.date.text = (save.date == null)  ? '-------':Res.getDate(save.date);
-					slot.level.text = (save.date == null) ? '':Res.txt('m', save.game.level).substr(0, 18);
+					slot.level.text = (save.date == null) ? '':Res.txt('map', save.game.level).substr(0, 18);
 				} 
 				else 
 				{
-					slot.objectName.text = Res.txt('p', 'freeslot');
+					slot.objectName.text = Res.txt('pip', 'freeslot');
 					slot.ggName.text 	= '';
 					slot.level.text 	= '';
 					slot.date.text 		= '';
@@ -522,7 +522,7 @@ package
 		
 		public function funLoadFile(event:MouseEvent):void
 		{
-			ffil = [new FileFilter(Res.txt('p', 'gamesaves') + " (*.sav)", "*.sav")];
+			ffil = [new FileFilter(Res.txt('pip', 'gamesaves') + " (*.sav)", "*.sav")];
 			file.browse(ffil);
 		}
 		
@@ -693,7 +693,7 @@ package
 		public function infoOpt(event:MouseEvent):void
 		{
 			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length - 1));
-			mainMenu.dialNew.modeinfo.htmlText = Res.formatText(Res.txt('g', 'opt' + n, 1));
+			mainMenu.dialNew.modeinfo.htmlText = Res.formatText(Res.txt('gui', 'opt' + n, 1));
 		}
 		
 		public function languageButtonPress(event:MouseEvent):void //What to do when a langauge button is pressed.

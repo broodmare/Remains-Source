@@ -71,7 +71,7 @@ package interdata
 			statHead.hpbar.visible = false;
 			statHead.objectName.text = '';
 			statHead.numb.text = '';
-			statHead.price.text = Res.txt('p', 'medprice');
+			statHead.price.text = Res.txt('pip', 'medprice');
 			vis.butOk.visible = vis.butDef.visible=false;
 
 			if (page2 == 1) 
@@ -82,30 +82,30 @@ package interdata
 				cena = (gg.maxhp - gg.hp - gg.rad) * priceHP;
 				if (cena < 0) cena = 0;
 				
-				arr.push({id:'hp', objectName:Res.txt('p', 'hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp), price:cena});
-				arr.push({id:'organism', objectName:Res.txt('p', 'organism')+':', lvl:''});
+				arr.push({id:'hp', objectName:Res.txt('pip', 'hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp), price:cena});
+				arr.push({id:'organism', objectName:Res.txt('pip', 'organism')+':', lvl:''});
 				
 				if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
-				arr.push({id:'statHead'+gg.pers.headSt,objectName:'   '+Res.txt('p', 'head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'statHead'+gg.pers.headSt,objectName:'   '+Res.txt('pip', 'head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP), price:cena});
 				
 				if (gg.pers.inMaxHP-gg.pers.torsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
-				arr.push({id:'statTors'+gg.pers.torsSt,objectName:'   '+Res.txt('p', 'tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'statTors'+gg.pers.torsSt,objectName:'   '+Res.txt('pip', 'tors'), lvl:Math.round(gg.pers.torsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.torsHP/gg.pers.inMaxHP), price:cena});
 				
 				if (gg.pers.inMaxHP-gg.pers.legsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
-				arr.push({id:'statLegs'+gg.pers.legsSt,objectName:'   '+Res.txt('p', 'legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'statLegs'+gg.pers.legsSt,objectName:'   '+Res.txt('pip', 'legs'), lvl:Math.round(gg.pers.legsHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.legsHP/gg.pers.inMaxHP), price:cena});
 				
 				if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) cena=raz*priceBlood; else cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
-				arr.push({id:'statBlood'+gg.pers.bloodSt,objectName:'   '+Res.txt('p', 'blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP), price:cena});
+				arr.push({id:'statBlood'+gg.pers.bloodSt,objectName:'   '+Res.txt('pip', 'blood'), lvl:Math.round(gg.pers.bloodHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.bloodHP/gg.pers.inMaxHP), price:cena});
 				
 				if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) cena=razMana*priceMana; else cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
-				arr.push({id:'statMana'+gg.pers.manaSt,objectName:'   '+Res.txt('p', 'mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana), price:cena});
+				arr.push({id:'statMana'+gg.pers.manaSt,objectName:'   '+Res.txt('pip', 'mana'), lvl:Math.round(gg.pers.manaHP)+'/'+Math.round(gg.pers.inMaxMana), bar:(gg.pers.manaHP/gg.pers.inMaxMana), price:cena});
 				
 				cena=(gg.rad)*priceRad;
-				arr.push({id:'rad', objectName:Res.txt('p', 'rad'), lvl:Math.round(gg.rad), price:cena});
+				arr.push({id:'rad', objectName:Res.txt('pip', 'rad'), lvl:Math.round(gg.rad), price:cena});
 				cena=(gg.cut)*priceCut;
-				arr.push({id:'cut', objectName:Res.txt('p', 'cut'), lvl:Math.round(gg.cut*10)/10, price:cena});
+				arr.push({id:'cut', objectName:Res.txt('pip', 'cut'), lvl:Math.round(gg.cut*10)/10, price:cena});
 				cena=(gg.poison)*pricePoison;
-				arr.push({id:'poison', objectName:Res.txt('p', 'poison'), lvl:Math.round(gg.poison*10)/10, price:cena});
+				arr.push({id:'poison', objectName:Res.txt('pip', 'poison'), lvl:Math.round(gg.poison*10)/10, price:cena});
 			}
 			showBottext();
 
@@ -140,8 +140,8 @@ package interdata
 		{
 				if (event.currentTarget.id.text!='') 
 				{
-					vis.objectName.text = Res.txt('p', event.currentTarget.id.text);
-					var s:String = Res.txt('p', event.currentTarget.id.text, 1);
+					vis.objectName.text = Res.txt('pip', event.currentTarget.id.text);
+					var s:String = Res.txt('pip', event.currentTarget.id.text, 1);
 					vis.info.htmlText=s;
 				} 
 				else
@@ -171,9 +171,9 @@ package interdata
 		//set public
 		public function showBottext():void
 		{
-			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('i','gel')+': '+yel(plata.kol);
-			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('i','good')+': '+yel(plata.kol);
-			else vis.bottext.htmlText=Res.txt('p', 'caps')+': '+yel(plata.kol);
+			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('item','gel')+': '+yel(plata.kol);
+			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('item','good')+': '+yel(plata.kol);
+			else vis.bottext.htmlText=Res.txt('pip', 'caps')+': '+yel(plata.kol);
 		}
 		
 		//set public

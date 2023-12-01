@@ -271,11 +271,11 @@ package interdata
 			keyNames[Keyboard.NUMPAD_SUBTRACT]	= "Numpad -";
 			keyNames[Keyboard.NUMPAD_ENTER]		= "Numpad Enter";
 			
-			mbNames['lmb']	= Res.txt('k', 'lmb');
-			mbNames['rmb']	= Res.txt('k', 'rmb');
-			mbNames['mmb']	= Res.txt('k', 'mmb');
-			mbNames['scrd']	= Res.txt('k', 'scrd');
-			mbNames['scru']	= Res.txt('k', 'scru');
+			mbNames['lmb']	= Res.txt('key', 'lmb');
+			mbNames['rmb']	= Res.txt('key', 'rmb');
+			mbNames['mmb']	= Res.txt('key', 'mmb');
+			mbNames['scrd']	= Res.txt('key', 'scrd');
+			mbNames['scru']	= Res.txt('key', 'scru');
 			
 			gotoDef();
 			if (loadObj) load(loadObj);

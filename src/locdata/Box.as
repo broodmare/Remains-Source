@@ -145,8 +145,8 @@ package locdata
 			if (node.@close.length()) sndClose = node.@close;
 			if (node.@die.length()) sndDie = node.@die;
 			if (node.@plav.length()) ddyPlav = node.@plav;
-			if (node.@objectName.length()) objectName = Res.txt('o', node.@objectName);
-			else objectName = Res.txt('o', id);
+			if (node.@objectName.length()) objectName = Res.txt('obj', node.@objectName);
+			else objectName = Res.txt('obj', id);
 			if (node.@explcrack.length()) explcrack = true;
 			if (scX < 40 || wall > 0) shelf = false;
 			if (node.@shelf.length()) shelf = true;
@@ -175,7 +175,7 @@ package locdata
 			// Individual parameters from the XML map
 			if (xml) 
 			{
-				if (xml.@name.length()) objectName=Res.txt('o',xml.@name);	//название
+				if (xml.@name.length()) objectName=Res.txt('obj',xml.@name);	//название
 				// Attached scripts
 				if (xml.scr.length()) 
 				{
@@ -201,7 +201,7 @@ package locdata
 				
 				if (xml.@prob.length && id != 'exit') 
 				{
-					objectName = Res.txt('m', xml.@prob);
+					objectName = Res.txt('map', xml.@prob);
 				}
 				if (xml.@light.length()) light=true;
 				if (xml.@fun.length()) 

@@ -41,7 +41,7 @@ package locdata
 			Y = ny;
 			scX=node.@size*Settings.tilePixelWidth;
 			scY=node.@wid*Settings.tilePixelHeight;
-			objectName=Res.txt('o','checkpoint');
+			objectName=Res.txt('obj','checkpoint');
 			
 			X1 = X - scX / 2;
 			X2 = X + scX / 2;

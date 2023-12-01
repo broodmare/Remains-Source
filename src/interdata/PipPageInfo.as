@@ -93,7 +93,7 @@ package interdata
 			{		//карта
 				if (World.world.room.noMap) 
 				{
-					vis.emptytext.text=Res.txt('p', 'emptymap');
+					vis.emptytext.text=Res.txt('pip', 'emptymap');
 				} 
 				else 
 				{
@@ -123,7 +123,7 @@ package interdata
 							if (j==null || j.state==0) 
 							{
 								vis.butOk.visible=true;
-								vis.butOk.text.text=Res.txt('p', 'alltask');
+								vis.butOk.text.text=Res.txt('pip', 'alltask');
 								break;
 							}
 						}
@@ -173,10 +173,10 @@ package interdata
 						if (Settings.testMode || level.visited || level.access) sim.visible = true;
 					}
 				}
-				vis.butOk.text.text=Res.txt('p', 'trans');
+				vis.butOk.text.text=Res.txt('pip', 'trans');
 				visWMap.visible=true;
 				pip.vis.butHelp.visible=true;
-				pip.helpText=Res.txt('p','helpWorld',0,true);
+				pip.helpText=Res.txt('pip','helpWorld',0,true);
 			} 
 			else if (page2 == 4)
 			{	//записи
@@ -208,13 +208,13 @@ package interdata
 				statHead.visible=true;
 				statHead.objectName.text='';
 				statHead.mq.visible=false;
-				statHead.kol.text=Res.txt('p', 'frag');
+				statHead.kol.text=Res.txt('pip', 'frag');
 				vis.ico.visible=true;
 				for each (var xml in XmlBook.getXML("units").unit)
 				{
 					if (xml && xml.@cat.length()) 
 					{
-						var n:Object={id:xml.@id, objectName:Res.txt('u',xml.@id), cat:xml.@cat, kol:-1};
+						var n:Object={id:xml.@id, objectName:Res.txt('unit',xml.@id), cat:xml.@cat, kol:-1};
 						if (xml.@cat=='3' && World.world.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.world.game.triggers['frag_'+xml.@id]);
 						if (xml.@cat=='2') 
 						{
@@ -263,7 +263,7 @@ package interdata
 				if (obj.state==2) 
 				{
 					item.objectName.alpha=item.mq.alpha=0.4;
-					item.objectName.text+=' ('+Res.txt('p', 'done')+')';
+					item.objectName.text+=' ('+Res.txt('pip', 'done')+')';
 				} 
 				else 
 				{
@@ -307,25 +307,25 @@ package interdata
 			{
 				var l:LevelTemplate=game.levelArray[event.currentTarget.name];
 				if (l==null) return;
-				vis.objectName.text=Res.txt('m',l.id);
-				var s:String=Res.txt('m',l.id,1);
-				if (!l.visited) s+="\n\n<span class ='blu'>"+Res.txt('p', 'ls1')+"</span>";
-				else if (l.passed) s+="\n\n<span class ='or'>"+Res.txt('p', 'ls2')+"</span>";
-				else if (l.tip=='base') s+="\n\n<span class ='or'>"+Res.txt('p', 'ls4')+"</span>";
-				else if (l.tip=='rnd') s+="\n\n<span class ='yel'>"+Res.txt('p', 'ls3')+": "+(l.landStage+1)+"</span>";
+				vis.objectName.text=Res.txt('map',l.id);
+				var s:String=Res.txt('map',l.id,1);
+				if (!l.visited) s+="\n\n<span class ='blu'>"+Res.txt('pip', 'ls1')+"</span>";
+				else if (l.passed) s+="\n\n<span class ='or'>"+Res.txt('pip', 'ls2')+"</span>";
+				else if (l.tip=='base') s+="\n\n<span class ='or'>"+Res.txt('pip', 'ls4')+"</span>";
+				else if (l.tip=='rnd') s+="\n\n<span class ='yel'>"+Res.txt('pip', 'ls3')+": "+(l.landStage+1)+"</span>";
 				if (l.tip=='rnd' && l.kolAllProb>0) {
-					s+="\n<span class ='yel'>"+Res.txt('p', 'kolProb')+': '+l.kolClosedProb+'/'+l.kolAllProb+"</span>";
+					s+="\n<span class ='yel'>"+Res.txt('pip', 'kolProb')+': '+l.kolClosedProb+'/'+l.kolAllProb+"</span>";
 				}
-				if (l.dif>0) s+='\n\n'+Res.txt('p', 'recLevel')+' '+Math.round(l.dif);
-				if (l.dif>World.world.pers.level) s+='\n\n'+Res.txt('p', 'wrLevel');
+				if (l.dif>0) s+='\n\n'+Res.txt('pip', 'recLevel')+' '+Math.round(l.dif);
+				if (l.dif>World.world.pers.level) s+='\n\n'+Res.txt('pip', 'wrLevel');
 				if (World.world.pers.speedShtr>=3) {
-					s+='\n\n'+red(Res.txt('p', 'speedshtr3'));
+					s+='\n\n'+red(Res.txt('pip', 'speedshtr3'));
 				} else if (World.world.pers.speedShtr==2) {
-					s+='\n\n'+red(Res.txt('p', 'speedshtr2'));
+					s+='\n\n'+red(Res.txt('pip', 'speedshtr2'));
 				} else if (World.world.pers.speedShtr==1) {
-					s+='\n\n'+red(Res.txt('p', 'speedshtr1'));
+					s+='\n\n'+red(Res.txt('pip', 'speedshtr1'));
 				}
-				if (World.world.pers.speedShtr>=1) s+='\n'+Res.txt('p', 'speedshtr0');
+				if (World.world.pers.speedShtr>=1) s+='\n'+Res.txt('pip', 'speedshtr0');
 				vis.info.htmlText=s;
 			} 
 			else if (page2==4) 
@@ -343,7 +343,7 @@ package interdata
 				Unit.initIco(event.currentTarget.id.text)
 				if (Unit.arrIcos[event.currentTarget.id.text]) vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
 				vis.objectName.text=event.currentTarget.objectName.text;
-				vis.info.htmlText=Res.txt('u',event.currentTarget.id.text,1)+'\n'+infoUnit(event.currentTarget.id.text, event.currentTarget.kol.text);
+				vis.info.htmlText=Res.txt('unit',event.currentTarget.id.text,1)+'\n'+infoUnit(event.currentTarget.id.text, event.currentTarget.kol.text);
 				vis.info.y=vis.ico.y+vis.ico.height+20;
 				vis.ico.x=685-vis.ico.width/2; //460 910
 			}
@@ -406,13 +406,13 @@ package interdata
 				if (n>=1) 
 				{
 					//ХП
-					s+=Res.txt('p', 'hp')+': '+yel(v_hp)+'\n';
+					s+=Res.txt('pip', 'hp')+': '+yel(v_hp)+'\n';
 					//порог урона и броня
-					if (v_skin) 	s+=Res.txt('p', 'skin')+': '+yel(v_skin)+'\n';
+					if (v_skin) 	s+=Res.txt('pip', 'skin')+': '+yel(v_skin)+'\n';
 					if (v_aqual) 
 					{
-						if (v_armor) 	s+=Res.txt('p', 'armor')+': '+yel(v_armor)+' ('+(v_aqual*100)+'%)  ';
-						if (v_marmor) 	s+=Res.txt('p', 'marmor')+': '+yel(v_marmor)+' ('+(v_aqual*100)+'%)';
+						if (v_armor) 	s+=Res.txt('pip', 'armor')+': '+yel(v_armor)+' ('+(v_aqual*100)+'%)  ';
+						if (v_marmor) 	s+=Res.txt('pip', 'marmor')+': '+yel(v_marmor)+' ('+(v_aqual*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
@@ -420,14 +420,14 @@ package interdata
 				{
 					if ((v_visdam==1 || v_visdam==3) && v_damage) 
 					{
-						s+=Res.txt('p', 'dam_melee')+': ';
-						if (v_tipdam) s+=blue(Res.txt('p', 'tipdam'+v_tipdam)); else s+=blue(Res.txt('p', 'tipdam2'));
+						s+=Res.txt('pip', 'dam_melee')+': ';
+						if (v_tipdam) s+=blue(Res.txt('pip', 'tipdam'+v_tipdam)); else s+=blue(Res.txt('pip', 'tipdam2'));
 						s+=' ('+yel(v_damage)+')\n'
 					}
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) 
 					{
-						s+=Res.txt('p', 'dam_shoot')+': ';
-						if (v_stipdam) s+=blue(Res.txt('p', 'tipdam'+v_stipdam)); else s+=blue(Res.txt('p', 'tipdam0'));
+						s+=Res.txt('pip', 'dam_shoot')+': ';
+						if (v_stipdam) s+=blue(Res.txt('pip', 'tipdam'+v_stipdam)); else s+=blue(Res.txt('pip', 'tipdam0'));
 						s+=' ('+yel(v_sdamage)+')\n'
 					}
 					if (un.w.length()) 
@@ -438,8 +438,8 @@ package interdata
 							if (!(weap.@no>0)) 
 							{
 								if (wk) s+=', ';
-								else s+=Res.txt('p', 'enemy_weap')+': ';
-								s+=blue(Res.txt('w', weap.@id));
+								else s+=Res.txt('pip', 'enemy_weap')+': ';
+								s+=blue(Res.txt('weapon', weap.@id));
 								try 
 								{
 									var w = XmlBook.getXML("weapons").weapon.(@id == weap.@id);
@@ -460,15 +460,15 @@ package interdata
 				}
 				//уклонение
 				if (n>=3) {
-					if (v_dexter!=null) 	s+=Res.txt('p', 'dexter')+': '+yel((v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
-					if (v_observ) 	s+=Res.txt('p', 'observ')+': '+yel((v_observ>0?'+':'')+v_observ)+'\n';
-					if (v_skill!=null) 	s+=Res.txt('p', 'weapskill')+': '+yel(Math.round(v_skill*100)+'%')+'\n';
+					if (v_dexter!=null) 	s+=Res.txt('pip', 'dexter')+': '+yel((v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
+					if (v_observ) 	s+=Res.txt('pip', 'observ')+': '+yel((v_observ>0?'+':'')+v_observ)+'\n';
+					if (v_skill!=null) 	s+=Res.txt('pip', 'weapskill')+': '+yel(Math.round(v_skill*100)+'%')+'\n';
 				}
 			}
 			//сопротивления
 			if (n>=3 && un.vulner.length()) 
 			{
-				s+=Res.txt('p', 'resists')+': ';
+				s+=Res.txt('pip', 'resists')+': ';
 				node=un.vulner[0];
 				if (node.@emp.length()) 	s+=vulner(Unit.D_EMP,node.@emp);
 				if (node.@bul.length()) 	s+=vulner(Unit.D_BUL,node.@bul);
@@ -489,7 +489,7 @@ package interdata
 		//set public
 		public function vulner(n:int, val:Number):String 
 		{
-			return blue(Res.txt('p', 'tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
+			return blue(Res.txt('pip', 'tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
 		}
 		
 		

@@ -346,7 +346,7 @@ package unitdata
 				}
 				if (xml.@name.length()) {
 					uniqName=true;
-					objectName=Res.txt('u',xml.@name);
+					objectName=Res.txt('unit',xml.@name);
 				}
 				if (xml.@ai.length()) aiTip=xml.@ai;
 				if (xml.@hpmult.length()) hpmult=xml.@hpmult;
@@ -480,7 +480,7 @@ package unitdata
 				mid=id;
 			}
 			var node0:XML = XmlBook.getXML("units").unit.(@id == mid)[0];
-			if (mid && !uniqName) objectName=Res.txt('u',mid);
+			if (mid && !uniqName) objectName=Res.txt('unit',mid);
 			if (node0.@fraction.length()) fraction=node0.@fraction;
 			inter.cont=mid;
 			if (node0.@cont.length() && inter) inter.cont=node0.@cont;
@@ -2376,7 +2376,7 @@ package unitdata
 				{
 					armor_hp=0;
 					armor_qual=0;
-					mess=Res.txt('g', 'abr');
+					mess=Res.txt('gui', 'abr');
 				}
 			}
 
@@ -2473,13 +2473,13 @@ package unitdata
 				// Electric and EMP damage stun robots
 				if ((tip==D_SPARK || tip==D_EMP) && opt && opt.robot && sost==1 && Math.random()<dam/maxhp) 
 				{
-					mess=Res.txt('g', 'kz');
+					mess=Res.txt('gui', 'kz');
 					if (stun<robotKZ) stun=robotKZ;
 				}
 				// Explosions cause concussion
 				if (tip==D_EXPL && opt && !opt.robot && !mech && !doop && sost==1 && Math.random()<dam/maxhp) 
 				{
-					mess=Res.txt('e','contusion');
+					mess=Res.txt('eff','contusion');
 					addEffect('contusion');
 				}
 				if (!tt && demask<200) demask=200;	// An invisible object becomes visible when taking damage
@@ -2491,26 +2491,26 @@ package unitdata
 						if (bul.weap.dopEffect=='igni' && vulner[D_FIRE]>0.1) 
 						{
 							addEffect('burning',bul.weap.dopDamage);
-							mess=Res.txt('e','burning');
+							mess=Res.txt('eff','burning');
 						}
 						if (bul.weap.dopEffect=='ice' && vulner[D_CRIO]>0.1 && !mech) 
 						{
-							mess=Res.txt('e','freezing');
+							mess=Res.txt('eff','freezing');
 							addEffect('freezing');
 						}
 						if (bul.weap.dopEffect=='blind' && vulner[D_LASER]>0.1 && !mech && !doop) 
 						{
-							mess=Res.txt('e','blindness');
+							mess=Res.txt('eff','blindness');
 							addEffect('blindness');
 						}
 						if (bul.weap.dopEffect=='acid' && vulner[D_ACID]>0.1) 
 						{
-							mess=Res.txt('e','chemburn');
+							mess=Res.txt('eff','chemburn');
 							addEffect('chemburn',bul.weap.dopDamage);
 						}
 						if (bul.weap.dopEffect=='pink' && vulner[D_PINK]>0.1) 
 						{
-							mess=Res.txt('e','pinkcloud');
+							mess=Res.txt('eff','pinkcloud');
 							addEffect('pinkcloud',bul.weap.dopDamage);
 						}
 						if (bul.weap.dopEffect=='poison' && vulner[D_POISON]>0.1) 
@@ -2530,14 +2530,14 @@ package unitdata
 								stun=bul.weap.dopDamage;
 								//trace(stun);
 								if (player && stun<=0) World.world.gui.infoText('stun');
-								if (stun>1) mess=Res.txt('g', 'stun');
+								if (stun>1) mess=Res.txt('gui', 'stun');
 							}
 						}
 					}
 					if (bul.weap.ammoFire) 
 					{
 						addEffect('burning',bul.weap.ammoFire);
-						mess=Res.txt('e','burning');
+						mess=Res.txt('eff','burning');
 					}
 				}
 				// Return damage to the owner of the bullet

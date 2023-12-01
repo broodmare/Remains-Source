@@ -211,8 +211,8 @@ package unitdata
 			vse=true;
 			if (player && inf && se) 
 			{
-				if (tip==3) World.world.gui.infoText('endFoodEffect',Res.txt('e',id));
-				else World.world.gui.infoText('endEffect',Res.txt('e',id));
+				if (tip==3) World.world.gui.infoText('endFoodEffect',Res.txt('eff',id));
+				else World.world.gui.infoText('endEffect',Res.txt('eff',id));
 			}
 			if (post && onPost) 		// Replacement of the effect with a post-effect
 			{

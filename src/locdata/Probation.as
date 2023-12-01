@@ -54,12 +54,12 @@ package locdata
 			xml=nxml;
 			room=newRoom;
 			id=xml.@id;
-			objectName=Res.txt('m',id);
-			info='<b>'+objectName+'</b><br><br>'+Res.txt('m',id,1)+'<br>';
-			if (Res.txt('m',id,3)!='') help="<span class = 'r3'>"+Res.txt('m',id,3)+"</span>";
-			if (!room.levitOn) info+='<br>'+Res.txt('g', 'restr_levit');
-			if (!room.portOn) info+='<br>'+Res.txt('g', 'restr_port');
-			if (!room.destroyOn) info+='<br>'+Res.txt('g', 'restr_des');
+			objectName=Res.txt('map',id);
+			info='<b>'+objectName+'</b><br><br>'+Res.txt('map',id,1)+'<br>';
+			if (Res.txt('map',id,3)!='') help="<span class = 'r3'>"+Res.txt('map',id,3)+"</span>";
+			if (!room.levitOn) info+='<br>'+Res.txt('gui', 'restr_levit');
+			if (!room.portOn) info+='<br>'+Res.txt('gui', 'restr_port');
+			if (!room.destroyOn) info+='<br>'+Res.txt('gui', 'restr_des');
 			if (xml.@prize.length()) prizeActive=true;
 			if (xml.@tip.length()) tip=xml.@tip;
 			if (xml.@close.length()) isClose=true;
@@ -185,7 +185,7 @@ package locdata
 		public function showHelp():void
 		{
 			var isHelp = (help != '');
-			World.world.gui.informText(info+(isHelp?('<br><br>'+Res.txt('g', 'need_help')):''),isHelp);
+			World.world.gui.informText(info+(isHelp?('<br><br>'+Res.txt('gui', 'need_help')):''),isHelp);
 		}
 		
 		//активировать испытание

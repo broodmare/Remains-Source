@@ -125,7 +125,7 @@ package unitdata
 			if (node.@res.length()) dmana_res = node.@res;
 			
 			//showObsInd=true;//!!!!
-			objectName = Res.txt('a', id);
+			objectName = Res.txt('armor', id);
 			if (lvl > 0) objectName += ' - ' + lvl;
 		}
 		

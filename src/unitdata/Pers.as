@@ -824,7 +824,7 @@ package unitdata
 				for (var i=preNumb+1; i<=postNumb; i++) 
 				{
 					var bonus=getSkBonus(i);
-					if (bonus>0) World.world.gui.infoText('skill',Res.txt('e',id)+'-'+bonus);
+					if (bonus>0) World.world.gui.infoText('skill',Res.txt('eff',id)+'-'+bonus);
 				}
 			} 
 			else 
@@ -848,7 +848,7 @@ package unitdata
 		{
 			if (skills[id]<maxSkLvl) 
 			{
-				World.world.gui.infoText('skillUp',Res.txt('e',id));
+				World.world.gui.infoText('skillUp',Res.txt('eff',id));
 				Snd.ps('skill');
 				addSkill(id,1);
 				setParameters();
@@ -863,7 +863,7 @@ package unitdata
 				else id='knowl';
 				if (skills[id]<maxPostSkLvl) 
 				{
-					World.world.gui.infoText('skillUp',Res.txt('e',id));
+					World.world.gui.infoText('skillUp',Res.txt('eff',id));
 					Snd.ps('skill');
 					addSkill(id,1);
 					setParameters();
@@ -897,7 +897,7 @@ package unitdata
 				if (perks[id]<maxlvl) 
 				{
 					perks[id]++;
-					World.world.gui.infoText('perk',Res.txt('e',id)+'-'+perks[id]);
+					World.world.gui.infoText('perk',Res.txt('eff',id)+'-'+perks[id]);
 					Snd.ps('skill');
 				} 
 				else 
@@ -910,7 +910,7 @@ package unitdata
 			{
 				// If the required perk is not present, add it
 				perks[id]=1;
-				World.world.gui.infoText('perk',Res.txt('e',id));
+				World.world.gui.infoText('perk',Res.txt('eff',id));
 				Snd.ps('skill');
 			}
 			if (minus) perkPoint--;
@@ -1601,12 +1601,12 @@ package unitdata
 		
 		public function repTex():String 
 		{
-			if (rep>=repGood) return Res.txt('p', 'reputmax');
-			if (rep>=rep4) return Res.txt('p', 'reput4');
-			if (rep>=rep3) return Res.txt('p', 'reput3');
-			if (rep>=rep2) return Res.txt('p', 'reput2');
-			if (rep>=rep1) return Res.txt('p', 'reput1');
-			return Res.txt('p', 'reput0');
+			if (rep>=repGood) return Res.txt('pip', 'reputmax');
+			if (rep>=rep4) return Res.txt('pip', 'reput4');
+			if (rep>=rep3) return Res.txt('pip', 'reput3');
+			if (rep>=rep2) return Res.txt('pip', 'reput2');
+			if (rep>=rep1) return Res.txt('pip', 'reput1');
+			return Res.txt('pip', 'reput0');
 		}
 		
 		

@@ -1391,7 +1391,7 @@ package locdata
 			if (spawnPoints.length > 0) 
 			{
 				var sp = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
-				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} objectName={Res.txt('m',nprob)} time='20' inter='8'/>);
+				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} objectName={Res.txt('map',nprob)} time='20' inter='8'/>);
 				isCheck = true;
 				return true;
 			}

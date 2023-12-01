@@ -10,27 +10,6 @@ package
 	{
 		
 		public static var localizationFile:XML;
-		
-		//Localization strings sorted into various categories.
-		public static const classData:Object = 
-		{
-			'u' : 'unit',
-			'w' : 'weapon',
-			'a' : 'armor',
-			'o' : 'obj',
-			'i' : 'item',
-			'e' : 'eff',
-			'f' : 'info',
-			'p' : 'pip',
-			'k' : 'key',
-			'g' : 'gui',
-			'm' : 'map',
-			'0' : 'n',
-			'1' : 'info',
-			'2' : 'mess',
-			'3' : 'help'
-		};
-		
 		private static var rainbowcol:Array = ['red','or','yel','green','blu','purp'];
 
 		public function Res() 
@@ -38,97 +17,123 @@ package
 
 
 		}
-		
 
-
-
-
-		public static function istxt(stringType:String, id:String):Boolean
+		//TODO: Remove. Fold into txt().
+		public static function istxt(classKey:String, id:String):Boolean
 		{
-			    //trace('Res.as/istxt() - istxt() executing with stringType: ' + stringType + ' and ID: ' + id + '.');
-				if (localizationFile == null) trace('Res.as/istxt() - Game data is null.');
-				var xl:XMLList = localizationFile[classData[stringType]].(@id == id);
-				return (xl.length() > 0);
+				var string = localizationFile[classKey].(@id == id);		
+				if(string.length() > 0)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 		}
 		
-
-		public static function txt(classDataKey:String, id:String, classDataIndexNumber:int = 0, dop:Boolean = false):String 
+		//Text string localization
+		public static function txt(classKey:String, id:String, nodeChildType:int = 0, dop:Boolean = false):String 
 		{
-			//trace('Res.as/txt() - txt() executing with classDataKey: "' + classDataKey + '" String ID: "' + id + '" classDataIndexNumber: "' + classDataIndexNumber + '" dop: "' + dop + '."')
-			if (id == '') 
-			{
-				trace('Res.as/txt() - ID is blank, returning.');
-				return '';
-			}
-			if (localizationFile == null) 
-			{
-				
-				trace('Res.as/txt() - localizationFile is null.');
-				return '';
-			}
-			if (classData[classDataKey] == null) 
-			{
-				trace('Res.as/txt() - Invalid classDataKey provided: ' + classDataKey);
-				return '';
-			}
+			trace('Res.as/txt() - classKey/ID: "' + classKey + '/' + id + '", nodeChildType: "' + nodeChildType + '" dop: "' + dop + '."')
 
+			var xmlNode:XML;
+   			var xmlNodeText:String = "";
+			
+			if (isTextNullCheck(classKey, id)) //Return blank text early if elements are malformed.
+			{
+				return xmlNodeText;
+			}
 
 			try 
 			{
-				//trace('Res.as/txt() - Trying to set "xl" as: ' + localizationFile[classData[classDataKey]].(@id == id));
-				var xl = localizationFile[classData[classDataKey]].(@id == id);
+				xmlNode = localizationFile[classKey].(@id == id)[0]; //XML Node
+				trace('Res.as/txt() - xmlNode: "' + xmlNode + '".');
 
-				//trace('Res.as/txt() - Trying to set "s" as: ' + xl[classData[classDataIndexNumber]][0]);
-				var s = xl[classData[classDataIndexNumber]][0];
+				switch(nodeChildType) //XML Node child elements.
+				{
+					case 0:
+						xmlNodeText = xmlNode.n; // Access the 'n' child element (default behavior)
+						break;
+					case 1:
+						xmlNodeText = xmlNode.info; // Access the 'info' child element
+						break;
+					case 2:
+						xmlNodeText = xmlNode.mess; // Access the 'mess' child element
+						break;
+					case 3:
+						xmlNodeText = xmlNode.help; // Access the 'help' child element
+						break;
+					default:
+						trace('Res.as/txt() - nodeChildType for classKey/ID: "' + classKey + '/' + id + '" not found with nodeChildType: "' + nodeChildType + '".');
+						break;
+				}
 			} 
 			catch (err:Error) 
 			{
-				trace('Res.as/txt() - txt Error.' + err.message);
+				trace('Res.as/txt() - Failed to retrieve string ID: "' + id + '", with classKey: "' + classKey + '". Error: "' + err.message + '".');
+				return xmlNodeText;
 			}
-
-			if (s == null || s == "") 
-			{
-				if (classDataKey == 'o') return '';
-				if (classDataIndexNumber == 0) return '*' + classData[classDataKey] + '_' + id;			// If still not found, return just the id
-				return '';
-			}
-
 
 			// Processing
-			xl = xl[0];
-			if (xl.@m == '1')	// Contains material
+			if (xmlNode.@m == '1')	// Contains material
 			{						
-				var spl:Array = s.split('|');
-				if (spl.length >= 2) s = spl[Settings.matFilter ? 1 : 0];
+				var spl:Array = xmlNodeText.split('|');
+				if (spl.length >= 2) xmlNodeText = spl[Settings.matFilter ? 1 : 0];
+			
 			}
-			if (classDataIndexNumber >= 1 || dop) // Control keys
+			if (nodeChildType >= 1 || dop) // Control keys
 			{
-				if (xl.@s1.length()) s = addKeys(s, xl);	
+				if (xmlNode.@s1.length()) xmlNodeText = addKeys(xmlNodeText, xmlNode);	
 				try 
 				{
-					if (xl[classData[classDataIndexNumber]][0].@s1.length) 
+					if (xmlNode[classKey][0].@s1.length) 
 					{
-						s = addKeys(s, xl[classData[classDataIndexNumber]][0]);
+						xmlNodeText = addKeys(xmlNodeText, xmlNode[classKey][0]);
 					}
 				} 
 				catch (err) 
 				{
 					trace('Res.as/txt() - Failed adding control keys.');
 				}
-				s = s.replace(/\[br\]/g, '<br>');
-				s = s.replace(/\[/g, "<span classData='yel'>");
-				s = s.replace(/\]/g, "</span>");
+				xmlNodeText = xmlNodeText.replace(/\[br\]/g, '<br>');
+				xmlNodeText = xmlNodeText.replace(/\[/g, "<span classData='yel'>");
+				xmlNodeText = xmlNodeText.replace(/\]/g, "</span>");
 			}
+			
 			if (dop) 
 			{
-				s = s.replace(/[\b\r\t]/g, '');
+				xmlNodeText = xmlNodeText.replace(/[\b\r\t]/g, '');
 			}
-			if (classDataKey == 'f' || classDataKey == 'e' && classDataIndexNumber == 2 || classDataIndexNumber >= 1 && xl.@st.length()) s = "<span classData = 'r" + xl.@st + "'>" + s + "</span>";
 			
-			//trace('Res.as/txt() - Returning string: "' + s + '."');
-			return s;
+			if (classKey == 'info' || classKey == 'eff' && nodeChildType == 2 || nodeChildType >= 1 && xmlNode.@st.length()) 
+			{
+				xmlNodeText = "<span classData = 'r" + xmlNode.@st + "'>" + xmlNodeText + "</span>";
+			}
+
+			trace('Res.as/txt() - Returning localized text: "' + xmlNodeText + '."');
+			return xmlNodeText;
 		}
 
+		private static function isTextNullCheck(classKey:String, id:String):Boolean
+		{
+			if (id == '') 
+			{
+				trace('Res.as/isTextNullCheck() - ID is blank.');
+				return true;
+			}
+			if (localizationFile == null) 
+			{
+				trace('Res.as/isTextNullCheck() - localizationFile is null.');
+				return true;
+			}
+			if (classKey == null || '') 
+			{
+				trace('Res.as/isTextNullCheck() - classKey is blank or null.');
+				return true;
+			}
+			return false;
+		}
 
 		public static function messText(id:String, v:int = 0, imp:Boolean = true):String 
 		{
@@ -379,7 +384,6 @@ package
 
 		public static function getClass(id1:String, id2:String = null, def:Class = null):Class 
 		{
-			//trace('Res/getClass() - getClass Executing...');
 			var r:Class;
 			try 
 			{

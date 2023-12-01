@@ -53,7 +53,7 @@ package unitdata
 				vis.osn.gotoAndStop('opened');
 				inter.active=false;
 				id='cage';
-				objectName=Res.txt('u',id);
+				objectName=Res.txt('unit',id);
 				npc=false;
 				fraction=0;
 			}
@@ -90,7 +90,7 @@ package unitdata
 			vis.osn.gotoAndPlay('open');
 			inter.active=false;
 			id='cage';
-			objectName=Res.txt('u',id);
+			objectName=Res.txt('unit',id);
 			npc=false;
 			room.takeXP(500,World.world.gg.X, World.world.gg.Y-100,true);
 			fraction=0;
