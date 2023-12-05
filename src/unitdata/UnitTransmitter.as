@@ -89,7 +89,7 @@ package unitdata
 				return;
 			}
 			aiTCh++;
-			if (aiState==1 && oduplenie<=0 && aiTCh%3==1 && room==World.world.gg.room) {
+			if (aiState==1 && oduplenie<=0 && aiTCh%3==1 && room==GameSession.currentSession.gg.room) {
 				upKoef+=0.05;
 				if (rasst2<dist*dist) {
 					rasst=Math.sqrt(rasst2);
@@ -101,12 +101,12 @@ package unitdata
 						Snd.pshum(sndRun,rkoef);
 					}
 					if (aiTCh%15==1) Emitter.emit('necronoise',room,X,Y-10,{alpha:rkoef});
-					if (!World.world.gg.invulner && aiTCh%30==1) {
+					if (!GameSession.currentSession.gg.invulner && aiTCh%30==1) {
 						if (rasst<distdam) {
 							rkoef=(distdam-rasst)/distdam;
 							if (rkoef<0.5) rkoef*=2;
 							else rkoef=1;
-							World.world.gg.damage(dam*rkoef,tipDamage,null,false);
+							GameSession.currentSession.gg.damage(dam*rkoef,tipDamage,null,false);
 						}
 					}
 				}

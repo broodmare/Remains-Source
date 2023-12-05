@@ -528,15 +528,15 @@ package weapondata
 		{
 			if (uniq<0) return;
 			variant=nvar;
-			if (owner.player && World.world.gg.currentWeapon==this) 
+			if (owner.player && GameSession.currentSession.gg.currentWeapon==this) 
 			{
 				remVisual();
 			}
 			getXmlParam();			
-			if (owner.player && World.world.gg.currentWeapon==this) 
+			if (owner.player && GameSession.currentSession.gg.currentWeapon==this) 
 			{
 				addVisual();
-				World.world.gg.weaponLevit();
+				GameSession.currentSession.gg.weaponLevit();
 			}
 		}
 		
@@ -554,7 +554,7 @@ package weapondata
 			} 
 			else 
 			{
-				room = World.world.room;
+				room = GameSession.currentSession.room;
 			}
 			super.addVisual();
 			if (owner && tip != 5 && owner.cTransform) 
@@ -564,7 +564,7 @@ package weapondata
 		}
 		public function addVisual2():void
 		{
-			if (tip == 5 && vis) World.world.grafon.canvasLayerArray[layer].addChild(vis);
+			if (tip == 5 && vis) GameSession.currentSession.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
 		public override function setNull(f:Boolean=false):void
@@ -773,7 +773,7 @@ package weapondata
 				{
 					hold++;
 					t_rech=recharg;
-					if (owner.player) World.world.gui.setWeapon();
+					if (owner.player) GameSession.currentSession.gui.setWeapon();
 				}
 			}
 			if (t_attack==0 && t_reload>0) t_reload--;
@@ -785,15 +785,15 @@ package weapondata
 		public function attack(waitReady:Boolean=false):Boolean 
 		{
 			if (waitReady && !ready) return false;
-			if (hp<=0 && owner==World.world.gg) 
+			if (hp<=0 && owner==GameSession.currentSession.gg) 
 			{
-				World.world.gui.infoText('brokenWeapon',objectName,null,false);
-				World.world.gui.bulb(X,Y);
+				GameSession.currentSession.gui.infoText('brokenWeapon',objectName,null,false);
+				GameSession.currentSession.gui.bulb(X,Y);
 				return false;
 			}
 			if (owner.player && (respect==1 || alicorn && !Settings.alicorn)) 
 			{
-				World.world.gui.infoText('disWeapon',null,null,false);
+				GameSession.currentSession.gui.infoText('disWeapon',null,null,false);
 				return false;
 			}
 			if (!waitReady && !Settings.alicorn && !auto && t_auto>0) 
@@ -828,8 +828,8 @@ package weapondata
 		{
 			if (jammed) 
 			{
-				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) World.world.gui.infoText('weaponCircuit',null,null,false);
-				else World.world.gui.infoText('weaponJammed', null, null, false);
+				if (tipDamage==Unit.D_LASER || tipDamage==Unit.D_PLASMA || tipDamage==Unit.D_EMP || tipDamage==Unit.D_SPARK) GameSession.currentSession.gui.infoText('weaponCircuit',null,null,false);
+				else GameSession.currentSession.gui.infoText('weaponJammed', null, null, false);
 				Snd.ps('no_ammo',X,Y);
 				initReload();
 				return;
@@ -845,12 +845,12 @@ package weapondata
 			else if (razn == 2) skillConf = 0.6;
 			else if (razn > 2) 
 			{
-				World.world.gui.infoText('weaponSkillLevel',null,null,false);
+				GameSession.currentSession.gui.infoText('weaponSkillLevel',null,null,false);
 				return false;
 			}
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) 
 			{
-				World.world.gui.infoText('persLevel',null,null,false);
+				GameSession.currentSession.gui.infoText('persLevel',null,null,false);
 				return false;
 			}
 			return true;
@@ -903,7 +903,7 @@ package weapondata
 				else if (rnd<breaking/5*jm) 
 				{
 					t_ret=2;
-					if (rapid>5) World.world.gui.infoText('misfire',null,null,false);
+					if (rapid>5) GameSession.currentSession.gui.infoText('misfire',null,null,false);
 					Snd.ps('no_ammo',X,Y);
 					return null;
 				}
@@ -922,7 +922,7 @@ package weapondata
 				if (navod) 
 				{
 					b = new SmartBullet(owner,bulX,bulY,vBullet);
-					(b as SmartBullet).setCel(World.world.gg,navod);
+					(b as SmartBullet).setCel(GameSession.currentSession.gg,navod);
 				} 
 				else 
 				{
@@ -1011,8 +1011,8 @@ package weapondata
 					//восполнение на полигоне
 					if (owner.player && (room.train) && ammo!='recharg' && ammo!='not')
 					{
-						World.world.invent.items[ammo].kol+=rashod;
-						World.world.invent.mass[2]+=World.world.invent.items[ammo].mass*rashod;
+						GameSession.currentSession.invent.items[ammo].kol+=rashod;
+						GameSession.currentSession.invent.mass[2]+=GameSession.currentSession.invent.items[ammo].mass*rashod;
 					}
 				}
 			}
@@ -1058,7 +1058,7 @@ package weapondata
 		
 		public function setTrass(gr:Graphics):void
 		{
-			var rot3:Number = Math.atan2(World.world.celY-Y, World.world.celX-X);
+			var rot3:Number = Math.atan2(GameSession.currentSession.celY-Y, GameSession.currentSession.celX-X);
 			trasser.room=owner.room;
 			trasser.X=trasser.begx=X;
 			trasser.Y=trasser.begy=Y;
@@ -1123,17 +1123,17 @@ package weapondata
 				{
 					if (hold>0) 
 					{
-						World.world.invent.items[ammo].kol+=hold;
-						World.world.invent.mass[2]+=World.world.invent.items[ammo].mass*hold;
+						GameSession.currentSession.invent.items[ammo].kol+=hold;
+						GameSession.currentSession.invent.mass[2]+=GameSession.currentSession.invent.items[ammo].mass*hold;
 						hold=0;
 					}
 					setAmmo(ammoTarg);
 				}
-				var kol:int=World.world.invent.items[ammo].kol;
+				var kol:int=GameSession.currentSession.invent.items[ammo].kol;
 				if (kol>holder-hold) kol=holder-hold;
 				hold+=kol;
-				World.world.invent.items[ammo].kol-=kol;
-				World.world.invent.mass[2]-=World.world.invent.items[ammo].mass*kol;
+				GameSession.currentSession.invent.items[ammo].kol-=kol;
+				GameSession.currentSession.invent.mass[2]-=GameSession.currentSession.invent.items[ammo].mass*kol;
 			} 
 			else 
 			{
@@ -1148,8 +1148,8 @@ package weapondata
 			if (nammo!=null) ammo=nammo;
 			if (node==null) 
 			{
-				node=World.world.invent.items[ammo].xml;
-				if (owner && owner.player && World.world.gui) World.world.gui.setWeapon();
+				node=GameSession.currentSession.invent.items[ammo].xml;
+				if (owner && owner.player && GameSession.currentSession.gui) GameSession.currentSession.gui.setWeapon();
 			}
 			if (node==null) 
 			{
@@ -1181,9 +1181,9 @@ package weapondata
 		{
 			if (owner && owner.player && holder && hold && ammo!='' && ammo!='recharg' && ammo!='not') 
 			{
-				World.world.gui.infoText('unloadWeapon',objectName,null,false);
+				GameSession.currentSession.gui.infoText('unloadWeapon',objectName,null,false);
 				(owner as UnitPlayer).invent.items[ammo].kol+=hold;
-				World.world.invent.mass[2]+=World.world.invent.items[ammo].mass*hold;
+				GameSession.currentSession.invent.mass[2]+=GameSession.currentSession.invent.items[ammo].mass*hold;
 				hold=0;
 				if (sndReload!='') Snd.ps(sndReload,X,Y);
 			}
@@ -1196,7 +1196,7 @@ package weapondata
 			if (jammed) return 2;
 			if (ammo!='recharg' && ammo!='not' && holder>0 && hold<rashod) 
 			{
-				if (World.world.invent.items[ammo].kol<rashod) return 4;
+				if (GameSession.currentSession.invent.items[ammo].kol<rashod) return 4;
 				else return 2;
 			}
 			if (dmagic>owner.mana && owner.mana<owner.maxmana*0.99) return 6;
@@ -1212,7 +1212,7 @@ package weapondata
 			if (perslvl && (owner as UnitPlayer).pers.level<perslvl) return -1; 
 			var razn:Number = lvl-(owner as UnitPlayer).pers.getWeapLevel(skill);
 			if (Settings.weaponsLevelsOff && (razn>2 || lvlNoUse && razn>0)) return -1;
-			if (ammo!='recharg' && ammo!='not' && holder>0 && World.world.invent.items[ammo].kol<rashod) return 0;
+			if (ammo!='recharg' && ammo!='not' && holder>0 && GameSession.currentSession.invent.items[ammo].kol<rashod) return 0;
 			return 1;
 		}
 		
@@ -1240,8 +1240,8 @@ package weapondata
 					if (am.length() == 0) return;
 					if (am.@base != ammoBase) 
 					{
-						World.world.gui.infoText('imprAmmo', World.world.invent.items[nammo].objectName, null, false);
-						World.world.gui.bulb(X, Y);
+						GameSession.currentSession.gui.infoText('imprAmmo', GameSession.currentSession.invent.items[nammo].objectName, null, false);
+						GameSession.currentSession.gui.bulb(X, Y);
 						return;
 					}
 					ammoTarg = nammo;
@@ -1250,10 +1250,10 @@ package weapondata
 				{
 					ammoTarg=nammo;
 				}
-				if (!jammed && ammo!='not' && World.world.invent.items[ammoTarg].kol<rashod) 
+				if (!jammed && ammo!='not' && GameSession.currentSession.invent.items[ammoTarg].kol<rashod) 
 				{
-					World.world.gui.infoText('noAmmo',World.world.invent.items[ammoTarg].objectName,null,false);
-					World.world.gui.bulb(X,Y);
+					GameSession.currentSession.gui.infoText('noAmmo',GameSession.currentSession.invent.items[ammoTarg].objectName,null,false);
+					GameSession.currentSession.gui.bulb(X,Y);
 					return;
 				}
 			}
@@ -1261,7 +1261,7 @@ package weapondata
 			{
 				if (reload>0) 
 				{
-					//if (owner==World.world.gg && holder>rashod) World.world.gui.infoText('reloadWeapon',objectName);
+					//if (owner==GameSession.currentSession.gg && holder>rashod) GameSession.currentSession.gui.infoText('reloadWeapon',objectName);
 					t_reload=Math.round(reload*reloadMult);
 					if (animated) 
 					{

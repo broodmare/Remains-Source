@@ -413,7 +413,7 @@ package unitdata
 			}
 			
 			if (Y>room.roomHeight*Settings.tilePixelHeight-80) throu=false;
-			//World.world.gui.vis.sist.text=aiNeedLaz+':'+isLaz;
+			//GameSession.currentSession.gui.vis.sist.text=aiNeedLaz+':'+isLaz;
 		}
 		
 		//поиск лестницы

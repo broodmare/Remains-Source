@@ -265,7 +265,7 @@ package interdata
 			}
 			selMode = mode;
 			wSelN = 0;
-			var inv:Invent = World.world.invent;
+			var inv:Invent = GameSession.currentSession.invent;
 			inv.getKolAmmos();
 			arr = [];
 			arrfav = [];
@@ -417,16 +417,16 @@ package interdata
 					if (arrfav[i].ammo!=null) mc.ammo.text=arrfav[i].ammo;
 					else mc.ammo.text='';
 
-					if (i<=Settings.kolHK) mc.fav.text=World.world.ctr.keyStates.retKey('keyWeapon'+arrfav[i].fav);
+					if (i<=Settings.kolHK) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+arrfav[i].fav);
 					else if (i<=Settings.kolHK*2+4) 
 					{
-						if (i<=Settings.kolHK*2) mc.fav.text='^'+World.world.ctr.keyStates.retKey('keyWeapon'+(arrfav[i].fav-Settings.kolHK));
-						else mc.fav.text=World.world.ctr.keyStates.retKey('keySpell'+(arrfav[i].fav-Settings.kolHK*2));
+						if (i<=Settings.kolHK*2) mc.fav.text='^'+GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+(arrfav[i].fav-Settings.kolHK));
+						else mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keySpell'+(arrfav[i].fav-Settings.kolHK*2));
 						mc.x=screenX-400;
 					} 
-					else if (i==Settings.kolHK*2+5) mc.fav.text=World.world.ctr.keyStates.retKey('keyGrenad');
-					else if (i==Settings.kolHK*2+6) mc.fav.text=World.world.ctr.keyStates.retKey('keyMagic');
-					else if (i==Settings.kolHK*2+7) mc.fav.text=World.world.ctr.keyStates.retKey('keyDef');
+					else if (i==Settings.kolHK*2+5) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyGrenad');
+					else if (i==Settings.kolHK*2+6) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyMagic');
+					else if (i==Settings.kolHK*2+7) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyDef');
 
 					try 
 					{
@@ -446,7 +446,7 @@ package interdata
 		
 		public function setStatus():void
 		{
-			if (World.world.game && World.world.game.triggers['nomed']) return;
+			if (GameSession.currentSession.game && GameSession.currentSession.game.triggers['nomed']) return;
 			vis.status.visible=active;
 		}
 		
@@ -464,8 +464,8 @@ package interdata
 				mc.objectName.text=arr[n].objectName;
 				if (arr[n].ammo!=null) mc.ammo.text=arr[n].ammo;
 				else mc.ammo.text='';
-				if (arr[n].fav>Settings.kolHK && arr[n].fav<=Settings.kolHK*2) mc.fav.text='^'+World.world.ctr.keyStates.retKey('keyWeapon'+(arr[n].fav-Settings.kolHK));
-				else if (arr[n].fav>0 && arr[n].fav<=Settings.kolHK) mc.fav.text=World.world.ctr.keyStates.retKey('keyWeapon'+arr[n].fav);
+				if (arr[n].fav>Settings.kolHK && arr[n].fav<=Settings.kolHK*2) mc.fav.text='^'+GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+(arr[n].fav-Settings.kolHK));
+				else if (arr[n].fav>0 && arr[n].fav<=Settings.kolHK) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+arr[n].fav);
 				else mc.fav.text='';
 				try 
 				{
@@ -530,7 +530,7 @@ package interdata
 				if (w.ammo) 
 				{
 					var n = '';
-					var k:int = World.world.invent.items[w.ammo].kol;
+					var k:int = GameSession.currentSession.invent.items[w.ammo].kol;
 					var s:String;
 					if (w.tip != 4) 
 					{
@@ -581,7 +581,7 @@ package interdata
 
 				if (w.ammo != '' && w.tip != 4) 
 				{
-					ammo.text = World.world.invent.items[w.ammo].objectName;
+					ammo.text = GameSession.currentSession.invent.items[w.ammo].objectName;
 				}
 				else if (w.id == 'paint') 
 				{
@@ -605,8 +605,8 @@ package interdata
 			if (gg.currentWeapon == null || gg.currentWeapon.noSats) vis.odBar.visible = false;
 			else vis.odBar.visible = active;
 			t_od = 200;
-			vis.odBar.bar.scaleX  = World.world.sats.odv / 50;
-			vis.odBar.bar2.scaleX = World.world.sats.od  / 50;
+			vis.odBar.bar.scaleX  = GameSession.currentSession.sats.odv / 50;
+			vis.odBar.bar2.scaleX = GameSession.currentSession.sats.od  / 50;
 		}
 		
 		public function setItems(turn:int = 0):void
@@ -619,7 +619,7 @@ package interdata
 				item.text = '';
 				return;
 			}
-			if (World.world.invent.cItem < 0) 
+			if (GameSession.currentSession.invent.cItem < 0) 
 			{
 				vitem.visible = false;
 				item.visible = false;
@@ -629,7 +629,7 @@ package interdata
 			else 
 			{
 				t_item = 200;
-				var ci:String = World.world.invent.itemsId[World.world.invent.cItem];
+				var ci:String = GameSession.currentSession.invent.itemsId[GameSession.currentSession.invent.cItem];
 				vitem.visible = item.visible=active;
 				try 
 				{
@@ -639,7 +639,7 @@ package interdata
 				{
 					vitem.gotoAndStop(1);
 				}
-				item.text = Res.txt('item', ci) + ' ('+World.world.invent.items[ci].kol + ')';
+				item.text = Res.txt('item', ci) + ' ('+GameSession.currentSession.invent.items[ci].kol + ')';
 			}
 			setOtstup();
 		}
@@ -672,7 +672,7 @@ package interdata
 		
 		public function setVisibility():void
 		{
-			if (World.world.pip.active || !gg.showObsInd || gg.obs<3) 
+			if (GameSession.currentSession.pip.active || !gg.showObsInd || gg.obs<3) 
 			{
 				vis.visibility.visible=false;
 			} 
@@ -680,7 +680,7 @@ package interdata
 			{
 				vis.visibility.visible=true;
 				vis.visibility.gotoAndStop(Math.floor(gg.obs/gg.maxObs*40+1));
-				World.world.cam.setKoord(vis.visibility,gg.X,gg.Y-80);
+				GameSession.currentSession.cam.setKoord(vis.visibility,gg.X,gg.Y-80);
 			}
 		}
 		
@@ -771,7 +771,7 @@ package interdata
 		
 		public function offCelObj():void
 		{
-			celObj=World.world.room.celObj=null;
+			celObj=GameSession.currentSession.room.celObj=null;
 			celobj.visible=false;
 			unshowSelector();
 		}
@@ -802,7 +802,7 @@ package interdata
 				for (var i:int = 0; i<kolEff; i++) 
 				{
 
-					if (World.world.pip.active) veff[i].alpha=0.2;
+					if (GameSession.currentSession.pip.active) veff[i].alpha=0.2;
 					else veff[i].alpha=1;
 
 					if (!t1 && gg.cut>0) 
@@ -865,7 +865,7 @@ package interdata
 		
 		public function setCelObj():void
 		{
-			celObj=World.world.room.celObj;
+			celObj=GameSession.currentSession.room.celObj;
 			if (celObj!=prevObj) 
 			{
 				if (Settings.shineObjs && prevObj && prevObj.vis && prevObj.levit==0)
@@ -875,22 +875,22 @@ package interdata
 			}
 			var warn:String = 'r';
 			levit_poss.visible=false;
-			if (World.world.pip.active) return;
+			if (GameSession.currentSession.pip.active) return;
 			var s:String;
 			pr_bar.visible=false;
 			if (gg.teleObj) 
 			{
-				World.world.cur('action');
+				GameSession.currentSession.cur('action');
 				celobj.visible=true;
 				if (gg.teleObj.warn>0)  warn='warn';
 				s="<span class = '"+warn+"'>"+gg.teleObj.objectName+"</span>"
-				if (Settings.hintTele) s+='\n'+World.world.ctr.keyStates.retKey('keyTele')+' - '+txtDrop;
+				if (Settings.hintTele) s+='\n'+GameSession.currentSession.ctr.keyStates.retKey('keyTele')+' - '+txtDrop;
 				celobj.text=s;
-				World.world.cam.setKoord(celobj,gg.teleObj.X,gg.teleObj.Y);
+				GameSession.currentSession.cam.setKoord(celobj,gg.teleObj.X,gg.teleObj.Y);
 			} 
 			else if (gg.actionObj!=null && gg.actionObj.owner) 
 			{
-				World.world.cur('action');
+				GameSession.currentSession.cur('action');
 				try {
 					celobj.visible=true;
 					s=gg.actionObj.owner.objectName;
@@ -900,8 +900,8 @@ package interdata
 					pr_bar.pr.scaleX=perc;
 					s+='\n'+gg.actionObj.actionText;//+' '+gg.t_action;
 					celobj.text=s;
-					World.world.cam.setKoord(celobj,gg.actionObj.owner.X,gg.actionObj.owner.Y);
-					World.world.cam.setKoord(pr_bar,gg.actionObj.owner.X,gg.actionObj.owner.Y);
+					GameSession.currentSession.cam.setKoord(celobj,gg.actionObj.owner.X,gg.actionObj.owner.Y);
+					GameSession.currentSession.cam.setKoord(pr_bar,gg.actionObj.owner.X,gg.actionObj.owner.Y);
 				} 
 				catch (err) {
 					celobj.visible=false;
@@ -924,24 +924,24 @@ package interdata
 				//Add object status
 				if (celObj.inter && celObj.inter.stateText!='') s+=' ['+celObj.inter.stateText+']';
 				//Telekinesis
-				if (!World.world.room.base && celObj.stay && celObj.levitPoss && World.world.room.celDist<=World.world.pers.teleDist && celObj.massa<=World.world.pers.maxTeleMassa) {
-					if (Settings.hintTele) s+='\n'+World.world.ctr.keyStates.retKey('keyTele')+' - '+txtTele;
+				if (!GameSession.currentSession.room.base && celObj.stay && celObj.levitPoss && GameSession.currentSession.room.celDist<=GameSession.currentSession.pers.teleDist && celObj.massa<=GameSession.currentSession.pers.maxTeleMassa) {
+					if (Settings.hintTele) s+='\n'+GameSession.currentSession.ctr.keyStates.retKey('keyTele')+' - '+txtTele;
 					//Glow
 					if (Settings.shineObjs && celObj.vis) {
 						celObj.vis.transform.colorTransform=gg.shineTransform;
 					}
 					levit_poss.visible=true;
-					World.world.cam.setKoord(levit_poss,celObj.X,celObj.Y-5);
+					GameSession.currentSession.cam.setKoord(levit_poss,celObj.X,celObj.Y-5);
 				}
 				// Add a line about an action
-				if (celObj.inter && celObj.inter.active && celObj.inter.action && World.world.room.celDist<= Settings.actionDist && World.world.gg.rat==0) {
-					World.world.cur('action');
-					if (!World.world.room.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
+				if (celObj.inter && celObj.inter.active && celObj.inter.action && GameSession.currentSession.room.celDist<= Settings.actionDist && GameSession.currentSession.gg.rat==0) {
+					GameSession.currentSession.cur('action');
+					if (!GameSession.currentSession.room.base && (celObj.inter.mine>0 || celObj.inter.lock>0) && !celObj.inter.is_act || celObj.inter.t_action) {
 						// Locked and has a key
 						//if (Settings.showAddInfo) s+='\nзамок '+celObj.inter.lock+';'+celObj.inter.lockLevel+', мина '+celObj.inter.mine+', уровень['+celObj.inter.allDif+']';
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
-							if (Settings.hintKeys) s+=World.world.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
+							if (Settings.hintKeys) s+=GameSession.currentSession.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
 							s+=Res.txt('gui', 'usekey');
 						 // Locked, key needed, but not available
 						} else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
@@ -953,38 +953,38 @@ package interdata
 							s+="\n(<span class = 'r3'>"+txtUndef0+"</span>)"; 
 						} else if (celObj.inter.actionText!='') {
 							var acts:String ='\n';
-							if (Settings.hintKeys) acts+=World.world.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
+							if (Settings.hintKeys) acts+=GameSession.currentSession.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
 							acts+=celObj.inter.actionText;
 							if (celObj.inter.mine>0) {			//есть минирование
 								s+=acts+dif(celObj.inter.mine, celObj.inter.mineTip);		
 							} else if (celObj.inter.lock>0) { 	//есть замок
 								if (celObj.inter.lockTip==1 || celObj.inter.lockTip==2) {
-									if (World.world.pers.getLockMaster(celObj.inter.lockTip)<celObj.inter.lockLevel) {
+									if (GameSession.currentSession.pers.getLockMaster(celObj.inter.lockTip)<celObj.inter.lockLevel) {
 										s+="\n(<span class = 'r3'>"+this['txtUndef'+celObj.inter.lockTip]+"</span>)"; 
 									} else {
-										s+=acts+'\n'+diflock(celObj.inter.getChance(celObj.inter.lock-World.world.pers.getLockTip(celObj.inter.lockTip)));
+										s+=acts+'\n'+diflock(celObj.inter.getChance(celObj.inter.lock-GameSession.currentSession.pers.getLockTip(celObj.inter.lockTip)));
 									}
 								} else s+=acts+dif(celObj.inter.lock, celObj.inter.lockTip);
 							} else {
 								s+=acts;
 							}
 							//заколки
-							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && World.world.invent && World.world.invent.pin.kol>0) s+=" {<span class = 'r2'>"+World.world.invent.pin.kol+"</span>}";
+							if (celObj.inter.lockTip==1 && celObj.inter.lock>0 && celObj.inter.mine==0 && GameSession.currentSession.invent && GameSession.currentSession.invent.pin.kol>0) s+=" {<span class = 'r2'>"+GameSession.currentSession.invent.pin.kol+"</span>}";
 							if (celObj.inter.cons) s+='\n('+Res.txt('gui', 'required')+': '+Res.txt('item',celObj.inter.cons)+')';
 						}
 					} else {
 						s+='\n';
-						if (Settings.hintKeys) s+=World.world.ctr.keyStates.retKey('keyAction')+' - ';
+						if (Settings.hintKeys) s+=GameSession.currentSession.ctr.keyStates.retKey('keyAction')+' - ';
 						s+=celObj.inter.actionText;
 					}
 				} else if (celObj.warn>0)  {
-					World.world.cur('combat');
+					GameSession.currentSession.cur('combat');
 				} else {
-					World.world.cur('target');
+					GameSession.currentSession.cur('target');
 				}
-				if (celObj.inter && World.world.room.celDist <= Settings.actionDist) {
+				if (celObj.inter && GameSession.currentSession.room.celDist <= Settings.actionDist) {
 					acts="\n<span class = 'r3'>";
-					if (Settings.hintKeys) acts+=World.world.ctr.keyStates.retKey('keyCrack')+' - ';
+					if (Settings.hintKeys) acts+=GameSession.currentSession.ctr.keyStates.retKey('keyCrack')+' - ';
 					if (celObj.inter.mineTip==6 && celObj.inter.mine>0) {
 						s+=acts+Res.txt('gui', 'actalarm')+"</span>";
 					} else if (celObj.inter.lockTip==1 && celObj.inter.needRuna(gg)) {
@@ -997,22 +997,22 @@ package interdata
 					s+=" <span class = 'r1'>(ʘ)</span>";
 				}
 				celobj.htmlText=s;
-				World.world.cam.setKoord(celobj,celObj.X,celObj.Y);
+				GameSession.currentSession.cam.setKoord(celobj,celObj.X,celObj.Y);
 			} else {
 				celobj.visible=false;
-				World.world.cur('target');
+				GameSession.currentSession.cur('target');
 			}
-			//if (World.world.t_battle>0) World.world.cur('combat');
+			//if (GameSession.currentSession.t_battle>0) GameSession.currentSession.cur('combat');
 			if (celobj.visible) {
 				celobj.x-=celobj.width/2;
-				if (celobj.y>World.world.cam.screenY-40-celobj.height) celobj.y=pr_bar.y=World.world.cam.screenY-40-celobj.height;
+				if (celobj.y>GameSession.currentSession.cam.screenY-40-celobj.height) celobj.y=pr_bar.y=GameSession.currentSession.cam.screenY-40-celobj.height;
 			}
 			prevObj=celObj;
 		}
 		
 		public function dif(lock:int, lockTip:int):String 
 		{
-			var pick=World.world.pers.getLockTip(lockTip);
+			var pick=GameSession.currentSession.pers.getLockTip(lockTip);
 			var s:String='';
 			if (lock < pick) s=txtSoft; 
 			else if (lock > pick+2) s="<span class = 'warn'>"+txtUnreal+"</span>"; 
@@ -1048,9 +1048,9 @@ package interdata
 		public function showPortCel():void
 		{
 			vis.portCel.visible=true;
-			var nx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth;
-			var ny=Math.round(World.world.celY/Settings.tilePixelHeight)*Settings.tilePixelHeight;
-			World.world.cam.setKoord(vis.portCel,nx,ny);
+			var nx=Math.round(GameSession.currentSession.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth;
+			var ny=Math.round(GameSession.currentSession.celY/Settings.tilePixelHeight)*Settings.tilePixelHeight;
+			GameSession.currentSession.cam.setKoord(vis.portCel,nx,ny);
 			if (gg.checkPort()) 
 			{
 				if (gg.t_port<gg.pers.portTime) vis.portCel.gotoAndStop(1);
@@ -1068,7 +1068,7 @@ package interdata
 			{
 				bulbText=s;
 				info.htmlText+=bulbText+"<br>";
-				if (addlog) World.world.log+=bulbText+"<br>";
+				if (addlog) GameSession.currentSession.log+=bulbText+"<br>";
 				kolStr++;
 				t_info=150;
 				if (kolStr>6) remStr();
@@ -1090,7 +1090,7 @@ package interdata
 		public function bulb(nx:int, ny:int):void
 		{
 			if (t_bulb>0) return
-			Emitter.emit('gui',World.world.room,nx,ny-110,{txt:bulbText, ry:50});
+			Emitter.emit('gui',GameSession.currentSession.room,nx,ny-110,{txt:bulbText, ry:50});
 			t_bulb=20;
 		}
 		
@@ -1112,8 +1112,8 @@ package interdata
 			ny=ny-80+float_dy;
 			if (ny<40) ny-=100;
 			if (nx<50) nx=50;
-			if (nx>World.world.room.roomPixelWidth-50) nx=World.world.room.roomPixelWidth-50;
-			Emitter.emit('take',World.world.room,nx,ny,{txt:bulbText});
+			if (nx>GameSession.currentSession.room.roomPixelWidth-50) nx=GameSession.currentSession.room.roomPixelWidth-50;
+			Emitter.emit('take',GameSession.currentSession.room,nx,ny,{txt:bulbText});
 			t_bulb=10;
 		}
 		
@@ -1178,15 +1178,15 @@ package interdata
 		
 		public function showHelp(event:MouseEvent):void
 		{
-			World.world.ctr.keyStates.active=false;
-			World.world.ctr.keyStates.keyPressed=false;
-			if (World.world.room.prob) informText(World.world.room.prob.info+'<br><br>'+World.world.room.prob.help);
+			GameSession.currentSession.ctr.keyStates.active=false;
+			GameSession.currentSession.ctr.keyStates.keyPressed=false;
+			if (GameSession.currentSession.room.prob) informText(GameSession.currentSession.room.prob.info+'<br><br>'+GameSession.currentSession.room.prob.help);
 			event.stopPropagation();
 		}
 		public function scrollClick(event:MouseEvent):void
 		{
-			World.world.ctr.keyStates.active=false;
-			World.world.ctr.keyStates.keyPressed=false;
+			GameSession.currentSession.ctr.keyStates.active=false;
+			GameSession.currentSession.ctr.keyStates.keyPressed=false;
 			event.stopPropagation();
 		}
 		
@@ -1215,7 +1215,7 @@ package interdata
 					xml = xml.r[n];
 					if (xml == null) return false;
 				}
-				World.world.game.addNote(id);
+				GameSession.currentSession.game.addNote(id);
 			} 
 			else if (id is XML) xml = id;
 			var reg:int = 0;
@@ -1235,7 +1235,7 @@ package interdata
 			}
 			for (var i:int = 1; i<=5; i++) 
 			{
-				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+World.world.ctr.keyStates.retKey(xml.attribute('s'+i))+"</span>");
+				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+GameSession.currentSession.ctr.keyStates.retKey(xml.attribute('s'+i))+"</span>");
 			}
 			s=s.replace(/\[/g,"<span class='yel'>");
 			s=s.replace(/\]/g,"</span>");
@@ -1300,8 +1300,8 @@ package interdata
 		// Important message, pauses the game
 		public function impMess(ntitle:String, ntext:String, nico:String=''):void
 		{
-			World.world.ctr.keyStates.active=false;
-			World.world.ctr.keyStates.keyPressed=false;
+			GameSession.currentSession.ctr.keyStates.active=false;
+			GameSession.currentSession.ctr.keyStates.keyPressed=false;
 			imp.ico.gotoAndStop(1);
 			if (nico != '') 
 			{
@@ -1398,7 +1398,7 @@ package interdata
 
 			if (informScript.running) informScript.step();
 			if (dialScript.running) dialScript.step();
-			if (World.world.ctr.keyStates.active && guiPause) 
+			if (GameSession.currentSession.ctr.keyStates.active && guiPause) 
 			{
 				if (t_bulb<=0) 
 				{
@@ -1407,7 +1407,7 @@ package interdata
 				} 
 				else 
 				{
-					World.world.ctr.keyStates.active=false;
+					GameSession.currentSession.ctr.keyStates.active=false;
 				}
 			}
 
@@ -1416,7 +1416,7 @@ package interdata
 				tharrow.visible = true;
 				var ndx = gg.teleObj.X - gg.X
 				var ndy = gg.teleObj.Y - gg.teleObj.scY / 2 - gg.Y + gg.scY / 2 - 10;
-				World.world.cam.setKoord(tharrow,World.world.gg.teleObj.X,World.world.gg.teleObj.Y-World.world.gg.teleObj.scY/2);
+				GameSession.currentSession.cam.setKoord(tharrow,GameSession.currentSession.gg.teleObj.X,GameSession.currentSession.gg.teleObj.Y-GameSession.currentSession.gg.teleObj.scY/2);
 				tharrow.rotation = Math.atan2(ndy, ndx) / Math.PI * 180;
 				var alph:Number = gg.throwForceRelat();
 				tharrow.alpha = alph;
@@ -1426,11 +1426,11 @@ package interdata
 			} 
 			else tharrow.visible = false;
 
-			if (showDop&&!World.world.sats.active && !vis.fav.visible && !World.world.catPause) 
+			if (showDop&&!GameSession.currentSession.sats.active && !vis.fav.visible && !GameSession.currentSession.catPause) 
 			{
 				showSelector();
 			}
-			vis.fav.visible=vis.status.visible=(showFav || showDop)&&!World.world.sats.active && !World.world.catPause;
+			vis.fav.visible=vis.status.visible=(showFav || showDop)&&!GameSession.currentSession.sats.active && !GameSession.currentSession.catPause;
 		}
 		
 		public function setSats(turn:Boolean):void

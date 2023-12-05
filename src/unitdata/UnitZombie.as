@@ -634,7 +634,7 @@ package unitdata
 				}
 				if (superSilaTip==7 && isrnd(0.1)) currentWeapon.attack();
 			} 
-				//World.world.gui.vis.sist.text=teleUnit+' '+celUnit+' '+aiZlo;
+				//GameSession.currentSession.gui.vis.sist.text=teleUnit+' '+celUnit+' '+aiZlo;
 		}
 		
 		public function setSuper():void

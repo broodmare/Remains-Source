@@ -121,10 +121,10 @@ package
 		
 		public function getRasst2(obj:Obj=null):Number 
 		{
-			if (obj==null) obj = World.world.gg;
+			if (obj==null) obj = GameSession.currentSession.gg;
 			var nx:Number = obj.X-X;
 			var ny:Number = obj.Y-obj.scY / 2 - Y + scY / 2;
-			if (obj == World.world.gg) ny = obj.Y-obj.scY*0.75-Y+scY/2;
+			if (obj == GameSession.currentSession.gg) ny = obj.Y-obj.scY*0.75-Y+scY/2;
 			rasst2=nx*nx+ny*ny;
 			if (isNaN(rasst2)) rasst2=-1;
 			return rasst2;
@@ -140,18 +140,18 @@ package
 		{
 			if (com == 'show') 
 			{
-				World.world.cam.showOn = true;
-				World.world.cam.showX = X;
-				World.world.cam.showY = Y;
+				GameSession.currentSession.cam.showOn = true;
+				GameSession.currentSession.cam.showX = X;
+				GameSession.currentSession.cam.showY = Y;
 			}
 		}
 		
 		//affecting the main character
 		public function ggModum():void
 		{
-			if (room == World.world.gg.room && radioactiv && rasst2 >= 0 && rasst2 < radrad * radrad) 
+			if (room == GameSession.currentSession.gg.room && radioactiv && rasst2 >= 0 && rasst2 < radrad * radrad) 
 			{
-				World.world.gg.raddamage((radrad - Math.sqrt(rasst2)) / radrad, radioactiv, radtip);
+				GameSession.currentSession.gg.raddamage((radrad - Math.sqrt(rasst2)) / radrad, radioactiv, radtip);
 			}
 		}
 		
@@ -220,10 +220,10 @@ package
 		public static function setArmor(m:MovieClip):void
 		{
 			var aid:String='';
-			if (World.world) 
+			if (GameSession.currentSession) 
 			{
-				if (World.world.pip && World.world.pip.active || World.world.mmArmor && World.world.allStat == 0) aid = World.world.pip.ArmorId;
-				else if (World.world.armorWork != '') aid = World.world.armorWork;
+				if (GameSession.currentSession.pip && GameSession.currentSession.pip.active || GameSession.currentSession.mmArmor && GameSession.currentSession.allStat == 0) aid = GameSession.currentSession.pip.ArmorId;
+				else if (GameSession.currentSession.armorWork != '') aid = GameSession.currentSession.armorWork;
 				else if (Settings.alicorn) aid = 'ali';
 				else aid = Appear.ggArmorId;
 			}
@@ -244,7 +244,7 @@ package
 		
 		public static function setMorda(m:MovieClip, c:int):void
 		{
-			if (World.world && World.world.gg) m.gotoAndStop(World.world.gg.mordaN);
+			if (GameSession.currentSession && GameSession.currentSession.gg) m.gotoAndStop(GameSession.currentSession.gg.mordaN);
 			else m.gotoAndStop(1);
 		}
 		
@@ -272,7 +272,7 @@ package
 		public static function setVisible(m:MovieClip):void
 		{
 			var h:int = 0;
-			if (World.world && World.world.pip && World.world.pip.active) h = World.world.pip.hideMane;
+			if (GameSession.currentSession && GameSession.currentSession.pip && GameSession.currentSession.pip.active) h = GameSession.currentSession.pip.hideMane;
 			else h = Appear.hideMane;
 			m.visible=(h == 0);
 		}

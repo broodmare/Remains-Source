@@ -248,7 +248,7 @@ package unitdata
 		{
 			status=2;
 			setStatus();
-			World.world.gui.infoText('trapDisarm')
+			GameSession.currentSession.gui.infoText('trapDisarm')
 		}
 		
 		//реактивировать
@@ -291,7 +291,7 @@ package unitdata
 			}
 			if (sndAct) sound(sndAct);
 			setStatus();
-			if (act) World.world.gui.infoText('trapActivate')
+			if (act) GameSession.currentSession.gui.infoText('trapActivate')
 		}
 		
 		var aiN:int=Math.floor(Math.random()*5);
@@ -312,7 +312,7 @@ package unitdata
 				isAct=act;
 			}
 			if (aiN%10==0 && !isVis) {
-				isVis=World.world.gg.lookInvis(this);
+				isVis=GameSession.currentSession.gg.lookInvis(this);
 				if (isVis) {
 					setVis(true);
 				}

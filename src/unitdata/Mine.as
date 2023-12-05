@@ -228,7 +228,7 @@ package unitdata
 							}
 							if (un.player && chain) 
 							{
-								World.world.gg.bindChain(X,Y);
+								GameSession.currentSession.gg.bindChain(X,Y);
 							}
 							activate();
 							break;
@@ -251,7 +251,7 @@ package unitdata
 			}
 			if (aiN%10==0 && !isVis) 
 			{
-				isVis=World.world.gg.lookInvis(this);
+				isVis=GameSession.currentSession.gg.lookInvis(this);
 				if (isVis) 
 				{
 					setVis(true);

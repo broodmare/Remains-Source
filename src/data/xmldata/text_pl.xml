@@ -2632,7 +2632,7 @@ Będziesz mógł nosić i używać ograniczonej liczby przedmiotów i broni.
 Ten tryb jest zalecany tylko doświadczonym graczom</info>
   </gui>
 
-<gui id="butvid" v="0.6"><n>Dostosuj wygląd</n></gui>
+<gui id="editAppearanceButton" v="0.6"><n>Dostosuj wygląd</n></gui>
 <gui id="vidfur" v="0.6"><n>Kolor sierści</n></gui>
 <gui id="vidhair" v="0.6"><n>Pierwszy kolor grzywy i kształt</n></gui>
 <gui id="vidhair1" v="0.6"><n>Drugi kolor grzywy</n></gui>

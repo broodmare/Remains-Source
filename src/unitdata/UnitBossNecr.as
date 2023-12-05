@@ -70,8 +70,8 @@ package unitdata
 			shadowFilter=new DropShadowFilter(0,90,0,0.5,3,3,1,3,false,false,true);
 			ghostFilter=new GlowFilter(0x9999FF,1,6,6,2,3);
 			timerDie=90;
-			if (World.world.game.globalDif==3) summonAtkMult=0.65;
-			if (World.world.game.globalDif==4) summonAtkMult=0.8;
+			if (GameSession.currentSession.game.globalDif==3) summonAtkMult=0.65;
+			if (GameSession.currentSession.game.globalDif==4) summonAtkMult=0.8;
 		}
 		
 
@@ -81,8 +81,8 @@ package unitdata
 			var wMult=(1+level*0.08);
 			var dMult=1;
 			healHp=maxhp/10;
-			if (World.world.game.globalDif==3) dMult=1.2;
-			if (World.world.game.globalDif==4) dMult=1.5;
+			if (GameSession.currentSession.game.globalDif==3) dMult=1.2;
+			if (GameSession.currentSession.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
 			if (currentWeapon) {
@@ -140,7 +140,7 @@ package unitdata
 					vis.osn.body.gotoAndStop(cframe);
 				}
 			} 
-			if (superInvis && World.world.pers.infravis==0) 
+			if (superInvis && GameSession.currentSession.pers.infravis==0) 
 			{
 				celA=0;
 			} 
@@ -148,7 +148,7 @@ package unitdata
 			if (curA>celA) curA-=5;
 			if (curA<celA) curA+=5;
 			vis.alpha=curA/100;
-			//World.world.gui.vis.hpbarboss.hpNum.text='('+aiState+') '+aiTCh+' '+atk_t;
+			//GameSession.currentSession.gui.vis.hpbarboss.hpNum.text='('+aiState+') '+aiTCh+' '+atk_t;
 		}
 		
 		public override function setWeaponPos(tip:int=0):void

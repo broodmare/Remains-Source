@@ -150,7 +150,7 @@ package graphdata
 			mapTileWidth 	= 48; 
 			mapTileHeight 	= 25;
 
-			trace('Grafon.as/Grafon() - Initializing TileFilter array.');
+			//trace('Grafon.as/Grafon() - Initializing TileFilter array.');
 			var tilefilter:TileFilter = new TileFilter();
 
 			dsFilter 		= new DropShadowFilter(7, 90, 0, 0.75, 16, 16, 1, 3, false, false, true);
@@ -443,7 +443,7 @@ package graphdata
 		//Fog of war
 		public function warShadow():void
 		{
-			if (World.world.pers.infravis)
+			if (GameSession.currentSession.pers.infravis)
 			{
 				layerLighting.transform.colorTransform = infraTransform;
 				layerLighting.blendMode = 'multiply';
@@ -473,7 +473,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 1; 
+				GameSession.currentSession.gr_stage = 1; 
 
 				room = currentLocation;
 				room.grafon = this;
@@ -487,7 +487,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 1. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 			
 
@@ -497,7 +497,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 2;
+				GameSession.currentSession.gr_stage = 2;
 
 				// Borders
 				borderTop.x = borderBottom.x = -50;
@@ -514,7 +514,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 2. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -523,7 +523,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 3;
+				GameSession.currentSession.gr_stage = 3;
 				frontBmp.lock();
 				backBmp.lock();
 				backBmp2.lock();
@@ -549,7 +549,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 3. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 				
@@ -558,7 +558,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 4; 
+				GameSession.currentSession.gr_stage = 4; 
 
 				var front:Sprite = new Sprite();	
 				var back:Sprite = new Sprite();	
@@ -581,7 +581,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 4. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 				
 				
@@ -590,7 +590,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
+				GameSession.currentSession.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
 
 				var tile:Tile; 					//Define a tile as an object to hold the current tile's properties in the grid.
 				var tileSprite:MovieClip; 		//Define a tileSprite as an MovieClip to hold the current tile's sprite.
@@ -648,7 +648,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 5. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 				
@@ -657,14 +657,14 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 6;
+				GameSession.currentSession.gr_stage = 6;
 				vodaBmp.draw(waterMovieClip, null, null, null, null, false);
 				frontBmp.draw(front, null, null, null, null, false);
 			}
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 6. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 				
 				
@@ -673,13 +673,13 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 7;
+				GameSession.currentSession.gr_stage = 7;
 				drawBackWall(currentLocation.backwall, currentLocation.backform);
 			}
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 7. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 					
 
@@ -688,7 +688,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 8;  //Draw Background items in backwallArray.
+				GameSession.currentSession.gr_stage = 8;  //Draw Background items in backwallArray.
 				for (var m:int = 0; m < backwallArray.length; m++)
 				{
 					try 
@@ -697,14 +697,14 @@ package graphdata
 					} 
 					catch (err)
 					{
-						World.world.showError(err, 'Error, Stage 8. Back Layer drawing matterial: ' + backwallArray[m].id);
+						GameSession.currentSession.showError(err, 'Error, Stage 8. Back Layer drawing matterial: ' + backwallArray[m].id);
 					}
 				}
 			}
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 8. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -713,7 +713,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 9;  
+				GameSession.currentSession.gr_stage = 9;  
 				for (var n:int = 0; n < backwallArray.length; n++)
 				{
 					try 
@@ -722,14 +722,14 @@ package graphdata
 					} 
 					catch (err)
 					{
-						World.world.showError(err, 'Error, Stage 9. Front Layer drawing matterial: ' + backwallArray[n].id);
+						GameSession.currentSession.showError(err, 'Error, Stage 9. Front Layer drawing matterial: ' + backwallArray[n].id);
 					}
 				}
 			}
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 9. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -738,7 +738,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 10; 
+				GameSession.currentSession.gr_stage = 10; 
 				satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 				var darkness2:Number = 1 - (255 - darkness) /150;
 
@@ -748,7 +748,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 10. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -757,7 +757,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 11; // Drawing background object sprites. 
+				GameSession.currentSession.gr_stage = 11; // Drawing background object sprites. 
 				for (var o:int = -2; o <= 3; o++) 
 				{
 					if (o == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -806,7 +806,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 11. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -815,7 +815,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 12;    
+				GameSession.currentSession.gr_stage = 12;    
 				if (currentLocation.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
 				{
 					frontBmp.colorTransform(frontBmp.rect, currentLocation.cTransform);
@@ -827,7 +827,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 12. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -836,7 +836,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 13; // Darkening the background
+				GameSession.currentSession.gr_stage = 13; // Darkening the background
 				if (currentLocation.cTransform) 
 				{
 					backBmp.colorTransform(backBmp.rect, currentLocation.cTransform);
@@ -857,7 +857,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 13. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -866,13 +866,13 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 14;  
+				GameSession.currentSession.gr_stage = 14;  
 				backBmp2.draw(back, null, currentLocation.cTransform, null, null, false);
 			}
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 14. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -881,7 +881,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 15; 
+				GameSession.currentSession.gr_stage = 15; 
 				if (transparentBackground) 
 				{
 					satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -898,7 +898,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 15. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 				
 
@@ -907,7 +907,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 16;  
+				GameSession.currentSession.gr_stage = 16;  
 				if (room.gas > 0)
 				{
 					backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
@@ -918,7 +918,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 16. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -927,7 +927,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
+				GameSession.currentSession.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 				for (var q:int = 0; q > tileArray.length; q++)
 				{
 					drawTileSprite(tileArray[q], false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
@@ -938,7 +938,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 17. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 
@@ -947,7 +947,7 @@ package graphdata
 			//####################
 			try
 			{
-				World.world.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
+				GameSession.currentSession.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
 				if (currentLocation.cTransform && currentLocation.cTransformFon) 
 				{
 					skyboxLayer.transform.colorTransform = currentLocation.cTransformFon;
@@ -960,7 +960,7 @@ package graphdata
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 18. Error: "' + err.message + '".');
-				World.world.showError(err)
+				GameSession.currentSession.showError(err)
 			}
 
 			frontBmp.unlock();
@@ -972,14 +972,14 @@ package graphdata
 			//####################
 			//      STAGE 19
 			//####################
-			World.world.gr_stage = 19;  //Render all game objects.
+			GameSession.currentSession.gr_stage = 19;  //Render all game objects.
 			drawAllObjs();  //Draw all active objects
 
 
 			//####################
 			//      STAGE 20 FINISHED
 			//####################
-			World.world.gr_stage = 0;  //Screen is now rendered.
+			GameSession.currentSession.gr_stage = 0;  //Screen is now rendered.
 		}
 		
 
@@ -1519,7 +1519,7 @@ package graphdata
 				var rect:Rectangle  =  new Rectangle(nx-dyrx/2+rdx, ny-dyry/2+rdy, nx+dyrx/2+rdx, ny+dyry/2+rdy);
 				var pt:Point  =  new Point(0, 0);
 				res2.copyChannel(frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
-				frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal')?World.world.room.cTransform:null, bl, null, true);
+				frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal')?GameSession.currentSession.room.cTransform:null, bl, null, true);
 				rect  =  new Rectangle(0, 0, dyrx, dyry);
 				pt = new Point(nx-dyrx/2+rdx, ny-dyry/2+rdy);
 				frontBmp.copyChannel(res2, rect, pt, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);

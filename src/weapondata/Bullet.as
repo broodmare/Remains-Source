@@ -88,7 +88,7 @@ package weapondata
 			if (own == null) 
 			{
 				owner = new Unit();
-				room = World.world.room;
+				room = GameSession.currentSession.room;
 			} 
 			else 
 			{
@@ -401,9 +401,9 @@ package weapondata
 					if (box.dead && weap) weap.crash(box.montdam);
 				}
 			}
-			if (World.world.gg.room == room && World.world.gg.teleObj && (World.world.gg.teleObj is Box) && owner != World.world.gg) 
+			if (GameSession.currentSession.gg.room == room && GameSession.currentSession.gg.teleObj && (GameSession.currentSession.gg.teleObj is Box) && owner != GameSession.currentSession.gg) 
 			{
-				box = World.world.gg.teleObj as Box;
+				box = GameSession.currentSession.gg.teleObj as Box;
 				if (X >= box.X1 && X <= box.X2 && Y >= box.Y1 && Y <= box.Y2 && udar(box)) 
 				{
 					res = box.udarBullet(this, 0);
@@ -527,7 +527,7 @@ package weapondata
 					if (rasst>explRadius*0.5) dam*=(2-rasst*2/explRadius);
 					if (weap!=null) un.dieWeap=weap.id;
 					if (weapId!=null) un.dieWeap=weapId;
-					if (weap && weap.owner.fraction==Unit.F_PLAYER && un.player)  un.damage(dam*World.world.pers.autoExpl,tipDamage);
+					if (weap && weap.owner.fraction==Unit.F_PLAYER && un.player)  un.damage(dam*GameSession.currentSession.pers.autoExpl,tipDamage);
 					else un.damage(dam,tipDamage);
 				}
 			}
@@ -556,7 +556,7 @@ package weapondata
 					// Fire on oneself
 					if (un.player) 
 					{
-						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage *= World.world.pers.autoExpl;
+						if (weap && weap.owner.fraction == Unit.F_PLAYER) b.damage *= GameSession.currentSession.pers.autoExpl;
 						var p={x:b.knockx, y:b.knocky};
 						norma(p, 10);
 						b.knockx = p.x;
@@ -709,7 +709,7 @@ package weapondata
 					explLiquid('fire',-33);
 				}
 			}
-			if (otbros>0)	World.world.quake((Math.random()*8-4)*otbros,otbros*0.8);
+			if (otbros>0)	GameSession.currentSession.quake((Math.random()*8-4)*otbros,otbros*0.8);
 		}
 
 		public function explLiquid(liq:String, ndy:int=0):void

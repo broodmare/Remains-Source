@@ -13,7 +13,7 @@ package components
         private static const xmlFilesLocation:String = Settings.xmlBookDataLocation;
 
         private static var pageSetupCounter:int = 0;
-        private static var bookSetup:Boolean = false;
+        public static var bookSetup:Boolean = false;
 
 
 		public function XmlBook() 
@@ -113,6 +113,9 @@ package components
             xmlBook["scripts"]      = new XML();
             xmlBook["quests"]       = new XML();
             xmlBook["vendors"]      = new XML();
+
+            //New Stuff
+            xmlBook["sounds"]      = new XML();
 
         }
 

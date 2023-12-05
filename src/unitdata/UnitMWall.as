@@ -36,7 +36,7 @@ package unitdata
 		public override function addVisual():void
 		{
 			if (disabled) return;
-			if (vis && room && room.roomActive) World.world.grafon.canvasLayerArray[layer].addChild(vis);
+			if (vis && room && room.roomActive) GameSession.currentSession.grafon.canvasLayerArray[layer].addChild(vis);
 		}
 		
 		public override function visDetails():void

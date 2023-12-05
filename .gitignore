@@ -7,3 +7,5 @@ asconfig.json
 .idea/
 qodana.yaml
 src/.github/
+bin/
+Remains.as3proj

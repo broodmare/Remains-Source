@@ -92,7 +92,7 @@ package interdata
 						w.setPers(gg, gg.pers);
 						if (w.respect==1) 
 						{	//скрытый
-							if (!Settings.hardInv || World.world.room.base || World.world.room.train) vis.butOk.visible=true;
+							if (!Settings.hardInv || GameSession.currentSession.room.base || GameSession.currentSession.room.train) vis.butOk.visible=true;
 							if (!pip.showHidden) continue;
 						}
 						if (w.alicorn && !Settings.alicorn) continue;
@@ -237,11 +237,11 @@ package interdata
 			item.mass.text='';
 			if (inv.favIds[obj.id]) 
 			{
-				if (inv.favIds[obj.id]==29) item.fav.text=World.world.ctr.retKey('keyGrenad');
-				else if (inv.favIds[obj.id]==30) item.fav.text=World.world.ctr.retKey('keyMagic');
-				else if (inv.favIds[obj.id]>Settings.kolHK*2) item.fav.text=World.world.ctr.retKey('keySpell'+(inv.favIds[obj.id]-Settings.kolHK*2));
-				else if (inv.favIds[obj.id]>Settings.kolHK) item.fav.text='^'+World.world.ctr.retKey('keyWeapon'+(inv.favIds[obj.id]-Settings.kolHK));
-				else item.fav.text=World.world.ctr.retKey('keyWeapon'+inv.favIds[obj.id]);
+				if (inv.favIds[obj.id]==29) item.fav.text=GameSession.currentSession.ctr.retKey('keyGrenad');
+				else if (inv.favIds[obj.id]==30) item.fav.text=GameSession.currentSession.ctr.retKey('keyMagic');
+				else if (inv.favIds[obj.id]>Settings.kolHK*2) item.fav.text=GameSession.currentSession.ctr.retKey('keySpell'+(inv.favIds[obj.id]-Settings.kolHK*2));
+				else if (inv.favIds[obj.id]>Settings.kolHK) item.fav.text='^'+GameSession.currentSession.ctr.retKey('keyWeapon'+(inv.favIds[obj.id]-Settings.kolHK));
+				else item.fav.text=GameSession.currentSession.ctr.retKey('keyWeapon'+inv.favIds[obj.id]);
 			}
 			else item.fav.text='';
 
@@ -255,7 +255,7 @@ package interdata
 			}
 			if (page2==1) 
 			{
-				item.ramka.visible=(World.world.gg.newWeapon && World.world.gg.newWeapon.id==obj.id) || (World.world.gg.currentSpell && World.world.gg.currentSpell.id==obj.id);
+				item.ramka.visible=(GameSession.currentSession.gg.newWeapon && GameSession.currentSession.gg.newWeapon.id==obj.id) || (GameSession.currentSession.gg.currentSpell && GameSession.currentSession.gg.currentSpell.id==obj.id);
 				if (item.ramka.visible) selItem=item;
 				item.objectName.htmlText=obj.objectName;
 				if (obj.respect==0 && item.fav.text=='') item.fav.text='☩';
@@ -277,13 +277,13 @@ package interdata
 			else if (page2==2) 
 			{
 				item.ramka.visible=false;
-				if (Settings.hardInv && !World.world.room.base && obj.trol=='armor1' && World.world.gg.prevArmor!=obj.id && obj.clo==0) item.alpha=0.4;
-				if (World.world.gg.currentArmor && World.world.gg.currentArmor.id==obj.id) {
+				if (Settings.hardInv && !GameSession.currentSession.room.base && obj.trol=='armor1' && GameSession.currentSession.gg.prevArmor!=obj.id && obj.clo==0) item.alpha=0.4;
+				if (GameSession.currentSession.gg.currentArmor && GameSession.currentSession.gg.currentArmor.id==obj.id) {
 					item.ramka.visible=true;
 					item.alpha=1;
 					selItem=item;
 				}
-				if (World.world.gg.currentAmul && World.world.gg.currentAmul.id==obj.id) {
+				if (GameSession.currentSession.gg.currentAmul && GameSession.currentSession.gg.currentAmul.id==obj.id) {
 					item.ramka.visible=true;
 				}
 				item.objectName.text=obj.objectName;
@@ -294,7 +294,7 @@ package interdata
 			}
 			else  
 			{
-				item.ramka.visible=(World.world.gg.currentSpell && World.world.gg.currentSpell.id==obj.id);
+				item.ramka.visible=(GameSession.currentSession.gg.currentSpell && GameSession.currentSession.gg.currentSpell.id==obj.id);
 				item.objectName.text=obj.objectName;
 				item.hp.text=obj.kol;
 				if (Settings.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);
@@ -351,7 +351,7 @@ package interdata
 		{
 			if (pip.gamePause) 
 			{
-				World.world.gui.infoText('gamePause');
+				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
 			if (event.ctrlKey) 
@@ -362,14 +362,14 @@ package interdata
 			var ci:String = event.currentTarget.id.text;
 			if (page2 == 1) 
 			{
-				World.world.gg.changeWeapon(ci);
+				GameSession.currentSession.gg.changeWeapon(ci);
 				selItem = event.currentTarget as MovieClip;
 				setStatus(false);
 				pip.snd(1);
 			} 
 			else if (page2 == 2) 
 			{
-				if (World.world.gg.changeArmor(ci)) 
+				if (GameSession.currentSession.gg.changeArmor(ci)) 
 				{
 					setStatus(false);
 				}
@@ -381,17 +381,17 @@ package interdata
 				{
 					if (Settings.alicorn)
 					{
-						World.world.gui.infoText('alicornNot',null,null,false);
+						GameSession.currentSession.gui.infoText('alicornNot',null,null,false);
 						return;
 					}
-					if (World.world.game.curLevelID==World.world.game.baseId) return;
-					else if (World.world.possiblyOut()>=2) World.world.gui.infoText('noUseCombat'); 
+					if (GameSession.currentSession.game.curLevelID==GameSession.currentSession.game.baseId) return;
+					else if (GameSession.currentSession.possiblyOut()>=2) GameSession.currentSession.gui.infoText('noUseCombat'); 
 					else buttonOk('retr');
 				} 
 				else if (ci=='mworkbench' || ci=='mworkexpl' || ci=='mworklab')
 				{
-					if (World.world.t_battle>0) {
-						World.world.gui.infoText('noUseCombat',null,null,false);
+					if (GameSession.currentSession.t_battle>0) {
+						GameSession.currentSession.gui.infoText('noUseCombat',null,null,false);
 					} 
 					else 
 					{
@@ -401,9 +401,9 @@ package interdata
 				} 
 				else 
 				{
-					World.world.invent.useItem(ci);
+					GameSession.currentSession.invent.useItem(ci);
 					setStatus(false);
-					World.world.gui.setHp();
+					GameSession.currentSession.gui.setHp();
 				}
 				pip.snd(1);
 				over_t=2;
@@ -413,7 +413,7 @@ package interdata
 				if (gg.invent.weapons[ci]) 
 				{
 					gg.invent.weapons[ci].respect=2;
-					World.world.gg.changeWeapon(ci);
+					GameSession.currentSession.gg.changeWeapon(ci);
 				} 
 				else if (gg.currentWeapon && gg.currentWeapon.tip<=3 && gg.currentWeapon.holder>0) gg.currentWeapon.initReload(ci);
 			}
@@ -426,13 +426,13 @@ package interdata
 		{
 			if (pip.gamePause) 
 			{
-				World.world.gui.infoText('gamePause');
+				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==1) 
 			{
 				var obj = assArr[event.currentTarget.id.text];
-				obj.respect=World.world.invent.respectWeapon(event.currentTarget.id.text);
+				obj.respect=GameSession.currentSession.invent.respectWeapon(event.currentTarget.id.text);
 				setStatItem(event.currentTarget as MovieClip, obj);
 				pip.setRPanel();
 				showBottext();
@@ -440,9 +440,9 @@ package interdata
 			}
 			if (page2>=3) 
 			{
-				if (World.world.room.base) 
+				if (GameSession.currentSession.room.base) 
 				{
-					World.world.gui.infoText('noDrop1',null,null,false);
+					GameSession.currentSession.gui.infoText('noDrop1',null,null,false);
 					return;
 				}
 				obj = assArr[event.currentTarget.id.text];
@@ -455,7 +455,7 @@ package interdata
 				} 
 				else 
 				{
-					World.world.gui.infoText('noDrop2',null,null,false);
+					GameSession.currentSession.gui.infoText('noDrop2',null,null,false);
 				}
 			}
 		}
@@ -467,7 +467,7 @@ package interdata
 			var temp=assId;
 			if (page2<=3 && assId!=null) 
 			{
-				World.world.invent.favItem(assId, num);
+				GameSession.currentSession.invent.favItem(assId, num);
 				setStatus(false);
 			}
 			assId=temp;
@@ -484,10 +484,10 @@ package interdata
 			} 
 			else if (actCurrent=='retr') 
 			{		//Возврат на базу
-				if (inv.items['retr'].kol>0 && World.world.game.triggers['noreturn']!=1) 
+				if (inv.items['retr'].kol>0 && GameSession.currentSession.game.triggers['noreturn']!=1) 
 				{
 					inv.minusItem('retr');
-					World.world.game.gotoLevel(World.world.game.baseId);
+					GameSession.currentSession.game.gotoLevel(GameSession.currentSession.game.baseId);
 				}
 				vis.butOk.visible=false;
 				pip.onoff(-1);

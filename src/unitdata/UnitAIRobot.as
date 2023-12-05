@@ -386,7 +386,7 @@ package unitdata
 		
 		public function actPort(rnd:Boolean=false):void
 		{
-			var cel:Unit=World.world.gg;
+			var cel:Unit=GameSession.currentSession.gg;
 			var nx:Number=0;
 			var ny:Number=0;
 			for (var i:int = 1; i <= 20; i++) 

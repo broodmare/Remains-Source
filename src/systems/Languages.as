@@ -35,14 +35,14 @@ package systems
 
 		public static function languageStart():void
 		{
-			trace('Languages.as/languageStart() - Creating langauge dictionary and loading languages..."');
+			//trace('Languages.as/languageStart() - Creating langauge dictionary and loading languages..."');
 			initializeLanguageDictionary();
 			
 			for (var language:* in languageListDictionary)
 			{
 				var languageFileURL:String = (languageFilesLocation + 'text_' + language + '.xml');
 
-				trace('Languages.as/languageStart() - Trying to load: "' + languageFileURL + '"');
+				//trace('Languages.as/languageStart() - Trying to load: "' + languageFileURL + '"');
 				languageLoader = new XMLLoader();
 				languageLoader.addEventListener(XMLLoader.XML_LOADED, languageSetup);
 
@@ -61,7 +61,7 @@ package systems
             var language:String = currentLoader.xmlData.lang.@id;
             var languageData:XML = currentLoader.xmlData;
 
-			trace('Languages.as/languageSetup() - Adding language "' + language + '" to language dictionary.');
+			//trace('Languages.as/languageSetup() - Adding language "' + language + '" to language dictionary.');
 			if (languageListDictionary[language] != null)
 			{
 				languageListDictionary[language] = languageData;
@@ -69,7 +69,7 @@ package systems
 				//Hardcoded just to get this shit to work first.
 				if (language == "en")
 				{
-					trace('Languages.as/languageSetup() - English text file loaded, calling applyLanguage().');
+					//trace('Languages.as/languageSetup() - English text file loaded, calling applyLanguage().');
 					applyLanguage(language); 
 				}
 			}
@@ -105,7 +105,7 @@ package systems
 				trace('Languages.as/changeLanguage() - Changing language to: "' + languageName + '" and saving.');
 				
 				applyLanguage(languageName);
-				World.world.saveConfig();
+				GameSession.currentSession.saveConfig();
 			}
 			else 
 			{

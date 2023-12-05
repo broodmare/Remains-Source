@@ -33,7 +33,7 @@ package weapondata
 				shoot();
 				if (owner.player) 
 				{
-					b.damage*=World.world.pers.punchDamMult;
+					b.damage*=GameSession.currentSession.pers.punchDamMult;
 				}
 				b.liv=5;
 				if (zadok && (rot<Math.PI / 2 && rot > -Math.PI / 2 && owner.storona < 0 || (rot > Math.PI / 2 || rot < -Math.PI / 2) && owner.storona > 0)) //kick
@@ -42,8 +42,8 @@ package weapondata
 					b.damage = damage * 2 * damMult;
 					if (owner.player) 
 					{
-						b.damage *= World.world.pers.punchDamMult;
-						b.destroy = World.world.pers.kickDestroy;
+						b.damage *= GameSession.currentSession.pers.punchDamMult;
+						b.destroy = GameSession.currentSession.pers.kickDestroy;
 					}
 					Snd.ps('m_big', X, Y, 0, Math.random() * 0.2 + 0.1);
 				} 

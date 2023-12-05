@@ -30,7 +30,7 @@ package graphdata
 			grafon = gr; 			//Grafon pointer to call it's functions later.
 			loaderID = ID; 			//Assign the graphics loader an ID.
 
-			trace('GrLoader.as/GrLoader() - New loader (' + loaderID + ') created. Instance count: "' + instanceCount + '." Content: "' + resourceURL + '."');
+			//trace('GrLoader.as/GrLoader() - New loader (' + loaderID + ') created. Instance count: "' + instanceCount + '." Content: "' + resourceURL + '."');
 			loader = new Loader(); 	// Sets the loader a new Flash.Loader class.
 			
 			
@@ -53,7 +53,7 @@ package graphdata
 				trace('GrLoader.as/funLoaded() - resource:' + resource + 'failed to load.')
 			}
 
-			trace('GrLoader.as/funLoaded() - Loader (' + loaderID + ') finished loading: "' + resourceURL + '."');
+			//trace('GrLoader.as/funLoaded() - Loader (' + loaderID + ') finished loading: "' + resourceURL + '."');
 
 			isLoad = true; 				// Indicate the file is fully loaded.  CHECK IF THIS IS EVEN USED.
 			progressLoad = 1; 			// Set the progress to 100%.

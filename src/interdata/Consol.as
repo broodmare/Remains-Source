@@ -90,7 +90,7 @@ package interdata
 			}
 			if (event.keyCode == Keyboard.END || event.keyCode == Keyboard.ESCAPE) 
 			{
-				World.world.consolOnOff();
+				GameSession.currentSession.consolOnOff();
 			}
 			if (event.keyCode == Keyboard.UP) 
 			{
@@ -112,7 +112,7 @@ package interdata
 		}
 		public function onButClose(event:MouseEvent):void 
 		{
-			World.world.consolOnOff();
+			GameSession.currentSession.consolOnOff();
 			event.stopPropagation();
 		}
 		
@@ -127,39 +127,39 @@ package interdata
 		{
 			var str:String = vis.input.text;
 			ist.push(str);
-			World.world.lastCom = str;
-			World.world.saveConfig();
+			GameSession.currentSession.lastCom = str;
+			GameSession.currentSession.saveConfig();
 			istN = ist.length;
 			vis.input.text = '';
 			var s:Array = str.split(' ');
 				if (s[0]=='clear') 
 				{
-					World.world.cam.dblack = 0;
-					World.world.gg.controlOn();
-					World.world.gg.vis.visible = true;
-					World.world.vblack.alpha = 0;
-					World.world.vblack.visible = false;
-					World.world.t_exit = World.world.t_die=0;
-					World.world.vgui.visible = World.world.skybox.visible = World.world.mainCanvas.visible = true;
+					GameSession.currentSession.cam.dblack = 0;
+					GameSession.currentSession.gg.controlOn();
+					GameSession.currentSession.gg.vis.visible = true;
+					GameSession.currentSession.vblack.alpha = 0;
+					GameSession.currentSession.vblack.visible = false;
+					GameSession.currentSession.t_exit = GameSession.currentSession.t_die=0;
+					GameSession.currentSession.vgui.visible = GameSession.currentSession.skybox.visible = GameSession.currentSession.mainCanvas.visible = true;
 					Snd.off = false;
 				}
 				if (s[0]=='redraw') 
 				{
-					World.world.redrawLoc();
+					GameSession.currentSession.redrawLoc();
 				}
 				if (s[0]=='hud') 
 				{
-					World.world.gui.vis.visible=!World.world.gui.vis.visible;
+					GameSession.currentSession.gui.vis.visible=!GameSession.currentSession.gui.vis.visible;
 				}
 				if (s[0]=='die') 
 				{
-					World.world.gg.damage(10000,Unit.D_INSIDE);
+					GameSession.currentSession.gg.damage(10000,Unit.D_INSIDE);
 				}
-				if (s[0]=='hardreset' && World.world.pers.dead) 
+				if (s[0]=='hardreset' && GameSession.currentSession.pers.dead) 
 				{
-					World.world.pers.dead=false;
-					World.world.t_die=210;
-					World.world.gg.anim('die',true);
+					GameSession.currentSession.pers.dead=false;
+					GameSession.currentSession.t_die=210;
+					GameSession.currentSession.gg.anim('die',true);
 					off();
 				}
 				if (s[0]=='hardinv') 
@@ -168,12 +168,12 @@ package interdata
 				}
 				if (s[0]=='res_watcher') 
 				{	//исправление бага с наблюдателем
-					World.world.game.triggers['observer']=1;
+					GameSession.currentSession.game.triggers['observer']=1;
 				}
 				if (s[0]=='mqt') 
 				{
 					Settings.chitOn=!Settings.chitOn;
-					World.world.saveConfig();
+					GameSession.currentSession.saveConfig();
 					return;
 				}
 				if (!Settings.chitOn) 
@@ -188,7 +188,7 @@ package interdata
 				}
 				if (s[0]=='hardcoreMode') //Toggle Hardcore mode.
 				{
-					World.world.pers.hardcoreMode =! World.world.pers.hardcoreMode;
+					GameSession.currentSession.pers.hardcoreMode =! GameSession.currentSession.pers.hardcoreMode;
 				}
 				if (s[0]=='testmode') //Toggle debug testing mode.
 				{
@@ -196,28 +196,28 @@ package interdata
 				}
 				if (s[0]=='dif') 
 				{
-					World.world.game.globalDif=s[1];
-					if (World.world.game.globalDif<0) World.world.game.globalDif=0;
-					if (World.world.game.globalDif>4) World.world.game.globalDif=4;
-					World.world.pers.setGlobalDif(World.world.game.globalDif);
-					World.world.pers.setParameters();
+					GameSession.currentSession.game.globalDif=s[1];
+					if (GameSession.currentSession.game.globalDif<0) GameSession.currentSession.game.globalDif=0;
+					if (GameSession.currentSession.game.globalDif>4) GameSession.currentSession.game.globalDif=4;
+					GameSession.currentSession.pers.setGlobalDif(GameSession.currentSession.game.globalDif);
+					GameSession.currentSession.pers.setParameters();
 				}
 				if (s[0]=='all') 
 				{
 					if (s.length==1)
 					{
-						World.world.invent.addAll();
-						World.world.pers.addSkillPoint(10);
+						GameSession.currentSession.invent.addAll();
+						GameSession.currentSession.pers.addSkillPoint(10);
 					}
-					else if (s[1]=='weapon') World.world.invent.addAllWeapon();
-					else if (s[1]=='ammo') World.world.invent.addAllAmmo();
-					else if (s[1]=='item') World.world.invent.addAllItem();
-					else if (s[1]=='armor') World.world.invent.addAllArmor();
+					else if (s[1]=='weapon') GameSession.currentSession.invent.addAllWeapon();
+					else if (s[1]=='ammo') GameSession.currentSession.invent.addAllAmmo();
+					else if (s[1]=='item') GameSession.currentSession.invent.addAllItem();
+					else if (s[1]=='armor') GameSession.currentSession.invent.addAllArmor();
 					off();
 				}
 				if (s[0]=='min') 
 				{
-					World.world.invent.addMin();
+					GameSession.currentSession.invent.addMin();
 					off();
 				}
 				if (s[0]=='god') 
@@ -226,111 +226,111 @@ package interdata
 				}
 				if (s[0]=='lvl' || s[0]=='level') 
 				{
-					World.world.pers.setForcLevel(s[1]);
+					GameSession.currentSession.pers.setForcLevel(s[1]);
 				}
 				if (s[0]=='xp') 
 				{
-					World.world.pers.expa(s[1]);
+					GameSession.currentSession.pers.expa(s[1]);
 				}
 				if (s[0]=='sp') 
 				{
-					if (s.length == 1) World.world.pers.addSkillPoint();
-					else World.world.pers.addSkillPoint(int(s[1]));
+					if (s.length == 1) GameSession.currentSession.pers.addSkillPoint();
+					else GameSession.currentSession.pers.addSkillPoint(int(s[1]));
 				}
 				if (s[0]=='pp') 
 				{
-					if (s.length == 1) World.world.pers.perkPoint++;
-					else  World.world.pers.perkPoint+=int(s[1]);
+					if (s.length == 1) GameSession.currentSession.pers.perkPoint++;
+					else  GameSession.currentSession.pers.perkPoint+=int(s[1]);
 				}
 				if (s[0]=='weapon') 
 				{
-					if (s.length == 2) World.world.invent.addWeapon(s[1]);
-					else if (s.length > 2) World.world.invent.updWeapon(s[1],1)
+					if (s.length == 2) GameSession.currentSession.invent.addWeapon(s[1]);
+					else if (s.length > 2) GameSession.currentSession.invent.updWeapon(s[1],1)
 				}
 				if (s[0]=='remw') 
 				{
-					if (s.length == 2) World.world.invent.remWeapon(s[1]);
+					if (s.length == 2) GameSession.currentSession.invent.remWeapon(s[1]);
 				}
 				if (s[0]=='armor') 
 				{
-					if (s.length == 2) World.world.invent.addArmor(s[1]);
+					if (s.length == 2) GameSession.currentSession.invent.addArmor(s[1]);
 				}
 				if (s[0]=='money') 
 				{
-					if (s.length == 2) World.world.invent.items['money'].kol=int(s[1]);
+					if (s.length == 2) GameSession.currentSession.invent.items['money'].kol=int(s[1]);
 				}
 				if (s[0]=='item') 
 				{
-					if (World.world.invent.items[s[1]]==null) return;
-					if (s.length == 3) World.world.invent.items[s[1]].kol=int(s[2]);
-					else if (s.length == 2) World.world.invent.items[s[1]].kol++;
-					World.world.game.checkQuests(s[1]);
-					World.world.pers.setParameters();
+					if (GameSession.currentSession.invent.items[s[1]]==null) return;
+					if (s.length == 3) GameSession.currentSession.invent.items[s[1]].kol=int(s[2]);
+					else if (s.length == 2) GameSession.currentSession.invent.items[s[1]].kol++;
+					GameSession.currentSession.game.checkQuests(s[1]);
+					GameSession.currentSession.pers.setParameters();
 				}
 				if (s[0]=='ammo') 
 				{
-					if (s.length == 3) World.world.invent.items[s[1]].kol=int(s[2]);
+					if (s.length == 3) GameSession.currentSession.invent.items[s[1]].kol=int(s[2]);
 				}
 				if (s[0]=='perk') 
 				{
-					if (s.length == 2) World.world.pers.addPerk(s[1]);
+					if (s.length == 2) GameSession.currentSession.pers.addPerk(s[1]);
 				}
 				if (s[0]=='skill') 
 				{
-					if (s.length == 3) World.world.pers.setSkill(s[1], s[2]);
+					if (s.length == 3) GameSession.currentSession.pers.setSkill(s[1], s[2]);
 				}
 				if (s[0]=='eff') 
 				{
-					if (s.length == 2) World.world.gg.addEffect(s[1]);
+					if (s.length == 2) GameSession.currentSession.gg.addEffect(s[1]);
 				}
 				if (s[0]=='res') 
 				{
-					if (World.world.gg.effects.length > 0) 
+					if (GameSession.currentSession.gg.effects.length > 0) 
 					{
-						for each (var eff in World.world.gg.effects) eff.unsetEff();
+						for each (var eff in GameSession.currentSession.gg.effects) eff.unsetEff();
 					}
 				}
 				if (s[0]=='repair') 
 				{
-					World.world.gg.currentWeapon.repair(1000000);
+					GameSession.currentSession.gg.currentWeapon.repair(1000000);
 				}
 				if (s[0]=='refill') 
 				{
-					World.world.game.refillVendors();
+					GameSession.currentSession.game.refillVendors();
 				}
 				if (s[0]=='rep') 
 				{
-					if (s.length == 2) World.world.pers.rep=int(s[1]);
+					if (s.length == 2) GameSession.currentSession.pers.rep=int(s[1]);
 				}
 				if (s[0]=='crack') 
 				{
-					if (s.length == 2 && World.world.gg.currentWeapon) World.world.gg.currentWeapon.hp=Math.round(World.world.gg.currentWeapon.maxhp*Number(s[1])/100);
+					if (s.length == 2 && GameSession.currentSession.gg.currentWeapon) GameSession.currentSession.gg.currentWeapon.hp=Math.round(GameSession.currentSession.gg.currentWeapon.maxhp*Number(s[1])/100);
 				}
 				if (s[0]=='break') 
 				{
-					if (s.length == 2 && World.world.gg.currentArmor) World.world.gg.currentArmor.hp=Math.round(World.world.gg.currentArmor.maxhp*Number(s[1])/100);
+					if (s.length == 2 && GameSession.currentSession.gg.currentArmor) GameSession.currentSession.gg.currentArmor.hp=Math.round(GameSession.currentSession.gg.currentArmor.maxhp*Number(s[1])/100);
 				}
 				if (s[0]=='heal') 
 				{
-					World.world.gg.heal(10000);
+					GameSession.currentSession.gg.heal(10000);
 				}
 				if (s[0]=='rad') 
 				{
-					World.world.gg.rad=s[1];
-					World.world.gui.setAll();
+					GameSession.currentSession.gg.rad=s[1];
+					GameSession.currentSession.gui.setAll();
 				}
 				if (s[0]=='mana') 
 				{
-					World.world.pers.manaHP=int(s[1]);
-					World.world.pers.setParameters();
+					GameSession.currentSession.pers.manaHP=int(s[1]);
+					GameSession.currentSession.pers.setParameters();
 				}
 				if (s[0]=='check') 
 				{
-					World.world.level.gotoCheckPoint();
+					GameSession.currentSession.level.gotoCheckPoint();
 				}
 				if (s[0]=='goto') 
 				{
-					if (s.length == 3) World.world.level.gotoXY(s[1],s[2]);
+					if (s.length == 3) GameSession.currentSession.level.gotoXY(s[1],s[2]);
 				}
 				if (s[0]=='map') 
 				{
@@ -339,7 +339,7 @@ package interdata
 				if (s[0]=='black') 
 				{
 					Settings.black=!Settings.black;
-					World.world.grafon.layerLighting.visible=Settings.black && World.world.room.black;
+					GameSession.currentSession.grafon.layerLighting.visible=Settings.black && GameSession.currentSession.room.black;
 				}
 				if (s[0]=='battle') 
 				{
@@ -360,7 +360,7 @@ package interdata
 				}
 				if (s[0]=='lim') 
 				{
-					if (s.length == 2) World.world.level.lootLimit=Number(s[1]);
+					if (s.length == 2) GameSession.currentSession.level.lootLimit=Number(s[1]);
 				}
 				if (s[0]=='fly' || s[0]=='port' || s[0]=='emit') 
 				{
@@ -369,43 +369,43 @@ package interdata
 				}
 				if (s[0]=='getroom') 
 				{
-					World.world.testLoot=true;
-					trace('получено опыта', World.world.room.getAll());
-					World.world.testLoot=false;
+					GameSession.currentSession.testLoot=true;
+					trace('получено опыта', GameSession.currentSession.room.getAll());
+					GameSession.currentSession.testLoot=false;
 				}
 				if (s[0]=='err') 
 				{
-					World.world.landError=!World.world.landError;
+					GameSession.currentSession.landError=!GameSession.currentSession.landError;
 				}
 				if (s[0]=='getloc') 
 				{
-					World.world.testLoot=true;
-					trace('получено опыта', World.world.level.getAll());
-					World.world.testLoot=false;		
+					GameSession.currentSession.testLoot=true;
+					trace('получено опыта', GameSession.currentSession.level.getAll());
+					GameSession.currentSession.testLoot=false;		
 				}
 				if (s[0]=='alicorn') 
 				{
-					if (Settings.alicorn) World.world.gg.alicornOff();
-					else World.world.gg.alicornOn();
+					if (Settings.alicorn) GameSession.currentSession.gg.alicornOff();
+					else GameSession.currentSession.gg.alicornOn();
 				}
 				if (s[0]=='st') 
 				{
-					if (s.length == 3) World.world.game.triggers[s[1]]=s[2];
+					if (s.length == 3) GameSession.currentSession.game.triggers[s[1]]=s[2];
 				}
 				if (s[0]=='trigger') 
 				{
-					if (s.length == 2) World.world.gui.infoText('trigger',s[1],World.world.game.triggers[s[1]]);
+					if (s.length == 2) GameSession.currentSession.gui.infoText('trigger',s[1],GameSession.currentSession.game.triggers[s[1]]);
 				}
 				if (s[0]=='triggers') 
 				{
-					if (s.length > 1) World.world.gui.infoText('trigger',s[1],World.world.game.triggers[s[1]]);
+					if (s.length > 1) GameSession.currentSession.gui.infoText('trigger',s[1],GameSession.currentSession.game.triggers[s[1]]);
 					else 
 					{
-						for (var i in World.world.game.triggers)  World.world.gui.infoText('trigger',i,World.world.game.triggers[i]);
+						for (var i in GameSession.currentSession.game.triggers)  GameSession.currentSession.gui.infoText('trigger',i,GameSession.currentSession.game.triggers[i]);
 					}
 				}
 				
-			World.world.gui.setAll();
+			GameSession.currentSession.gui.setAll();
 		}
 
 	}

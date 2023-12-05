@@ -15,7 +15,7 @@ package interdata
 		public function SatsCel(nUn:Object, nx:Number, ny:Number, ncons:Number, nkol:int=1) 
 		{
 			layer=5;
-			room=World.world.room;
+			room=GameSession.currentSession.room;
 			var ramka:int=10;
 			if (nUn==null) 
 			{

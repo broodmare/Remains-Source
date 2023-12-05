@@ -92,7 +92,7 @@ package unitdata
 			//поиск цели
 			if (Settings.enemyAct>1 && aiTCh%10==1) 
 			{
-				if (findCel() && !World.world.gg.invulner) 
+				if (findCel() && !GameSession.currentSession.gg.invulner) 
 				{
 					aiSpok=maxSpok+10;
 					aiState=1;
@@ -101,13 +101,13 @@ package unitdata
 				} 
 				else 
 				{
-					celX=World.world.gg.X
-					celY=World.world.gg.Y-World.world.gg.scY/2;
+					celX=GameSession.currentSession.gg.X
+					celY=GameSession.currentSession.gg.Y-GameSession.currentSession.gg.scY/2;
 				}
 				storona=(celX>X)?1:-1;
 			}
 			
-			if (aiState==1 && World.world.gg.room==room) 
+			if (aiState==1 && GameSession.currentSession.gg.room==room) 
 			{
 				spd.x=celX-X;
 				spd.y=celY-(Y-scY/2);

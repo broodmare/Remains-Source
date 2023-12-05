@@ -177,10 +177,10 @@ package unitdata
 				}
 			} else if (aiState==2) {
 				if (oduplenie<=0 && aiN%4==0) {
-					if (room==World.world.gg.room && rasst2>0 && rasst2<explDist*explDist) activate();
+					if (room==GameSession.currentSession.gg.room && rasst2>0 && rasst2<explDist*explDist) activate();
 				}
 				if (aiN%10==0 && !isVis) {
-					isVis=World.world.gg.lookInvis(this,1);
+					isVis=GameSession.currentSession.gg.lookInvis(this,1);
 					if (isVis) {
 						setVis(true);
 					}

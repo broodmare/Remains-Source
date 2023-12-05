@@ -259,13 +259,13 @@ package graphdata
 					}
 					if ((id == 'gui' || id == 'take') && param.txt) 
 					{
-						p.vis.text.text.styleSheet = World.world.gui.style;
+						p.vis.text.text.styleSheet = GameSession.currentSession.gui.style;
 						p.vis.text.text.htmlText = param.txt;
 					}
 					if (camscale) 
 					{
-						p.vis.scaleX = 1 / World.world.cam.scaleV;
-						p.vis.scaleY = 1 / World.world.cam.scaleV;
+						p.vis.scaleX = 1 / GameSession.currentSession.cam.scaleV;
+						p.vis.scaleY = 1 / GameSession.currentSession.cam.scaleV;
 						if (param && param.scale) 
 						{
 							p.vis.scaleX *= param.scale;

@@ -281,7 +281,7 @@ package interdata
 
 				if (n == 6) 
 				{
-					World.world.armorWork = arm.@id;
+					GameSession.currentSession.armorWork = arm.@id;
 					dvis.gotoAndStop(2);
 					dvis.gotoAndStop(1);
 					var sprX:int = dvis.width *  sc + 2;
@@ -319,7 +319,7 @@ package interdata
 
 
 			Appear.transp 			= false;
-			World.world.armorWork 	= '';
+			GameSession.currentSession.armorWork 	= '';
 		}
 		
 		public function showMass():void
@@ -485,8 +485,8 @@ package interdata
 			info.fon.height=info.info.height+info.info.y+8;
 			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
 			var ny=event.currentTarget.y+event.currentTarget.parent.y-50;
-			if (ny+vis.y+info.height>World.world.cam.screenY-10) ny=World.world.cam.screenY-vis.y-info.height-10;
-			if (nx+vis.x+info.width>World.world.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
+			if (ny+vis.y+info.height>GameSession.currentSession.cam.screenY-10) ny=GameSession.currentSession.cam.screenY-vis.y-info.height-10;
+			if (nx+vis.x+info.width>GameSession.currentSession.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
 			info.x = nx;
 			info.y = ny;
 		}
@@ -499,8 +499,8 @@ package interdata
 			info.fon.height=info.info.height+info.info.y+8;
 			var nx=event.currentTarget.x+event.currentTarget.parent.x+80;
 			var ny=event.currentTarget.y+event.currentTarget.parent.y+20;
-			if (ny+vis.y+info.height>World.world.cam.screenY-10) ny=World.world.cam.screenY-vis.y-info.height-10;
-			if (nx+vis.x+info.width>World.world.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
+			if (ny+vis.y+info.height>GameSession.currentSession.cam.screenY-10) ny=GameSession.currentSession.cam.screenY-vis.y-info.height-10;
+			if (nx+vis.x+info.width>GameSession.currentSession.cam.screenX-10) nx=event.currentTarget.x+event.currentTarget.parent.x-80-info.width;
 			info.x=nx;
 			info.y=ny;
 		}
@@ -518,8 +518,8 @@ package interdata
 			else if (turn > 0) 
 			{
 				active = true;
-				World.world.pip.onoff(-1);
-				World.world.ctr.clearAll();
+				GameSession.currentSession.pip.onoff(-1);
+				GameSession.currentSession.ctr.clearAll();
 			} 
 			else 
 			{
@@ -529,7 +529,7 @@ package interdata
 			vis.visible = active;
 			if (active) 
 			{
-				World.world.cur();
+				GameSession.currentSession.cur();
 				setButtons();
 				showWeaponList(page);
 

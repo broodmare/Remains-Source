@@ -176,10 +176,10 @@ package interdata
 				setTopText('inforepair');
 				if (inv.items['owl'] && inv.items['owl'].kol) 
 				{
-					World.world.pers.setRoboowl();
-					if (World.world.pers.owlhpProc<1) 
+					GameSession.currentSession.pers.setRoboowl();
+					if (GameSession.currentSession.pers.owlhpProc<1) 
 					{
-						n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, rep:owlRep/World.world.pers.owlhp};
+						n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:GameSession.currentSession.pers.owlhp*GameSession.currentSession.pers.owlhpProc, maxhp:GameSession.currentSession.pers.owlhp, rep:owlRep/GameSession.currentSession.pers.owlhp};
 						arr.push(n);
 						assArr[n.id]=n;
 					}
@@ -292,7 +292,7 @@ package interdata
 			if (inv.items[cid]) 
 			{
 				vis.bottext.htmlText=Res.txt('item',cid)+ ': '+yel(inv.items[cid].kol);
-				if (World.world.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.txt('pip', 'invault')+')';
+				if (GameSession.currentSession.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.txt('pip', 'invault')+')';
 			} 
 			else 
 			{
@@ -304,12 +304,12 @@ package interdata
 		public function checkScheme(sch:XML):Boolean
 		{
 			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
-				World.world.gui.infoText('needSkill', Res.txt('eff',sch.@skill), sch.@lvl);	//требуется навык
+				GameSession.currentSession.gui.infoText('needSkill', Res.txt('eff',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
 			}
 			for each(var c in sch.craft) {
 				if (inv.items[c.@id]==null || (inv.items[c.@id].kol+inv.items[c.@id].vault)<c.@kol) {
-					World.world.gui.infoText('noMaterials');
+					GameSession.currentSession.gui.infoText('noMaterials');
 					return false;
 				}
 			}
@@ -331,7 +331,7 @@ package interdata
 		{
 			if (pip.gamePause) 
 			{
-				World.world.gui.infoText('gamePause');
+				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
 			var w:Weapon;
@@ -357,14 +357,14 @@ package interdata
 					{
 						w.respect=0;
 						w.hold=w.holder;
-						World.world.gui.infoText('created',cnazv);
+						GameSession.currentSession.gui.infoText('created',cnazv);
 						setStatus();
 					} 
 					else 
 					{
 						inv.plusItem(w.id,kol);
 						obj.kol=inv.items[w.id].kol;
-						World.world.gui.infoText('created2',cnazv,inv.items[cid].kol);
+						GameSession.currentSession.gui.infoText('created2',cnazv,inv.items[cid].kol);
 						infoItem(ccat,cid,cnazv, 1);
 						setStatItem(event.currentTarget as MovieClip, obj);
 					}
@@ -376,7 +376,7 @@ package interdata
 					if (arm.lvl>=0) return;
 					minusCraftComp(sch);
 					arm.lvl=0;
-					World.world.gui.infoText('created3',cnazv);
+					GameSession.currentSession.gui.infoText('created3',cnazv);
 					setStatus();
 				} 
 				else if (ccat==Item.L_IMPL) 
@@ -384,7 +384,7 @@ package interdata
 					minusCraftComp(sch);
 					inv.plusItem(cid,1);
 					inv.takeScript(cid);
-					World.world.gui.infoText('created4',cnazv);
+					GameSession.currentSession.gui.infoText('created4',cnazv);
 					gg.pers.setParameters();
 					setStatus();
 				} 
@@ -394,19 +394,19 @@ package interdata
 					minusCraftComp(sch);
 					inv.plusItem(cid,kol);
 					obj.kol=inv.items[cid].kol;
-					World.world.gui.infoText('created2',cnazv,inv.items[cid].kol);
+					GameSession.currentSession.gui.infoText('created2',cnazv,inv.items[cid].kol);
 					infoItem(ccat,cid,cnazv, 1);
 					if (inv.items[cid].xml && inv.items[cid].xml.@one=='1') setStatus();
 					setStatItem(event.currentTarget as MovieClip, obj);
 				}
-				World.world.game.checkQuests(cid);
+				GameSession.currentSession.game.checkQuests(cid);
 				if (Settings.helpMess && inv.items[cid]) 
 				{
 					var lmess:String=inv.items[cid].mess;
-					if (lmess!=null && !(World.world.game.triggers['mess_'+lmess]>0)) 
+					if (lmess!=null && !(GameSession.currentSession.game.triggers['mess_'+lmess]>0)) 
 					{
-						World.world.game.triggers['mess_'+lmess]=1;
-						World.world.gui.impMess(Res.txt('item',lmess),Res.txt('item',lmess,2),lmess);
+						GameSession.currentSession.game.triggers['mess_'+lmess]=1;
+						GameSession.currentSession.gui.impMess(Res.txt('item',lmess),Res.txt('item',lmess,2),lmess);
 						pip.onoff(-1);
 					}
 				}
@@ -423,12 +423,12 @@ package interdata
 						inv.minusItem(arm.idComp,kol,false);
 						arm.upgrade();
 						gg.pers.setParameters();
-						World.world.gui.infoText('upArmor');
+						GameSession.currentSession.gui.infoText('upArmor');
 						setStatus();
 					} 
 					else 
 					{
-						World.world.gui.infoText('noMaterials');
+						GameSession.currentSession.gui.infoText('noMaterials');
 					}
 				} 
 				else if (ccat==Item.L_WEAPON) 
@@ -438,7 +438,7 @@ package interdata
 					if (!checkScheme(sch)) return;
 					minusCraftComp(sch);
 					inv.updWeapon(cid,1);
-					World.world.gui.infoText('created',cnazv+Weapon.variant2);
+					GameSession.currentSession.gui.infoText('created',cnazv+Weapon.variant2);
 					setStatus();
 				}
 			} 
@@ -450,7 +450,7 @@ package interdata
 					arm=inv.armors[cid];
 					if (arm.hp>=arm.maxhp) 
 					{
-						World.world.gui.infoText('noRepair');
+						GameSession.currentSession.gui.infoText('noRepair');
 						return;
 					}
 					var cid2:String=inv.armors[cid].idComp;
@@ -463,7 +463,7 @@ package interdata
 					} 
 					else 
 					{
-						World.world.gui.infoText('noMaterials');
+						GameSession.currentSession.gui.infoText('noMaterials');
 					}
 				}
 				else if (ccat==Item.L_WEAPON) 
@@ -480,7 +480,7 @@ package interdata
 					} 
 					else 
 					{
-						World.world.gui.infoText('noMaterials');
+						GameSession.currentSession.gui.infoText('noMaterials');
 					}
 				} 
 				else if (ccat==Item.L_INSTR) 
@@ -497,7 +497,7 @@ package interdata
 					} 
 					else 
 					{
-						World.world.gui.infoText('noMaterials');
+						GameSession.currentSession.gui.infoText('noMaterials');
 					}
 				}
 				setStatItem(event.currentTarget as MovieClip, obj);

@@ -183,7 +183,7 @@ package unitdata
 				Settings.drawAllMap=true;
 				Settings.black=false;
 				Settings.showAddInfo=true;
-				World.world.grafon.layerLighting.visible=false;
+				GameSession.currentSession.grafon.layerLighting.visible=false;
 			}
 		}
 		
@@ -221,7 +221,7 @@ package unitdata
 			
 			weaponKrep=0;	//0 - левитация оружия, 1 - держать
 			
-			teleColor=World.world.app.cMagic;
+			teleColor = GameSession.currentSession.appearanceWindow.cMagic;
 			levitFilter1=new GlowFilter(teleColor,0,6,6,2,3);
 			teleFilter=new GlowFilter(teleColor,1,6,6,1,3);
 			dieFilter=new GlowFilter(0xCC00FF,0,6,6,2,3);
@@ -244,11 +244,11 @@ package unitdata
 		public function attach():void
 		{
 
-			invent = World.world.invent;
+			invent = GameSession.currentSession.invent;
 			invent.gg = this;
 			invent.owner = this;
 			invent.addAllSpells();
-			pers = World.world.pers;
+			pers = GameSession.currentSession.pers;
 			pers.gg = this;
 
 			hp = pers.begHP;
@@ -321,8 +321,8 @@ package unitdata
 				weaponLevit();
 			}
 
-			World.world.calcMassW = true;
-			World.world.calcMass = true;
+			GameSession.currentSession.calcMassW = true;
+			GameSession.currentSession.calcMass = true;
 			setAddictions();
 			if (Settings.alicorn) alicornOn(false);
 			else pers.setParameters();
@@ -371,19 +371,19 @@ package unitdata
 			if (teleObj || actionObj || t_work>0 || isFetter>0 || room.sky) return false;
 			
 			//не давать выйти, пока гг под атакой
-			var po:int=World.world.possiblyOut();
+			var po:int=GameSession.currentSession.possiblyOut();
 			if (po>0 && !(napr==3 && room.bezdna) && rat==0) 
 			{
 				if (napr==3 && !room.bezdna) {
 					dy=-jumpdy;
 					dx=maxSpeed*storona;
 				}
-				if (po==2) World.world.gui.infoText('noOutLoc',null,null,false);
+				if (po==2) GameSession.currentSession.gui.infoText('noOutLoc',null,null,false);
 				return false;
 			}
 			
 			var laz=isLaz, lev=levit;
-			var outP:Object=World.world.level.gotoLoc(napr, portX, portY);
+			var outP:Object=GameSession.currentSession.level.gotoLoc(napr, portX, portY);
 			if (outP!=null) 
 			{
 				if (outP.die) 
@@ -430,7 +430,7 @@ package unitdata
 			{
 				if (!newRoom.petOn && room.petOn) 
 				{
-					World.world.gui.infoText('noPetFollow');
+					GameSession.currentSession.gui.infoText('noPetFollow');
 					pet.vis.alpha=0;
 					if (pet.hpbar) pet.hpbar.alpha=pet.vis.alpha;
 				} 
@@ -466,7 +466,7 @@ package unitdata
 			if (!room.levitOn && isFly) isFly = false;
 			if (room.electroDam > 0) 
 			{
-				World.world.gui.infoText('electroOn',null,null,true);
+				GameSession.currentSession.gui.infoText('electroOn',null,null,true);
 				isStayDam=45;
 			}
 			vis.svet.visible = room.sky;
@@ -651,7 +651,7 @@ package unitdata
 		{
 			super.actions();
 			
-			inBattle=World.world.t_battle>0 || Settings.testBattle;
+			inBattle=GameSession.currentSession.t_battle>0 || Settings.testBattle;
 			
 			//захват лута
 			if (isTake>0) isTake--;
@@ -680,14 +680,14 @@ package unitdata
 						hp=maxhp-rad;
 						if (hp<=0) die();
 					}
-					World.world.gui.setHp();
+					GameSession.currentSession.gui.setHp();
 				}
 				var ver:Number=Math.min(0.5, drad/10);
 				if (drad>0.1 && isrnd (ver)) sound('geiger');
 				if (pet) pet.heal(drad/15,1);
 				drad=0;
 			} else if (drad==0){
-				World.world.gui.setHp();
+				GameSession.currentSession.gui.setHp();
 				drad=-0.0001;
 			}
 			//лечение
@@ -695,22 +695,22 @@ package unitdata
 				healhp-=pers.healMult/5*pers.metaMult;
 				hp+=pers.healMult/5*pers.metaMult;
 				if (hp>maxhp-rad) hp=maxhp-rad;
-				World.world.gui.setHp();
+				GameSession.currentSession.gui.setHp();
 			}
 			if (pers.regenFew>0 && hp<Math.min(maxhp*pers.regenMax,maxhp-rad) && hp>0) {
 				hp+=pers.regenFew;
-				World.world.gui.setHp();
+				GameSession.currentSession.gui.setHp();
 			}
 			if (Settings.alicorn && sost==1) {
 				if (hp<maxhp) {
 					hp+=pers.alicornHeal;
 					if (hp>maxhp) hp=maxhp;
-					World.world.gui.setHp();
+					GameSession.currentSession.gui.setHp();
 				}
 				if (pers.manaHP<pers.inMaxMana) {
 					pers.manaHP+=pers.alicornManaHeal;
 					if (pers.manaHP>pers.inMaxMana) pers.manaHP=pers.inMaxMana;
-					World.world.gui.setMana();
+					GameSession.currentSession.gui.setMana();
 				}				
 			}
 			//различные действия
@@ -802,7 +802,7 @@ package unitdata
 			if (currentWeapon && currentWeapon.is_shoot) {
 				if (sats.que.length > 0) {
 					sats.act();
-					World.world.gui.setWeapon();
+					GameSession.currentSession.gui.setWeapon();
 				}
 				currentWeapon.is_shoot=false;
 			}
@@ -830,8 +830,8 @@ package unitdata
 			} 
 			else 
 			{
-				celX=World.world.celX;
-				celY=World.world.celY;
+				celX=GameSession.currentSession.celX;
+				celY=GameSession.currentSession.celY;
 			}
 			//модификатор точности precMult, только если стрельба не через зпс
 			precMult=pers.allPrecMult;
@@ -919,7 +919,7 @@ package unitdata
 			if (mana>maxmana) mana=maxmana;
 			if (pers.manaHP<pers.manaMin) {
 				pers.manaHP+=pers.manaHPRes;
-				World.world.gui.setMana();
+				GameSession.currentSession.gui.setMana();
 			}
 			//воздух
 			if (isPlav) {
@@ -989,14 +989,14 @@ package unitdata
 			//спутник
 			if (noPet>0) {
 				noPet--;
-				World.world.gui.setPet();
+				GameSession.currentSession.gui.setPet();
 			}
 			if (noPet2>0) noPet2--;
 			if (pet && pet.sost==4 && noPet<=0 && pet.optAutores) pet.resurrect();
 			//удары ап стену
 			//if (stay) damWall=0;
 			//откл. пипбака
-			if (pipOff==1) World.world.gui.allOn();
+			if (pipOff==1) GameSession.currentSession.gui.allOn();
 			if (pipOff>0) pipOff--;
 			//неконтролируемая атака
 			if (attackForever) {
@@ -1069,11 +1069,11 @@ package unitdata
 		{
 			if (!room.portOn) return;
 			if (mana<pers.portMana*pers.allDManaMult && mana<maxmana*0.99) {
-				World.world.gui.infoText('overMana',null,null,false);
-				World.world.gui.bulb(X,Y-20);
+				GameSession.currentSession.gui.infoText('overMana',null,null,false);
+				GameSession.currentSession.gui.bulb(X,Y-20);
 			} else {
-				var nx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
-				var ny=Math.round(World.world.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
+				var nx=Math.round(GameSession.currentSession.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
+				var ny=Math.round(GameSession.currentSession.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
 				if (checkPort()) {
 					teleport(nx, ny, 1);
 					sound('teleport');
@@ -1092,16 +1092,16 @@ package unitdata
 		public function alicornPort():void
 		{
 			if (mana<pers.alicornPortMana && mana<maxmana*0.99) {
-				World.world.gui.infoText('overMana',null,null,false);
-				World.world.gui.bulb(X,Y-20);
+				GameSession.currentSession.gui.infoText('overMana',null,null,false);
+				GameSession.currentSession.gui.bulb(X,Y-20);
 				return;
 			}
 			if (!room.sky) {
-				var t:Tile=room.getAbsTile(World.world.celX,World.world.celY);
+				var t:Tile=room.getAbsTile(GameSession.currentSession.celX,GameSession.currentSession.celY);
 				if (t.visi<0.8) return;
 			}
-			var tx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
-			var ty=Math.round(World.world.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
+			var tx=Math.round(GameSession.currentSession.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
+			var ty=Math.round(GameSession.currentSession.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
 			if (room.sky || !room.collisionUnit(tx,ty,stayX,stayY))	{
 				teleport(tx, ty, 1);
 				if (teleObj) dropTeleObj();
@@ -1115,9 +1115,9 @@ package unitdata
 		{
 			if (mana<pers.portMana*pers.allDManaMult) return false;
 			if (room.sky) return true;
-			var nx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
-			var ny=Math.round(World.world.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
-			var t:Tile=room.getAbsTile(World.world.celX,World.world.celY);
+			var nx=Math.round(GameSession.currentSession.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
+			var ny=Math.round(GameSession.currentSession.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
+			var t:Tile=room.getAbsTile(GameSession.currentSession.celX,GameSession.currentSession.celY);
 			if (t.visi>=0.8 && !room.collisionUnit(nx, ny,stayX,stayY)) return true;
 			return false;
 		}
@@ -1162,14 +1162,14 @@ package unitdata
 			//найти ближайший подходящий объект, если курсор не указывает прямо на цель
 			if (mana<200) return;
 			if (room.celObj==null) {
-				var dist=(X-World.world.celX)*(X-World.world.celX)+(Y-scY/2-World.world.celY)*(Y-scY/2-World.world.celY);
+				var dist=(X-GameSession.currentSession.celX)*(X-GameSession.currentSession.celX)+(Y-scY/2-GameSession.currentSession.celY)*(Y-scY/2-GameSession.currentSession.celY);
 				if (dist>pers.teleDist) return;
-				if (!room.isLine(X,Y-scY*0.75, World.world.celX, World.world.celY)) return;
+				if (!room.isLine(X,Y-scY*0.75, GameSession.currentSession.celX, GameSession.currentSession.celY)) return;
 				var pt:Pt=room.firstObj;
 				var mindist=50*50;
 				while (pt) {
 					if ((pt is Obj) && (pt as Obj).levitPoss && (pt as Obj).massa<=pers.maxTeleMassa) {
-						dist=(World.world.celX-pt.X)*(World.world.celX-pt.X)+(World.world.celY-pt.Y+(pt as Obj).scY/2)*(World.world.celY-pt.Y+(pt as Obj).scY/2);
+						dist=(GameSession.currentSession.celX-pt.X)*(GameSession.currentSession.celX-pt.X)+(GameSession.currentSession.celY-pt.Y+(pt as Obj).scY/2)*(GameSession.currentSession.celY-pt.Y+(pt as Obj).scY/2);
 						if (dist<mindist) {
 							room.celObj=(pt as Obj);
 							mindist=dist;
@@ -1184,7 +1184,7 @@ package unitdata
 			}
 			if (room.celObj && room.celObj.levitPoss && room.celObj.onCursor && room.celDist<=pers.teleDist && room.celObj.massa<=pers.maxTeleMassa){
 				if ((pers.telemaster==0 || !room.portOn) && !room.isLine(X,Y-scY*0.75,room.celObj.X, room.celObj.Y-room.celObj.scY/2)) {
-					World.world.gui.infoText('noVisible',null,null,false);
+					GameSession.currentSession.gui.infoText('noVisible',null,null,false);
 					return;
 				}
 				if (room.electroDam && (room.celObj is Box) && (room.celObj as Box).mat==1) {
@@ -1236,7 +1236,7 @@ package unitdata
 				if (teleObj is Unit) {
 					(teleObj as Unit).t_throw=45;
 				}
-				World.world.gui.setMana();
+				GameSession.currentSession.gui.setMana();
 				teleObj.dx+=p.x;
 				teleObj.dy+=p.y;
 				if (pers.throwForce>0) {
@@ -1267,7 +1267,7 @@ package unitdata
 				}
 				teleObj.levit=0;
 				teleObj=null;
-				World.world.gui.setMana();
+				GameSession.currentSession.gui.setMana();
 			}
 		}
 		
@@ -1288,7 +1288,7 @@ package unitdata
 				actionReady=false;
 				if ((pers.telemaster==0 || !room.portOn || (room.celObj is Loot) || (room.celObj.inter && room.celObj.inter.allact=='comein')) && !room.isLine(X, Y - scY * 0.75, room.celObj.X, room.celObj.Y - room.celObj.scY / 2, room.celObj)) 
 				{
-					World.world.gui.infoText('noVisible',null,null,false);
+					GameSession.currentSession.gui.infoText('noVisible',null,null,false);
 					return;
 				}
 				if (room.electroDam && (room.celObj is Box) && (room.celObj as Box).mat == 1) 
@@ -1358,12 +1358,12 @@ package unitdata
 		{
 			if (Settings.chit=='fly') isFly=!isFly;
 			if (Settings.chit=='port') {
-				var tx=Math.round(World.world.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
-				var ty=Math.round(World.world.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
+				var tx=Math.round(GameSession.currentSession.celX/Settings.tilePixelWidth)*Settings.tilePixelWidth
+				var ty=Math.round(GameSession.currentSession.celY/Settings.tilePixelHeight+1)*Settings.tilePixelHeight-1;
 				if (!room.collisionUnit(tx,ty,stayX,stayY))	teleport(tx, ty);
 			}
 			if (Settings.chit=='emit') {
-				Emitter.emit(Settings.chitX,room,World.world.celX, World.world.celY);
+				Emitter.emit(Settings.chitX,room,GameSession.currentSession.celX, GameSession.currentSession.celY);
 			}
 		}
 		
@@ -1378,7 +1378,7 @@ package unitdata
 			isRun=false;
 			walk=0;
 			if (currentWeapon) currentWeapon.vis.visible=false;
-			World.world.pip.gamePause=true;
+			GameSession.currentSession.pip.gamePause=true;
 		}
 		
 		//вернуть обычный режим
@@ -1388,7 +1388,7 @@ package unitdata
 			invulner=false;
 			ggControl=true;
 			if (currentWeapon) currentWeapon.vis.visible=true;
-			World.world.pip.gamePause=false;
+			GameSession.currentSession.pip.gamePause=false;
 		}
 		
 		public override function sit(turn:Boolean):void
@@ -1448,7 +1448,7 @@ package unitdata
 				if (!teleReady) 
 				{
 					if (sats.que.length > 0) sats.clearAll();
-					if (visSel) World.world.gui.unshowSelector(0);
+					if (visSel) GameSession.currentSession.gui.unshowSelector(0);
 					else actTele();
 					teleReady=true;
 				}
@@ -1497,7 +1497,7 @@ package unitdata
 				if (Settings.alicorn) currentSpell=invent.spells['sp_mshit'];
 				if (currentSpell)
 				{
-					if (!currentSpell.castSpell(World.world.celX, World.world.celY)) ctr.keyStates.keyDef=false;
+					if (!currentSpell.castSpell(GameSession.currentSession.celX, GameSession.currentSession.celY)) ctr.keyStates.keyDef=false;
 					if (!currentSpell.prod) ctr.keyStates.keyDef=false;
 				}
 				else ctr.keyStates.keyDef=false;
@@ -1512,7 +1512,7 @@ package unitdata
 						var sp:Spell = invent.spells[invent.fav[Settings.kolHK * 2 + i]];
 						if (sp)
 						{
-							if (!sp.castSpell(World.world.celX, World.world.celY)) ctr['keySpell' + i] = false;
+							if (!sp.castSpell(GameSession.currentSession.celX, GameSession.currentSession.celY)) ctr['keySpell' + i] = false;
 							if (!sp.prod) ctr['keySpell' + i] = false;
 						}
 						else ctr['keySpell' + i] = false;
@@ -1551,7 +1551,7 @@ package unitdata
 			{
 				if (visSel)
 				{
-					World.world.gui.unshowSelector(1);
+					GameSession.currentSession.gui.unshowSelector(1);
 					ctr.keyStates.keyAttack=false;
 				}
 				else if (ctr.keyStates.keyTele)
@@ -1572,7 +1572,7 @@ package unitdata
 					{
 						weaponSkill = pers.weaponSkills[currentWeapon.skill];
 						if (!currentWeapon.attack()) ctr.keyStates.keyAttack=false;
-						World.world.gui.setWeapon();
+						GameSession.currentSession.gui.setWeapon();
 						spellDisact();
 					}
 				}
@@ -1622,7 +1622,7 @@ package unitdata
 						{
 							ctr['keyWeapon' + j] = false;
 							invent.useFav(j + (ctr.keyStates.keyRun ? Settings.kolHK:0));
-							if (visSel) World.world.gui.unshowSelector(0);
+							if (visSel) GameSession.currentSession.gui.unshowSelector(0);
 							if (currentSpell) currentSpell.active = false;
 							ctr.keyStates.keyDef = false;
 							ctr.keyStates.keyAttack = false;
@@ -1631,12 +1631,12 @@ package unitdata
 				}
 				if (ctr.keyStates.keyScrDown && !autoAttack)
 				{
-					World.world.gui.showSelector(1, ctr.keyStates.keyRun?1:0);
+					GameSession.currentSession.gui.showSelector(1, ctr.keyStates.keyRun?1:0);
 					ctr.keyStates.keyScrDown=ctr.keyStates.keyScrUp=false;
 				}
 				if (ctr.keyStates.keyScrUp && !autoAttack)
 				{
-					World.world.gui.showSelector(-1, ctr.keyStates.keyRun?1:0);
+					GameSession.currentSession.gui.showSelector(-1, ctr.keyStates.keyRun?1:0);
 					ctr.keyStates.keyScrDown=ctr.keyStates.keyScrUp=false;
 				}
 				//вещи
@@ -1984,7 +1984,7 @@ package unitdata
 			for (var i=1; i<div; i++) {
 				var nx=X+ndx*i/div;
 				var ny=Y-scY/2+ndy*i/div;
-				var t:Tile=World.world.room.getAbsTile(Math.floor(nx),Math.floor(ny));
+				var t:Tile=GameSession.currentSession.room.getAbsTile(Math.floor(nx),Math.floor(ny));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) {
 					celX=nx;
 					celY=ny;
@@ -2066,7 +2066,7 @@ package unitdata
 					eff.forever = true;
 				}
 			}
-			if (World.world.game.triggers['curse']>0) addEffect('curse');
+			if (GameSession.currentSession.game.triggers['curse']>0) addEffect('curse');
 		}
 
 		public function endAllEffect():void
@@ -2148,7 +2148,7 @@ package unitdata
 				}
 			}
 			if (ismess && (sost==1 || sost==2) && showNumbs && hl>0.5) numbEmit.castSpell(room,X,Y-scY/2,{txt:((tip==2)?'-':'+')+Math.round(hl), frame:((tip==2)?7:4), rx:20, ry:20});
-			World.world.gui.setHp();
+			GameSession.currentSession.gui.setHp();
 		}
 		
 		public override function udarUnit(un:Unit, mult:Number=1):Boolean
@@ -2165,7 +2165,7 @@ package unitdata
 		{
 			if (t_nogas>0) return;
 			if (tip==0) {
-				World.world.gg.drad+=dam*koef;
+				GameSession.currentSession.gg.drad+=dam*koef;
 			} else if (this['ddam'+tip]!=null) {
 				if (koef<0.25) koef=koef*4;
 				else koef=1;
@@ -2185,7 +2185,7 @@ package unitdata
 			if (tip==Unit.D_EMP && dam>30 && pers.pipEmpVulner>0) {
 				pipOff+=Math.round(dam*pers.pipEmpVulner);
 				if (sats.que.length > 0) sats.clearAll();
-				World.world.gui.allOff();
+				GameSession.currentSession.gui.allOff();
 			}
 			if (cryst && tip!=Unit.D_BLEED && tip!=Unit.D_POISON && tip!=Unit.D_INSIDE) {
 				dam*=5/spellPower;
@@ -2212,7 +2212,7 @@ package unitdata
 			if (pinok>60 && teleObj) dropTeleObj();
 			if (pinok>30) isLaz=0;
 			var pdam:Number=super.damage(dam, tip, bul, tt);
-			if (dhp/maxhp>=0.2 && hp/maxhp<0.2) World.world.gui.critHP();
+			if (dhp/maxhp>=0.2 && hp/maxhp<0.2) GameSession.currentSession.gui.critHP();
 			if (pdam/maxhp>0.1 && isrnd(pdam/maxhp)) {
 				replic('dam');
 			}
@@ -2269,7 +2269,7 @@ package unitdata
 				if (sposob<10 && sost==1) pers.damage(0,0,true);
 			}
 			controlOff();
-			World.world.gui.unshowSelector();
+			GameSession.currentSession.gui.unshowSelector();
 			if (sost<3) sost=2;
 			if (sposob>=10) sost=3;
 			isLaz=0;
@@ -2286,12 +2286,12 @@ package unitdata
 			work='die';
 			if (pers.hardcoreMode && sposob>=0) {
 				pers.dead=true;
-				World.world.saveGame(-2);
-				if (sposob==10) World.world.gui.messText('hardDie2', pers.persName, false, false, 10000);
-				else World.world.gui.messText('hardDie', pers.persName, false, false, 10000);
+				GameSession.currentSession.saveGame(-2);
+				if (sposob==10) GameSession.currentSession.gui.messText('hardDie2', pers.persName, false, false, 10000);
+				else GameSession.currentSession.gui.messText('hardDie', pers.persName, false, false, 10000);
 				Snd.playMusic('harddie',1);
 			} else {
-				World.world.t_die=300;
+				GameSession.currentSession.t_die=300;
 			}
 		}
 		
@@ -2318,7 +2318,7 @@ package unitdata
 			drad2=0;
 			possRun=true;
 			if (pipOff>0) {
-				World.world.gui.allOn();
+				GameSession.currentSession.gui.allOn();
 				pipOff=0;
 			}
 			endAllEffect();
@@ -2404,8 +2404,8 @@ package unitdata
 			{
 				if (nw.respect==1 || nw.alicorn && !Settings.alicorn) 
 				{
-					if (nw.tip==5) World.world.gui.infoText('disSpell',null,null,false);
-					else World.world.gui.infoText('disWeapon',null,null,false);
+					if (nw.tip==5) GameSession.currentSession.gui.infoText('disSpell',null,null,false);
+					else GameSession.currentSession.gui.infoText('disWeapon',null,null,false);
 					return;
 				}
 				if (nw.spell) 
@@ -2418,7 +2418,7 @@ package unitdata
 				{
 					if (nw.lvlNoUse || nw.lvl-pers.getWeapLevel(nw.skill)>2) 
 					{
-						World.world.gui.infoText('weaponSkillLevel',null,null,false);
+						GameSession.currentSession.gui.infoText('weaponSkillLevel',null,null,false);
 					}
 				}
 			}
@@ -2471,7 +2471,7 @@ package unitdata
 				}
 			}
 			if (currentWeapon) vision=currentWeapon.visionMult;
-			World.world.gui.setWeapon();
+			GameSession.currentSession.gui.setWeapon();
 		}
 		
 		//вернуть нужное количество боеприпасов из инвентаря, или сколько есть
@@ -2494,11 +2494,11 @@ package unitdata
 		public function changeArmor (nid:String='', forced:Boolean=false):Boolean 
 		{
 			if (Settings.alicorn && nid!='' && !forced) {
-				World.world.gui.infoText('alicornNot',null,null,false);
+				GameSession.currentSession.gui.infoText('alicornNot',null,null,false);
 				return false;
 			}
-			if (World.world.t_battle>0 && nid!='off') {
-				World.world.gui.infoText('noChArmor',null,null,false);
+			if (GameSession.currentSession.t_battle>0 && nid!='off') {
+				GameSession.currentSession.gui.infoText('noChArmor',null,null,false);
 				return false;
 			}
 			var tipArmor=1;
@@ -2509,12 +2509,12 @@ package unitdata
 			}
 			if (Settings.hardInv && !forced && nid!='off' && !(room && room.base) && tipArmor==1) {
 				if (clo==0 && nid!=prevArmor) {
-					World.world.gui.infoText('noChArmor2',null,null,false);
+					GameSession.currentSession.gui.infoText('noChArmor2',null,null,false);
 					return false;
 				}
 			}
 			if (nid=='off') {
-				World.world.gui.infoText('brokenArmor');
+				GameSession.currentSession.gui.infoText('brokenArmor');
 				nid='';
 			}
 			if (tipArmor==1) {		//броня
@@ -2527,7 +2527,7 @@ package unitdata
 				if (nid=='' ||  currentArmor && currentArmor.id==invent.armors[nid].id) currentArmor=null;
 				else if (invent.armors[nid]) {
 					if (invent.armors[nid].hp>0) currentArmor=invent.armors[nid];
-					else World.world.gui.infoText('brokenArmor');
+					else GameSession.currentSession.gui.infoText('brokenArmor');
 				}
 				if (currentArmor) {
 					Appear.ggArmorId=currentArmor.id;
@@ -2562,7 +2562,7 @@ package unitdata
 		{
 			if (currentSpell==invent.spells[nid]) currentSpell=null;
 			else currentSpell=invent.spells[nid];
-			if (inf && currentSpell) World.world.gui.infoText('usedSpell',currentSpell.objectName);
+			if (inf && currentSpell) GameSession.currentSession.gui.infoText('usedSpell',currentSpell.objectName);
 		}
 		
 		public override function setPunchWeaponPos(w:WPunch):void
@@ -2599,19 +2599,19 @@ package unitdata
 		{
 			if (noPet > 0 && !f) 
 			{
-				World.world.gui.infoText('petNot', null, null, false);
+				GameSession.currentSession.gui.infoText('petNot', null, null, false);
 				return;
 			}
 
 			if (noPet2 > 0 && !f || !atkPoss || Settings.alicorn) 
 			{
-				World.world.gui.infoText('petNot2', null, null, false);
+				GameSession.currentSession.gui.infoText('petNot2', null, null, false);
 				return;
 			}
 
 			if (npet == 'owl' && currentPet == 'owl' && pets[npet] && pets[npet].hp <= 0 && !f) 
 			{
-				World.world.gui.infoText('petNot3',null,null,false);
+				GameSession.currentSession.gui.infoText('petNot3',null,null,false);
 				return;
 			}
 
@@ -2619,7 +2619,7 @@ package unitdata
 
 			if (pet) 
 			{
-				World.world.gui.infoText('petRecall', pet.objectName);
+				GameSession.currentSession.gui.infoText('petRecall', pet.objectName);
 				pet.recall();
 				pet = null;
 				childObjs[2] = null;
@@ -2635,7 +2635,7 @@ package unitdata
 			{
 				if (!room.petOn) 
 				{
-					World.world.gui.infoText('noPetCall', null, null, false);
+					GameSession.currentSession.gui.infoText('noPetCall', null, null, false);
 				} 
 				else 
 				{
@@ -2646,23 +2646,23 @@ package unitdata
 					pet.Y = Y - 20;
 					pet.room = room;
 					pet.call();
-					World.world.gui.infoText('petCall', pet.objectName);
+					GameSession.currentSession.gui.infoText('petCall', pet.objectName);
 				}
 			}
-			World.world.gui.setPet();
+			GameSession.currentSession.gui.setPet();
 		}
 		
 		public function uncallPet(ret:Boolean=false):void
 		{
 			if (pet) {
 				if (ret && currentPet!='moon') retPet=currentPet;
-				World.world.gui.infoText('petRecall',pet.objectName);
+				GameSession.currentSession.gui.infoText('petRecall',pet.objectName);
 				pet.recall();
 				pet=null;
 				childObjs[2]=null;
 				currentPet='';
 			}
-			World.world.gui.setPet();
+			GameSession.currentSession.gui.setPet();
 		}
 		
 		public function alicornOn(eff:Boolean=true):void
@@ -3243,7 +3243,7 @@ package unitdata
 			if (currentWeapon && currentWeapon.t_reload>1) {
 				if (!reloadbar.visible) reloadbar.visible=true;
 				reloadbar.gotoAndStop(Math.floor(currentWeapon.t_reload/(currentWeapon.reload*currentWeapon.reloadMult)*11)+1)
-				World.world.gui.setHolder();
+				GameSession.currentSession.gui.setHolder();
 			} else {
 				if (reloadbar.visible) reloadbar.visible=false;
 			}
@@ -3287,25 +3287,36 @@ package unitdata
 			vis.osn.body.head.morda.magic.alpha=aMC/100;
 			vis.osn.body.head.morda.magic.visible=vis.osn.body.head.morda.magic.alpha>0;
 			//крылья
-			if (pers.ableFly) {
+			if (pers.ableFly) 
+			{
 				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=true;
 				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=true;
-				if (Settings.alicorn || currentArmor && currentArmor.ableFly) {
-					try {
+				if (Settings.alicorn || currentArmor && currentArmor.ableFly) 
+				{
+					try 
+					{
 						if (vis.osn.body.rwing.currentFrame!=11) vis.osn.body.rwing.gotoAndStop(11);
 						if (vis.osn.body.lwing.currentFrame!=11) vis.osn.body.lwing.gotoAndStop(11);
 						vis.osn.body.rwing.wing.wing2.rotation=50-Math.abs(dx)*1.6;
 						vis.osn.body.lwing.wing.wing2.rotation=50-Math.abs(dx)*1.2;
-						//vis.osn.body.rwing.wing..rotation=Math.abs(dy)*2;
-					} catch (err) {}
-				} else if (isFly && !stay && !isPlav && !isLaz) {
+					} catch (err) 
+					{
+
+					}
+				} 
+				else if (isFly && !stay && !isPlav && !isLaz) 
+				{
 					if (vis.osn.body.rwing && vis.osn.body.rwing.currentFrame==1) vis.osn.body.rwing.gotoAndPlay(2);
 					if (vis.osn.body.lwing && vis.osn.body.lwing.currentFrame==1) vis.osn.body.lwing.gotoAndPlay(2);
-				} else {
+				}
+				else 
+				{
 					if (vis.osn.body.rwing) vis.osn.body.rwing.gotoAndStop(1);
 					if (vis.osn.body.lwing) vis.osn.body.lwing.gotoAndStop(1);
 				}
-			} else {
+			} 
+			else 
+			{
 				if (vis.osn.body.rwing) vis.osn.body.rwing.visible=false;
 				if (vis.osn.body.lwing) vis.osn.body.lwing.visible=false;
 			}
@@ -3320,31 +3331,34 @@ package unitdata
 				vis.shit.visible=false;
 				vis.shit.gotoAndStop(1);
 			}
-			if (isFetter>0) {
+			if (isFetter>0) 
+			{
 				dfx=fetX-X;
 				dfy=fetY-Y+30;
 				rfetter=Math.sqrt(dfx*dfx+dfy*dfy);
 				vis.fetter.visible=true;
 				vis.fetter.scaleX=rfetter/100;
 				vis.fetter.rotation=Math.atan2(dfy,dfx*storona)/Math.PI*180;
-			} else {
+			} 
+			else 
+			{
 				vis.fetter.visible=false;
 			}
 		}
 		
 		public function refreshVis():void
 		{
-			var dez=vis.osn.currentFrameLabel;
+			var dez = vis.osn.currentFrameLabel;
 			vis.osn.gotoAndStop('nope');
 			vis.osn.gotoAndStop(dez);
-			teleColor=World.world.app.cMagic;
+			teleColor = GameSession.currentSession.appearanceWindow.cMagic;
 			levitFilter1.color=teleColor;
 			teleFilter.color=teleColor;
 		}
 		
 		public override function visDetails():void
 		{
-			World.world.gui.setHp();
+			GameSession.currentSession.gui.setHp();
 		}
 		
 		public function showElectroBlock():void
@@ -3355,27 +3369,28 @@ package unitdata
 		
 		public override function replic(s:String):void
 		{
-			if (sost!=1 || id_replic=='') return;
-			if (t_replic>0) return;
+			if (sost != 1 || id_replic == '') return;
+			if (t_replic > 0) return;
 			var s_replic:String;
-			t_replic=75+Math.random()*30;
-			s_replic=Res.repText(id_replic, s, false);
-			if (s_replic==prev_replic) s_replic=Res.repText(id_replic, s, false);
-			if (s_replic==prev_replic) return;
+			t_replic = 75 + Math.random() * 30;
+			s_replic = Res.repText(id_replic, s, false);
+			if (s_replic == prev_replic) s_replic = Res.repText(id_replic, s, false);
+			if (s_replic == prev_replic) return;
 			prev_replic=s_replic;
-			if (s_replic!='' && s_replic!=null) {
-				Emitter.emit('replic2',room,X,Y-90,{txt:s_replic, ry:20});
+			if (s_replic!='' && s_replic!=null) 
+			{
+				Emitter.emit('replic2', room, X, Y - 90, {txt:s_replic, ry:20});
 			}
 		}
 		
 		public override function sndStep(faza:int,tip:int=0):void
 		{
-			if (rat>0) return;
-			super.sndStep(faza,tip);
+			if (rat > 0) return;
+			super.sndStep(faza, tip);
 		}
 		protected override function sndFall():void
 		{
-			if (rat>0) return;
+			if (rat > 0) return;
 			super.sndFall();
 		}
 		

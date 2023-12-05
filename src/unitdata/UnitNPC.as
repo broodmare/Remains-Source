@@ -63,7 +63,7 @@ package unitdata
 			//взять данные об npc
 			if (xml && xml.@npc.length()) 
 			{
-				targNPC=World.world.game.npcs[xml.@npc];
+				targNPC=GameSession.currentSession.game.npcs[xml.@npc];
 			}
 			if (targNPC) 
 			{
@@ -226,7 +226,7 @@ package unitdata
 			if (zanyato || t_ref>0) return;
 			t_ref=16;
 			if (!noTurn) {
-				if (X>World.world.gg.X) storona=-1;
+				if (X>GameSession.currentSession.gg.X) storona=-1;
 				else storona=1;
 			}
 			if (targNPC) targNPC.activate();
@@ -329,7 +329,7 @@ package unitdata
 		public override function control():void
 		{
 			if (t_ref>0) t_ref--;
-			if (World.world.gui.dialScript.running) {
+			if (GameSession.currentSession.gui.dialScript.running) {
 			} else {
 				t_replic--;
 				if (t_replic<=0) {

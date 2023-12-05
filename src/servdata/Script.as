@@ -84,41 +84,41 @@ package servdata
 			{
 				if (wait) 
 				{
-					if (World.world.ctr.keyPressed2) 
+					if (GameSession.currentSession.ctr.keyPressed2) 
 					{
 						dial_n = 10000;
 					} 
-					else if (!World.world.ctr.keyPressed) return;
+					else if (!GameSession.currentSession.ctr.keyPressed) return;
 					if (dial_n < 0) 
 					{
-						World.world.gui.dialText();
+						GameSession.currentSession.gui.dialText();
 						wait = false;
 					}
 					else 
 					{
 						dial_n++;
-						if (World.world.gui.dialText(actObj.val, dial_n, actObj.opt1 > 0, true)) 
+						if (GameSession.currentSession.gui.dialText(actObj.val, dial_n, actObj.opt1 > 0, true)) 
 						{
-							World.world.ctr.active = false;
-							World.world.ctr.keyPressed = false;
-							World.world.gg.levit = 0;
+							GameSession.currentSession.ctr.active = false;
+							GameSession.currentSession.ctr.keyPressed = false;
+							GameSession.currentSession.gg.levit = 0;
 							return;
 						} 
 						else 
 						{
-							World.world.gui.dialText();
-							World.world.gg.controlOn();
+							GameSession.currentSession.gui.dialText();
+							GameSession.currentSession.gg.controlOn();
 							wait = false;
 						}
 					}
-					World.world.ctr.keyPressed  = false;
-					World.world.ctr.keyPressed2 = false;
+					GameSession.currentSession.ctr.keyPressed  = false;
+					GameSession.currentSession.ctr.keyPressed2 = false;
 				}
 				ncom++;
 				if (ncom >= acts.length) 
 				{
 					running = false;
-					World.world.gui.dialText();
+					GameSession.currentSession.gui.dialText();
 				} 
 				else 
 				{
@@ -135,9 +135,9 @@ package servdata
 			if (obj == null) return;
 			//trace('SCR', obj.targ, obj.act, obj.val);
 			actObj = obj;
-			if (World.world.gui.vis.dial.visible) World.world.gui.dialText();
-			World.world.ctr.keyPressed 	= false;
-			World.world.ctr.keyPressed2 = false;
+			if (GameSession.currentSession.gui.vis.dial.visible) GameSession.currentSession.gui.dialText();
+			GameSession.currentSession.ctr.keyPressed 	= false;
+			GameSession.currentSession.ctr.keyPressed2 = false;
 			wait = false;
 			dial_n = -1;
 			if (obj.targ) 
@@ -145,86 +145,86 @@ package servdata
 				var target:Obj;
 				if (obj.targ == 'this') target = owner;
 				else if (level) target = level.uidObjs[obj.targ];
-				else target = World.world.level.uidObjs[obj.targ];
+				else target = GameSession.currentSession.level.uidObjs[obj.targ];
 
 				if (target) target.command(obj.act, obj.val);
 			} 
 			else 
 			{
-				if (obj.act == 'control off') World.world.gg.controlOff();
-				if (obj.act == 'control on') World.world.gg.controlOn();
-				if (obj.act == 'mess') World.world.gui.messText(obj.val, '', obj.opt1 > 0, obj.opt2 > 0);
+				if (obj.act == 'control off') GameSession.currentSession.gg.controlOff();
+				if (obj.act == 'control on') GameSession.currentSession.gg.controlOn();
+				if (obj.act == 'mess') GameSession.currentSession.gui.messText(obj.val, '', obj.opt1 > 0, obj.opt2 > 0);
 				if (obj.act == 'dial') 
 				{
 					if (!(obj.t > 0)) wait = true;
-					World.world.ctr.active = false;
-					World.world.gui.dialText(obj.val, obj.n, obj.opt1 > 0, wait);
+					GameSession.currentSession.ctr.active = false;
+					GameSession.currentSession.gui.dialText(obj.val, obj.n, obj.opt1 > 0, wait);
 				}
 				if (obj.act == 'dialog') 
 				{
 					if (Settings.dialOn) 
 					{
-						World.world.gg.controlOff();
+						GameSession.currentSession.gg.controlOff();
 						wait = true;
 						dial_n = 0;
-						World.world.ctr.active = false;
-						World.world.gui.dialText(actObj.val, dial_n, actObj.opt1 > 0, true);
-						World.world.ctr.keyStates.keyJump = false;
-						World.world.gg.levit = 0;
+						GameSession.currentSession.ctr.active = false;
+						GameSession.currentSession.gui.dialText(actObj.val, dial_n, actObj.opt1 > 0, true);
+						GameSession.currentSession.ctr.keyStates.keyJump = false;
+						GameSession.currentSession.gg.levit = 0;
 					}
 				}
 				if (obj.act == 'inform') 
 				{
-					World.world.gg.controlOff();
+					GameSession.currentSession.gg.controlOff();
 					wait = true;
 					dial_n = 0;
-					World.world.ctr.active = false;
-					World.world.gui.dialText(<r mod = {actObj.opt2} push = {(actObj.opt1 > 0) ? '1':'0'}> {actObj.val}</r>, 0, false, true);
+					GameSession.currentSession.ctr.active = false;
+					GameSession.currentSession.gui.dialText(<r mod = {actObj.opt2} push = {(actObj.opt1 > 0) ? '1':'0'}> {actObj.val}</r>, 0, false, true);
 				}
 				if (obj.act == 'landlevel') 
 				{
-					if (Settings.dialOn && World.world.game.levelArray[actObj.val]) 
+					if (Settings.dialOn && GameSession.currentSession.game.levelArray[actObj.val]) 
 					{
-						World.world.gg.controlOff();
+						GameSession.currentSession.gg.controlOff();
 						wait=true;
-						World.world.ctr.active=false;
-						var str:String = Res.txt('map', actObj.val) + "\n" + Res.txt('pip', 'recLevel') + ': ['+World.world.game.levelArray[actObj.val].dif + "]\n" + Res.txt('pip', 'isperslvl') + ': [' + World.world.pers.level + ']';
-						if (World.world.game.levelArray[actObj.val].dif > World.world.pers.level) 
+						GameSession.currentSession.ctr.active=false;
+						var str:String = Res.txt('map', actObj.val) + "\n" + Res.txt('pip', 'recLevel') + ': ['+GameSession.currentSession.game.levelArray[actObj.val].dif + "]\n" + Res.txt('pip', 'isperslvl') + ': [' + GameSession.currentSession.pers.level + ']';
+						if (GameSession.currentSession.game.levelArray[actObj.val].dif > GameSession.currentSession.pers.level) 
 						{
 							str += '\n\n' + Res.txt('pip', 'wrLevel');
 						}
-						World.world.gui.dialText(<r mod='1'>{str}</r>, 0, false, true);
+						GameSession.currentSession.gui.dialText(<r mod='1'>{str}</r>, 0, false, true);
 					}
 				}
 				if (obj.act == 'allact') 
 				{
-					World.world.room.allAct(null, obj.val, obj.n);
+					GameSession.currentSession.room.allAct(null, obj.val, obj.n);
 				}
 				if (obj.act == 'take') 
 				{
 					if (obj.n < 0) 
 					{
-						if (World.world.invent.items[obj.val]) 
+						if (GameSession.currentSession.invent.items[obj.val]) 
 						{
-							World.world.gui.infoText('withdraw', World.world.invent.items[obj.val].objectName, -obj.n);
-							World.world.invent.minusItem(obj.val, -obj.n);
-							World.world.pers.setParameters();
+							GameSession.currentSession.gui.infoText('withdraw', GameSession.currentSession.invent.items[obj.val].objectName, -obj.n);
+							GameSession.currentSession.invent.minusItem(obj.val, -obj.n);
+							GameSession.currentSession.pers.setParameters();
 						}
 					} 
 					else 
 					{
 						var item:Item = new Item(null, obj.val, obj.n);
-						World.world.invent.take(item);
+						GameSession.currentSession.invent.take(item);
 					}
 				}
 				if (obj.act == 'armor') 
 				{
-					World.world.gg.changeArmor(obj.val, true);
+					GameSession.currentSession.gg.changeArmor(obj.val, true);
 				}
-				if (obj.act == 'xp') World.world.pers.expa(obj.val,World.world.gg.X,World.world.gg.Y);
-				if (obj.act == 'perk') World.world.pers.addPerk(obj.val);
-				if (obj.act == 'eff') World.world.gg.addEffect(obj.val,obj.opt1,obj.opt2);
-				if (obj.act == 'remeff') World.world.gg.remEffect(obj.val);
+				if (obj.act == 'xp') GameSession.currentSession.pers.expa(obj.val,GameSession.currentSession.gg.X,GameSession.currentSession.gg.Y);
+				if (obj.act == 'perk') GameSession.currentSession.pers.addPerk(obj.val);
+				if (obj.act == 'eff') GameSession.currentSession.gg.addEffect(obj.val,obj.opt1,obj.opt2);
+				if (obj.act == 'remeff') GameSession.currentSession.gg.remEffect(obj.val);
 				if (obj.act == 'music') 
 				{
 					if (obj.n>0) Snd.playMusic(obj.val, obj.n);
@@ -232,66 +232,66 @@ package servdata
 				}
 				if (obj.act == 'music_rep') 
 				{
-					if (World.world.pers.rep>=World.world.pers.repGood) Snd.playMusic(obj.val);
+					if (GameSession.currentSession.pers.rep>=GameSession.currentSession.pers.repGood) Snd.playMusic(obj.val);
 				}
-				if (obj.act == 'anim') World.world.gg.anim(obj.val,actObj.opt1>0);
+				if (obj.act == 'anim') GameSession.currentSession.gg.anim(obj.val,actObj.opt1>0);
 				if (obj.act == 'turn') 
 				{
-					if (obj.val>0) World.world.gg.storona=1;
-					else World.world.gg.storona=-1;
-					World.world.gg.dx+=World.world.gg.storona*3;
+					if (obj.val>0) GameSession.currentSession.gg.storona=1;
+					else GameSession.currentSession.gg.storona=-1;
+					GameSession.currentSession.gg.dx+=GameSession.currentSession.gg.storona*3;
 				}
 				if (obj.act == 'black') 
 				{
-					World.world.cam.dblack=0;
-					if (obj.val>0)World.world.vblack.visible=true;
-					World.world.vblack.alpha=obj.val;
+					GameSession.currentSession.cam.dblack=0;
+					if (obj.val>0)GameSession.currentSession.vblack.visible=true;
+					GameSession.currentSession.vblack.alpha=obj.val;
 				}
-				if (obj.act == 'dblack') World.world.cam.dblack=obj.val;
+				if (obj.act == 'dblack') GameSession.currentSession.cam.dblack=obj.val;
 				if (obj.act == 'gui off') 
 				{
-					World.world.gui.hpBarOnOff(false);
+					GameSession.currentSession.gui.hpBarOnOff(false);
 				}
 				if (obj.act == 'gui on') 
 				{
-					World.world.gui.hpBarOnOff(true);
+					GameSession.currentSession.gui.hpBarOnOff(true);
 				}
 				if (obj.act == 'refill') 
 				{
-					World.world.level.refill();
+					GameSession.currentSession.level.refill();
 				}
 				if (obj.act == 'upland') 
 				{
-					World.world.game.upLandLevel();
+					GameSession.currentSession.game.upLandLevel();
 				}
 				if (obj.act == 'locon') 
 				{
-					World.world.room.allon();
+					GameSession.currentSession.room.allon();
 				}
 				if (obj.act == 'locoff') 
 				{
-					World.world.room.alloff();
+					GameSession.currentSession.room.alloff();
 				}
 				if (obj.act == 'quest') 
 				{
-					World.world.game.addQuest(obj.val);
+					GameSession.currentSession.game.addQuest(obj.val);
 				}
 				if (obj.act == 'showstage')
 				{
-					World.world.game.showQuest(obj.val, obj.n);
+					GameSession.currentSession.game.showQuest(obj.val, obj.n);
 				}
 				if (obj.act == 'show') 
 				{
-					World.world.cam.showOn=false;
+					GameSession.currentSession.cam.showOn=false;
 				}
 				if (obj.act == 'stage') 
 				{
-					World.world.game.closeQuest(obj.val, obj.n);
+					GameSession.currentSession.game.closeQuest(obj.val, obj.n);
 				}
 				if (obj.act == 'trigger') 
 				{
-					if (obj.n != null) World.world.game.setTrigger(obj.val, obj.n);
-					else World.world.game.setTrigger(obj.val);
+					if (obj.n != null) GameSession.currentSession.game.setTrigger(obj.val, obj.n);
+					else GameSession.currentSession.game.setTrigger(obj.val);
 				}
 				if (obj.act == 'goto') 
 				{	//перейти в комнату
@@ -300,15 +300,15 @@ package servdata
 				}
 				if (obj.act == 'gotoLevel') //перейти в местность
 				{	
-					if (obj.n == 2) World.world.game.gotoLevel(obj.val, null, true);
-					else if (obj.n == 1) World.world.game.gotoLevel(obj.val, obj.opt1 + ':' + obj.opt2);
-					else World.world.game.gotoLevel(obj.val);
+					if (obj.n == 2) GameSession.currentSession.game.gotoLevel(obj.val, null, true);
+					else if (obj.n == 1) GameSession.currentSession.game.gotoLevel(obj.val, obj.opt1 + ':' + obj.opt2);
+					else GameSession.currentSession.game.gotoLevel(obj.val);
 				}
 				if (obj.act == 'openland') //открыть местность на карте
 				{	
-					if (World.world.game.levelArray[obj.val]) 
+					if (GameSession.currentSession.game.levelArray[obj.val]) 
 					{
-						World.world.game.levelArray[obj.val].access = true;
+						GameSession.currentSession.game.levelArray[obj.val].access = true;
 					} 
 					else 
 					{
@@ -317,77 +317,77 @@ package servdata
 				}
 				if (obj.act == 'passed') //местность пройдена
 				{		
-					World.world.level.levelTemplate.passed = true;
+					GameSession.currentSession.level.levelTemplate.passed = true;
 				}
 				if (obj.act == 'actprob') 
 				{
-					if (World.world.room.prob) World.world.room.prob.activateProb();
+					if (GameSession.currentSession.room.prob) GameSession.currentSession.room.prob.activateProb();
 				}
 				if (obj.act == 'alarm') 
 				{
-					World.world.room.signal();
+					GameSession.currentSession.room.signal();
 				}
 				if (obj.act == 'trus') 
 				{
 					if (owner && owner.room) owner.room.trus = Number(obj.val);
-					else World.world.room.trus = Number(obj.val);
+					else GameSession.currentSession.room.trus = Number(obj.val);
 				}
 				if (obj.act == 'checkall') 
 				{
-					for each (var un:Unit in World.world.room.units) 
+					for each (var un:Unit in GameSession.currentSession.room.units) 
 					{
 						un.command('check');
 					}
 				}
 				if (obj.act == 'robots') 
 				{
-					World.world.room.robocellActivate();
+					GameSession.currentSession.room.robocellActivate();
 				}
 				if (obj.act == 'weapch') 
 				{
-					World.world.gg.changeWeapon(obj.val);
+					GameSession.currentSession.gg.changeWeapon(obj.val);
 				}
 				if (obj.act == 'alicorn') 
 				{
-					if (obj.val <= 0) World.world.gg.alicornOff();
-					else World.world.gg.alicornOn();
+					if (obj.val <= 0) GameSession.currentSession.gg.alicornOff();
+					else GameSession.currentSession.gg.alicornOn();
 				}
 				if (obj.act == 'wave') 
 				{
-					if (World.world.room.prob) World.world.room.prob.beginWave();
+					if (GameSession.currentSession.room.prob) GameSession.currentSession.room.prob.beginWave();
 				}
 				if (obj.act == 'pip') 
 				{
-					World.world.pip.onoff(obj.val, obj.n);
+					GameSession.currentSession.pip.onoff(obj.val, obj.n);
 				}
 				if (obj.act == 'speceffect') 
 				{
-					World.world.grafon.specEffect(obj.n);
+					GameSession.currentSession.grafon.specEffect(obj.n);
 				}
 				if (obj.act == 'scene') 
 				{
 					if (obj.val) 
 					{
-						World.world.showScene(obj.val, obj.n);
+						GameSession.currentSession.showScene(obj.val, obj.n);
 					}
 					else 
 					{
-						World.world.unshowScene();
+						GameSession.currentSession.unshowScene();
 					}
 				}
 				if (obj.act == 'endgame') 
 				{
-					World.world.endgame();
+					GameSession.currentSession.endgame();
 				}
 				if (obj.act == 'gameover') 
 				{
-					World.world.endgame(1);
+					GameSession.currentSession.endgame(1);
 				}
 				if (obj.act == 'wait') 
 				{
 					wait = true;
 					dial_n = 0;
-					World.world.ctr.active = false;
+					GameSession.currentSession.ctr.active = false;
 				}
 			}
 		}

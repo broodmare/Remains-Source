@@ -108,11 +108,11 @@ package unitdata
 		{
 			if (novoi || !act) return;
 			t_replic--;
-			if (room!=World.world.room) return;
+			if (room!=GameSession.currentSession.room) return;
 			if (privet && t_replic%60==3) 
 			{
-				var nx = World.world.gg.X-X;
-				var ny = World.world.gg.Y-Y;
+				var nx = GameSession.currentSession.gg.X-X;
+				var ny = GameSession.currentSession.gg.Y-Y;
 				if (Math.abs(nx)<200 && Math.abs(ny)<60) 
 				{
 					t_replic=0;

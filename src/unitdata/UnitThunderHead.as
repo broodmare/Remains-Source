@@ -59,7 +59,7 @@ package unitdata
 			id='thunderhead';
 			
 			//взять параметры из xml
-			blitData=World.world.grafon.getSpriteList('sprThunderHead');
+			blitData=GameSession.currentSession.grafon.getSpriteList('sprThunderHead');
 			vis=new MovieClip();
 			var osn:Sprite=new Sprite();
 			visBmp=new Bitmap(blitData);
@@ -214,13 +214,13 @@ package unitdata
 		
 		public override function setLevel(nlevel:int=0):void
 		{
-			if (World.world.game.globalDif==3) 
+			if (GameSession.currentSession.game.globalDif==3) 
 			{
 				kol_emit=3;
 				max_emit=18;
 				hp=maxhp=hp*1.1;
 			}
-			if (World.world.game.globalDif==4) 
+			if (GameSession.currentSession.game.globalDif==4) 
 			{
 				kol_emit=1;
 				max_emit=21;
@@ -400,17 +400,17 @@ package unitdata
 		public function vsos(n:Number=0, klob:Boolean=false):void
 		{
 			if (!room.roomActive) return;
-			p.x=X-World.world.gg.X;
-			p.y=Y-World.world.gg.Y;
+			p.x=X-GameSession.currentSession.gg.X;
+			p.y=Y-GameSession.currentSession.gg.Y;
 			if (n==0) {
 				norma(p,5);
-				World.world.gg.storona=(World.world.gg.dx>0)?1:-1;
+				GameSession.currentSession.gg.storona=(GameSession.currentSession.gg.dx>0)?1:-1;
 			} else {
 				norma(p,n);
 			}
-			if (klob && t_vsos%3==0) Emitter.emit('vsos',room,World.world.gg.X,World.world.gg.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
-			World.world.gg.dx+=p.x;
-			World.world.gg.dy+=p.y;
+			if (klob && t_vsos%3==0) Emitter.emit('vsos',room,GameSession.currentSession.gg.X,GameSession.currentSession.gg.Y-40,{dx:(p.x*12+Math.random()*4-2), dy:(p.y*12+Math.random()*4-2), scale:6});
+			GameSession.currentSession.gg.dx+=p.x;
+			GameSession.currentSession.gg.dy+=p.y;
 		}
 		
 	}

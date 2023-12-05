@@ -86,24 +86,24 @@ package locdata
 				room.kolXp--;
 				if (room.kolXp==0 && room.maxXp>1)  //собрали все бонусы
 				{	
-					World.world.pers.expa(room.unXp*room.maxXp);
+					GameSession.currentSession.pers.expa(room.unXp*room.maxXp);
 					if (!room.detecting && room.summXp>0) 
 					{
-						room.takeXP(room.summXp,World.world.gg.X, World.world.gg.Y-100,true);
-						World.world.gui.infoText('sneakBonus');
+						room.takeXP(room.summXp,GameSession.currentSession.gg.X, GameSession.currentSession.gg.Y-100,true);
+						GameSession.currentSession.gui.infoText('sneakBonus');
 					}
 					Snd.ps('bonus2');
 				} 
 				else 
 				{
-					World.world.pers.expa(room.unXp);
+					GameSession.currentSession.pers.expa(room.unXp);
 					Snd.ps('bonus1');
 				}
 				
 			}
 			if (id=='heal') 
 			{
-				World.world.gg.heal(val);
+				GameSession.currentSession.gg.heal(val);
 				Snd.ps('bonus1');
 			}
 		}

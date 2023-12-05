@@ -90,8 +90,8 @@ package unitdata
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
-			if (World.world.game.globalDif==3) dMult=1.2;
-			if (World.world.game.globalDif==4) dMult=1.5;
+			if (GameSession.currentSession.game.globalDif==3) dMult=1.2;
+			if (GameSession.currentSession.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
 			if (currentWeapon) {

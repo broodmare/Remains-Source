@@ -36,7 +36,7 @@ package unitdata
 
 		public function Effect(nid:String, own:Unit=null, nval:Number=0) 
 		{
-			if (own==null) owner=World.world.gg;
+			if (own==null) owner=GameSession.currentSession.gg;
 			else owner=own;
 			player=owner.player;
 			id=nid;
@@ -123,7 +123,7 @@ package unitdata
 			}
 			if (id=='potion_infra') 
 			{
-				World.world.grafon.warShadow();
+				GameSession.currentSession.grafon.warShadow();
 			}
 			if (id=='reanim' && player) 
 			{
@@ -149,7 +149,7 @@ package unitdata
 				(owner as UnitPlayer).setFilters();
 				owner.newPart('blood',30);
 			}
-			if (id=='curse') World.world.game.triggers['curse']=1;
+			if (id=='curse') GameSession.currentSession.game.triggers['curse']=1;
 			visEff();
 		}
 		
@@ -211,8 +211,8 @@ package unitdata
 			vse=true;
 			if (player && inf && se) 
 			{
-				if (tip==3) World.world.gui.infoText('endFoodEffect',Res.txt('eff',id));
-				else World.world.gui.infoText('endEffect',Res.txt('eff',id));
+				if (tip==3) GameSession.currentSession.gui.infoText('endFoodEffect',Res.txt('eff',id));
+				else GameSession.currentSession.gui.infoText('endEffect',Res.txt('eff',id));
 			}
 			if (post && onPost) 		// Replacement of the effect with a post-effect
 			{
@@ -221,14 +221,14 @@ package unitdata
 					getXmlParam();
 					if (isBad) 
 					{
-						var proc = World.world.pers.addictions[id];
-						if (proc >= World.world.pers.ad1) 
+						var proc = GameSession.currentSession.pers.addictions[id];
+						if (proc >= GameSession.currentSession.pers.ad1) 
 						{
 							forever = true;
 							ad = true;
 						}
-						if (proc>=World.world.pers.ad2) lvl=2;
-						if (proc>=World.world.pers.ad3) lvl=3;
+						if (proc>=GameSession.currentSession.pers.ad2) lvl=2;
+						if (proc>=GameSession.currentSession.pers.ad3) lvl=3;
 					}
 					vse=false;
 			}
@@ -256,7 +256,7 @@ package unitdata
 			}
 			if (id=='potion_infra') 
 			{
-				World.world.grafon.warShadow();
+				GameSession.currentSession.grafon.warShadow();
 			}
 			if (id=='reanim' && player) 
 			{

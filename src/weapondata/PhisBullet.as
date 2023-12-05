@@ -76,7 +76,7 @@ package weapondata
 			else liv--;
 			if (liv==3) 
 			{
-				if ((World.world.gg as UnitPlayer).teleObj==this) (World.world.gg as UnitPlayer).dropTeleObj();
+				if ((GameSession.currentSession.gg as UnitPlayer).teleObj==this) (GameSession.currentSession.gg as UnitPlayer).dropTeleObj();
 				explosion();
 				liv=1;
 			}
@@ -94,7 +94,7 @@ package weapondata
 			}
 
 			//trace(liv,expl_t);
-			onCursor=(liv>5 && X-scX/2<World.world.celX && X+scX/2>World.world.celX && Y-scY/2<World.world.celY && Y+scY/2>World.world.celY)?3:0;
+			onCursor=(liv>5 && X-scX/2<GameSession.currentSession.celX && X+scX/2>GameSession.currentSession.celX && Y-scY/2<GameSession.currentSession.celY && Y+scY/2>GameSession.currentSession.celY)?3:0;
 		}
 		
 		private function sensor():Boolean 

@@ -133,9 +133,9 @@ package locdata
 		{
 			closed=true;
 			active=false;
-			if (World.world.game.triggers['prob_'+id]==null) World.world.game.triggers['prob_'+id]=1;
-			else World.world.game.triggers['prob_'+id]++;
-			World.world.gui.infoText('closeProb',objectName);
+			if (GameSession.currentSession.game.triggers['prob_'+id]==null) GameSession.currentSession.game.triggers['prob_'+id]=1;
+			else GameSession.currentSession.game.triggers['prob_'+id]++;
+			GameSession.currentSession.gui.infoText('closeProb',objectName);
 			Snd.ps('quest_ok');
 			doorsOnOff(1);
 			//окрыть коробки с призами
@@ -158,7 +158,7 @@ package locdata
 		//войти в комнату
 		public function over() 
 		{
-			World.world.gui.messText('', objectName, World.world.gg.Y<300);
+			GameSession.currentSession.gui.messText('', objectName, GameSession.currentSession.gg.Y<300);
 			if (!closed) defaultProb();
 			if (inScript) 
 			{
@@ -185,7 +185,7 @@ package locdata
 		public function showHelp():void
 		{
 			var isHelp = (help != '');
-			World.world.gui.informText(info+(isHelp?('<br><br>'+Res.txt('gui', 'need_help')):''),isHelp);
+			GameSession.currentSession.gui.informText(info+(isHelp?('<br><br>'+Res.txt('gui', 'need_help')):''),isHelp);
 		}
 		
 		//активировать испытание
@@ -284,7 +284,7 @@ package locdata
 			{
 				if (t_wave>0) t_wave--;
 				if (t_wave==1 && nwave<maxwave) createWave();
-				if (t_wave%30==1) World.world.gui.messText('',Math.floor(t_wave/30).toString());
+				if (t_wave%30==1) GameSession.currentSession.gui.messText('',Math.floor(t_wave/30).toString());
 			}
 		}
 	}

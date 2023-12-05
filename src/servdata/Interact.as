@@ -556,7 +556,7 @@ package servdata
 			}
 			if (needSkill && needSkillLvl>unlock) 
 			{
-				World.world.gui.infoText('needSkill', Res.txt('eff',needSkill), needSkillLvl,false);	// Skill required
+				GameSession.currentSession.gui.infoText('needSkill', Res.txt('eff',needSkill), needSkillLvl,false);	// Skill required
 			} 
 			else if (mine>0) 
 			{
@@ -567,8 +567,8 @@ package servdata
 					if (Math.random()<verZhopa)  // Critical failure
 					{	
 						setAct('mine',101);
-						if (mineTip==6) World.world.gui.infoText('signalZhopa');	// Alarm triggered
-						else World.world.gui.infoText('remineZhopa');	// Bomb triggered
+						if (mineTip==6) GameSession.currentSession.gui.infoText('signalZhopa');	// Alarm triggered
+						else GameSession.currentSession.gui.infoText('remineZhopa');	// Bomb triggered
 						if (fiascoRemine!=null) fiascoRemine();
 						if (at_once>0) 
 						{
@@ -578,15 +578,15 @@ package servdata
 						update();
 					} else if (Math.random()<verFail)  // Failure	
 					{ 
-						if (mineTip==6) World.world.gui.infoText('signalFail',null,null,false);	// Alarm not disarmed
-						else World.world.gui.infoText('remineFail',null,null,false);	// Bomb not disarmed
+						if (mineTip==6) GameSession.currentSession.gui.infoText('signalFail',null,null,false);	// Alarm not disarmed
+						else GameSession.currentSession.gui.infoText('remineFail',null,null,false);	// Bomb not disarmed
 						replic('fail');
 					} 
 					else // Success
 					{						
 						setAct('mine',101);
-						if (mineTip==6) World.world.gui.infoText('signalOff');	// Alarm disarmed
-						else  World.world.gui.infoText('remine');	// Bomb disarmed
+						if (mineTip==6) GameSession.currentSession.gui.infoText('signalOff');	// Alarm disarmed
+						else  GameSession.currentSession.gui.infoText('remine');	// Bomb disarmed
 						if (successRemine!=null) successRemine();
 						if (at_once>0) 
 						{
@@ -595,18 +595,18 @@ package servdata
 						replic('success');
 						update();
 					}
-					World.world.gui.bulb(X,Y);
+					GameSession.currentSession.gui.bulb(X,Y);
 					// trace('disarm', unlock, 'failure', verFail,'жопа',verZhopa);
 				unlock=0;
 				is_ready=false;
 			} 
-			else if (lock>0 && lockKey && World.world.invent.items[lockKey].kol>0) 
+			else if (lock>0 && lockKey && GameSession.currentSession.invent.items[lockKey].kol>0) 
 			{
 				setAct('lock',101);
-				if (lockTip==1) World.world.gui.infoText('unLockKey');
-				if (lockTip==2) World.world.gui.infoText('unTermLock');
-				if (lockTip==4) World.world.gui.infoText('unRepLock');
-				if (lockTip==5) World.world.gui.infoText('unFixPart');
+				if (lockTip==1) GameSession.currentSession.gui.infoText('unLockKey');
+				if (lockTip==2) GameSession.currentSession.gui.infoText('unTermLock');
+				if (lockTip==4) GameSession.currentSession.gui.infoText('unRepLock');
+				if (lockTip==5) GameSession.currentSession.gui.infoText('unFixPart');
 				update();
 				if (successUnlock!=null) successUnlock();
 				//if (lockKeyMinus) 
@@ -658,59 +658,59 @@ package servdata
 						if (lockTip==1) 
 						{
 							var pinCrack:Boolean=false;
-							if (World.world.invent.pin.kol>0) 
+							if (GameSession.currentSession.invent.pin.kol>0) 
 							{
-								if (World.world.pers.pinBreak>=1 || Math.random()<World.world.pers.pinBreak) 
+								if (GameSession.currentSession.pers.pinBreak>=1 || Math.random()<GameSession.currentSession.pers.pinBreak) 
 								{
-									World.world.invent.minusItem('pin');
+									GameSession.currentSession.invent.minusItem('pin');
 									pinCrack=true;
 								}
 							} 
 							else lockDam1+=2;
-							lockDam=(lockDam1+Math.random()*lockDam2)*World.world.pers.lockAtt;
+							lockDam=(lockDam1+Math.random()*lockDam2)*GameSession.currentSession.pers.lockAtt;
 							lockHP-=lockDam;
 							//trace(lockDam,lockHP);
 							if (lockHP<=0) 
 							{		//Замок заклинило
 								setAct('lock',102);
-								World.world.gui.infoText('unLockZhopa');
+								GameSession.currentSession.gui.infoText('unLockZhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
 								replic('zhopa');
 							} 
 							else if (pinCrack) 
 							{
-								World.world.gui.infoText('unLockFailP', null,null,false);	//замок не открыт, заколка сломана
+								GameSession.currentSession.gui.infoText('unLockFailP', null,null,false);	//замок не открыт, заколка сломана
 								replic('fail');
 							} 
 							else if (lockHP>100) 
 							{
-								World.world.gui.infoText('unLockFailA', null,null,false);	//замок не открыт, попробуйте ещё
+								GameSession.currentSession.gui.infoText('unLockFailA', null,null,false);	//замок не открыт, попробуйте ещё
 							} 
 							else 
 							{
-								World.world.gui.infoText('unLockFail',null,null,false);	//замок не открыт
+								GameSession.currentSession.gui.infoText('unLockFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
 						} 
 						else if (lockTip==2) 
 						{
-							if (lockAtt==-100) lockAtt=World.world.pers.hackAtt;
+							if (lockAtt==-100) lockAtt=GameSession.currentSession.pers.hackAtt;
 							lockAtt--;
-							if (lockAtt>10) World.world.gui.infoText('unTermLockFail2',null,null,false);	//терминал не взломан
+							if (lockAtt>10) GameSession.currentSession.gui.infoText('unTermLockFail2',null,null,false);	//терминал не взломан
 							else if (lockAtt>1) 
 							{
-								World.world.gui.infoText('unTermLockFail',lockAtt,null,false);	//терминал не взломан
+								GameSession.currentSession.gui.infoText('unTermLockFail',lockAtt,null,false);	//терминал не взломан
 								replic('fail');
 							} 
 							else if (lockAtt==1) 
 							{
-								World.world.gui.infoText('unTermLockFail1',null,null,false);	//терминал не взломан
+								GameSession.currentSession.gui.infoText('unTermLockFail1',null,null,false);	//терминал не взломан
 								replic('fail');
 							} else 
 							{					//терминал блокирован
 								setAct('lock',102);
 								replic('zhopa');
-								World.world.gui.infoText('unLockBlock');
+								GameSession.currentSession.gui.infoText('unLockBlock');
 								if (fiascoUnlock!=null) fiascoUnlock();
 							}
 						} 
@@ -723,13 +723,13 @@ package servdata
 							{		//Удар током
 								//setAct('lock',102);
 								discharge();
-								World.world.gui.infoText('unRepZhopa',null,null,false);
+								GameSession.currentSession.gui.infoText('unRepZhopa',null,null,false);
 								replic('zhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
 							} 
 							else 
 							{
-								World.world.gui.infoText('unRepFail',null,null,false);	//замок не открыт
+								GameSession.currentSession.gui.infoText('unRepFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
 						} 
@@ -741,13 +741,13 @@ package servdata
 							if (lockHP <= 0) //Замок заклинило
 							{		
 								setAct('lock', 102);
-								World.world.gui.infoText('unFixZhopa');
+								GameSession.currentSession.gui.infoText('unFixZhopa');
 								replic('zhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
 							} 
 							else
 							{
-								World.world.gui.infoText('unFixFail',null,null,false);	//замок не открыт
+								GameSession.currentSession.gui.infoText('unFixFail',null,null,false);	//замок не открыт
 								replic('fail');
 							}
 						}
@@ -757,24 +757,24 @@ package servdata
 						setAct('lock',101);
 						if (lockTip==1) 
 						{
-							World.world.gui.infoText('unLock');
+							GameSession.currentSession.gui.infoText('unLock');
 							if (Math.random()<0.8) replic('success');
 							else replic('unlock');
 						}
 						if (lockTip==2) 
 						{
-							World.world.gui.infoText('unTermLock');
+							GameSession.currentSession.gui.infoText('unTermLock');
 							if (Math.random()<0.8) replic('success');
 							else replic('hack');
 						}
 						if (lockTip==4) 
 						{
-							World.world.gui.infoText('unRepLock');
+							GameSession.currentSession.gui.infoText('unRepLock');
 							replic('success');
 						}
 						if (lockTip==5) 
 						{
-							World.world.gui.infoText('unFixLock');
+							GameSession.currentSession.gui.infoText('unFixLock');
 							replic('success');
 						}
 						if (successUnlock!=null) successUnlock();
@@ -784,12 +784,12 @@ package servdata
 						}
 						update();
 					}
-					World.world.gui.bulb(owner.X,owner.Y);
+					GameSession.currentSession.gui.bulb(owner.X,owner.Y);
 				} 
 				else 
 				{
-					World.world.gui.infoText('noPoss',null,null,false);
-					World.world.gui.bulb(owner.X,owner.Y);
+					GameSession.currentSession.gui.infoText('noPoss',null,null,false);
+					GameSession.currentSession.gui.bulb(owner.X,owner.Y);
 				}
 				unlock=0;
 				is_ready=false;
@@ -805,7 +805,7 @@ package servdata
 		{
 			if (dif<-2) return 1;
 			if (dif>4) return 0;
-			if (World.world.pers.upChance>0) return chanceUnlock2[dif+2];
+			if (GameSession.currentSession.pers.upChance>0) return chanceUnlock2[dif+2];
 			return chanceUnlock[dif+2]
 		}
 		
@@ -814,15 +814,15 @@ package servdata
 		{
 			if (cons) 
 			{
-				if (World.world.invent.items[cons] && World.world.invent.items[cons].kol>0)	
+				if (GameSession.currentSession.invent.items[cons] && GameSession.currentSession.invent.items[cons].kol>0)	
 				{
-					World.world.invent.minusItem(cons);
-					World.world.gui.infoText('usedCons', Res.txt('item',cons));
+					GameSession.currentSession.invent.minusItem(cons);
+					GameSession.currentSession.gui.infoText('usedCons', Res.txt('item',cons));
 					if (cons=='empbomb') Emitter.emit('impexpl',room,owner.X, owner.Y-owner.scY/2);
 				} 
 				else 
 				{
-					World.world.gui.infoText('needCons', Res.txt('item',cons),null,false);
+					GameSession.currentSession.gui.infoText('needCons', Res.txt('item',cons),null,false);
 					return;
 				}
 			}
@@ -843,7 +843,7 @@ package servdata
 				if (open && scrOpen) scrOpen.start();
 				if (!open && scrClose) scrClose.start();
 				if (open) t_autoClose=autoClose;
-				if (door>0 && World.world.pers.noiseDoorOpen) World.world.gg.makeNoise(World.world.pers.noiseDoorOpen, true);
+				if (door>0 && GameSession.currentSession.pers.noiseDoorOpen) GameSession.currentSession.gg.makeNoise(GameSession.currentSession.pers.noiseDoorOpen, true);
 			}
 			if (allact || prob!=null) 
 			{
@@ -866,7 +866,7 @@ package servdata
 			if (mine) 
 			{
 				setAct('mine',101);
-				World.world.gui.infoText('remineZhopa');	// The bomb has triggered
+				GameSession.currentSession.gui.infoText('remineZhopa');	// The bomb has triggered
 				if (fiascoRemine!=null) fiascoRemine();
 			}
 			open=true;
@@ -921,7 +921,7 @@ package servdata
 			if (inited && !open && (owner as Box).attDoor()) 
 			{
 				open=true;
-				if (t_autoClose<=0) World.world.gui.infoText('noClose',null,null,false);
+				if (t_autoClose<=0) GameSession.currentSession.gui.infoText('noClose',null,null,false);
 				return;
 			}
 			(owner as Box).setDoor(open);
@@ -945,9 +945,9 @@ package servdata
 		// Unsuccessful attempt at hacking a force field - electric shock
 		public function discharge():void
 		{
-			World.world.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
+			GameSession.currentSession.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
 			//damage(,Unit.D_SPARK);
-			//Emitter.emit('moln',room,owner.X,owner.Y-owner.scY/2,{celx:World.world.gg.X, cely:(World.world.gg.Y-World.world.gg.scY/2)});
+			//Emitter.emit('moln',room,owner.X,owner.Y-owner.scY/2,{celx:GameSession.currentSession.gg.X, cely:(GameSession.currentSession.gg.Y-GameSession.currentSession.gg.scY/2)});
 			//Snd.ps('electro',X,Y);
 			damdis+=50;
 			if (damdis>500) damdis=500;
@@ -1022,15 +1022,15 @@ package servdata
 			{
 				command('unlock');
 				gg.invent.minusItem('runa');
-				World.world.gui.infoText('useRuna');
-				World.world.gui.bulb(owner.X,owner.Y);
+				GameSession.currentSession.gui.infoText('useRuna');
+				GameSession.currentSession.gui.bulb(owner.X,owner.Y);
 			}
 			if (lockTip==2 && lock>0 && gg.invent.items['reboot'].kol>0) 
 			{
 				command('unlock');
 				gg.invent.minusItem('reboot');
-				World.world.gui.infoText('useReboot');
-				World.world.gui.bulb(owner.X,owner.Y);
+				GameSession.currentSession.gui.infoText('useReboot');
+				GameSession.currentSession.gui.bulb(owner.X,owner.Y);
 			}
 		}
 		
@@ -1045,9 +1045,9 @@ package servdata
 		{
 			if (prob!=null) 
 			{
-				if (World.world.possiblyOut()==2) 
+				if (GameSession.currentSession.possiblyOut()==2) 
 				{
-					World.world.gui.infoText('noOutLoc',null,null,false);
+					GameSession.currentSession.gui.infoText('noOutLoc',null,null,false);
 					return;
 				}
 				room.level.gotoProb(prob, owner.X, owner.Y);
@@ -1056,9 +1056,9 @@ package servdata
 			{
 				if (room.levelProb!='') 
 				{
-					if (World.world.possiblyOut()==2) 
+					if (GameSession.currentSession.possiblyOut()==2) 
 					{
-						World.world.gui.infoText('noOutLoc',null,null,false);
+						GameSession.currentSession.gui.infoText('noOutLoc',null,null,false);
 						return;
 					}
 					room.level.gotoProb('', owner.X, owner.Y);
@@ -1066,14 +1066,14 @@ package servdata
 			} 
 			else if (allact=='hack_robot') 
 			{
-				World.world.gui.infoText('term1Act');
-				World.world.gui.bulb(X,Y);
-				for each (var un:Unit in owner.room.units) un.hack(World.world.pers.security);				
+				GameSession.currentSession.gui.infoText('term1Act');
+				GameSession.currentSession.gui.bulb(X,Y);
+				for each (var un:Unit in owner.room.units) un.hack(GameSession.currentSession.pers.security);				
 			} 
 			else if (allact=='hack_lock') 
 			{
-				World.world.gui.infoText('term2Act');
-				World.world.gui.bulb(X,Y);
+				GameSession.currentSession.gui.infoText('term2Act');
+				GameSession.currentSession.gui.bulb(X,Y);
 				for each (var obj:Obj in owner.room.objs) 
 				{
 					if (obj.inter) obj.inter.command('hack');
@@ -1086,53 +1086,53 @@ package servdata
 			else if (allact=='electro_check') 
 			{
 				room.electroCheck();
-				if (room.electroDam<=0) World.world.gui.infoText('electroOff',null,null,true);
-				else World.world.gui.infoText('electroOn',null,null,true);
+				if (room.electroDam<=0) GameSession.currentSession.gui.infoText('electroOff',null,null,true);
+				else GameSession.currentSession.gui.infoText('electroOn',null,null,true);
 			} 
 			else if (allact=='comein') 
 			{
-				World.world.gg.outLoc(5,X,Y);
+				GameSession.currentSession.gg.outLoc(5,X,Y);
 			} 
 			else if (allact=='bind') 
 			{
-				World.world.gg.bindChain(X,Y-20);
+				GameSession.currentSession.gg.bindChain(X,Y-20);
 			} 
 			else if (allact=='work' || allact=='lab' || allact=='stove') 
 			{
-				World.world.pip.workTip=allact;
-				World.world.pip.onoff(7);
+				GameSession.currentSession.pip.workTip=allact;
+				GameSession.currentSession.pip.onoff(7);
 			} 
 			else if (allact=='app') 
 			{
-				World.world.pip.onoff(8);
+				GameSession.currentSession.pip.onoff(8);
 			} 
 			else if (allact=='map') 
 			{
-				World.world.pip.travel=true;
-				World.world.pip.onoff(3,3);
-				World.world.pip.travel=true;
+				GameSession.currentSession.pip.travel=true;
+				GameSession.currentSession.pip.onoff(3,3);
+				GameSession.currentSession.pip.travel=true;
 			} 
 			else if (allact=='stand') 
 			{
-				World.world.stand.onoff(1);
+				GameSession.currentSession.stand.onoff(1);
 			} 
 			else if (allact=='exit') 
 			{
-				World.world.game.gotoNextLevel();
+				GameSession.currentSession.game.gotoNextLevel();
 			} 
 			else if (allact=='robocell') 
 			{
-				World.world.gui.infoText('robocellOff');
+				GameSession.currentSession.gui.infoText('robocellOff');
 				setAct('open',1);
 			} 
 			else if (allact=='alarm') 
 			{
-				World.world.gui.infoText('alarmOff');
+				GameSession.currentSession.gui.infoText('alarmOff');
 				setAct('open',1);
 			} 
 			else if (allact=='vault') 
 			{
-				World.world.pip.onoff(9);
+				GameSession.currentSession.pip.onoff(9);
 			} else owner.room.allAct(owner,allact,allid);
 		}
 		
@@ -1355,7 +1355,7 @@ package servdata
 		//set public
 		public function replic(s:String):void
 		{
-			if (Math.random() < 0.25) World.world.gg.replic(s);
+			if (Math.random() < 0.25) GameSession.currentSession.gg.replic(s);
 		}	
 		
 		// Confirm the receipt of a critical item
@@ -1406,7 +1406,7 @@ package servdata
 					}
 				}
 			}
-			if (!is_loot && (owner is Box) && !World.world.testLoot) World.world.gui.infoText('itsEmpty');
+			if (!is_loot && (owner is Box) && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('itsEmpty');
 			setAct('loot',imp_loot);
 		}
 	}

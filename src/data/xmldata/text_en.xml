@@ -4535,7 +4535,7 @@ You will have to choose more carefully which skills you need in the first place<
 You will be able to carry and use a limited number of items and weapons.
 This mode is recommended only for experienced players who are playing not the first time</info>
   </gui>
-  <gui id="butvid" v="0.6">
+  <gui id="editAppearanceButton" v="0.6">
     <n>Customize appearance</n>
   </gui>
   <gui id="vidfur" v="0.6">
@@ -8072,7 +8072,7 @@ Visiting the F-17 zone at this time is not recommended</r>
       <r p='main'>Hush, do not shout, I just woke up! Do you even realize it`s two in the morning?</r>
       <r p='lp1'>Forgive me, I did not follow the time while I was breaking through the huge Stable full of robots and slavers</r>
       <r p='main'>Full of what?</r>
-      <r p='lp1'>Just listen. A large group of ponies is operating here, in Stale 88, who catch and enslave other ponies</r>
+      <r p='lp1'>Just listen. A large group of ponies is operating here, in Stable 88, who catch and enslave other ponies</r>
       <r p='main'>I know who slavers are, @lp…</r>
       <r p='lp1'>.. which caught the Chosen-24 some time ago and went looking for our Stable</r>
       <r p='main'>Wait a minute. If there is a threat to the Stable Pi, we will have to take very strict security measures. Are you sure about what you are saying?</r>

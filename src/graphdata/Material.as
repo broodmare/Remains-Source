@@ -54,20 +54,20 @@ package graphdata
 
 			this.id = materialXML.@id; 
 			this.materialName = materialXML.@n; 
-			this.texture = World.world.grafon.getObj(material.main.@tex, Grafon.activeMaterials);
+			this.texture = GameSession.currentSession.grafon.getObj(material.main.@tex, Grafon.activeMaterials);
 
 			if (material.main.@alt.length()) //If the materialXML has an alternate texture...
 			{
-				this.alttexture = World.world.grafon.getObj(material.main.@alt, Grafon.activeMaterials);
+				this.alttexture = GameSession.currentSession.grafon.getObj(material.main.@alt, Grafon.activeMaterials);
 			}
 
 			if (material.border.@tex.length())
 			{
-				this.border = World.world.grafon.getObj(material.border.@tex, Grafon.activeMaterials);
+				this.border = GameSession.currentSession.grafon.getObj(material.border.@tex, Grafon.activeMaterials);
 			}
 			if (material.floor.@tex.length())
 			{
-				this.floor  = World.world.grafon.getObj(material.floor.@tex,  Grafon.activeMaterials);
+				this.floor  = GameSession.currentSession.grafon.getObj(material.floor.@tex,  Grafon.activeMaterials);
 			}
 			if (material.main.@mask.length()) //If a materialXML has a mask property...
 			{

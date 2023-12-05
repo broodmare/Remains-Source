@@ -40,7 +40,7 @@ package unitdata
 			trigDis=!checkTrig();
 			if (trigDis) return;
 			super.addVisual();
-			if (arm) World.world.grafon.canvasLayerArray[layer].addChild(arm);
+			if (arm) GameSession.currentSession.grafon.canvasLayerArray[layer].addChild(arm);
 			if (cTransform) arm.transform.colorTransform=cTransform;
 			if (currentWeapon) {
 				currentWeapon.recoil=0;
@@ -51,7 +51,7 @@ package unitdata
 		{
 			super.remVisual();
 			try {
-				World.world.grafon.canvasLayerArray[layer].removeChild(arm);
+				GameSession.currentSession.grafon.canvasLayerArray[layer].removeChild(arm);
 			} catch (err) {}
 		}
 		public override function setVisPos():void

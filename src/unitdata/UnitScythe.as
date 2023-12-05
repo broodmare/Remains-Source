@@ -53,7 +53,7 @@ package unitdata
 		public override function putLoc(newRoom:Room, nx:Number, ny:Number):void
 		{
 			super.putLoc(newRoom,nx,ny);
-			cel=World.world.gg;
+			cel=GameSession.currentSession.gg;
 			getNapr();
 		}
 		

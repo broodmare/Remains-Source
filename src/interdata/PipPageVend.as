@@ -88,7 +88,7 @@ package interdata
 			if (vend) {
 				vend.kolBou=0;
 			}
-			inbase=World.world.room.base;
+			inbase=GameSession.currentSession.room.base;
 			npcInter=pip.npcInter;
 			vis.but3.visible=true;
 			vis.but4.visible=true;
@@ -133,7 +133,7 @@ package interdata
 					if (b.tip!=Item.L_WEAPON && b.xml && b.xml.@price.length()==0)  continue;
 					if ((b.tip==Item.L_ART || b.tip==Item.L_IMPL) && inv.items[b.id].kol>0) continue;
 					if (b.lvl>gg.pers.level || b.barter>gg.pers.barterLvl) continue;
-					if (b.trig && World.world.game.triggers[b.trig]!=1) continue;
+					if (b.trig && GameSession.currentSession.game.triggers[b.trig]!=1) continue;
 					if (b.hardinv && !Settings.hardInv) continue;
 					if (!checkCat(b.tip)) continue;
 					b.getPrice();
@@ -238,8 +238,8 @@ package interdata
 				statHead.cat.visible=false;
 				if (inv.items['owl'] && inv.items['owl'].kol) 
 				{
-					World.world.pers.setRoboowl();
-					n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:World.world.pers.owlhp*World.world.pers.owlhpProc, maxhp:World.world.pers.owlhp, price:World.world.pers.owlhp*repOwl};
+					GameSession.currentSession.pers.setRoboowl();
+					n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:GameSession.currentSession.pers.owlhp*GameSession.currentSession.pers.owlhpProc, maxhp:GameSession.currentSession.pers.owlhp, price:GameSession.currentSession.pers.owlhp*repOwl};
 					arr.push(n);
 					assArr[n.id]=n;
 					
@@ -296,10 +296,10 @@ package interdata
 						n.skilln=task.@skilln;
 					}
 					n.objectName=Res.messText(task.@id);
-					if (World.world.game.quests[task.@id]) 
+					if (GameSession.currentSession.game.quests[task.@id]) 
 					{
-						var quest:Quest=World.world.game.quests[task.@id];
-						n.state=World.world.game.quests[task.@id].state;
+						var quest:Quest=GameSession.currentSession.game.quests[task.@id];
+						n.state=GameSession.currentSession.game.quests[task.@id].state;
 						if (n.state==1 && quest.chReport(npcId, false)) n.state=3;
 						if (n.state==1 && quest.chGive(npcId, false)) n.state=4;
 					}
@@ -334,10 +334,10 @@ package interdata
 				for each(var task in vend.xml.task) 
 				{
 					if (!checkQuest(task)) continue;
-					if (World.world.game.quests[task.@id]) 
+					if (GameSession.currentSession.game.quests[task.@id]) 
 					{
-						var quest:Quest=World.world.game.quests[task.@id];
-						var nstate=World.world.game.quests[task.@id].state;
+						var quest:Quest=GameSession.currentSession.game.quests[task.@id];
+						var nstate=GameSession.currentSession.game.quests[task.@id].state;
 						if (nstate==0 || nstate==1 && quest.chReport(npcId, false) || nstate==1 && quest.chGive(npcId, false)) 
 						{
 							signs[4]=1;
@@ -355,7 +355,7 @@ package interdata
 		
 		public override function page2Click(event:MouseEvent):void
 		{
-			if (World.world.ctr.setkeyOn) return;
+			if (GameSession.currentSession.ctr.setkeyOn) return;
 			page2=int(event.currentTarget.id.text);
 			pip.snd(2);
 			if (page2==3 && npcInter=='doc') 
@@ -521,7 +521,7 @@ package interdata
 				trace(n);
 				if (n<=0) 
 				{
-					World.world.gui.infoText('noMoney',Math.round(buy.price*buy.mp-(pip.money-vend.kolBou)));
+					GameSession.currentSession.gui.infoText('noMoney',Math.round(buy.price*buy.mp-(pip.money-vend.kolBou)));
 					return;
 				}
 			}
@@ -615,20 +615,20 @@ package interdata
 				inv.money.kol-=price;
 				pip.vendor.money+=price;
 				setStatItem(event.currentTarget as MovieClip, obj);
-				World.world.gui.setWeapon();
+				GameSession.currentSession.gui.setWeapon();
 				pip.setRPanel();
 			}
 			if (page2==4) 
 			{
 				try 
 				{
-					if (World.world.game.quests[event.currentTarget.id.text]) 
+					if (GameSession.currentSession.game.quests[event.currentTarget.id.text]) 
 					{
-						var quest:Quest=World.world.game.quests[event.currentTarget.id.text];
+						var quest:Quest=GameSession.currentSession.game.quests[event.currentTarget.id.text];
 						quest.chGive(npcId, true);
 						quest.chReport(npcId, true);
 					} 
-					else World.world.game.addQuest(event.currentTarget.id.text);
+					else GameSession.currentSession.game.addQuest(event.currentTarget.id.text);
 				} 
 				catch(err) 
 				{
@@ -699,7 +699,7 @@ package interdata
 		{
 			if (!inbase && Math.ceil(vend.kolSell)>vend.money) 
 			{
-				World.world.gui.infoText('noSell');
+				GameSession.currentSession.gui.infoText('noSell');
 				return;
 			}
 			for (var s in inv.items) 

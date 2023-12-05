@@ -19,7 +19,6 @@ package
 
 	import interdata.PipPageOpt;
 	import interdata.PipBuck;
-	import interdata.Appear;
 	import graphdata.Displ;
 	
 
@@ -29,122 +28,124 @@ package
 
 	import stubs.*;
 
-	public class MainMenu 
+	public class MainMenu
 	{
 		
-		public var mainMenu; 			// Create a container for the main menu sprite
-		public var main:Sprite;
-		public var world:World;
-		public var active:Boolean 		= true;
-		public var loaded:Boolean 		= false;	// If ALL resources (language, levels, grafon) are done loading.
-		public var newGameDif:int 		= 2;
-		public var loadCell:int 		= -1;
-		public var loadReg:int 			= 0;	// loading mode, 0 - loading, 1 - slot selection for autosave
-		public var command:int 			= 0; 	//What should the main menu be doing?
-		public var com:String 			= '';
-		public var pip:PipBuck;
-		public var displ:Displ;
-		public var animOn:Boolean			= true;
-		public var langReload:Boolean		= false;
-		private var langButtonsLoaded:Boolean = false;
+		public var gameWindow:Sprite;
+		// NOTE: This mainMenu pointer is so the mainMenu can access it's own properties, eg. "mainMenu.NewGameWindow".
+		public var mainMenuWindow; 		//The MainMenu MovieClip from the '.fla' file, everything below goes in it.
+		public var currentSession:GameSession;
+		public var pip:PipBuck; 		// Why does main menu have (possibly its own instance of) this?
 
-		public var kolDifs:int 				= 5;
-		public var kolOpts:int 				= 6;
-		
-		public var languageButtons:Array;
+		public var loadCell:int 		= -1;
+		public var loadReg:int 			=  0;			// loading mode, 0 - loading, 1 - slot selection for autosave
+		public var command:int 			=  0; 			//What should the main menu be doing?
+		public var com:String 			= '';
+		public var newGameDif:int =  2;					//New Game difficulty.
+
+		public var mainMenuAnimation:Displ;
+
+		public var difficultyOptionCount:int	= 5;	//Number of difficulty settings, eg. 'easy', that exist.
+		public var playthroughOptionCount:int	= 6;	//Number of playthrough options, eg. 'permadeath', that exist
+
+		public var languageButtons:Array = [];
 
 		public var style:StyleSheet 		= new StyleSheet(); 
 		public var styleObj:Object 			= {};
 		public var format:TextFormat 		= new TextFormat();
 		public var file:FileReference 		= new FileReference();
 		public var ffil:Array;
-		public var arr:Array				= [];
+
+		public var savefileArray:Array		= [];
+
+		// MAIN MENU STATE VARIABLES
+		public var mainMenuSecondaryLoadingDone:Boolean = false;
+		public var readyToStart:Boolean = false;	// If ALL resources (language, levels, grafon) are done loading.
+		public var mainMenuActive:Boolean = true;
+		public var animOn:Boolean = true;
+		public var langReload:Boolean = false;
+		public var langButtonsLoaded:Boolean = false;
+
+		//Symbol linkages defined in the '.fla' file.
+
+		//Difficulty option tickboxes in the new game window.
+		private var difficultyOptionTickboxes:Array; 
 		
-		public var mainMenuLoaded:Boolean = false;
+		
 
-		public function MainMenu(nmain:Sprite)
+		public function MainMenu(window)
 		{
-			trace('MainMenu.as/MainMenu() - Main Menu Starting, Calling Settings.as/settingsSetup().');
-			Settings.settingsSetup();
+			trace('MainMenu.as/MainMenu() - Creating an instance of the main menu MovieClip.');
+			mainMenuWindow = new visMainMenu();
+			mainMenuWindow.newGameWindow.visible = false;
+			mainMenuWindow.loadGameWindow.visible = false;
+			mainMenuWindow.aboutWindow.visible = false;
+			mainMenuWindow.info.visible = false;
+			// Set up difficulty option tickboxes from the newgame window into array for easier code later.
+			difficultyOptionTickboxes = [mainMenuWindow.newGameWindow.dif0, mainMenuWindow.newGameWindow.dif1, mainMenuWindow.newGameWindow.dif2, mainMenuWindow.newGameWindow.dif3, mainMenuWindow.newGameWindow.dif4];
 
+			trace('MainMenu.as/MainMenu() - Main Menu Starting, Calling Settings.as/initialize().');
+			Settings.initialize();
+			
 			trace('MainMenu.as/MainMenu() - Calling XmlBook.as/xmlBookSetup().');
 			XmlBook.xmlBookSetup();
-
-			main = nmain;
-			mainMenu = new visMainMenu(); //Linkage
-
-			mainMenu.dialLoad.visible 		= false;
-			mainMenu.dialNew.visible 		= false;
-			mainMenu.dialAbout.visible 		= false;
-
-			main.stage.addEventListener(Event.RESIZE, resizeDisplay);
-			main.stage.addEventListener(Event.ENTER_FRAME, mainStep);
 			
-			trace('MainMenu.as/MainMenu() - Turning off buttons.');
-			showMainButtons(false);
-			
-			trace('MainMenu.as/MainMenu() - Calling mainMenuOn()...');
+			trace('MainMenu.as/MainMenu() - Animating the main menu.');
+			mainMenuAnimation = new Displ(mainMenuWindow.mainMenuLittlepip, mainMenuWindow.lightningEffect);
+
+			trace('MainMenu.as/MainMenu() - Creating a game container.');
+			gameWindow = window;
+			gameWindow.stage.addEventListener(Event.RESIZE, resizeDisplay);
+			gameWindow.stage.addEventListener(Event.ENTER_FRAME, mainStep);
+
+			trace('MainMenu.as/MainMenu() - Creating new game instance.');
+			currentSession = new GameSession(gameWindow);
+			currentSession.mainMenuWindow = this;
+
+			trace('MainMenu.as/MainMenu() - Turning the main menu on.');
 			mainMenuOn();
 
-			trace('MainMenu.as/MainMenu() - Creating new world and passing the "main" sprite.');
-			world = new World(main);
-
-			world.mainMenu = this;
-			mainMenu.info.visible = false;
-			
-
-			trace('MainMenu.as/MainMenu() - Calling Sound/initSound...');
-			Snd.initSnd();
-
-
+			trace('MainMenu.as/MainMenu() - Enabling all main menu buttons for interaction.');
+			mainMenuButtonsListenerToggle(true);
 		}
 
-		public function continueLoading():void
+		public function continueLoadingWhenGameSessionExists():void	//currentSession holds all the menu objects, hence the wait...
 		{
 
-			trace('MainMenu.as/continueLoading() - Calling MainMenu/SetMenuSize...');
-			setMenuSize(); //NEEDS world.app.
+			trace('MainMenu.as/continueLoadingWhenGameSessionExists() - Setting menu size and applying style');
+			setMenuSize(); 
 
-			trace('MainMenu.as/continueLoading() - Applying Formating...');
-			displ = new Displ(mainMenu.pipka, mainMenu.groza);
-			mainMenu.groza.visible = false;
+			mainMenuWindow.lightningEffect.visible = false;
 			format.font = "_sans";
             format.color = 0xFFFFFF;
-            format.size = 28;
-			
+            format.size = 28;			
 			styleObj.fontWeight = "bold"; 
 			styleObj.color		= "#FFFF00"; 
-			style.setStyle(".yel", styleObj); 	//выделение важного
-			
+			style.setStyle(".yel", styleObj);	//highlighting important
 			styleObj.fontWeight = "normal"; 
 			styleObj.color 		= "#00FF99";
 			styleObj.fontSize	= "12";
-			style.setStyle(".music", styleObj); 	//мелкий шрифт
-			
+			style.setStyle(".music", styleObj);	//Small font
 			styleObj.fontWeight = "normal"; 
 			styleObj.color 		= "#66FF66";
 			styleObj.fontSize 	= undefined;
-			style.setStyle("a", styleObj); 	//ссыль
+			style.setStyle("a", styleObj); 	// HTML link(?)
 			styleObj.textDecoration = "underline";
 			style.setStyle("a:hover", styleObj);
-			
-			mainMenu.info.txt.styleSheet 	= style;
-			mainMenu.link.l1.styleSheet 	= style;
-			mainMenu.link.l2.styleSheet 	= style;
-
-			trace('MainMenu.as/continueLoading() - Main menu setup finished..');
-			
+			mainMenuWindow.info.txt.styleSheet 	= style;
+			mainMenuWindow.link.l1.styleSheet 	= style;
+			mainMenuWindow.link.l2.styleSheet 	= style;
 		}
 
 		public function mainMenuOn():void
 		{
-			trace('MainMenu.as/mainMenuOn() - setting mainMenu.active to true.');
-			active = true;
+			trace('MainMenu.as/mainMenuOn() - setting mainMenu.mainMenuActive to true.');
+			mainMenuActive = true;
 
-			mainMenuListenerToggle(true);
-			if (!main.contains(mainMenu))
+
+			if (!gameWindow.contains(mainMenuWindow))
 			{
-				main.addChild(mainMenu);
+				gameWindow.addChild(mainMenuWindow);
 			}
 			file.addEventListener(Event.SELECT, selectHandler);
 			file.addEventListener(Event.COMPLETE, completeHandler);
@@ -152,133 +153,22 @@ package
 		
 		public function mainMenuOff():void
 		{
-			trace('MainMenu.as/mainMenuOff() - mainMenu disabled.');
-			active = false;
-
-
-			mainMenuListenerToggle(false);
+			trace('MainMenu.as/mainMenuOff() - setting mainMenu.mainMenuActive to false.');
+			mainMenuActive = false;
 
 			for each(var m:* in languageButtons) 
 			{
 				if (m) m.removeEventListener(MouseEvent.CLICK, languageButtonPress);
 			}
-			if (main.contains(mainMenu)) main.removeChild(mainMenu);
-			world.loadingScreen.visible = true;
-			world.loadingScreen.progres.text = Res.txt('gui', 'loading');
+			if (gameWindow.contains(mainMenuWindow)) gameWindow.removeChild(mainMenuWindow);
+			currentSession.loadingScreen.visible = true;
+			currentSession.loadingScreen.progres.text = Res.txt('gui', 'loading');
 		}
 
-		public function mainMenuListenerToggle(enabled:Boolean):void
+		public function createMainMenuLanguageButtons():void
 		{
-			var mainFivebuttons:Array = [mainMenu.butContGame, mainMenu.butLoadGame, mainMenu.butNewGame, mainMenu.butOpt, mainMenu.butAbout];
-			var toggle:Function;
-			
-			for each (var mainFiveButton:Object in mainFivebuttons) 
-			{
-				toggle = enabled ? mainFiveButton.addEventListener : mainFiveButton.removeEventListener;
-				toggle(MouseEvent.MOUSE_OVER, funOver);
-				toggle(MouseEvent.MOUSE_OUT, funOut);
-				toggle(MouseEvent.CLICK, mainMenuButtonPress);
-    		}
+			trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Creating language buttons.');
 
-			toggle = enabled ? mainMenu.adv.addEventListener : mainMenu.adv.removeEventListener;
-			toggle(MouseEvent.CLICK, funAdv);
-			toggle(MouseEvent.RIGHT_CLICK, funAdvR);
-
-			toggle = enabled ? file.addEventListener : file.removeEventListener;
-			toggle(Event.SELECT, selectHandler);
-			toggle(Event.COMPLETE, completeHandler);
-		}
-
-
-		private function mainMenuButtonPress(event:MouseEvent):void
-		{
-			trace('MainMenu.as/mainMenuButtonPress() - "' + event.currentTarget.name + '" pressed.');
-			switch(event.currentTarget.name)
-			{
-        		case "butContGame":
-					trace('MainMenu.as/mainMenuButtonPress() - Opening Continue Game window.');
-					var n:int = 0;
-					var maxDate:Number = 0;
-					for (var i:int = 0; i <= world.saveCount; i++) 
-					{
-						var save:Object = World.world.getSave(i);
-						if (save && save.est && save.date > maxDate) 
-						{
-							n = i;
-							maxDate = save.date;
-						}
-					}
-
-					save = World.world.getSave(n);
-
-					if (save && save.est) 
-					{
-						mainMenuOff();
-						loadCell = n;
-						command  = 3;
-					} 
-					else 
-					{
-						mainNewOn();
-						mainLoadOff();
-					}
-           			break;
-
-        		case "butLoadGame":
-					trace('MainMenu.as/mainMenuButtonPress() - Opening Load Game window.');
-					world.mmArmor = true;
-					mainNewOff();
-					loadReg = 0;
-					mainLoadOn();
-					break;
-				case "butNewGame":
-					trace('MainMenu.as/mainMenuButtonPress() - Opening New Game window.');
-					world.mmArmor = false;
-					mainLoadOff();
-					mainNewOn();
-					break;
-				case "butOpt":
-					trace('MainMenu.as/mainMenuButtonPress() - Opening Options window.');
-					mainNewOff();
-					mainLoadOff();
-					world.pip.onoff();
-					break;
-				case "butAbout":
-					trace('MainMenu.as/mainMenuButtonPress() - Executing funAbout().');
-					mainMenu.dialAbout.title.text = Res.txt('gui', 'about');
-					var s:String = Res.formatText(Res.txt('gui','about', 1));
-					s += '<br><br>' + Res.txt('gui', 'usedmusic') + '<br>';
-					s += "<br><span class='music'>" + Res.formatText(Res.localizationFile.gui.(@id == 'usedmusic').info[0]) + "</span>"
-					s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
-					mainMenu.dialAbout.txt.styleSheet 	= style;
-					mainMenu.dialAbout.txt.htmlText 	= s;
-					mainMenu.dialAbout.visible 			= true;
-					mainMenu.dialAbout.butCancel.addEventListener(MouseEvent.CLICK, funAboutOk);
-					mainMenu.dialAbout.scroll.maxScrollPosition = mainMenu.dialAbout.txt.maxScrollV;
-					break;
-				default:
-           			trace("MainMenu.as/mainMenuButtonPress() - Unknown button pressed");
-            		break;
-			}
-
-		}
-
-		public function funOver(event:MouseEvent):void //Mouseover
-		{
-			(event.currentTarget as MovieClip).fon.scaleX = 1;
-			(event.currentTarget as MovieClip).fon.alpha  = 1.5;
-		}
-
-		public function funOut(event:MouseEvent):void //Mouseover stopped
-		{
-			(event.currentTarget as MovieClip).fon.scaleX = 0.7;
-			(event.currentTarget as MovieClip).fon.alpha  = 1;
-		}
-		
-		public function setLangButtons():void
-		{
-			trace('MainMenu.as/setLangButtons() - Creating language buttons.');
-			languageButtons = [];
 
 			try
 			{
@@ -287,20 +177,26 @@ package
 					if(language.lang.@id != "" && language.lang.text() != "")
 					{
 						Languages.languageCount++;
-						var button = new butLang();
+						var button = new LanguageSelectButton(); // .swf Linkage
 
 						var languageId:String = language.lang.@id;
 						var languageName:String = language.lang.text();
 
-						trace('MainMenu.as/setLangButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
+						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
 
 						// Set the button properties
-						button.languageButtonTextField.text = languageName;
+						button.txt.text = languageName;
 						button.y = -Languages.languageCount * 40;
 						button.n.text = languageId;
 						button.n.visible = false;
 						button.addEventListener(MouseEvent.CLICK, languageButtonPress);
-						mainMenu.lang.addChild(button)
+
+						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Button done, adding to menu."');
+						if (mainMenuWindow.languageContainer == null)
+						{
+							trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageContainer null!."');
+						}
+						mainMenuWindow.languageContainer.addChild(button)
 					}
 					else // Check languageListDictionary length and output error about a blank entry.
 					{
@@ -309,70 +205,60 @@ package
 						{
 							dictionaryLength++;
 						}
-						trace('MainMenu.as/setLangButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
+						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
 					}
 				}
 			}
 			catch(err:Error)
 			{
-				trace('MainMenu.as/setLangButtons() - ERROR: Failed to create language buttons. Error: "' + err.message + '."');
+				trace('MainMenuButtons.as/createMainMenuLanguageButtons() - ERROR: Failed to create language buttons. Error: "' + err.message + '."');
 			}
 
-			trace('MainMenu.as/setLangButtons() - Created: "' + Languages.languageCount + '" language buttons.');
+			trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Created: "' + Languages.languageCount + '" language buttons.');
 
 			if (Languages.languageCount > -1 ) //-1 is the starting value.
 			{
-				langButtonsLoaded = true;
+				mainMenuWindow.langButtonsLoaded = true;
 			}
 		}
-		
+
+
+
 		//Language
 		public function updateMainMenuLanguage():void
 		{
-			trace('MainMenu.as/updateMainMenuLanguage() - Updating language on mainMenu buttons.');
+			trace('MainMenu.as/updateMainMenuLanguage() - Updating main menu localization.');
 
-			setMainButton(mainMenu.butContGame, Res.txt('gui', 'contgame'));
-			setMainButton(mainMenu.butNewGame, 	Res.txt('gui', 'newgame'));
-			setMainButton(mainMenu.butLoadGame, Res.txt('gui', 'loadgame'));
-			setMainButton(mainMenu.butOpt, 		Res.txt('gui', 'options'));
-			setMainButton(mainMenu.butAbout, 	Res.txt('gui', 'about'));
 
-			mainMenu.dialNew.title.text 			= Res.txt('gui', 'newgame');
-			mainMenu.dialLoad.title.text 			= Res.txt('gui', 'loadgame');
-			mainMenu.dialLoad.title2.text 			= Res.txt('gui', 'select_slot');
-			mainMenu.version.htmlText 				= '<b>' + Res.txt('gui', 'version') + ' ' + Settings.version + '</b>';
-			mainMenu.dialLoad.butCancel.text.text 	= Res.txt('gui', 'cancel');
-			mainMenu.dialNew.butCancel.text.text 	= Res.txt('gui', 'cancel');
-			mainMenu.dialLoad.butFile.text.text 	= Res.txt('pip', 'loadfile');
-			mainMenu.dialLoad.warn.text 			= Res.txt('gui', 'loadwarn');
-			mainMenu.dialNew.warn.text 				= Res.txt('gui', 'loadwarn');
-			mainMenu.dialNew.infoName.text 			= Res.txt('gui', 'inputname');
-			mainMenu.dialNew.hardOpt.text 			= Res.txt('gui', 'hardopt');
-			mainMenu.dialNew.butOk.text.text 		= 'OK';
-			mainMenu.dialNew.inputName.text 		= Res.txt('unit','littlepip');
-			mainMenu.dialNew.maxChars = 32;
+			//Main Menu Buttons
+			updateMenuButtonLocalization();
 
-			for (var i:int = 0; i < kolDifs; i++) 
+			// All window text set through 'Res.as'.
+			localizeMainMenuWindows()
+
+			//New Game difficulty options
+			for (var i:int = 0; i < difficultyOptionCount; i++) 
 			{
-				mainMenu.dialNew['dif' + i].mode.text 		= Res.txt('gui', 'dif' + i);
-				mainMenu.dialNew['dif' + i].modeinfo.text 	= Res.formatText(Res.txt('gui', 'dif' + i, 1));
+				mainMenuWindow.newGameWindow['dif' + i].mode.text 		= Res.txt('gui', 'dif' + i);
+				mainMenuWindow.newGameWindow['dif' + i].modeinfo.text 	= Res.formatText(Res.txt('gui', 'dif' + i, 1));
 			}
 
-			for (var j:int = 1; j <= kolOpts; j++) 
+			//New Game playthrough options
+			for (var j:int = 1; j <= playthroughOptionCount; j++) 
 			{
-				mainMenu.dialNew['infoOpt' + j].text = Res.txt('gui', 'opt' + j);
+				mainMenuWindow.newGameWindow['infoOpt' + j].text = Res.txt('gui', 'opt' + j);
 			}
 			
-			mainMenu.dialNew.butVid.mode.text = Res.txt('gui', 'butvid');
+			mainMenuWindow.newGameWindow.editAppearanceButton.mode.text = Res.txt('gui', 'butvid');
 
-			world.app.setLang();
+			currentSession.appearanceWindow.setLang();
 
-			mainMenu.adv.text 			= Res.advText(world.nadv);
-			mainMenu.adv.y 				= main.stage.stageHeight - mainMenu.adv.textHeight - 40;
+			mainMenuWindow.adviceSnippetBox.text 	= Res.advText(currentSession.nadv);
+			mainMenuWindow.adviceSnippetBox.y 		= gameWindow.stage.stageHeight - mainMenuWindow.adviceSnippetBox.textHeight - 40;
 
 
-			mainMenu.info.txt.htmlText 	= Res.txt('gui', 'inform') + '<br>' + Res.txt('gui', 'inform', 1);
-			mainMenu.info.visible 		= (mainMenu.info.txt.text.length > 0);
+			mainMenuWindow.info.txt.htmlText 	= Res.txt('gui', 'inform') + '<br>' + Res.txt('gui', 'inform', 1);
+			mainMenuWindow.info.visible 		= (mainMenuWindow.info.txt.text.length > 0);
 
 
 			setScrollInfo();
@@ -380,33 +266,30 @@ package
 			trace('MainMenu.as/updateMainMenuLanguage() - Finished updating mainMenu language.');
 		}
 		
-		public function setMainButton(but:MovieClip, txt:String):void
-		{
-			but.txt.text 	= txt;
-			but.glow.text 	= txt;
-			but.txt.visible = (but.glow.textWidth < 1)
-		}
+
+
+
 		
 		public function setMenuSize():void
 		{
-			mainMenu.adv.y 		= main.stage.stageHeight - mainMenu.adv.textHeight - 40;
-			mainMenu.version.y 	= main.stage.stageHeight - 58;
-			mainMenu.link.y 	= main.stage.stageHeight - 125;
-			var ny:int			= main.stage.stageHeight - 400;
+			mainMenuWindow.adviceSnippetBox.y = gameWindow.stage.stageHeight - mainMenuWindow.adviceSnippetBox.textHeight - 40;
+			mainMenuWindow.version.y = gameWindow.stage.stageHeight - 58;
+			mainMenuWindow.link.y = gameWindow.stage.stageHeight - 125;
+			var ny:int = gameWindow.stage.stageHeight - 400;
 			if (ny < 280) ny = 280;
-			mainMenu.dialLoad.x = main.stage.stageWidth / 2;
-			mainMenu.dialNew.x 	= main.stage.stageWidth / 2;
+			mainMenuWindow.loadGameWindow.x = gameWindow.stage.stageWidth / 2;
+			mainMenuWindow.newGameWindow.x 	= gameWindow.stage.stageWidth / 2;
 			
-			world.app.vis.x 	= main.stage.stageWidth / 2;
-			mainMenu.dialLoad.y = ny;
-			mainMenu.dialNew.y 	= ny;
-			world.app.vis.y 	= ny;
+			currentSession.appearanceWindow.window.x 	= gameWindow.stage.stageWidth / 2;
+			mainMenuWindow.loadGameWindow.y = ny;
+			mainMenuWindow.newGameWindow.y 	= ny;
+			currentSession.appearanceWindow.window.y 	= ny;
 
-			mainMenu.lang.x 	= main.stage.stageWidth  - 30;
-			mainMenu.lang.y 	= main.stage.stageHeight - 50;
+			mainMenuWindow.languageContainer.x 	= gameWindow.stage.stageWidth  - 30;
+			mainMenuWindow.languageContainer.y 	= gameWindow.stage.stageHeight - 50;
 
-			mainMenu.info.txt.height 	= mainMenu.link.y - mainMenu.info.y - 20; 
-			mainMenu.info.scroll.height = mainMenu.link.y - mainMenu.info.y - 20;
+			mainMenuWindow.info.txt.height 	= mainMenuWindow.link.y - mainMenuWindow.info.y - 20; 
+			mainMenuWindow.info.scroll.height = mainMenuWindow.link.y - mainMenuWindow.info.y - 20;
 
 			setScrollInfo();
 
@@ -414,40 +297,40 @@ package
 		
 		public function setScrollInfo():void
 		{
-			if (mainMenu.info.txt.height < mainMenu.info.txt.textHeight) 
+			if (mainMenuWindow.info.txt.height < mainMenuWindow.info.txt.textHeight) 
 			{
-				mainMenu.info.scroll.maxScrollPosition = mainMenu.info.txt.maxScrollV;
-				mainMenu.info.scroll.visible = true;
+				mainMenuWindow.info.scroll.maxScrollPosition = mainMenuWindow.info.txt.maxScrollV;
+				mainMenuWindow.info.scroll.visible = true;
 			} 
-			else mainMenu.info.scroll.visible = false;
+			else mainMenuWindow.info.scroll.visible = false;
 		}
 		
 		public function resizeDisplay(event:Event):void
 		{
-			world.resizeScreen();
-			if (active) setMenuSize();
+			currentSession.resizeScreen();
+			if (mainMenuActive) setMenuSize();
 		}
 
 		//Main menu loading
-		public function mainLoadOn():void
+		public function openLoadGameWindow():void
 		{
-			trace('MainMenu.as/mainLoadOn() - Executing mainLoadOn().');
-			mainMenu.dialLoad.visible 			= true;
-			mainMenu.dialLoad.title2.visible 	= (loadReg == 1);
-			mainMenu.dialLoad.title.visible 	= (loadReg == 0);
-			mainMenu.dialLoad.slot0.visible 	= (loadReg == 0);
-			mainMenu.dialLoad.info.text 		= '';
-			mainMenu.dialLoad.objectName.text 	= '';
-			mainMenu.dialLoad.pers.visible 		= false;
+			trace('MainMenu.as/openLoadGameWindow() - Executing openLoadGameWindow().');
+			mainMenuWindow.loadGameWindow.visible 			= true;
+			mainMenuWindow.loadGameWindow.title2.visible 	= (loadReg == 1);
+			mainMenuWindow.loadGameWindow.title.visible 	= (loadReg == 0);
+			mainMenuWindow.loadGameWindow.slot0.visible 	= (loadReg == 0);
+			mainMenuWindow.loadGameWindow.info.text 		= '';
+			mainMenuWindow.loadGameWindow.objectName.text 	= '';
+			mainMenuWindow.loadGameWindow.pers.visible 		= false;
 
-			arr = [];
+			savefileArray = [];
 
-			for (var i:int = 0; i <= world.saveCount; i++) 
+			for (var i:int = 0; i <= currentSession.saveCount; i++) 
 			{
-				var slot:MovieClip = mainMenu.dialLoad['slot' + i];
-				var save:Object = World.world.getSave(i);
+				var slot:MovieClip = mainMenuWindow.loadGameWindow['slot' + i];
+				var save:Object = GameSession.currentSession.getSave(i);
 				var obj:Object = interdata.PipPageOpt.saveObj(save, i);
-				arr.push(obj);
+				savefileArray.push(obj);
 				slot.id.text 	= i;
 				slot.id.visible = false;
 				if (save != null && save.est != null) 
@@ -471,23 +354,23 @@ package
 				slot.addEventListener(MouseEvent.MOUSE_OVER, funOverSlot);
 			}
 
-			mainMenu.dialLoad.butCancel.addEventListener(MouseEvent.CLICK, 	funLoadCancel);
-			mainMenu.dialLoad.butFile.addEventListener(MouseEvent.CLICK, 	funLoadFile);
+			mainMenuWindow.loadGameWindow.butCancel.addEventListener(MouseEvent.CLICK, 	clickedButtonCloseLoadGameWindow);
+			mainMenuWindow.loadGameWindow.butFile.addEventListener(MouseEvent.CLICK, 	clickedButtonLoadGame);
 			animOn = false;
 		}
 		
-		public function mainLoadOff():void
+		public function closeLoadGameWindow():void
 		{
-			trace('MainMenu.as/mainLoadOff() - Executing mainLoadOff().');
-			mainMenu.dialLoad.visible = false;
-			if (mainMenu.dialLoad.butCancel.hasEventListener(MouseEvent.CLICK)) 
+			trace('MainMenu.as/closeLoadGameWindow() - Executing closeLoadGameWindow().');
+			mainMenuWindow.loadGameWindow.visible = false;
+			if (mainMenuWindow.loadGameWindow.butCancel.hasEventListener(MouseEvent.CLICK)) 
 			{
-				mainMenu.dialLoad.butCancel.removeEventListener(MouseEvent.CLICK, funLoadCancel);
-				mainMenu.dialLoad.butFile.removeEventListener(MouseEvent.CLICK, funLoadFile);
+				mainMenuWindow.loadGameWindow.butCancel.removeEventListener(MouseEvent.CLICK, clickedButtonCloseLoadGameWindow);
+				mainMenuWindow.loadGameWindow.butFile.removeEventListener(MouseEvent.CLICK, clickedButtonLoadGame);
 			}
-			for (var i:int = 0; i <= world.saveCount; i++) 
+			for (var i:int = 0; i <= currentSession.saveCount; i++) 
 			{
-				var slot:MovieClip = mainMenu.dialLoad['slot' + i];
+				var slot:MovieClip = mainMenuWindow.loadGameWindow['slot' + i];
 				if (slot.hasEventListener(MouseEvent.CLICK)) 
 				{
 					slot.removeEventListener(MouseEvent.CLICK, funLoadSlot);
@@ -497,10 +380,7 @@ package
 			animOn = true;
 		}
 		
-		public function funLoadCancel(event:MouseEvent):void
-		{
-			mainLoadOff();
-		}
+
 
 		//select slot
 		public function funLoadSlot(event:MouseEvent):void
@@ -508,8 +388,9 @@ package
 			loadCell = event.currentTarget.id.text;
 			if (loadReg == 1 && loadCell == 0) return;
 			if (loadReg == 0 && event.currentTarget.ggName.text == '') return;
-			mainLoadOff();
+			closeLoadGameWindow();
 			mainMenuOff();
+			mainMenuButtonsListenerToggle(false);
 			command = 3;
 			if (loadReg == 1) com = 'new';
 			else com = 'load';
@@ -517,317 +398,210 @@ package
 
 		public function funOverSlot(event:MouseEvent):void
 		{
-			interdata.PipPageOpt.showSaveInfo(arr[event.currentTarget.id.text],mainMenu.dialLoad);
+			interdata.PipPageOpt.showSaveInfo(savefileArray[event.currentTarget.id.text], mainMenuWindow.loadGameWindow);
 		}
 		
-		public function funLoadFile(event:MouseEvent):void
+		//New Game Window
+		public function openNewGameWindow():void
 		{
-			ffil = [new FileFilter(Res.txt('pip', 'gamesaves') + " (*.sav)", "*.sav")];
-			file.browse(ffil);
-		}
-		
-		private function selectHandler(event:Event):void 
-		{
-            file.load();
-        }		
-		private function completeHandler(event:Event):void
-		{
-			try 
+			trace('MainMenu.as/openNewGameWindow() - Executing openNewGameWindow().');
+			mainMenuWindow.newGameWindow.visible = true;
+			mainMenuWindow.newGameWindow.butCancel.addEventListener(MouseEvent.CLICK, clickedButtonCloseNewGameWindow);
+			mainMenuWindow.newGameWindow.butOk.addEventListener(MouseEvent.CLICK, clickedButtonStartNewGame);
+			mainMenuWindow.newGameWindow.butVid.addEventListener(MouseEvent.CLICK, openAppearanceEditorWindow);
+
+			for (var i:int = 0; i <difficultyOptionCount; i++) 
 			{
-				var obj:Object = file.data.readObject();
-				if (obj && obj.est == 1) 
-				{
-					loadCell = 99;
-					world.loaddata = obj;
-					mainLoadOff();
-					mainMenuOff();
-					command = 3;
-					com = 'load';
-				}
-			} 
-			catch(err:Error) 
-			{
-				trace('MainMenu.as/completeHandler() - Error load');
+				mainMenuWindow.newGameWindow['dif' + i].addEventListener(MouseEvent.CLICK, funNewDif);
+				mainMenuWindow.newGameWindow['dif' + i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
 			}
-			
-       }		
-		
-		//new game
-		public function mainNewOn():void
-		{
-			trace('MainMenu.as/mainNewOn() - Executing mainNewOn().');
-			mainMenu.dialNew.visible = true;
-			mainMenu.dialNew.butCancel.addEventListener(MouseEvent.CLICK, funNewCancel);
-			mainMenu.dialNew.butOk.addEventListener(MouseEvent.CLICK, funNewOk);
-			mainMenu.dialNew.butVid.addEventListener(MouseEvent.CLICK, funNewVid);
-			for (var i:int = 0; i <kolDifs; i++) 
+
+			for (var j:int = 1; j <= playthroughOptionCount; j++) 
 			{
-				mainMenu.dialNew['dif' + i].addEventListener(MouseEvent.CLICK, funNewDif);
-				mainMenu.dialNew['dif' + i].addEventListener(MouseEvent.MOUSE_OVER, infoMode);
+				mainMenuWindow.newGameWindow['infoOpt' + j].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
+				mainMenuWindow.newGameWindow['checkOpt' + j].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 			}
-			for (var j:int = 1; j <= kolOpts; j++) 
-			{
-				mainMenu.dialNew['infoOpt' + j].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
-				mainMenu.dialNew['checkOpt' + j].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
-			}
+
 			updNewMode();
-			mainMenu.dialNew.pers.gotoAndStop(2);
-			mainMenu.dialNew.pers.gotoAndStop(1);
+			mainMenuWindow.newGameWindow.pers.gotoAndStop(2);
+			mainMenuWindow.newGameWindow.pers.gotoAndStop(1);
 			animOn = false;
 		}
 
-		public function mainNewOff():void
+		public function closeNewGameWindow():void
 		{
-			trace('MainMenu.as/mainNewOff() - Executing mainNewOff().');
-			mainMenu.dialNew.visible = false;
-			if (mainMenu.dialNew.butCancel.hasEventListener(MouseEvent.CLICK)) mainMenu.dialNew.butCancel.removeEventListener(MouseEvent.CLICK, funNewCancel);
-			if (mainMenu.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) mainMenu.dialNew.butOk.removeEventListener(MouseEvent.CLICK, funNewOk);
-			if (mainMenu.dialNew.butOk.hasEventListener(MouseEvent.CLICK)) 
+			trace('MainMenu.as/closeNewGameWindow() - Executing closeNewGameWindow().');
+			mainMenuWindow.newGameWindow.visible = false;
+			if (mainMenuWindow.newGameWindow.butCancel.hasEventListener(MouseEvent.CLICK)) mainMenuWindow.newGameWindow.butCancel.removeEventListener(MouseEvent.CLICK, clickedButtonCloseNewGameWindow);
+			if (mainMenuWindow.newGameWindow.butOk.hasEventListener(MouseEvent.CLICK)) mainMenuWindow.newGameWindow.butOk.removeEventListener(MouseEvent.CLICK, clickedButtonStartNewGame);
+			if (mainMenuWindow.newGameWindow.butOk.hasEventListener(MouseEvent.CLICK)) 
 			{
-				mainMenu.dialNew.butVid.removeEventListener(MouseEvent.CLICK, funNewVid);
-				for (var i:int = 0; i < kolDifs; i++) 
+				mainMenuWindow.newGameWindow.butVid.removeEventListener(MouseEvent.CLICK, openAppearanceEditorWindow);
+				for (var i:int = 0; i < difficultyOptionCount; i++) 
 				{
-					mainMenu.dialNew['dif' + i].removeEventListener(MouseEvent.CLICK, funNewDif);
-					mainMenu.dialNew['dif' + i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
+					mainMenuWindow.newGameWindow['dif' + i].removeEventListener(MouseEvent.CLICK, funNewDif);
+					mainMenuWindow.newGameWindow['dif' + i].removeEventListener(MouseEvent.MOUSE_OVER, infoMode);
 				}
 			}
 			animOn = true;
 		}
 
-		public function funAdv(event:MouseEvent):void
+		public function openAppearanceEditorWindow(event:MouseEvent):void
 		{
-			trace('MainMenu.as/funAdv() - Executing funAdv().');
-
-			world.nadv++;
-			if (world.nadv>=world.koladv) world.nadv = 0;
-			mainMenu.adv.text = Res.advText(world.nadv);
-			mainMenu.adv.y = main.stage.stageHeight-mainMenu.adv.textHeight -40;
-		}
-
-		public function funAdvR(event:MouseEvent):void
-		{
-			trace('MainMenu.as/funAdvR() - Executing funAdvR().');
-
-			world.nadv--;
-			if (world.nadv < 0) world.nadv = world.koladv - 1;
-			mainMenu.adv.text = Res.advText(world.nadv);
-			mainMenu.adv.y = main.stage.stageHeight - mainMenu.adv.textHeight - 40;
-		}
-
-		public function funNewCancel(event:MouseEvent):void
-		{
-			mainNewOff();
-		}
-
-		public function funNewOk(event:MouseEvent):void //click OK in the new game window
-		{
-			trace('MainMenu.as/funNewOk() - Executing funNewOk().');
-
-			mainNewOff();
-			if (mainMenu.dialNew.checkOpt2.selected) //show slot selection window
-			{	
-				loadReg = 1;
-				mainLoadOn();
-			} 
-			else 
-			{
-				mainMenuOff();
-				loadCell = -1;
-				command  = 3;
-				com 	 = 'new';
-			}
-		}
-		
-		public function funNewVid(event:MouseEvent):void //enable appearance settings
-		{
-			trace('MainMenu.as/funNewVid() - Opening appearance menu.');
+			trace('MainMenu.as/openAppearanceEditorWindow() - Opening appearance menu.');
 
 			setMenuSize();
-			mainMenu.dialNew.visible = false;
-			world.app.attach(mainMenu, funVidOk, funVidOk);
+			mainMenuWindow.newGameWindow.visible = false;
+			currentSession.appearanceWindow.attach(mainMenuWindow, closeAppearanceEditorWindow, closeAppearanceEditorWindow); //Why is this calling closeAppearanceEditorWindow twice?
 		}
 		
-		public function funVidOk():void //accept appearance settings
+		public function closeAppearanceEditorWindow():void
 		{
-			trace('MainMenu.as/funNewVid() - Appearance settings accepted.');
+			trace('MainMenu.as/openAppearanceEditorWindow() - Appearance settings accepted.');
 
-			mainMenu.dialNew.visible = true;
-			world.app.detach();
-			mainMenu.dialNew.pers.gotoAndStop(2);
-			mainMenu.dialNew.pers.gotoAndStop(1);
+			mainMenuWindow.newGameWindow.visible = true;
+			currentSession.appearanceWindow.detach();
+			mainMenuWindow.newGameWindow.pers.gotoAndStop(2);
+			mainMenuWindow.newGameWindow.pers.gotoAndStop(1);
 		}
 
 		public function funNewDif(event:MouseEvent):void
 		{
 			trace('MainMenu.as/funNewDif() - Selecting game difficulty.');
 
-			if (event.currentTarget == mainMenu.dialNew.dif0) newGameDif = 0;
-			if (event.currentTarget == mainMenu.dialNew.dif1) newGameDif = 1;
-			if (event.currentTarget == mainMenu.dialNew.dif2) newGameDif = 2;
-			if (event.currentTarget == mainMenu.dialNew.dif3) newGameDif = 3;
-			if (event.currentTarget == mainMenu.dialNew.dif4) newGameDif = 4;
+			for (var i:int = 0; i < 5; i++)
+			{
+				if (event.currentTarget == difficultyOptionTickboxes[i]) 
+				{
+					newGameDif = i;
+					break;
+				}
+
+			}
 			updNewMode();
 		}
 
 		public function updNewMode():void
 		{
 			trace('MainMenu.as/updNewMode() - Updating game difficulty.');
+			for (var i:int = 0; i < 5; i++) // Set all difficulty checkboxes to empty.
+			{
+				difficultyOptionTickboxes[i].fon.gotoAndStop(1);
 
-			mainMenu.dialNew.dif0.fon.gotoAndStop(1);
-			mainMenu.dialNew.dif1.fon.gotoAndStop(1);
-			mainMenu.dialNew.dif2.fon.gotoAndStop(1);
-			mainMenu.dialNew.dif3.fon.gotoAndStop(1);
-			mainMenu.dialNew.dif4.fon.gotoAndStop(1);
-			if (newGameDif == 0) mainMenu.dialNew.dif0.fon.gotoAndStop(2);
-			if (newGameDif == 1) mainMenu.dialNew.dif1.fon.gotoAndStop(2);
-			if (newGameDif == 2) mainMenu.dialNew.dif2.fon.gotoAndStop(2);
-			if (newGameDif == 3) mainMenu.dialNew.dif3.fon.gotoAndStop(2);
-			if (newGameDif == 4) mainMenu.dialNew.dif4.fon.gotoAndStop(2);
+			}
+			for (var j:int = 0; j < 5; j++) // If the new game difficulty matches the checkbox, change to a ticked checkbox.
+			{
+				if (newGameDif == j)
+				{
+					difficultyOptionTickboxes[j].fon.gotoAndStop(2);
+					break;
+				}
+				
+			}
 		}
 
-		public function infoMode(event:MouseEvent):void
+		public function infoMode(event:MouseEvent):void //???
 		{
-			mainMenu.dialNew.modeinfo.htmlText = event.currentTarget.modeinfo.text;
+			mainMenuWindow.newGameWindow.modeinfo.htmlText = event.currentTarget.modeinfo.text;
 		}
 
-		public function infoOpt(event:MouseEvent):void
+		public function infoOpt(event:MouseEvent):void //???
 		{
 			var n:int = int(event.currentTarget.name.substr(event.currentTarget.name.length - 1));
-			mainMenu.dialNew.modeinfo.htmlText = Res.formatText(Res.txt('gui', 'opt' + n, 1));
-		}
-		
-		public function languageButtonPress(event:MouseEvent):void //What to do when a langauge button is pressed.
-		{
-			trace('MainMenu.as/languageButtonPress() - Language : "' + event.currentTarget.n.text + '" pressed. Current Language: "' + Languages.languageName + '."');
-
-			mainMenu.loading.text = '';
-			var newLanguage:String = event.currentTarget.n.text;
-			if (newLanguage == Languages.languageName) 
-			{
-				trace('MainMenu.as/languageButtonPress() - New langauge is the same as old language, returning.');
-				return;
-			}
-
-			trace('MainMenu.as/languageButtonPress() - Calling Languages/changeLanguage().');
-			Languages.changeLanguage(newLanguage);
-
-			trace('MainMenu.as/languageButtonPress() - Setting langReload to true and turning off buttons.');
-			langReload = true;
-			showMainButtons(false);
-			mainMenu.loading.text = 'Loading';
-			
-		}
-		
-		public function showMainButtons(bool:Boolean):void
-		{
-			mainMenu.butNewGame.visible  = bool;
-			mainMenu.butLoadGame.visible = bool;
-			mainMenu.butContGame.visible = bool;
-			mainMenu.butOpt.visible      = bool;
-			mainMenu.butAbout.visible    = bool;
-
-			trace('MainMenu.as/showMainButtons() - Turned main buttons ' + (bool ? 'on' : 'off') + '.');
-		}
-
-		public function funAboutOk(event:MouseEvent):void
-		{
-			mainMenu.dialAbout.visible = false;
-			mainMenu.dialAbout.butCancel.removeEventListener(MouseEvent.CLICK, funAboutOk);
+			mainMenuWindow.newGameWindow.modeinfo.htmlText = Res.formatText(Res.txt('gui', 'opt' + n, 1));
 		}
 		
 		public function step():void
 		{
-
-			//trace('MainMenu.as/step()');
 			if (langReload) 
 			{	
-				trace('MainMenu.as/step() - mainMenu.langReload is true, reloading language.');
+				trace('MainMenu.as/step() - Reloading language.');
 
 				langReload = false;
-				showMainButtons(true);
+				showMainButtons(false);
 
-				world.pip.updateLang();
+				currentSession.pip.updateLang();
 				updateMainMenuLanguage();
-
 			}
-			
-			//TODO: This is probably better as a switch-case
-			if (loaded) 
-			{
-				if (animOn && !world.pip.active) displ.anim();
 
-				if (world.allLevelsLoaded && Languages.textLoaded)
+			if (XmlBook.bookSetup && !Snd.soundInitialized)
+			{
+				trace('MainMenu.as/step() - XML readyToStart, initializaing sound');
+				Snd.initializeSound();
+			}
+
+			if (readyToStart)
+			{
+				trace('MainMenu.as/step() - Starting menu animation.');
+				if (animOn && !currentSession.pip.active) mainMenuAnimation.anim();
+
+				if (currentSession.allLevelsLoaded && Languages.textLoaded)
 				{
-					if (Settings.musicTracksFound > Settings.musicTracksLoaded) 
+					if (Settings.musicTracksFound < Settings.musicTracksLoaded) 
 					{
-						trace('MainMenu.as/step() - Waiting on music to load, updating loading display.');
-						try
-						{
-							mainMenu.loading.text = 'Music loading ' + Settings.musicTracksLoaded + '/' + Settings.musicTracksFound;
-						}
-						catch (error:Error)
-						{
-							trace('MainMenu.as/step() - updating mainMenu loading text failed.');
-						}
-						
+						mainMenuWindow.loading.text = 'Music files readyToStart!';
+					}
+					else if (Settings.musicTracksFound > Settings.musicTracksLoaded) 
+					{
+						mainMenuWindow.loading.text = 'Music files readyToStart : ' + Settings.musicTracksLoaded + '/' + Settings.musicTracksFound;
 					}
 				}
 				else
 				{
-					mainMenu.loading.text = '';
+					mainMenuWindow.mainMenuLoadingLog.text = '';
 				}
 			}
 
-			if (!world.constructorFinished && Languages.textLoaded)
+			if (!currentSession.constructorFinished && Languages.textLoaded)
 			{
-				trace('MainMenu.as/step() - Language data finished loading, continuing world construction.');
-				world.constructorFinished = true;
-				world.continueLoadingWorld();
+				trace('MainMenu.as/step() - Language data finished loading, continuing currentSession construction.');
+				currentSession.constructorFinished = true;
+				currentSession.continueLoadingWorld();
 			}
 
-			if (world.constructorFinished && !mainMenuLoaded)
+			if (currentSession.constructorFinished && !mainMenuSecondaryLoadingDone)
 			{
-				trace('MainMenu.as/step() - world finished loading. Starting main menu loading stage 2.');
-				mainMenuLoaded = true;
-				continueLoading();
+				trace('MainMenu.as/step() - currentSession finished loading. Starting main menu loading stage 2.');
+				mainMenuSecondaryLoadingDone = true;
+				continueLoadingWhenGameSessionExists();
 			}
 
-			if (world.grafon != null)
+			if (currentSession.grafon != null)
 			{
-				if (world.grafon.resourcesLoaded) 
+				if (currentSession.grafon.resourcesLoaded) 
 				{
-					mainMenu.loading.text = 'Loading...\n';
-					//trace('MainMenu.as/step() - Resources loaded. Languages.textloaded = "' + Languages.textLoaded + '" world.init2Done: "' + world.init2Done + '" world.allLevelsLoaded: ' + world.allLevelsLoaded + '"');
+					mainMenuWindow.mainMenuLoadingLog.text = 'Loading...';
 					
-					if (Languages.textLoaded && !world.init2Done)
+					
+					if (Languages.textLoaded && !currentSession.init2Done)
 					{
-						trace('MainMenu.as/step() - Languages.textLoaded are true, calling world.init2().');
-						world.init2Done = true
-						world.init2();
+						trace('MainMenu.as/step() - Languages.textLoaded are true, calling currentSession.init2().');
+						currentSession.init2Done = true
+						currentSession.init2();
 						return;
 					}
 
-					if (Languages.textLoaded && world.allLevelsLoaded)
+					if (Languages.textLoaded && currentSession.allLevelsLoaded)
 					{
-						//trace('MainMenu.as/step() - Languages.textLoaded and world.allLevelsLoaded are true, Checking if language buttons are loaded.');
 						if (!langButtonsLoaded)
 						{
 							trace('MainMenu.as/step() - No language buttons found, creating new Menu buttons array.');
-							setLangButtons();
-							updateMainMenuLanguage(); //I put this in here as a quick hacky fix.
+							createMainMenuLanguageButtons();
 						}
-						if (!loaded)
+						if (!readyToStart)
 						{
+							updateMainMenuLanguage();
 							showMainButtons(true);
 						}
-						loaded = true; // ALL loading is finished.
+						readyToStart = true; // ALL loading is finished.
+						mainMenuWindow.mainMenuLoadingLog.text = '';
 					}
 
 				}
 				else 
 				{
-					trace('MainMenu.as/step() - world.grafon.resourcesLoaded is false, waiting on resources to load...');
-					mainMenu.loading.text = 'Loading ' + Math.round(world.grafon.progressLoad * 100) + '%';
+					trace('MainMenu.as/step() - currentSession.grafon.resourcesLoaded is false, waiting on resources to load...');
+					mainMenuWindow.mainMenuLoadingLog.text = 'Loading ' + Math.round(currentSession.grafon.progressLoad * 100) + '%';
 				}
 			}
 
@@ -835,21 +609,21 @@ package
 		
 		public function log(s:String):void
 		{
-			mainMenu.loading.text += s + '; ';
+			mainMenuWindow.mainMenuLoadingLog.text += s + '; ';
 		}
 
 		public function mainStep(event:Event):void  // Runs when entering the frame.
 		{
-			if (active) 
+			if (mainMenuActive) 
 			{
 				step();
 			}
 			else if (command > 0) 
 			{
 				command--;
-				if (command == 1 && !mainMenu.dialNew.checkOpt1.selected && com == 'new') 
+				if (command == 1 && !mainMenuWindow.newGameWindow.checkOpt1.selected && com == 'new') 
 				{
-					world.setLoadScreen(0);
+					currentSession.setLoadScreen(0);
 				}
 				
 				if (command == 0) //start the game!!!!
@@ -862,25 +636,304 @@ package
 						opt =
 						{
 							dif:newGameDif,
-							skipTraining:mainMenu.dialNew.checkOpt1.selected,	//skipTraining - option 1 - skip training
-							hardcore:mainMenu.dialNew.checkOpt2.selected,		//hardcoreMode - option 2
-							fastxp:mainMenu.dialNew.checkOpt3.selected,			//fastxp - option 3, 40% less experience needed
-							rndpump:mainMenu.dialNew.checkOpt4.selected, 		//randomizeLevelUpSkills - option 4, randomize what skillpoints are assigned to when leveling up.
-							hardskills:mainMenu.dialNew.checkOpt5.selected, 	//hardskills - give 3 sp per level (instead of?)
-							hardinv:mainMenu.dialNew.checkOpt6.selected 		//limitedInventory
+							skipTraining:mainMenuWindow.newGameWindow.checkOpt1.selected,	//skipTraining - option 1 - skip training
+							hardcore:mainMenuWindow.newGameWindow.checkOpt2.selected,		//hardcoreMode - option 2
+							fastxp:mainMenuWindow.newGameWindow.checkOpt3.selected,			//fastxp - option 3, 40% less experience needed
+							rndpump:mainMenuWindow.newGameWindow.checkOpt4.selected, 		//randomizeLevelUpSkills - option 4, randomize what skillpoints are assigned to when leveling up.
+							hardskills:mainMenuWindow.newGameWindow.checkOpt5.selected, 	//hardskills - give 3 sp per level (instead of?)
+							hardinv:mainMenuWindow.newGameWindow.checkOpt6.selected 		//limitedInventory
 						};
-						if (opt.hardcore) opt.autoSaveN = loadCell; 			//autoSaveN - autosave cell
+						if (opt.hardcore) opt.autoSaveN = loadCell; 						//autoSaveN - autosave cell
 						loadCell = -1;
 					}
-					world.startNewGame(loadCell, mainMenu.dialNew.inputName.text, opt);
+					currentSession.startNewGame(loadCell, mainMenuWindow.newGameWindow.inputName.text, opt);
 				}
 			} 
 			
 			else 
 			{
-				//trace('MainMenu.as/mainStep() - mainMenu is not active and (mainMenu.command < 1). Calling world/step().');
-				world.step();
+				currentSession.step();
 			}
 		}
+
+
+		private function localizeMainMenuWindows():void
+		{
+			mainMenuWindow.version.htmlText = '<b>' + Res.txt('gui', 'version') + ' ' + Settings.version + '</b>';
+			//Load Game Window
+			mainMenuWindow.loadGameWindow.title.text = Res.txt('gui', 'loadgame');
+			mainMenuWindow.loadGameWindow.title2.text = Res.txt('gui', 'select_slot');
+			mainMenuWindow.loadGameWindow.butCancel.text.text = Res.txt('gui', 'cancel');
+			mainMenuWindow.loadGameWindow.butFile.text.text = Res.txt('pip', 'loadfile');
+			mainMenuWindow.loadGameWindow.warn.text = Res.txt('gui', 'loadwarn');
+			//New Game Window
+			mainMenuWindow.newGameWindow.title.text = Res.txt('gui', 'newgame');
+			mainMenuWindow.newGameWindow.warn.text = Res.txt('gui', 'loadwarn');
+			mainMenuWindow.newGameWindow.infoName.text = Res.txt('gui', 'inputname');
+			mainMenuWindow.newGameWindow.hardOpt.text = Res.txt('gui', 'hardopt');
+			mainMenuWindow.newGameWindow.butOk.text.text = 'OK';
+			mainMenuWindow.newGameWindow.inputName.text = Res.txt('unit','littlepip');
+			mainMenuWindow.newGameWindow.butCancel.text.text = Res.txt('gui', 'cancel');
+			mainMenuWindow.newGameWindow.maxChars = 32;
+		}
+
+		private function mainMenuButtonPress(event:MouseEvent):void
+		{
+			trace('MainMenuButtons.as/mainMenuButtonPress() - "' + event.currentTarget.name + '" pressed.');
+			switch(event.currentTarget.name)
+			{
+        		case "continueGameButton":
+					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening Continue Game window.');
+					var n:int = 0;
+					var maxDate:Number = 0;
+					for (var i:int = 0; i <= currentSession.saveCount; i++) 
+					{
+						var save:Object = currentSession.getSave(i);
+						if (save && save.est && save.date > maxDate) 
+						{
+							n = i;
+							maxDate = save.date;
+						}
+					}
+
+					save = currentSession.getSave(n);
+
+					if (save && save.est) 
+					{
+						mainMenuOff();
+						loadCell = n;
+						command  = 3;
+					} 
+					else 
+					{
+						openNewGameWindow();
+						closeLoadGameWindow();
+					}
+           			break;
+
+        		case "loadGameButton":
+					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening Load Game window.');
+					currentSession.mmArmor = true;
+					closeNewGameWindow();
+					loadReg = 0;
+					openLoadGameWindow();
+					break;
+				case "newGameButton":
+					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening New Game window.');
+					currentSession.mmArmor = false;
+					closeLoadGameWindow();
+					openNewGameWindow();
+					break;
+				case "optionsButton":
+					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening Options window.');
+					closeNewGameWindow();
+					closeLoadGameWindow();
+					currentSession.pip.onoff();
+					break;
+				case "aboutButton":
+					trace('MainMenuButtons.as/mainMenuButtonPress() - Executing funAbout().');
+					mainMenuWindow.aboutWindow.title.text = Res.txt('gui', 'about');
+					var s:String = Res.formatText(Res.txt('gui','about', 1));
+					s += '<br><br>' + Res.txt('gui', 'usedmusic') + '<br>';
+					s += "<br><span class='music'>" + Res.formatText(Res.localizationFile.gui.(@id == 'usedmusic').info[0]) + "</span>"
+					s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
+					mainMenuWindow.aboutWindow.txt.styleSheet 	= style;
+					mainMenuWindow.aboutWindow.txt.htmlText 	= s;
+					mainMenuWindow.aboutWindow.visible = true;
+					mainMenuWindow.aboutWindow.butCancel.addEventListener(MouseEvent.CLICK, clickedButtonCloseAboutWindow);
+					mainMenuWindow.aboutWindow.scroll.maxScrollPosition = mainMenuWindow.aboutWindow.txt.maxScrollV;
+					break;
+				default:
+           			trace("MainMenuButtons.as/mainMenuButtonPress() - Unknown button pressed");
+            		break;
+			}
+
+		}
+
+
+
+		public function showMainButtons(bool:Boolean):void
+		{
+			mainMenuWindow.newGameButton.visible  = bool;
+			mainMenuWindow.loadGameButton.visible = bool;
+			mainMenuWindow.continueGameButton.visible = bool;
+			mainMenuWindow.optionsButton.visible      = bool;
+			mainMenuWindow.aboutButton.visible    = bool;
+
+			trace('MainMenuButtons.as/showMainButtons() - Turned main buttons ' + (bool ? 'on' : 'off') + '.');
+		}
+
+		public function clickedButtonCloseAboutWindow(event:MouseEvent):void
+		{
+			mainMenuWindow.aboutWindow.visible = false;
+			mainMenuWindow.aboutWindow.butCancel.removeEventListener(MouseEvent.CLICK, clickedButtonCloseAboutWindow);
+		}
+
+		public function mouseOverHighlight(event:MouseEvent):void //Mouseover
+		{
+			(event.currentTarget as MovieClip).fon.scaleX = 1;
+			(event.currentTarget as MovieClip).fon.alpha  = 1.5;
+		}
+
+		public function mouseOverHighlightStop(event:MouseEvent):void //Mouseover stopped
+		{
+			(event.currentTarget as MovieClip).fon.scaleX = 0.7;
+			(event.currentTarget as MovieClip).fon.alpha  = 1;
+		}
+
+		public function mainMenuButtonsListenerToggle(enabled:Boolean):void
+		{
+			var mainFivebuttons:Array = [mainMenuWindow.continueGameButton, mainMenuWindow.loadGameButton, mainMenuWindow.newGameButton, mainMenuWindow.optionsButton, mainMenuWindow.aboutButton];
+			var toggle:Function;
+			
+			for each (var mainFiveButton:Object in mainFivebuttons) 
+			{
+				toggle = enabled ? mainFiveButton.addEventListener : mainFiveButton.removeEventListener;
+				toggle(MouseEvent.MOUSE_OVER, mouseOverHighlight);
+				toggle(MouseEvent.MOUSE_OUT, mouseOverHighlightStop);
+				toggle(MouseEvent.CLICK, mainMenuButtonPress);
+    		}
+
+			toggle = enabled ? mainMenuWindow.adviceSnippetBox.addEventListener : mainMenuWindow.adviceSnippetBox.removeEventListener;
+			toggle(MouseEvent.CLICK, showNextAdviceSnippet);
+			toggle(MouseEvent.RIGHT_CLICK, showPreviousAdviceSnippet);
+
+			toggle = enabled ? file.addEventListener : file.removeEventListener;
+			toggle(Event.SELECT, selectHandler);
+			toggle(Event.COMPLETE, completeHandler);
+		}
+
+		public function selectHandler(event:Event):void 
+		{
+            file.load();
+        }
+
+		public function completeHandler(event:Event):void
+		{
+			try 
+			{
+				var obj:Object = file.data.readObject();
+				if (obj && obj.est == 1) 
+				{
+					loadCell = 99;
+					currentSession.loaddata = obj;
+					closeLoadGameWindow();
+					mainMenuOff();
+					command = 3;
+					com = 'load';
+				}
+			} 
+			catch(err:Error) 
+			{
+				trace('MainMenuButtons.as/completeHandler() - Error load');
+			}
+			
+       }	
+		public function languageButtonPress(event:MouseEvent):void //What to do when a langauge button is pressed.
+		{
+			trace('MainMenuButtons.as/languageButtonPress() - Language : "' + event.currentTarget.n.text + '" pressed. Current Language: "' + Languages.languageName + '."');
+
+			mainMenuWindow.mainMenuLoadingLog.text = '';
+			var newLanguage:String = event.currentTarget.n.text;
+			if (newLanguage == Languages.languageName) 
+			{
+				trace('MainMenuButtons.as/languageButtonPress() - New langauge is the same as old language, returning.');
+				return;
+			}
+
+			trace('MainMenuButtons.as/languageButtonPress() - Calling Languages/changeLanguage().');
+			Languages.changeLanguage(newLanguage);
+
+			trace('MainMenuButtons.as/languageButtonPress() - Setting langReload to true and turning off buttons.');
+			langReload = true;
+			showMainButtons(false);
+			mainMenuWindow.mainMenuLoadingLog.text = 'Loading';
+			
+		}
+
+
+
+
+		//Load Game Window
+		public function clickedButtonLoadGame(event:MouseEvent):void
+		{
+			ffil = [new FileFilter(Res.txt('pip', 'gamesaves') + " (*.sav)", "*.sav")];
+			file.browse(ffil);
+		}
+
+		public function clickedButtonCloseLoadGameWindow(event:MouseEvent):void
+		{
+			closeLoadGameWindow();
+		}
+
+
+		//New Game Window
+		public function clickedButtonCloseNewGameWindow(event:MouseEvent):void
+		{
+			closeNewGameWindow();
+		}
+
+		public function clickedButtonStartNewGame(event:MouseEvent):void //click OK in the new game window
+		{
+			trace('MainMenuButtons.as/clickedButtonStartNewGame() - Executing clickedButtonStartNewGame().');
+
+			closeNewGameWindow();
+			if (mainMenuWindow.newGameWindow.checkOpt2.selected) //show slot selection window
+			{	
+				loadReg = 1;
+				openLoadGameWindow();
+			} 
+			else 
+			{
+				mainMenuOff();
+				loadCell = -1;
+				command  =  3;
+				com 	 = 'new';
+			}
+		}
+
+		// Main Menu hints
+		public function showNextAdviceSnippet(event:MouseEvent):void
+		{
+			trace('MainMenuButtons.as/showNextAdviceSnippet() - Executing.');
+
+			currentSession.nadv++;
+			if (currentSession.nadv >= currentSession.koladv) currentSession.nadv = 0;
+			mainMenuWindow.adviceSnippetBox.text = Res.advText(currentSession.nadv);
+			mainMenuWindow.adviceSnippetBox.y = gameWindow.stage.stageHeight - mainMenuWindow.adviceSnippetBox.textHeight - 40;
+		}
+		public function showPreviousAdviceSnippet(event:MouseEvent):void
+		{
+			trace('MainMenuButtons.as/showPreviousAdviceSnippet() - Executing.');
+
+			currentSession.nadv--;
+			if (currentSession.nadv < 0) currentSession.nadv = currentSession.koladv - 1;
+			mainMenuWindow.adviceSnippetBox.text = Res.advText(currentSession.nadv);
+			mainMenuWindow.adviceSnippetBox.y = gameWindow.stage.stageHeight - mainMenuWindow.adviceSnippetBox.textHeight - 40;
+		}
+
+		public function updateMenuButtonLocalization():void
+		{
+			trace('MainMenuButtons.as/updateMainMenuLanguage() - Updating main menu button localization.');
+			if (mainMenuWindow == null)
+			{
+				trace('MainMenuButtons.as/updateMainMenuLanguage() - ERROR: Main menu target is null!');
+			}
+			updateButtonText(mainMenuWindow.continueGameButton, Res.txt('gui', 'contgame'));
+			updateButtonText(mainMenuWindow.newGameButton, Res.txt('gui', 'newgame'));
+			updateButtonText(mainMenuWindow.loadGameButton, Res.txt('gui', 'loadgame'));
+			updateButtonText(mainMenuWindow.optionsButton, Res.txt('gui', 'options'));
+			updateButtonText(mainMenuWindow.aboutButton, Res.txt('gui', 'about'));
+		}
+
+		//Button localization
+		public function updateButtonText(menuButton:MovieClip, localizedText:String):void
+		{
+			menuButton.txt.text = localizedText;
+			menuButton.glow.text 	= localizedText;
+			menuButton.txt.visible = (menuButton.glow.textWidth < 1)
+		}
 	}
+
+
 }

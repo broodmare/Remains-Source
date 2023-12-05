@@ -64,7 +64,7 @@ package unitdata
 		
 		public override function control():void
 		{
-			if (shine<100 && World.world.pers.infravis>0) shine=100;
+			if (shine<100 && GameSession.currentSession.pers.infravis>0) shine=100;
 			if (sost>1) shine=100;
 			invis=(shine<15);
 			super.control();
@@ -79,15 +79,15 @@ package unitdata
 		public function showThis():Boolean
 		{
 			//проверить линию взгляда
-			var cx =- (X-World.world.gg.eyeX);
-			var cy =- (Y-scY*0.6-World.world.gg.eyeY);
+			var cx =- (X-GameSession.currentSession.gg.eyeX);
+			var cy =- (Y-scY*0.6-GameSession.currentSession.gg.eyeY);
 			if (cx * cx + cy * cy > 1000 * 1000) return false;
 			var div = Math.floor(Math.max(Math.abs(cy), Math.abs(cy)) / Settings.maxdelta) + 1;
 			for (var i:int = 1; i < div; i++) 
 			{
 				var nx = X + cx * i / div;
 				var ny = Y - scY* 0.6 + cy * i / div;
-				var t:Tile = World.world.room.getTile(Math.floor(nx / Tile.tilePixelWidth), Math.floor(ny / Tile.tilePixelHeight));
+				var t:Tile = GameSession.currentSession.room.getTile(Math.floor(nx / Tile.tilePixelWidth), Math.floor(ny / Tile.tilePixelHeight));
 				if (t.phis == 1 && nx >= t.phX1 && nx <= t.phX2 && ny >= t.phY1 && ny <= t.phY2) 
 				{
 					return false;

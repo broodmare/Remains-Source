@@ -115,7 +115,7 @@ package unitdata
 				t_shit=45;
 				osob=(Math.random()<0.4);
 			}
-			if (World.world.game.globalDif==4) osob=true;
+			if (GameSession.currentSession.game.globalDif==4) osob=true;
 			mana=maxmana=2000;
 			dmana=5;
 			walkSpeed=maxSpeed;
@@ -237,7 +237,7 @@ package unitdata
 				Emitter.emit('pole',room,X,Y-50,{kol:12,rx:100, ry:100});
 			}
 			//невидимость
-			if (superInvis && World.world.pers.infravis==0) {
+			if (superInvis && GameSession.currentSession.pers.infravis==0) {
 				if (isShoot) {
 					curA=50;
 					isShoot=false;
@@ -398,7 +398,7 @@ package unitdata
 			var jmp:Number=0;
 			//return;
 			invis=superInvis;
-			if (World.world.pers.infravis==0) dexter=2-curA/100;
+			if (GameSession.currentSession.pers.infravis==0) dexter=2-curA/100;
 			else dexter=1;
 			if (mana<maxmana) mana+=resmana;
 			if (Settings.enemyAct<=0) return;
@@ -770,7 +770,7 @@ package unitdata
 				teleObj.vis.filters=[teleFilter];
 			}
 			teleObj.fracLevit=fraction;
-			if (teleObj is UnitPlayer) teleObj.levit=(tr==2)?World.world.pers.teleEnemy:World.world.pers.teleEnemy*0.5;
+			if (teleObj is UnitPlayer) teleObj.levit=(tr==2)?GameSession.currentSession.pers.teleEnemy:GameSession.currentSession.pers.teleEnemy*0.5;
 			else teleObj.levit=2;
 		}
 		
@@ -814,7 +814,7 @@ package unitdata
 		
 		public function actPort(rnd:Boolean=false):void
 		{
-			var cel:Unit=World.world.gg;
+			var cel:Unit=GameSession.currentSession.gg;
 			//var dx:Number=0, dy:Number=0;
 			var nx:Number=0;
 			var ny:Number=0;

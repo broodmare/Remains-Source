@@ -66,8 +66,8 @@ package unitdata
 					return;
 				}
 				currentWeapon.reloadMult=1/head.reloadDiv;
-					//setCel(null, World.world.gg.X+Math.random()*500-250, World.world.gg.Y+Math.random()*400-200);
-				setCel(World.world.gg);
+					//setCel(null, GameSession.currentSession.gg.X+Math.random()*500-250, GameSession.currentSession.gg.Y+Math.random()*400-200);
+				setCel(GameSession.currentSession.gg);
 				storona=(celDX>0)?1:-1;
 				//if (head.attTur<=0) 
 					currentWeapon.attack();
@@ -80,11 +80,11 @@ package unitdata
 		
 		public override function setLevel(nlevel:int=0):void
 		{
-			if (World.world.game.globalDif==3) 
+			if (GameSession.currentSession.game.globalDif==3) 
 			{
 				hp=maxhp=hp*1.5;
 			}
-			if (World.world.game.globalDif==4) 
+			if (GameSession.currentSession.game.globalDif==4) 
 			{
 				hp=maxhp=hp*2;
 			}

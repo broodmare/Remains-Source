@@ -97,15 +97,15 @@ package unitdata
 				if (gg.rat>0) return false;
 				if (gg.invent.weapons[id] && gg.invent.weapons[id].respect==1) 
 				{
-					World.world.gui.infoText('disSpell',null,null,false);
+					GameSession.currentSession.gui.infoText('disSpell',null,null,false);
 					Snd.ps('nomagic');
 					return false;
 				}
-				if (World.world.pers.spellsPoss==0 || atk && !gg.atkPoss) 
+				if (GameSession.currentSession.pers.spellsPoss==0 || atk && !gg.atkPoss) 
 				{
-					World.world.gui.infoText('noSpells',null,null,false);
+					GameSession.currentSession.gui.infoText('noSpells',null,null,false);
 					Snd.ps('nomagic');
-					World.world.gui.bulb(owner.X,owner.Y);
+					GameSession.currentSession.gui.bulb(owner.X,owner.Y);
 					return false;
 				}
 				if (t_culd > 0) 
@@ -114,26 +114,26 @@ package unitdata
 					{
 						if (culd >= 100) 
 						{
-							World.world.gui.infoText('spellCuld',Math.ceil(t_culd/Settings.fps),null,false);
-							World.world.gui.bulb(owner.X,owner.Y-20);
+							GameSession.currentSession.gui.infoText('spellCuld',Math.ceil(t_culd/Settings.fps),null,false);
+							GameSession.currentSession.gui.bulb(owner.X,owner.Y-20);
 						}
 						Snd.ps('nomagic');
 					}
 					return false;
 				}
-				dmagic=magic*World.world.pers.allDManaMult;
-				dmana=mana*World.world.pers.allDManaMult;
+				dmagic=magic*GameSession.currentSession.pers.allDManaMult;
+				dmana=mana*GameSession.currentSession.pers.allDManaMult;
 				if (dmagic>999) dmagic=999;
 				if (owner.mana<dmagic) 
 				{
-					World.world.gui.infoText('overMana',null,null,false);
+					GameSession.currentSession.gui.infoText('overMana',null,null,false);
 					Snd.ps('nomagic');
-					World.world.gui.bulb(owner.X,owner.Y-20);
+					GameSession.currentSession.gui.bulb(owner.X,owner.Y-20);
 					return false;
 				}
-				if (dmana>World.world.pers.manaHP) 
+				if (dmana>GameSession.currentSession.pers.manaHP) 
 				{
-					World.world.gui.infoText('noMana',null,null,false);
+					GameSession.currentSession.gui.infoText('noMana',null,null,false);
 					Snd.ps('nomagic');
 					return false;
 				}
@@ -152,7 +152,7 @@ package unitdata
 			} 
 			else 
 			{
-				room=World.world.room;
+				room=GameSession.currentSession.room;
 			}
 			//координаты цели
 			cx = nx;
@@ -161,7 +161,7 @@ package unitdata
 			//проверка видимости точки цели, если это нужно
 			if (line == 1 && owner && !owner.room.isLine(X, Y, cx, cy)) 
 			{
-				if (player) World.world.gui.infoText('noVisible', null, null, false);
+				if (player) GameSession.currentSession.gui.infoText('noVisible', null, null, false);
 				return false;
 			}
 			//проверка и коррекция дистанции
@@ -206,7 +206,7 @@ package unitdata
 		//магический щит
 		public function cast_mshit():void
 		{
-			if (owner.player && Settings.alicorn) owner.shithp=World.world.pers.alicornShitHP;
+			if (owner.player && Settings.alicorn) owner.shithp=GameSession.currentSession.pers.alicornShitHP;
 			else owner.shithp=hp*power;
 		}
 		//магический щит
@@ -269,7 +269,7 @@ package unitdata
 			if (owner.player) room.budilo(X,Y,500);
 			if (room.roomActive) Emitter.emit('blast',room,X,Y);
 			
-			if (room.roomActive) World.world.quake(Math.random()*30-10,Math.random()*10-5);
+			if (room.roomActive) GameSession.currentSession.quake(Math.random()*30-10,Math.random()*10-5);
 		}
 		
 		//замедляющее поле
@@ -300,7 +300,7 @@ package unitdata
 				t.hp=Math.round(hp*power);
 				t.tileMaterial=7;
 				t.t_ghost=Math.round(dam*power);
-				World.world.grafon.gwall(t.X,t.Y);
+				GameSession.currentSession.grafon.gwall(t.X,t.Y);
 				est=1;
 			}
 			Emitter.emit('gwall',room,(t.X+0.5)*Tile.tilePixelWidth,(t.Y+0.5)*Tile.tilePixelHeight);

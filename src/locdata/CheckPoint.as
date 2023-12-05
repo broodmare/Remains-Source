@@ -120,7 +120,7 @@ package locdata
 		{
 			if (vis && !hide) 
 			{
-				World.world.grafon.canvasLayerArray[layer].addChild(vis);
+				GameSession.currentSession.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform) {
 					vis.transform.colorTransform=cTransform;
 				}
@@ -157,31 +157,31 @@ package locdata
 
 			if (active == 0 && !first)
 			{
-				if (World.world.pers.manaCPres) World.world.pers.heal(World.world.pers.manaCPres, 6);
-				if (World.world.pers.xpCPadd) World.world.pers.expa(room.unXp * 3);
+				if (GameSession.currentSession.pers.manaCPres) GameSession.currentSession.pers.heal(GameSession.currentSession.pers.manaCPres, 6);
+				if (GameSession.currentSession.pers.xpCPadd) GameSession.currentSession.pers.expa(room.unXp * 3);
 			}
 			active = 2;
-			World.world.pers.currentCP = this;
-			World.world.pers.currentCPCode = code;
+			GameSession.currentSession.pers.currentCP = this;
+			GameSession.currentSession.pers.currentCPCode = code;
 			if (code) 
 			{
-				World.world.pers.prevCPCode = code;
+				GameSession.currentSession.pers.prevCPCode = code;
 				room.level.levelTemplate.lastCpCode = code;
 			}
 			room.level.currentCP = this;
 			if (first) 
 			{
 				vis.osn.gotoAndStop('open');
-				if (World.world.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
+				if (GameSession.currentSession.game.mReturn && teleOn && !used) vis.fiol.gotoAndStop(25);
 			} 
 			else 
 			{
 				vis.osn.play();
-				if (World.world.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
+				if (GameSession.currentSession.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
 			}
 			if (used) vis.fiol.gotoAndStop(1);
-			//trace(World.world.game.mReturn)
-			if (World.world.game.mReturn && teleOn && !used) 
+			//trace(GameSession.currentSession.game.mReturn)
+			if (GameSession.currentSession.game.mReturn && teleOn && !used) 
 			{
 				inter.actFun = teleport;
 				inter.userAction = 'returnb';
@@ -193,16 +193,16 @@ package locdata
 				inter.active = false;
 				inter.actionText = '';
 			}
-			World.world.gui.infoText('checkPoint');
-			World.world.saveGame();
+			GameSession.currentSession.gui.infoText('checkPoint');
+			GameSession.currentSession.saveGame();
 		}
 		
 		public function teleport()
 		{
 			if (!main) 
 			{
-				World.world.game.gotoLevel(World.world.game.baseId);
-				if (Settings.hardInv && World.world.level.rnd) 
+				GameSession.currentSession.game.gotoLevel(GameSession.currentSession.game.baseId);
+				if (Settings.hardInv && GameSession.currentSession.level.rnd) 
 				{
 					used = true;
 					inter.active = false;
@@ -210,8 +210,8 @@ package locdata
 					vis.fiol.gotoAndStop(1);
 				}
 			} 
-			else if (World.world.game.missionId != 'rbl') World.world.game.gotoLevel(World.world.game.missionId);
-			//trace('GOTO '+World.world.game.curLevelID);
+			else if (GameSession.currentSession.game.missionId != 'rbl') GameSession.currentSession.game.gotoLevel(GameSession.currentSession.game.missionId);
+			//trace('GOTO '+GameSession.currentSession.game.curLevelID);
 		}
 		
 		public function areaActivate()
@@ -234,11 +234,11 @@ package locdata
 		
 		public override function step():void
 		{
-			onCursor = (X1 < World.world.celX && X2 > World.world.celX && Y1 < World.world.celY && Y2 > World.world.celY) ? prior:0;
+			onCursor = (X1 < GameSession.currentSession.celX && X2 > GameSession.currentSession.celX && Y1 < GameSession.currentSession.celY && Y2 > GameSession.currentSession.celY) ? prior:0;
 			if (inter) inter.step();
 			if (main) 
 			{
-				if (World.world.game.missionId && World.world.game.levelArray[World.world.game.missionId] && World.world.game.levelArray[World.world.game.missionId].tip!='base') inter.active=true;
+				if (GameSession.currentSession.game.missionId && GameSession.currentSession.game.levelArray[GameSession.currentSession.game.missionId] && GameSession.currentSession.game.levelArray[GameSession.currentSession.game.missionId].tip!='base') inter.active=true;
 				else inter.active = false;
 				return;
 			}
@@ -250,7 +250,7 @@ package locdata
 			}
 			
 			if (area) area.step();
-			if (active == 2 && World.world.pers.currentCP != this) deactivate();
+			if (active == 2 && GameSession.currentSession.pers.currentCP != this) deactivate();
 		}
 		
 	}

@@ -200,8 +200,8 @@ package interdata
 		
 		public function pageClick(event:MouseEvent):void
 		{
-			if (World.world.ctr.setkeyOn) return;
-			if (World.world.gg && World.world.gg.pipOff) return;
+			if (GameSession.currentSession.ctr.setkeyOn) return;
+			if (GameSession.currentSession.gg && GameSession.currentSession.gg.pipOff) return;
 			page = int(event.currentTarget.id.text);
 			setPage();
 			setButtons();
@@ -209,7 +209,7 @@ package interdata
 		}
 		public function pipClose(event:MouseEvent):void
 		{
-			if (World.world.ctr.setkeyOn) return;
+			if (GameSession.currentSession.ctr.setkeyOn) return;
 			onoff(-1);
 		}
 		public function setButtons():void
@@ -267,7 +267,7 @@ package interdata
 				active = false;
 			}
 
-			if (!light && World.world.room && World.world.room.base) travel = true;
+			if (!light && GameSession.currentSession.room && GameSession.currentSession.room.base) travel = true;
 			vis.but4.visible = false;
 			if (turn == 4 || (turn >= 6 && turn <= 9)) 
 			{
@@ -279,47 +279,47 @@ package interdata
 
 			if (active) 
 			{
-				World.world.cur();
+				GameSession.currentSession.cur();
 				showHidden = false;
 				if (vendor) vendor.reset();
-				World.world.ctr.clearAll();
-				if (World.world.stand) World.world.stand.onoff(-1);
+				GameSession.currentSession.ctr.clearAll();
+				if (GameSession.currentSession.stand) GameSession.currentSession.stand.onoff(-1);
 				setPage(p2);
 
 				if (!light) 
 				{
-					World.world.gui.offCelObj();
-					if (World.world.gui.t_mess>  30) World.world.gui.t_mess = 30;
+					GameSession.currentSession.gui.offCelObj();
+					if (GameSession.currentSession.gui.t_mess>  30) GameSession.currentSession.gui.t_mess = 30;
 				}
-				if (World.world.gui) 
+				if (GameSession.currentSession.gui) 
 				{
-					World.world.gui.dial.alpha   = 0;
-					World.world.gui.inform.alpha = 0;
+					GameSession.currentSession.gui.dial.alpha   = 0;
+					GameSession.currentSession.gui.inform.alpha = 0;
 				}
-				if (World.world.gg && World.world.gg.rat > 0 || World.world.catPause) 
+				if (GameSession.currentSession.gg && GameSession.currentSession.gg.rat > 0 || GameSession.currentSession.catPause) 
 				{
 					noAct2 	  = gamePause;
 					gamePause = true;
 				}
-				World.world.gc();
+				GameSession.currentSession.gc();
 			} 
 			else 
 			{
 				if (isSaveConf) 
 				{
-					World.world.saveConfig();
+					GameSession.currentSession.saveConfig();
 					isSaveConf = false;
 				}
 				vendor 	= null;
 				npcId 	= '';
-				World.world.ctr.clearAll();
-				World.world.app.detach();
-				if (World.world.gui) 
+				GameSession.currentSession.ctr.clearAll();
+				GameSession.currentSession.appearanceWindow.detach();
+				if (GameSession.currentSession.gui) 
 				{
-					World.world.gui.dial.alpha 	 = 1;
-					World.world.gui.inform.alpha = 1;
+					GameSession.currentSession.gui.dial.alpha 	 = 1;
+					GameSession.currentSession.gui.inform.alpha = 1;
 				}
-				if (World.world.gg && World.world.gg.rat > 0) 
+				if (GameSession.currentSession.gg && GameSession.currentSession.gg.rat > 0) 
 				{
 					gamePause = noAct2;
 				}
@@ -327,13 +327,13 @@ package interdata
 
 			if (!light) 
 			{
-				World.world.gui.setEffects();
+				GameSession.currentSession.gui.setEffects();
 				vis.pr.visible = true;
 			}
 			setButtons();
-			if (!light && World.world.room && !World.world.room.base) travel = false;
-			supply(World.world && World.world.gg && World.world.gg.pipOff ? -1 : 1);
-			World.world.ctr.keyPressed = false;
+			if (!light && GameSession.currentSession.room && !GameSession.currentSession.room.base) travel = false;
+			supply(GameSession.currentSession && GameSession.currentSession.gg && GameSession.currentSession.gg.pipOff ? -1 : 1);
+			GameSession.currentSession.ctr.keyPressed = false;
 		}
 		
 		//коррекция размеров
@@ -395,12 +395,12 @@ package interdata
 		{
 			if (!light) 
 			{
-				gg = World.world.gg;
-				inv = World.world.invent;
+				gg = GameSession.currentSession.gg;
+				inv = GameSession.currentSession.invent;
 				money = inv.money.kol;
 				if (vendor) 
 				{
-					vendor.multPrice = World.world.pers.barterMult;
+					vendor.multPrice = GameSession.currentSession.pers.barterMult;
 				}
 			}
 			for (var i in pages) 
@@ -506,14 +506,14 @@ package interdata
 		{
 			trace('PipBuck.as/setRPanel() - setRPanel() executing...');
 			if (light || !active) return;
-			var gg:UnitPlayer = World.world.gg;
-			var pers:Pers 	  = World.world.pers;
+			var gg:UnitPlayer = GameSession.currentSession.gg;
+			var pers:Pers 	  = GameSession.currentSession.pers;
 			ritem1(0, gg.hp, gg.maxhp);
-			ritem1(1, pers.headHP,  pers.inMaxHP,   !World.world.game.triggers['nomed']);
-			ritem1(2, pers.torsHP,  pers.inMaxHP,   !World.world.game.triggers['nomed']);
-			ritem1(3, pers.legsHP,  pers.inMaxHP,   !World.world.game.triggers['nomed']);
-			ritem1(4, pers.bloodHP, pers.inMaxHP,   !World.world.game.triggers['nomed']);
-			ritem1(5, pers.manaHP,  pers.inMaxMana, !World.world.game.triggers['nomed']);
+			ritem1(1, pers.headHP,  pers.inMaxHP,   !GameSession.currentSession.game.triggers['nomed']);
+			ritem1(2, pers.torsHP,  pers.inMaxHP,   !GameSession.currentSession.game.triggers['nomed']);
+			ritem1(3, pers.legsHP,  pers.inMaxHP,   !GameSession.currentSession.game.triggers['nomed']);
+			ritem1(4, pers.bloodHP, pers.inMaxHP,   !GameSession.currentSession.game.triggers['nomed']);
+			ritem1(5, pers.manaHP,  pers.inMaxMana, !GameSession.currentSession.game.triggers['nomed']);
 
 			if (gg.pet) 
 			{

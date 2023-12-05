@@ -204,10 +204,10 @@ package locdata
 		//попробовать взять
 		public function take(prinud:Boolean=false):void
 		{
-			if ((ttake>0 || World.world.gg.room!=room || World.world.gg.rat>0) && !prinud) return;
-			var rx=World.world.gg.X-X, ry=World.world.gg.Y-World.world.gg.scY/2-Y;
+			if ((ttake>0 || GameSession.currentSession.gg.room!=room || GameSession.currentSession.gg.rat>0) && !prinud) return;
+			var rx=GameSession.currentSession.gg.X-X, ry=GameSession.currentSession.gg.Y-GameSession.currentSession.gg.scY/2-Y;
 			//взять
-			if (prinud || (World.world.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) 
+			if (prinud || (GameSession.currentSession.gg.isTake>=1 || actTake) && rx<20 && rx>-20 && ry<20 &&ry>-20) 
 			{
 				if (Settings.hardInv && !actTake) 
 				{
@@ -223,14 +223,14 @@ package locdata
 				}
 				levitPoss=false;
 				room.remObj(this);
-				if (!isTake) World.world.invent.take(item);
+				if (!isTake) GameSession.currentSession.invent.take(item);
 				isTake=true;
 				onCursor=0;
 				return;
 			}
 
 			//притяжение
-			if ((World.world.gg.isTake>=20 || actTake) && rx<takeR && rx>-takeR && ry<takeR &&ry>-takeR && tvsos<45) 
+			if ((GameSession.currentSession.gg.isTake>=20 || actTake) && rx<takeR && rx>-takeR && ry<takeR &&ry>-takeR && tvsos<45) 
 			{
 				levitPoss=false;
 				stay=false;
@@ -286,8 +286,8 @@ package locdata
 				}
 			}
 			if (inter) inter.step();
-			onCursor=(X-scX/2<World.world.celX && X+scX/2>World.world.celX && Y-scY<World.world.celY && Y>World.world.celY)?prior:0;
-			if (World.world.checkLoot) auto2=item.checkAuto();
+			onCursor=(X-scX/2<GameSession.currentSession.celX && X+scX/2>GameSession.currentSession.celX && Y-scY<GameSession.currentSession.celY && Y>GameSession.currentSession.celY)?prior:0;
+			if (GameSession.currentSession.checkLoot) auto2=item.checkAuto();
 			if (auto && auto2 || actTake) take();
 		}
 		

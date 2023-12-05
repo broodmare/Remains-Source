@@ -42,8 +42,8 @@ package unitdata
 			expl();
 			exterminate();
 			runScript();
-			if (World.world.game) {
-				World.world.game.triggers['frag_'+id]=0;
+			if (GameSession.currentSession.game) {
+				GameSession.currentSession.game.triggers['frag_'+id]=0;
 			}
 		}
 		
@@ -70,8 +70,8 @@ package unitdata
 		{
 			if (com=='tame') {
 				die();
-				var pet:UnitPet=World.world.gg.pets['phoenix'];
-				World.world.gg.callPet('phoenix');
+				var pet:UnitPet=GameSession.currentSession.gg.pets['phoenix'];
+				GameSession.currentSession.gg.callPet('phoenix');
 				pet.oduplenie=0;
 				pet.setPos(X,Y);
 			}
@@ -79,30 +79,30 @@ package unitdata
 		
 		public override function setNull(f:Boolean=false):void
 		{
-			if (World.world.game.triggers['tame']>=5) die();
+			if (GameSession.currentSession.game.triggers['tame']>=5) die();
 		}
 		
 		public function tame():void
 		{
-			if (!questOk) World.world.game.addQuest('tamePhoenix');
-			storona=(X>World.world.gg.X)?-1:1;
-			if (World.world.invent.items['radcookie'].kol>0) {
-				World.world.game.incQuests('tame_ph');
-				World.world.invent.minusItem('radcookie');
-				if (World.world.game.triggers['tame']) World.world.game.triggers['tame']++;
-				else World.world.game.triggers['tame']=1;
-				if (World.world.game.triggers['tame']>=5 && !World.world.game.triggers['pet_phoenix']) {	//приручить
-					if (World.world.game.runScript('tamePhoenix',this)) World.world.game.triggers['pet_phoenix']=1;
+			if (!questOk) GameSession.currentSession.game.addQuest('tamePhoenix');
+			storona=(X>GameSession.currentSession.gg.X)?-1:1;
+			if (GameSession.currentSession.invent.items['radcookie'].kol>0) {
+				GameSession.currentSession.game.incQuests('tame_ph');
+				GameSession.currentSession.invent.minusItem('radcookie');
+				if (GameSession.currentSession.game.triggers['tame']) GameSession.currentSession.game.triggers['tame']++;
+				else GameSession.currentSession.game.triggers['tame']=1;
+				if (GameSession.currentSession.game.triggers['tame']>=5 && !GameSession.currentSession.game.triggers['pet_phoenix']) {	//приручить
+					if (GameSession.currentSession.game.runScript('tamePhoenix',this)) GameSession.currentSession.game.triggers['pet_phoenix']=1;
 
 				} else {
 					die();
-					World.world.gui.messText('phoenixFeed2','',Y<300);
+					GameSession.currentSession.gui.messText('phoenixFeed2','',Y<300);
 				}
 			} else {
-				World.world.gui.messText('phoenixFeed1','',Y<300);
+				GameSession.currentSession.gui.messText('phoenixFeed1','',Y<300);
 			}
-			if (World.world.game) {
-				World.world.game.triggers['frag_'+id]=0;
+			if (GameSession.currentSession.game) {
+				GameSession.currentSession.game.triggers['frag_'+id]=0;
 			}
 		}
 		
@@ -111,8 +111,8 @@ package unitdata
 			if (!stay) t_fall++;
 			if (t_fall>=3 || dx>1 || dx<-1) die();
 			if (!questOk && room.celObj==this) {
-				World.world.game.triggers['frag_'+id]=0;
-				World.world.game.addQuest('tamePhoenix');
+				GameSession.currentSession.game.triggers['frag_'+id]=0;
+				GameSession.currentSession.game.addQuest('tamePhoenix');
 				questOk=true;
 			}
 		}

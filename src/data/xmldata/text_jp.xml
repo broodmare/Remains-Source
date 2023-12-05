@@ -2127,7 +2127,7 @@ Music CC-BY License: https://creativecommons.org/licenses/by-nc/4.0/legalcode</i
 一度に持ち運ぶことのできる武器や道具の数が制限される。
 上級者向けのモードなため初めて遊ぶ人には非推奨。</info>
   </gui>
-<gui id='butvid' v='0.6'><n>外見の変更</n></gui>
+<gui id='editAppearanceButton' v='0.6'><n>外見の変更</n></gui>
 <gui id='vidfur' v='0.6'><n>体の色</n></gui>
 <gui id='vidhair' v='0.6'><n>たてがみの色１</n></gui>
 <gui id='vidhair1' v='0.6'><n>たてがみの色２</n></gui>

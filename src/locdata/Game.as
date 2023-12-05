@@ -56,9 +56,9 @@ package locdata
 			for each (var xl in XmlBook.getXML("levels").level)
 			{
 				var level:LevelTemplate = new LevelTemplate(xl);
-				if (World.world.allLevelsArray[xl.@id] && World.world.allLevelsArray[xl.@id].allroom) 
+				if (GameSession.currentSession.allLevelsArray[xl.@id] && GameSession.currentSession.allLevelsArray[xl.@id].allroom) 
 				{
-					level.allroom = World.world.allLevelsArray[xl.@id].allroom;
+					level.allroom = GameSession.currentSession.allLevelsArray[xl.@id].allroom;
 					level.loaded = true;
 				}
 				if (level.prob == 0) levelArray[level.id] = level;
@@ -72,7 +72,7 @@ package locdata
 
 			obj.dif = globalDif;
 			obj.level = curLevelID;
-			World.world.level.saveObjs(objs);	//Save an array of objects with IDs
+			GameSession.currentSession.level.saveObjs(objs);	//Save an array of objects with IDs
 			
 			obj.objs = [];
 			for (var uid in objs) 
@@ -232,8 +232,8 @@ package locdata
 			globalDif=ndif;
 			if (globalDif < 0) globalDif = 0;
 			if (globalDif > 4) globalDif = 4;
-			World.world.pers.setGlobalDif(globalDif);
-			World.world.pers.setParameters();
+			GameSession.currentSession.pers.setGlobalDif(globalDif);
+			GameSession.currentSession.pers.setParameters();
 			return true;
 		}
 		
@@ -241,7 +241,7 @@ package locdata
 		{
 			trace('Game.as/enterCurrentLevel() - Entering current level.');
 			Level.locN += 5;
-			if (World.world.level && objs) World.world.level.saveObjs(objs);
+			if (GameSession.currentSession.level && objs) GameSession.currentSession.level.saveObjs(objs);
 
 			///Check if the game should transition to a random encounter
 			Encounter();
@@ -257,14 +257,14 @@ package locdata
 				if (triggers['firstroom'] > 0) 
 				{
 					n = 1;
-					if (World.world.pers.level > 1) n = World.world.pers.level - 1;
+					if (GameSession.currentSession.pers.level > 1) n = GameSession.currentSession.pers.level - 1;
 				}
-				curLevel.level = new Level(World.world.gg, curLevel, n);
+				curLevel.level = new Level(GameSession.currentSession.gg, curLevel, n);
 			}
 			if (!first) triggers['firstroom'] = 1;
 			crea = false;
-			World.world.activateLevel(curLevel.level);
-			World.world.level.enterLevel(first, curCoord);
+			GameSession.currentSession.activateLevel(curLevel.level);
+			GameSession.currentSession.level.enterLevel(first, curCoord);
 			curCoord = null;
 
 			if (curLevel.id == 'rbl') 
@@ -281,10 +281,10 @@ package locdata
 					trace(curLevel.tip == 'base')
 				}
 			}
-			World.world.gg.remEffect('potion_fly');
+			GameSession.currentSession.gg.remEffect('potion_fly');
 
 			trace('Game.as/enterCurrentLevel() - Checking if this is causing the empty strings.');
-			World.world.gui.messText('', Res.txt('map', curLevel.id) + (curLevel.rnd?(' - ' + (curLevel.landStage + 1)):''), World.world.gg.Y < 300);
+			GameSession.currentSession.gui.messText('', Res.txt('map', curLevel.id) + (curLevel.rnd?(' - ' + (curLevel.landStage + 1)):''), GameSession.currentSession.gg.Y < 300);
 			
 			if (!curLevel.rnd) curLevel.visited=true;
 			mReturn = (triggers['noreturn'] <= 0);
@@ -323,10 +323,10 @@ package locdata
 		
 		/*Transition to a new room
 			gotoLevel(newLand:String)
-			World.world.exitLevel();
+			GameSession.currentSession.exitLevel();
 			enterCurrentLevel();
-			World.world.activateLevel(curLevel.level);
-			World.world.level.enterLevel(first);
+			GameSession.currentSession.activateLevel(curLevel.level);
+			GameSession.currentSession.level.enterLevel(first);
 			activateRoom();
 		*/
 		
@@ -334,19 +334,19 @@ package locdata
 		{
 			trace('Game.as/gotoLevel() - Moving to a new level: "' + newLevel + '."');
 
-			if (newLevel != baseId && !World.world.pers.dopusk()) 
+			if (newLevel != baseId && !GameSession.currentSession.pers.dopusk()) 
 			{
-				World.world.gui.messText('nocont');
+				GameSession.currentSession.gui.messText('nocont');
 			} 
-			else if (newLevel != baseId && World.world.pers.speedShtr >= 3) 
+			else if (newLevel != baseId && GameSession.currentSession.pers.speedShtr >= 3) 
 			{
-				World.world.gui.messText('nocont2');
+				GameSession.currentSession.gui.messText('nocont2');
 			} 
 			else 
 			{
 				curLevelID = newLevel;
 				curCoord = coord;
-				World.world.exitLevel(fast);
+				GameSession.currentSession.exitLevel(fast);
 			}
 		}
 		
@@ -372,8 +372,8 @@ package locdata
 		public function gotoNextLevel():void
 		{
 			trace('Game.as/gotoNextLevel() - Moving to a next level: "' + missionId + '."');
-			World.world.pers.prevCPCode 	= null;
-			World.world.pers.currentCPCode 	= null;
+			GameSession.currentSession.pers.prevCPCode 	= null;
+			GameSession.currentSession.pers.currentCPCode 	= null;
 			curLevel.level.currentCP 		= null;
 			crea = true;
 			curLevel.level.refill();
@@ -415,8 +415,8 @@ package locdata
 			{
 				if (triggers[tr] == 'wait') triggers[tr] = 1;
 			}
-			World.world.invent.good.kol = World.world.pers.goodHp;
-			World.world.gui.infoText('refill');
+			GameSession.currentSession.invent.good.kol = GameSession.currentSession.pers.goodHp;
+			GameSession.currentSession.gui.infoText('refill');
 		}
 		
 		public function addQuest(id:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest 
@@ -428,12 +428,12 @@ package locdata
 				if (quests[id].state==0) 
 				{
 					quests[id].state=1;
-					World.world.gui.infoText('addTask',quests[id].objectName);
+					GameSession.currentSession.gui.infoText('addTask',quests[id].objectName);
 					Snd.ps('quest');
 					// Check stages, if all are completed, close it immediately
 					quests[id].isClosed();
 					quests[id].deposit();
-					if (quests[id].state==2) World.world.gui.infoText('doneTask',quests[id].objectName);
+					if (quests[id].state==2) GameSession.currentSession.gui.infoText('doneTask',quests[id].objectName);
 				}
 				return quests[id];
 			}
@@ -449,14 +449,14 @@ package locdata
 			if (noVis && !q.auto) q.state = 0;
 			if (loadObj == null && q.state > 0) 
 			{
-				World.world.gui.infoText('addTask', q.objectName);
+				GameSession.currentSession.gui.infoText('addTask', q.objectName);
 				quests[id].deposit();
 				if (snd) Snd.ps('quest');
 			}
-			if (loadObj == null && showDial && q.begDial && Settings.dialOn && World.world.room.prob == null) 
+			if (loadObj == null && showDial && q.begDial && Settings.dialOn && GameSession.currentSession.room.prob == null) 
 			{
-				World.world.pip.onoff(-1);
-				World.world.gui.dialog(q.begDial);
+				GameSession.currentSession.pip.onoff(-1);
+				GameSession.currentSession.gui.dialog(q.begDial);
 			}
 			return q;
 		}
@@ -479,7 +479,7 @@ package locdata
 				{
 					if (q1.id == sid) 
 					{
-						World.world.gui.infoText('addTask2', q1.objectName);
+						GameSession.currentSession.gui.infoText('addTask2', q1.objectName);
 						Snd.ps('quest');
 						break;
 					}
@@ -590,7 +590,7 @@ package locdata
 			if (xmlList.length()) 
 			{
 				var scriptXML:XML = xmlList[0];
-				var runScr:Script = new Script(scriptXML, World.world.level, own);
+				var runScr:Script = new Script(scriptXML, GameSession.currentSession.level, own);
 				runScr.start();
 				return true;
 			}
@@ -611,7 +611,7 @@ package locdata
 			if (xmlList.length()) 
 			{
 				var scriptXML:XML = xmlList[0];
-				return new Script(scriptXML, (own == null) ? World.world.level : own.room.level, own);
+				return new Script(scriptXML, (own == null) ? GameSession.currentSession.level : own.room.level, own);
 			}
 			return null;
 		}

@@ -59,7 +59,7 @@ package weapondata
 				{
 					if ((owner as UnitPlayer).pers.getWeapLevel(skill) < lvl) 
 					{
-						World.world.gui.infoText('weaponSkillLevel');
+						GameSession.currentSession.gui.infoText('weaponSkillLevel');
 						return false;
 					}
 				} 
@@ -70,7 +70,7 @@ package weapondata
 					else if (razn == 2) skillConf = 0.5;
 					else if (razn > 2) 
 					{
-						World.world.gui.infoText('weaponSkillLevel');
+						GameSession.currentSession.gui.infoText('weaponSkillLevel');
 						return false;
 					}
 				}
@@ -109,7 +109,7 @@ package weapondata
 			{
 				var un:Mine = new Mine(id);
 				un.massa=un.massaMove;
-				un.putLoc(World.world.room,X,Y);
+				un.putLoc(GameSession.currentSession.room,X,Y);
 				un.room.addObj(un);
 				un.room.units.push(un);
 				un.fraction=owner.fraction;
@@ -123,8 +123,8 @@ package weapondata
 				un.inter.mine=1;
 				if (un.collisionAll()) un.setPos(owner.X,owner.Y);
 				if (un.collisionAll()) un.fixed=true;
-				if (owner && owner.player && World.world.pers.sapper>1) {
-					un.damage1*=World.world.pers.sapper;
+				if (owner && owner.player && GameSession.currentSession.pers.sapper>1) {
+					un.damage1*=GameSession.currentSession.pers.sapper;
 					un.vulner[Unit.D_EXPL]=un.vulner[Unit.D_PLASMA]=0;
 				}
 			} 
@@ -152,7 +152,7 @@ package weapondata
 				(b as PhisBullet).sndHit=sndFall;
 				if (owner.player) 
 				{
-					if (World.world.pers.grenader && !World.world.ctr.keyStates.keyRun) (b as PhisBullet).isSensor=true;
+					if (GameSession.currentSession.pers.grenader && !GameSession.currentSession.ctr.keyStates.keyRun) (b as PhisBullet).isSensor=true;
 				}
 				room.newGrenade(b);
 			}
@@ -162,8 +162,8 @@ package weapondata
 			hold=0;
 			if (owner.player && room.train) 
 			{
-				World.world.invent.items[ammo].kol++;
-				World.world.invent.mass[2]+=World.world.invent.items[ammo].mass;
+				GameSession.currentSession.invent.items[ammo].kol++;
+				GameSession.currentSession.invent.mass[2]+=GameSession.currentSession.invent.items[ammo].mass;
 			}
 			t_auto=3;
 			return b;
@@ -172,13 +172,13 @@ package weapondata
 		public override function setTrass(gr:Graphics):void
 		{
 			skillConf=1;
-			var razn:Number = lvl-World.world.pers.getWeapLevel(skill);
+			var razn:Number = lvl-GameSession.currentSession.pers.getWeapLevel(skill);
 			if (razn==1) skillConf=0.75;
 			else if (razn>=2) skillConf=0.5;
-			var rot3:Number=Math.atan2(World.world.celY-Y, World.world.celX-X);
+			var rot3:Number=Math.atan2(GameSession.currentSession.celY-Y, GameSession.currentSession.celX-X);
 			trasser.room=owner.room;
-			var rasstx:Number = World.world.celX-X;
-			var rassty:Number = World.world.celY-Y;
+			var rasstx:Number = GameSession.currentSession.celX-X;
+			var rassty:Number = GameSession.currentSession.celY-Y;
 			trasser.X=trasser.begx=X;
 			trasser.Y=trasser.begy=Y;
 			trasser.ddy=Settings.ddy;

@@ -94,8 +94,8 @@ package unitdata
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
-			if (World.world.game.globalDif==3) dMult=1.2;
-			if (World.world.game.globalDif==4) dMult=1.5;
+			if (GameSession.currentSession.game.globalDif==3) dMult=1.2;
+			if (GameSession.currentSession.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
 			if (weaps[1]) {
@@ -174,7 +174,7 @@ package unitdata
 			}
 			anims[animState].step();
 			//невидимость
-			if (superInvis && World.world.pers.infravis==0) {
+			if (superInvis && GameSession.currentSession.pers.infravis==0) {
 				celA=0;
 			} else celA=100;
 			if (curA>celA) curA-=5;
@@ -293,7 +293,7 @@ package unitdata
 					mp=nmp;
 					teleport(movePoints[mp].x*40+20, movePoints[mp].y*40+40, (attState==4)?0:1);
 					aiTCh=30;
-					if (World.world.game.globalDif==4 && isrnd(0.2) || World.world.game.globalDif==3 && isrnd(0.1))	attState=5;
+					if (GameSession.currentSession.game.globalDif==4 && isrnd(0.2) || GameSession.currentSession.game.globalDif==3 && isrnd(0.1))	attState=5;
 					if (attState<=2) currentWeapon=weaps[attState]
 					if (attState==4) {
 						superInvis=true;
@@ -431,7 +431,7 @@ package unitdata
 				teleObj.vis.filters=[teleFilter];
 			}
 			teleObj.fracLevit=fraction;
-			if (teleObj is UnitPlayer) teleObj.levit=World.world.pers.teleEnemy;
+			if (teleObj is UnitPlayer) teleObj.levit=GameSession.currentSession.pers.teleEnemy;
 			else teleObj.levit=2;
 		}
 		

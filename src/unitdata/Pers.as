@@ -303,7 +303,7 @@ package unitdata
 			skills=[];
 			addictions=[];
 			var ndif:int=2;
-			ndif=World.world.game.globalDif;
+			ndif=GameSession.currentSession.game.globalDif;
 			for each (var sk in XmlBook.getXML("skills").skill)
 			{
 				skill_ids.push({id:sk.@id, sort:sk.@sort, post:sk.@post});
@@ -684,16 +684,16 @@ package unitdata
 				nx = gg.X;
 				ny = gg.Y - gg.scY;
 			}
-			if (World.world.testLoot) 
+			if (GameSession.currentSession.testLoot) 
 			{
-				World.world.summxp+=dxp;
+				GameSession.currentSession.summxp+=dxp;
 			} 
 			else 
 			{
 				gg.numbEmit.castSpell(gg.room,nx,ny,{txt:('+'+dxp+'xp'), frame:8, rx:20, ry:20, alpha:0.5, scale:1.5});
 			}
 			if (xpCur >= xpNext) upLevel();
-			World.world.gui.setXp();
+			GameSession.currentSession.gui.setXp();
 		}
 		
 		//вернуть уровень навыка в зависимости от вложенных очков
@@ -766,13 +766,13 @@ package unitdata
 		{
 			xpPrev=xpProgress(level);
 			level++;
-			World.world.gui.messText('levelUp', ' '+level);
+			GameSession.currentSession.gui.messText('levelUp', ' '+level);
 			xpNext=xpProgress(level);
 			addSkillPoint(levelSkAdd, false, false);
 			perkPoint++;
 			if (rndpump) autoPump();
 			if (gg.pet) gg.pet.setLevel(level);
-			World.world.gui.infoText('perkPoint');
+			GameSession.currentSession.gui.infoText('perkPoint');
 			Snd.ps('levelup');
 			gg.newPart('gold_spark',25);
 		}
@@ -805,8 +805,8 @@ package unitdata
 		public function addSkillPoint(numb:int=1, dop:Boolean=false, snd:Boolean=true):void
 		{
 			skillPoint+=numb;
-			if (numb==1) World.world.gui.infoText('skillPoint');
-			else World.world.gui.infoText('skillPoints',numb);
+			if (numb==1) GameSession.currentSession.gui.infoText('skillPoint');
+			else GameSession.currentSession.gui.infoText('skillPoints',numb);
 			if (snd) Snd.ps('skill');
 			if (rndpump) autoPump();
 		}
@@ -824,7 +824,7 @@ package unitdata
 				for (var i=preNumb+1; i<=postNumb; i++) 
 				{
 					var bonus=getSkBonus(i);
-					if (bonus>0) World.world.gui.infoText('skill',Res.txt('eff',id)+'-'+bonus);
+					if (bonus>0) GameSession.currentSession.gui.infoText('skill',Res.txt('eff',id)+'-'+bonus);
 				}
 			} 
 			else 
@@ -836,7 +836,7 @@ package unitdata
 					{
 						perkPoint+=sklvl-perkPointExtra;
 						perkPointExtra=sklvl;
-						World.world.gui.infoText('perkPoint');
+						GameSession.currentSession.gui.infoText('perkPoint');
 					}
 				}
 			}
@@ -848,11 +848,11 @@ package unitdata
 		{
 			if (skills[id]<maxSkLvl) 
 			{
-				World.world.gui.infoText('skillUp',Res.txt('eff',id));
+				GameSession.currentSession.gui.infoText('skillUp',Res.txt('eff',id));
 				Snd.ps('skill');
 				addSkill(id,1);
 				setParameters();
-				World.world.gui.setAll();
+				GameSession.currentSession.gui.setAll();
 				return true;
 			} 
 			else 
@@ -863,16 +863,16 @@ package unitdata
 				else id='knowl';
 				if (skills[id]<maxPostSkLvl) 
 				{
-					World.world.gui.infoText('skillUp',Res.txt('eff',id));
+					GameSession.currentSession.gui.infoText('skillUp',Res.txt('eff',id));
 					Snd.ps('skill');
 					addSkill(id,1);
 					setParameters();
-					World.world.gui.setAll();
+					GameSession.currentSession.gui.setAll();
 					return true;
 				} 
 				else 
 				{
-					World.world.gui.infoText('noSkill');
+					GameSession.currentSession.gui.infoText('noSkill');
 					return false;
 				}
 			}
@@ -885,7 +885,7 @@ package unitdata
 			if (n>maxSkLvl) n=maxSkLvl;
 			if (skills[id]) skills[id]=n;
 			setParameters();
-			World.world.gui.setAll();
+			GameSession.currentSession.gui.setAll();
 		}
 		
 		public function addPerk(id:String, minus:Boolean=false):void
@@ -897,12 +897,12 @@ package unitdata
 				if (perks[id]<maxlvl) 
 				{
 					perks[id]++;
-					World.world.gui.infoText('perk',Res.txt('eff',id)+'-'+perks[id]);
+					GameSession.currentSession.gui.infoText('perk',Res.txt('eff',id)+'-'+perks[id]);
 					Snd.ps('skill');
 				} 
 				else 
 				{
-					World.world.gui.infoText('noPerk');
+					GameSession.currentSession.gui.infoText('noPerk');
 					return;
 				}
 			} 
@@ -910,7 +910,7 @@ package unitdata
 			{
 				// If the required perk is not present, add it
 				perks[id]=1;
-				World.world.gui.infoText('perk',Res.txt('eff',id));
+				GameSession.currentSession.gui.infoText('perk',Res.txt('eff',id));
 				Snd.ps('skill');
 			}
 			if (minus) perkPoint--;
@@ -1094,15 +1094,15 @@ package unitdata
 			if (organ==3 && st==4) st=3;
 			if (organ==4) 
 			{
-				if (st>0) World.world.gui.infoText('blood'+st, persName);
+				if (st>0) GameSession.currentSession.gui.infoText('blood'+st, persName);
 			} 
 			else if (organ==5) 
 			{
-				if (st>1) World.world.gui.infoText('tmana'+st);
+				if (st>1) GameSession.currentSession.gui.infoText('tmana'+st);
 			} 
 			else 
 			{
-				if (st>0) World.world.gui.infoText('trauma'+st, persName);
+				if (st>0) GameSession.currentSession.gui.infoText('trauma'+st, persName);
 			}
 		}
 		
@@ -1163,7 +1163,7 @@ package unitdata
 		{
 			gg.poison=0;
 			gg.cut=0;
-			World.world.gui.messText('gameover');
+			GameSession.currentSession.gui.messText('gameover');
 			if (gg.sost==1) gg.die(10);
 			else gg.sost=3;
 		}
@@ -1257,7 +1257,7 @@ package unitdata
 				if (manaHP>inMaxMana) manaHP=inMaxMana;
 				manaSt=4-Math.ceil(manaHP/inMaxMana*4);
 				if (sst!=manaSt) setParameters();
-				World.world.gui.setMana();
+				GameSession.currentSession.gui.setMana();
 			}
 		}
 		
@@ -1357,7 +1357,7 @@ package unitdata
 		//вычислить и установить штрафы на перегрузку
 		public function invMassParam():void
 		{
-			var inv:Invent=World.world.invent;
+			var inv:Invent=GameSession.currentSession.invent;
 			maxSpeed=100;
 			accelMult=1;
 			speedShtr=0;
@@ -1372,7 +1372,7 @@ package unitdata
 			if (inv.mass[2]>maxm2*1.2) speedShtr++;
 			if (inv.mass[3]>maxm3) speedShtr++;
 			if (inv.mass[3]>maxm3*1.2) speedShtr++;
-			if (World.world.room && !World.world.room.base && !World.world.room.train && !Settings.alicorn) 
+			if (GameSession.currentSession.room && !GameSession.currentSession.room.base && !GameSession.currentSession.room.train && !Settings.alicorn) 
 			{
 				if (speedShtr>=3) 
 				{
@@ -1380,8 +1380,8 @@ package unitdata
 					accelMult=0.1;
 					jumpMult=0;
 					gg.noStairs=true;
-					World.world.gui.infoText('overMass');
-					World.world.gui.bulb(gg.X, gg.Y-100);
+					GameSession.currentSession.gui.infoText('overMass');
+					GameSession.currentSession.gui.bulb(gg.X, gg.Y-100);
 				} 
 				else if (speedShtr==2) 
 				{
@@ -1510,8 +1510,8 @@ package unitdata
 			if (gg.currentWeapon) gg.currentWeapon.setPers(gg,this);
 			if (gg.magicWeapon) gg.magicWeapon.setPers(gg,this);
 			if (gg.throwWeapon) gg.throwWeapon.setPers(gg,this);
-			World.world.gui.setHp();
-			if (World.world.game.triggers['nomed']) 
+			GameSession.currentSession.gui.setHp();
+			if (GameSession.currentSession.game.triggers['nomed']) 
 			{
 				organMult=0.5;
 				headMin=156;
@@ -1525,7 +1525,7 @@ package unitdata
 				headMin=torsMin=legsMin=bloodMin=-1;
 			}
 			if (gg.pet) gg.pet.setLevel(level);
-			World.world.game.triggers['eco']=eco;
+			GameSession.currentSession.game.triggers['eco']=eco;
 			invMassParam();
 		}
 		

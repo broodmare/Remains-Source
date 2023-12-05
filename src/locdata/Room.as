@@ -697,7 +697,7 @@ package locdata
 			}
 			objsT=null;
 			setRandomUnits();
-			if (level.rnd && World.world.pers.modMetal>0 && Math.random()<World.world.pers.modMetal) putRandomLoot();
+			if (level.rnd && GameSession.currentSession.pers.modMetal>0 && Math.random()<GameSession.currentSession.pers.modMetal) putRandomLoot();
 		}
 		
 		// Set the number of random enemies
@@ -790,11 +790,11 @@ package locdata
 				if ((xml==null || xml.@on.length()==0) && Math.random()<0.5) return null;
 			}
 
-			if (xml && xml.@trigger.length() && World.world.game.triggers[xml.@trigger]=='1') return null;
+			if (xml && xml.@trigger.length() && GameSession.currentSession.game.triggers[xml.@trigger]=='1') return null;
 
 			var loadObj:Object=null;
 
-			if (xml && xml.@code.length() && World.world.game.objs.hasOwnProperty(xml.@code)) loadObj=World.world.game.objs[xml.@code];
+			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj=GameSession.currentSession.game.objs[xml.@code];
 
 			//не генерировать юнита, который сдох
 			if (loadObj && loadObj.dead>0 && loadObj.loot!=2)
@@ -1293,16 +1293,16 @@ package locdata
 			var size:int = XmlBook.getXML("objects").obj.(@id == id).@size;
 			if (size<=0) size=1;
 			var loadObj:Object=null;
-			if (xml && xml.@code.length() && World.world.game.objs.hasOwnProperty(xml.@code)) loadObj=World.world.game.objs[xml.@code];
+			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj=GameSession.currentSession.game.objs[xml.@code];
 			if (tip=='box' || tip=='door') 
 			{
 				obj=new Box(this, id, (nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
 				objs.push(obj);
 				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
 				//создать феникса
-				if (xml && xml.@ph=='1' && !World.world.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
+				if (xml && xml.@ph=='1' && !GameSession.currentSession.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
 				if (xml && xml.@transm=='1') createTransmitter((obj as Box));
-				if (level.rnd && level.levelTemplate.biom==0 && !World.world.game.triggers['pet_phoenix'] && kol_phoenix==0 && level.kol_phoenix<3 && Math.random()<0.02) 
+				if (level.rnd && level.levelTemplate.biom==0 && !GameSession.currentSession.game.triggers['pet_phoenix'] && kol_phoenix==0 && level.kol_phoenix<3 && Math.random()<0.02) 
 				{
 					createPhoenix(obj as Box);
 				}
@@ -1318,7 +1318,7 @@ package locdata
 			{
 				obj=new CheckPoint(this, id,(nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
 				//установить на контрольных точках телепорты на базу
-				if (World.world.game.globalDif<=1 || level.rnd && World.world.game.globalDif==2 && Math.random()<0.33) (obj as CheckPoint).teleOn=true;
+				if (GameSession.currentSession.game.globalDif<=1 || level.rnd && GameSession.currentSession.game.globalDif==2 && Math.random()<0.33) (obj as CheckPoint).teleOn=true;
 				activeObjects.push(obj);
 			} 
 			else if (tip=='area') 
@@ -1337,7 +1337,7 @@ package locdata
 				obj.code=xml.@code;
 				if (tip=='checkpoint' && !level.rnd) //сохранённая контрольная точка
 				{	
-					if (World.world.pers.currentCPCode!=null && obj.code==World.world.pers.currentCPCode || World.world.pers.prevCPCode!=null && obj.code==World.world.pers.prevCPCode || level.levelTemplate.lastCpCode==obj.code) {
+					if (GameSession.currentSession.pers.currentCPCode!=null && obj.code==GameSession.currentSession.pers.currentCPCode || GameSession.currentSession.pers.prevCPCode!=null && obj.code==GameSession.currentSession.pers.prevCPCode || level.levelTemplate.lastCpCode==obj.code) {
 						level.currentCP=obj as CheckPoint;
 					}
 				}
@@ -1620,7 +1620,7 @@ package locdata
 				var tempX:Number = nx + ndx * i / div;
 				var tempY:Number = ny + ndy * i / div;
 				
-				var t:Tile = World.world.room.getAbsTile(tempX | 0, tempY | 0);
+				var t:Tile = GameSession.currentSession.room.getAbsTile(tempX | 0, tempY | 0);
 				
 				if (t.phis == 1 && tempX >= t.phX1 && tempX <= t.phX2 && tempY >= t.phY1 && tempY <= t.phY2) 
 				{
@@ -2041,7 +2041,7 @@ package locdata
 			 {
 				obj.onoff(1);
 			}
-			World.world.redrawLoc();
+			GameSession.currentSession.redrawLoc();
 		}
 		// Turn off everything
 		public function alloff():void
@@ -2063,7 +2063,7 @@ package locdata
 			{
 				obj.onoff(-1);
 			}
-			World.world.redrawLoc();
+			GameSession.currentSession.redrawLoc();
 		}
 		
 		// Spawn an enemy at the spawn point
@@ -2111,16 +2111,16 @@ package locdata
 			if (quake<n) 
 			{
 				quake=n;
-				World.world.quake(n,n/4);
+				GameSession.currentSession.quake(n,n/4);
 			}
 		}
 		
 		public function createHealBonus(nx:Number, ny:Number) 
 		{
-			if (World.world.pers.bonusHeal <= 0) return;
+			if (GameSession.currentSession.pers.bonusHeal <= 0) return;
 			var obj:Bonus = new Bonus(this, 'heal', nx, ny);
 			obj.liv = 300;
-			obj.val = World.world.pers.bonusHeal * World.world.pers.bonusHealMult;
+			obj.val = GameSession.currentSession.pers.bonusHeal * GameSession.currentSession.pers.bonusHealMult;
 			if (roomActive) obj.addVisual();
 			addObj(obj);
 		}
@@ -2301,7 +2301,7 @@ package locdata
 				}
 				level.summXp+=dxp;
 			}
-			if (dxp>0) World.world.pers.expa(dxp,nx,ny);
+			if (dxp>0) GameSession.currentSession.pers.expa(dxp,nx,ny);
 		}
 		
 		
@@ -2321,7 +2321,7 @@ package locdata
 					obj.step();
 				} catch(err) 
 				{
-					World.world.showError(err, obj.err());
+					GameSession.currentSession.showError(err, obj.err());
 				}
 				obj=nextObj;
 				numb++;
@@ -2356,7 +2356,7 @@ package locdata
 				} 
 				catch(err) 
 				{
-					World.world.showError(err, obj.err());
+					GameSession.currentSession.showError(err, obj.err());
 				}
 				obj=nextObj;
 				// Check for infinite loop prevention
@@ -2382,7 +2382,7 @@ package locdata
 			if (t_gwall==1) gwalls();
 			if (t_gwall>0) t_gwall--;
 			// Show/hide transition markers based on player position
-			if (sign_vis && World.world.possiblyOut() ||  !sign_vis && !World.world.possiblyOut()) showSign(!sign_vis);
+			if (sign_vis && GameSession.currentSession.possiblyOut() ||  !sign_vis && !GameSession.currentSession.possiblyOut()) showSign(!sign_vis);
 			// Handle game alarms and enemy spawns
 			if (t_alarm>0) 
 			{
@@ -2395,14 +2395,14 @@ package locdata
 			}
 			// Handle screen shaking (earthquake effect)
 			if (quake>0) quake--;
-			if (trus>0) World.world.quake(trus/2,trus);
+			if (trus>0) GameSession.currentSession.quake(trus/2,trus);
 		}
 		
 		// Kill all enemies and open all containers
 		public function getAll():int 
 		{
-			World.world.summxp=0;
-			World.world.pers.expa(unXp*9);
+			GameSession.currentSession.summxp=0;
+			GameSession.currentSession.pers.expa(unXp*9);
 			for each (var un:Unit in units) 
 			{
 				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);
@@ -2411,7 +2411,7 @@ package locdata
 			{
 				if (box.inter && box.inter.cont) box.inter.loot();
 			}
-			return World.world.summxp;
+			return GameSession.currentSession.summxp;
 		}
 		
 		public function openAllPrize():void
@@ -2426,7 +2426,7 @@ package locdata
 		//дистанция между гг и активным объектом
 		private function getDist():void
 		{
-			if (getTile(Math.round(World.world.celX/Tile.tilePixelWidth),Math.round(World.world.celY/Tile.tilePixelHeight)).visi<0.1) celObj=null;
+			if (getTile(Math.round(GameSession.currentSession.celX/Tile.tilePixelWidth),Math.round(GameSession.currentSession.celY/Tile.tilePixelHeight)).visi<0.1) celObj=null;
 			if (celObj) 
 			{
 				celDist = (gg.X - celObj.X) * (gg.X - celObj.X) + (gg.Y - celObj.Y) * (gg.Y - celObj.Y);

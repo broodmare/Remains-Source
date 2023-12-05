@@ -254,7 +254,7 @@ package servdata
 		
 		public function checkAuto(m:Boolean = false):Boolean 
 		{
-			var inv:Invent = World.world.invent;
+			var inv:Invent = GameSession.currentSession.invent;
 			if (tip == L_WEAPON) 
 			{
 				var w = inv.weapons[id];
@@ -277,25 +277,25 @@ package servdata
 						if (mass == 0) return true;
 						if (xml.@tip <= 3) 
 						{
-							if (inv.massW <= World.world.pers.maxmW - mass) 
+							if (inv.massW <= GameSession.currentSession.pers.maxmW - mass) 
 							{
 								return true;
 							} 
 							else 
 							{
-								if (m) World.world.gui.infoText('fullWeap');
+								if (m) GameSession.currentSession.gui.infoText('fullWeap');
 								return false;
 							}
 						}
 						if (xml.@tip == 5) 
 						{
-							if (inv.massM <= World.world.pers.maxmM - mass) 
+							if (inv.massM <= GameSession.currentSession.pers.maxmM - mass) 
 							{
 								return true;
 							} 
 							else 
 							{
-								if (m) World.world.gui.infoText('fullMagic');
+								if (m) GameSession.currentSession.gui.infoText('fullMagic');
 								return false;
 							}
 						}
@@ -307,14 +307,14 @@ package servdata
 			}
 			if (tip == L_SPELL) 
 			{
-				if (inv.massM >= World.world.pers.maxmM) World.world.gui.infoText('fullMagic');
+				if (inv.massM >= GameSession.currentSession.pers.maxmM) GameSession.currentSession.gui.infoText('fullMagic');
 				return true;
 			}
 			if (tip == L_ARMOR) return true;
 			if (mass == 0) return true;
 			if (Settings.hardInv) 
 			{
-				if (inv.mass[invCat] + mass * kol > World.world.pers['maxm' + invCat]) return false;
+				if (inv.mass[invCat] + mass * kol > GameSession.currentSession.pers['maxm' + invCat]) return false;
 			}
 			if (Settings.vsAmmoAll && tip == L_AMMO) return true;
 			if (Settings.vsAmmoTek && xml && tip == L_AMMO) 

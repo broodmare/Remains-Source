@@ -91,7 +91,7 @@ package locdata
 		{
 			if (vis) 
 			{
-				World.world.grafon.canvasLayerArray[layer].addChild(vis);
+				GameSession.currentSession.grafon.canvasLayerArray[layer].addChild(vis);
 				if (cTransform) 
 				{
 					vis.transform.colorTransform=cTransform;
@@ -99,7 +99,7 @@ package locdata
 			}
 			if (vis2) 
 			{
-				World.world.grafon.canvasLayerArray[3].addChild(vis2);
+				GameSession.currentSession.grafon.canvasLayerArray[3].addChild(vis2);
 				if (cTransform) 
 				{
 					vis2.transform.colorTransform=cTransform;

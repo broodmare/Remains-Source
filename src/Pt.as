@@ -33,7 +33,7 @@ package
 		{
 			if (vis && room && room.roomActive) 
 			{
-				World.world.grafon.canvasLayerArray[layer].addChild(vis);
+				GameSession.currentSession.grafon.canvasLayerArray[layer].addChild(vis);
 			}
 		}
 		

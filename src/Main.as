@@ -14,14 +14,18 @@ package
 	import flash.net.URLRequest;
 	import flash.system.Security;
 	
-	import stubs.loadingWidget;
+	import stubs.LoadingWidget;
 	
-	public class Main extends flash.display.MovieClip
+	public class Main extends MovieClip
 	{
-		
+
 		public var mainMenu:MainMenu;
 
-		public function Main() 
+		//Symbol linkages defined in the '.fla' file.		
+		public var loadingWidget:MovieClip;
+
+
+		public function Main()
 		{
 			trace('Main.as/Main() - Entering Main()...');
 
@@ -29,6 +33,9 @@ package
 			stage.align 	= StageAlign.TOP_LEFT;
 			stage.color 	= 0;
 
+			trace('Creating Loading Widget.');
+			loadingWidget = new LoadingWidget();
+			
 			var myMenu:ContextMenu = new ContextMenu();
 			myMenu.hideBuiltInItems();
 			myMenu.builtInItems.quality = true;
@@ -44,24 +51,26 @@ package
 		{
 			var bLoaded:uint = loaderInfo.bytesLoaded;
 			var bTotal:uint = loaderInfo.bytesTotal;
-			//if (loadingWidget.alpha < 1) 
-			//{
-				//loadingWidget.alpha += 0.05;
-			//}
-			//loadingWidget.progres.text = 'Loading ' + Math.round(bLoaded / bTotal * 100) + '%';
 
+			if (loadingWidget != null)
+			{
+				if (loadingWidget.alpha < 1 && loadingWidget ) 
+				{
+					loadingWidget.alpha += 0.05;
+				}
+				loadingWidget.progres.text = 'Loading ' + Math.round(bLoaded / bTotal * 100) + '%';
+			}
 
 			if (bLoaded >= bTotal)
 			{
-				//loadingWidget.visible = false;
+				loadingWidget.visible = false;
 				removeEventListener(Event.ENTER_FRAME, onEnterFrameLoader);
-				nextFrame();
 
-				trace('Main.as/onEnterFrameLoader() - Creating new mainMenu...');
-				mainMenu = new MainMenu(this);
+				nextFrame();
+				trace('Main.as/onEnterFrameLoader() - Creating new mainMenu.');
 				
+				mainMenu = new MainMenu(this);
 			}
 		}
-
 	}
 }

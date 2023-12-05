@@ -184,7 +184,7 @@ package interdata
 
 		public function page2Click(event:MouseEvent):void
 		{
-			if (World.world.ctr.setkeyOn) return;
+			if (GameSession.currentSession.ctr.setkeyOn) return;
 			page2 = int(event.currentTarget.id.text);
 			setStatus();
 			pip.snd(2);
@@ -479,7 +479,7 @@ package interdata
 
 			//определение текущего уровня
 			var lvl = 1;
-			var pers:Pers = World.world.pers;
+			var pers:Pers = GameSession.currentSession.pers;
 			if (tip == 'perk')
 			{
 				lvl = pers.perks[id];
@@ -576,9 +576,9 @@ package interdata
 		public static function infoStr(tip:String, id:String):String 
 		{
 			var s:String = '';
-			var pip:PipBuck = World.world.pip;
-			var gg:UnitPlayer = World.world.gg;
-			var inv:Invent=World.world.invent;
+			var pip:PipBuck = GameSession.currentSession.pip;
+			var gg:UnitPlayer = GameSession.currentSession.gg;
+			var inv:Invent=GameSession.currentSession.invent;
 			if (tip == Item.L_ARMOR && inv.armors[id] == null && pip.arrArmor[id] == null) tip = Item.L_ITEM;
 			if (tip == Item.L_WEAPON && inv.weapons[id] && inv.weapons[id].spell) tip = Item.L_ITEM;
 			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) 
@@ -756,30 +756,30 @@ package interdata
 				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') 
 				{
 					if (pot.@hhp.length() || pot.@hhplong.length())
-					s+='\n'+Res.txt('pip', 'healhp')+': '+yel(Math.round(pot.@hhp*World.world.pers.healMult));
-					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*World.world.pers.healMult));
-					if (pot.@hrad.length()) s+='\n'+Res.txt('pip', 'healrad')+': '+yel(Math.round(pot.@hrad*World.world.pers.healMult));
+					s+='\n'+Res.txt('pip', 'healhp')+': '+yel(Math.round(pot.@hhp*GameSession.currentSession.pers.healMult));
+					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*GameSession.currentSession.pers.healMult));
+					if (pot.@hrad.length()) s+='\n'+Res.txt('pip', 'healrad')+': '+yel(Math.round(pot.@hrad*GameSession.currentSession.pers.healMult));
 					if (pot.@hcut.length()) s+='\n'+Res.txt('pip', 'healcut')+': '+yel(Math.round(pot.@hcut));
 					if (pot.@hpoison.length()) s+='\n'+Res.txt('pip', 'healpoison')+': '+yel(Math.round(pot.@hpoison));
 					if (pot.@horgan.length()) s+='\n'+Res.txt('pip', 'healorgan')+': '+yel(Math.round(pot.@horgan));
 					if (pot.@horgans.length()) s+='\n'+Res.txt('pip', 'healorgans')+': '+yel(Math.round(pot.@horgans));
 					if (pot.@hblood.length()) s+='\n'+Res.txt('pip', 'healblood')+': '+yel(Math.round(pot.@hblood));
-					if (pot.@hmana.length()) s+='\n'+Res.txt('pip', 'healmana')+': '+yel(Math.round(pot.@hmana*World.world.pers.healManaMult));
+					if (pot.@hmana.length()) s+='\n'+Res.txt('pip', 'healmana')+': '+yel(Math.round(pot.@hmana*GameSession.currentSession.pers.healManaMult));
 					if (pot.@alc.length()) s+='\n'+Res.txt('pip', 'alcohol')+': '+yel(Math.round(pot.@alc));
 					if (pot.@rad.length()) s+='\n'+Res.txt('pip', 'rad')+': '+yel(Math.round(pot.@rad));
 					if (pot.@effect.length()) 
 					{
 						s+='\n'+Res.txt('pip', 'refeff')+': '+effStr('eff',pot.@effect);
 					}
-					if (pot.@perk.length()) s+='\n'+pink(Res.txt('eff',pot.@perk))+': '+Res.txt('pip', 'level')+' '+(World.world.pers.perks[pot.@perk]>0?World.world.pers.perks[pot.@perk]:'0');
+					if (pot.@perk.length()) s+='\n'+pink(Res.txt('eff',pot.@perk))+': '+Res.txt('pip', 'level')+' '+(GameSession.currentSession.pers.perks[pot.@perk]>0?GameSession.currentSession.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
 				if (tip=='book') {
-					if (World.world.pers.skills[id]!=null) s+='\n'+Res.txt('pip', 'skillup')+': '+pink(Res.txt('eff',id));
+					if (GameSession.currentSession.pers.skills[id]!=null) s+='\n'+Res.txt('pip', 'skillup')+': '+pink(Res.txt('eff',id));
 				}
 				if (tip=='spell') {
-					s+='\n'+Res.txt('pip', 'dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*World.world.pers.allDManaMult))+')';
-					s+='\n'+Res.txt('pip', 'culd')+': '+yel(pot.@culd+Res.txt('gui', 'sec'))+' ('+yel(Math.round(pot.@culd*World.world.pers.spellDown)+Res.txt('gui', 'sec'))+')';
+					s+='\n'+Res.txt('pip', 'dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*GameSession.currentSession.pers.allDManaMult))+')';
+					s+='\n'+Res.txt('pip', 'culd')+': '+yel(pot.@culd+Res.txt('gui', 'sec'))+' ('+yel(Math.round(pot.@culd*GameSession.currentSession.pers.spellDown)+Res.txt('gui', 'sec'))+')';
 					s+='\n'+Res.txt('pip', 'is1')+': '+pink((pot.@tele>0)?Res.txt('eff','tele'):Res.txt('eff','magic'));
 				}
 				if (id=='rep') {
@@ -840,9 +840,9 @@ package interdata
 					var cid:String=a.idComp;
 					var kolcomp:int=a.needComp();
 					s+="\n\n<span class = 'or'>"+Res.txt('item',cid)+ " - "+kolcomp+" <span ";
-					if (!World.world.room.base && kolcomp>inv.items[cid].kol || World.world.room.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
+					if (!GameSession.currentSession.room.base && kolcomp>inv.items[cid].kol || GameSession.currentSession.room.base && kolcomp>inv.items[cid].kol+inv.items[cid].vault) s+="class='red'"
 					s+="> ("+inv.items[cid].kol;
-					if (World.world.room.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
+					if (GameSession.currentSession.room.base && inv.items[cid].vault>0) s+=' +'+inv.items[cid].vault;
 					s+=")</span></span>";
 				}
 				if (craft==1) s+=craftInfo(id);
@@ -899,10 +899,10 @@ package interdata
 			for each(var c in sch.craft) 
 			{
 				s+="\n<span class = 'or'>"+Res.txt('item',c.@id)+ " - "+c.@kol+" <span ";
-				if (!World.world.room.base && c.@kol>inv.items[c.@id].kol
-				  || World.world.room.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
+				if (!GameSession.currentSession.room.base && c.@kol>inv.items[c.@id].kol
+				  || GameSession.currentSession.room.base && c.@kol>inv.items[c.@id].kol+inv.items[c.@id].vault) s+="class='red'";
 				s+=">("+inv.items[c.@id].kol;
-				if (World.world.room.base && inv.items[c.@id].vault>0) s+=' +'+inv.items[c.@id].vault;
+				if (GameSession.currentSession.room.base && inv.items[c.@id].vault>0) s+=' +'+inv.items[c.@id].vault;
 				s+=")</span></span>";
 			}
 			return s;
@@ -910,7 +910,7 @@ package interdata
 		
 		public function infoQuest(id:String):String 
 		{
-				var q:Quest=World.world.game.quests[id];
+				var q:Quest=GameSession.currentSession.game.quests[id];
 				if (q==null) return '';
 				vis.objectName.text=q.objectName;
 				var s:String=q.info;
@@ -950,11 +950,11 @@ package interdata
 			var xml = XmlBook.getXML("parameters").param.(@v == id);
 			var xmlTip:String = xml.@tip;
 			
-			if (World.world.pers.factor[id] is Array) 
+			if (GameSession.currentSession.pers.factor[id] is Array) 
 			{
 				if (xmlTip == '4') lines.push('- ' + Res.txt('pip', 'begvulner') + ': ' + yel('100%'));
 				
-				for each (var obj in World.world.pers.factor[id]) 
+				for each (var obj in GameSession.currentSession.pers.factor[id]) 
 				{
 					var line:String = '- ';
 					
@@ -1103,19 +1103,19 @@ package interdata
 			//проверка на доступ к местности
 			if (task.@level.length()) 
 			{
-				var level:LevelTemplate=World.world.game.levelArray[task.@level];
+				var level:LevelTemplate=GameSession.currentSession.game.levelArray[task.@level];
 				if (level==null) return false;
-				if (!level.access && !level.visited && World.world.pers.level<level.dif) return false;
+				if (!level.access && !level.visited && GameSession.currentSession.pers.level<level.dif) return false;
 			}
 			//проверка триггера
 			if (task.@trigger.length()) 
 			{
-				if (World.world.game.triggers[task.@trigger]!=1) return false;
+				if (GameSession.currentSession.game.triggers[task.@trigger]!=1) return false;
 			}
 			//проверка скилла
 			if (task.@skill.length() && task.@skilln.length()) 
 			{
-				if (World.world.pers.skills[task.@skill]<task.@skilln) return false;
+				if (GameSession.currentSession.pers.skills[task.@skill]<task.@skilln) return false;
 			}
 			return true;
 		}
@@ -1205,7 +1205,7 @@ package interdata
 		//Set public
 		public function onMouseWheel1(event:MouseEvent):void 
 		{
-			if (World.world.ctr.setkeyOn) return;
+			if (GameSession.currentSession.ctr.setkeyOn) return;
 			try 
 			{
 				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;

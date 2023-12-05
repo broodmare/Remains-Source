@@ -35,7 +35,7 @@ package
 		//Text string localization
 		public static function txt(classKey:String, id:String, nodeChildType:int = 0, dop:Boolean = false):String 
 		{
-			trace('Res.as/txt() - classKey/ID: "' + classKey + '/' + id + '", nodeChildType: "' + nodeChildType + '" dop: "' + dop + '."')
+			//trace('Res.as/txt() - classKey/ID: "' + classKey + '/' + id + '", nodeChildType: "' + nodeChildType + '" dop: "' + dop + '."')
 
 			var xmlNode:XML;
    			var xmlNodeText:String = "";
@@ -48,7 +48,7 @@ package
 			try 
 			{
 				xmlNode = localizationFile[classKey].(@id == id)[0]; //XML Node
-				trace('Res.as/txt() - xmlNode: "' + xmlNode + '".');
+				//trace('Res.as/txt() - xmlNode: "' + xmlNode + '".');
 
 				switch(nodeChildType) //XML Node child elements.
 				{
@@ -71,7 +71,8 @@ package
 			} 
 			catch (err:Error) 
 			{
-				trace('Res.as/txt() - Failed to retrieve string ID: "' + id + '", with classKey: "' + classKey + '". Error: "' + err.message + '".');
+				//trace('Res.as/txt() - Failed to retrieve string ID: "' + id + '", with classKey: "' + classKey + '". Error: "' + err.message + '".');
+				xmlNodeText = 'ERROR';
 				return xmlNodeText;
 			}
 
@@ -111,7 +112,7 @@ package
 				xmlNodeText = "<span classData = 'r" + xmlNode.@st + "'>" + xmlNodeText + "</span>";
 			}
 
-			trace('Res.as/txt() - Returning localized text: "' + xmlNodeText + '."');
+			//trace('Res.as/txt() - Returning localized text: "' + xmlNodeText + '."');
 			return xmlNodeText;
 		}
 
@@ -182,7 +183,7 @@ package
 							{
 								for (var i:int = 1; i <= 5; i++) 
 								{
-									if (node.attribute('s' + i).length())  s1 = s1.replace('@' + i, "<span classData = 'yel'>" + World.world.ctr.retKey(node.attribute('s' + i)) + "</span>");
+									if (node.attribute('s' + i).length())  s1 = s1.replace('@' + i, "<span classData = 'yel'>" + GameSession.currentSession.ctr.retKey(node.attribute('s' + i)) + "</span>");
 								}
 							}
 
@@ -214,7 +215,7 @@ package
 				{
 					for (var j:int = 1; j <= 5; j++) 
 					{
-						if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span classData='r2'>" + World.world.ctr.retKey(xml.attribute('s' + j)) + "</span>");
+						if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span classData='r2'>" + GameSession.currentSession.ctr.retKey(xml.attribute('s' + j)) + "</span>");
 					}
 				}
 			} 
@@ -257,7 +258,7 @@ package
 				var ss:String = s.substring(n1 + 1, n2);
 				s = s.substring(0, n1) + ss.split('|')[msex ? 0:1] + s.substring(n2 + 1);
 			}
-			s = s.replace('@lp', World.world.pers.persName);
+			s = s.replace('@lp', GameSession.currentSession.pers.persName);
 			return s;
 		}
 		
@@ -280,7 +281,7 @@ package
 
 		public static function lpName(s:String):String 
 		{
-			return s.replace(/@lp/g, World.world.pers.persName);
+			return s.replace(/@lp/g, GameSession.currentSession.pers.persName);
 		}
 		
 
@@ -316,7 +317,7 @@ package
 			{
 				for (var i:int = 1; i <= 5; i++) 
 				{
-					if (xml.attribute('s' + i ).length())  s = s.replace('@' + i, "<span classData='imp'>" + World.world.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+					if (xml.attribute('s' + i ).length())  s = s.replace('@' + i, "<span classData='imp'>" + GameSession.currentSession.ctr.retKey(xml.attribute('s' + i)) + "</span>");
 				}
 			}
 			catch(err:Error)

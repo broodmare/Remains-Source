@@ -96,7 +96,7 @@ package unitdata
 				if (ci >= cItemMax) ci = 0;
 				if (ci < 0) ci = cItemMax - 1;
 			}
-			World.world.gui.setItems();
+			GameSession.currentSession.gui.setItems();
 		}
 		
 		//выбрать подходящий мед. прибор
@@ -146,8 +146,8 @@ package unitdata
 			if (ci!=null && ci!='mana' && items[ci].kol<=0) return false;
 			if (ci==null && need2<1)
 			{
-				World.world.gui.infoText('noHeal');
-				if (gg.rad>1) World.world.gui.infoText('useAntirad');
+				GameSession.currentSession.gui.infoText('noHeal');
+				if (gg.rad>1) GameSession.currentSession.gui.infoText('useAntirad');
 				return false;
 			}
 			if (ci==null) 	//применить наиболее подходящее зелье
@@ -171,7 +171,7 @@ package unitdata
 				}
 				if (nci=='') 	//нет подходящего
 				{
-					World.world.gui.infoText('noSuitablePot');
+					GameSession.currentSession.gui.infoText('noSuitablePot');
 					return false;
 				} else ci=nci;
 			}
@@ -198,7 +198,7 @@ package unitdata
 				}
 				if (nci=='') 	//нет подходящего
 				{
-					World.world.gui.infoText('noSuitablePot');
+					GameSession.currentSession.gui.infoText('noSuitablePot');
 					return false;
 				} 
 				else ci=nci;
@@ -214,33 +214,33 @@ package unitdata
 			{
 				if (pot.@tip == 'pot' || pot.@tip == 'him' || pot.@tip == 'food') 
 				{
-					World.world.gui.infoText('alicornNot', null, null, false);
+					GameSession.currentSession.gui.infoText('alicornNot', null, null, false);
 					return false;
 				}
 			}
 			if (pot.@heal == 'rad' && gg.rad < 1) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('item',ci));
+				GameSession.currentSession.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='poison' && gg.poison<0.1) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('item',ci));
+				GameSession.currentSession.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='blood' && (gg.pers.inMaxHP-gg.pers.bloodHP<1)) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('item',ci));
+				GameSession.currentSession.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='organ' && (gg.pers.inMaxHP-gg.pers.headHP<1) && (gg.pers.inMaxHP-gg.pers.torsHP<1) && (gg.pers.inMaxHP-gg.pers.legsHP<1)) 
 			{
-				World.world.gui.infoText('noHeal');
+				GameSession.currentSession.gui.infoText('noHeal');
 				return false;
 			} 
 			else if (pot.@heal=='mana' && (gg.pers.inMaxMana-gg.pers.manaHP<1)) 
 			{
-				World.world.gui.infoText('noMedic',Res.txt('item',ci));
+				GameSession.currentSession.gui.infoText('noMedic',Res.txt('item',ci));
 				return false;
 			} 
 			else if (pot.@heal=='pet') 	//лечение феникса
@@ -248,14 +248,14 @@ package unitdata
 				pet=gg.pets[pot.@pet];
 				if (pet==null || pet.maxhp-pet.hp<1) 
 				{
-					World.world.gui.infoText('noMedic',Res.txt('item',ci));
+					GameSession.currentSession.gui.infoText('noMedic',Res.txt('item',ci));
 					return false;
 				}
 			}
 			//проверить соответствие уровню навыка
 			if (pot.@minmed.length() && pot.@minmed>gg.pers.medic) 
 			{
-				 World.world.gui.infoText('needSkill',Res.txt('eff','medic'),pot.@minmed);
+				 GameSession.currentSession.gui.infoText('needSkill',Res.txt('eff','medic'),pot.@minmed);
 				  return false;
 			}
 			if (pot.@heal=='detoxin') 
@@ -263,20 +263,20 @@ package unitdata
 				var limAddict:int=pot.@detox;
 				for (var j:int = 0; j < 5; j++) 
 				{
-					for (var ad in World.world.pers.addictions) 
+					for (var ad in GameSession.currentSession.pers.addictions) 
 					{
-						if (World.world.pers.addictions[ad]>0) 
+						if (GameSession.currentSession.pers.addictions[ad]>0) 
 						{
 							var redAddict=Math.round(Math.random()*50+25);
-							if (redAddict>World.world.pers.addictions[ad]) 
+							if (redAddict>GameSession.currentSession.pers.addictions[ad]) 
 							{
-								limAddict-=World.world.pers.addictions[ad];
-								World.world.pers.addictions[ad]=0;
+								limAddict-=GameSession.currentSession.pers.addictions[ad];
+								GameSession.currentSession.pers.addictions[ad]=0;
 							} 
 							else 
 							{
 								limAddict-=redAddict;
-								World.world.pers.addictions[ad]-=redAddict;
+								GameSession.currentSession.pers.addictions[ad]-=redAddict;
 							}
 						}
 						if (limAddict<=0) break;
@@ -316,7 +316,7 @@ package unitdata
 					}
 				}
 				gg.remEffect('curse');
-				World.world.game.triggers['curse']=0;
+				GameSession.currentSession.game.triggers['curse']=0;
 				gg.pers.setParameters();
 			}
 			if (pot.@hpet.length()) 
@@ -359,17 +359,17 @@ package unitdata
 				var prev:int=gg.pers.addictions[pot.@ad];
 				gg.pers.addictions[pot.@ad]+=n;
 				if (gg.pers.addictions[pot.@ad]>gg.pers.admax) gg.pers.addictions[pot.@ad]=gg.pers.admax;
-				if (prev<gg.pers.ad3 && prev+n>=gg.pers.ad3) World.world.gui.infoText('addiction3',Res.txt('item',ci));
-				else if (prev<gg.pers.ad2 && prev+n>=gg.pers.ad2) World.world.gui.infoText('addiction2',Res.txt('item',ci));
-				else if (prev<gg.pers.ad1 && prev+n>=gg.pers.ad1) World.world.gui.infoText('addiction1',Res.txt('item',ci));
+				if (prev<gg.pers.ad3 && prev+n>=gg.pers.ad3) GameSession.currentSession.gui.infoText('addiction3',Res.txt('item',ci));
+				else if (prev<gg.pers.ad2 && prev+n>=gg.pers.ad2) GameSession.currentSession.gui.infoText('addiction2',Res.txt('item',ci));
+				else if (prev<gg.pers.ad1 && prev+n>=gg.pers.ad1) GameSession.currentSession.gui.infoText('addiction1',Res.txt('item',ci));
 			}
 			if (pot.@tip=='food') 
 			{
-				if (pot.@ftip=='1') World.world.gui.infoText('usedfood2',Res.txt('item',ci));
-				else World.world.gui.infoText('usedfood',Res.txt('item',ci));
+				if (pot.@ftip=='1') GameSession.currentSession.gui.infoText('usedfood2',Res.txt('item',ci));
+				else GameSession.currentSession.gui.infoText('usedfood',Res.txt('item',ci));
 			} 
-			else if (pot.@heal=='organ') World.world.gui.infoText('usedheal',Res.txt('item',ci));
-			else World.world.gui.infoText('heal',Res.txt('item',ci));
+			else if (pot.@heal=='organ') GameSession.currentSession.gui.infoText('usedheal',Res.txt('item',ci));
+			else GameSession.currentSession.gui.infoText('heal',Res.txt('item',ci));
 			if (pot.@inf>0) return true;
 			minusItem(ci);
 			return true;
@@ -380,9 +380,9 @@ package unitdata
 			if (ci==null) 
 			{
 				if (cItem<0) return false;
-				if (World.world.gui.t_item<=0) 
+				if (GameSession.currentSession.gui.t_item<=0) 
 				{
-					World.world.gui.setItems();
+					GameSession.currentSession.gui.setItems();
 					return false;
 				} 
 				else 
@@ -392,13 +392,13 @@ package unitdata
 			}
 			if (ci=='mworkbench' || ci=='mworkexpl' || ci=='mworklab') 
 			{
-				if (World.world.t_battle>0) 
+				if (GameSession.currentSession.t_battle>0) 
 				{
-					World.world.gui.infoText('noUseCombat',null,null,false);
+					GameSession.currentSession.gui.infoText('noUseCombat',null,null,false);
 					return false;
 				}
-				World.world.pip.workTip=ci;
-				World.world.pip.onoff(7);
+				GameSession.currentSession.pip.workTip=ci;
+				GameSession.currentSession.pip.onoff(7);
 				return false;
 			}
 			if (items[ci].kol<=0) return false;
@@ -408,18 +408,18 @@ package unitdata
 			if (item.@paint.length())  //краска
 			{
 				gg.changePaintWeapon(item.@id,item.@paint,item.@blend);
-				World.world.gui.infoText('inUse',items[ci].objectName);
+				GameSession.currentSession.gui.infoText('inUse',items[ci].objectName);
 				return true;
 			}
 			if (item.@text.length())  //документ
 			{
-				if (World.world.t_battle>0) 
+				if (GameSession.currentSession.t_battle>0) 
 				{
-					World.world.gui.infoText('noUseCombat',null,null,false);
+					GameSession.currentSession.gui.infoText('noUseCombat',null,null,false);
 					return false;
 				}
-				World.world.pip.onoff(-1);
-				World.world.gui.dialog(item.@text);
+				GameSession.currentSession.pip.onoff(-1);
+				GameSession.currentSession.gui.dialog(item.@text);
 				if (item.@perk.length()) 
 				{
 					gg.pers.addPerk(item.@perk);
@@ -438,12 +438,12 @@ package unitdata
 			{
 				if (Settings.alicorn) 
 				{
-					World.world.gui.infoText('alicornNot',null,null,false);
+					GameSession.currentSession.gui.infoText('alicornNot',null,null,false);
 					return false;
 				}
-				if (World.world.t_battle>0) 
+				if (GameSession.currentSession.t_battle>0) 
 				{
-					World.world.gui.infoText('noUseCombat',null,null,false);
+					GameSession.currentSession.gui.infoText('noUseCombat',null,null,false);
 					return false;
 				}
 				return (usePotion(ci));
@@ -452,7 +452,7 @@ package unitdata
 			{
 				if (Settings.alicorn) 
 				{
-					World.world.gui.infoText('alicornNot',null,null,false);
+					GameSession.currentSession.gui.infoText('alicornNot',null,null,false);
 					return false;
 				}
 				gg.changeSpell(ci);
@@ -460,14 +460,14 @@ package unitdata
 			} 
 			else if (tip=='book') 
 			{
-				if (World.world.t_battle>0) 
+				if (GameSession.currentSession.t_battle>0) 
 				{
-					World.world.gui.infoText('noUseCombat',null,null,false);
+					GameSession.currentSession.gui.infoText('noUseCombat',null,null,false);
 					return false;
 				}
-				if (Settings.hardInv && !World.world.room.base) 
+				if (Settings.hardInv && !GameSession.currentSession.room.base) 
 				{
-					World.world.gui.infoText('noBase');
+					GameSession.currentSession.gui.infoText('noBase');
 					return false;
 				}
 				if (item.@perk.length()) 
@@ -482,14 +482,14 @@ package unitdata
 			} 
 			else if (ci=='sphera') 
 			{
-				if (World.world.t_battle>0) 
+				if (GameSession.currentSession.t_battle>0) 
 				{
-					World.world.gui.infoText('noUseCombat',null,null,false);
+					GameSession.currentSession.gui.infoText('noUseCombat',null,null,false);
 					return false;
 				}
-				if (Settings.hardInv && !World.world.room.base) 
+				if (Settings.hardInv && !GameSession.currentSession.room.base) 
 				{
-					World.world.gui.infoText('noBase');
+					GameSession.currentSession.gui.infoText('noBase');
 					return false;
 				}
 				gg.pers.addSkillPoint(1, true);
@@ -506,7 +506,7 @@ package unitdata
 			{
 				if (Settings.alicorn) 
 				{
-					World.world.gui.infoText('alicornNot',null,null,false);
+					GameSession.currentSession.gui.infoText('alicornNot',null,null,false);
 					return false;
 				}
 				gg.addEffect('stealth');
@@ -515,7 +515,7 @@ package unitdata
 			{
 				if (Settings.alicorn) 
 				{
-					World.world.gui.infoText('alicornNot',null,null,false);
+					GameSession.currentSession.gui.infoText('alicornNot',null,null,false);
 					return false;
 				}
 				gg.callPet(item.@pet);
@@ -523,13 +523,13 @@ package unitdata
 			} 
 			else if (item.@chdif.length()) 	//карта судьбы
 			{
-				if (!World.world.game.changeDif(item.@chdif)) return false;
-				World.world.gui.infoText('changeDif',Res.txt('gui', 'dif'+item.@chdif));
+				if (!GameSession.currentSession.game.changeDif(item.@chdif)) return false;
+				GameSession.currentSession.gui.infoText('changeDif',Res.txt('gui', 'dif'+item.@chdif));
 			} 
 			else return false;
 			minusItem(ci);
-			if (ci==itemsId[cItem] && World.world.gui.t_item>0) World.world.gui.setItems();
-			World.world.calcMass=true;
+			if (ci==itemsId[cItem] && GameSession.currentSession.gui.t_item>0) GameSession.currentSession.gui.setItems();
+			GameSession.currentSession.calcMass=true;
 			return true;
 		}
 		
@@ -640,18 +640,18 @@ package unitdata
 				{
 					var hhp=w.maxhp*gg.pers.repairMult*w.rep_eff*koef;
 					w.repair(hhp);
-					World.world.gui.infoText('repairWeapon',w.objectName,Math.round(w.hp/w.maxhp*100));
-					World.world.gui.setWeapon();
+					GameSession.currentSession.gui.infoText('repairWeapon',w.objectName,Math.round(w.hp/w.maxhp*100));
+					GameSession.currentSession.gui.setWeapon();
 				} 
 				else 
 				{
-					World.world.gui.infoText('noRepair');
+					GameSession.currentSession.gui.infoText('noRepair');
 					return false;
 				}
 			} 
 			else 
 			{
-				World.world.gui.infoText('noRepair2');
+				GameSession.currentSession.gui.infoText('noRepair2');
 				return false;
 			}
 			return true;
@@ -672,7 +672,7 @@ package unitdata
 				if (n<1 && n<Math.random()) return;
 				n=Math.round(n);
 				items['frag'].kol+=n;
-				if(!World.world.testLoot) World.world.gui.infoText('take',Res.txt('item','frag')+((n>1)?(' ('+n+')'):''));
+				if(!GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('take',Res.txt('item','frag')+((n>1)?(' ('+n+')'):''));
 			}
 		}
 		public function favItem(id:String, cell:int):void
@@ -681,7 +681,7 @@ package unitdata
 			{
 				if (weapons[id]==null || (weapons[id].tip!=4 && weapons[id].tip!=5) || weapons[id].spell) 
 				{
-					World.world.gui.infoText('onlyExpl');
+					GameSession.currentSession.gui.infoText('onlyExpl');
 					return;
 				}
 				if (cell==29) 
@@ -714,7 +714,7 @@ package unitdata
 				var xml:XMLList = XmlBook.getXML("items").item.(@id == id);
 				if (xml.length()==0 || xml.@tip!='spell') 
 				{
-					World.world.gui.infoText('onlySpell');
+					GameSession.currentSession.gui.infoText('onlySpell');
 					return;
 				}
 			}
@@ -822,25 +822,25 @@ package unitdata
 					{
 						if (weapons[l.id].variant<l.variant) 
 						{
-							if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
+							if (tr==0 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
 							updWeapon(l.id,l.variant);
 						}
 						if (weapons[l.id].tip!=5) 
 						{
 							repairWeapon(l.id, hp);
-							if (!World.world.testLoot) World.world.gui.infoText('repairWeapon',weapons[l.id].objectName,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
+							if (!GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('repairWeapon',weapons[l.id].objectName,Math.round(weapons[l.id].hp/weapons[l.id].maxhp*100));
 						}
 					} 
 					else 
 					{
-						if (tr == 0 && !World.world.testLoot) World.world.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
+						if (tr == 0 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('takeWeapon',l.objectName,Math.round(l.sost*l.multHP*100));
 						addWeapon(l.id, hp, 0,0, l.variant);
 						takeScript(l.id);
 						if (owner.player && gg.currentWeapon==null) gg.changeWeapon(l.id);
 					}
 					if (l.shpun==2) weapons[l.id].respect=0;
-					World.world.gui.setWeapon();
-					World.world.calcMassW=true;
+					GameSession.currentSession.gui.setWeapon();
+					GameSession.currentSession.calcMassW=true;
 					color=5;
 				} 
 				else if (l.tip==Item.L_ARMOR) 
@@ -852,14 +852,14 @@ package unitdata
 				else if (l.tip==Item.L_SPELL) 
 				{
 					plus(l,tr);
-					World.world.calcMassW=true;
+					GameSession.currentSession.calcMassW=true;
 					color=5;
 				} 
 				else if (l.tip==Item.L_SCHEME) 
 				{
 					if (items[l.id].kol==0)	takeScript(l.id);
 					plus(l,tr);
-					if (tr <=1 && !World.world.testLoot) World.world.gui.infoText('take',l.objectName);
+					if (tr <=1 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('take',l.objectName);
 					if (l.xml && l.xml.@cat=='weapon' && weapons[l.id.substr(2)]==null) 
 					{
 						addWeapon(l.id.substr(2), 0xFFFFFF, 0,3);
@@ -874,37 +874,37 @@ package unitdata
 				{
 					plus(l,tr);
 					if (!weapons[l.id]) addWeapon(l.id);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('take',l.objectName+((l.kol>1)?(' ('+l.kol+')'):''));
+					if (tr==0 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('take',l.objectName+((l.kol>1)?(' ('+l.kol+')'):''));
 					color=3;
 				} 
 				else if (l.tip==Item.L_AMMO) 
 				{
 					plus(l,tr);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeAmmo',l.objectName,l.kol);
+					if (tr==0 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('takeAmmo',l.objectName,l.kol);
 					color=3;
 				} 
 				else if (l.tip==Item.L_MED) 
 				{
 					plus(l,tr);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('takeMed',l.objectName);
+					if (tr==0 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('takeMed',l.objectName);
 					if (cItem<0) nextItem(1);
-					else World.world.gui.setItems();
+					else GameSession.currentSession.gui.setItems();
 					color=1;
 				} 
 				else if (l.tip==Item.L_BOOK) 
 				{
 					if (items[l.id].kol==0)	takeScript(l.id);
 					plus(l,tr);
-					if (tr <= 1 && !World.world.testLoot) World.world.gui.infoText('takeBook',l.objectName);
+					if (tr <= 1 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('takeBook',l.objectName);
 					if (cItem<0) nextItem(1);
-					else World.world.gui.setItems();
+					else GameSession.currentSession.gui.setItems();
 					color=4;
 				} 
 				else if (l.tip==Item.L_INSTR || l.tip==Item.L_ART || l.tip==Item.L_IMPL || l.xml && l.xml.sk.length()) 
 				{
 					if (items[l.id].kol==0)	takeScript(l.id);
 					plus(l,tr);
-					if (tr==0 && !World.world.testLoot) World.world.gui.infoText('take',l.objectName);
+					if (tr==0 && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('take',l.objectName);
 					gg.pers.setParameters();
 					color=6;
 				} 
@@ -912,12 +912,12 @@ package unitdata
 				{
 					if (items[l.id].kol==0)	takeScript(l.id);
 					plus(l,tr);
-					if (tr==0 && !World.world.testLoot) {
-						if (l.id=='money') World.world.gui.infoText('takeMoney',l.kol);
-						else World.world.gui.infoText('take',l.objectName+((l.kol>1)?(' ('+l.kol+')'):''));
+					if (tr==0 && !GameSession.currentSession.testLoot) {
+						if (l.id=='money') GameSession.currentSession.gui.infoText('takeMoney',l.kol);
+						else GameSession.currentSession.gui.infoText('take',l.objectName+((l.kol>1)?(' ('+l.kol+')'):''));
 					}
 					if (cItem<0) nextItem(1);
-					else World.world.gui.setItems();
+					else GameSession.currentSession.gui.setItems();
 					
 					if (l.tip=='valuables') color=2;
 					else if (l.tip==Item.L_HIM || l.tip==Item.L_POT) color=1;
@@ -927,42 +927,42 @@ package unitdata
 				}
 				if (tr==2) 
 				{
-					if (l.kol>1) World.world.gui.infoText('reward',l.objectName,l.kol);
-					else World.world.gui.infoText('reward2',l.objectName);
+					if (l.kol>1) GameSession.currentSession.gui.infoText('reward',l.objectName,l.kol);
+					else GameSession.currentSession.gui.infoText('reward2',l.objectName);
 				}
 				//если объект был сгенерирован случайно, обновить лимиты
 				if (tr==0 && l.imp==0 && l.xml.@limit.length()) 
 				{
-					World.world.game.addLimit(l.xml.@limit,2);
+					GameSession.currentSession.game.addLimit(l.xml.@limit,2);
 				}
 				//всплывающее сообщение
-				if (!World.world.testLoot && (tr==0 || tr==2)) 
+				if (!GameSession.currentSession.testLoot && (tr==0 || tr==2)) 
 				{
 					if (l.fc>=0) color=l.fc;
-					World.world.gui.floatText(l.objectName+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
+					GameSession.currentSession.gui.floatText(l.objectName+(l.kol>1?(' ('+l.kol+')'):''), gg.X, gg.Y, color);
 				}
 				//информационное окно для важных предметов
 				if (Settings.helpMess || l.tip=='art') 
 				{
-					if (l.mess!=null && !(World.world.game.triggers['mess_'+l.mess]>0)) 
+					if (l.mess!=null && !(GameSession.currentSession.game.triggers['mess_'+l.mess]>0)) 
 					{
-						World.world.game.triggers['mess_'+l.mess]=1;
-						World.world.gui.impMess(Res.txt('item',l.mess),Res.txt('item',l.mess,2),l.mess);
+						GameSession.currentSession.game.triggers['mess_'+l.mess]=1;
+						GameSession.currentSession.gui.impMess(Res.txt('item',l.mess),Res.txt('item',l.mess,2),l.mess);
 					}
 				}
 				//если объект критичный, подтвердить получение
 				if (l.imp==2 && l.cont) l.cont.receipt();
-				var res:String=World.world.game.checkQuests(l.id);
+				var res:String=GameSession.currentSession.game.checkQuests(l.id);
 				if (res!=null) 
 				{
-					World.world.gui.infoText('collect',res);
+					GameSession.currentSession.gui.infoText('collect',res);
 				}
 			} catch (err) 
 			{
-				World.world.showError(err, 'Loot error. tip:' + l.tip + ' id:' + l.id);
+				GameSession.currentSession.showError(err, 'Loot error. tip:' + l.tip + ' id:' + l.id);
 			}
 			if (Settings.hardInv) mass[l.invCat]+=l.mass*l.kol;
-			World.world.calcMass=true;
+			GameSession.currentSession.calcMass=true;
 		}
 		
 		public function plus(l:Item, tr:int = 0):void
@@ -1029,7 +1029,7 @@ package unitdata
 		
 		public function checkKol(ci:String, n:int=1):Boolean 
 		{
-			if (World.world.room && World.world.room.base) 
+			if (GameSession.currentSession.room && GameSession.currentSession.room.base) 
 			{
 				if (items[ci].kol+items[ci].vault>=n) return true;
 				else return false;
@@ -1048,8 +1048,8 @@ package unitdata
 			{
 				mass[item.invCat]+=item.mass*item.kol;
 			}
-			World.world.checkLoot=true;
-			World.world.pers.invMassParam();
+			GameSession.currentSession.checkLoot=true;
+			GameSession.currentSession.pers.invMassParam();
 		}
 		
 		public function calcWeaponMass():void
@@ -1061,16 +1061,16 @@ package unitdata
 				if (w.tip>0 && w.tip<4 && (w.respect==0 || w.respect==2)) massW+=w.mass;
 				if (w.tip==5 && (w.respect==0 || w.respect==2) && (!w.spell || items[w.id] && items[w.id].kol>0)) massM+=w.mass;
 			}
-			World.world.checkLoot=true;
-			World.world.pers.invMassParam();
+			GameSession.currentSession.checkLoot=true;
+			GameSession.currentSession.pers.invMassParam();
 		}
 		
 		//уничтожение экипировки
 		public function damageItems(dam:Number, destr:Boolean=true):void
 		{
-			if (!destr && !World.world.room.base && !Settings.alicorn) dam=5;
-			if (mass[1]<=World.world.pers.maxm1 || dam<=0) return;
-			var kol=dam*(mass[1]-World.world.pers.maxm1)/800;
+			if (!destr && !GameSession.currentSession.room.base && !Settings.alicorn) dam=5;
+			if (mass[1]<=GameSession.currentSession.pers.maxm1 || dam<=0) return;
+			var kol=dam*(mass[1]-GameSession.currentSession.pers.maxm1)/800;
 			if (kol>=1 || Math.random()<kol) 
 			{
 				kol=Math.ceil(kol*Math.random());
@@ -1082,14 +1082,14 @@ package unitdata
 						if (destr) {
 
 							minusItem(nid,kol,false);
-							World.world.gui.infoText('itemDestr',items[nid].objectName, kol);
+							GameSession.currentSession.gui.infoText('itemDestr',items[nid].objectName, kol);
 						} 
 						else 
 						{
 							drop(nid,kol);
-							World.world.gui.infoText('itemLose',items[nid].objectName, kol);
+							GameSession.currentSession.gui.infoText('itemLose',items[nid].objectName, kol);
 						}
-						World.world.calcMass=true;
+						GameSession.currentSession.calcMass=true;
 						return;
 					}
 				}
@@ -1128,23 +1128,23 @@ package unitdata
 		//выкинуть вещи
 		public function drop(nid:String, kol:int=1):void
 		{
-			if (World.world.room.base || Settings.alicorn) 
+			if (GameSession.currentSession.room.base || Settings.alicorn) 
 			{
 				return;
 			}
 			if (kol>items[nid].kol) kol=items[nid].kol;
 			if (kol<=0) return;
 			var item:Item=new Item(null,nid,kol);
-			var loot:Loot=new Loot(World.world.room,item,owner.X,owner.Y-owner.scY/2,true,false,false);
+			var loot:Loot=new Loot(GameSession.currentSession.room,item,owner.X,owner.Y-owner.scY/2,true,false,false);
 			minusItem(nid,kol,false);
 		}
 		
 		//вызвать прикреплённый скрипт
 		public function takeScript(id:String):void
 		{
-			if (World.world.level.itemScripts[id]) 
+			if (GameSession.currentSession.level.itemScripts[id]) 
 			{
-				World.world.level.itemScripts[id].start();
+				GameSession.currentSession.level.itemScripts[id].start();
 			}
 		}
 		
@@ -1161,21 +1161,21 @@ package unitdata
 		//выкурить косяк
 		public function useRollup():Boolean 
 		{
-			if (!World.world.room.base) 
+			if (!GameSession.currentSession.room.base) 
 			{
-				World.world.gui.infoText('noBase');
+				GameSession.currentSession.gui.infoText('noBase');
 				return false;
 			} 
 			else 
 			{
-				World.world.pip.onoff(-1);
+				GameSession.currentSession.pip.onoff(-1);
 				var xml1 = XmlBook.getXML("scripts").scr.(@id == 'smokeRollup');
 				if (xml1.length()) 
 				{
 					xml1=xml1[0];
-					var smokeScr:Script=new Script(xml1,World.world.room.level, gg);
+					var smokeScr:Script=new Script(xml1,GameSession.currentSession.room.level, gg);
 					smokeScr.start();
-					World.world.game.triggers['rollup']=1;
+					GameSession.currentSession.game.triggers['rollup']=1;
 				}
 				return true;
 			}

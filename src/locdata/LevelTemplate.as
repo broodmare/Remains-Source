@@ -121,7 +121,7 @@ package locdata
 			for each(var xml in levelData.prob) 
 			{
 				kolAllProb++;
-				if (World.world.game.triggers['prob_'+xml.@id] != null) kolClosedProb++
+				if (GameSession.currentSession.game.triggers['prob_'+xml.@id] != null) kolClosedProb++
 			}
 		}
 		

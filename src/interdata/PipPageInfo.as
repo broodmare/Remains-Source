@@ -43,8 +43,10 @@ package interdata
 			super(npip,npp);
 
 			//объект карты
-			visMap 	= new visPipMap();
-			visWMap = new visPipWMap();
+			visMap 	= new visPipMap(); 	// .swf linkage
+			visWMap = new visPipWMap();	// .swf linkage
+
+
 			vis.addChild(visMap);
 			vis.addChild(visWMap);
 			visMap.x  = 12;
@@ -88,17 +90,17 @@ package interdata
 			targetLand				= '';
 			setTopText();
 
-			game = World.world.game;
+			game = GameSession.currentSession.game;
 			if (page2 == 1) 
 			{		//карта
-				if (World.world.room.noMap) 
+				if (GameSession.currentSession.room.noMap) 
 				{
 					vis.emptytext.text=Res.txt('pip', 'emptymap');
 				} 
 				else 
 				{
 					vis.emptytext.text='';
-					map.bitmapData=World.world.level.drawMap();
+					map.bitmapData=GameSession.currentSession.level.drawMap();
 					setMapSize();
 					visMap.visible=true;
 				}
@@ -114,7 +116,7 @@ package interdata
 					}
 				}
 				if (arr.length) arr.sortOn(['state','sort','objectName']);
-				if (World.world.room && World.world.room.base) {
+				if (GameSession.currentSession.room && GameSession.currentSession.room.base) {
 					for each (var task in XmlBook.getXML("vendors").vendor.task)
 					{
 						if (checkQuest(task)) 
@@ -193,7 +195,7 @@ package interdata
 					var title:String;
 					if (xml.n.t.length()) title=xml.n.t[0];
 					else title=xml.n.r[0];
-					title=title.replace(/&lp/g,World.world.pers.persName);
+					title=title.replace(/&lp/g,GameSession.currentSession.pers.persName);
 					var n:Object={id:note, objectName:title, ico:nico};
 					if (nico==3) doparr.push(n);
 					else arr.push(n);
@@ -215,7 +217,7 @@ package interdata
 					if (xml && xml.@cat.length()) 
 					{
 						var n:Object={id:xml.@id, objectName:Res.txt('unit',xml.@id), cat:xml.@cat, kol:-1};
-						if (xml.@cat=='3' && World.world.game.triggers['frag_'+xml.@id]>=0) n.kol=int(World.world.game.triggers['frag_'+xml.@id]);
+						if (xml.@cat=='3' && GameSession.currentSession.game.triggers['frag_'+xml.@id]>=0) n.kol=int(GameSession.currentSession.game.triggers['frag_'+xml.@id]);
 						if (xml.@cat=='2') 
 						{
 							prevObj=n;
@@ -317,22 +319,22 @@ package interdata
 					s+="\n<span class ='yel'>"+Res.txt('pip', 'kolProb')+': '+l.kolClosedProb+'/'+l.kolAllProb+"</span>";
 				}
 				if (l.dif>0) s+='\n\n'+Res.txt('pip', 'recLevel')+' '+Math.round(l.dif);
-				if (l.dif>World.world.pers.level) s+='\n\n'+Res.txt('pip', 'wrLevel');
-				if (World.world.pers.speedShtr>=3) {
+				if (l.dif>GameSession.currentSession.pers.level) s+='\n\n'+Res.txt('pip', 'wrLevel');
+				if (GameSession.currentSession.pers.speedShtr>=3) {
 					s+='\n\n'+red(Res.txt('pip', 'speedshtr3'));
-				} else if (World.world.pers.speedShtr==2) {
+				} else if (GameSession.currentSession.pers.speedShtr==2) {
 					s+='\n\n'+red(Res.txt('pip', 'speedshtr2'));
-				} else if (World.world.pers.speedShtr==1) {
+				} else if (GameSession.currentSession.pers.speedShtr==1) {
 					s+='\n\n'+red(Res.txt('pip', 'speedshtr1'));
 				}
-				if (World.world.pers.speedShtr>=1) s+='\n'+Res.txt('pip', 'speedshtr0');
+				if (GameSession.currentSession.pers.speedShtr>=1) s+='\n'+Res.txt('pip', 'speedshtr0');
 				vis.info.htmlText=s;
 			} 
 			else if (page2==4) 
 			{
 				vis.info.y=vis.objectName.y;
 				var s:String=Res.messText(event.currentTarget.id.text,0,false);
-				s=s.replace(/&lp/g,World.world.pers.persName);
+				s=s.replace(/&lp/g,GameSession.currentSession.pers.persName);
 				s=s.replace(/\[/g,"<span class='yel'>");
 				s=s.replace(/\]/g,"</span>");
 				vis.info.htmlText=s;
@@ -498,7 +500,7 @@ package interdata
 		{
 			if (pip.gamePause) 
 			{
-				World.world.gui.infoText('gamePause');
+				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==3 && (pip.travel || Settings.testMode)) 
@@ -521,7 +523,7 @@ package interdata
 				else 
 				{
 					vis.butOk.visible=false;
-					World.world.gui.infoText('noTravel');
+					GameSession.currentSession.gui.infoText('noTravel');
 				}
 				pip.snd(1);
 			}
@@ -531,7 +533,7 @@ package interdata
 		public function transOk(event:MouseEvent):void
 		{
 			if (pip.gamePause) {
-				World.world.gui.infoText('gamePause');
+				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==3 && (pip.travel || Settings.testMode)) 
@@ -594,8 +596,8 @@ package interdata
 			var ty=(visMap.vmap.y-cy)*mapScale/ms;
 			visMap.vmap.x=tx+cx;
 			visMap.vmap.y=ty+cy;
-			plTag.x=World.world.level.ggX/Settings.tilePixelWidth*mapScale;
-			plTag.y=World.world.level.ggY/Settings.tilePixelHeight*mapScale;
+			plTag.x=GameSession.currentSession.level.ggX/Settings.tilePixelWidth*mapScale;
+			plTag.y=GameSession.currentSession.level.ggY/Settings.tilePixelHeight*mapScale;
 			ms=mapScale;
 		}
 		

@@ -104,8 +104,8 @@ package locdata
 						if (scr.eve == 'out') scrOut = scr;
 					}
 				}
-				if (xml.@scr.length()) scrOver = World.world.game.getScript(xml.@scr, this);
-				if (xml.@scrout.length()) scrOut = World.world.game.getScript(xml.@scrout, this);
+				if (xml.@scr.length()) scrOver = GameSession.currentSession.game.getScript(xml.@scr, this);
+				if (xml.@scrout.length()) scrOut = GameSession.currentSession.game.getScript(xml.@scrout, this);
 
 				// Change Walls
 				if (xml.@tilehp.length() || xml.@tileop.length() || xml.@damageThreshold.length())  //If the tile has a HP value, tileop(?), or damageThreshold property
@@ -245,7 +245,7 @@ package locdata
 					}
 				}
 			}
-			if (active && mess) World.world.gui.messText(mess, '', messDown);
+			if (active && mess) GameSession.currentSession.gui.messText(mess, '', messDown);
 			if (active && run) run();
 			if (active && !preactive && allact) room.allAct(this,allact,allid);
 			if (active && !preactive && over) over();
@@ -255,9 +255,9 @@ package locdata
 			{
 				if (trig && uid) 
 				{
-					if (World.world.game.triggers[uid] != 1) 
+					if (GameSession.currentSession.game.triggers[uid] != 1) 
 					{
-						World.world.game.triggers[uid] = 1;
+						GameSession.currentSession.game.triggers[uid] = 1;
 						scrOver.start();
 					}
 				} 

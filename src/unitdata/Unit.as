@@ -486,7 +486,7 @@ package unitdata
 			if (node0.@cont.length() && inter) inter.cont=node0.@cont;
 			if (fraction==F_PLAYER) warn=0;
 
-			if (node0.@xp.length()) xp = node0.@xp * Settings.unitXPMult; //TODO - Probably redundant, remove from World.
+			if (node0.@xp.length()) xp = node0.@xp * Settings.unitXPMult; //TODO - Probably redundant, remove from currentSession.
 
 			//физические параметры
 			if (node0.phis.length()) 
@@ -526,10 +526,10 @@ package unitdata
 			{
 				node=node0.comb[0];
 				if (node.@hp.length()) hp=maxhp=node.@hp*hpmult;
-				if (fraction!=F_PLAYER && World.world.game.globalDif<=1) 
+				if (fraction!=F_PLAYER && GameSession.currentSession.game.globalDif<=1) 
 				{
-					if (World.world.game.globalDif==0) maxhp*=0.4;
-					if (World.world.game.globalDif==1) maxhp*=0.7;
+					if (GameSession.currentSession.game.globalDif==0) maxhp*=0.4;
+					if (GameSession.currentSession.game.globalDif==1) maxhp*=0.7;
 					hp=maxhp;
 				}
 				if (node.@skin.length()) skin=node.@skin;
@@ -677,11 +677,11 @@ package unitdata
 		
 		public function getName():String 
 		{
-			if (World.world.game==null || id_name==null) return '';
-			var arr:Array=World.world.game.names[id_name];
+			if (GameSession.currentSession.game==null || id_name==null) return '';
+			var arr:Array=GameSession.currentSession.game.names[id_name];
 			if (arr==null || arr.length == 0) arr=Res.namesArr(id_name); 	//подготовить массив имён
 			if (arr==null || arr.length == 0) return '';
-			World.world.game.names[id_name]=arr;
+			GameSession.currentSession.game.names[id_name]=arr;
 			var n=Math.floor(Math.random()*arr.length);
 			var s=arr[n];
 			arr.splice(n,1);
@@ -692,8 +692,8 @@ package unitdata
 		{
 			if (trig) 
 			{
-				if (trig=='eco' && (World.world.pers==null || World.world.pers.eco==0)) return false;
-				if (World.world.game.triggers[trig]!=1) return false;
+				if (trig=='eco' && (GameSession.currentSession.pers==null || GameSession.currentSession.pers.eco==0)) return false;
+				if (GameSession.currentSession.game.triggers[trig]!=1) return false;
 			}
 			return true;
 		}
@@ -742,8 +742,8 @@ package unitdata
 						if (scr.eve=='alarm') scrAlarm=scr;
 					}
 				}
-				if (mapxml.@scr.length()) scrDie=World.world.game.getScript(mapxml.@scr,this);
-				if (mapxml.@alarm.length()) scrAlarm=World.world.game.getScript(mapxml.@alarm,this);
+				if (mapxml.@scr.length()) scrDie=GameSession.currentSession.game.getScript(mapxml.@scr,this);
+				if (mapxml.@alarm.length()) scrAlarm=GameSession.currentSession.game.getScript(mapxml.@alarm,this);
 			}
 			if (postDie) 
 			{
@@ -878,7 +878,7 @@ package unitdata
 			var res=false;
 			try 
 			{
-				res = World.world.game.globalDif <= 3 && room && room.level.levelTemplate.tip != 'base';
+				res = GameSession.currentSession.game.globalDif <= 3 && room && room.level.levelTemplate.tip != 'base';
 			} 
 			catch(err) {}
 			return res;
@@ -949,7 +949,7 @@ package unitdata
 				burn.step();
 				if (burn.vse) exterminate();
 			}
-			onCursor=(isVis && !disabled && sost<4 && X1<World.world.celX && X2>World.world.celX && Y1<World.world.celY && Y2>World.world.celY)?prior:0;
+			onCursor=(isVis && !disabled && sost<4 && X1<GameSession.currentSession.celX && X2>GameSession.currentSession.celX && Y1<GameSession.currentSession.celY && Y2>GameSession.currentSession.celY)?prior:0;
 
 			//подчинённые объекты
 			for (i in childObjs) if (childObjs[i]) 
@@ -1828,7 +1828,7 @@ package unitdata
 			if (xml.vis.length() && xml.vis.@blit.length()) 
 			{
 				var bmpd:BitmapData;
-				var data:BitmapData=World.world.grafon.getSpriteList(xml.vis.@blit);
+				var data:BitmapData=GameSession.currentSession.grafon.getSpriteList(xml.vis.@blit);
 				if (data==null) return;
 				var sprX:int=xml.vis.@sprX;
 				var sprY:int=(xml.vis.@sprY>0)?xml.vis.@sprY:sprX;
@@ -1844,7 +1844,7 @@ package unitdata
 		
 		public function initBlit()
 		{
-			blitData=World.world.grafon.getSpriteList(blitId);
+			blitData=GameSession.currentSession.grafon.getSpriteList(blitId);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
 			blitPoint = new Point(0,0);
 			vis=new MovieClip();
@@ -1880,7 +1880,7 @@ package unitdata
 				if (invis) hpbar.visible = false;
 				visDetails();
 			}
-			if (hpbar && room && room.roomActive) World.world.grafon.canvasLayerArray[3].addChild(hpbar);
+			if (hpbar && room && room.roomActive) GameSession.currentSession.grafon.canvasLayerArray[3].addChild(hpbar);
 			if (cTransform && ctrans) vis.transform.colorTransform=cTransform;
 			if (childObjs) {
 				for (var i in childObjs) 
@@ -1949,7 +1949,7 @@ package unitdata
 			{
 				if (boss) 
 				{
-					World.world.gui.hpBarBoss(hp/maxhp);
+					GameSession.currentSession.gui.hpBarBoss(hp/maxhp);
 					hpbar.visible=false;
 				} 
 				else 
@@ -1977,7 +1977,7 @@ package unitdata
 			if (boss) 
 			{
 				hpbar.y=60;
-				hpbar.x=World.world.cam.screenX/2;
+				hpbar.x=GameSession.currentSession.cam.screenX/2;
 			} 
 			else 
 			{
@@ -2016,7 +2016,7 @@ package unitdata
 			if (shok>0) shok--;
 			if (oduplenie>0) 
 			{
-				if (opt && opt.izvrat && World.world.pers.socks || noAgro) {}
+				if (opt && opt.izvrat && GameSession.currentSession.pers.socks || noAgro) {}
 				else oduplenie--;
 			}
 			if (noise>0) noise-=20;
@@ -2242,7 +2242,7 @@ package unitdata
 			}
 			eff.se=se;
 			effects.push(eff);
-			if (player && se) World.world.gui.infoEffText(id);
+			if (player && se) GameSession.currentSession.gui.infoEffText(id);
 			eff.setEff();
 			return eff;
 		}
@@ -2515,12 +2515,12 @@ package unitdata
 						}
 						if (bul.weap.dopEffect=='poison' && vulner[D_POISON]>0.1) 
 						{
-							if (player && poison<=0) World.world.gui.infoText('poison');
+							if (player && poison<=0) GameSession.currentSession.gui.infoText('poison');
 							poison+=bul.weap.dopDamage;
 						}
 						if (bul.weap.dopEffect=='cut' && vulner[D_BLEED]>0.1 && !mech) 
 						{
-							if (player && cut<=0) World.world.gui.infoText('cut');
+							if (player && cut<=0) GameSession.currentSession.gui.infoText('cut');
 							cut+=bul.weap.dopDamage;
 						}
 						if (bul.weap.dopEffect=='stun') 
@@ -2529,7 +2529,7 @@ package unitdata
 							{
 								stun=bul.weap.dopDamage;
 								//trace(stun);
-								if (player && stun<=0) World.world.gui.infoText('stun');
+								if (player && stun<=0) GameSession.currentSession.gui.infoText('stun');
 								if (stun>1) mess=Res.txt('gui', 'stun');
 							}
 						}
@@ -2608,7 +2608,7 @@ package unitdata
 						{
 							if (isCrit==1 || isCrit==3) 
 							{
-								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/World.world.cam.scaleV;
+								hitPart.vis.scaleX=hitPart.vis.scaleY=1.6/GameSession.currentSession.cam.scaleV;
 							}
 							hitPart.vis.numb.text=Math.round(hitSumm);
 							hitPart.liv=60;
@@ -2868,7 +2868,7 @@ package unitdata
 			if (hpbar) hpbar.visible=false;
 			if (boss) 
 			{
-				World.world.gui.hpBarBoss();
+				GameSession.currentSession.gui.hpBarBoss();
 				if (sndMusic) Snd.combatMusic(sndMusic, sndMusicPrior, 90);
 			}
 			if (sposob==0 && sost==1 && sndDie) sound(sndDie);
@@ -2922,12 +2922,12 @@ package unitdata
 			transT = true;
 			sndRunOn = false;
 			plaKap = false;
-			if (!doop && World.world.t_battle>30) World.world.t_battle=30;
+			if (!doop && GameSession.currentSession.t_battle>30) GameSession.currentSession.t_battle=30;
 			if (!lootIsDrop && (!isRes || sost==4 || burn)) 
 			{
 				lootIsDrop=true;
 				if (mother) mother.kolChild--;
-				if (hero>0) World.world.gui.infoText('killHero',objectName);
+				if (hero>0) GameSession.currentSession.gui.infoText('killHero',objectName);
 				runScript();
 				dropLoot();
 				incStat();
@@ -2944,14 +2944,14 @@ package unitdata
 			}
 		}
 		
-		// Destroy, remove from the world
+		// Destroy, remove from the currentSession
 		public function exterminate():void
 		{
-			radioactiv=0;
-			levitPoss=false;
-			if (sost!=4) room.remObj(this);
-			sost=4;
-			disabled=true;
+			radioactiv = 0;
+			levitPoss = false;
+			if (sost != 4) room.remObj(this);
+			sost = 4;
+			disabled = true;
 		}
 		
 		// Explosion, guts, or other effect after death
@@ -2974,9 +2974,9 @@ package unitdata
 			if (inter) inter.loot();
 			if (hero > 0 && !opt.robot && isrnd(0.75)) LootGen.lootId(room,X,Y-scY/2,'essence');
 			// Dropping a precious gem
-			if (World.world.pers && World.world.pers.dropTre>0 && xp>0) 
+			if (GameSession.currentSession.pers && GameSession.currentSession.pers.dropTre>0 && xp>0) 
 			{
-				if (Math.random()<World.world.pers.dropTre*xp/4000) LootGen.lootId(room,X,Y-scY/2,'gem'+Math.floor(Math.random()*3+1));
+				if (Math.random()<GameSession.currentSession.pers.dropTre*xp/4000) LootGen.lootId(room,X,Y-scY/2,'gem'+Math.floor(Math.random()*3+1));
 			}
 		}
 		
@@ -2999,23 +2999,23 @@ package unitdata
 			if (questId) 
 			{
 				if (room.level.itemScripts[questId]) room.level.itemScripts[questId].start();
-				World.world.game.incQuests(questId);
+				GameSession.currentSession.game.incQuests(questId);
 			}
 			if (wave && room.prob) room.prob.checkWave(true);
 			// Perform an action like destroying a certain number of enemies with a specific weapon
-			if (dieWeap!=null && World.world.game.triggers['look_'+dieWeap]>0 && xp>0) 
+			if (dieWeap!=null && GameSession.currentSession.game.triggers['look_'+dieWeap]>0 && xp>0) 
 			{
-				World.world.game.incQuests('kill_'+dieWeap);
+				GameSession.currentSession.game.incQuests('kill_'+dieWeap);
 			}
 		}
 
 		// Modify statistics
 		public function incStat(sposob:int=0):void
 		{
-			if (World.world.game) 
+			if (GameSession.currentSession.game) 
 			{
-				if (World.world.game.triggers['frag_'+id]>0) World.world.game.triggers['frag_'+id]++;
-				else World.world.game.triggers['frag_'+id]=1;
+				if (GameSession.currentSession.game.triggers['frag_'+id]>0) GameSession.currentSession.game.triggers['frag_'+id]++;
+				else GameSession.currentSession.game.triggers['frag_'+id]=1;
 			}
 		}
 		
@@ -3097,7 +3097,7 @@ package unitdata
 			{
 				var nx:Number =X+scX*0.25*storona+cx*i/div;
 				var ny:Number =Y-scY*0.75+cy*i/div;
-				var t:Tile=World.world.room.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
+				var t:Tile=GameSession.currentSession.room.getTile(Math.floor(nx/Tile.tilePixelWidth),Math.floor(ny/Tile.tilePixelHeight));
 				if (t.phis==1 && nx>=t.phX1 && nx<=t.phX2 && ny>=t.phY1 && ny<=t.phY2) 
 				{
 					return 0;
@@ -3159,8 +3159,8 @@ package unitdata
 				celUnit=un;
 				if (un.player)
 				{
-					World.world.t_battle=Settings.battleNoOut;
-					World.world.cur();
+					GameSession.currentSession.t_battle=Settings.battleNoOut;
+					GameSession.currentSession.cur();
 					room.detecting=true;
 					if (sndMusic && !room.postMusic) Snd.combatMusic(sndMusic, sndMusicPrior, boss?10000:150);
 				}

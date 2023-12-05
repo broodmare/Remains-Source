@@ -27,6 +27,7 @@ package graphdata
 		
 		public var displFilter1:DisplacementMapFilter;
 		public var displFilter2:DisplacementMapFilter;
+
 		public var displBmpd:BitmapData;
 		public var displStamp:MovieClip;
 		public var displPoint:Point = new Point(0, 0);
@@ -43,7 +44,7 @@ package graphdata
 		
 		public var t_anim:int = 0;
 		public var t_klip:int = 60;
-		public var t_groza:int = 120;
+		public var t_lightning:int = 120;
 		public var p_x:Number;
 		public var p_y:Number;
 		
@@ -57,7 +58,7 @@ package graphdata
 			displMatrix.ty = mm.target.y - mm.displ1.y;
 			displFilter1 = new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,displX,displY,DisplacementMapFilterMode.COLOR);
 			displFilter2 = new DisplacementMapFilter(displBmpd,displPoint,BitmapDataChannel.RED,BitmapDataChannel.RED,0,5,DisplacementMapFilterMode.COLOR);
-			for (var i:int=0; i<wavKol; i++) 
+			for (var i:int = 0; i < wavKol; i++) 
 			{
 				var v:MovieClip = new visWav();
 				v.x = Math.random() * disX * 2 - disX;
@@ -113,8 +114,8 @@ package graphdata
 			mm.horn.magic.krug.rotation = 90 + t_anim * 0.67;
 			if (gr) 
 			{
-				t_groza--;
-				if (t_groza == 0) 
+				t_lightning--;
+				if (t_lightning == 0) 
 				{
 					gr.x = Math.random() * 1800;
 					gr.y = Math.random() * 350;
@@ -127,14 +128,14 @@ package graphdata
 					gr.tuchi.x = -200 - Math.random() * 400
 					gr.tuchi.y = -200 - Math.random() * 300
 				} 
-				else if (t_groza < 0) 
+				else if (t_lightning < 0) 
 				{
-					gr.alpha = Math.min(1, Math.random() * 0.5 + t_groza / 12 + 0.7);
-					if (t_groza<-6 && Math.random() < 0.1) t_groza = -100;
+					gr.alpha = Math.min(1, Math.random() * 0.5 + t_lightning / 12 + 0.7);
+					if (t_lightning<-6 && Math.random() < 0.1) t_lightning = -100;
 				}
-				if (t_groza < -30) 
+				if (t_lightning < -30) 
 				{
-					t_groza = Math.floor(Math.random() * 200 + 100);
+					t_lightning = Math.floor(Math.random() * 200 + 100);
 					gr.visible = false;
 				}
 			}

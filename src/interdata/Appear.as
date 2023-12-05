@@ -14,12 +14,12 @@ package interdata
 	import fl.motion.Color;
 	// Character Appearance Settings
 	
-	import stubs.dialVid;
+	import stubs.appearanceEdtiorWindow;
 
 	public class Appear 
 	{
 
-		public var vis:MovieClip;
+		public var window:MovieClip;
 		public var col:Color = new Color;
 		
 		public var funOk:Function;
@@ -61,7 +61,7 @@ package interdata
 
 		public function Appear():void
 		{
-			vis = new dialVid();
+			window = new appearanceEdtiorWindow(); //.swf Linkage
 
 			for each(var l:String in clist) 
 			{
@@ -76,34 +76,34 @@ package interdata
 		//надписи
 		public function setLang():void
 		{
-			vis.butOk.text.text = 'OK';
-			vis.butCancel.text.text=Res.txt('gui', 'cancel');
-			vis.butDef.text.text=Res.txt('pip', 'default');
-			vis.title.text=Res.txt('gui', 'butvid');
-			vis.tFur.text=Res.txt('gui', 'vidfur');
-			vis.tHair.text=Res.txt('gui', 'vidhair');
-			vis.tHair1.text=Res.txt('gui', 'vidhair1');
-			vis.tEye.text=Res.txt('gui', 'videye');
-			vis.tMagic.text=Res.txt('gui', 'vidmagic');
+			window.butOk.text.text = 'OK';
+			window.butCancel.text.text=Res.txt('gui', 'cancel');
+			window.butDef.text.text=Res.txt('pip', 'default');
+			window.title.text=Res.txt('gui', 'butvid');
+			window.tFur.text=Res.txt('gui', 'vidfur');
+			window.tHair.text=Res.txt('gui', 'vidhair');
+			window.tHair1.text=Res.txt('gui', 'vidhair1');
+			window.tEye.text=Res.txt('gui', 'videye');
+			window.tMagic.text=Res.txt('gui', 'vidmagic');
 		}
 		
 		//присоединить диалоговое окно
 		public function attach(mm:MovieClip, fo:Function, fc:Function):void
 		{
-			mm.addChild(vis);
-			vis.fon.visible = true;
+			mm.addChild(window);
+			window.fon.visible = true;
 			temp = save();
 			funcOn();
 			funOk = fo;
 			funCancel = fc;
 			setColors();
-			vis.pers.gotoAndStop(2);
-			vis.pers.gotoAndStop(1);
+			window.pers.gotoAndStop(2);
+			window.pers.gotoAndStop(1);
 		}
 		//отсоединить диалоговое окно
 		public function detach():void
 		{
-			if (vis.parent) vis.parent.removeChild(vis);
+			if (window.parent) window.parent.removeChild(window);
 			funcOff();
 			funOk = null;
 			funCancel = null;
@@ -116,50 +116,50 @@ package interdata
 		
 		public function funcOn():void
 		{
-			vis.butOk.addEventListener(MouseEvent.CLICK, buttonOk);
-			vis.butCancel.addEventListener(MouseEvent.CLICK, buttonCancel);
-			vis.butDef.addEventListener(MouseEvent.CLICK, buttonDef);
+			window.butOk.addEventListener(MouseEvent.CLICK, buttonOk);
+			window.butCancel.addEventListener(MouseEvent.CLICK, buttonCancel);
+			window.butDef.addEventListener(MouseEvent.CLICK, buttonDef);
 			for each(var l:String in clist) 
 			{
-				vis['color' + l].addEventListener(ColorPickerEvent.CHANGE, changeHandler);
-				vis['color' + l].addEventListener(Event.OPEN, openHandler);
+				window['color' + l].addEventListener(ColorPickerEvent.CHANGE, changeHandler);
+				window['color' + l].addEventListener(Event.OPEN, openHandler);
 			}
-			vis.slRed.addEventListener(SliderEvent.THUMB_DRAG, chColor);
-			vis.slGreen.addEventListener(SliderEvent.THUMB_DRAG, chColor);
-			vis.slBlue.addEventListener(SliderEvent.THUMB_DRAG, chColor);
-			vis.checkHair1.addEventListener(ColorPickerEvent.CHANGE, changeHair1);
-			vis.b1Eye.addEventListener(MouseEvent.CLICK, chBut);
-			vis.b2Eye.addEventListener(MouseEvent.CLICK, chBut);
-			vis.b1Hair.addEventListener(MouseEvent.CLICK, chBut);
-			vis.b2Hair.addEventListener(MouseEvent.CLICK, chBut);
+			window.slRed.addEventListener(SliderEvent.THUMB_DRAG, chColor);
+			window.slGreen.addEventListener(SliderEvent.THUMB_DRAG, chColor);
+			window.slBlue.addEventListener(SliderEvent.THUMB_DRAG, chColor);
+			window.checkHair1.addEventListener(ColorPickerEvent.CHANGE, changeHair1);
+			window.b1Eye.addEventListener(MouseEvent.CLICK, chBut);
+			window.b2Eye.addEventListener(MouseEvent.CLICK, chBut);
+			window.b1Hair.addEventListener(MouseEvent.CLICK, chBut);
+			window.b2Hair.addEventListener(MouseEvent.CLICK, chBut);
 		}
 
 		public function funcOff():void
 		{
-			if (!vis.butOk.hasEventListener(MouseEvent.CLICK)) return;
-			vis.butOk.removeEventListener(MouseEvent.CLICK, buttonOk);
-			vis.butCancel.removeEventListener(MouseEvent.CLICK, buttonCancel);
-			vis.butDef.removeEventListener(MouseEvent.CLICK, buttonDef);
+			if (!window.butOk.hasEventListener(MouseEvent.CLICK)) return;
+			window.butOk.removeEventListener(MouseEvent.CLICK, buttonOk);
+			window.butCancel.removeEventListener(MouseEvent.CLICK, buttonCancel);
+			window.butDef.removeEventListener(MouseEvent.CLICK, buttonDef);
 			for each(var l:String in clist) 
 			{
-				vis['color' + l].removeEventListener(ColorPickerEvent.CHANGE, changeHandler);
-				vis['color' + l].removeEventListener(Event.OPEN, openHandler);
+				window['color' + l].removeEventListener(ColorPickerEvent.CHANGE, changeHandler);
+				window['color' + l].removeEventListener(Event.OPEN, openHandler);
 			}
-			vis.slRed.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
-			vis.slGreen.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
-			vis.slBlue.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
-			vis.checkHair1.removeEventListener(ColorPickerEvent.CHANGE, changeHair1);
-			vis.b1Eye.removeEventListener(MouseEvent.CLICK, chBut);
-			vis.b2Eye.removeEventListener(MouseEvent.CLICK, chBut);
-			vis.b1Hair.removeEventListener(MouseEvent.CLICK, chBut);
-			vis.b2Hair.removeEventListener(MouseEvent.CLICK, chBut);
+			window.slRed.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
+			window.slGreen.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
+			window.slBlue.removeEventListener(SliderEvent.THUMB_DRAG, chColor);
+			window.checkHair1.removeEventListener(ColorPickerEvent.CHANGE, changeHair1);
+			window.b1Eye.removeEventListener(MouseEvent.CLICK, chBut);
+			window.b2Eye.removeEventListener(MouseEvent.CLICK, chBut);
+			window.b1Hair.removeEventListener(MouseEvent.CLICK, chBut);
+			window.b2Hair.removeEventListener(MouseEvent.CLICK, chBut);
 		}
 		
 		// Press the OK button
 		public function buttonOk(event:MouseEvent):void
 		{
 			if (funOk) funOk();
-			World.world.saveConfig();
+			GameSession.currentSession.saveConfig();
 		}
 		// Press the Cancel button
 		public function buttonCancel(event:MouseEvent):void
@@ -167,8 +167,8 @@ package interdata
 			load(temp);
 			setTransforms();
 			setColors();
-			vis.pers.gotoAndStop(2);
-			vis.pers.gotoAndStop(1);
+			window.pers.gotoAndStop(2);
+			window.pers.gotoAndStop(1);
 			if (funCancel) funCancel();
 		}
 		// Press the def button
@@ -177,8 +177,8 @@ package interdata
 			load(def);
 			setTransforms();
 			setColors();
-			vis.pers.gotoAndStop(2);
-			vis.pers.gotoAndStop(1);
+			window.pers.gotoAndStop(2);
+			window.pers.gotoAndStop(1);
 		}
 		
 		// Set all color pickers to match the colors
@@ -187,10 +187,10 @@ package interdata
 			trace('Appear.as/setColors() - setColors() Executing.');
 			for each(var l:String in clist) 
 			{
-				vis['color' + l].selectedColor = this['c' + l];
+				window['color' + l].selectedColor = this['c' + l];
 			}
 
-			vis.checkHair1.selected = visHair1;
+			window.checkHair1.selected = visHair1;
 		}
 
 		// Convert all colors to transforms
@@ -265,26 +265,26 @@ package interdata
 			ct.redMultiplier = col.redOffset / colMax + colSd;
 			ct.greenMultiplier = col.greenOffset / colMax + colSd;
 			ct.blueMultiplier = col.blueOffset / colMax + colSd;
-			vis.slRed.value = col.redOffset;
-			vis.slGreen.value = col.greenOffset;
-			vis.slBlue.value = col.blueOffset;
+			window.slRed.value = col.redOffset;
+			window.slGreen.value = col.greenOffset;
+			window.slBlue.value = col.blueOffset;
 			setRGB();
 		}
 		
 		//Labels
 		public function setRGB():void
 		{
-			vis.nRed.text 	= 'R:' + col.redOffset;
-			vis.nGreen.text = 'G:' + col.greenOffset;
-			vis.nBlue.text 	= 'B:' + col.blueOffset;
+			window.nRed.text 	= 'R:' + col.redOffset;
+			window.nGreen.text = 'G:' + col.greenOffset;
+			window.nBlue.text 	= 'B:' + col.blueOffset;
 		}
 		
 		//Slider event
 		public function chColor(event:SliderEvent):void
 		{
-			col.redOffset=vis.slRed.value;
-			col.greenOffset=vis.slGreen.value;
-			col.blueOffset=vis.slBlue.value;
+			col.redOffset=window.slRed.value;
+			col.greenOffset=window.slGreen.value;
+			col.blueOffset=window.slBlue.value;
 			setRGB();
 			setColor(tek,col.color);
 		}
@@ -310,9 +310,9 @@ package interdata
 		//Enable/disable second color
 		public function changeHair1(e:Event):void
 		{
-			visHair1=vis.checkHair1.selected;
-			vis.pers.gotoAndStop(2);
-			vis.pers.gotoAndStop(1);
+			visHair1=window.checkHair1.selected;
+			window.pers.gotoAndStop(2);
+			window.pers.gotoAndStop(1);
 		}
 		
 		//Buttons for selecting options
@@ -339,8 +339,8 @@ package interdata
 				fHair++;
 				if (fHair > maxHair) fHair = 1;
 			}
-			vis.pers.gotoAndStop(2);
-			vis.pers.gotoAndStop(1);
+			window.pers.gotoAndStop(2);
+			window.pers.gotoAndStop(1);
 		}
 		
 		//set the model's color
@@ -348,9 +348,9 @@ package interdata
 		{
 			this['c' + nam] = c;
 			colorToTransform(this['c' + nam], Appear['tr' + nam]);
-			vis['color' + nam].selectedColor = c;
-			vis.pers.gotoAndStop(2);
-			vis.pers.gotoAndStop(1);
+			window['color' + nam].selectedColor = c;
+			window.pers.gotoAndStop(2);
+			window.pers.gotoAndStop(1);
 		}
 		
 	}

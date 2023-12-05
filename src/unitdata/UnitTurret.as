@@ -343,8 +343,8 @@ package unitdata
 		
 		public override function findCel(over:Boolean=false):Boolean 
 		{
-			if (absVis && room==World.world.room && !reprog && !sleep) {
-				setCel(World.world.gg);
+			if (absVis && room==GameSession.currentSession.room && !reprog && !sleep) {
+				setCel(GameSession.currentSession.gg);
 				return true;
 			}
 			if (!reprog) return super.findCel(over);

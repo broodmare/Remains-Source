@@ -75,8 +75,8 @@ package servdata
 			}
 			var num:int;
 			if (rndtip == 'random') num = 30;
-			else if (rndtip == 'doctor') num = 5 + 3 * World.world.pers.barterLvl;
-			else num = 10 + 6 * World.world.pers.barterLvl;
+			else if (rndtip == 'doctor') num = 5 + 3 * GameSession.currentSession.pers.barterLvl;
+			else num = 10 + 6 * GameSession.currentSession.pers.barterLvl;
 			num = Math.round(num * (0.5 + Math.random() * 0.7));
 			var num2:int = num * (0.1 + Math.random() * 0.3);
 			var item:Item;
@@ -182,7 +182,7 @@ package servdata
 				var buy:XMLList = xml.buy.(@id == item.id);
 				
 				if (buy.length()==0 || buy.@n.length()==0) continue;
-				var lim:int = Math.ceil(buy.@n*World.world.pers.limitBuys);
+				var lim:int = Math.ceil(buy.@n*GameSession.currentSession.pers.limitBuys);
 				if (item.kol < lim) {
 					item.kol = Math.min(lim,item.kol+Math.ceil(0.25*lim));
 					//trace(item.objectName, item.kol);

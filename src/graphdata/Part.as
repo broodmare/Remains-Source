@@ -64,7 +64,7 @@ package graphdata
 		
 		public function initBlit(blitId:String):void //Create a bitmap
 		{
-			blitData = World.world.grafon.getSpriteList(blitId, 1);
+			blitData = GameSession.currentSession.grafon.getSpriteList(blitId, 1);
 			blitRect = new Rectangle(0, 0, blitX, blitY);
 			blitPoint = new Point(0,0);
 			vis = new MovieClip();

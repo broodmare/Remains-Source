@@ -9,7 +9,7 @@ package interdata
 	public class Camera 
 	{
 		
-		public var world:World;
+		public var currentSession:GameSession;
 		public var moved:Boolean;
 		public var screenX:int=1280; // Screen dimensions
 		public var screenY:int=800;
@@ -37,16 +37,16 @@ package interdata
 		public var showX:Number=-1;
 		public var showY:Number=0;
 		
-		public function Camera(nw:World) 
+		public function Camera(session:GameSession) 
 		{
-			world = nw;
+			currentSession = session;
 		}
 		
 		public function setLoc(room:Room):void
 		{
 			if (room == null) return;
-			screenX=world.swfStage.stageWidth;
-			screenY=world.swfStage.stageHeight;
+			screenX=currentSession.swfStage.stageWidth;
+			screenY=currentSession.swfStage.stageHeight;
 			maxsx=room.roomPixelWidth;
 			maxsy=room.roomPixelHeight;
 			maxvx=maxsx-screenX;
@@ -57,8 +57,8 @@ package interdata
 				moved=false;
 				vx=-maxvx/2;
 				vy=-maxvy/2;
-				world.mainCanvas.x=world.sats.vis.x=vx;
-				world.mainCanvas.y=world.sats.vis.y=vy;
+				currentSession.mainCanvas.x = currentSession.sats.vis.x = vx;
+				currentSession.mainCanvas.y = currentSession.sats.vis.y = vy;
 			} 
 			else 
 			{
@@ -79,7 +79,7 @@ package interdata
 			{
 				isZoom++;
 				if (isZoom>2) isZoom=0;
-				World.world.gui.infoText('zoom'+isZoom);
+				GameSession.currentSession.gui.infoText('zoom'+isZoom);
 			} 
 			else if (turn>=0) 
 			{
@@ -102,35 +102,35 @@ package interdata
 			if (scaleV>0.98) scaleV=1;
 			maxvx=maxsx*scaleV-screenX;
 			maxvy=maxsy*scaleV-screenY;
-			world.mainCanvas.scaleX=world.sats.vis.scaleX=world.mainCanvas.scaleY=world.sats.vis.scaleY=scaleV;
-			world.vscene.scaleX=world.vscene.scaleY=scaleS;
+			currentSession.mainCanvas.scaleX=currentSession.sats.vis.scaleX=currentSession.mainCanvas.scaleY=currentSession.sats.vis.scaleY=scaleV;
+			currentSession.vscene.scaleX=currentSession.vscene.scaleY=scaleS;
 			if (screenY>maxsy*scaleV) 
 			{
-				World.world.grafon.borderTop.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
-				World.world.grafon.borderBottom.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
+				GameSession.currentSession.grafon.borderTop.scaleY=-(screenY-maxsy*scaleV)/100/scaleV-0.5;
+				GameSession.currentSession.grafon.borderBottom.scaleY=(screenY-maxsy*scaleV+5)/100/scaleV+0.5;
 			} 
 			else 
 			{
-				World.world.grafon.borderTop.scaleY=-0.5/scaleV;
-				World.world.grafon.borderBottom.scaleY=0.6/scaleV;
+				GameSession.currentSession.grafon.borderTop.scaleY=-0.5/scaleV;
+				GameSession.currentSession.grafon.borderBottom.scaleY=0.6/scaleV;
 			}
 			if (screenX>maxsx*scaleV) 
 			{
-				World.world.grafon.borderLeft.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
-				World.world.grafon.borderRight.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
+				GameSession.currentSession.grafon.borderLeft.scaleX=-(screenX-maxsx*scaleV)/100/scaleV-0.5;
+				GameSession.currentSession.grafon.borderRight.scaleX=(screenX-maxsx*scaleV+5)/100/scaleV+0.5;
 			} 
 			else 
 			{
-				World.world.grafon.borderLeft.scaleX=-0.5/scaleV;
-				World.world.grafon.borderRight.scaleX=0.5/scaleV;
+				GameSession.currentSession.grafon.borderLeft.scaleX=-0.5/scaleV;
+				GameSession.currentSession.grafon.borderRight.scaleX=0.5/scaleV;
 			}
 		}
 		
 		public function calc(un:Unit):void
 		{
-			if (world.ctr.keyStates.keyZoom)
+			if (currentSession.ctr.keyStates.keyZoom)
 			{
-				if (World.world.room && World.world.room.sky) 
+				if (GameSession.currentSession.room && GameSession.currentSession.room.sky) 
 				{
 					setZoom(2);
 				} 
@@ -138,21 +138,21 @@ package interdata
 				{
 					setZoom(1000);
 				}
-				world.ctr.keyStates.keyZoom=false;
+				currentSession.ctr.keyStates.keyZoom=false;
 			}
 			if (moved) 
 			{
-				if ((world.ctr.keyStates.keyLook || showOn) && otryv<1) 
+				if ((currentSession.ctr.keyStates.keyLook || showOn) && otryv<1) 
 				{
 					if (showOn) otryv+=0.2;
 					else otryv+=0.05;
 				}
-				if (!world.ctr.keyStates.keyLook && !showOn && otryv>0) 
+				if (!currentSession.ctr.keyStates.keyLook && !showOn && otryv>0) 
 				{
 					otryv-=0.2;
 					if (otryv<0) otryv=0;
 				}
-				if (world.ctr.keyStates.keyLook) {
+				if (currentSession.ctr.keyStates.keyLook) {
 					showX=-1;
 				}
 				if (!camRun) 
@@ -212,29 +212,29 @@ package interdata
 				if (Math.random()>0.2) quakeY*=-(Math.random()*0.3+0.5);
 				if (quakeY<1 && quakeY>-1) quakeY=0;
 			}
-			world.mainCanvas.x=world.sats.vis.x=vx+quakeX;
-			world.mainCanvas.y=world.sats.vis.y=vy+quakeY;
+			currentSession.mainCanvas.x=currentSession.sats.vis.x=vx+quakeX;
+			currentSession.mainCanvas.y=currentSession.sats.vis.y=vy+quakeY;
 			Snd.centrX = X;
 			Snd.centrY = Y;
 			
-			world.celX=(celX-vx)/scaleV;
-			world.celY=(celY-vy)/scaleV;
+			currentSession.celX=(celX-vx)/scaleV;
+			currentSession.celY=(celY-vy)/scaleV;
 			if (dblack>0) 
 			{
-				world.vblack.visible=true;
-				world.vblack.alpha+=dblack/100;
-				if (world.vblack.alpha>=1) 
+				currentSession.vblack.visible=true;
+				currentSession.vblack.alpha+=dblack/100;
+				if (currentSession.vblack.alpha>=1) 
 				{
 					dblack=0;
 				}
 			}
 			if (dblack<0) 
 			{
-				world.vblack.alpha+=dblack/100;
-				if (world.vblack.alpha<=0) 
+				currentSession.vblack.alpha+=dblack/100;
+				if (currentSession.vblack.alpha<=0) 
 				{
 					dblack=0;
-					world.vblack.visible=false;
+					currentSession.vblack.visible=false;
 				}
 			}
 		}

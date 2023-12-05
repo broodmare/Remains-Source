@@ -2139,7 +2139,7 @@ Du musst genauer darauf achten, welche Fertigkeiten du zuerst benötigst.</info>
 Du kannst nur eine begrenzte Anzahl von Gegenständen und Waffen tragen und verwenden.
 Dieser Modus wird nur erfahrenen Spielern empfohlen, die nicht zum ersten Mal spielen.</info></gui>
   
-<gui id='butvid' v='0.6'><n>Erscheinungsbild anpassen</n></gui>
+<gui id='editAppearanceButton' v='0.6'><n>Erscheinungsbild anpassen</n></gui>
 <gui id='vidfur' v='0.6'><n>Fellfarbe</n></gui>
 <gui id='vidhair' v='0.6'><n>Erste Mähnenfarbe</n></gui>
 <gui id='vidhair1' v='0.6'><n>Zweite Mähnenfarbe</n></gui>

@@ -22,7 +22,7 @@ package weapondata
 			if (own==null) 
 			{
 				owner=new Unit();
-				room=World.world.room;
+				room=GameSession.currentSession.room;
 			} 
 			else 
 			{
@@ -51,7 +51,7 @@ package weapondata
 		
 		public function castSpell():void
 		{
-			var cel:Unit=World.world.gg;
+			var cel:Unit=GameSession.currentSession.gg;
 			if (cel.room==room && !cel.invulner && cel.sost<=2) 
 			{
 				if (getRasst2(cel)<rad*rad) 

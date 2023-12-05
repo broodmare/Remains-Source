@@ -388,7 +388,7 @@ package unitdata
 			//if (hpbar) trace(hpbar.visible, hpbar.x, hpbar.y);
 		
 			var t:Tile;
-			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);
+			//GameSession.currentSession.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);
 			//если сдох, то не двигаться
 			if (sost==3) return;
 			if (levit) {
@@ -500,7 +500,7 @@ package unitdata
 						replic('ear');
 						aiSpok=maxSpok-1;
 					}
-					if (celUnit==World.world.gg) {
+					if (celUnit==GameSession.currentSession.gg) {
 						aiVKurse=true;
 					}
 				} else if (t_chCel>0) {

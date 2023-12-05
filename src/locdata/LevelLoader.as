@@ -2,7 +2,7 @@ package locdata
 {
 	
 	// Class for loading terrain maps from a file or retrieving them from variables
-	// Contained within the 'world' object
+	// Contained within the 'currentSession' object
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
 	import flash.events.Event;
@@ -50,8 +50,8 @@ package locdata
 
 			allroom = new XML(loader.data);
 			
-			World.world.levelsLoaded++
-			World.world.allLevelsLoadedCheck();
+			GameSession.currentSession.levelsLoaded++
+			GameSession.currentSession.allLevelsLoadedCheck();
 		}
 		
 		private function ioErrorHandler(event:IOErrorEvent):void 

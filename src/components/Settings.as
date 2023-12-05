@@ -28,7 +28,8 @@ package components
 			
 		public static const boxDamage:Number = 0.2;		//box attack strength multiplier
 
-
+		//Gameplay variables
+		
 
 		//Settings variables
 		public static var enemyAct:int;				//enemy activity, should be 3. If 0, enemies will not be active
@@ -117,11 +118,11 @@ package components
 
 
 
-        public static function settingsSetup():void
+        public static function initialize():void
         {
 
 		//Settings variables
-		trace('Settings.as/settingsSetup() - Settings initializing...');
+		trace('Settings.as/initialize() - Settings initializing...');
 
 
 
@@ -138,7 +139,7 @@ package components
 		errorShowOpt        = true;
         bitmapCachingOption = true;			//Bitcaching to trade RAM for peformance. Default was on, added this as an option.
 
-
+		//Gameplay settings
 
         //General player settings
 		hardInv             = false;		//limited inventory

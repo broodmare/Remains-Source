@@ -12,11 +12,7 @@ package
 	import components.Settings;
 	import systems.XMLLoader;
 
-	//Class overview
-
-
-
-
+	import components.XmlBook;
 
 	public class Snd extends EventDispatcher 
 	{
@@ -71,42 +67,25 @@ package
 		
 
 
-		public static function initSnd():void
+		public static function initializeSound():void
 		{
-			trace('Snd.as/initSnd() - initSnd() Executing ...');
+			trace('Snd.as/initializeSound() - Starting sound.');
 			if (soundInitialized || !soundEnabled)  
 			{
-				trace('Snd.as/initSnd() - error: Sound already intitialized.');
+				trace('Snd.as/initializeSound() - error: Sound already intitialized.');
 				return;
 			}
-			
-			trace('Snd.as/initSnd() - Calling Snd/mainMenuMusicSetup...');
-			//Main menu song loader was here.
+			//TODO: START MAIN MENU MUSIC HERE
 
-			trace('Snd.as/initSnd() - Calling XMLLoader.as/load with ' + soundLocation);
-			soundTextLoader.addEventListener(XMLLoader.XML_LOADED, soundParser);
-			soundTextLoader.load(soundLocation, "initSnd()"); // Load files located at the default sound location and when finished, pass them to soundParser().
-			
-		}
-
-
-
-
-
-		public static function soundParser(event:Event):void
-		{
-			trace('Snd.as/soundParser() - Sound XML received.');
-			
-			event.target.removeEventListener(XMLLoader.XML_LOADED, soundParser);
-			soundList = soundTextLoader.xmlData; //XML list of all sound ids.
+			trace('Snd.as/initializeSound() - Testing: "' + XmlBook.getXML("sounds").sound + '".');
+			soundList = XmlBook.getXML("sounds").sound;
 			Settings.soundFilesFound = soundList.s.length();
 
+			trace('Snd.as/initializeSound() - Loading all sounds, soundList: "' + soundList + '".');
 			var loadingCount:int = 0;
 			for each (var soundFile:XML in soundList.s) 
 			{
 				var soundName:String = soundFile.@id;
-
-
 				var soundURL:URLRequest = new URLRequest(Settings.soundPath + soundName + ".mp3");
 
 				var soundData:Sound = new Sound(soundURL);
@@ -118,9 +97,8 @@ package
 				loadingCount++;
 
 			}
-			trace('Snd.as/soundParser() - Sound files found: "'+ Settings.soundFilesFound + '." Sound files loading: "' + loadingCount + '."');
-
-			trace('Snd.as/soundParser() - Setting soundInitialized to true.');
+			trace('Snd.as/initializeSound() - Sound files found: "'+ Settings.soundFilesFound + '." Sound files loading: "' + loadingCount + '."');
+			trace('Snd.as/initializeSound() - Sound initialized.');
 			soundInitialized = true;	//Set sound to as initialized.
 		}
 
@@ -374,9 +352,9 @@ package
 				if (t_combat == 1) 
 				{
 					currentMusicPrior = 0;
-					playMusic(World.world.currentMusic);
+					playMusic(GameSession.currentSession.currentMusic);
 				}
-				if (World.world.pip == null || !World.world.pip.active && !World.world.sats.active) t_combat--;
+				if (GameSession.currentSession.pip == null || !GameSession.currentSession.pip.active && !GameSession.currentSession.sats.active) t_combat--;
 			}
 			t_shum--;
 			if (t_shum <= 0) 

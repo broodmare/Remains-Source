@@ -58,9 +58,9 @@ package graphdata
 				X = nx + wid;
 				scX = -1;
 			} 
-			vis = World.world.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_t', Grafon.bgObjectCount);
-			erase = World.world.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_e', Grafon.bgObjectCount);
-			light = World.world.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_l', Grafon.bgObjectCount);
+			vis = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_t', Grafon.bgObjectCount);
+			erase = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_e', Grafon.bgObjectCount);
+			light = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_l', Grafon.bgObjectCount);
 			if (node.@fr.length()) frame = node.@fr;
 			else if (newRoom.lightOn > 0 && node.@lon.length()) frame = node.@lon;
 			else if (newRoom.lightOn < 0 && node.@loff.length()) frame = node.@loff;

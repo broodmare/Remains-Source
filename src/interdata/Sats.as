@@ -63,23 +63,23 @@ package interdata
 			else active=false;
 			if (active) 
 			{
-				if (World.world.room.base || Settings.alicorn) 
+				if (GameSession.currentSession.room.base || Settings.alicorn) 
 				{
 					active=false;
 					return;
 				}
-				gg=World.world.gg;
+				gg=GameSession.currentSession.gg;
 				weapon=gg.currentWeapon;
 				if (weapon==null) 
 				{
-					World.world.gui.infoText('noSats');
+					GameSession.currentSession.gui.infoText('noSats');
 					active=false;
 				} 
 				else 
 				{
 					if (weapon.noSats) 
 					{
-						World.world.gui.infoText('noSats');
+						GameSession.currentSession.gui.infoText('noSats');
 						active=false;
 					} 
 					else 
@@ -87,17 +87,17 @@ package interdata
 						var st=weapon.status();
 						if (st==4) 
 						{
-							World.world.gui.infoText('noAmmo','');
+							GameSession.currentSession.gui.infoText('noAmmo','');
 							active=false;
 						}
 						if (st==5) 
 						{
-							World.world.gui.infoText('brokenWeapon','');
+							GameSession.currentSession.gui.infoText('brokenWeapon','');
 							active=false;
 						}
 						if (st==6) 
 						{
-							World.world.gui.infoText('noMana','');
+							GameSession.currentSession.gui.infoText('noMana','');
 							active=false;
 						}
 					}
@@ -129,31 +129,31 @@ package interdata
 					else if (razn>2) 
 					{
 						skillConf=0;
-						World.world.gui.infoText('weaponSkillLevel');
+						GameSession.currentSession.gui.infoText('weaponSkillLevel');
 						active=false;
 						return;
 					}
 				}
 				if (que.length > 0) clearAll();
-				World.world.grafon.drawSats();
-				World.world.grafon.onSats(true);
+				GameSession.currentSession.grafon.drawSats();
+				GameSession.currentSession.grafon.onSats(true);
 				getUnits();
-				World.world.gui.offCelObj();
+				GameSession.currentSession.gui.offCelObj();
 				odv=od;
-				World.world.gui.setOd();
-				World.world.swfStage.addEventListener(MouseEvent.MOUSE_MOVE,mMove);
-				World.world.gui.setTopText('infosats');
+				GameSession.currentSession.gui.setOd();
+				GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_MOVE,mMove);
+				GameSession.currentSession.gui.setTopText('infosats');
 			} 
 			else 
 			{
-				World.world.grafon.onSats(false);
+				GameSession.currentSession.grafon.onSats(false);
 				offUnits();
-				World.world.swfStage.removeEventListener(MouseEvent.MOUSE_MOVE,mMove);
-				World.world.ctr.clearAll();
-				World.world.gui.setTopText('');
+				GameSession.currentSession.swfStage.removeEventListener(MouseEvent.MOUSE_MOVE,mMove);
+				GameSession.currentSession.ctr.clearAll();
+				GameSession.currentSession.gui.setTopText('');
 			}
 			vis.visible = active;
-			World.world.gui.setSats(active);
+			GameSession.currentSession.gui.setSats(active);
 		}
 		
 		//когда на паузе
@@ -161,20 +161,20 @@ package interdata
 		{
 			if (active) 
 			{
-				if (World.world.ctr.keyStates.keyAttack) 
+				if (GameSession.currentSession.ctr.keyStates.keyAttack) 
 				{
 					setCel();
-					World.world.ctr.keyStates.keyAttack = false;
+					GameSession.currentSession.ctr.keyStates.keyAttack = false;
 				}
-				if (World.world.ctr.keyStates.keyTele) 
+				if (GameSession.currentSession.ctr.keyStates.keyTele) 
 				{
 					unsetCel();
-					World.world.ctr.keyStates.keyTele = false;
+					GameSession.currentSession.ctr.keyStates.keyTele = false;
 				}
-				if (World.world.ctr.keyStates.keyAction) 
+				if (GameSession.currentSession.ctr.keyStates.keyAction) 
 				{
 					onoff(-1);
-					World.world.ctr.keyStates.keyAction = false;
+					GameSession.currentSession.ctr.keyStates.keyAction = false;
 				}
 			}
 		}
@@ -182,17 +182,17 @@ package interdata
 		//когда не на паузе
 		public function step2():void
 		{
-			if (que.length > 0 && World.world.ctr.keyStates.keyAttack) clearAll();
+			if (que.length > 0 && GameSession.currentSession.ctr.keyStates.keyAttack) clearAll();
 			if (que.length > 0 && weapon.satsCons*weapon.consMult*weapon.consMult/skillConf*gg.pers.satsMult/weapon.satsQue>od) 
 			{
-				World.world.gui.infoText('noOd');
+				GameSession.currentSession.gui.infoText('noOd');
 				clearAll();
 			}
 			if (que.length == 0 && od<gg.pers.maxOd) 
 			{
 				od+=odd;
 				odv=od;
-				World.world.gui.setOd();
+				GameSession.currentSession.gui.setOd();
 			}
 		}
 		
@@ -205,7 +205,7 @@ package interdata
 				cel.remove();
 			}
 			odv=od;
-			World.world.gui.setOd();
+			GameSession.currentSession.gui.setOd();
 			//trace('cl all');
 		}
 		
@@ -213,7 +213,7 @@ package interdata
 		{
 			if (weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult>odv) 
 			{
-				World.world.gui.infoText('noOd');
+				GameSession.currentSession.gui.infoText('noOd');
 				return;
 			}
 			var cel:SatsCel;
@@ -229,10 +229,10 @@ package interdata
 					}
 				}
 			}
-			if (cel==null) cel=new SatsCel(null, World.world.celX,World.world.celY,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
+			if (cel==null) cel=new SatsCel(null, GameSession.currentSession.celX,GameSession.currentSession.celY,weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult,weapon.satsQue);
 			weapon.ready=false;
 			odv-=weapon.satsCons*weapon.consMult/skillConf*gg.pers.satsMult;
-			World.world.gui.setOd();
+			GameSession.currentSession.gui.setOd();
 			que.push(cel);
 		}
 		public function unsetCel(q:Boolean=false):void
@@ -253,7 +253,7 @@ package interdata
 				onoff(-1);
 				odv=od;
 			}
-			World.world.gui.setOd();
+			GameSession.currentSession.gui.setOd();
 		}
 		
 		public function getReady():Boolean 
@@ -266,7 +266,7 @@ package interdata
 		public function act():void
 		{
 			od-=que[0].cons;
-			World.world.gui.setOd();
+			GameSession.currentSession.gui.setOd();
 			if (que[0].kol>1 && weapon.status()<=1)
 			{
 				que[0].kol--;
@@ -377,7 +377,7 @@ package interdata
 		
 		public function getUnits():void
 		{
-			for each (var un:Unit in World.world.room.units) 
+			for each (var un:Unit in GameSession.currentSession.room.units) 
 			{
 				if (!gg.isMeet(un) || !un.isSats || un.sost>=3 || un.invis) continue;
 				if (weapon.satsMelee) 
@@ -396,7 +396,7 @@ package interdata
 				var du:MovieClip=drawUnit(un);
 				var su:MovieClip=new satsUnit();
 				su.filters=[fShad];
-				su.scaleX=su.scaleY=1/World.world.cam.scaleV;
+				su.scaleX=su.scaleY=1/GameSession.currentSession.cam.scaleV;
 				var txt:TextField=su.txt;
 				var info:TextField=su.info;
 				txt.y=3;
@@ -412,7 +412,7 @@ package interdata
 				info.text='';
 				
 				//расширенная информация о враге
-				if (World.world.pers && World.world.pers.modAnalis) 
+				if (GameSession.currentSession.pers && GameSession.currentSession.pers.modAnalis) 
 				{
 					info.text+='\n'+Res.txt('pip', 'level')+': '+(un.level+1);
 					info.text+='\n'+Res.txt('pip', 'hp')+': '+Math.ceil(un.hp)+'/'+Math.ceil(un.maxhp);

@@ -83,8 +83,8 @@ package unitdata
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.08);
 			var dMult=1;
-			if (World.world.game.globalDif==3) dMult=1.2;
-			if (World.world.game.globalDif==4) dMult=1.5;
+			if (GameSession.currentSession.game.globalDif==3) dMult=1.2;
+			if (GameSession.currentSession.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			dam*=dMult;
 			if (currentWeapon) {
@@ -175,7 +175,7 @@ package unitdata
 		public override function damage(dam:Number, tip:int, bul:Bullet=null, tt:Boolean=false):Number
 		{
 			var td:Number=super.damage(dam, tip, bul,tt);
-			if (tr==2 && World.world.game.globalDif>1) {
+			if (tr==2 && GameSession.currentSession.game.globalDif>1) {
 				var tc:int=Math.floor((maxhp-hp)/maxhp*4);
 				if (tc>called) {
 					room.enemySpawn(true,true);

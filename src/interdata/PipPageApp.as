@@ -23,7 +23,7 @@ package interdata
 		//принять настройки внешности
 		public function funVidOk():void
 		{
-			World.world.gg.refreshVis();
+			GameSession.currentSession.gg.refreshVis();
 			pip.onoff(-1);
 		}
 		//принять настройки внешности
@@ -45,10 +45,10 @@ package interdata
 			if (page2 == 1) 
 			{
 				pip.ArmorId = '';
-				World.world.app.attach(vis, funVidOk, funVidCancel);
-				World.world.app.vis.y = 400;
-				World.world.app.vis.x = 444;
-				World.world.app.vis.fon.visible = false;
+				GameSession.currentSession.appearanceWindow.attach(vis, funVidOk, funVidCancel);
+				GameSession.currentSession.appearanceWindow.window.y = 400;
+				GameSession.currentSession.appearanceWindow.window.x = 444;
+				GameSession.currentSession.appearanceWindow.window.fon.visible = false;
 			}
 			
 			trace('PipPageApp.as/setSubPages() - Finished updating subPages.');

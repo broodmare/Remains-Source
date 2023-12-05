@@ -195,7 +195,7 @@ package interdata
 						trace('PipPageOpt.as/setSubPages() - arr is null.');
 					}
 					setTopText('infokeys');
-					for each (var key:Object in World.world.ctr.keyObj) 
+					for each (var key:Object in GameSession.currentSession.ctr.keyObj) 
 					{
 						var obj:Object = {id:key.id, objectName:Res.txt('key', key.id), a1:key.a1, a2:key.a2};
 						arr.push(obj);
@@ -218,8 +218,8 @@ package interdata
 				{
 					if (pip.light) return;
 					info.visible 	= true;
-					info.styleSheet = World.world.gui.style;
-					info.htmlText 	= World.world.log;
+					info.styleSheet = GameSession.currentSession.gui.style;
+					info.htmlText 	= GameSession.currentSession.log;
 					info.scrollV 	= info.maxScrollV;
 					trace('PipPageOpt.as/setSubPages() - Sucessfully updated page 2.');
 				}
@@ -239,7 +239,7 @@ package interdata
 					}
 					if (pip.light) return;
 					vis.butDef.visible = true;
-					World.world.app.saveOst();
+					GameSession.currentSession.appearanceWindow.saveOst();
 					if (page2 == 1) 
 					{
 						setTopText('infoload');
@@ -249,22 +249,22 @@ package interdata
 					else 
 					{
 						setTopText('infosave');
-						if (World.world.pers.hardcoreMode) 
+						if (GameSession.currentSession.pers.hardcoreMode) 
 						{
-							nSave = World.world.autoSaveN;
+							nSave = GameSession.currentSession.autoSaveN;
 							vis.butOk.visible = true;
 						}
 						vis.butOk.text.text = Res.txt('pip', 'opt2');
 						if (gg.pers.hardcoreMode) vis.butDef.visible = false;
 						vis.butDef.text.text = Res.txt('pip', 'savefile');
 					}
-					for (var i:int = 0; i <= World.world.saveCount; i++) 
+					for (var i:int = 0; i <= GameSession.currentSession.saveCount; i++) 
 					{
-						var save:Object = World.world.getSave(i);
+						var save:Object = GameSession.currentSession.getSave(i);
 						var obj1:Object = saveObj(save,i);
 						arr.push(obj1);
 					}
-					if (page2 == 2 && World.world.pers.hardcoreMode) 
+					if (page2 == 2 && GameSession.currentSession.pers.hardcoreMode) 
 					{
 						showSaveInfo(arr[nSave], vis);
 					}
@@ -378,7 +378,7 @@ package interdata
 			vis.gotoAndStop(1);
 			if (n==null) return;
 			try {
-				vis.txt.text=World.world.ctr.keyNames[n];
+				vis.txt.text=GameSession.currentSession.ctr.keyNames[n];
 			} 
 			catch(err:Error) 
 			{
@@ -392,12 +392,12 @@ package interdata
 		{
 			pip.vissetkey.visible=true;
 			pip.vissetkey.txt.htmlText=Res.txt('gui', 'setkeyinfo')+'\n\n<b>'+Res.txt('key',setkeyAction)+'</b>\n'+setkeyCell;
-			World.world.ctr.requestKey(unshowSetKey);
+			GameSession.currentSession.ctr.requestKey(unshowSetKey);
 		}
 		
 		public function unshowSetKey():void
 		{
-			var newkey=World.world.ctr.setkeyRequest;
+			var newkey=GameSession.currentSession.ctr.setkeyRequest;
 			pip.vissetkey.visible=false;
 			if (newkey!=-1) 
 			{
@@ -484,19 +484,19 @@ package interdata
 				Settings.zoom100=sel;
 				if (!pip.light) 
 				{
-					if (sel) World.world.cam.setZoom(0);
-					else World.world.cam.setZoom(2);
+					if (sel) GameSession.currentSession.cam.setZoom(0);
+					else GameSession.currentSession.cam.setZoom(2);
 				} 
 				else 
 				{
-					if (sel) World.world.cam.isZoom=0;
-					else World.world.cam.isZoom=2;
+					if (sel) GameSession.currentSession.cam.isZoom=0;
+					else GameSession.currentSession.cam.isZoom=2;
 				}
 			}
 			if (page2 == 6) 
 			{
-				World.world[id] = sel;
-				World.world.checkLoot = true;
+				GameSession.currentSession[id] = sel;
+				GameSession.currentSession.checkLoot = true;
 			}
 			pip.isSaveConf=true;
 		}
@@ -504,12 +504,12 @@ package interdata
 		//set public
 		public override function itemClick(event:MouseEvent):void
 		{
-			if (World.world.ctr.setkeyOn) return;
+			if (GameSession.currentSession.ctr.setkeyOn) return;
 			if (page2 == 3) 
 			{
 				if (event.currentTarget.id.text=='fullscreen') 
 				{
-					World.world.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+					GameSession.currentSession.swfStage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				}
 				if (event.currentTarget.id.text=='autotake') 
 				{
@@ -530,7 +530,7 @@ package interdata
 			{
 				if (pip.gamePause && page2 == 2) 
 				{
-					World.world.gui.infoText('gamePause');
+					GameSession.currentSession.gui.infoText('gamePause');
 					return;
 				}
 				if (page2 == 2 && gg.pers.hardcoreMode) return;
@@ -551,36 +551,36 @@ package interdata
 			{
 				for (var i in arr) 
 				{
-					var obj=World.world.ctr.keyIds[arr[i].id];
+					var obj=GameSession.currentSession.ctr.keyIds[arr[i].id];
 					obj.a1=arr[i].a1;
 					obj.a2=arr[i].a2;
 				}
 				vis.butOk.visible=false;
-				World.world.ctr.updateKeys();
-				World.world.saveConfig();
+				GameSession.currentSession.ctr.updateKeys();
+				GameSession.currentSession.saveConfig();
 			} 
 			else if (page2==1) 
 			{
-				World.world.comLoad=nSave;
+				GameSession.currentSession.comLoad=nSave;
 			} 
 			else if (page2==2) 
 			{
 				if (pip.gamePause) 
 				{
-					World.world.gui.infoText('gamePause');
+					GameSession.currentSession.gui.infoText('gamePause');
 					return;
 				}
 					try 
 					{
-						World.world.saveGame(nSave);
-						World.world.gui.infoText('SaveGame');
+						GameSession.currentSession.saveGame(nSave);
+						GameSession.currentSession.gui.infoText('SaveGame');
 						nSave=-1;
 						vis.butOk.visible=false;
 						setStatus();
 					}
 					catch (err:Error) 
 					{
-						World.world.gui.infoText('noSaveGame');
+						GameSession.currentSession.gui.infoText('noSaveGame');
 					}
 			}
 		}
@@ -595,12 +595,12 @@ package interdata
 			try {
 				var obj:Object=file.data.readObject();
 				if (obj && obj.est==1) {
-					World.world.comLoad=99;
-					World.world.loaddata=obj;
+					GameSession.currentSession.comLoad=99;
+					GameSession.currentSession.loaddata=obj;
 					return;
 				}
 			} catch(err) {}
-			World.world.gui.infoText('noLoadGame');
+			GameSession.currentSession.gui.infoText('noLoadGame');
 			trace('Error load');
        }		
 		
@@ -608,9 +608,9 @@ package interdata
 		public function gotoDef(event:MouseEvent):void
 		{
 			if (page2==4) {
-				World.world.ctr.gotoDef();
-				World.world.ctr.updateKeys();
-				World.world.saveConfig();
+				GameSession.currentSession.ctr.gotoDef();
+				GameSession.currentSession.ctr.updateKeys();
+				GameSession.currentSession.saveConfig();
 				setStatus();
 			} 
 			else if (page2==1) 
@@ -622,12 +622,12 @@ package interdata
 			{
 				if (pip.gamePause) 
 				{
-					World.world.gui.infoText('gamePause');
+					GameSession.currentSession.gui.infoText('gamePause');
 					return;
 				}
 				//сохранить в файл
 				var obj:Object={};
-				World.world.saveToObj(obj);
+				GameSession.currentSession.saveToObj(obj);
 				var ba:ByteArray=new ByteArray();
 				ba.writeObject(obj);
 				var sfile = new FileReference();
@@ -648,8 +648,8 @@ package interdata
 			if (obj && obj.gg!='') 
 			{
 				vis.objectName.text=obj.gg;
-				World.world.app.load(obj.app);
-				World.world.pip.setArmor(obj.armor);
+				GameSession.currentSession.appearanceWindow.load(obj.app);
+				GameSession.currentSession.pip.setArmor(obj.armor);
 				vis.pers.gotoAndStop(2);
 				vis.pers.gotoAndStop(1);
 				vis.pers.head.morda.magic.visible=false;

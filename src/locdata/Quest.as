@@ -121,7 +121,7 @@ package locdata
 				trigger=xml.@trigger;
 				if (xml.@triggerset.length()) triggerSet=xml.@triggerset;
 				else triggerSet='1';
-				if (state==2 && World.world.game.triggers[trigger]==null) World.world.game.triggers[trigger]=triggerSet;
+				if (state==2 && GameSession.currentSession.game.triggers[trigger]==null) GameSession.currentSession.game.triggers[trigger]=triggerSet;
 			}
 			if (loadObj && loadObj.invis!=undefined) 
 			{
@@ -196,12 +196,12 @@ package locdata
 						var item:Item;
 						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
 						else item=new Item('', rew.@id);
-						World.world.invent.take(item,2);
+						GameSession.currentSession.invent.take(item,2);
 					}
 					if (rew.@trigger.length()) 
 					{
-						if (rew.@set.length()) World.world.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.world.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) GameSession.currentSession.game.triggers[rew.@trigger]=rew.@set.toString();
+						else GameSession.currentSession.game.triggers[rew.@trigger]=1;
 					}
 				}
 			}
@@ -216,7 +216,7 @@ package locdata
 			{
 				if (collect && colTip==0 && gived<kol) 
 				{
-					if (World.world.invent.items[collect]) est=World.world.invent.items[collect].kol+gived;
+					if (GameSession.currentSession.invent.items[collect]) est=GameSession.currentSession.invent.items[collect].kol+gived;
 					if (est>kol) est=kol;
 					if (give==null) {
 						if (est>=kol) 
@@ -236,11 +236,11 @@ package locdata
 						
 					}
 					if (cid!=null && collect==cid) res=objectName+' '+est+'/'+kol;
-					if (World.world.invent.items[collect]) est=World.world.invent.items[collect].kol;
+					if (GameSession.currentSession.invent.items[collect]) est=GameSession.currentSession.invent.items[collect].kol;
 				}
 				if (collect && colTip==1) 
 				{
-					if (World.world.invent.weapons[collect]!=null && World.world.invent.weapons[collect].respect!=3) 
+					if (GameSession.currentSession.invent.weapons[collect]!=null && GameSession.currentSession.invent.weapons[collect].respect!=3) 
 					{
 						state=2;
 						if (par.result) par.isResult();
@@ -278,20 +278,20 @@ package locdata
 				if (give==null) return false;
 				if (collect) 
 				{
-					if (World.world.invent.items[collect]) est=World.world.invent.items[collect].kol;
+					if (GameSession.currentSession.invent.items[collect]) est=GameSession.currentSession.invent.items[collect].kol;
 					if (est>0 && (kol-gived)>0) 
 					{
 						if (est>kol-gived) est=kol-gived;
 						if (us) 
 						{
-							World.world.invent.minusItem(collect,est);
+							GameSession.currentSession.invent.minusItem(collect,est);
 							gived+=est;
 							if (pay>0) 
 							{
-								World.world.invent.money.kol+=est*pay;
-								World.world.gui.infoText('reward',Res.txt('item','money'),est*pay);
+								GameSession.currentSession.invent.money.kol+=est*pay;
+								GameSession.currentSession.gui.infoText('reward',Res.txt('item','money'),est*pay);
 							}
-							World.world.gui.infoText('withdraw',World.world.invent.items[collect].objectName, est);
+							GameSession.currentSession.gui.infoText('withdraw',GameSession.currentSession.invent.items[collect].objectName, est);
 							est=0;
 							if (gived>=kol) close();
 						}
@@ -395,32 +395,32 @@ package locdata
 					{
 						if (q.colTip==0) 
 						{
-							World.world.invent.minusItem(q.collect, q.kol);
+							GameSession.currentSession.invent.minusItem(q.collect, q.kol);
 							try 
 							{
-								World.world.gui.infoText('withdraw',World.world.invent.items[q.collect].objectName, q.kol);
+								GameSession.currentSession.gui.infoText('withdraw',GameSession.currentSession.invent.items[q.collect].objectName, q.kol);
 							} catch (err) {}
 						} 
 						else if (q.colTip==1) 
 						{
 							try 
 							{
-								World.world.gui.infoText('withdraw',World.world.invent.weapons[q.collect].objectName, 1);
+								GameSession.currentSession.gui.infoText('withdraw',GameSession.currentSession.invent.weapons[q.collect].objectName, 1);
 							} 
 							catch (err) 
 							{
 
 							}
-							World.world.invent.remWeapon(q.collect);
+							GameSession.currentSession.invent.remWeapon(q.collect);
 						}
 					}
 				}
 			}
 			//выдать награды
-			if (sp) World.world.pers.addSkillPoint(sp);
-			if (xp) World.world.pers.expa(xp);
-			if (rep) World.world.pers.rep+=rep;
-			if (trigger) World.world.game.triggers[trigger]=triggerSet;
+			if (sp) GameSession.currentSession.pers.addSkillPoint(sp);
+			if (xp) GameSession.currentSession.pers.expa(xp);
+			if (rep) GameSession.currentSession.pers.rep+=rep;
+			if (trigger) GameSession.currentSession.game.triggers[trigger]=triggerSet;
 			if (xml.reward.length()) 
 			{
 				for each(var rew in xml.reward) 
@@ -430,35 +430,35 @@ package locdata
 						var item:Item;
 						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
 						else item=new Item('', rew.@id);
-						World.world.invent.take(item,2);
+						GameSession.currentSession.invent.take(item,2);
 					}
 					if (rew.@trigger.length()) 
 					{
-						if (rew.@set.length()) World.world.game.triggers[rew.@trigger]=rew.@set.toString();
-						else World.world.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) GameSession.currentSession.game.triggers[rew.@trigger]=rew.@set.toString();
+						else GameSession.currentSession.game.triggers[rew.@trigger]=1;
 					}
 				}
 			}
 			//сообщение и звук
 			if (!sub) 
 			{
-				World.world.gui.infoText('doneTask',objectName);
+				GameSession.currentSession.gui.infoText('doneTask',objectName);
 				Snd.ps('quest_ok');
 			} 
 			else 
 			{
-				World.world.gui.infoText('doneStage',objectName);
+				GameSession.currentSession.gui.infoText('doneStage',objectName);
 			}
 			//завершающий диалог
 			if (endDial && Settings.dialOn) 
 			{
-				World.world.pip.onoff(-1);
-				World.world.gui.dialog(endDial);
+				GameSession.currentSession.pip.onoff(-1);
+				GameSession.currentSession.gui.dialog(endDial);
 			}
 			//завершающий скрипт
 			if (endScript!=null) 
 			{
-				World.world.game.runScript(endScript);
+				GameSession.currentSession.game.runScript(endScript);
 			}
 		}
 

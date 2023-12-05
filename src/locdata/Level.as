@@ -152,7 +152,7 @@ package locdata
 		
 		public function buildRandomLand():void
 		{
-			if (World.world.landError) 
+			if (GameSession.currentSession.landError) 
 			{
 				roomArray = null;
 				roomArray = [];
@@ -241,7 +241,7 @@ package locdata
 						{
 							if (j == 0) 
 							{
-								if (!(World.world.game.triggers['mbase_visited'] > 0)) 
+								if (!(GameSession.currentSession.game.triggers['mbase_visited'] > 0)) 
 								{
 									opt.mirror = false;
 									opt.ramka = 8;
@@ -629,7 +629,7 @@ package locdata
 		{
 			if (probs[nprob] != null) return false;
 			//create a single room
-			var arrr:XML = World.world.game.probs['prob'].allroom;
+			var arrr:XML = GameSession.currentSession.game.probs['prob'].allroom;
 			for each(var xml in arrr.roomTemplate) 
 			{
 				if (xml.@name==nprob) 
@@ -660,7 +660,7 @@ package locdata
 			var impProb;
 			for each(var xml in levelTemplate.levelData.prob) 
 			{
-				if (probs[xml.@id]==null && World.world.game.triggers['prob_'+xml.@id]==null && (xml.@levelTemplate.length==0 || xml.@levelTemplate<=maxlevel)) 
+				if (probs[xml.@id]==null && GameSession.currentSession.game.triggers['prob_'+xml.@id]==null && (xml.@levelTemplate.length==0 || xml.@levelTemplate<=maxlevel)) 
 				{
 					rndRoom.push(xml.@id);
 					if (xml.@imp.length()) impProb=xml.@id;
@@ -790,8 +790,8 @@ package locdata
 			room.enemyLevel=ml;		// level of enemies
 
 			// influence of difficulty settings
-			if (World.world.game.globalDif<2) room.earMult*=0.5;
-			if (World.world.game.globalDif>2) room.enemyLevel+=(World.world.game.globalDif-2)*2;	// level of enemies based on difficulty
+			if (GameSession.currentSession.game.globalDif<2) room.earMult*=0.5;
+			if (GameSession.currentSession.game.globalDif>2) room.enemyLevel+=(GameSession.currentSession.game.globalDif-2)*2;	// level of enemies based on difficulty
 			// type of enemies
 			if (levelTemplate.biom==0 && Math.random()<0.25) room.tipEnemy=1;
 			if (room.tipEnemy<0) room.tipEnemy=Math.floor(Math.random() * 3);
@@ -900,7 +900,7 @@ package locdata
 			} 
 			else if (currentCP && !first) 
 			{
-				World.world.pers.currentCP = currentCP;
+				GameSession.currentSession.pers.currentCP = currentCP;
 				gotoCheckPoint();
 				currentCP.activate();
 			} 
@@ -1015,13 +1015,13 @@ package locdata
 
 			gg.inLoc(room);
 			room.reactivate(locN);
-			World.world.activateRoom(room);
+			GameSession.currentSession.activateRoom(room);
 
 			if (room.sky) 
 			{
 				gg.isFly = true;
 				gg.stay = false;
-				World.world.cam.setZoom(2);
+				GameSession.currentSession.cam.setZoom(2);
 			}
 
 			room.lightAll();
@@ -1159,7 +1159,7 @@ package locdata
 		
 		public function gotoCheckPoint():void
 		{
-			var cp:CheckPoint=World.world.pers.currentCP;
+			var cp:CheckPoint=GameSession.currentSession.pers.currentCP;
 			if (cp == null) 
 			{
 				gg.setNull();
@@ -1168,7 +1168,7 @@ package locdata
 			if (cp.room.level!=this && currentCP)	
 			{
 				cp=currentCP;
-				World.world.pers.currentCP=currentCP;
+				GameSession.currentSession.pers.currentCP=currentCP;
 				currentCP.activate();
 			}
 			if (cp.room.level!=this) 
@@ -1197,7 +1197,7 @@ package locdata
 			if (isRefill) return;
 			if (summXp*10>allXp || !rnd) 
 			{
-				World.world.game.refillVendors();
+				GameSession.currentSession.game.refillVendors();
 				isRefill=true;
 			} 
 			else 
@@ -1209,7 +1209,7 @@ package locdata
 		public function artBabah():void
 		{
 			Snd.ps('artfire');
-			World.world.quake(10,3);
+			GameSession.currentSession.quake(10,3);
 		}
 		
 		public function artStep():void
@@ -1218,7 +1218,7 @@ package locdata
 			if (art_t<=0) 
 			{
 				art_t=Math.floor(Math.random()*1000+20);
-				if (levelTemplate.artFire!=null && World.world.game.triggers[levelTemplate.artFire]!=1) 
+				if (levelTemplate.artFire!=null && GameSession.currentSession.game.triggers[levelTemplate.artFire]!=1) 
 				{
 					artBabah();
 				}
@@ -1260,7 +1260,7 @@ package locdata
 		
 		public function step():void
 		{
-			if (!World.world.catPause) 
+			if (!GameSession.currentSession.catPause) 
 			{
 				room.step();
 				if (loc_t>0) 

@@ -89,7 +89,7 @@ package unitdata
 		
 		public override function step():void
 		{
-			if (World.world.room.petOn) super.step();
+			if (GameSession.currentSession.room.petOn) super.step();
 		}
 		
 		public override function forces():void
@@ -201,7 +201,7 @@ package unitdata
 		public override function visDetails():void
 		{
 			super.visDetails();
-			World.world.gui.setPet();
+			GameSession.currentSession.gui.setPet();
 		}
 		
 		//найти точку следования
@@ -329,8 +329,8 @@ package unitdata
 		public override function die(sposob:int = 0):void
 		{
 			if (sost>=3) return;
-			if (optAutores)	World.world.gui.infoText('petDie', objectName, World.world.pers.petRes);
-			else World.world.gui.infoText('petDie2', objectName);
+			if (optAutores)	GameSession.currentSession.gui.infoText('petDie', objectName, GameSession.currentSession.pers.petRes);
+			else GameSession.currentSession.gui.infoText('petDie2', objectName);
 			if (optUncall) {
 				recall();
 				gg.pet=null;
@@ -344,13 +344,13 @@ package unitdata
 			poison=stun=cut=0;
 			sost=4;
 			expl();
-			if (optAutores)	gg.noPet = World.world.pers.petRes * 30;
-			World.world.gui.setPet();
+			if (optAutores)	gg.noPet = GameSession.currentSession.pers.petRes * 30;
+			GameSession.currentSession.gui.setPet();
 		}
 		
 		public function resurrect():void
 		{
-			World.world.gui.infoText('petRes', objectName);
+			GameSession.currentSession.gui.infoText('petRes', objectName);
 			if (hpbar) hpbar.visible=false;
 			hp=Math.min(100,maxhp/2);
 			setLevel(gg.pers.level);
@@ -363,7 +363,7 @@ package unitdata
 			vis.visible=true;
 			sost=1;
 			aiState=1;
-			World.world.gui.setPet();
+			GameSession.currentSession.gui.setPet();
 		}
 		
 		public function repair(hl:Number):Boolean 
@@ -376,7 +376,7 @@ package unitdata
 				sost=1;
 				if (gg.currentPet==id) 
 				{
-					World.world.gui.infoText('petRes', objectName);
+					GameSession.currentSession.gui.infoText('petRes', objectName);
 					setLevel(gg.pers.level);
 					visDetails();
 					X=gg.X;
@@ -386,7 +386,7 @@ package unitdata
 					cut=poison=stun=0;
 					vis.visible=true;
 					aiState=1;
-					World.world.gui.setPet();
+					GameSession.currentSession.gui.setPet();
 				}
 			}
 			return true;
@@ -429,7 +429,7 @@ package unitdata
 				} else if (aiState==4 || aiState==5) {
 					aiState=2;
 				} else if (aiState==3) {
-					if (World.world.t_battle<=0) aiState=1;
+					if (GameSession.currentSession.t_battle<=0) aiState=1;
 					else aiState=2;
 				}
 				if (gg.dx>2 || gg.dx<-2) aiTCh=Math.floor(Math.random()*20)+10;
@@ -499,7 +499,7 @@ package unitdata
 			if (celUnit && celUnit.fraction==fraction) celUnit=null;
 			//поиск цели
 			if (aiState<=1 && aiTCh%30==1 && oduplenie<=0) {
-				if (findCel() || World.world.t_battle>0) {
+				if (findCel() || GameSession.currentSession.t_battle>0) {
 					aiState=2;
 				}
 			} if ((aiState==2 || aiState==5) && aiTCh%15==1) {
@@ -508,12 +508,12 @@ package unitdata
 				} else if (findCel()) {		//найти новую цель
 					
 				} else {					//успокоиться
-					if (World.world.t_battle<=0) aiState=1;
+					if (GameSession.currentSession.t_battle<=0) aiState=1;
 				}
 			} else if (aiState==3) {
 				//достиг точки назначения
 				if (flyR<20) {
-					if (World.world.t_battle<=0) aiState=1;
+					if (GameSession.currentSession.t_battle<=0) aiState=1;
 					else aiState=2;
 				}
 			}

@@ -84,8 +84,8 @@ package unitdata
 			super.setLevel(nlevel);
 			var wMult=(1+level*0.07);
 			var dMult=1;
-			if (World.world.game.globalDif==3) dMult=1.2;
-			if (World.world.game.globalDif==4) dMult=1.5;
+			if (GameSession.currentSession.game.globalDif==3) dMult=1.2;
+			if (GameSession.currentSession.game.globalDif==4) dMult=1.5;
 			hp=maxhp=hp*dMult;
 			shitMaxHp*=(1+level*0.12)*dMult;
 			dam*=dMult;
@@ -220,7 +220,7 @@ package unitdata
 		public override function control():void
 		{
 
-			//World.world.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);
+			//GameSession.currentSession.gui.vis.vfc.text=(celUnit==null)?'no':(celUnit.objectName+celDY);
 			//если сдох, то не двигаться
 			if (sost == 3) return;
 			if (sost == 2) 
@@ -342,7 +342,7 @@ package unitdata
 		
 		public function castShit():void
 		{
-			if (shithp<=0 && t_shit<=0 && (World.world.game.globalDif==4 || World.world.game.globalDif==3 && hp<maxhp/2)) {
+			if (shithp<=0 && t_shit<=0 && (GameSession.currentSession.game.globalDif==4 || GameSession.currentSession.game.globalDif==3 && hp<maxhp/2)) {
 				shithp=shitMaxHp;
 				t_shit=1000;
 			}

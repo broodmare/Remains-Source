@@ -92,11 +92,11 @@ package unitdata
 			id='cage';
 			objectName=Res.txt('unit',id);
 			npc=false;
-			room.takeXP(500,World.world.gg.X, World.world.gg.Y-100,true);
+			room.takeXP(500,GameSession.currentSession.gg.X, GameSession.currentSession.gg.Y-100,true);
 			fraction=0;
 			if (questId) {
 				if (room.level.itemScripts[questId]) room.level.itemScripts[questId].start();
-				World.world.game.incQuests(questId);
+				GameSession.currentSession.game.incQuests(questId);
 			}
 			statusCapt=1;
 		}

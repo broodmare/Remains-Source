@@ -4534,7 +4534,7 @@ Tendrás que elegir con más cuidado qué habilidades necesitas en primer lugar<
 Podrás transportar y usar un número limitado de artículos y armas.
 Este modo se recomienda solo para jugadores experimentados que juegan no la primera vez</info>
   </gui>
-  <gui id="butvid" v="0.6">
+  <gui id="editAppearanceButton" v="0.6">
     <n>Personaliza la apariencia</n>
   </gui>
   <gui id="vidfur" v="0.6">

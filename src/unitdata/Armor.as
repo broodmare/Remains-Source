@@ -153,7 +153,7 @@ package unitdata
 				if (hp < 0) 
 				{
 					hp = 0;
-					World.world.gg.changeArmor('off');
+					GameSession.currentSession.gg.changeArmor('off');
 				}
 			}
 			setArmor();
