@@ -32,7 +32,6 @@ package
 	{
 		
 		public var gameWindow:Sprite;
-		// NOTE: This mainMenu pointer is so the mainMenu can access it's own properties, eg. "mainMenu.NewGameWindow".
 		public var mainMenuWindow; 		//The MainMenu MovieClip from the '.fla' file, everything below goes in it.
 		public var currentSession:GameSession;
 		public var pip:PipBuck; 		// Why does main menu have (possibly its own instance of) this?
@@ -207,6 +206,8 @@ package
 						}
 						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
 					}
+
+					langButtonsLoaded = true;
 				}
 			}
 			catch(err:Error)
@@ -249,7 +250,7 @@ package
 				mainMenuWindow.newGameWindow['infoOpt' + j].text = Res.txt('gui', 'opt' + j);
 			}
 			
-			mainMenuWindow.newGameWindow.editAppearanceButton.mode.text = Res.txt('gui', 'butvid');
+			mainMenuWindow.newGameWindow.editAppearanceButton.mode.text = Res.txt('gui', 'editAppearanceButton');
 
 			currentSession.appearanceWindow.setLang();
 
@@ -408,7 +409,7 @@ package
 			mainMenuWindow.newGameWindow.visible = true;
 			mainMenuWindow.newGameWindow.butCancel.addEventListener(MouseEvent.CLICK, clickedButtonCloseNewGameWindow);
 			mainMenuWindow.newGameWindow.butOk.addEventListener(MouseEvent.CLICK, clickedButtonStartNewGame);
-			mainMenuWindow.newGameWindow.butVid.addEventListener(MouseEvent.CLICK, openAppearanceEditorWindow);
+			mainMenuWindow.newGameWindow.editAppearanceButton.addEventListener(MouseEvent.CLICK, openAppearanceEditorWindow);
 
 			for (var i:int = 0; i <difficultyOptionCount; i++) 
 			{
@@ -436,7 +437,7 @@ package
 			if (mainMenuWindow.newGameWindow.butOk.hasEventListener(MouseEvent.CLICK)) mainMenuWindow.newGameWindow.butOk.removeEventListener(MouseEvent.CLICK, clickedButtonStartNewGame);
 			if (mainMenuWindow.newGameWindow.butOk.hasEventListener(MouseEvent.CLICK)) 
 			{
-				mainMenuWindow.newGameWindow.butVid.removeEventListener(MouseEvent.CLICK, openAppearanceEditorWindow);
+				mainMenuWindow.newGameWindow.editAppearanceButton.removeEventListener(MouseEvent.CLICK, openAppearanceEditorWindow);
 				for (var i:int = 0; i < difficultyOptionCount; i++) 
 				{
 					mainMenuWindow.newGameWindow['dif' + i].removeEventListener(MouseEvent.CLICK, funNewDif);
@@ -532,18 +533,18 @@ package
 
 			if (readyToStart)
 			{
-				trace('MainMenu.as/step() - Starting menu animation.');
+				//trace('MainMenu.as/step() - Starting menu animation.');
 				if (animOn && !currentSession.pip.active) mainMenuAnimation.anim();
 
 				if (currentSession.allLevelsLoaded && Languages.textLoaded)
 				{
 					if (Settings.musicTracksFound < Settings.musicTracksLoaded) 
 					{
-						mainMenuWindow.loading.text = 'Music files readyToStart!';
+						mainMenuWindow.mainMenuLoadingLog.text = 'Music files readyToStart!';
 					}
 					else if (Settings.musicTracksFound > Settings.musicTracksLoaded) 
 					{
-						mainMenuWindow.loading.text = 'Music files readyToStart : ' + Settings.musicTracksLoaded + '/' + Settings.musicTracksFound;
+						mainMenuWindow.mainMenuLoadingLog.text = 'Music files readyToStart : ' + Settings.musicTracksLoaded + '/' + Settings.musicTracksFound;
 					}
 				}
 				else
@@ -600,7 +601,7 @@ package
 				}
 				else 
 				{
-					trace('MainMenu.as/step() - currentSession.grafon.resourcesLoaded is false, waiting on resources to load...');
+					//trace('MainMenu.as/step() - currentSession.grafon.resourcesLoaded is false, waiting on resources to load...');
 					mainMenuWindow.mainMenuLoadingLog.text = 'Loading ' + Math.round(currentSession.grafon.progressLoad * 100) + '%';
 				}
 			}

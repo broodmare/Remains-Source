@@ -1,4 +1,4 @@
-package systems
+﻿package systems
 {
 	import flash.net.URLLoader; 
 	import flash.net.URLRequest; 
@@ -57,10 +57,10 @@ package systems
 			switch (event.type) 
 			{
 				case Event.COMPLETE:
-
+					
+					trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" requested by "' + callerID + '" is done loading. Firing event to notify the caller.')
 					xmlData = new XML(loader.data);
-
-					//trace('XMLLoader.as/loaderFinished() - File: "' + fileURL + '" requested by "' + callerID + '" is done loading. Firing event to notify the caller.')
+					
 					dispatchEvent(new Event(XMLLoader.XML_LOADED));
 					break;
 				

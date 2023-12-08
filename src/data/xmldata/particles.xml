@@ -1,5 +1,5 @@
 <particles>
-	<!-- Разрушение стен -->
+	<!-- Разрушение  стен -->
 	<part id='kusok' vis='visualKusok' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
 	<part id='kusokB' vis='visualKusokB' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>
 	<part id='kusokD' vis='visualKusokD' alph='1' ctrans='1' minliv='20' rliv='40' grav='1' minv='2' rv='10' rot='1' dy='-5'/>

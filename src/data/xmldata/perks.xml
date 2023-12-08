@@ -26,7 +26,6 @@
 		<sk tip='m' id='maxmM' vd='1'/>
 	</perk>
 	
-	<!-- магия -->
 	<perk id='spell_port' tip='1'>
 		<req id='level' lvl='12'/>
 		<req id='magic' lvl='4'/>

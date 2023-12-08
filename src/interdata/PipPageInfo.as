@@ -208,7 +208,7 @@ package interdata
 				if (Unit.arrIcos==null) Unit.initIcos();
 				var prevObj:Object=null;
 				statHead.visible=true;
-				statHead.objectName.text='';
+				statHead.nazv.text='';
 				statHead.mq.visible=false;
 				statHead.kol.text=Res.txt('pip', 'frag');
 				vis.ico.visible=true;

@@ -4,6 +4,7 @@ package graphdata
 	import flash.net.URLRequest;
 	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.events.ProgressEvent;
 	
 	public class GrLoader 
@@ -33,10 +34,12 @@ package graphdata
 			//trace('GrLoader.as/GrLoader() - New loader (' + loaderID + ') created. Instance count: "' + instanceCount + '." Content: "' + resourceURL + '."');
 			loader = new Loader(); 	// Sets the loader a new Flash.Loader class.
 			
-			
-			var urlReq:URLRequest = new URLRequest(url); 										//What file to load.
-			loader.load(urlReq); 																//Load the file.
+			trace('GrLoader.as/GrLoader() - Attempting to load resources from url: "' + url + '"');
+			var urlReq:URLRequest = new URLRequest(url);	//What file to load.
+			loader.load(urlReq);	//Load the file.
+																
 			loader.contentLoaderInfo.addEventListener(ProgressEvent.PROGRESS, funProgress); 	//Add event listeners to check loading progress.
+			loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, funIOError)
 			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, funLoaded); 			 	//Add event listeners to check if file loading is complete.
 			
 		}
@@ -45,13 +48,11 @@ package graphdata
 		//What to do when the file is loaded.
 		public function funLoaded(event:Event):void 
 		{
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, funLoaded);
+			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, funIOError);
+			loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, funProgress);
 
 			resource = event.target.content; // Set 'resource' as the loaded content.
-			
-			if (resource == null)
-			{
-				trace('GrLoader.as/funLoaded() - resource:' + resource + 'failed to load.')
-			}
 
 			//trace('GrLoader.as/funLoaded() - Loader (' + loaderID + ') finished loading: "' + resourceURL + '."');
 
@@ -60,9 +61,19 @@ package graphdata
 			completedInstances++; 		// Increase the global number of loaded instances.
 
 			grafon.checkLoaded(); 
-			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, funLoaded); 			//Remove the event listeners.
-			loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, funProgress);  //Remove the event listeners.
+
  		}
+
+		public function funIOError(event:IOErrorEvent):void
+		{
+			loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, funLoaded);
+			loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, funIOError);
+			loader.contentLoaderInfo.removeEventListener(ProgressEvent.PROGRESS, funProgress);
+
+			{
+				trace('GrLoader.as/funIOError() - ERROR: IO error while loading graphics: "' + event.text);
+			}
+		}
 
 		//Determine the progress of the file loading.
 		public function funProgress(event:ProgressEvent):void 

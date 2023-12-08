@@ -561,12 +561,9 @@ package graphdata
 				GameSession.currentSession.gr_stage = 4; 
 
 				var front:Sprite = new Sprite();	
-				var back:Sprite = new Sprite();	
+				var back:Sprite = new Sprite();
 				var back2:Sprite = new Sprite();	
 				var waterMovieClip:Sprite = new Sprite();	
-				
-
-				var mat:Material;
 
 				for (var i:int = 0; i < tileArray.length; i++)
 				{

@@ -46,7 +46,6 @@
 		<param blood='0'/>
 		<vulner emp='1'/>
 	</unit>
-
 	<!-- pony -->
 	<unit id='pony' cat='1'/>
 	<unit id='raider' fraction='2' cat='2'>

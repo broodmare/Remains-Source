@@ -37,6 +37,7 @@
 	<param id='pink' v='19' f='1' show='3' tip='4'/>
 	<param id='necro' v='16' f='1' show='1' tip='4'/>
 	
+	
 	<param id='param_oth' v='' show='1'/>
 	<param id='sneak' v='visiMult' f='1' show='1' tip='3'/>
 	<param id='allspeed' v='allSpeedMult' f='1' show='1' tip='1'/>

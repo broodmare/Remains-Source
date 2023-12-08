@@ -15,6 +15,7 @@
 			<sk id='alicornRunMana' v0='5' v1='4' v2='3.2' v3='2.5' v4='2' v5='1.6'/>
 			<sk id='alicornFlyMult' v0='1' vd='0.1'/>
 		</skill>
+		
 		<skill id='melee' sort='2'>
 			<sk id='meleeR' v0='100' vd='30'/>
 			<sk id='meleeRun' v0='10' vd='3'/>

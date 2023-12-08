@@ -230,7 +230,7 @@ package
 		public static function advText(n:int):String 
 		{
 			var xml:XML = localizationFile.advice[0];
-			var s:XMLList = xml.a[n];
+			var s = xml.a[n];
 			return (s == null) ? '' : s;
 		}
 

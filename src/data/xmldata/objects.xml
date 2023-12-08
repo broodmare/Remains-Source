@@ -31,7 +31,6 @@
 	<obj ed='2' ico='cont' id='enclchest' n='Сундук Анклава' tip='box' inter='1' hp='400' shield='0.25' montdam='25' mat='1' cont='chest' rem='1' plav='0.5' lurk='3' lock='1.5' low='0.4' lockch='0.85' size='2' wid='1' fall='fall_metal_big' open='metal_open'/>
 	<obj ed='2' ico='cont' id='enclcase' n='Ящик Анклава' inter='1' tip='box' hp='500' shield='0.3' montdam='25' mat='1' cont='wbig' massaMult='2' lock='1.8' lockch='0.9' lurk='3' size='3' wid='1' fall='fall_metal_big' open='metal_open'/>
 	
-	<!-- двери -->
 	<obj ed='6' ico='door' id='septum' tip='door' door='1' wall='2' hp='30' mat='3' size='1' wid='3' n='Деревянная стенка' die='break_wood'/>
 	<obj ed='6' ico='door' id='grate' inter='0' tip='door' door='1' phis='2' wall='2' opac='0.1' hp='1000' damageThreshold='100' mat='1' size='1' wid='3' n='Решётка верт' open='big_door_close' close='big_door_close' die='break_metal'/>
 	<obj ed='6' ico='door' id='hgrate' inter='0' tip='door' door='1' phis='2' wall='2' opac='0.1' hp='1000' damageThreshold='100' mat='1' size='3' wid='1' n='Решётка гор' open='big_door_close' close='big_door_close' die='break_metal'/>

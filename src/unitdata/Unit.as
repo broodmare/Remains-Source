@@ -61,8 +61,9 @@ package unitdata
 		public static var arrIcos:Array;
 		
 		public var id:String;
-		var mapxml:XML;
-		var uniqName:Boolean = false;
+		
+		public var mapxml:XML;
+		public var uniqName:Boolean = false;
 		
 		// Coordinates and sizes
 		public var sitY:Number = 40;	// Dimensions
@@ -759,60 +760,63 @@ package unitdata
 		{
 			level += nlevel;
 			if (level < 0) level = 0;
-			maxhp = hp*(1 + level*0.11);
-			hp = hp*(1 + level*0.11);
-			dam*=(1+level*0.07);
-			radDamage*=(1+level*0.1);
-			critCh=level*0.01;
-			armor*=(1+level*0.05);
-			marmor*=(1+level*0.05);
-			skin*=(1+level*0.05);
-			armor_hp=armor_maxhp=armor_hp*(1+level*0.1);
-			observ+=Math.min(nlevel*0.6,15)*(0.9+Math.random()*0.2);
-			if (currentWeapon && currentWeapon.tip==0) 
+			maxhp = hp * (1 + level * 0.11);
+			hp = hp * (1 + level * 0.11);
+			dam *= (1 + level * 0.07);
+			radDamage *= (1 + level * 0.1);
+			critCh = level * 0.01;
+			armor *= (1 + level * 0.05);
+			marmor *= (1 + level * 0.05);
+			skin *= (1 + level * 0.05);
+			armor_hp = armor_maxhp = armor_hp * (1 + level * 0.1);
+			observ += Math.min(nlevel * 0.6, 15) * (0.9 + Math.random() * 0.2);
+			if (currentWeapon && currentWeapon.tip == 0) 
 			{
-				currentWeapon.damage*=(1+level*0.07);
+				currentWeapon.damage *= (1 + level * 0.07);
 			} 
 			else 
 			{
-				weaponSkill*=(1+level*0.035);
+				weaponSkill *= (1 + level * 0.035);
 			}
-			damWall*=(1+level*0.04);
+			damWall *= (1 + level * 0.04);
 		}
 		
 		//сделать героем
 		public function setHero(nhero:int=1):void
 		{
 			if (!mHero) return;
-			if (hero==0) hero=nhero;
-			if (hero>0) 
+			if (hero == 0) hero = nhero;
+			if (hero > 0) 
 			{
 				if (!uniqName) 
 				{
-					var s=getName();
-					if (s!=null && s!='') objectName=s;
+					var s = getName();
+					if (s != null && s != '') objectName = s;
 				}
-				xp*=5;
+				xp *= 5;
 			}
-			if (hero==1) 
+			if (hero == 1) 
 			{
-				hp=maxhp=maxhp*2.5;
-				dam*=1.8;
-				if (currentWeapon) currentWeapon.damage*=1.5;
+				hp = maxhp * 2.5;
+				maxhp = maxhp * 2.5;
+				dam *= 1.8;
+				if (currentWeapon) currentWeapon.damage *= 1.5;
 			} 
-			else if (hero==2 || hero==3) 
+			else if (hero == 2 || hero == 3) 
 			{
-				hp=maxhp=maxhp*3;
-				dam*=1.2;
+				hp = maxhp * 3;
+				maxhp = maxhp * 3;
+				dam *= 1.2;
 			} 
-			else if (hero==4) 
+			else if (hero == 4) 
 			{
-				hp=maxhp=maxhp*2;
-				dam*=1.4;
-				observ+=8;
-				walkSpeed*=1.4;
-				sitSpeed*=1.4;
-				runSpeed*=1.25;
+				hp = maxhp * 2;
+				maxhp = maxhp * 2;
+				dam *= 1.4;
+				observ += 8;
+				walkSpeed *= 1.4;
+				sitSpeed *= 1.4;
+				runSpeed *= 1.25;
 			}
 			setHeroVulners();
 			//trace(id,hero)
@@ -820,11 +824,11 @@ package unitdata
 		
 		public function setHeroVulners():void
 		{
-			vulner[D_EMP]*=0.8;
-			vulner[D_BALE]*=0.7;
-			vulner[D_NECRO]*=0.7;
-			vulner[D_ASTRO]*=0.7;
-			if (hero==2) 
+			vulner[D_EMP] *= 0.8;
+			vulner[D_BALE] *= 0.7;
+			vulner[D_NECRO] *= 0.7;
+			vulner[D_ASTRO] *= 0.7;
+			if (hero == 2) 
 			{
 				vulner[D_BUL]*=0.5;
 				vulner[D_PHIS]*=0.65;

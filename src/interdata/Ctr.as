@@ -23,7 +23,7 @@ package interdata
 			Keyboard.INSERT
 		];
 
-
+		//TODO: load this dynamically.
 		public var keyXML:XML =
 		<keys>
 			<key id = 'keyLeft' 	def = {Keyboard.A}/>
@@ -33,7 +33,6 @@ package interdata
 			<key id = 'keyJump' 	def = {Keyboard.SPACE}/>
 			<key id = 'keyRun' 		def = {Keyboard.SHIFT}/>
 			<key id = 'keyDash'/> 
- 			  
   			<key id = 'keyAttack' 	def = 'lmb'/>
 			<key id = 'keyPunch' 	def = {Keyboard.F}/>
 			<key id = 'keyReload' 	def = {Keyboard.R}/>
@@ -47,7 +46,6 @@ package interdata
 			<key id = 'keyPip' 		def = {Keyboard.TAB}/>
 			<key id = 'keyArmor' 	def = {Keyboard.N}/>
 			<key id = 'keySats' 	def = {Keyboard.V} alt = 'mmb'/>
-  
   			<key id = 'keyInvent' 	def = {Keyboard.I}/>
 			<key id = 'keyStatus' 	def = {Keyboard.O}/>
 			<key id = 'keySkills' 	def = {Keyboard.K}/>
@@ -77,7 +75,6 @@ package interdata
 			<key id = 'keySpell2' 	def = {Keyboard.X}/>
 			<key id = 'keySpell3'/>
 			<key id = 'keySpell4'/>
-			 
  			<key id = 'keyLook' 	def = {Keyboard.SEMICOLON}/>
 			<key id = 'keyZoom' 	def = {Keyboard.QUOTE}/>
 			<key id = 'keyFull' 	def = {Keyboard.ENTER}/>
@@ -158,12 +155,19 @@ package interdata
 		
 		//set private
 		private const dubleT:int = 5;		
-		private var kR_t:int = 10, kL_t:int = 10, kD_t:int = 10, scr_t:int = 0;
+		private var kR_t:int = 10;
+		private var kL_t:int = 10;
+		private var kD_t:int = 10;
+		private var scr_t:int = 0;
 		
 		public var active:Boolean = true;
 		
 		//set private
-		private var KeyboardA = Keyboard.A, KeyboardZ = Keyboard.Z, KeyboardW = Keyboard.W, KeyboardQ = Keyboard.Q;
+		//uints (according to the compiler)
+		private var keyboardA = Keyboard.A;
+		private var keyboardZ = Keyboard.Z;
+		private var keyboardW = Keyboard.W;
+		private var keyboardQ = Keyboard.Q;
 		
 		
 		public var setkeyOn:Boolean 	= false;
@@ -187,17 +191,17 @@ package interdata
 		{
 			if (keyboardMode == 0) 
 			{
-				KeyboardA = Keyboard.A;
-				KeyboardZ = Keyboard.Z;
-				KeyboardW = Keyboard.W;
-				KeyboardQ = Keyboard.Q;
+				keyboardA = Keyboard.A;
+				keyboardZ = Keyboard.Z;
+				keyboardW = Keyboard.W;
+				keyboardQ = Keyboard.Q;
 			}
 			if (keyboardMode == 1) 
 			{
-				KeyboardA = Keyboard.Q;
-				KeyboardZ = Keyboard.W;
-				KeyboardW = Keyboard.Z;
-				KeyboardQ = Keyboard.A;
+				keyboardA = Keyboard.Q;
+				keyboardZ = Keyboard.W;
+				keyboardW = Keyboard.Z;
+				keyboardQ = Keyboard.A;
 			}
 		}
 		
@@ -206,9 +210,9 @@ package interdata
 			trace('Ctr.as/Ctr - Ctr() Controller initializing.');
 
 			trace('Ctr.as/Ctr - Ctr() Naming keys...');
-			keyNames 	= new Vector.<String>(256);
-			keyDowns 	= new Vector.<Boolean>(256);
-			mbNames 	= [];
+			keyNames = new Vector.<String>(256);
+			keyDowns = new Vector.<Boolean>(256);
+			mbNames = [];
 
 			for (var i = Keyboard.A; i <= Keyboard.Z; i++) 
 			{
@@ -286,17 +290,17 @@ package interdata
 			{
 				trace('Ctr.as/Ctr - Ctr() currentSession.swfStage. is null!');
 			}
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN,	onMiddleMouseDown1);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP,	onMiddleMouseUp1);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN,	onRightMouseDown1);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_UP,	onRightMouseUp1);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.RIGHT_CLICK, 		onRightMouse);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_DOWN,		onMouseDown1);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_UP,			onMouseUp1);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_MOVE, 		onMouseMove1);
-			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_WHEEL,		onMouseWheel1);
-			GameSession.currentSession.swfStage.addEventListener(KeyboardEvent.KEY_DOWN,		onKeyboardDownEvent);
-			GameSession.currentSession.swfStage.addEventListener(KeyboardEvent.KEY_UP,			onKeyboardUpEvent);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, onMiddleMouseDown1);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, onMiddleMouseUp1);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onRightMouseDown1);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_UP, onRightMouseUp1);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.RIGHT_CLICK, onRightMouse);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown1);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp1);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove1);
+			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel1);
+			GameSession.currentSession.swfStage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyboardDownEvent);
+			GameSession.currentSession.swfStage.addEventListener(KeyboardEvent.KEY_UP, onKeyboardUpEvent);
 
 
 			trace('Ctr.as/Ctr - Ctr() Controller finished setup.');
@@ -312,8 +316,8 @@ package interdata
 				scr_t--;
 				if (scr_t == 0) 
 				{
-					if (keys['scrd']) this[keys['scrd'].id] = false;
-					if (keys['scru']) this[keys['scru'].id] = false;
+					if (keys['scrd']) keyStates[keys['scrd'].id] = false;
+					if (keys['scru']) keyStates[keys['scru'].id] = false;
 				}
 			}
 		}
@@ -450,6 +454,7 @@ package interdata
 				GameSession.currentSession.gui.showDop = Settings.showFavs && (event.stageY > GameSession.currentSession.swfStage.stageHeight - 15);
 			}
 		}
+		
 		public function onMouseDown1(event:MouseEvent):void 
 		{
 			if (GameSession.currentSession.onConsol) return;
@@ -472,17 +477,26 @@ package interdata
 			} 
 			else 
 			{
-				if (keys['lmb']) this[keys['lmb'].id] = true;
+				if (keys['lmb']) 
+				{
+					keyStates[keys['lmb'].id] = true;
+				}
 			}
 		}
+
 		public function onMouseUp1(event:MouseEvent):void 
 		{
-			if (keys['lmb']) this[keys['lmb'].id] = false;
+			if (keys['lmb']) 
+			{
+				keyStates[keys['lmb'].id] = false;
+			}
 		}
+
 		private function onRightMouse(event:MouseEvent):void 
 		{
             // Disable the menu
         }
+
 		public function onRightMouseDown1(event:MouseEvent):void 
 		{
 			if (GameSession.currentSession.onConsol) return;
@@ -493,12 +507,20 @@ package interdata
 				requestOk('rmb');
 				return;
 			}
-			if (keys['rmb']) this[keys['rmb'].id] = true;
+			if (keys['rmb']) 
+			{
+				keyStates[keys['rmb'].id] = true;
+			}
 		}
+
 		public function onRightMouseUp1(event:MouseEvent):void 
 		{
-			if (keys['rmb']) this[keys['rmb'].id] = false;
+			if (keys['rmb']) 
+			{
+				keyStates[keys['rmb'].id] = false;
+			}
 		}
+
 		public function onMiddleMouseDown1(event:MouseEvent):void 
 		{
 			if (GameSession.currentSession.onConsol) return;
@@ -507,12 +529,20 @@ package interdata
 				requestOk('mmb');
 				return;
 			}
-			if (keys['mmb']) this[keys['mmb'].id] = true;
+			if (keys['mmb']) 
+			{
+				keyStates[keys['mmb'].id] = true;
+			}
 		}
+
 		public function onMiddleMouseUp1(event:MouseEvent):void 
 		{
-			if (keys['mmb']) this[keys['mmb'].id] = false;
+			if (keys['mmb']) 
+			{
+				keyStates[keys['mmb'].id] = false;
+			}
 		}
+
 		public function onMouseWheel1(event:MouseEvent):void 
 		{
 			if (GameSession.currentSession.onConsol) return;
@@ -535,8 +565,14 @@ package interdata
 			{
 
 			}
-			if (event.delta < 0 && keys['scrd']) this[keys['scrd'].id] = true;
-			if (event.delta > 0 && keys['scru']) this[keys['scru'].id] = true;
+			if (event.delta < 0 && keys['scrd']) 
+			{
+				keyStates[keys['scrd'].id] = true;
+			}
+			if (event.delta > 0 && keys['scru']) 
+			{
+				keyStates[keys['scru'].id] = true;
+			}
 			scr_t = 3;
 			event.stopPropagation();
 		}
@@ -627,7 +663,7 @@ package interdata
 			if (event.keyCode < 256) keyDowns[event.keyCode] = false;
 			if (keys[event.keyCode]) 
 			{
-				this[keys[event.keyCode].id] = false;
+				keyStates[keys[event.keyCode].id] = false;
 
 				if (keys[event.keyCode].id	== 'keyLeft') 	kL_t = 0;
 				if (keys[event.keyCode].id	== 'keyRight') 	kR_t = 0;

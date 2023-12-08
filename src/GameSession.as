@@ -766,11 +766,12 @@ package
 		// There is a graphical bug here
 		public function activateRoom(newRoom:Room):void
 		{
-			trace('GameSession.as/activateRoom() - Activating room: "' + newRoom + '."');
+			trace('GameSession.as/activateRoom() - Activating room: "' + newRoom.id + '."');
 			try 
 			{
 				if (room != null) //If a room exists, unload it.
 				{
+					trace('GameSession.as/activateRoom() - unloading previous room.');
 					room.unloadRoom();
 				}
 

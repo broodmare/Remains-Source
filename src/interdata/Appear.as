@@ -79,7 +79,7 @@ package interdata
 			window.butOk.text.text = 'OK';
 			window.butCancel.text.text=Res.txt('gui', 'cancel');
 			window.butDef.text.text=Res.txt('pip', 'default');
-			window.title.text=Res.txt('gui', 'butvid');
+			window.title.text=Res.txt('gui', 'editAppearanceButton');
 			window.tFur.text=Res.txt('gui', 'vidfur');
 			window.tHair.text=Res.txt('gui', 'vidhair');
 			window.tHair1.text=Res.txt('gui', 'vidhair1');

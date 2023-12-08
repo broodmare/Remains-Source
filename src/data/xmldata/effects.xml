@@ -301,7 +301,6 @@
 		<del id='potion_shadow'/>
 	</eff>
 	
-	<!-- еда -->
 	<eff id='f_hp' tip='3' t='900'>
 		<sk id='maxhp' ref='mult' v1='1.1'/>
 		<textvar s1='10%'/>

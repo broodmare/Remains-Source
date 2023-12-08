@@ -8,4 +8,6 @@ asconfig.json
 qodana.yaml
 src/.github/
 bin/
+Sound/
+Rooms/
 Remains.as3proj
