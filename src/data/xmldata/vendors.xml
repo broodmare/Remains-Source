@@ -1,8 +1,6 @@
 <vendors>
-	<vendor id='nope'>
-	</vendor>
-	<vendor id='random'>
-	</vendor>
+	<vendor id='nope'/>
+	<vendor id='random'/>
 	<vendor id='vendor_bar'>
 		<buy id='sparklecola' n='20'/>
 		<buy id='radcola' n='5' barter='3'/>
@@ -40,7 +38,6 @@
 		<buy id='plap^1' n='2' lvl='6'/>
 		<buy id='plar^1' n='2' lvl='11' barter='2'/>
 		<buy id='lassn^1' n='2' lvl='11'/>
-		
 		<buy id='p127mm' n='1'  lvl='10'/>
 		<buy id='plamg' n='1'  lvl='12'/>
 		<buy id='pp127mm' n='2' lvl='10'/>
@@ -54,7 +51,6 @@
 		<buy id='plamg^1' n='2' lvl='14' barter='4'/>
 		<buy id='plam^1' n='2' lvl='12' barter='3'/>
 		<buy id='gatl' n='2'  lvl='14' barter='3'/>
-		
 		<buy id='psc' n='1'  lvl='14'/>
 		<buy id='pshot' n='1'  lvl='16' barter='3'/>
 		<buy id='lmg' n='1' lvl='14'/>
@@ -64,10 +60,8 @@
 		<buy id='autor' n='1'  lvl='15' barter='3'/>
 		<buy id='quick' n='2'  lvl='15' barter='4'/>
 		<buy id='rail' n='2'  lvl='16' barter='3'/>
-		
 		<buy id='amul_sniper' n='1' lvl='22' noref='1'/>
 		<buy id='bag1' n='1' lvl='12' noref='1' hardinv='1'/>
-		
 		<buy id='p32' n='200' />
 		<buy id='p32_1' n='50' />
 		<buy id='p32_2' n='60' />
@@ -211,7 +205,6 @@
 		<buy id='moon' n='2' lvl='18'/>
 		<buy id='power' n='2' lvl='20' trigger='power_armor' pmult='0.4'/><!---->
 		<buy id='amul_war' n='1' lvl='22' noref='1'/>
-		
 		<buy id='s_chitin' n='1' nocheap='1' lvl='5' barter='1'/>
 		<buy id='kombu_comp' n='6'/>
 		<buy id='antirad_comp' n='3'/>
@@ -222,7 +215,6 @@
 		<buy id='battle_comp' n='5' lvl='11'/>
 		<buy id='polic_comp' n='5' lvl='8'/>
 		<buy id='magus_comp' n='5' lvl='11'/>
-		
 		<task id='findProArmor'/>
 		<task id='killMadfox'/>
 		<task id='collectPaintsA'/>
@@ -253,7 +245,6 @@
 		<buy id='sword^1' n='2' lvl='16' barter='5'/>
 		<buy id='mspear^1' n='2' lvl='18'/>
 		<buy id='amul_berserk' n='1' lvl='22' noref='1'/>
-		
 		<buy id='s_hsword' n='1'/>
 		<buy id='s_arson' n='1'/>
 		<buy id='s_dartgun' n='1' lvl='3'/>
@@ -278,7 +269,6 @@
 		<buy id='pin' n='10'/>
 		<buy id='stealth' n='5'/>
 		<buy id='rep' n='6' barter='3' nocheap='1'/>
-		
 		<buy id='strap' n='3' lvl='9'/>
 		<buy id='tape' n='3' lvl='9'/>
 		<buy id='glue' n='3' lvl='9'/>
@@ -295,13 +285,11 @@
 		<buy id='magnit' n='5' lvl='20'/>
 		<buy id='elcomp' n='30'/>
 		<buy id='pbatt' n='1'/>
-		
 		<buy id='screwdriver' n='1' noref='1'/>
 		<buy id='titansd' n='1' noref='1' nocheap='1'/>
 		<buy id='mworkbench' n='1' lvl='5' noref='1' nocheap='1'/>
 		<buy id='s_owl' n='1' lvl='20' noref='1' nocheap='1'/>
 		<buy id='c_owl' n='1' lvl='20' noref='1' nocheap='1'/>
-		
 		<task id='collectScrew'/>
 		<task id='collectTools'/>
 		<task id='collectFans'/>
@@ -342,7 +330,6 @@
 		<buy id='sp_invulner' n='1' lvl='24' noref='1'/>
 		<buy id='amul_spark' n='2' lvl='13' noref='1'/>
 		<buy id='amul_mage' n='1' lvl='22' noref='1'/>
-		
 		<buy id='potm1' n='45'/>
 		<buy id='potm2' n='25'/>
 		<buy id='potm3' n='15'/>
@@ -375,7 +362,6 @@
 		<buy id='tal_moon' n='1' lvl='30' noref='1' nocheap='1'/>
 		<buy id='tal_sun' n='1' lvl='35' noref='1' nocheap='1'/>
 		<buy id='tal_ether' n='1' lvl='40' noref='1' nocheap='1'/>
-		
 		<task id='collectBooks'/>
 		<task id='collectGems' level='random_stable'/>
 		<task id='collectDust' level='random_mane'/>
@@ -402,7 +388,6 @@
 		<buy id='chips' n='3' lvl='15' barter='3'/>
 		<buy id='bananas' n='2' lvl='15' barter='4'/>
 		<buy id='honey' n='1' lvl='15' barter='4'/>
-		
 		<buy id='frpot' n='1'/>
 		<buy id='oatmeal' n='1'/>
 		<buy id='cucsand' n='1'/>
@@ -417,7 +402,6 @@
 		<buy id='spsalad' n='1' lvl='18'/>
 		<buy id='patty' n='1' lvl='19'/>
 		<buy id='maffin' n='1' lvl='20'/>
-		
 		<buy id='s_frmeat' n='1' noref='1'/>
 		<buy id='s_cucsand' n='1' lvl='3' noref='1'/>
 		<buy id='s_frpot' n='1' lvl='3' noref='1'/>
@@ -461,7 +445,6 @@
 		<buy id='potm2' n='20'/>
 		<buy id='potm3' n='25'/>
 		<buy id='zebmine' n='20' trigger='encounter_post'/>
-		
 		<buy id='s_potion_mage' n='1' lvl='4'/>
 		<buy id='s_potion_swim' n='1' lvl='6'/>
 		<buy id='s_potion_stim' n='1' lvl='7'/>
@@ -482,7 +465,6 @@
 		<buy id='s_spie' n='1' lvl='18'/>
 		<buy id='s_borsch' n='1' lvl='20'/>
 		<buy id='potion_consc' n='1' lvl='12' noref='1' hardinv='1'/>
-		
 		<task id='collectCanter' man='1'/>
 		<task id='collectTalisman' man='1'/>
 	</vendor>
@@ -509,7 +491,6 @@
 		<buy id='aglau' n='2' lvl='14'/>
 		<buy id='bel' n='1' lvl='20'/>
 		<buy id='sword^1' n='2' lvl='20'/>
-		
 		<buy id='p12' n='50' />
 		<buy id='p12_3' n='30' barter='4'/>
 		<buy id='p12_4' n='30' barter='5'/>
@@ -541,9 +522,7 @@
 		<buy id='rocket' n='30'/>
 		<buy id='empbomb' n='5' />
 		<buy id='s_empbomb' n='1'/>
-		
 		<buy id='bag2' n='1' lvl='12' noref='1' hardinv='1'/>
-		
 		<task id='hydroPon' man='1'/>
 		<task id='collectDatast' man='1'/>
 		<task id='collectMotiv' man='1'/>

@@ -1,5 +1,5 @@
 <scripts>
-<!-- tame the phoenix -->
+	<!-- tame the phoenix -->
 	<scr id='tamePhoenix'>
 		<s act="dialog" val="dialTamePhoenix"/>
 		<s targ="this" act="tame"/>
@@ -7,7 +7,7 @@
 		<s t="3" act="take" val="whistle" n="1"/>
 		<s act="dialog" val="dialTakeWhistle"/>
 	</scr>
-<!-- smoke a joint -->
+	<!-- smoke a joint -->
 	<scr id='smokeRollup'>
 		<s act="control off"/>
 		<s act="dial" val="dialSmoke" n="0"/>
@@ -34,7 +34,7 @@
 		<s act="control on"/>
 		<s act="xp" val="500"/>
 	</scr>
-<!-- repair the generator -->
+	<!-- repair the generator -->
 	<scr id='fixGenerator'>
 		<s act="control off"/>
 		<s act="dblack" val="2" t="3"/>
@@ -44,7 +44,7 @@
 		<s act="black" val="0"/>
 	</scr>
 	
-<!-- the very beginning of the game -->
+	<!-- the very beginning of the game -->
 	<scr id='beginBeg'>
 		<s act="black" val="1"/>
 		<s act="gui off"/>
@@ -60,7 +60,7 @@
 		<s act="off" targ="this"/>
 		<s act="mess" val="trWalk"/>
 	</scr>
-<!-- contact with mountain terminal -->
+	<!-- contact with mountain terminal -->
 	<scr id='beginMtn'>
 		<s act="control off"/>
 		<s act="music" val="music_strange"/>
@@ -78,7 +78,7 @@
 		<s act="off" targ="this"/>
 		<s act="control on" t="1"/>
 	</scr>
-<!-- acquiring the self levitation perk -->
+	<!-- acquiring the self levitation perk -->
 	<scr id='beginLevit'>
 		<s act="control off"/>
 		<s act="dial" val="begDialLevit" n="0" t="2"/>
@@ -90,7 +90,7 @@
 		<s act="on" targ="trLevit"/>
 		<s act="control on" t="0.2"/>
 	</scr>
-<!-- reach the exit point, get a level-up -->
+	<!-- reach the exit point, get a level-up -->
 	<scr id='beginUp'>
 		<s act="control off"/>
 		<s act="dial" val="begDialExit" n="0"/>
@@ -104,7 +104,7 @@
 		<s act="pip" val="1" n="2"/>
 		<s act="on" targ="trCrossroad"/>
 	</scr>
-<!-- conversation with the mentor through pip-buck -->
+	<!-- conversation with the mentor through pip-buck -->
 	<scr id='beginStory'>
 		<s act="control off"/>
 		<s act="dialog" val="storyDial1"/>
@@ -113,7 +113,7 @@
 		<s act="quest" val="storyMain"/>
 		<s act="control on"/>
 	</scr>
-<!-- meeting with calamity -->
+	<!-- meeting with calamity -->
 	<scr id='surfStory'>
 		<s act="control off"/>
 		<s act="dial" val="dialCalam1" n="0"/>
@@ -130,14 +130,14 @@
 		<s act="off" targ="this"/>
 		<s act="control on"/>
 	</scr>
-<!-- first appearance in the camp -->
+	<!-- first appearance in the camp -->
 	<scr id='rblVisit'>
 		<s act="dialog" val="rblDialM"/>
 		<s act="trigger" val="rbl_visited" n="1"/>
 		<s act="stage" val="storyContact" n="1"/>
 		<s act="off" targ="this"/>
 	</scr>
-<!-- conversation with the mentor through pip-buck in the camp, if not during training -->
+	<!-- conversation with the mentor through pip-buck in the camp, if not during training -->
 	<scr id='rblStory'>
 		<s act="control off"/>
 		<s act="music" val="music_strange"/>
@@ -147,14 +147,14 @@
 		<s act="quest" val="storyMain"/>
 		<s act="control on"/>
 	</scr>
-<!-- at the transition between levels 1 and 2 of the factory -->
+	<!-- at the transition between levels 1 and 2 of the factory -->
 	<scr id='plantStory1'>
 		<s act="stage" val="storyMain" n="2"/>
 		<s act="showstage" val="storyMain" n="3"/>
 		<s act="showstage" val="storyMain" n="4"/>
 		<s act="dialog" val="plantNextLevel"/>
 	</scr>
-<!-- Entry to the department of special research -->
+	<!-- Entry to the department of special research -->
 	<scr id='plantStory2'>
 		<s act="dialog" val="nioDial1"/>
 		<s act="stage" val="storyMain" n="4"/>
@@ -165,18 +165,18 @@
 		<s act="quest" val="freeCaptive"/>
 		<s act="off" targ="this"/>
 	</scr>
-<!-- entry to the stable -->
+	<!-- entry to the stable -->
 	<scr id='stableStory'>
 		<s act="stage" val="storyStable" n="2"/>
 		<s act="gotoLevel" val="random_stable"/>
 		<s act="passed"/>
 	</scr>
-<!-- go to the garages -->
+	<!-- go to the garages -->
 	<scr id='garages'>
 		<s act="stage" val="storyMeet" n="1"/>
 		<s act="off" targ="this"/>
 	</scr>
-<!-- inspection of sprite-bot wreckage -->
+	<!-- inspection of sprite-bot wreckage -->
 	<scr id='brspr'>
 		<s act="dialog" val="meetDial2"/>
 		<s act="stage" val="storyMeet" n="3"/>
@@ -185,13 +185,13 @@
 		<s act="trigger" val="story_mane" n="1"/>
 		<s act="passed"/>
 	</scr>
-<!-- view from the rooftop of a high-rise building -->
+	<!-- view from the rooftop of a high-rise building -->
 	<scr id='maneStory0'>
 		<s act="dialog" val="maneNextLevel"/>
 		<s act="stage" val="storyMane" n="2"/>
 		<s act="showstage" val="storyMane" n="3"/>
 	</scr>
-<!-- meeting with alicorns -->
+	<!-- meeting with alicorns -->
 	<scr id='maneStory1'>
 		<s act="control off"/>
 		<s act="music" val="pre_1"/>
@@ -202,7 +202,7 @@
 		<s act="off" targ="this"/>
 		<s act="control on"/>
 	</scr>
-<!-- встреча с боссом аликорнов -->
+	<!-- встреча с боссом аликорнов -->
 	<scr id='maneStory2'>
 		<s act="control off"/>
 		<s act="music" val="pre_1"/>
@@ -212,7 +212,7 @@
 		<s act="off" targ="this"/>
 		<s act="control on"/>
 	</scr>
-<!-- встреча с Зебрами -->
+	<!-- встреча с Зебрами -->
 	<scr id='zebraWay'>
 		<s act="control off"/>
 		<s act="dialog" val="dialZebra1"/>
@@ -220,7 +220,7 @@
 		<s act="gotoLevel" val="covert"/>
 		<s act="control on"/>
 	</scr>
-<!-- встреча с Вельвет -->
+	<!-- встреча с Вельвет -->
 	<scr id='covertStory'>
 		<s act="control off"/>
 		<s act="music" val="music_enc"/>
@@ -231,7 +231,7 @@
 		<s act="off" targ="this"/>
 		<s act="control on"/>
 	</scr>
-<!-- квест на лечение -->
+	<!-- квест на лечение -->
 	<scr id='coverPatient'>
 		<s act="control off"/>
 		<s act="dialog" val="dialPatient1"/>
@@ -239,12 +239,12 @@
 		<s act="off" targ="this"/>
 		<s act="control on"/>
 	</scr>
-<!-- кантерлот, вход -->
+	<!-- кантерлот, вход -->
 	<scr id='canterStory1'>
 		<s act="stage" val="storyCanter" n="2"/>
 		<s act="dialog" val="dialCanter3"/>
 	</scr>
-<!-- кантерлот, встреча с СР -->
+	<!-- кантерлот, встреча с СР -->
 	<scr id='canterRangers'>
 		<s act="control off"/>
 		<s act="dialog" val="dialCanter5"/>
@@ -254,12 +254,12 @@
 		<s act="upland"/>
 		<s act="off" targ="this"/>
 	</scr>
-<!-- мин ст, вход -->
+	<!-- мин ст, вход -->
 	<scr id='canterStory2'>
 		<s act="stage" val="storyCanter" n="3"/>
 		<s act="off" targ="this"/>
 	</scr>
-<!-- мин ст, встреча с боссом -->
+	<!-- мин ст, встреча с боссом -->
 	<scr id='canterStory3'>
 		<s act="control off"/>
 		<s act="music" val="pre_1"/>
@@ -271,7 +271,7 @@
 		<s act="off" targ="this"/>
 		<s act="control on"/>
 	</scr>
-<!-- база СР, диалог с охраной -->
+	<!-- база СР, диалог с охраной -->
 	<scr id='rangerStory1'>
 		<s act="control off"/>
 		<s act="music" val="pre_1" t="1"/>
@@ -282,18 +282,18 @@
 		<s act="off" targ="this"/>
 		<s act="control on"/>
 	</scr>
-<!-- база СР, вход -->
+	<!-- база СР, вход -->
 	<scr id='rangerStory2'>
 		<s act="trigger" val="mbase_visited" n="1"/>
 		<s act="stage" val="storyRanger" n="2"/>
 		<s act="off" targ="this"/>
 	</scr>
-<!-- база СР, встреча с Колдсайтом -->
+	<!-- база СР, встреча с Колдсайтом -->
 	<scr id='rangerStory3'>
 		<s act="music" val="pre_1"/>
 		<s act="dialog" val="dialRanger4"/>
 	</scr>
-<!-- база СР, убийство Колдсайта -->
+	<!-- база СР, убийство Колдсайта -->
 	<scr id='rangerStoryOk'>
 		<s act="stage" val="storyRanger" n="3"/>
 		<s act="showstage" val="storyRanger" n="4"/>
@@ -301,14 +301,14 @@
 		<s act="refill"/>
 		<s act="passed"/>
 	</scr>
-<!-- исследовать орудийный цех -->
+	<!-- исследовать орудийный цех -->
 	<scr id='helpCampOk'>
 		<s act="dialog" val="dialHelpCamp3"/>
 		<s act="stage" val="storyHelpCamp" n="2"/>
 		<s act="showstage" val="storyHelpCamp" n="3"/>
 		<s act="passed"/>
 	</scr>
-<!-- совет общины -->
+	<!-- совет общины -->
 	<scr id='sovietStory'>
 		<s act="control off"/>
 		<s act="dblack" val="-3" t="2"/>
@@ -324,23 +324,23 @@
 		<s act="goto" val="1 0"/>
 		<s act="black" val="0"/>
 	</scr>
-<!-- войти в орудийный цех -->
+	<!-- войти в орудийный цех -->
 	<scr id='workshopIn'>
 		<s act="off" targ="this"/>
 		<s act="dialog" val="dialHelpCamp1"/>
 		<s act="close" targ="elpanel1" t="1"/>
 		<s act="dialog" val="dialHelpCamp2"/>
 	</scr>
-<!-- войти в штаб -->
+	<!-- войти в штаб -->
 	<scr id='hqlIn'>
 		<s act="stage" val="storyHelpCovert" n="4"/>
 		<s act="off" targ="this"/>
 	</scr>
-<!-- убить центуриона -->
+	<!-- убить центуриона -->
 	<scr id='zebraKill'>
 		<s act="stage" val="storyHelpCovert" n="5"/>
 	</scr>
-<!-- пост анклава, встреча с охраной -->
+	<!-- пост анклава, встреча с охраной -->
 	<scr id='postStory1'>
 		<s act="control off"/>
 		<s act="music" val="pre_1" t="1"/>
@@ -351,7 +351,7 @@
 		<s act="fraction" val="4" targ="postE1" t="5"/>
 		<s act="alarm"/>
 	</scr>
-<!-- пост анклава, вход на базу -->
+	<!-- пост анклава, вход на базу -->
 	<scr id='postStory3'>
 		<s act="dialog" val="dialEncl2"/>
 		<s act="stage" val="storyEncl" n="1"/>
@@ -361,7 +361,7 @@
 		<s act="passed"/>
 		<s act="gotoLevel" val="random_encl"/>
 	</scr>
-<!-- командный центр, вход -->
+	<!-- командный центр, вход -->
 	<scr id='commStory0'>
 		<s act="dialog" val="dialEncl3"/>
 		<s act="stage" val="storyEncl" n="2"/>
@@ -372,7 +372,7 @@
 		<s val="colonel_show" act="trigger" n="1"/>
 		<s targ="this" act="off"/>
 	</scr>
-<!-- командный центр, разговор с полковником -->
+	<!-- командный центр, разговор с полковником -->
 	<scr id='commStory2'>
 		<s val="colonel_show" act="trigger" n="2"/>
 		<s act="dialog" val="dialEncl4"/>
@@ -385,12 +385,12 @@
 		<s act="passed"/>
 		<s targ="this" act="off"/>
 	</scr>
-<!-- командный центр, убить полковника -->
+	<!-- командный центр, убить полковника -->
 	<scr id='commStory3'>
 		<s val="colonel_show" act="trigger" n="3"/>
 		<s act="dialog" val="dialEncl5"/>
 	</scr>
-<!-- стойло пи, первое посещение -->
+	<!-- стойло пи, первое посещение -->
 	<scr id='stablePi0'>
 		<s act="control off"/>
 		<s act="turn" val="1"/>
@@ -412,20 +412,20 @@
 		<s act="control on"/>
 	</scr>
 	
-<!-- стойло пи, комната ЛП -->
+	<!-- стойло пи, комната ЛП -->
 	<scr id='stablePi1'>
 		<s act="music" val="music_enc"/>
 		<s act="dialog" val="roomLP"/>
 	</scr>
 	
-<!-- форт Рокс, вход -->
+	<!-- форт Рокс, вход -->
 	<scr id='fortRocks1'>
 		<s act="stage" val="storyStorm" n="3"/>
 		<s act="trigger" val="fin" n="1"/>
 		<s targ="artF1" act="check"/>
 		<s targ="this" act="off"/>
 	</scr>
-<!-- форт Рокс, отключение генераторов -->
+	<!-- форт Рокс, отключение генераторов -->
 	<scr id='fortRocks2'>
 		<s act="control off"/>
 		<s act="dial" val="dialStorm3" n="0"/>
@@ -446,12 +446,12 @@
 		<s targ="this" act="off"/>
 		<s act="control on"/>
 	</scr>
-<!-- атакованное стойло пи, вход -->
+	<!-- атакованное стойло пи, вход -->
 	<scr id='stablePi2'>
 		<s act="dialog" val="dialFin1"/>
 		<s act="open" targ="piF2"/>
 	</scr>
-<!-- атакованное стойло пи, разговор с наставником -->
+	<!-- атакованное стойло пи, разговор с наставником -->
 	<scr id='stablePi3'>
 		<s act="dialog" val="dialFin3"/>
 		<s act="stage" val="storyFbattle" n="1"/>
@@ -459,7 +459,7 @@
 		<s act="sign" targ="piF3" n="1"/>
 		<s targ="this" act="off"/>
 	</scr>
-<!-- атакованное стойло пи, получение брони аликорна -->
+	<!-- атакованное стойло пи, получение брони аликорна -->
 	<scr id='stablePi4'>
 		<s act="dialog" val="dialFin4"/>
 		<s act="control off"/>
@@ -479,7 +479,7 @@
 		<s act="control on"/>
 		<s act="dialog" val="alicornArmor"/>
 	</scr>
-<!-- тандерхед -->
+	<!-- тандерхед -->
 	<scr id='megabossDie'>
 		<s act="control off" t="1"/>
 		<s act="dialog" val="dialFB5"/>
@@ -523,7 +523,7 @@
 		<s act="scene"/>
 		<s act="gotoLevel" val="grave" n="2"/>
 	</scr>
-<!-- кладбище -->
+	<!-- кладбище -->
 	<scr id='vse'>
 		<s act="black" val="1"/>
 		<s act="black" val="1"/>

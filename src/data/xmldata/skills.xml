@@ -1,15 +1,5 @@
-	<!-- Skills -->
-		<!-- 
-			id - id - variable name or number in the array
-			tip - tip - where the variable is located
-				By default - located in Pers or UnitPlayer
-				weap - array of weapon skills
-				res - array of resistances
-				V1-V5 - values
-				V0, Vd - zero value and delta
-		-->
-	<skills>
-		<skill id='tele' sort='1'>
+<skills>
+	<skill id='tele' sort='1'>
 			<sk id='teleMult' dop='1' v0='2.2' vd='-0.1'/>
 			<sk id='throwDmana' v0='250' v1='250' v2='250' v3='200' v4='150' v5='100'/>
 			<sk id='maxTeleMassa' v0='0.6' v1='1.6' v2='3' v3='6' v4='12' v5='25'/>
@@ -107,5 +97,5 @@
 			<textvar s1='3%'/>
 		</skill>
 		<skill id='knowl' sort='16' post='1'>
-		</skill>
-	</skills>
+	</skill>
+</skills>

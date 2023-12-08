@@ -1,5 +1,4 @@
 <levels>
-
 	<level id='begin' dif='0' file='rooms_begin' locx='0' locy='0' stage='1' limit='1' list='2' tip='story'>
 		<options backwall="tBackWall" music='music_begin'/>
 		<scr eve='take' item='mont'>
