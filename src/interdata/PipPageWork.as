@@ -71,7 +71,7 @@ package interdata
 			if (page2==1) {		//крафт
 				assArr=[];
 				statHead.fav.text='';
-				statHead.objectName.text=Res.txt('pip', 'work1');
+				statHead.nazv.text=Res.txt('pip', 'work1');
 				statHead.hp.text=Res.txt('pip', 'iv6');
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
@@ -129,7 +129,7 @@ package interdata
 			else if (page2==2) 
 			{	//улучшение
 				statHead.fav.text='';
-				statHead.objectName.text='';//Res.txt('pip', 'ii2');
+				statHead.nazv.text='';//Res.txt('pip', 'ii2');
 				statHead.hp.text='';
 				statHead.ammo.text='';
 				statHead.ammotip.text='';
@@ -169,7 +169,7 @@ package interdata
 			{	//ремонт
 				assArr=[];
 				statHead.fav.text='';
-				statHead.objectName.text=Res.txt('pip', 'ii2');
+				statHead.nazv.text=Res.txt('pip', 'ii2');
 				statHead.hp.text=Res.txt('pip', 'ii3');
 				statHead.ammo.text='';
 				statHead.ammotip.text=Res.txt('pip', 'repairto');
@@ -225,7 +225,7 @@ package interdata
 			item.rid.visible=false;
 			item.id.text=obj.id;
 			item.cat.text=obj.tip;
-			item.objectName.text=obj.objectName;
+			item.nazv.text=obj.objectName;
 			item.id.visible=item.cat.visible=false;
 			item.ramka.visible=false;
 			item.mass.text='';

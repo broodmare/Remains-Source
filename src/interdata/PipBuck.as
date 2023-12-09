@@ -155,7 +155,7 @@ package interdata
 				item.y = 40 + j * 30;
 				PipPage.setStyle(item.txt);
 				item.trol.gotoAndStop(j + 1);
-				//item.objectName.visible = false; (This was breaking loading the main menu, but present in original code.)
+				//item.nazv.visible = false; (This was breaking loading the main menu, but present in original code.)
 				item.visible = false;
 			}
 

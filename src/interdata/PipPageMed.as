@@ -69,7 +69,7 @@ package interdata
 			priceMana 	= pers.priceMana;
 			
 			statHead.hpbar.visible = false;
-			statHead.objectName.text = '';
+			statHead.nazv.text = '';
 			statHead.numb.text = '';
 			statHead.price.text = Res.txt('pip', 'medprice');
 			vis.butOk.visible = vis.butDef.visible=false;
@@ -121,7 +121,7 @@ package interdata
 			else item.id.text 		= '';
 			item.id.visible 		= false;
 			item.hpbar.visible 		= false;
-			item.objectName.text 	= obj.objectName;
+			item.nazv.text 	= obj.objectName;
 			item.numb.text 			= obj.lvl;
 
 			if (obj.price != null) item.price.text = Math.round(obj.price);

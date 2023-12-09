@@ -1504,7 +1504,7 @@ package unitdata
 			}
 			for (var i:int = 1; i <= Settings.kolQS; i++)
 			{
-				if (ctr['keySpell' + i])
+				if (ctr.keyStates['keySpell' + i])
 				{
 					if (invent.fav[Settings.kolHK * 2 + i] != null)
 					{
@@ -1512,12 +1512,12 @@ package unitdata
 						var sp:Spell = invent.spells[invent.fav[Settings.kolHK * 2 + i]];
 						if (sp)
 						{
-							if (!sp.castSpell(GameSession.currentSession.celX, GameSession.currentSession.celY)) ctr['keySpell' + i] = false;
-							if (!sp.prod) ctr['keySpell' + i] = false;
+							if (!sp.castSpell(GameSession.currentSession.celX, GameSession.currentSession.celY)) ctr.keyStates['keySpell' + i] = false;
+							if (!sp.prod) ctr.keyStates['keySpell' + i] = false;
 						}
-						else ctr['keySpell' + i] = false;
+						else ctr.keyStates['keySpell' + i] = false;
 					}
-					else ctr['keySpell' + i] = false;
+					else ctr.keyStates['keySpell' + i] = false;
 				}
 			}
 			//спутник
@@ -1618,9 +1618,9 @@ package unitdata
 				{
 					for (var j:int = 1; j <= Settings.kolHK; j++)
 					{
-						if (ctr['keyWeapon' + j])
+						if (ctr.keyStates['keyWeapon' + j])
 						{
-							ctr['keyWeapon' + j] = false;
+							ctr.keyStates['keyWeapon' + j] = false;
 							invent.useFav(j + (ctr.keyStates.keyRun ? Settings.kolHK:0));
 							if (visSel) GameSession.currentSession.gui.unshowSelector(0);
 							if (currentSpell) currentSpell.active = false;

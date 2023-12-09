@@ -10,7 +10,6 @@ package interdata
 	
 	public class Ctr 
 	{
-		
 		public var restrictedKeys:Array = 
 		[
 			Keyboard.CONTROL, 
@@ -80,88 +79,27 @@ package interdata
 			<key id = 'keyFull' 	def = {Keyboard.ENTER}/>
 		</keys>;
 		
-
+		
 		public var keyDowns:Vector.<Boolean>;	// Key Press States
 		public var keyNames:Vector.<String>;	// Key Names by Codes
+		public var keyStates = {};				// All actionable keybinds and their state.
+
 		public var mbNames:Array;				// Mouse Button Names
+
 		public var keys:Array;					// Objects by Key Codes
 		public var keyObj:Array;				// Objects in Order
 		public var keyIds:Array;				// Objects by Action ID
-
-		public var keyStates:Object =
-		{
-		keyLeft		: false,
-		keyRight	: false,
-		keyDubLeft	: false,
-		keyDubRight	: false,
-		keyJump		: false,
-		keySit		: false,
-		keyDubSit	: false,
-		keyBeUp		: false,
-		keyRun		: false,
-		keyAttack	: false,
-		keyPunch	: false,
-		keyReload	: false,
-		keyGrenad	: false,
-		keyMagic	: false,
-		keyDef		: false,
-		keyPet		: false,
-		keyAction	: false,
-		keyCrack	: false,
-		keyTele		: false,
-		keyPip		: false,
-		keySats		: false,
-		keyFly		: false,
-		keyLook		: false,
-		keyZoom		: false,
-		keyFull		: false,
-		keyItem		: false,
-		keyPot		: false,
-		keyMana		: false,
-		keyItemPrev	: false,
-		keyItemNext	: false,
-		keyInvent	: false,
-		keyStatus	: false,
-		keySkills	: false,
-		keyMed		: false,
-		keyMap		: false,
-		keyQuest	: false,
-		keyWeapon1 	: false,
-		keyWeapon2 	: false,
-		keyWeapon3 	: false,
-		keyWeapon4 	: false,
-		keyWeapon5 	: false,
-		keyWeapon6 	: false,
-		keyWeapon7 	: false,
-		keyWeapon8 	: false,
-		keyWeapon9 	: false,
-		keyWeapon10	: false,
-		keyWeapon11	: false,
-		keyWeapon12	: false,
-		keyScrDown	: false, 
-		keyScrUp	: false,
-		rbmDbl		: false,
-		keyDash		: false, 
-		keyArmor	: false,
-		keySpell1	: false, 
-		keySpell2	: false, 
-		keySpell3	: false, 
-		keySpell4	: false,
-		keyTest1	: false,
-		keyTest2 	: false
-		};
-
 		public var keyboardMode:int = 0;
-		
+
 		//set private
 		private const dubleT:int = 5;		
 		private var kR_t:int = 10;
 		private var kL_t:int = 10;
 		private var kD_t:int = 10;
 		private var scr_t:int = 0;
-		
+
 		public var active:Boolean = true;
-		
+
 		//set private
 		//uints (according to the compiler)
 		private var keyboardA = Keyboard.A;
@@ -169,7 +107,7 @@ package interdata
 		private var keyboardW = Keyboard.W;
 		private var keyboardQ = Keyboard.Q;
 		
-		
+
 		public var setkeyOn:Boolean 	= false;
 		public var setkeyRequest		= null;
 		
@@ -208,10 +146,12 @@ package interdata
 		public function Ctr(loadObj = null):void
 		{
 			trace('Ctr.as/Ctr - Ctr() Controller initializing.');
+			keyStates = KeyStates.createKeyStatesObject(keyStates);
 
 			trace('Ctr.as/Ctr - Ctr() Naming keys...');
 			keyNames = new Vector.<String>(256);
 			keyDowns = new Vector.<Boolean>(256);
+
 			mbNames = [];
 
 			for (var i = Keyboard.A; i <= Keyboard.Z; i++) 
@@ -290,6 +230,7 @@ package interdata
 			{
 				trace('Ctr.as/Ctr - Ctr() currentSession.swfStage. is null!');
 			}
+
 			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_DOWN, onMiddleMouseDown1);
 			GameSession.currentSession.swfStage.addEventListener(MouseEvent.MIDDLE_MOUSE_UP, onMiddleMouseUp1);
 			GameSession.currentSession.swfStage.addEventListener(MouseEvent.RIGHT_MOUSE_DOWN, onRightMouseDown1);
@@ -387,34 +328,23 @@ package interdata
 			}
 		}
 		
-		// Return the visible key name by action code
+		// Check Key-Pair from keyXML dictionary and try to return formatted keyCode as a string.
 		public function retKey(id):String
 		{
-			if (keyIds[id] == null) 
+			var key:Object = keyIds[id]; 
+			if (!key) 
 			{
-				return '?'
+				trace('Ctr.as/retKey() - ERROR: invalid (Dictionary) key');
+				return '?';
 			}
-
-			var key = keyIds[id].a1;
-
-			if (key == null) 
+			var keyPair:int = key.a1 || key.a2;
+			if (!keyPair) 
 			{
-				key = keyIds[id].a2;
-			}
-
-			if (key == null) 
-			{
+				trace('Ctr.as/retKey() - ERROR: No return found for key: "' + key + '".');
 				return '???';
 			}
 
-			if (key > 0 && key < 256) 
-			{
-				return "[" + keyNames[key] + "]";
-			}
-			else 
-			{
-				return "[" + mbNames[key] + "]";
-			}
+			return "[" + (keyNames[keyPair] || mbNames[keyPair]) + "]";
 		}
 		
 		public function permissKey(key:uint):Boolean 
@@ -592,7 +522,7 @@ package interdata
 				{
 					if (keys[event.keyCode]) 
 					{
-						this[keys[event.keyCode].id] = true;
+						keyStates[keys[event.keyCode].id] = true;
 						if (keys[event.keyCode].id == 'keyLeft'  && kL_t < dubleT) keyStates.keyDubLeft  = true;
 						if (keys[event.keyCode].id == 'keyRight' && kR_t < dubleT) keyStates.keyDubRight = true;
 						if (keys[event.keyCode].id == 'keySit' 	 && kD_t < dubleT) keyStates.keyDubSit   = true;
@@ -603,18 +533,18 @@ package interdata
 				{
 					for (var i:int = 1; i <= 12; i++) 
 					{
-						if (this['keyWeapon' + i]) 
+						if (keyStates['keyWeapon' + i]) 
 						{
-							this['keyWeapon' + i] = false;
+							keyStates['keyWeapon' + i] = false;
 							GameSession.currentSession.pip.assignKey(i+(keyStates.keyRun ? 12 : 0));
 						}
 					}
 					//Changed 'i' to 'j'.
 					for (var j:int = 1; j <= 4; j++) 
 					{
-						if (this['keySpell' + j]) 
+						if (keyStates['keySpell' + j]) 
 						{
-							this['keySpell' + j] = false;
+							keyStates['keySpell' + j] = false;
 							GameSession.currentSession.pip.assignKey(24 + j);
 						}
 					}

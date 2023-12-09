@@ -185,7 +185,7 @@ package servdata
 				var lim:int = Math.ceil(buy.@n*GameSession.currentSession.pers.limitBuys);
 				if (item.kol < lim) {
 					item.kol = Math.min(lim,item.kol+Math.ceil(0.25*lim));
-					//trace(item.objectName, item.kol);
+					//trace(item.nazv, item.kol);
 				}
 			}
 		}

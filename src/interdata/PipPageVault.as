@@ -63,7 +63,7 @@ package interdata
 
 			assArr=[];
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
-			statHead.objectName.text=Res.txt('pip', 'ii2');
+			statHead.nazv.text=Res.txt('pip', 'ii2');
 			statHead.kol.text=Res.txt('pip', 'ii7');
 			statHead.kol.width=170;
 			statHead.mass.text=Settings.hardInv?Res.txt('pip', 'ii8'):'';
@@ -120,7 +120,7 @@ package interdata
 			item.id.text=obj.id;
 			item.id.visible=false;
 			item.cat.visible=false;
-			item.objectName.alpha=1;
+			item.nazv.alpha=1;
 			try 
 			{
 				item.trol.gotoAndStop(obj.tip);
@@ -130,9 +130,9 @@ package interdata
 				item.trol.gotoAndStop(1);
 			}
 			item.id.text=obj.id;
-			item.objectName.text=obj.objectName;
-			item.objectName.alpha=1;
-			if (obj.kol==0) item.objectName.alpha=0.5;
+			item.nazv.text=obj.objectName;
+			item.nazv.alpha=1;
+			if (obj.kol==0) item.nazv.alpha=0.5;
 			item.cat.text=obj.tip;
 			item.mass.text=Settings.hardInv?obj.mass:'';
 			item.mass2.text=Settings.hardInv?Res.numb(obj.mass*obj.kol):'';

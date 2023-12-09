@@ -1,4 +1,4 @@
-package
+﻿package
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
@@ -223,14 +223,10 @@ package
 			}
 		}
 
-
-
 		//Language
 		public function updateMainMenuLanguage():void
 		{
 			trace('MainMenu.as/updateMainMenuLanguage() - Updating main menu localization.');
-
-
 			//Main Menu Buttons
 			updateMenuButtonLocalization();
 
@@ -321,7 +317,7 @@ package
 			mainMenuWindow.loadGameWindow.title.visible 	= (loadReg == 0);
 			mainMenuWindow.loadGameWindow.slot0.visible 	= (loadReg == 0);
 			mainMenuWindow.loadGameWindow.info.text 		= '';
-			mainMenuWindow.loadGameWindow.objectName.text 	= '';
+			mainMenuWindow.loadGameWindow.nazv.text 	= '';
 			mainMenuWindow.loadGameWindow.pers.visible 		= false;
 
 			savefileArray = [];
@@ -346,7 +342,7 @@ package
 				} 
 				else 
 				{
-					slot.objectName.text = Res.txt('pip', 'freeslot');
+					slot.nazv.text = Res.txt('pip', 'freeslot');
 					slot.ggName.text 	= '';
 					slot.level.text 	= '';
 					slot.date.text 		= '';
@@ -925,6 +921,8 @@ package
 			updateButtonText(mainMenuWindow.loadGameButton, Res.txt('gui', 'loadgame'));
 			updateButtonText(mainMenuWindow.optionsButton, Res.txt('gui', 'options'));
 			updateButtonText(mainMenuWindow.aboutButton, Res.txt('gui', 'about'));
+
+			showMainButtons(true);
 		}
 
 		//Button localization

@@ -96,7 +96,7 @@ package interdata
 				item = new itemClass(); 
 				item.x = 30;
 				item.y = 100 + i * 30;
-				if (item.objectName) setStyle(item.objectName);
+				if (item.nazv) setStyle(item.nazv);
 				vis.addChild(item);
 				if (item.ramka) item.ramka.visible = false;
 				if (i < 0) 

@@ -159,6 +159,7 @@ package graphdata
 			
 			pa 				= new paintaero();
 			pb 				= new paintbrush();
+			
 			brTrans 		= new ColorTransform();
 			brColor 		= new Color();
 			brData  		= new BitmapData(100, 100, false, 0x0);

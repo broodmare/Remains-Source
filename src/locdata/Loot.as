@@ -60,8 +60,8 @@ package locdata
 			if (nx<Tile.tilePixelWidth) nx=Tile.tilePixelWidth;
 			if (nx>(room.roomWidth-1)*Tile.tilePixelWidth) nx=(room.roomWidth-1)*Tile.tilePixelWidth;
 			if (ny>(room.roomHeight-1)*Tile.tilePixelHeight) ny=(room.roomHeight-1)*Tile.tilePixelHeight;
-			massa=0.1;
-			objectName=item.objectName;
+			massa = 0.1;
+			objectName = item.objectName;
 			scX = 30;
 			scY = 20;
 			if (item.tip==Item.L_WEAPON) 
@@ -126,13 +126,13 @@ package locdata
 				} 
 				catch(err) 
 				{
-					if (item.tip==Item.L_COMPA) vis.gotoAndStop('compa');
-					else if (item.tip==Item.L_COMPW) vis.gotoAndStop('compw');
-					else if (item.tip==Item.L_COMPE) vis.gotoAndStop('compe');
-					else if (item.tip==Item.L_COMPP) vis.gotoAndStop('compp');
-					else if (item.tip==Item.L_KEY) vis.gotoAndStop('key');
-					else if (item.tip==Item.L_PAINT) vis.gotoAndStop('paint');
-					else if (item.tip==Item.L_FOOD) vis.gotoAndStop('food');
+					if (item.tip == Item.L_COMPA) vis.gotoAndStop('compa');
+					else if (item.tip == Item.L_COMPW) vis.gotoAndStop('compw');
+					else if (item.tip == Item.L_COMPE) vis.gotoAndStop('compe');
+					else if (item.tip == Item.L_COMPP) vis.gotoAndStop('compp');
+					else if (item.tip == Item.L_KEY) vis.gotoAndStop('key');
+					else if (item.tip == Item.L_PAINT) vis.gotoAndStop('paint');
+					else if (item.tip == Item.L_FOOD) vis.gotoAndStop('food');
 					else vis.gotoAndStop(1);
 				}
 				if (item.tip==Item.L_SCHEME) 

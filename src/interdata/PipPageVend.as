@@ -117,7 +117,7 @@ package interdata
 				assArr=[];
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
-				statHead.objectName.text=Res.txt('pip', 'iv1');
+				statHead.nazv.text=Res.txt('pip', 'iv1');
 				statHead.hp.text=Res.txt('pip', 'iv2')+' / '+Res.txt('pip', 'iv6');
 				statHead.price.text=Res.txt('pip', 'iv3');
 				statHead.kol.text=Res.txt('pip', 'iv4');
@@ -178,7 +178,7 @@ package interdata
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
 				vend.kolSell=0;
-				statHead.objectName.text=Res.txt('pip', 'iv1');
+				statHead.nazv.text=Res.txt('pip', 'iv1');
 				statHead.hp.text='';
 				statHead.price.text=Res.txt('pip', 'iv3');
 				statHead.kol.text=Res.txt('pip', 'iv6');
@@ -230,7 +230,7 @@ package interdata
 			{
 				assArr=[];
 				setTopText('inforepair');
-				statHead.objectName.text='';
+				statHead.nazv.text='';
 				statHead.hp.text=Res.txt('pip', 'iv2');
 				statHead.price.text=Res.txt('pip', 'iv5');
 				statHead.kol.text='';
@@ -396,7 +396,7 @@ package interdata
 			item.rid.visible=false;
 			item.lvl.visible=false;
 			item.ns.visible=false;
-			item.objectName.alpha=1;
+			item.nazv.alpha=1;
 			item.price.x=504;
 			item.price.width=58;
 			try 
@@ -413,7 +413,7 @@ package interdata
 				item.lvl.gotoAndStop(obj.barter+1);
 				item.rid.text=obj.rid;
 				item.cat.text=obj.tip;
-				item.objectName.text=obj.objectName;
+				item.nazv.text=obj.objectName;
 				if (obj.tip==Item.L_WEAPON || obj.tip==Item.L_ARMOR) 
 				{
 					item.hp.text=Math.round(obj.sost*100)+'%';
@@ -436,7 +436,7 @@ package interdata
 			{
 				item.cat.text=obj.tip;
 				item.rid.text=obj.id;
-				item.objectName.text=obj.objectName;
+				item.nazv.text=obj.objectName;
 				item.hp.text='';
 				item.price.text=Math.round(obj.price*10)/10;
 				item.kol.text=obj.kol;
@@ -449,7 +449,7 @@ package interdata
 			if (page2==3) 
 			{
 				item.cat.text=obj.tip;
-				item.objectName.text=obj.objectName;
+				item.nazv.text=obj.objectName;
 				item.hp.text=Math.round(obj.hp/obj.maxhp*100)+'%';
 				var mp:Number=1;
 				if (obj.tip==Item.L_ARMOR) mp=gg.pers.priceRepArmor;
@@ -461,7 +461,7 @@ package interdata
 			if (page2==4) 
 			{
 				item.cat.text=obj.state;
-				item.objectName.text=obj.objectName;
+				item.nazv.text=obj.objectName;
 				item.hp.text='';
 				item.price.text='';
 				item.price.x=400;
@@ -469,7 +469,7 @@ package interdata
 				if (obj.state==1) item.price.text=Res.txt('pip', 'perform');
 				if (obj.state==2) {
 					item.price.text=Res.txt('pip', 'done');
-					item.objectName.alpha=0.5;
+					item.nazv.alpha=0.5;
 				}
 				if (obj.state==3) item.price.text=Res.txt('pip', 'surr');
 				if (obj.state==4) item.price.text=Res.txt('pip', 'progress');
@@ -487,7 +487,7 @@ package interdata
 			}
 			if (page2==4) 
 			{
-				vis.objectName.text=event.currentTarget.objectName.text;
+				vis.nazv.text=event.currentTarget.objectName.text;
 				var s:String=infoQuest(event.currentTarget.id.text);
 				if (s=='') vis.info.htmlText=Res.messText(event.currentTarget.id.text,1);
 				else vis.info.htmlText=s;

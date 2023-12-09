@@ -83,20 +83,23 @@ package
 				if (spl.length >= 2) xmlNodeText = spl[Settings.matFilter ? 1 : 0];
 			
 			}
-			if (nodeChildType >= 1 || dop) // Control keys
+			if (nodeChildType >= 1 || dop) 
 			{
 				if (xmlNode.@s1.length()) xmlNodeText = addKeys(xmlNodeText, xmlNode);	
-				try 
+				
+				if (xmlNode && xmlNode.attribute("s1").length() > 0) 
 				{
-					if (xmlNode[classKey][0].@s1.length) 
+					trace('Res.as/txt() - Attempting to add control key: "' + xmlNode.@s1 + '"');
+					try 
 					{
-						xmlNodeText = addKeys(xmlNodeText, xmlNode[classKey][0]);
+						xmlNodeText = addKeys(xmlNodeText, xmlNode);
 					}
-				} 
-				catch (err) 
-				{
-					trace('Res.as/txt() - Failed adding control keys.');
+					catch (err) 
+					{
+						trace('Res.as/txt() - Failed adding control keys.');
+					}
 				}
+				
 				xmlNodeText = xmlNodeText.replace(/\[br\]/g, '<br>');
 				xmlNodeText = xmlNodeText.replace(/\[/g, "<span classData='yel'>");
 				xmlNodeText = xmlNodeText.replace(/\]/g, "</span>");
@@ -317,14 +320,17 @@ package
 			{
 				for (var i:int = 1; i <= 5; i++) 
 				{
-					if (xml.attribute('s' + i ).length())  s = s.replace('@' + i, "<span classData='imp'>" + GameSession.currentSession.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+					//If string1, string2, etc. exist, replace @1, @2 etc. with some kind of class?
+					if (xml.attribute('s' + i ).length())  
+						{
+							s = s.replace('@' + i, "<span classData='imp'>" + GameSession.currentSession.ctr.retKey(xml.attribute('s' + i)) + "</span>");
+						}
 				}
 			}
 			catch(err:Error)
 			{
 				trace('Res.as/addKeys() -  ERROR: Error while transforming string: "' + s + '."');
 			}
-
 
 			return s;
 		}

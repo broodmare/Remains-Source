@@ -1,4 +1,4 @@
-package interdata 
+﻿package interdata 
 {
 	//Стенд для оружия, коллекционных вещей и ачивок
 	
@@ -204,8 +204,8 @@ package interdata
 					item.weapon.addChild(infIco);
 					if (weap.char.length()>1) 
 					{
-						if (Res.istxt('weapon',weap.@id+'^1')) item.objectName2.text = Res.txt('weapon',weap.@id+'^1');
-						else item.objectName2.text = Res.txt('weapon',weap.@id) + Weapon.variant2;
+						if (Res.istxt('weapon', weap.@id + '^1')) item.objectName2.text = Res.txt('weapon', weap.@id + '^1');
+						else item.objectName2.text = Res.txt('weapon', weap.@id) + Weapon.variant2;
 						
 						item.dop.text = '1';	//есть уникальный вариант
 						item.goldstar.gotoAndStop(2);

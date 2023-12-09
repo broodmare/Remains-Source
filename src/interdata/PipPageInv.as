@@ -76,7 +76,7 @@ package interdata
 				inv.getKolAmmos();
 				assArr=[];
 				statHead.fav.text=Res.txt('pip', 'ii1');
-				statHead.objectName.text=Res.txt('pip', 'ii2');
+				statHead.nazv.text=Res.txt('pip', 'ii2');
 				statHead.hp.text=Res.txt('pip', 'ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
@@ -101,7 +101,7 @@ package interdata
 						if (curTip!='' && curTip!=null && curTip!=trol) continue;	//категория
 						var avail:Boolean=true;
 						if (w.avail()<=-1) avail=false;
-						var n:Object={tip:'w', id:w.id, objectName:w.objectName, respect:w.respect, avail:avail, variant:w.variant, trol:trol};
+						var n:Object = {tip:'w', id:w.id, objectName:w.objectName, respect:w.respect, avail:avail, variant:w.variant, trol:trol};
 						n.sort1=1;
 						if (!avail) n.sort1=2;
 						if (n.respect==1) n.sort1=3;
@@ -120,7 +120,7 @@ package interdata
 							else n.ammo=inv.items[w.ammo].kol+w.hold;
 							n.ammotip=(w.tip!=4)?inv.items[w.ammoBase].objectName:'';
 						}
-						if (w.alicorn) n.objectName=Res.rainbow(n.objectName);
+						if (w.alicorn) n.objectName = Res.rainbow(n.objectName);
 						arr.push(n);
 						assArr[n.id]=n;
 					}
@@ -134,7 +134,7 @@ package interdata
 			else if (page2 == 2) 
 			{	//броня
 				statHead.fav.text=Res.txt('pip', 'ii1');
-				statHead.objectName.text=Res.txt('pip', 'ii2');
+				statHead.nazv.text=Res.txt('pip', 'ii2');
 				statHead.hp.text=Res.txt('pip', 'ii3');
 				statHead.ammo.text='';
 				statHead.mass.text='';
@@ -156,7 +156,7 @@ package interdata
 			{	//снаряжение
 				assArr=[];
 				statHead.fav.text=Res.txt('pip', 'ii1');
-				statHead.objectName.text=Res.txt('pip', 'ii2');
+				statHead.nazv.text=Res.txt('pip', 'ii2');
 				statHead.hp.text=Res.txt('pip', 'ii5');
 				statHead.ammotip.text=Res.txt('pip', 'ii6');
 				statHead.ammo.text='';
@@ -233,7 +233,7 @@ package interdata
 			item.id.text=obj.id;
 			item.id.visible=item.rid.visible=item.cat.visible=false;
 			item.alpha=1;
-			item.objectName.alpha=1;
+			item.nazv.alpha=1;
 			item.mass.text='';
 			if (inv.favIds[obj.id]) 
 			{
@@ -257,7 +257,7 @@ package interdata
 			{
 				item.ramka.visible=(GameSession.currentSession.gg.newWeapon && GameSession.currentSession.gg.newWeapon.id==obj.id) || (GameSession.currentSession.gg.currentSpell && GameSession.currentSession.gg.currentSpell.id==obj.id);
 				if (item.ramka.visible) selItem=item;
-				item.objectName.htmlText=obj.objectName;
+				item.nazv.htmlText = obj.objectName;
 				if (obj.respect==0 && item.fav.text=='') item.fav.text='☩';
 				item.hp.text=(obj.hp==null)?'':obj.hp;
 				if (obj.ammo!=null) 
@@ -270,7 +270,7 @@ package interdata
 					item.ammo.text=item.ammotip.text='';
 				}
 				if (obj.respect==1) item.alpha=0.4;
-				if (!obj.avail) item.objectName.alpha=0.6;
+				if (!obj.avail) item.nazv.alpha=0.6;
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
 			} 
@@ -286,7 +286,7 @@ package interdata
 				if (GameSession.currentSession.gg.currentAmul && GameSession.currentSession.gg.currentAmul.id==obj.id) {
 					item.ramka.visible=true;
 				}
-				item.objectName.text=obj.objectName;
+				item.nazv.text = obj.objectName;
 				if (obj.trol=='armor3') item.hp.text='';
 				else item.hp.text=obj.hp;
 				item.ammo.text='';
@@ -295,7 +295,7 @@ package interdata
 			else  
 			{
 				item.ramka.visible=(GameSession.currentSession.gg.currentSpell && GameSession.currentSession.gg.currentSpell.id==obj.id);
-				item.objectName.text=obj.objectName;
+				item.nazv.text = obj.objectName;
 				item.hp.text=obj.kol;
 				if (Settings.hardInv && obj.mass>0) item.mass.text=Res.numb(obj.kol*obj.mass);
 				if (obj.price && obj.tip=='valuables') item.ammo.text=obj.price;

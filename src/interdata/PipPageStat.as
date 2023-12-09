@@ -1,4 +1,4 @@
-package interdata 
+﻿package interdata 
 {
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
@@ -55,7 +55,7 @@ package interdata
 			drunk = 0;
 			if (page2==1) 
 			{
-				statHead.objectName.text = '';
+				statHead.nazv.text = '';
 				statHead.numb.text = '';
 				arr.push({objectName:Res.txt('pip', 'name'), lvl:gg.pers.persName});
 				arr.push({objectName:Res.txt('pip', 'level'), lvl:gg.pers.level});
@@ -121,7 +121,7 @@ package interdata
 				}
 				gg.pers.checkHP();
 				setTopText('usemed1');
-				statHead.objectName.text=statHead.numb.text='';
+				statHead.nazv.text=statHead.numb.text='';
 				arr.push({id:'hp', objectName:Res.txt('pip', 'hp'), lvl:Math.round(gg.hp)+'/'+Math.round(gg.maxhp), bar:(gg.hp/gg.maxhp)});
 				arr.push({id:'organism', objectName:Res.txt('pip', 'organism')+':', lvl:''});
 				arr.push({id:'statHead'+gg.pers.headSt,objectName:'   '+Res.txt('pip', 'head'), lvl:Math.round(gg.pers.headHP)+'/'+Math.round(gg.pers.inMaxHP), bar:(gg.pers.headHP/gg.pers.inMaxHP)});
@@ -155,7 +155,7 @@ package interdata
 			{	
 				setTopText('infoskills');
 				skillPoint=pers.skillPoint;
-				statHead.objectName.text=Res.txt('pip', 'is1');
+				statHead.nazv.text=Res.txt('pip', 'is1');
 				statHead.numb.text=Res.txt('pip', 'is2');
 				for each(var sk in pers.skill_ids) 
 				{
@@ -170,7 +170,7 @@ package interdata
 			else if (page2==3) 
 			{
 				perkPoint=pers.perkPoint;
-				statHead.objectName.text=Res.txt('pip', 'is5');
+				statHead.nazv.text=Res.txt('pip', 'is5');
 				statHead.numb.text=Res.txt('pip', 'is2');
 				for (var pid in pers.perks) 
 				{
@@ -200,7 +200,7 @@ package interdata
 			} 
 			else if (page2==4) 
 			{
-				statHead.objectName.text=Res.txt('pip', 'is3');
+				statHead.nazv.text=Res.txt('pip', 'is3');
 				statHead.numb.text=Res.txt('pip', 'is4');
 				statHead.numb.x=500;
 				for (var sk in gg.effects) {
@@ -240,7 +240,7 @@ package interdata
 			else if (page2==6) 
 			{
 				perkPoint=pers.perkPoint;
-				statHead.objectName.text=Res.txt('pip', 'is5');
+				statHead.nazv.text=Res.txt('pip', 'is5');
 				statHead.numb.text=Res.txt('pip', 'is2');
 				for each (var dp:XML in XmlBook.getXML("perks").perk) 
 				{
@@ -283,37 +283,37 @@ package interdata
 		{
 			if (obj.id!=null) item.id.text=obj.id; else item.id.text='';
 			if (obj.cat!=null) item.cat.text=obj.cat; else item.cat.text='';
-			item.id.visible=false;
-			item.cat.visible=false;
-			item.progress.visible=false;
-			item.hpbar.visible=false;
-			item.numb.x=335;
-			item.objectName.text=obj.objectName;
-			item.numb.text=obj.lvl;
-			if (obj.maxlvl && obj.maxlvl>1 && obj.maxlvl<1000) item.numb.text+='/'+obj.maxlvl;
-			item.alpha=1;
-			if (page2==4) item.numb.x=500;
-			if (page2==2) 
+			item.id.visible = false;
+			item.cat.visible = false;
+			item.progress.visible = false;
+			item.hpbar.visible = false;
+			item.numb.x = 335;
+			item.nazv.text = obj.objectName;
+			item.numb.text = obj.lvl;
+			if (obj.maxlvl && obj.maxlvl > 1 && obj.maxlvl < 1000) item.numb.text += '/' + obj.maxlvl;
+			item.alpha = 1;
+			if (page2 == 4) item.numb.x = 500;
+			if (page2 == 2) 
 			{
-				if (obj.post>0) 
+				if (obj.post > 0) 
 				{
-					var sklvl=pers.getPostSkLevel(obj.lvl);
-					var nextN=100;
-					if (sklvl<pers.postSkTab.length) nextN=pers.postSkTab[sklvl];
-					item.numb.text=obj.lvl+ '  (+'+(nextN-obj.lvl)+')\t         '+Res.txt('pip', 'level')+': '+sklvl;
-					item.numb.x=215;
+					var sklvl = pers.getPostSkLevel(obj.lvl);
+					var nextN = 100;
+					if (sklvl < pers.postSkTab.length) nextN = pers.postSkTab[sklvl];
+					item.numb.text = obj.lvl + '  (+' + (nextN - obj.lvl) + ')\t         ' + Res.txt('pip', 'level') + ': ' + sklvl;
+					item.numb.x = 215;
 				} 
 				else 
 				{
-					item.numb.text=pers.getSkLevel(obj.lvl);
-					for (var i=1; i<=maxSkLvl; i++) 
+					item.numb.text = pers.getSkLevel(obj.lvl);
+					for (var i:int = 1; i <= maxSkLvl; i++) 
 					{
-						if (i<=obj.minlvl) item.progress['p'+i].gotoAndStop(2);
-						else if (i<=obj.lvl) item.progress['p'+i].gotoAndStop(3);
-						else item.progress['p'+i].gotoAndStop(1);
+						if (i <= obj.minlvl) item.progress['p' + i].gotoAndStop(2);
+						else if (i <= obj.lvl) item.progress['p' + i].gotoAndStop(3);
+						else item.progress['p' + i].gotoAndStop(1);
 					}
-					item.progress.visible=true;
-					item.numb.x=525;
+					item.progress.visible = true;
+					item.numb.x = 525;
 				}
 			}
 			if (page2==6) 
@@ -331,8 +331,8 @@ package interdata
 		//set public 
 		public override function statInfo(event:MouseEvent):void
 		{
-			var id:String=event.currentTarget.id.text;
-			var objectName:String=event.currentTarget.objectName.text;
+			var id:String = event.currentTarget.id.text;
+			var objectName:String = event.currentTarget.nazv.text;
 			if (page2==2 || page2==3 || page2==6) setIco(5,id);
 			else setIco();
 			if (id!='') 
@@ -342,12 +342,12 @@ package interdata
 					infoItemId=id;
 					if (id=='diff') 
 					{
-						vis.objectName.text=Res.txt('pip',id);
+						vis.nazv.text=Res.txt('pip',id);
 						vis.info.htmlText=Res.txt('gui','dif'+GameSession.currentSession.game.globalDif,1);
 					} 
 					else 
 					{
-						vis.objectName.text=Res.txt('pip', id);
+						vis.nazv.text=Res.txt('pip', id);
 						vis.info.htmlText=Res.txt('pip',id,1);
 					}
 					vis.info.htmlText+='<br><br>';
@@ -362,7 +362,7 @@ package interdata
 
 					if (event.currentTarget.cat.text=='ad') 
 					{
-						vis.objectName.text=Res.txt('eff',id+'_ad');
+						vis.nazv.text=Res.txt('eff',id+'_ad');
 						lvl=0;
 						lvl=int(event.currentTarget.numb.text);
 						if (lvl>0) lvl--;
@@ -370,12 +370,12 @@ package interdata
 					} 
 					else if (id=='phoenix') 
 					{
-						vis.objectName.text=objectName;
+						vis.nazv.text=objectName;
 						vis.info.htmlText=Res.txt('unit','phoenix',1);
 					} 
 					else 
 					{
-						vis.objectName.text=Res.txt('pip', id);
+						vis.nazv.text=Res.txt('pip', id);
 						vis.info.htmlText=Res.txt('pip',id,1);
 					}
 
@@ -416,7 +416,7 @@ package interdata
 				} 
 				else 
 				{
-					vis.objectName.text=objectName;
+					vis.nazv.text=objectName;
 					if (page2==4) {
 						if (id=='drunk') 
 						{
@@ -449,7 +449,7 @@ package interdata
 			} 
 			else 
 			{
-				vis.objectName.text=vis.info.htmlText='';
+				vis.nazv.text=vis.info.htmlText='';
 			}
 		}
 		
@@ -567,19 +567,19 @@ package interdata
 				}
 				pip.snd(1);
 			}
-			if (page2==5 && infoItemId!='') 
+			if (page2 == 5 && infoItemId != '') 
 			{
-				infoItemId=event.currentTarget.id.text;
+				infoItemId = event.currentTarget.id.text;
 				var need:String;
-				if (infoItemId=='hp') 
+				if (infoItemId == 'hp') 
 				{
 					inv.usePotion();
 				} 
-				else if (infoItemId=='rad') 
+				else if (infoItemId == 'rad') 
 				{
 					inv.usePotion('antiradin');
 				} 
-				else if (infoItemId=='cut') 
+				else if (infoItemId == 'cut') 
 				{
 					inv.usePotion('pot0');
 				} 

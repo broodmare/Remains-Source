@@ -1,4 +1,4 @@
-package interdata 
+﻿package interdata 
 {
 	
 	import flash.display.MovieClip;
@@ -88,7 +88,7 @@ package interdata
 					
 					trace('PipPageOpt.as/setSubPages() - Step 01/17 - setting statHead text.');
 
-					statHead.objectName.text = ''; 
+					statHead.nazv.text = ''; 
 					statHead.numb.text = '';
 
 
@@ -322,19 +322,20 @@ package interdata
 			item.check.visible=false;
 			item.key1.visible=item.key2.visible=false;
 			item.ramka.visible=false;
-			item.level.text='';
+			item.level.text = '';
+			
 			if (page2==3 || page2==6) 
 			{
-				item.objectName.text=Res.txt('pip', obj.id);
-				item.ggName.text='';
-				if (obj.numb!=null) 
+				item.nazv.text = Res.txt('pip', obj.id);
+				item.ggName.text = '';
+				if (obj.numb != null) 
 				{
-					item.numb.text=obj.numb;
-					var scr:ScrollBar=item.scr;
-					scr.visible=true;
-					scr.minScrollPosition=0;
-					scr.maxScrollPosition=100;
-					scr.scrollPosition=obj.numb;
+					item.numb.text = obj.numb;
+					var scr:ScrollBar = item.scr;
+					scr.visible = true;
+					scr.minScrollPosition =   0;
+					scr.maxScrollPosition = 100;
+					scr.scrollPosition = obj.numb;
 					if (!scr.hasEventListener(ScrollEvent.SCROLL)) scr.addEventListener(ScrollEvent.SCROLL,optScroll);
 				} 
 				else 
@@ -353,19 +354,19 @@ package interdata
 			{
 				item.key1.visible=item.key2.visible=true;
 				item.numb.text=item.ggName.text='';
-				item.objectName.text=obj.objectName;
+				item.nazv.text=obj.objectName;
 				setVisKey(obj.a1,item.key1);
 				setVisKey(obj.a2,item.key2);
 			}
 			if (page2==1 || page2==2) 
 			{
-				item.objectName.text=obj.objectName;
+				item.nazv.text=obj.objectName;
 				item.numb.text=obj.date;
 				item.ggName.text=obj.gg;
 				if (obj.level) item.ggName.text+=((obj.level!='')?(' ('+obj.level+')'):'');
 				if (obj.level) item.level.text=obj.level.substr(0,18);
-				if (obj.hard==1) item.objectName.text+=' {!}';
-				if (obj.hard==2) item.objectName.text+=' [†]';
+				if (obj.hard==1) item.nazv.text+=' {!}';
+				if (obj.hard==2) item.nazv.text+=' [†]';
 				if (nSave==obj.id) item.ramka.visible=true;
 			}
 		}
@@ -647,7 +648,7 @@ package interdata
 			vis.info.htmlText='';
 			if (obj && obj.gg!='') 
 			{
-				vis.objectName.text=obj.gg;
+				vis.nazv.text = obj.gg;
 				GameSession.currentSession.appearanceWindow.load(obj.app);
 				GameSession.currentSession.pip.setArmor(obj.armor);
 				vis.pers.gotoAndStop(2);
@@ -669,7 +670,7 @@ package interdata
 			} 
 			else 
 			{
-				vis.objectName.text='';
+				vis.nazv.text='';
 				vis.pers.visible=false;
 			}
 		}
