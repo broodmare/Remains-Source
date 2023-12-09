@@ -283,10 +283,9 @@ package locdata
 			}
 			GameSession.currentSession.gg.remEffect('potion_fly');
 
-			trace('Game.as/enterCurrentLevel() - Checking if this is causing the empty strings.');
 			GameSession.currentSession.gui.messText('', Res.txt('map', curLevel.id) + (curLevel.rnd?(' - ' + (curLevel.landStage + 1)):''), GameSession.currentSession.gg.Y < 300);
 			
-			if (!curLevel.rnd) curLevel.visited=true;
+			if (!curLevel.rnd) curLevel.visited = true;
 			mReturn = (triggers['noreturn'] <= 0);
 			if (curLevel.upStage) 
 			{

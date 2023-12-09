@@ -78,7 +78,7 @@ package
 
 		//Room components
 		public var level:Level;						//Current level
-		public var room:Room;						//Current room
+		public var room:Room;				//Current room
 		public var roomContainer:RoomContainer;		//Holds all level data.
 		
 
@@ -104,8 +104,6 @@ package
 		public var ccur:String;
 		public var currentMusic:String = '';
 		
-
-
 		//Loading, saves, config
 		public var configObj:SharedObject;
 		public var saveObj:SharedObject;
@@ -116,7 +114,6 @@ package
 		public var nadv:int = 0;
 		public var koladv:int = 10;					//advice number
 		public var load_log:String = '';			//This is the text that apepars onscreen during boot.
-		
 
 		//Maps
 		public var levelPath:String;					//
@@ -124,7 +121,6 @@ package
 		public var levelsFound:int = 0;
 		public var levelsLoaded:int = 0;
 		public var allLevelsLoaded:Boolean = false;
-
 
 		//Other
 		public var comLoad:int 		= -1;				//load command
@@ -134,7 +130,6 @@ package
 		public var autoSaveN:int 	= 0;				//autosave slot number
 		public var log:String 		= '';
 		public var fc:int 			= 0;
-
 
 		public var d1:int, d2:int;
 		public var landError:Boolean = false;
@@ -148,7 +143,6 @@ package
 			trace('GameSession.as/World() - Running world constructor.');
 			GameSession.currentSession = this;
 
-			
 			gameContainer = container;
 
 			swfStage 				= gameContainer.stage;
@@ -165,12 +159,9 @@ package
 				Snd.load(configObj.data.snd);
 			}
 
-			
-
 			trace('GameSession.as/World() - Calling Languages/languageStart.');
 			Languages.languageStart();
 			
-
 			trace('GameSession.as/World() - Checking if language is loaded.');
 			if (Languages.textLoaded)
 			{
@@ -186,12 +177,10 @@ package
 			load_log += 'Stage 1 Ok\n';
 		}
 
-
 		public function continueLoadingWorld():void
 		{
 
 			trace ('GameSession.as/continueLoadingWorld() - Continuing world construction.');
-
 			trace ('GameSession.as/continueLoadingWorld() - Calling LootGen.init()...');
 			LootGen.init();
 			trace ('GameSession.as/continueLoadingWorld() - Calling Form.setForms()...');
@@ -199,7 +188,6 @@ package
 			trace ('GameSession.as/continueLoadingWorld() - Calling Emitter.init()...');
 			Emitter.init();
 			
-
 			trace ('GameSession.as/continueLoadingWorld() - Creating GUI elements.');
 			loadingScreen 	= new visualWait();
 			
@@ -216,8 +204,6 @@ package
 			vconsol 		 = new visConsol();
 			verror 			 = new visError();
 	
-
-
 			loadingScreen.cacheAsBitmap = Settings.bitmapCachingOption;
 			vblack.cacheAsBitmap 		= Settings.bitmapCachingOption;
 
@@ -239,8 +225,6 @@ package
 			gameContainer.addChild(vstand);
 			gameContainer.addChild(verror);
 			gameContainer.addChild(vconsol);
-
-
 
 			//ERROR LOG STUFF
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function():void {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
@@ -269,7 +253,6 @@ package
 		public function init2():void
 		{
 			trace('GameSession.as/init2() - init2() Executing...');
-
 			
 			if (consol) 
 			{
@@ -278,8 +261,6 @@ package
 					trace('GameSession.as/init2() - Checking if all rooms are loaded.');
 					allLevelsLoadedCheck();
 				}
-				
-
 
 				trace('GameSession.as/init2() - Consol enabled, returning.');
 				return;
@@ -304,9 +285,6 @@ package
 			}
     		saveObj = saveArr[0];
 			
-
-
-
 			trace('GameSession.as/init2() - Creating input controller.');
 			ctr = new Ctr(configObj.data.ctr);
 
@@ -388,7 +366,6 @@ package
 			}
 
 			if (configObj.data.chit > 0) 		Settings.chitOn 		= true;
-			
 			if (configObj.data.vsWeaponNew > 0) Settings.vsWeaponNew 	= false;
 			if (configObj.data.vsWeaponRep > 0) Settings.vsWeaponRep 	= false;
 			if (configObj.data.vsAmmoAll > 0) 	Settings.vsAmmoAll 		= false;	

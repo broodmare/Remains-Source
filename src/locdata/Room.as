@@ -21,7 +21,8 @@ package locdata
 	
 	public class Room 
 	{
-		
+		private const currentRoom:Room = GameSession.currentSession.room;
+
 		public var level:Level;
 		
 		public var id:String;					// Room ID
@@ -1620,7 +1621,7 @@ package locdata
 				var tempX:Number = nx + ndx * i / div;
 				var tempY:Number = ny + ndy * i / div;
 				
-				var t:Tile = GameSession.currentSession.room.getAbsTile(tempX | 0, tempY | 0);
+				var t:Tile = currentRoom.getAbsTile(tempX | 0, tempY | 0);
 				
 				if (t.phis == 1 && tempX >= t.phX1 && tempX <= t.phX2 && tempY >= t.phY1 && tempY <= t.phY2) 
 				{
@@ -1715,17 +1716,17 @@ package locdata
 			if (tip == 100 && hit <= 50 && (t.damageThreshold > 0 || t.indestruct)) return;
 			if (tip == 100) tip = 4;
 			// Room walls are not destructible
-			if (!destroyOn && t.hp>500) 
+			if (!destroyOn && t.hp > 500) 
 			{
-				if (roomActive && t.phis == 1) grafon.dyrka(nx, ny, tip, t.tileMaterial, true, hit / t.hp);
+				if (roomActive && t.phis == 1) BulletHoles.renderBulletHoles(nx, ny, tip, t.tileMaterial, true, hit / t.hp);
 				return;
 			}
 			// Has damage been dealt to the tile?
 			if (t.udar(hit))  // Hit the tile, passes if damage was dealt
 			{	
-				if (t.hp<=0)  // If the tile is destroyed
+				if (t.hp <= 0)  // If the tile is destroyed
 				{	
-					if (t.phis>=1) // Change the room configuration
+					if (t.phis >= 1) // Change the room configuration
 					{
 						isRebuild = true;				 
 						if (t.Y < waterLevel)  // Recalculate water
@@ -1754,12 +1755,12 @@ package locdata
 				} 
 				else if (t.phis >= 1)  // If it's not destroyed but damage was dealt
 				{	
-					if (roomActive) grafon.dyrka(nx, ny, tip, t.tileMaterial, false, hit / t.hp);
+					if (roomActive) BulletHoles.renderBulletHoles(nx, ny, tip, t.tileMaterial, false, hit / t.hp);
 				}
 			} 
 			else if (t.phis >= 1) // If there was no damage
 			{		
-				if (roomActive) grafon.dyrka(nx, ny, tip, t.tileMaterial, true, hit / t.hp);
+				if (roomActive) BulletHoles.renderBulletHoles(nx, ny, tip, t.tileMaterial, true, hit / t.hp);
 			}
 		}
 		
@@ -1767,7 +1768,7 @@ package locdata
 		public function dieTile(t:Tile):void
 		{
 			if (t.indestruct) return;
-			if (t.phis==1) 
+			if (t.phis == 1) 
 			{
 				if (t.door) // If it's a door
 				{				

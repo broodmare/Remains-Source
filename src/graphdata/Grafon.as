@@ -9,22 +9,14 @@ package graphdata
 	import flash.geom.Point;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
-	import flash.filters.BevelFilter;
 	import flash.filters.BlurFilter;
-	import flash.filters.GlowFilter;
 	import flash.filters.ColorMatrixFilter;
 	import flash.filters.DropShadowFilter;
-	import flash.utils.*;
-	import flash.net.URLRequest;
-	import flash.display.Loader;
-	import flash.events.Event;
-	import flash.events.ProgressEvent;
-	import flash.ui.MouseCursorData;
-	import flash.ui.Mouse;
 
 	import fl.motion.Color;
 
 	import locdata.*;
+	import locdata.Room;
 
 	import components.Settings;
 	import components.XmlBook;
@@ -37,9 +29,9 @@ package graphdata
 
 	public class Grafon 
 	{
-		
-		public var room:Room;	//current Room.
-		
+
+		public var  room:Room;
+
 		public var mainCanvas:Sprite;			// Sprite that all 6 layers are drawn onto (Screenspace?)
 		public var layerBackground_1:Sprite;	// Layer 1
 		public var layerBackground_2:Sprite;	// Layer 2
@@ -48,7 +40,6 @@ package graphdata
 		public var layerLighting:Sprite;		// Layer 5
 		public var layerSats:Sprite;			// Layer 6
 		
-
 		public var canvasLayerArray:Array;
 		public var skyboxLayer:MovieClip;
 		
@@ -78,27 +69,20 @@ package graphdata
 		public var shadBmp:BitmapData;
 		public var colorBmp:BitmapData;
 
-
-
-
-		//Export this to some kind of user settings. This might save on memory usage which is a premium for flash.
-
 		public var dsFilter:DropShadowFilter;				// Adds a drop shadow to objects. (What objects?)
 		public var infraTransform:ColorTransform;			// Fog of war stuff.
 		public var defTransform:ColorTransform;				// Fog of war stuff.
-		
-		public var pa:MovieClip;							// Something for spraypainting.
-		public var pb:MovieClip;							// Something for spraypainting.
-		public var brTrans:ColorTransform;					// Something for spraypainting.
-		public var brColor:Color;							// Something for spraypainting.
-		public var brData:BitmapData;						// Something for spraypainting.
-		public var brPoint:Point;							// Something for spraypainting.
-		public var brRect:Rectangle;						// Something for spraypainting.
-		public var paintMatrix:Matrix;						// Something for spraypainting.
 
+		// Spraypainting TODO: Move to another class.
+		public var pa:MovieClip;
+		public var pb:MovieClip;
+		public var brTrans:ColorTransform;
+		public var brColor:Color;
+		public var brData:BitmapData;
+		public var brPoint:Point;
+		public var brRect:Rectangle;
+		public var paintMatrix:Matrix;
 
-		
-		
 		//Screen Borders
 		public var borderTop:MovieClip;						// Black border around the screen
 		public var borderBottom:MovieClip;					// Black border around the screen
@@ -111,7 +95,6 @@ package graphdata
 		public var screenResX:int;							// Horizontal screen resolution
 		public var screenResY:int;							// Vertical screen resolution
 		public var screenArea:Rectangle;					// Screen area (Width x Height)
-		
 		public var lightX:int;								// Width of bitmap used for lighting.
 		public var lightY:int;								// Height of the bitmap used for lighting.	//Why is this different?
 		public var lightRect:Rectangle;						// Area of the bitmap used for lighting. 
@@ -122,17 +105,13 @@ package graphdata
 
 		public static var spriteLists:Array = [];	//Array of all active sprites.
 		public static var resourceURLArray:Array = ['data/texture.swf', 'data/texture1.swf', 'data/sprite.swf', 'data/sprite1.swf']; //URLs of the files to load
-		
-		
-		
-		public static const canvasLayerCount:int = 6; 		// Number of Layers to be rendered on mainCanvas.
 
+		public static const canvasLayerCount:int = 6; 		// Number of Layers to be rendered on mainCanvas.
 		public static const activeMaterials:int  = 0;		// Active Materials 
 		public static const skyboxCount:int   	 = 0;		// Active Skybox Textures
 		public static const bgObjectCount:int 	 = 1;		// Active Background Objects
 		public static const objectCount:int   	 = 1;		// Active Objects
 		public static const spriteCount:int   	 = 2;		// Active Sprites (starts at 2 because of Main and MainMenu)
-
 		public var tilepixelwidth:int; 						// Tile Width in pixels.
 		public var tilepixelheight:int;						// Tile Height in pixels.
 		public var finalWidth:int;							// (mapTileWidth * tilepixelwidth) 	 - Precalculated to save time.
@@ -140,7 +119,7 @@ package graphdata
 		
 		public var nn:int;									// Something for side quests? Why is this here?
 
-		public var waterMovieClip:MovieClip;  						// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
+		public var waterMovieClip:MovieClip;  				// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
 
 
 		public function Grafon(nvis:Sprite)
@@ -175,8 +154,6 @@ package graphdata
 			lightX 			= 49;
 			lightY 			= 28;
 			lightRect 		= new Rectangle(0, 0, lightX, lightY);
-
-
 			
 			progressLoad 	= 0;
 			resourcesLoaded = false; 
@@ -188,7 +165,6 @@ package graphdata
 			finalWidth 	= mapTileWidth 	* tilepixelwidth;
 			finalHeight = mapTileHeight * tilepixelheight;
 
-
 			mainCanvas 			= nvis;
 			layerBackground_1 	= new Sprite();
 			layerBackground_2 	= new Sprite();
@@ -197,9 +173,7 @@ package graphdata
 			visFront 			= new Sprite();
 			layerLighting 		= new Sprite();
 			layerSats 			= new Sprite();
-
 			canvasLayerArray 	= [];
-
 
 			layerSats.visible 	= false;
 			layerSats.filters 	= [new BlurFilter(3, 3, 1)];
@@ -228,7 +202,6 @@ package graphdata
 			layerLighting.scaleX = tilepixelwidth;
 			layerLighting.scaleY = tilepixelheight;
 			
-
 			trace('Grafon.as/Grafon() - Creating bitmaps...');
 			frontBmp 	= new BitmapData(screenResX, screenResY, true, 0x0)
 			frontBitmap =  new Bitmap(frontBmp);
@@ -257,9 +230,6 @@ package graphdata
 			lightBitmap =  new Bitmap(lightBmp, 'auto', true);
 			layerLighting.addChild(lightBitmap);
 
-
-
-
 			borderTop 	 = new visBlack();
 			borderBottom = new visBlack();
 			borderRight  = new visBlack();
@@ -277,9 +247,7 @@ package graphdata
 
 			//loader array setup
 			grLoaderArray = [];
-
-
-			
+		
 			//Resource URL list setup.
 			trace('Grafon.as/Grafon() - Creating resource resource loader array...');
 			for (var j:int = 0; j < resourceURLArray.length; j++)
@@ -293,15 +261,11 @@ package graphdata
 
 
 			trace('Grafon.as/Grafon() - Adding mouse cursor...');
-			createCursors();
+			CursorHandler.createCursors();
+
+
 			trace('Grafon.as/Grafon() - Grafon intitialized. ');
 		}
-		
-
-
-
-
-
 
 		//Check if all instances of GrLoader have finished.
 		public function checkLoaded():void
@@ -368,25 +332,7 @@ package graphdata
 			progressLoad /= GrLoader.instanceCount;
 		}
 		
-		public function createCursors():void
-		{
-			createCursor(visCurArrow, 	'arrow');
-			createCursor(visCurTarget, 	'target', 13, 13);
-			createCursor(visCurTarget1, 'combat', 13, 13);
-			createCursor(visCurTarget2, 'action', 13, 13);
-		}
-		
-		public function createCursor(vcur:Class, objectName:String, nx:int = 0, ny:int = 0):void
-		{
-			var cursorData:Vector.<BitmapData>;
-			var mouseCursorData:MouseCursorData;
-			cursorData = new Vector.<BitmapData>();
-			cursorData.push(new vcur());
-			mouseCursorData  =  new MouseCursorData();
-			mouseCursorData.data  =  cursorData;
-			mouseCursorData.hotSpot = new Point(nx, ny);
-			Mouse.registerCursor(objectName, mouseCursorData);
-		}
+
 		
 		//================================================================================================		
 		//							Initial Room Drawing
@@ -507,7 +453,7 @@ package graphdata
 				borderLeft.x = 0;
 				borderBottom.y = room.roomPixelHeight - 1;
 				borderRight.x = room.roomPixelWidth - 1;
-				borderTop.scaleX = borderBottom.scaleX = room.roomPixelWidth / 100+1;
+				borderTop.scaleX = borderBottom.scaleX = room.roomPixelWidth / 100 + 1;
 				borderTop.scaleY = borderBottom.scaleY = 2;
 				borderRight.scaleY = borderLeft.scaleY = room.roomPixelHeight / 100;
 				borderRight.scaleX = borderLeft.scaleX = 2;
@@ -544,7 +490,7 @@ package graphdata
 				var darkness:int = 0xAA + room.darkness;
 				if (darkness > 0xFF) darkness = 0xFF;
 				if (darkness < 0) darkness = 0;
-				colorBmp.fillRect(screenArea, darkness*0x1000000); //Black
+				colorBmp.fillRect(screenArea, darkness * 0x1000000); //Black
 				shadBmp.fillRect(screenArea, 0xFFFFFFFF); 		   //White
 			}
 			catch (err:Error) 
@@ -838,8 +784,8 @@ package graphdata
 				if (currentLocation.cTransform) 
 				{
 					backBmp.colorTransform(backBmp.rect, currentLocation.cTransform);
-					ct = new ColorTransform();//170, 130
-					darkness2 = 1+(170-darkness)/33;
+					ct = new ColorTransform();
+					darkness2 = 1 + (170 - darkness) / 33;
 					ct.concat(currentLocation.cTransform);
 
 					if (darkness2 > 1) 
@@ -1040,9 +986,6 @@ package graphdata
 			var baseSprite:Sprite = new Sprite();
 			baseSprite.graphics.beginBitmapFill(fill);
 
-
-
-
 			if (sposob == 0) 
 			{
 				baseSprite.graphics.drawRect(0, 0, finalWidth, finalHeight);
@@ -1068,30 +1011,23 @@ package graphdata
 		}
 		
 
-		//Identify this function
+		//Identify this function. Condensed 8 if else statements here. Original for reference: spriteContainer.c1.gotoAndStop(tile.kont1 + 1); 
 		public function setMCT(spriteContainer:MovieClip, tile:Tile, isTopLayer:Boolean):void
 		{
 			if (spriteContainer.c1)
 			{
-
-				if (isTopLayer) 
+				var prefix:String = isTopLayer ? "kont" : "pont";
+				for (var i:int = 1; i <= 4; i++)
 				{
-					spriteContainer.c1.gotoAndStop(tile.kont1+1);
-					spriteContainer.c2.gotoAndStop(tile.kont2+1);
-					spriteContainer.c3.gotoAndStop(tile.kont3+1);
-					spriteContainer.c4.gotoAndStop(tile.kont4+1);
-				} 
-
-				else 
-				{
-					spriteContainer.c1.gotoAndStop(tile.pont1+1);
-					spriteContainer.c2.gotoAndStop(tile.pont2+1);
-					spriteContainer.c3.gotoAndStop(tile.pont3+1);
-					spriteContainer.c4.gotoAndStop(tile.pont4+1);
+					var containerProp:String = "c" + i;
+					var tileProp:String = prefix + i;
+					if(spriteContainer.hasOwnProperty(containerProp)) 
+					{
+						spriteContainer[containerProp].gotoAndStop(tile[tileProp] + 1);
+					}
 				}
 			}
 		}
-
 
 		// Drawing textured materials
 		// Material: Material class.
@@ -1217,6 +1153,7 @@ package graphdata
 			border.mask = bmaska; 
 			floor.mask = fmaska;
 
+
 			tileTexture.cacheAsBitmap 	= Settings.bitmapCachingOption; 
 			maska.cacheAsBitmap		 	= Settings.bitmapCachingOption; 
 			border.cacheAsBitmap	 	= Settings.bitmapCachingOption; 
@@ -1302,7 +1239,7 @@ package graphdata
 			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) waterMovieClip.gotoAndStop(2);
 			else waterMovieClip.gotoAndStop(1);
 			vodaBmp.draw(waterMovieClip, backgroundMatrix, room.cTransform, (tile.water > 0) ? 'normal':'erase', null, false);
-			if (recurs) drawWater(room.getTile(tile.X, tile.Y+1), false);
+			if (recurs) drawWater(room.getTile(tile.X, tile.Y + 1), false);
 		}
 			
 		//TODO: See what the fuck is going on with this.
@@ -1344,184 +1281,8 @@ package graphdata
 				Emitter.emit('bur', room, nx, ny);
 				drC = block_bur;
 			}
-			decal(erC, drC, nx, ny, 1, 0, 'hardlight');
-		}
 			
-		// Bullet holes
-		public function dyrka(nx:int, ny:int, tip:int, mat:int, soft:Boolean = false, ver:Number = 1):void
-		{
-			var erC:Class, drC:Class;
-			var bl:String = 'normal';
-			var centr:Boolean = false;
-			var sc:Number = Math.random() * 0.5 + 0.5;
-			var rc:Number = Math.random() * 360
-			if (tip == 0 || mat == 0) return;
-			if (mat == 1) //metal
-			{ 			
-				if (tip >= 1 && tip <= 6) drC = bullet_metal;
-				else if (tip == 9) //explosion
-				{		
-					if (!soft && Math.random()*0.5<ver) drC = metal_tre;
-					centr = true;
-				}
-			} 
-			else if (mat == 2 || mat == 4 || mat == 6) //stone
-			{	
-				if (tip >= 1 && tip <= 3) //bullets
-				{					
-					if (tip>1 && Math.random()>0.5) erC = bullet_dyr;
-					drC = bullet_tre;
-					if (tip == 2) sc += 0.5;
-					if (tip == 3) sc += 1;
-				} 
-				else if (tip >= 4 && tip <= 6) //strikes
-				{			
-					if (!soft) drC = punch_tre;
-					if (tip == 5) sc += 0.5;
-					if (tip == 6) sc += 1;
-				} 
-				else if (tip == 9) //explosion
-				{					
-					if (!soft && Math.random()*0.5<ver) drC = expl_tre;
-					centr = true;
-				}
-				if (tip<10 && !soft)
-				{
-					if (mat == 2) Emitter.emit('kusoch', room, nx, ny, {kol:3});
-					else Emitter.emit('kusochB', room, nx, ny, {kol:3});
-				}
-			} 
-			else if (mat == 3) //wood
-			{	
-				if (tip >= 1 && tip <= 3) //bullets
-					{					
-					erC = bullet_dyr;
-					drC = bullet_wood;
-					rc = 0;
-					if (tip == 2) sc += 0.5;
-					if (tip == 3) sc += 1;
-				} 
-				else if (tip >= 4 && tip <= 6) // punches
-				{			
-					if (!soft) drC = punch_tre;
-					if (tip == 5) sc += 0.5;
-					if (tip == 6) sc += 1;
-				} 
-				else if (tip == 9) // explosion
-				{					
-					if (!soft && Math.random() * 0.5 < ver) drC = expl_tre;
-					centr = true;
-				}
-				if (tip<10 && !soft)
-				{
-					Emitter.emit('schepoch', room, nx, ny, {kol:3});
-				}
-			} 
-			else if (mat == 7) // field
-			{	
-				Emitter.emit('pole', room, nx, ny, {kol:5});
-			}
-
-			if (tip == 11) // fire
-			{					
-				if (Math.random() < 0.1) drC = fire_soft;
-			} 
-			else if (tip == 12 || tip == 13) // lasers
-			{		
-				if (soft && Math.random() * 0.2 > ver)
-				{
-					drC = fire_soft;
-				} 
-				else 
-				{
-					drC = laser_tre;
-				}
-				if (tip == 13) sc *= 0.6;
-				bl = 'hardlight';
-			} 
-			else if (tip == 15) // plasma
-			{
-				if (soft)
-				{
-					drC = plasma_soft;
-				} 
-				else 
-				{
-					erC = plasma_dyr;
-					drC = plasma_tre;
-				}
-				bl = 'hardlight';
-			} 
-			else if (tip == 16)
-			{
-				if (soft)
-				{
-					drC = fire_soft;
-				} else {
-					erC = plasma_dyr;
-					drC = bluplasma_tre;
-				}
-				bl = 'hardlight';
-			} 
-			else if (tip == 17)
-			{
-				if (soft)
-				{
-					drC = fire_soft;
-				} else {
-					erC = plasma_dyr;
-					drC = pinkplasma_tre;
-				}
-				bl = 'hardlight';
-			} 
-			else if (tip == 18)
-			{
-				drC = cryo_soft;
-				bl = 'hardlight';
-			} 
-			else if (tip == 19) // explosion
-			{
-				if (!soft && Math.random()*0.5<ver) drC = plaexpl_tre;
-				centr = true;
-			}			
-
-			
-			decal(erC, drC, nx, ny, sc, rc, bl);
-		}
-			
-		public function decal(erC:Class, drD:Class, nx:Number, ny:Number, sc:Number = 1, rc:Number = 0, bl:String = 'normal'):void
-		{
-			var backgroundMatrix:Matrix = new Matrix();
-			if (sc != 1) backgroundMatrix.scale(sc, sc);
-			if (rc != 0) backgroundMatrix.rotate(rc);
-			backgroundMatrix.tx = nx;
-			backgroundMatrix.ty = ny;
-			if (erC)
-			{
-				var erase:MovieClip = new erC();
-				if (erase.totalFrames>1) erase.gotoAndStop(Math.floor(Math.random()*erase.totalFrames+1));
-				frontBmp.draw(erase, backgroundMatrix, null, 'erase', null, true);
-			}
-			if (drD)
-			{
-				var nagar:MovieClip = new drD();
-				if (nagar.totalFrames > 1) nagar.gotoAndStop(Math.floor(Math.random()*nagar.totalFrames+1));
-				nagar.scaleX = nagar.scaleY = sc;
-				nagar.rotation = rc;
-				var dyrx:Number = Math.round(nagar.width/2+2)*2, dyry:Number = Math.round(nagar.height/2+2)*2;
-				var res2:BitmapData  =  new BitmapData(dyrx, dyry, false, 0x0);
-				var rdx:Number = 0;
-				var rdy:Number = 0;
-				if (nx - dyrx / 2 < 0) rdx = -(nx - dyrx / 2);
-				if (ny - dyry / 2 < 0) rdy = -(ny - dyry / 2);
-				var rect:Rectangle  =  new Rectangle(nx-dyrx/2+rdx, ny-dyry/2+rdy, nx+dyrx/2+rdx, ny+dyry/2+rdy);
-				var pt:Point  =  new Point(0, 0);
-				res2.copyChannel(frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
-				frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal')?GameSession.currentSession.room.cTransform:null, bl, null, true);
-				rect  =  new Rectangle(0, 0, dyrx, dyry);
-				pt = new Point(nx-dyrx/2+rdx, ny-dyry/2+rdy);
-				frontBmp.copyChannel(res2, rect, pt, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
-			}
+			BulletHoles.decal(erC, drC, nx, ny, 1, 0, 'hardlight');
 		}
 			
 		public function gwall(nx:int, ny:int):void
