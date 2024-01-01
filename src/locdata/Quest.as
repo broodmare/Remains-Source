@@ -80,19 +80,19 @@ package locdata
 				if (loadObj.gived) gived=loadObj.gived;
 			}
 			
-			if (xml.@empl.length()) empl=xml.@empl;
-			if (xml.@begdial.length()) begDial=xml.@begdial;
-			if (xml.@enddial.length()) endDial=xml.@enddial;
-			if (xml.@endscr.length()) endScript=xml.@endscr;
-			if (xml.@nn.length()) nn=true;
+			if (xml.@empl.length()) empl = xml.@empl;
+			if (xml.@begdial.length()) begDial = xml.@begdial;
+			if (xml.@enddial.length()) endDial = xml.@enddial;
+			if (xml.@endscr.length()) endScript = xml.@endscr;
+			if (xml.@nn.length()) nn = true;
 			
 			if (xml.@collect.length()) 
 			{
-				collect=xml.@collect;
-				isCheck=true;
-				if (par) par.isCheck=true;
-				if (xml.@del.length()) isDel=true;
-				if (xml.@coltip.length()) colTip=xml.@coltip;
+				collect = xml.@collect;
+				isCheck = true;
+				if (par) par.isCheck = true;
+				if (xml.@del.length()) isDel = true;
+				if (xml.@coltip.length()) colTip = xml.@coltip;
 			}
 			if (xml.@give.length()) 
 			{
@@ -102,55 +102,64 @@ package locdata
 			{
 				pay=xml.@pay;
 			}
-			if (xml.@kol.length()) kol=xml.@kol;
-			if (xml.@report.length()) report=xml.@report;
-			if (xml.@us.length()) canBeUse=true;
-			if (xml.@hidden.length()) hidden=true;
-			if (xml.@invis.length()) invis=true;
+			if (xml.@kol.length()) kol = xml.@kol;
+			if (xml.@report.length()) report = xml.@report;
+			if (xml.@us.length()) canBeUse = true;
+			if (xml.@hidden.length()) hidden = true;
+			if (xml.@invis.length()) invis = true;
 			if (xml.@result.length()) 
 			{
-				result=true;
-				if (par) par.result=true;
+				result = true;
+				if (par) par.result = true;
 			}
 			
-			if (xml.@sp.length()) sp=xml.@sp;
-			if (xml.@xp.length()) xp=xml.@xp;
-			if (xml.@rep.length()) rep=xml.@rep;
+			if (xml.@sp.length()) sp = xml.@sp;
+			if (xml.@xp.length()) xp = xml.@xp;
+			if (xml.@rep.length()) rep = xml.@rep;
 			if (xml.@trigger.length()) 
 			{
-				trigger=xml.@trigger;
+				trigger = xml.@trigger;
 				if (xml.@triggerset.length()) triggerSet=xml.@triggerset;
-				else triggerSet='1';
-				if (state==2 && GameSession.currentSession.game.triggers[trigger]==null) GameSession.currentSession.game.triggers[trigger]=triggerSet;
+				else triggerSet = '1';
+				if (state == 2 && GameSession.currentSession.game.triggers[trigger] == null) GameSession.currentSession.game.triggers[trigger]=triggerSet;
 			}
-			if (loadObj && loadObj.invis!=undefined) 
+			if (loadObj && loadObj.invis != undefined) 
 			{
 				invis=loadObj.invis;
 			}
 			var node = Res.localizationFile.txt.(@id == pid);
 			if (node.length()) 
 			{
-				node=node[0]
-				objectName=node.n[0];
-				if (objectName==null) objectName='['+id+']';
+				node = node[0]
+				objectName = node.n[0];
+				if (objectName == null) objectName = '[' + id + ']';
 			} 
 			else 
 			{
-				objectName='['+id+']';
+				objectName = '[' + id + ']';
 			}
 			if (!sub) 
 			{
-				if (node && node.info.length())	info=node.info[0];
-				else info='---';
-				main=xml.@main.length()>0;
-				subs=[];
-				subsId=[];
-				nnsub=1;
-				for each(var sxml:XML in xml.q) {
+				if (node && node.info.length())	
+				{
+					info = node.info[0];
+				}
+				else 
+				{
+					info = '---';
+				}
+
+				main = xml.@main.length() > 0;
+				subs = [];
+				subsId = [];
+				nnsub = 1;
+
+				for each(var sxml:XML in xml.q) 
+				{
 					var sl:Object;
-					if (loadObj) sl=loadObj.subs[sxml.@id];
-					var q:Quest=new Quest(sxml,sl,this,nnsub);
-					subsId[q.id]=q;
+					if (loadObj) sl = loadObj.subs[sxml.@id];
+					var q:Quest = new Quest(sxml, sl, this, nnsub);
+					subsId[q.id] = q;
 					subs.push(q);
 					nnsub++;
 				}
@@ -174,12 +183,12 @@ package locdata
 		//проверить, если cid совпадает с collect, увеличить est
 		public function inc(cid:String, kol:int=1):void
 		{
-			if (cid==collect) est+=kol;
+			if (cid == collect) est += kol;
 			if (!sub) 
 			{
 				for each (var q:Quest in subs) 
 				{
-					q.inc(cid,kol);
+					q.inc(cid, kol);
 				}
 			}
 		}
@@ -194,14 +203,14 @@ package locdata
 					if (rew.@id.length()) 
 					{
 						var item:Item;
-						if (rew.@kol.length()) item=new Item('', rew.@id, rew.@kol);
-						else item=new Item('', rew.@id);
+						if (rew.@kol.length()) item = new Item('', rew.@id, rew.@kol);
+						else item = new Item('', rew.@id);
 						GameSession.currentSession.invent.take(item,2);
 					}
 					if (rew.@trigger.length()) 
 					{
-						if (rew.@set.length()) GameSession.currentSession.game.triggers[rew.@trigger]=rew.@set.toString();
-						else GameSession.currentSession.game.triggers[rew.@trigger]=1;
+						if (rew.@set.length()) GameSession.currentSession.game.triggers[rew.@trigger] = rew.@set.toString();
+						else GameSession.currentSession.game.triggers[rew.@trigger] = 1;
 					}
 				}
 			}
