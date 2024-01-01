@@ -402,12 +402,6 @@ package graphdata
 			}
 		}
 
-
-		
-		
-
-
-
 		// ##########################################################
 		//                  BACKGROUND RENDERING 
 		// ##########################################################
@@ -418,10 +412,9 @@ package graphdata
 			//####################
 			//      STAGE 1   	
 			//####################
+			GameSession.currentSession.gr_stage = 1; 
 			try
 			{
-				GameSession.currentSession.gr_stage = 1; 
-
 				room = currentLocation;
 				room.grafon = this;
 
@@ -442,10 +435,9 @@ package graphdata
 			//####################
 			//      STAGE 2  
 			//####################
+			GameSession.currentSession.gr_stage = 2;
 			try
 			{
-				GameSession.currentSession.gr_stage = 2;
-
 				// Borders
 				borderTop.x = borderBottom.x = -50;
 				borderRight.y = borderLeft.y = 0;
@@ -468,9 +460,9 @@ package graphdata
 			//####################
 			//      STAGE 3   
 			//####################
+			GameSession.currentSession.gr_stage = 3;
 			try
 			{
-				GameSession.currentSession.gr_stage = 3;
 				frontBmp.lock();
 				backBmp.lock();
 				backBmp2.lock();
@@ -503,10 +495,9 @@ package graphdata
 			//####################
 			//      STAGE 4   
 			//####################
+			GameSession.currentSession.gr_stage = 4; 
 			try
 			{
-				GameSession.currentSession.gr_stage = 4; 
-
 				var front:Sprite = new Sprite();	
 				var back:Sprite = new Sprite();
 				var back2:Sprite = new Sprite();	
@@ -532,10 +523,9 @@ package graphdata
 			//####################
 			//      STAGE 5   
 			//####################
+			GameSession.currentSession.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
 			try
 			{
-				GameSession.currentSession.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
-
 				var tile:Tile; 					//Define a tile as an object to hold the current tile's properties in the grid.
 				var tileSprite:MovieClip; 		//Define a tileSprite as an MovieClip to hold the current tile's sprite.
 
@@ -599,9 +589,10 @@ package graphdata
 			//####################
 			//      STAGE 6   
 			//####################
+			GameSession.currentSession.gr_stage = 6;
 			try
 			{
-				GameSession.currentSession.gr_stage = 6;
+				
 				vodaBmp.draw(waterMovieClip, null, null, null, null, false);
 				frontBmp.draw(front, null, null, null, null, false);
 			}
@@ -615,9 +606,9 @@ package graphdata
 			//####################
 			//      STAGE 7  		// TILE LAYER
 			//####################
+			GameSession.currentSession.gr_stage = 7;
 			try
 			{
-				GameSession.currentSession.gr_stage = 7;
 				drawBackWall(currentLocation.backwall, currentLocation.backform);
 			}
 			catch (err:Error) 
@@ -630,9 +621,9 @@ package graphdata
 			//####################
 			//      STAGE 8  		// BACKWALL LAYER
 			//####################
+			GameSession.currentSession.gr_stage = 8;  //Draw Background items in backwallArray.
 			try
 			{
-				GameSession.currentSession.gr_stage = 8;  //Draw Background items in backwallArray.
 				for (var m:int = 0; m < backwallArray.length; m++)
 				{
 					try 
@@ -655,9 +646,9 @@ package graphdata
 			//####################
 			//      STAGE 9   		// CLIMBABLE LAYER
 			//####################
+			GameSession.currentSession.gr_stage = 9;  
 			try
 			{
-				GameSession.currentSession.gr_stage = 9;  
 				for (var n:int = 0; n < backwallArray.length; n++)
 				{
 					try 
@@ -680,9 +671,9 @@ package graphdata
 			//####################
 			//      STAGE 10
 			//####################
+			GameSession.currentSession.gr_stage = 10; 
 			try
 			{
-				GameSession.currentSession.gr_stage = 10; 
 				satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 				var darkness2:Number = 1 - (255 - darkness) /150;
 
@@ -699,9 +690,9 @@ package graphdata
 			//####################
 			//      STAGE 11  
 			//####################
+			GameSession.currentSession.gr_stage = 11; // Drawing background object sprites. 
 			try
 			{
-				GameSession.currentSession.gr_stage = 11; // Drawing background object sprites. 
 				for (var o:int = -2; o <= 3; o++) 
 				{
 					if (o == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -757,9 +748,9 @@ package graphdata
 			//####################
 			//      STAGE 12   - Apply Stage color transforms.
 			//####################
+			GameSession.currentSession.gr_stage = 12;   
 			try
 			{
-				GameSession.currentSession.gr_stage = 12;    
 				if (currentLocation.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
 				{
 					frontBmp.colorTransform(frontBmp.rect, currentLocation.cTransform);
@@ -778,9 +769,9 @@ package graphdata
 			//####################
 			//      STAGE 13  - //Lighting
 			//####################
+			GameSession.currentSession.gr_stage = 13; // Darkening the background
 			try
 			{
-				GameSession.currentSession.gr_stage = 13; // Darkening the background
 				if (currentLocation.cTransform) 
 				{
 					backBmp.colorTransform(backBmp.rect, currentLocation.cTransform);
@@ -808,9 +799,9 @@ package graphdata
 			//####################
 			//      STAGE 14  		//Color Filter
 			//####################
+			GameSession.currentSession.gr_stage = 14;  
 			try
 			{
-				GameSession.currentSession.gr_stage = 14;  
 				backBmp2.draw(back, null, currentLocation.cTransform, null, null, false);
 			}
 			catch (err:Error) 
@@ -823,9 +814,9 @@ package graphdata
 			//####################
 			//      STAGE 15		// SATS 
 			//####################
+			GameSession.currentSession.gr_stage = 15;
 			try
 			{
-				GameSession.currentSession.gr_stage = 15; 
 				if (transparentBackground) 
 				{
 					satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
@@ -849,9 +840,9 @@ package graphdata
 			//####################
 			//      STAGE 16 - Render Pink Cloud if it exists.
 			//####################
+			GameSession.currentSession.gr_stage = 16; 
 			try
 			{
-				GameSession.currentSession.gr_stage = 16;  
 				if (room.gas > 0)
 				{
 					backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
@@ -869,9 +860,9 @@ package graphdata
 			//####################
 			//      STAGE 17
 			//####################
+			GameSession.currentSession.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 			try
 			{
-				GameSession.currentSession.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 				for (var q:int = 0; q > tileArray.length; q++)
 				{
 					drawTileSprite(tileArray[q], false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
@@ -889,9 +880,9 @@ package graphdata
 			//####################
 			//      STAGE 18   
 			//####################
+			GameSession.currentSession.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
 			try
 			{
-				GameSession.currentSession.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
 				if (currentLocation.cTransform && currentLocation.cTransformFon) 
 				{
 					skyboxLayer.transform.colorTransform = currentLocation.cTransformFon;
@@ -906,24 +897,32 @@ package graphdata
 				trace('Grafon.as/drawLoc() - ERROR during stage 18. Error: "' + err.message + '".');
 				GameSession.currentSession.showError(err)
 			}
-
-			frontBmp.unlock();
-			backBmp.unlock();
-			backBmp2.unlock();
-			vodaBmp.unlock();
-
-
+			finally
+			{
+				frontBmp.unlock();
+				backBmp.unlock();
+				backBmp2.unlock();
+				vodaBmp.unlock();
+			}
+			
 			//####################
 			//      STAGE 19
 			//####################
 			GameSession.currentSession.gr_stage = 19;  //Render all game objects.
-			drawAllObjs();  //Draw all active objects
-
-
+			try
+			{
+				drawAllObjs();  //Draw all active objects
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 19. Error: "' + err.message + '".');
+				GameSession.currentSession.showError(err)
+			}
+			
 			//####################
-			//      STAGE 20 FINISHED
+			//      STAGE 20 - FINISHED
 			//####################
-			GameSession.currentSession.gr_stage = 0;  //Screen is now rendered.
+			GameSession.currentSession.gr_stage = 0;  //Screen is now rendered, reset graphics rendering stage.
 		}
 		
 
@@ -1344,9 +1343,9 @@ package graphdata
 			brPoint.x = rx1;
 			brPoint.y = ry1;
 			brRect.left = 0;
-			brRect.right = rx2-rx1;
+			brRect.right = rx2 - rx1;
 			brRect.top = 0;
-			brRect.bottom = ry2-ry1;
+			brRect.bottom = ry2 - ry1;
 			backBmp.copyChannel(brData, brRect, brPoint, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 		}
 		
