@@ -15,10 +15,13 @@ package locdata
 	{
 		
 		public var enabled:Boolean = true;
-		public var tip:String = 'gg';	//1 - GG is activated
+		public var tip:String = 'gg';	//1 - Player is activated
 		
 		// Sizes in blocks
-		var bx:int=0, by:int=0, rx:int=2, ry:int=2;
+		var bx:int = 0;
+		var by:int = 0;
+		var rx:int = 2;
+		var ry:int = 2;
 		
 		var active:Boolean = false;		// Area is active (activator is in it)
 		var preactive:Boolean = false;	// Area was active in the previous cycle
@@ -36,7 +39,7 @@ package locdata
 		public var activator:Unit;
 		public var allact:String;		// Action for the entire room
 		public var allid:String;		// ID for the specified action
-		public var lift:Number=1;		// Gravity change
+		public var lift:Number = 1;		// Gravity change
 		public var onPort:Boolean = false;// Teleportation
 		public var portX:int = -1;
 		public var portY:int = -1;
@@ -48,7 +51,7 @@ package locdata
 		public var t_frec:Number = 0;
 		public var trig:Boolean;	// Disable and set trigger on first activation
 
-		public function Area(newRoom:Room, xml:XML=null, loadObj:Object=null, mirror:Boolean=false) 
+		public function Area(newRoom:Room, xml:XML = null, loadObj:Object = null, mirror:Boolean = false) 
 		{
 			room = newRoom;
 			if (xml) 
@@ -267,7 +270,7 @@ package locdata
 			preactive = active;
 		}
 		
-		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number)
+		public function setSize(x1:Number, y1:Number, x2:Number, y2:Number):void
 		{
 			X = x1;
 			X1 = x1;
@@ -279,7 +282,7 @@ package locdata
 			scY = Y2 - Y1;
 		}
 		
-		public function setLift()
+		public function setLift():void
 		{
 			for (var i:int = bx; i<bx+rx; i++) 
 			{
@@ -290,7 +293,7 @@ package locdata
 			}
 		}
 		
-		public function damTiles(destroy:int,tipDam:int=11)
+		public function damTiles(destroy:int,tipDam:int = 11):void
 		{
 			for (var i:int = bx; i < bx + rx; i++) 
 			{
@@ -301,7 +304,7 @@ package locdata
 			}
 		}
 		
-		public function teleport(un:Unit)
+		public function teleport(un:Unit):void
 		{
 			if (un == null) return;
 			if (!room.collisionUnit((portX+1) * Settings.tilePixelWidth, (portY + 1) * Settings.tilePixelHeight - 1, un.scX, un.scY)) 

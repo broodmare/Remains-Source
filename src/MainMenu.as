@@ -21,7 +21,6 @@
 	import interdata.PipBuck;
 	import graphdata.Displ;
 	
-
 	import systems.Languages;
 	import components.Settings;
 	import components.XmlBook;
@@ -181,7 +180,7 @@
 						var languageId:String = language.lang.@id;
 						var languageName:String = language.lang.text();
 
-						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
+						//trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
 
 						// Set the button properties
 						button.txt.text = languageName;
@@ -190,7 +189,7 @@
 						button.n.visible = false;
 						button.addEventListener(MouseEvent.CLICK, languageButtonPress);
 
-						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Button done, adding to menu."');
+						//trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Button done, adding to menu."');
 						if (mainMenuWindow.languageContainer == null)
 						{
 							trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageContainer null!."');
@@ -376,8 +375,6 @@
 			}
 			animOn = true;
 		}
-		
-
 
 		//select slot
 		public function funLoadSlot(event:MouseEvent):void

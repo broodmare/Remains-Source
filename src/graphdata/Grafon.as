@@ -1,4 +1,4 @@
-package graphdata
+﻿package graphdata
 {
 	import flash.display.BitmapData;
 	import flash.display.BitmapDataChannel;
@@ -285,12 +285,13 @@ package graphdata
 			{
 				trace('Grafon.as/checkLoaded() - All resources loaded, calling material Setup!');
 				materialSetup();
+				trace('TESTESTEST');
 			}
 		}
 		
 		public function materialSetup():void
 		{
-			//tile and backwall arrays
+			//tile and backwall material arrays
 			tileArray 		= [];	//Tiles and climbables
 			backwallArray   = []; 	//Backwalls
 
@@ -495,19 +496,31 @@ package graphdata
 			//####################
 			//      STAGE 4   
 			//####################
-			GameSession.currentSession.gr_stage = 4; 
+			GameSession.currentSession.gr_stage = 4;
+
+			//Why are these defined and instantiated here?
+			var front:Sprite = new Sprite();	
+			var back:Sprite = new Sprite();
+			var back2:Sprite = new Sprite();	
+			var waterMovieClip:Sprite = new Sprite();	
+
+			trace('Grafon.as/drawLoc() - STAGE 4. tileArray Count: "' + tileArray.length + '", backwallArray Count: "' + backwallArray.length + '".');
+			
 			try
 			{
-				var front:Sprite = new Sprite();	
-				var back:Sprite = new Sprite();
-				var back2:Sprite = new Sprite();	
-				var waterMovieClip:Sprite = new Sprite();	
-
 				for (var i:int = 0; i < tileArray.length; i++)
 				{
 					tileArray[i].used = false;
 				}
+			}
+			catch (err:Error) 
+			{
+				trace('Grafon.as/drawLoc() - ERROR during stage 4a. Error: "' + err.message + '".');
+				GameSession.currentSession.showError(err)
+			}
 
+			try
+			{
 				for (var j:int = 0; j < backwallArray.length; j++)
 				{
 					backwallArray[j].used = false;
@@ -515,10 +528,9 @@ package graphdata
 			}
 			catch (err:Error) 
 			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 4. Error: "' + err.message + '".');
+				trace('Grafon.as/drawLoc() - ERROR during stage 4b. Error: "' + err.message + '".');
 				GameSession.currentSession.showError(err)
-			}
-				
+			}	
 				
 			//####################
 			//      STAGE 5   
@@ -932,7 +944,6 @@ package graphdata
 
 		//****************************************************************************************************************************
 
-
 		// Drawing the shadow map
 		public function setLight():void
 		{
@@ -941,7 +952,7 @@ package graphdata
 			{
 				for (var j:int = 1; j < room.roomHeight; j++) 
 				{
-					lightBmp.setPixel32(i, j + 1, Math.floor((1-room.roomTileArray[i][j].visi)*255)*0x1000000);
+					lightBmp.setPixel32(i, j + 1, Math.floor((1 - room.roomTileArray[i][j].visi) * 255) * 0x1000000);
 				}
 			}
 			lightBmp.unlock();

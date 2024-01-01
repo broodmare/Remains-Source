@@ -123,7 +123,7 @@ package
 		{
 			if (id == '') 
 			{
-				trace('Res.as/isTextNullCheck() - ID is blank.');
+				//trace('Res.as/isTextNullCheck() - ID is blank.');
 				return true;
 			}
 			if (localizationFile == null) 
