@@ -291,6 +291,7 @@
 		
 		public function materialSetup():void
 		{
+			trace('Grafon.as/Grafon() - Setting up materials...');
 			//tile and backwall material arrays
 			tileArray 		= [];	//Tiles and climbables
 			backwallArray   = []; 	//Backwalls
@@ -298,13 +299,11 @@
 			var tileArrayCount:int = 0;
 			var backwallArrayCount:int = 0;
 
-			trace('Grafon.as/Grafon() - Setting up materials...');
-
 			for each (var newMat:XML in XmlBook.getXML("materials").mat) //for each <mat> item in AllData...
 			{
 				if (newMat.@vid.length() == 0)
 				{
-					if (newMat.@ed == '2') 
+					if (newMat.@drawLayer == '2') 
 					{
 						backwallArray[newMat.@id] = new Material(newMat);
 						backwallArrayCount++;
@@ -516,6 +515,7 @@
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 4a. Error: "' + err.message + '".');
+				trace('Grafon.as/drawLoc() - tileArray: "' + tileArray + '".');
 				GameSession.currentSession.showError(err)
 			}
 

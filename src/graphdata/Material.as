@@ -53,21 +53,21 @@ package graphdata
 			var material:XML = materialXML;
 
 			this.id = materialXML.@id; 
-			this.materialName = materialXML.@n; 
-			this.texture = GameSession.currentSession.grafon.getObj(material.main.@tex, Grafon.activeMaterials);
+			this.materialName = materialXML.@name; 
+			this.texture = GameSession.currentSession.grafon.getObj(material.main.@texture, Grafon.activeMaterials);
 
 			if (material.main.@alt.length()) //If the materialXML has an alternate texture...
 			{
 				this.alttexture = GameSession.currentSession.grafon.getObj(material.main.@alt, Grafon.activeMaterials);
 			}
 
-			if (material.border.@tex.length())
+			if (material.border.@texture.length())
 			{
-				this.border = GameSession.currentSession.grafon.getObj(material.border.@tex, Grafon.activeMaterials);
+				this.border = GameSession.currentSession.grafon.getObj(material.border.@texture, Grafon.activeMaterials);
 			}
-			if (material.floor.@tex.length())
+			if (material.floor.@texture.length())
 			{
-				this.floor  = GameSession.currentSession.grafon.getObj(material.floor.@tex,  Grafon.activeMaterials);
+				this.floor  = GameSession.currentSession.grafon.getObj(material.floor.@texture,  Grafon.activeMaterials);
 			}
 			if (material.main.@mask.length()) //If a materialXML has a mask property...
 			{
@@ -86,10 +86,10 @@ package graphdata
 
 			if (material.filter.length()) //If the materialXML has a filter, apply it.
 			{	
-				this.appliedFilters = TileFilter.getFilter(material.filter.@f);
+				this.appliedFilters = TileFilter.getFilter(material.filter.@filter);
 			}
 			
-			if (material.@rear > 0 || material.@ed == '2') // If the materialXML is a backwall, set to true.
+			if (material.@rear > 0 || material.@drawLayer == '2') // If the materialXML is a backwall, set to true.
 			{
 				this.isBackwall = true;
 			}
