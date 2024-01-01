@@ -121,12 +121,12 @@ package
 		
 		public function getRasst2(obj:Obj=null):Number 
 		{
-			if (obj==null) obj = GameSession.currentSession.gg;
+			if (obj == null) obj = GameSession.currentSession.gg;
 			var nx:Number = obj.X-X;
 			var ny:Number = obj.Y-obj.scY / 2 - Y + scY / 2;
-			if (obj == GameSession.currentSession.gg) ny = obj.Y-obj.scY*0.75-Y+scY/2;
-			rasst2=nx*nx+ny*ny;
-			if (isNaN(rasst2)) rasst2=-1;
+			if (obj == GameSession.currentSession.gg) ny = obj.Y - obj.scY * 0.75 - Y + scY / 2;
+			rasst2 = nx * nx + ny * ny;
+			if (isNaN(rasst2)) rasst2 = -1;
 			return rasst2;
 		}
 		
@@ -168,7 +168,6 @@ package
 				var nr:Number = Math.sqrt(p.x * p.x + p.y * p.y);
 				p.x *= mr / nr;
 				p.y *= mr / nr;
-				//trace(p.x, p.y);
 			}
 		}
 		
