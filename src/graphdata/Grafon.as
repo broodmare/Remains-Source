@@ -121,7 +121,6 @@
 
 		public var waterMovieClip:MovieClip;  				// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
 
-
 		public function Grafon(nvis:Sprite)
 		{
 			
@@ -285,41 +284,47 @@
 			{
 				trace('Grafon.as/checkLoaded() - All resources loaded, calling material Setup!');
 				materialSetup();
-				trace('TESTESTEST');
 			}
 		}
 		
 		public function materialSetup():void
 		{
-			trace('Grafon.as/Grafon() - Setting up materials...');
+			trace('Grafon.as/materialSetup() - Setting up materials');
 			//tile and backwall material arrays
 			tileArray 		= [];	//Tiles and climbables
 			backwallArray   = []; 	//Backwalls
 
-			var tileArrayCount:int = 0;
-			var backwallArrayCount:int = 0;
+			//trace('Grafon.as/Grafon() - FULL Material XML: "' + XmlBook.getXML("materials") + '');
 
-			for each (var newMat:XML in XmlBook.getXML("materials").mat) //for each <mat> item in AllData...
+			for each (var newMat in XmlBook.getXML("materials").mat) //for each <mat> item in AllData...
 			{
-				if (newMat.@vid.length() == 0)
+				trace('Grafon.as/Grafon() - Material XML: ' + newMat.toString());
+				if (newMat.@vid.length() == 0) // Not a stair or beam
 				{
-					if (newMat.@drawLayer == '2') 
+					if (newMat.@drawLayer == 2) //Back wall texture
 					{
 						backwallArray[newMat.@id] = new Material(newMat);
-						backwallArrayCount++;
 					}
-					else 
+					else //Tile texture
 					{
 						tileArray[newMat.@id] = new Material(newMat);
-						tileArrayCount++;
 					}
 				}
 			}
-	
-			trace('Grafon.as/Grafon() - Setup complete. tileArray count: "' + tileArrayCount + '." backwallArray count: "' + backwallArrayCount + '."');
-			trace('Grafon.as/Grafon() - Setting resourcesLoaded to true.');
+			trace('Grafon.as/Grafon() - Setup complete. tileArray count: "' + countArray(tileArray) + '." backwallArray count: "' + countArray(backwallArray) + '." Setting resourcesLoaded to true.');
 			resourcesLoaded = true;
 		}
+
+		private function countArray(array:Array):int
+		{
+			var count:int = 0;
+			for (var key:* in array) 
+			{
+				count++;
+			}
+    		return count;
+		}
+
 		//Determine progress of loading.
 		public function allProgress():void
 		{
@@ -362,7 +367,7 @@
 		{
 			if (skyboxLayer)
 			{
-				if (nx>screenResX && ny>screenResY)
+				if (nx > screenResX && ny > screenResY)
 				{
 					skyboxLayer.x = mainCanvas.x;
 					skyboxLayer.y = mainCanvas.y;
@@ -496,34 +501,27 @@
 			//      STAGE 4   
 			//####################
 			GameSession.currentSession.gr_stage = 4;
-
-			//Why are these defined and instantiated here?
-			var front:Sprite = new Sprite();	
+			var front:Sprite = new Sprite();	//Why are these defined and instantiated here?
 			var back:Sprite = new Sprite();
 			var back2:Sprite = new Sprite();	
 			var waterMovieClip:Sprite = new Sprite();	
-
-			trace('Grafon.as/drawLoc() - STAGE 4. tileArray Count: "' + tileArray.length + '", backwallArray Count: "' + backwallArray.length + '".');
-			
 			try
 			{
-				for (var i:int = 0; i < tileArray.length; i++)
+				for each (var tileMaterial:* in tileArray)
 				{
-					tileArray[i].used = false;
+					tileMaterial.used = false;
 				}
 			}
 			catch (err:Error) 
 			{
 				trace('Grafon.as/drawLoc() - ERROR during stage 4a. Error: "' + err.message + '".');
-				trace('Grafon.as/drawLoc() - tileArray: "' + tileArray + '".');
 				GameSession.currentSession.showError(err)
 			}
-
 			try
 			{
-				for (var j:int = 0; j < backwallArray.length; j++)
+				for each (var backwallMaterial:* in backwallArray)
 				{
-					backwallArray[j].used = false;
+					backwallMaterial.used = false;
 				}
 			}
 			catch (err:Error) 
