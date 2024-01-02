@@ -167,6 +167,7 @@ package locdata
 
 		public function Room(l:Level, nroom:XML, rnd:Boolean, opt:Object = null) 
 		{
+			trace('Room.as/Room() - Initializing room...');
 			level = l;
 			roomWidth = Settings.roomTileWidth;
 			roomHeight = Settings.roomTileHeight;
@@ -210,19 +211,18 @@ package locdata
 			buildLoc(nroom);
 		}
 
-		// Add the player character to the units array
-		public function addPlayer(un:UnitPlayer):void
+		public function addPlayer(un:UnitPlayer):void // Add the player character to the units array
 		{
 			gg = un;
 			units.push(un);
 			units.push(un.defpet);
 		}
 		
-		// Build according to the xml map
-		public function buildLoc(nroom:XML):void
+		public function buildLoc(nroom:XML):void // Build according to the xml map
 		{
-			// Create an array of tiles
-			for (var i:int = 0; i < roomWidth; i++) 
+			trace('Room.as/buildLoc() - Building room...');
+
+			for (var i:int = 0; i < roomWidth; i++) // Create an array of tiles
 			{
 				roomTileArray[i] = [];
 				for (var j:int = 0; j < roomHeight; j++) 
@@ -331,10 +331,8 @@ package locdata
 							roomTileArray[i][j].vid++;
 						}
 					}
-					// Water line
-					if (j >= waterLevel) roomTileArray[i][j].water = 1;
-					// Frame
-					if (i == 0 || i == roomWidth - 1 || j == 0 || j == roomHeight - 1) 
+					if (j >= waterLevel) roomTileArray[i][j].water = 1; // Water line
+					if (i == 0 || i == roomWidth - 1 || j == 0 || j == roomHeight - 1) // Frame
 					{
 						if (ramka == 1
 							|| (ramka == 2 || ramka == 4) && (i == 0 || i == roomWidth - 1)
@@ -348,7 +346,6 @@ package locdata
 					}
 				}
 			}
-			
 			if (nroom.doors.length() > 0) // Possible passages to other locations
 			{
 				var s:String = nroom.doors[0];
@@ -410,8 +407,7 @@ package locdata
 				else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
 			}
 			
-			// Background objects
-			for each(obj in nroom.back)
+			for each(obj in nroom.back) // Background objects
 			{
 				backobjs.push(new BackObj(this, obj.@id,obj.@x * Tile.tilePixelWidth, obj.@y * Tile.tilePixelHeight, obj));
 			}
@@ -423,8 +419,7 @@ package locdata
 			}
 		}
 		
-		// Color filter
-		public function colorFilter(filter:String = ''):ColorTransform 
+		public function colorFilter(filter:String = ''):ColorTransform // Color filter
 		{
 			var colorT = new ColorTransform();
 			var red:Number;
@@ -615,8 +610,7 @@ package locdata
 			}
 		}
 		
-		// Add transition indicators to neighboring locations
-		private function addSignPost(nx:int,ny:int,r:int):void
+		private function addSignPost(nx:int,ny:int,r:int):void // Add transition indicators to neighboring locations
 		{
 			var sign:MovieClip;
 			sign = new signPost();
@@ -626,8 +620,7 @@ package locdata
 			signposts.push(sign);
 		}
 		
-		// Add enemy spawn points
-		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null):void
+		private function addEnSpawn(nx:Number, ny:Number, xmll:XML=null):void // Add enemy spawn points
 		{
 			var obj:Object = {};
 			if (xmll) 
@@ -645,8 +638,7 @@ package locdata
 			enspawn.push(obj);
 		}
 		
-		// Add places where there should be no containers (near passages)
-		private function setNoObj(nx:int, ny:int, dx:int, dy:int):void
+		private function setNoObj(nx:int, ny:int, dx:int, dy:int):void // Add places where there should be no containers (near passages)
 		{
 			var i:int;
 			if (dx > 0) for (i = nx; i <= nx + dx; i++) roomTileArray[i][ny].place = false;
@@ -655,61 +647,55 @@ package locdata
 			if (dy < 0) for (i = ny + dy; i <= ny; i++) roomTileArray[nx][i].place = false;
 		}
 		
-		
-		// Main frame, call after creating passages
-		public function mainFrame():void
+		public function mainFrame():void // Main frame, call after creating passages
 		{
 			var border:String = 'A';
 			if (level && level.levelTemplate) border = level.levelTemplate.border;
-			for (var j = 0; j < roomWidth; j++) 
+			for (var j:int = 0; j < roomWidth; j++) 
 			{
-				if (roomTileArray[j][0].phis>=1) roomTileArray[j][0].mainFrame(border);
-				if (roomTileArray[j][roomHeight-1].phis>=1) roomTileArray[j][roomHeight-1].mainFrame(border);
+				if (roomTileArray[j][0].phis >= 1) roomTileArray[j][0].mainFrame(border);
+				if (roomTileArray[j][roomHeight - 1].phis >= 1) roomTileArray[j][roomHeight - 1].mainFrame(border);
 			}
 			for (j = 0; j<roomHeight; j++) 
 			{
-				if (roomTileArray[0][j].phis>=1) roomTileArray[0][j].mainFrame(border);
-				if (roomTileArray[roomWidth-1][j].phis>=1) roomTileArray[roomWidth-1][j].mainFrame(border);
+				if (roomTileArray[0][j].phis >= 1) roomTileArray[0][j].mainFrame(border);
+				if (roomTileArray[roomWidth - 1][j].phis >= 1) roomTileArray[roomWidth - 1][j].mainFrame(border);
 			}
 		}
 		
-		// Create active objects in their spawn locations, except for places near passages, call after creating passages
-		public function setObjects():void
+		public function setObjects():void // Create active objects in their spawn locations, except for places near passages, call after creating passages
 		{
 			for each (var obj in objsT) 
 			{
-				if (noHolesPlace && obj.rem>0 && !roomTileArray[obj.x][obj.y].place) continue;	/// Do not place boxes near passages
-				if (obj.tip=='unit') createUnit(obj.id,obj.x,obj.y, false, obj.xml);
+				if (noHolesPlace && obj.rem > 0 && !roomTileArray[obj.x][obj.y].place) continue; // Do not place boxes near passages
+				if (obj.tip == 'unit') createUnit(obj.id, obj.x, obj.y, false, obj.xml);
 				else createObj(obj.id, obj.tip, obj.x,obj.y, obj.xml);
 			}
-			objsT=null;
+			objsT = null;
 			setRandomUnits();
-			if (level.rnd && GameSession.currentSession.pers.modMetal>0 && Math.random()<GameSession.currentSession.pers.modMetal) putRandomLoot();
+			if (level.rnd && GameSession.currentSession.pers.modMetal > 0 && Math.random() < GameSession.currentSession.pers.modMetal) putRandomLoot();
 		}
 		
-		// Set the number of random enemies
-		public function setKolEn(en:int, min:int, max:int, spl:int=0):void
+		public function setKolEn(en:int, min:int, max:int, spl:int = 0):void // Set the number of random enemies
 		{
-			if (en==-1) 
+			if (en == -1) 
 			{
-				kolEnSpawn=min+Math.floor(Math.random()*(max-min+1));
+				kolEnSpawn = min + Math.floor(Math.random() * (max - min + 1));
 			} 
 			else 
 			{
-				kolEn[en]=min+Math.floor(Math.random()*(max-min+1));
-				if (spl>0 && Math.random()<0.2) kolEn[en]+=spl;
+				kolEn[en] = min + Math.floor(Math.random() * (max - min + 1));
+				if (spl > 0 && Math.random() < 0.2) kolEn[en] += spl;
 			}
 		}
 		
-		// Create random enemies in their spawn points
-		public function setRandomUnits():void
+		public function setRandomUnits():void // Create random enemies in their spawn points
 		{
 			for (var i:int = 1; i < kolEn.length; i++) 
 			{
-				if (kolEn[i]>0 && ups[i].length) 
+				if (kolEn[i] > 0 && ups[i].length) 
 				{
-					// Remove points near passages
-					if (noHolesPlace) 
+					if (noHolesPlace) // Remove points near passages
 					{
 						for (var j:int = 0; j < ups[i].length; j++) 
 						{
@@ -724,33 +710,31 @@ package locdata
 					{
 						for (j = 0; j < kolEn[i]; j++) 
 						{
-							var n:int = Math.floor(Math.random()*ups[i].length);
-							createUnit(tipEn[i],ups[i][n].x,ups[i][n].y, false, ups[i][n].xml);
+							var n:int = Math.floor(Math.random() * ups[i].length);
+							createUnit(tipEn[i], ups[i][n].x, ups[i][n].y, false, ups[i][n].xml);
 							if (ups[i].length <= 1) 
 							{
-								ups[i]=[];
+								ups[i] = [];
 								break;
 							} 
-							else ups[i].splice(n,1);
+							else ups[i].splice(n, 1);
 						}
 					}
 				}
 			}
-			// Add hidden enemies
-			if (kolEnHid > 0 && ups[2].length > 0) 
+			if (kolEnHid > 0 && ups[2].length > 0) // Add hidden enemies
 			{
 				for (j = 0; j < kolEnHid; j++) 
 				{
 					n = Math.floor(Math.random() * ups[2].length );
 					createHidden(ups[2][n].x,ups[2][n].y);
 					if (ups[2].length <= 1) break;
-					else ups[2].splice(n,1);
+					else ups[2].splice(n, 1);
 				}
 			}
 		}
 		
-		// Create random loot
-		public function putRandomLoot():void
+		public function putRandomLoot():void // Create random loot
 		{
 			var nx:int = Math.floor(Math.random() * (roomWidth - 2) + 1);
 			var ny:int = Math.floor(Math.random() * (roomHeight - 2) + 1);
@@ -760,8 +744,8 @@ package locdata
 			}
 		}
 		
-		// Create a unit, nx, ny - coordinates in blocks if abs=false, and in pixels if abs=true
-		// emerg>0 - smooth appearance over X ticks
+		// Create a unit, nx, ny - coordinates in blocks if abs = false, and in pixels if abs = true
+		// emerg > 0 - smooth appearance over X ticks
 		public function createUnit(tip:String, nx:int, ny:int, abs:Boolean = false, xml:XML = null, cid:String = null, emerg:int = 0):Unit 
 		{
 			if (tip == 'mines') 
@@ -771,20 +755,14 @@ package locdata
 				createUnit('mine', nx + 4, ny);
 				return null;
 			}
-
 			if (level.rnd && tip == 'transm') 
 			{
 				if ((xml == null || xml.@on.length() == 0) && Math.random() < 0.5) return null;
 			}
-
-			if (xml && xml.@trigger.length() && GameSession.currentSession.game.triggers[xml.@trigger]=='1') return null;
-
-			var loadObj:Object=null;
-
-			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj=GameSession.currentSession.game.objs[xml.@code];
-
-			//не генерировать юнита, который сдох
-			if (loadObj && loadObj.dead > 0 && loadObj.loot != 2)
+			if (xml && xml.@trigger.length() && GameSession.currentSession.game.triggers[xml.@trigger] == '1') return null;
+			var loadObj:Object = null;
+			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj = GameSession.currentSession.game.objs[xml.@code];
+			if (loadObj && loadObj.dead > 0 && loadObj.loot != 2) //не генерировать юнита, который сдох
 			{
 				return null;
 			}
@@ -792,74 +770,66 @@ package locdata
 			var scid:String;
 			var hero:int = 0;
 			var inWater:Boolean = false;
-
 			if ((biom == 1 || biom == 5) && !abs)
 			{
 				inWater = getTile(nx, ny).water > 0;
 			}
 			var s:String = randomUnit(tip, inWater); //определить, является ли юнит случайным, если да, то сгенерировать его id
-			//если тип был случайным и удалось сгенерировать его id
-
-			if (s != '') 
+			if (s != '') //если тип был случайным и удалось сгенерировать его id
 			{
 				if (cid) scid = cid;
 				else scid = randomCid(s);
 				if (s == 'slmine') s = 'slime';
 				un = Unit.create(s, locDifLevel, xml, loadObj, scid);
 			}
-
-			//если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
-			if ((s == '' && !homeStable) || un == null) 
+			if ((s == '' && !homeStable) || un == null) //если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
 			{
-				if (cid) scid=cid;
-				else scid=randomCid(tip);
+				if (cid) scid = cid;
+				else scid = randomCid(tip);
 				un = Unit.create(tip, locDifLevel, xml, loadObj, scid);
 			}
-
 			if (un != null) 
 			{
 				var enl = enemyLevel;
 				if (level.rnd && levelProb == '') {//геройский юнит
 					if (Math.random() < Math.min(0.05, locDifLevel / 100 + 0.02)) hero = Math.floor(Math.random() * 4 + 1);	
 				}
-				if (hero==0 && !un.boss) enl=Math.round(enl*(1.1-Math.random()*0.4));
+				if (hero == 0 && !un.boss) enl = Math.round(enl * (1.1 - Math.random() * 0.4));
 				un.setLevel(enl);
 				un.setHero(hero);
 				if (abs) 
 				{
-					un.putLoc(this,nx,ny);
+					un.putLoc(this, nx, ny);
 				} 
 				else 
 				{
-					var size = Math.floor((un.scX-1)/40)+1;
-					un.putLoc(this,(nx+0.5*size)*Tile.tilePixelWidth,(ny+1)*Tile.tilePixelHeight-1);
+					var size = Math.floor((un.scX - 1) / 40) + 1;
+					un.putLoc(this, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1);
 				}
 				if (roomActive) 
 				{
-					un.xp=0;
+					un.xp = 0;
 				} else 
 				{
-					summXp+=un.xp;
+					summXp += un.xp;
 				}
 				addObj(un);
 				units.push(un);
 				if (homeStable) 
 				{
-					un.fraction=Unit.F_PLAYER;
-					un.warn=0;
+					un.fraction = Unit.F_PLAYER;
+					un.warn = 0;
 				}
 				if (homeAtk) 
 				{
 					if (un is UnitTurret) (un as UnitTurret).hack(2);
-					else if (Math.random()<0.5) backobjs.push(new BackObj(this, 'blood1', nx*Tile.tilePixelWidth,(ny-Math.random()*4)*Tile.tilePixelHeight));
-					
+					else if (Math.random() < 0.5) backobjs.push(new BackObj(this, 'blood1', nx * Tile.tilePixelWidth, (ny - Math.random() * 4) * Tile.tilePixelHeight));
 				}
 				if (xml && xml.@code.length()) saves.push(un);
-				//Добавление объектов, имеющих uid в массив
-				if (xml && xml.@uid.length()) 
+				if (xml && xml.@uid.length()) //Добавление объектов, имеющих uid в массив
 				{
-					un.uid=xml.@uid;
-					level.uidObjs[un.uid]=un;
+					un.uid = xml.@uid;
+					level.uidObjs[un.uid] = un;
 				}
 				if (emerg>0) un.emergence(emerg);
 				un.step();
@@ -871,32 +841,31 @@ package locdata
 		public function createPhoenix(box:Box):Boolean 
 		{
 			if (box.wall || !box.shelf) return false;
-			if (collisionUnit(box.X,box.Y1-1,38,38)) return false;
-			var un:Unit=new UnitPhoenix();
-			un.putLoc(this,box.X,box.Y1-1);
+			if (collisionUnit(box.X, box.Y1 - 1, 38, 38)) return false;
+			var un:Unit = new UnitPhoenix();
+			un.putLoc(this, box.X, box.Y1 - 1);
 			addObj(un);
 			units.push(un);
 			kol_phoenix++;
 			level.kol_phoenix++;
-			//trace('Феникс',roomCoordinateX, roomCoordinateY);
 			return true;
 		}
 		//создать передатчик на ящике
 		public function createTransmitter(box:Box):Boolean 
 		{
 			if (box.wall || !box.shelf) return false;
-			if (level.rnd && Math.random()<0.5) return false;
-			if (collisionUnit(box.X,box.Y1-1,30,20)) return false;
-			var un:Unit=new UnitTransmitter('box');
+			if (level.rnd && Math.random() < 0.5) return false;
+			if (collisionUnit(box.X, box.Y1 - 1, 30, 20)) return false;
+			var un:Unit = new UnitTransmitter('box');
 			un.setLevel(enemyLevel);
-			un.putLoc(this,box.X,box.Y1-1);
+			un.putLoc(this, box.X, box.Y1 - 1);
 			addObj(un);
 			units.push(un);
 			return true;
 		}
 		
 		//создать предмет, стоящий на ящике
-		public function createSur(box:Box, nsur:String=null):void
+		public function createSur(box:Box, nsur:String = null):void
 		{
 			if (nsur == null) 
 			{
@@ -907,7 +876,7 @@ package locdata
 				if (nsur == null) return;
 			}
 			var item:Item = new Item(null, nsur, 1);
-			var l:Loot=new Loot(this, item, box.X, box.Y - box.scY - 3, false, false, false);
+			var l:Loot = new Loot(this, item, box.X, box.Y - box.scY - 3, false, false, false);
 			if (base) 
 			{
 				l.inter.active = false;
@@ -921,12 +890,12 @@ package locdata
 			if (biom == 10 || biom == 11) return;
 			if (tipEnemy == 0) createUnit('zombie', nx, ny, false, <unit dig = '2'/>);
 			else if (tipEnemy == 2) createObj('robocell', 'box', nx, ny);
-			else if (tipEnemy == 1 || tipEnemy==3) createObj('alarm', 'box', nx, ny);
+			else if (tipEnemy == 1 || tipEnemy == 3) createObj('alarm', 'box', nx, ny);
 			else if (tipEnemy == 6) createUnit('lov', nx, ny);
 		}
 		
 		//облака газа
-		public function createClouds(lvl:int, ncloud:String=null):void
+		public function createClouds(lvl:int, ncloud:String = null):void
 		{
 			if (ncloud == null) 
 			{
@@ -949,7 +918,7 @@ package locdata
 					if (lvl == 0) kol = Math.random() * 2;
 					else kol = Math.random() * 3;
 				}
-				for (var i = 0; i < kol; i++) 
+				for (var i:int = 0; i < kol; i++) 
 				{
 					var nx:int = Math.floor(Math.random() * (roomWidth - 4) + 2);
 					var ny:int = Math.floor(Math.random() * (roomHeight - 4) + 2);
@@ -966,8 +935,7 @@ package locdata
 			}
 		}
 		
-		//определение id случайного юнита
-		public function randomUnit(tip:String, inWater:Boolean = false):String 
+		public function randomUnit(tip:String, inWater:Boolean = false):String //определение id случайного юнита
 		{
 			var s:String = '';
 			switch (tip) 
@@ -1041,7 +1009,7 @@ package locdata
 						{
 							s = 'scorp';
 						} 
-						else if ((roomCoordinateX+roomCoordinateY)%2 == 0) s = 'slime';
+						else if ((roomCoordinateX + roomCoordinateY)%2 == 0) s = 'slime';
 						else s = 'ant';
 						if (biom == 1 && Math.random() < 0.25) s = 'rat';
 					} 
@@ -1050,44 +1018,44 @@ package locdata
 					else s = 'rat';
 				break;
 				case 'enc1':
-					if (biom==10) 
+					if (biom == 10) 
 					{
-						s='turret';
+						s = 'turret';
 					} 
 					else if ((biom == 1 || biom == 5) && inWater) 
 					{
-						s='fish';
+						s = 'fish';
 					} 
-					else if (biom==5) 
+					else if (biom == 5) 
 					{
-						if ((roomCoordinateX+roomCoordinateY)%2==0) s='bloodwing';
+						if ((roomCoordinateX + roomCoordinateY)%2 == 0) s = 'bloodwing';
 						else s = 'slime';
 					} 
 					else if (biom == 6 || biom == 4) 
 					{
 						s = 'cturret';
 					} 
-					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) 
+					else if (tipEnemy == 0 || tipEnemy == 5 || tipEnemy == 6) 
 					{
-						if (biom==1 && Math.random()<0.6) s='slime';
-						else s='bloodwing';
+						if (biom == 1 && Math.random() < 0.6) s = 'slime';
+						else s = 'bloodwing';
 					} 
 					else s = 'turret';
 				break;
 				case 'enf1':
-					if (biom==10) return '';
-					if ((biom==1 || biom==5) && inWater) 
+					if (biom == 10) return '';
+					if ((biom == 1 || biom == 5) && inWater) 
 					{
 						s='fish';
 					} 
-					else if (biom==5) 
+					else if (biom == 5) 
 					{
-						s='bloat';
+						s = 'bloat';
 					} 
-					else if (tipEnemy==0 || tipEnemy==5) s='bloat';
-					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6) && locDifLevel>=3) s='vortex';
-					else if (tipEnemy==2 && locDifLevel>=3) s='spritebot';
-					else if (tipEnemy==11 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10 || tipEnemy==2 && locDifLevel>10 && Math.random()<Math.min(locDifLevel/40,0.5)) s='dron';
+					else if (tipEnemy == 0 || tipEnemy == 5) s = 'bloat';
+					else if ((tipEnemy == 1 || tipEnemy == 3 || tipEnemy == 4 || tipEnemy == 6) && locDifLevel >= 3) s = 'vortex';
+					else if (tipEnemy == 2 && locDifLevel >= 3) s = 'spritebot';
+					else if (tipEnemy == 11 || tipEnemy == 7 || tipEnemy == 9 || tipEnemy == 10 || tipEnemy == 2 && locDifLevel > 10 && Math.random() < Math.min(locDifLevel / 40, 0.5)) s='dron';
 				break;
 				case 'lov':
 					if (biom == 10 || biom == 11) return '';
@@ -1097,7 +1065,7 @@ package locdata
 					} 
 					else if (tipEnemy == 0) 
 					{
-						if ((roomCoordinateX+roomCoordinateY)%2 == 0) s = 'slmine';
+						if ((roomCoordinateX + roomCoordinateY)%2 == 0) s = 'slmine';
 						else s = 'trap';
 					} 
 					else if ((tipEnemy == 1 || tipEnemy == 3 || tipEnemy == 4 || tipEnemy == 6)&&(roomCoordinateX + roomCoordinateY)%2 == 0) 
@@ -1119,7 +1087,6 @@ package locdata
 		//определение сid случайного юнита
 		public function randomCid(stringType:String):String
 		{
-
 			var randNum:Number = Math.random();
 			var lookup:Object = 
 			{
@@ -1287,8 +1254,7 @@ package locdata
 				obj = new Box(this, id, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1, xml, loadObj);
 				objs.push(obj);
 				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
-				//создать феникса
-				if (xml && xml.@ph == '1' && !GameSession.currentSession.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
+				if (xml && xml.@ph == '1' && !GameSession.currentSession.game.triggers['pet_phoenix']) createPhoenix((obj as Box)); //создать феникса
 				if (xml && xml.@transm == '1') createTransmitter((obj as Box));
 				if (level.rnd && level.levelTemplate.biom == 0 && !GameSession.currentSession.game.triggers['pet_phoenix'] && kol_phoenix == 0 && level.kol_phoenix < 3 && Math.random() < 0.02) 
 				{
@@ -1300,13 +1266,12 @@ package locdata
 			} 
 			else if (tip == 'trap') 
 			{
-				obj = new Trap(this, id,(nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1);
+				obj = new Trap(this, id, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1);
 			} 
-			else if (tip=='checkpoint') 
+			else if (tip == 'checkpoint') 
 			{
-				obj=new CheckPoint(this, id,(nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
-				//установить на контрольных точках телепорты на базу
-				if (GameSession.currentSession.game.globalDif<=1 || level.rnd && GameSession.currentSession.game.globalDif==2 && Math.random()<0.33) (obj as CheckPoint).teleOn=true;
+				obj = new CheckPoint(this, id,(nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1, xml, loadObj);
+				if (GameSession.currentSession.game.globalDif <= 1 || level.rnd && GameSession.currentSession.game.globalDif == 2 && Math.random() < 0.33) (obj as CheckPoint).teleOn = true; //установить на контрольных точках телепорты на базу
 				activeObjects.push(obj);
 			} 
 			else if (tip=='area') 
@@ -1333,21 +1298,21 @@ package locdata
 			//Добавление объектов, имеющих uid в массив
 			if (xml && xml.@uid.length()) 
 			{
-				obj.uid=xml.@uid;
-				level.uidObjs[obj.uid]=obj;
+				obj.uid = xml.@uid;
+				level.uidObjs[obj.uid] = obj;
 			}
 			if (xml && xml.@objectName.length()) 
 			{
-				obj.objectName=xml.@objectName;
+				obj.objectName = xml.@objectName;
 			}
 			//Добавление id испытаний
-			if (levelProb=='' && xml && xml.@prob.length() && xml.@prob!='') level.probIds.push(xml.@prob);
+			if (levelProb == '' && xml && xml.@prob.length() && xml.@prob != '') level.probIds.push(xml.@prob);
 			addObj(obj);
 			return obj;
 		}
 		
 		//создание чекпоинта в случайной точке появления
-		public function createCheck(act:Boolean=false):void
+		public function createCheck(act:Boolean = false):void
 		{
 			if (spawnPoints.length > 0) 
 			{
@@ -1364,7 +1329,7 @@ package locdata
 			}
 		}
 		//создание выхода в случайной точке появления
-		public function createExit(s:String=''):void
+		public function createExit(s:String = ''):void
 		{
 			if (spawnPoints.length > 0) 
 			{
@@ -1390,7 +1355,12 @@ package locdata
 		public function createXpBonuses(kol:int = 5):void
 		{
 			if (homeStable || homeAtk) return;
-			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
+			var nx:int;
+			var ny:int;
+			var x1:int;
+			var x2:int;
+			var y1:int;
+			var y2:int;
 			var mesto:int = 4;
 			var n:int = 5;
 			maxXp = kol;
@@ -1887,27 +1857,27 @@ package locdata
 						if (i < roomWidth - 1) 
 						{
 							if (roomTileArray[i + 1][j].visi > vid) vid = roomTileArray[i + 1][j].visi;
-							if (j<roomHeight-1) 
+							if (j < roomHeight - 1) 
 							{
 								if (roomTileArray[i + 1][j + 1].visi > vid) vid = roomTileArray[i + 1][j + 1].visi;
 							}
 						}
-						if (j<roomHeight-1) 
+						if (j < roomHeight - 1) 
 						{
 							if (roomTileArray[i][j + 1].visi > vid) vid = roomTileArray[i][j + 1].visi;
 						}
 					}
 					color += Math.floor(vid * 255) * 0x1000000;
-					m.setPixel32((roomCoordinateX - level.minLocX) * Settings.roomTileWidth + i,(roomCoordinateY - level.minLocY) * Settings.roomTileHeight + j, color);
+					m.setPixel32((roomCoordinateX - level.minLocX) * Settings.roomTileWidth + i, (roomCoordinateY - level.minLocY) * Settings.roomTileHeight + j, color);
 				}
 			}
 			for each (var obj:Obj in objs) 
 			{
-				if (obj.inter && obj.inter.cont!='' && obj.inter.active) 
+				if (obj.inter && obj.inter.cont != '' && obj.inter.active) 
 				{
 					drawMapObj(m, obj, 0xFFCC00);
 				}
-				if (obj.inter && obj.inter.prob!='' && obj.inter.prob != null) 
+				if (obj.inter && obj.inter.prob != '' && obj.inter.prob != null) 
 				{
 					drawMapObj(m, obj, 0xFF0077);
 				}
@@ -1944,8 +1914,7 @@ package locdata
 //				Usage
 //
 //**************************************************************************************************************************
-		// Command to all objects
-		public function allAct(emit:Obj, allact:String, allid:String=''):void
+		public function allAct(emit:Obj, allact:String, allid:String=''):void // Command to all objects
 		{
 			var obj:Obj;
 			for each (obj in objs) 
@@ -1962,8 +1931,7 @@ package locdata
 			}
 		}
 		
-		// Wake up everyone around
-		public function budilo(nx:Number, ny:Number, rad:Number = 1000, owner:Unit = null):void
+		public function budilo(nx:Number, ny:Number, rad:Number = 1000, owner:Unit = null):void // Wake up everyone around
 		{
 			var r2:Number = rad * rad * earMult * earMult;
 			for each(var un in units) 
@@ -1974,38 +1942,36 @@ package locdata
 					var dy = un.Y - ny;
 					var delta = rad / 2;
 					if (delta > 400) delta = 400;
-					if (dx*dx+dy*dy<r2*un.ear*un.ear) un.alarma(nx+(Math.random()-0.5)*delta,ny+(Math.random()-0.5)*delta);
+					if (dx * dx + dy * dy < r2 * un.ear * un.ear) un.alarma(nx + (Math.random() - 0.5) * delta, ny + (Math.random() - 0.5) * delta);
 				}
 			}
 		}
 		
 		public function electroCheck():void
 		{
-			electroDam=0;
+			electroDam = 0;
 			for each (var obj in objs) 
 			{
-				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
+				if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) electroDam = (obj as Box).electroDam;
 			}
 		}
 		
-		// Activate all robot cells
-		public function robocellActivate():void
+		public function robocellActivate():void // Activate all robot cells
 		{
 			for each(var un in objs) 
 			{
-				if (un.inter && un.inter.allact=='robocell') un.inter.genRobot();
+				if (un.inter && un.inter.allact == 'robocell') un.inter.genRobot();
 			}
 		}
 		
-		// Activate the alarm
-		public function signal(n:int=300):void
+		public function signal(n:int = 300):void // Activate the alarm
 		{
-			t_alarm=n;
-			t_alarmsp=Math.floor(n*Math.random()*0.25+0.25);
+			t_alarm = n;
+			t_alarmsp = Math.floor(n * Math.random() * 0.25 + 0.25);
 			if (prob && prob.alarmScript) prob.alarmScript.start(); 
 		}
-		// Turn on everything
-		public function allon():void
+		
+		public function allon():void // Turn on everything
 		{
 			color = 'yellow';
 			cTransform = colorFilter(color);
@@ -2032,8 +1998,8 @@ package locdata
 			}
 			GameSession.currentSession.redrawLoc();
 		}
-		// Turn off everything
-		public function alloff():void
+		
+		public function alloff():void // Turn off everything
 		{
 			color = 'black';
 			cTransform = colorFilter(color);
@@ -2055,8 +2021,7 @@ package locdata
 			GameSession.currentSession.redrawLoc();
 		}
 		
-		// Spawn an enemy at the spawn point
-		public function enemySpawn(one:Boolean = false, getGG:Boolean = false, tipSp:String = null):void
+		public function enemySpawn(one:Boolean = false, getGG:Boolean = false, tipSp:String = null):void // Spawn an enemy at the spawn point
 		{
 			if (kolEnSpawn <= 0 || enspawn == null || enspawn.length == 0) return;
 			kolEnSpawn--;
@@ -2073,8 +2038,7 @@ package locdata
 			}
 		}
 		
-		// Spawn an enemy from a wave
-		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit 
+		public function waveSpawn(w:XML, n:int = 0, spart:String = null):Unit // Spawn an enemy from a wave
 		{
 			if (w == null) return null;
 			if (enspawn.length == 0) return null;
@@ -2094,8 +2058,7 @@ package locdata
 			return null;
 		}
 		
-		// Cause an earthquake
-		public function earthQuake(n:int):void
+		public function earthQuake(n:int):void // Cause an earthquake
 		{
 			if (quake < n) 
 			{
@@ -2104,7 +2067,7 @@ package locdata
 			}
 		}
 		
-		public function createHealBonus(nx:Number, ny:Number) 
+		public function createHealBonus(nx:Number, ny:Number):void
 		{
 			if (GameSession.currentSession.pers.bonusHeal <= 0) return;
 			var obj:Bonus = new Bonus(this, 'heal', nx, ny);
@@ -2114,8 +2077,7 @@ package locdata
 			addObj(obj);
 		}
 		
-		// Process ghost walls
-		public function gwalls():void
+		public function gwalls():void // Process ghost walls
 		{
 			var est:Boolean = false;
 			var t:Tile;
@@ -2193,8 +2155,7 @@ package locdata
 					var rasst1:Number = Math.sqrt(rasst);
 					if (rasst1 <= dist1) n2 = 1;
 					else n2 = (dist2 - rasst1) / (dist2 - dist1);
-					//видимость по линии
-					if (rasst <= dist2 * dist2) 
+					if (rasst <= dist2 * dist2) //видимость по линии
 					{
 						var dex:Number, dey:Number, maxe:int;
 						if (Math.abs(dx) == Math.abs(dy)) dy++;
@@ -2266,7 +2227,7 @@ package locdata
 			{
 				for (var j:int = 1; j < roomHeight; j++) 
 				{
-					if (roomTileArray[i][j].visi!=roomTileArray[i][j].t_visi) 
+					if (roomTileArray[i][j].visi != roomTileArray[i][j].t_visi) 
 					{
 						setLightingPixel32(i, j);
 					}
@@ -2276,7 +2237,7 @@ package locdata
 		
 		private function setLightingPixel32(i:int, j:int):void //Cutting down on code re-use, not sure what this actually does yet.
 		{
-			grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
+			grafon.lightBmp.setPixel32(i, j + 1, Math.floor((1 - roomTileArray[i][j].updVisi()) * 255) * 0x1000000);
 		}
 
 		public function takeXP(dxp:int, nx:Number = -1, ny:Number = -1, un:Boolean = false):void //дать опыт
@@ -2450,8 +2411,6 @@ package locdata
 			{
 				if (obj.code) arr[obj.code] = obj.save();
 			}
-		}
-		
+		}	
 	}
-	
 }
