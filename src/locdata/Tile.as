@@ -32,11 +32,11 @@ package  locdata
 		
 		public var recalc:Boolean = false;
 		
-		public var vid:int 		  = 0;
-		public var vid2:int 	  = 0; 
-		public var tileTexture:String   ='';
-		public var tileRearTexture:String 	  ='';
-		public var zad:String	  ='';
+		public var vid:int = 0;
+		public var vid2:int = 0; 
+		public var tileTexture:String = '';
+		public var tileRearTexture:String = '';
+		public var zad:String = '';
 		public var tileHasRearTexture:Boolean = false;
 		public var vRear:Boolean  = false;
 		public var v2Rear:Boolean = false;
@@ -77,7 +77,7 @@ package  locdata
 		public var door:Box;
 		public var trap:Obj;
 		
-		public function Tile(nx:int,ny:int) //Initialization
+		public function Tile(nx:int, ny:int) //Initialization
 		{ 
 			X = nx;
 			Y = ny;
@@ -125,12 +125,12 @@ package  locdata
 				if (vid == 0)	
 				{
 					vid = form.vid;
-					if (form.formHasRearTexture) vRear=true;
+					if (form.formHasRearTexture) vRear = true;
 				} 
 				else 
 				{
 					vid2 = form.vid;
-					if (form.formHasRearTexture) v2Rear=true;
+					if (form.formHasRearTexture) v2Rear = true;
 				}
 			}
 
@@ -258,9 +258,9 @@ package  locdata
 			if (diagon == 0) return phY1;
 			else if (diagon > 0) 
 			{
-				if (rx<phX1) return phY2;
-				else if (rx>phX2) return phY1;
-				else return phY2-(phY2-phY1)*((rx-phX1)/(phX2-phX1));
+				if (rx < phX1) return phY2;
+				else if (rx > phX2) return phY1;
+				else return phY2 - (phY2 - phY1) * ((rx - phX1) / (phX2 - phX1));
 			} 
 			else 
 			{

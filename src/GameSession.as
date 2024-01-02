@@ -37,13 +37,13 @@ package
 
 	import stubs.*;
 	
-	public class GameSession 
+	public class GameSession
 	{
 
 		public static var currentSession:GameSession;
 
 		//Visual components
-		public var gameContainer:Sprite;				//Main game sprite
+		public var gameContainer:Sprite;			//Main game sprite
 		public var swfStage:Stage;					//Sprite container
 		public var skybox:MovieClip;				//Static background
 		public var mainCanvas:Sprite;				//Active area
@@ -58,7 +58,6 @@ package
 		public var verror:MovieClip;				//Error window
 		public var vconsol:MovieClip;				//Console scroll
 	
-
 		//All main components
 		public var mainMenuWindow:MainMenu;
 		public var cam:Camera;						//Camera
@@ -75,12 +74,10 @@ package
 		public var sats:Sats;						//SATS
 		public var appearanceWindow:Appear;			//Character appearance settings
 
-
 		//Room components
 		public var level:Level;						//Current level
-		public var room:Room;				//Current room
+		public var room:Room;						//Current room
 		public var roomContainer:RoomContainer;		//Holds all level data.
-		
 
 		//Working variables
 		public var onConsol:Boolean = false;		//Console active
@@ -92,14 +89,14 @@ package
 		public var t_die:int = 0;					//Player character has died
 		public var t_exit:int = 0;					//Exit from room
 		public var gr_stage:int = 0;				//Room rendering stage
-		public var checkLoot:Boolean 	= false;		//Recalculate auto-loot
-		public var calcMass:Boolean 	= false;		//Recalculate mass
-		public var calcMassW:Boolean 	= false;		//Recalculate weapon mass
+		public var checkLoot:Boolean 	= false;	//Recalculate auto-loot
+		public var calcMass:Boolean 	= false;	//Recalculate mass
+		public var calcMassW:Boolean 	= false;	//Recalculate weapon mass
 		public var lastCom:String 		= null;
-		public var armorWork:String 	= '';			//Temporary display of armor
-		public var mmArmor:Boolean 		= false;			//Armor in main menu
-		public var catPause:Boolean 	= false;		//Pause for scene display
-		public var testLoot:Boolean 	= false;		//Loot and experience testing
+		public var armorWork:String 	= '';		//Temporary display of armor
+		public var mmArmor:Boolean 		= false;	//Armor in main menu
+		public var catPause:Boolean 	= false;	//Pause for scene display
+		public var testLoot:Boolean 	= false;	//Loot and experience testing
 		public var summxp:int 			= 0;
 		public var ccur:String;
 		public var currentMusic:String = '';
@@ -116,7 +113,7 @@ package
 		public var load_log:String = '';			//This is the text that apepars onscreen during boot.
 
 		//Maps
-		public var levelPath:String;					//
+		public var levelPath:String;					//TODO: Check if this is needed.
 		public var allLevelsArray:Array;				//Stores all rooms for the current level as an array of XMLs.
 		public var levelsFound:int = 0;
 		public var levelsLoaded:int = 0;
@@ -131,7 +128,8 @@ package
 		public var log:String 		= '';
 		public var fc:int 			= 0;
 
-		public var d1:int, d2:int;
+		public var d1:int;
+		public var d2:int;
 		public var landError:Boolean = false;
 
 		public var constructorFinished:Boolean = false; // Used by main menu to start constructor part 2 and not call it repeatedly.
@@ -753,7 +751,7 @@ package
 				}
 
 				room = newRoom; //Set the desired area as the current area
-				grafon.drawLoc(room); //Draw the current area
+				grafon.drawLoc(room); //Draw the current area 
 				cam.setLoc(room);
 				grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
 				gui.setAll();
@@ -885,8 +883,7 @@ package
 			}
 		}
 
-		// Main loop
-		public function step():void
+		public function step():void // Main loop
 		{
 
 			if (verror.visible) 
@@ -918,32 +915,25 @@ package
 
 			if (!onConsol && !pip.active) swfStage.focus = swfStage;
 			
-			//Only if the game has started and not paused, game loops
-			if (allStat == 1 && !onPause) 
+			if (allStat == 1 && !onPause) //Only if the game has started and not paused, game loops
 			{
-				//exit loop
-				if (t_exit > 0) 
+				if (t_exit > 0) //exit loop
 				{
 					if (!(t_exit == 17 && clickReq == 1)) exitStep();
 				}
-				//particle count
-				Emitter.kol2 = Emitter.kol1;
+				
+				Emitter.kol2 = Emitter.kol1; //particle count
 				Emitter.kol1 = 0;
-				//trace(Emitter.kol2);
 
-				//main loop !!!!
-				if (t_exit != 17) level.step();
-
-				//death loop
-				if (t_die > 0) ggDieStep();
-
-				//battle timer
-				if (t_battle > 0) t_battle--;
-
+				if (t_exit != 17) level.step(); //main loop !!!!
+				
+				if (t_die > 0) ggDieStep(); //death loop
+				
+				if (t_battle > 0) t_battle--; //battle timer
+				
 				sats.step2();
-
-				//if mass recalculation is needed
-				if (calcMass) 
+				
+				if (calcMass) //if mass recalculation is needed
 				{
 					invent.calcMass();
 					calcMass = false;
@@ -954,8 +944,7 @@ package
 					calcMassW = false;
 				}
 
-				//Increment ticks since last save, if over 5000, and not in either test or alicorn mode, save the game.
-				t_save++;
+				t_save++; //Increment ticks since last save, if over 5000, and not in either test or alicorn mode, save the game.
 				if (t_save > 5000 && !Settings.testMode && !Settings.alicorn)
 				{
 					saveGame();
@@ -963,7 +952,6 @@ package
 
 				checkLoot = false;
 			}
-			//trace(clickReq, t_exit)
 			
 			if (comLoad >= 0) 
 			{
@@ -1000,40 +988,42 @@ package
 				}
 				if (ctr.keyStates.keyStatus) 
 				{
-					if (!sats.active) pip.onoff(1,1);
+					if (!sats.active) pip.onoff(1, 1);
 					ctr.keyStates.keyStatus = false;
 				}
 				if (ctr.keyStates.keySkills) 
 				{
-					if (!sats.active) pip.onoff(1,2);
+					if (!sats.active) pip.onoff(1, 2);
 					ctr.keyStates.keySkills = false;
 				}
 				if (ctr.keyStates.keyMed) 
 				{
-					if (!sats.active) pip.onoff(1,5);
+					if (!sats.active) pip.onoff(1, 5);
 					ctr.keyStates.keyMed = false;
 				}
 				if (ctr.keyStates.keyMap) 
 				{
-					if (!sats.active) pip.onoff(3,1);
+					if (!sats.active) pip.onoff(3, 1);
 					ctr.keyStates.keyMap = false;
 				}
 				if (ctr.keyStates.keyQuest) 
 				{
-					if (!sats.active) pip.onoff(3,2);
+					if (!sats.active) pip.onoff(3, 2);
 					ctr.keyStates.keyQuest = false;
 				}
 				if (ctr.keyStates.keySats) 
 				{
-					if (gg.ggControl && !pip.active && gg && gg.pipOff<=0 && !catPause) sats.onoff();
+					if (gg.ggControl && !pip.active && gg && gg.pipOff <= 0 && !catPause) sats.onoff();
 					ctr.keyStates.keySats = false;
 				}
 
-				allStat=(pip.active || sats.active || stand.active || gui.guiPause)?2:1;
+				allStat = (pip.active || sats.active || stand.active || gui.guiPause) ? 2:1;
 				
 				if (consol && consol.visoff) 
 				{
-					onConsol=consol.vis.visible=consol.visoff= false;
+					onConsol = false;
+					consol.vis.visible = false;
+					consol.visoff = false;
 				}
 			}
 
@@ -1078,6 +1068,7 @@ package
 			return 0;
 		}
 		
+		//TODO: Pull out into own class.
 		public function showError(err:Error, dop:String = null):void
 		{
 			if (!Settings.errorShow || !Settings.errorShowOpt) return;
@@ -1089,7 +1080,7 @@ package
 				verror.butForever.text.text = Res.txt('pip', 'err_dont_show');
 				verror.butCopy.text.text 	= Res.txt('pip', 'err_copy_to_clipboard');
 			} 
-			catch (e) 
+			catch (err:Error) 
 			{
 				
 			}
@@ -1097,7 +1088,7 @@ package
 			verror.txt.text = err.message + '\n' + err.getStackTrace();
 			verror.txt.text += '\n' + 'gr_stage: ' + gr_stage;
 			if (dop != null) verror.txt.text += '\n' + dop;
-			verror.visible=true;
+			verror.visible = true;
 		}
 		
 		public function gc():void
@@ -1156,11 +1147,10 @@ package
 			loadingScreen.cacheAsBitmap = true;
 		}
 		
-		// Determine which loading screen to display
-		public function getLoadScreen():int 
+		public function getLoadScreen():int // Determine which loading screen to display
 		{
-			//Changed from just returning -1 by default. The rest of this code was unreachable.
-			try 
+			
+			try //Changed from just returning -1 by default. The rest of this code was unreachable.
 			{
 				var nscr:int = game.levelArray[game.curLevelID].loadScr;
 
@@ -1181,15 +1171,13 @@ package
 			return -1;
 		}
 		
-		// Enable waiting for a click
-		public function waitLoadClick():void
+		public function waitLoadClick():void // Enable waiting for a click
 		{
 			loadingScreen.story.lmb.play();
 			loadingScreen.story.lmb.visible = true;
 		}
 		
-		// Remove the loading screen
-		public function offLoadScreen():void
+		public function offLoadScreen():void // Remove the loading screen
 		{
 			trace('GameSession.as/offLoadScreen() - offLoadScreen() executing, removing loading screen.');
 			loadingScreen.visible = false;
@@ -1199,9 +1187,8 @@ package
 			loadingScreen.story.lmb.visible = false;
 			clickReq = 0;
 		}
-
-		// Show the scene
-		public function showScene(sc:String, n:int=0):void
+		
+		public function showScene(sc:String, n:int = 0):void // Show the scene
 		{
 			catPause = true;
 			mainCanvas.visible = false;
@@ -1236,8 +1223,7 @@ package
 			vscene.visible = true;
 		}
 		
-		// Remove the scene
-		public function unshowScene():void
+		public function unshowScene():void // Remove the scene
 		{
 			catPause = false;
 			mainCanvas.visible = true;
@@ -1246,8 +1232,7 @@ package
 			vscene.visible = false;
 		}
 		
-		// Final credits or game over
-		public function endgame(n:int = 0):void
+		public function endgame(n:int = 0):void // Final credits or game over
 		{
 			loadingScreen.visible=skybox.visible = false;
 			var s:String;

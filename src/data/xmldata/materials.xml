@@ -100,18 +100,16 @@
 		<floor texture='tFloorMetal' mask='maskFloor'/>
 		<border texture='tKlep3' mask='maskMetalBorder'/>
 	</mat>
-	
 	<mat drawLayer='0' id='100' name='Border' physics='1' hp='10000' back='A' indestruct='1' mat='1'>
 		<main texture='tMetal' mask='TileMask'/>
 		<border texture='tKlep' mask='maskSimple'/>
 		<filter filter='cont'/>
 	</mat>
-	
+	<!-- Beams and Stairs -->
 	<mat drawLayer='3' id='А' name='Right Staircase' mirroredVer='Б' vid='3' mat='1' stair='1'>
 	</mat>
 	<mat drawLayer='3' id='Б' name='Left Staircase' mirroredVer='А' vid='1' mat='1' stair='-1'>
 	</mat>
-	
 	<mat drawLayer='4' id='-' name='Rusty Beam' mat='1' shelf='1' rear='1'>
 		<main texture='tShelf' mask='TileMask'/>
 	</mat>
@@ -157,7 +155,6 @@
 	</mat>
 	<mat drawLayer='4' id='Т' name='RtL Cloud Steps' mirroredVer='С' vid='15' mat='2' diagon='-1' rear='1'>
 	</mat>
-	
 	<!-- BACKWALLS -->
 	<mat drawLayer='2' name='Back Wall' id='A'>
 		<main texture='tConcreteBack' mask='maskDirt'/>

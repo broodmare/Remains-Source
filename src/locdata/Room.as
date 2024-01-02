@@ -38,14 +38,14 @@ package locdata
 		public var roomCoordinateY:int = 0;
 		public var roomCoordinateZ:int = 0;
 		public var levelProb:String = '';
-		public var bindRoom:Room;	// Bound by coordinate z ???
+		public var bindRoom:Room;			// Bound by coordinate z ???
 		public var base:Boolean = false;	// Base camp
 		public var train:Boolean = false;	// Training ground
 		public var black:Boolean = true;	// Fog of war
 		
 		// Objects
 		public var grafon:Grafon;
-		public var roomTileArray:Array;		// Room tile array
+		public var roomTileArray:Array;	// Room tile array
 		public var otstoy:Tile;			// Empty tile
 		public var units:Array;			// Array of Units
 		public var ups:Array;			// Spawn random units
@@ -58,36 +58,52 @@ package locdata
 		public var grenades:Array;		// Array of Active grenades
 		public var gg:UnitPlayer;
 		public var celObj:Obj;
-		public var celDist:Number =- 1;	// Target object and distance to it
+		public var celDist:Number = -1;	// Target object and distance to it
 		public var unitCoord;			// Object for unit coordination
 		
 		// Entrances and Visits
 		public var spawnPoints:Array;	// Spawn points
 		public var enspawn:Array;		// Enemy spawn points
 		public var doors:Array;			// Passages to other locations
-		public var signposts:Array, sign_vis:Boolean=true;		// Exit indicators
-		public var nAct:int=0;			// Last visit
-		public var roomActive:Boolean = false;		// Currently active
-		public var visited:Boolean=false;		// Visited
+		
+		// Exit indicators
+		public var signposts:Array;
+		public var sign_vis:Boolean = true;
+
+		public var nAct:int = 0;				// Last visit
+		public var roomActive:Boolean = false;	// Currently active
+		public var visited:Boolean = false;		// Visited
 		
 		// Service
 		public var cp:CheckPoint;
-		public var pass_r:Array, pass_d:Array;		// Passages to other locations
-		//public var unitsT:Array;			// Units
-		public var objsT:Array;				// Active objects
-		public var recalcTiles:Array;		// Recalculate water
-		public var firstObj:Pt, nextObj:Pt, lastObj:Pt;	// Execution chain
-		public var isRebuild:Boolean=false, isRecalc:Boolean=false, isRelight:Boolean=false, relight_t:int;
-		public var warning:int=0;			// Dangers like thrown grenades exist
-		public var t_gwall:int=0;	// Transparent walls exist
-		public var lDist1:int = 300, lDist2:int = 1000;	// Fog of war reveal distance
+		public var pass_r:Array;
+		public var pass_d:Array;				// Passages to other locations
+		public var objsT:Array;					// Active objects
+		public var recalcTiles:Array;			// Recalculate water
+		
+		// Execution chain
+		public var firstObj:Pt;
+		public var nextObj:Pt;
+		public var lastObj:Pt;	
+
+		public var isRebuild:Boolean = false;
+		public var isRecalc:Boolean = false;
+		public var isRelight:Boolean = false;
+		public var relight_t:int;
+		public var warning:int = 0;			// Dangers like thrown grenades exist
+		public var t_gwall:int = 0;			// Transparent walls exist
+
+		// Fog of war reveal distance
+		public var lDist1:int = 300;
+		public var  lDist2:int = 1000;
+
 		public var quake:int = 0;
 		public var broom:Boolean = false;		// All loot will be automatically picked up
 		public var isCheck:Boolean = false;		// Checkpoint, exit point, or trial door was created
 		
 		// Options
 		public var noHolesPlace:Boolean = true;	// Remove containers near passages
-		public var ramka:int = 0;				// Frame made of blocks around the perimeter: 1 - entire perimeter, 2 - sides only, 3 - bottom only, 4 - bottom and sides
+		public var roomBorderType:int = 0;		// Frame made of blocks around the perimeter: 1 - entire perimeter, 2 - sides only, 3 - bottom only, 4 - bottom and sides
 		public var bezdna:Boolean = false;		// Falling leads downward
 		public var mirror:Boolean = false;		// Mirror room
 		public var sky:Boolean = false;
@@ -115,14 +131,14 @@ package locdata
 		public var homeStable:Boolean = false;	
 		public var homeAtk:Boolean = false;	
 		public var visMult:Number = 1;
-		public var noMap:Boolean = false;			// Map is unavailable
-		public var darkness:int = 0;				// Background darkening
+		public var noMap:Boolean = false;		// Map is unavailable
+		public var darkness:int = 0;			// Background darkening
 		public var lightOn:int = 0;				// If greater than 0 - light is on, less - off
 		public var retDark:Boolean = false;		// Fog of war will be restored
 		public var levitOn:Boolean = true;		// Levitation is allowed
-		public var portOn:Boolean = true;			// Teleportation is allowed
-		public var petOn:Boolean = true;			// Pet is allowed
-		public var destroyOn:Boolean = true;		// Wall destruction is allowed
+		public var portOn:Boolean = true;		// Teleportation is allowed
+		public var petOn:Boolean = true;		// Pet is allowed
+		public var destroyOn:Boolean = true;	// Wall destruction is allowed
 		public var itemsTip:String;				// Special loot type
 		public var electroDam:Number = 0;
 		public var trus:Number = 0;				// Constant shaking
@@ -130,7 +146,7 @@ package locdata
 		// Enemies
 		public var tipEnemy:int = -1;				// Type of random enemies
 		public var kolEn:Array = [0, 6, 4, 6, 4, 6]; // Number of random small enemies: 0, small crawling, normal, flying, ceiling, trap
-		var tipEn:Array = ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
+		public var tipEn:Array = ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
 		public var tipSpawn:String = 'enl2';
 		public var kolEnSpawn:int = 0;			// Normal enemies may spawn
 		public var tileSpawn:Number = 0;		// Spawn when breaking blocks
@@ -165,63 +181,64 @@ package locdata
 // ------------------------------------------------------------------------------------------------
 // First stage - create and build according to the map from xml
 
-		public function Room(l:Level, nroom:XML, rnd:Boolean, opt:Object = null) 
+		public function Room(l:Level, nroom:XML, rnd:Boolean, roomParamObj:Object = null) 
 		{
-			trace('Room.as/Room() - Initializing room...');
-			level = l;
-			roomWidth = Settings.roomTileWidth;
-			roomHeight = Settings.roomTileHeight;
-			roomPixelWidth = roomWidth * Settings.tilePixelWidth;
-			roomPixelHeight = roomHeight * Settings.tilePixelHeight;
-			otstoy = new Tile(-1, -1);
-
-			units 			= [];
-			ups 			= [];
-			objs 			= [];
-			activeObjects 	= [];
-			areas 			= [];
-			saves 			= [];
-			enspawn 		= [];
-			backobjs 		= [];
-			roomTileArray 	= [];
-			signposts 		= [];
-			recalcTiles 	= [];
-			spawnPoints 	= [];
-			grenades 		= [];
-			bonuses 		= [];
-			maxdy 			= Settings.maxdy;
-
-			if (rnd) ramka = 1;
-			if (opt) 
+			trace('Room.as/Room() - Building room: "' + nroom.@name + '" and adding it to the level room array.');
+			try
 			{
-				if (opt.prob) ramka = 0;
-				if (opt.mirror) mirror = true;
-				if (opt.water != null) waterLevel = opt.water;
-				if (opt.ramka != null) ramka = opt.ramka;
-				if (ramka == 5) backform = 1;
-				if (ramka == 6) backform = 2;
-				if (opt.backform) backform = opt.backform;
-				if (opt.transparentBackground) transparentBackground = opt.transparentBackground;
-				if (opt.home) homeStable = true;
-				if (opt.atk) homeAtk = true;
+				level = l;
+				roomWidth = Settings.roomTileWidth;
+				roomHeight = Settings.roomTileHeight;
+				roomPixelWidth = roomWidth * Settings.tilePixelWidth;
+				roomPixelHeight = roomHeight * Settings.tilePixelHeight;
+				otstoy = new Tile(-1, -1);
+
+				units 			= [];
+				ups 			= [];
+				objs 			= [];
+				activeObjects 	= [];
+				areas 			= [];
+				saves 			= [];
+				enspawn 		= [];
+				backobjs 		= [];
+				roomTileArray 	= [];
+				signposts 		= [];
+				recalcTiles 	= [];
+				spawnPoints 	= [];
+				grenades 		= [];
+				bonuses 		= [];
+				maxdy 			= Settings.maxdy;
+
+				if (rnd) roomBorderType = 1;
+
+				if (roomParamObj) //This is made by level.as when needed.
+				{
+					if (roomParamObj.prob) roomBorderType = 0;
+					if (roomParamObj.mirror) mirror = true;
+					if (roomParamObj.water != null) waterLevel = roomParamObj.water;
+					if (roomParamObj.ramka != null) roomBorderType = roomParamObj.ramka;
+					if (roomBorderType == 5) backform = 1;
+					if (roomBorderType == 6) backform = 2;
+					if (roomParamObj.backform) backform = roomParamObj.backform;
+					if (roomParamObj.transparentBackground) transparentBackground = roomParamObj.transparentBackground;
+					if (roomParamObj.home) homeStable = true;
+					if (roomParamObj.atk) homeAtk = true;
+				}
+				for (var i:int = 0; i < kolEn.length; i++) ups[i] = [];
+				noHolesPlace = rnd;
+				
+				buildLoc(nroom);
 			}
-			for (var i:int = 0; i < kolEn.length; i++) ups[i] = [];
-			noHolesPlace = rnd;
+			catch(err:Error)
+			{
+				trace('Room.as/Room() - ERROR while Building room: "' + nroom.@name + '".');
+			}
 			
-			buildLoc(nroom);
+			trace('Room.as/Room() - Room: "' + nroom.@name + '" finished.');
 		}
 
-		public function addPlayer(un:UnitPlayer):void // Add the player character to the units array
-		{
-			gg = un;
-			units.push(un);
-			units.push(un.defpet);
-		}
-		
 		public function buildLoc(nroom:XML):void // Build according to the xml map
 		{
-			trace('Room.as/buildLoc() - Building room...');
-
 			for (var i:int = 0; i < roomWidth; i++) // Create an array of tiles
 			{
 				roomTileArray[i] = [];
@@ -303,8 +320,6 @@ package locdata
 				color = 'fire';
 				lightOn = 1;
 			}
-
-			// Create a room. (I think this part works correctly.)
 			for (j = 0; j < roomHeight; j++) //Build the room from XML Data.
 			{ 
 				var js:String = ''; //XML data as string
@@ -334,13 +349,13 @@ package locdata
 					if (j >= waterLevel) roomTileArray[i][j].water = 1; // Water line
 					if (i == 0 || i == roomWidth - 1 || j == 0 || j == roomHeight - 1) // Frame
 					{
-						if (ramka == 1
-							|| (ramka == 2 || ramka == 4) && (i == 0 || i == roomWidth - 1)
-							|| (ramka == 3 || ramka == 4) && (j == roomHeight - 1)
-							|| ramka == 5 && (i <= 10 || i >= 37)
-							|| ramka == 6 && j >= 16
-							|| ramka == 7 && (i <= 10 || i >= 37) && j >= 16
-							|| ramka == 8 && (i == roomWidth - 1)
+						if (roomBorderType == 1
+							|| (roomBorderType == 2 || roomBorderType == 4) && (i == 0 || i == roomWidth - 1)
+							|| (roomBorderType == 3 || roomBorderType == 4) && (j == roomHeight - 1)
+							|| roomBorderType == 5 && (i <= 10 || i >= 37)
+							|| roomBorderType == 6 && j >= 16
+							|| roomBorderType == 7 && (i <= 10 || i >= 37) && j >= 16
+							|| roomBorderType == 8 && (i == roomWidth - 1)
 						) roomTileArray[i][j].phis = 1;
 						else if (roomTileArray[i][j].phis >= 1) roomTileArray[i][j].indestruct = true;
 					}
@@ -378,7 +393,6 @@ package locdata
 				doors = [];
 				for (i = 0; i < 22; i++) doors[i] = 2;
 			}
-			
 			lDist1 *= visMult; // Visibility
 			lDist2 *= visMult;
 			if (isNaN(lDist1)) 
@@ -406,12 +420,10 @@ package locdata
 				} 
 				else objsT.push({id:obj.@id, tip:xmll.@tip, rem:xmll.@rem, x:nx, y:ny, xml:obj})
 			}
-			
 			for each(obj in nroom.back) // Background objects
 			{
 				backobjs.push(new BackObj(this, obj.@id,obj.@x * Tile.tilePixelWidth, obj.@y * Tile.tilePixelHeight, obj));
 			}
-
 			if (zoom > 1)
 			{
 				roomPixelWidth  *= zoom;
@@ -419,6 +431,13 @@ package locdata
 			}
 		}
 		
+		public function addPlayer(un:UnitPlayer):void // Add the player character to the units array
+		{
+			gg = un;
+			units.push(un);
+			units.push(un.defpet);
+		}
+
 		public function colorFilter(filter:String = ''):ColorTransform // Color filter
 		{
 			var colorT = new ColorTransform();
