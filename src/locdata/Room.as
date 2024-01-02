@@ -43,7 +43,6 @@ package locdata
 		public var train:Boolean = false;	// Training ground
 		public var black:Boolean = true;	// Fog of war
 		
-		
 		// Objects
 		public var grafon:Grafon;
 		public var roomTileArray:Array;		// Room tile array
@@ -83,12 +82,12 @@ package locdata
 		public var t_gwall:int=0;	// Transparent walls exist
 		public var lDist1:int = 300, lDist2:int = 1000;	// Fog of war reveal distance
 		public var quake:int = 0;
-		public var broom:Boolean=false;		// All loot will be automatically picked up
-		public var isCheck:Boolean=false;	// Checkpoint, exit point, or trial door was created
+		public var broom:Boolean = false;		// All loot will be automatically picked up
+		public var isCheck:Boolean = false;		// Checkpoint, exit point, or trial door was created
 		
 		// Options
 		public var noHolesPlace:Boolean = true;	// Remove containers near passages
-		public var ramka:int = 0;					// Frame made of blocks around the perimeter: 1 - entire perimeter, 2 - sides only, 3 - bottom only, 4 - bottom and sides
+		public var ramka:int = 0;				// Frame made of blocks around the perimeter: 1 - entire perimeter, 2 - sides only, 3 - bottom only, 4 - bottom and sides
 		public var bezdna:Boolean = false;		// Falling leads downward
 		public var mirror:Boolean = false;		// Mirror room
 		public var sky:Boolean = false;
@@ -130,16 +129,16 @@ package locdata
 		
 		// Enemies
 		public var tipEnemy:int = -1;				// Type of random enemies
-		public var kolEn:Array = [0,6,4,6,4,6]; // Number of random small enemies: 0, small crawling, normal, flying, ceiling, trap
-		var tipEn:Array=['','enl1','enl2','enf1','enc1','lov'];
+		public var kolEn:Array = [0, 6, 4, 6, 4, 6]; // Number of random small enemies: 0, small crawling, normal, flying, ceiling, trap
+		var tipEn:Array = ['', 'enl1', 'enl2', 'enf1', 'enc1', 'lov'];
 		public var tipSpawn:String = 'enl2';
-		public var kolEnSpawn:int = 0;		// Normal enemies may spawn
+		public var kolEnSpawn:int = 0;			// Normal enemies may spawn
 		public var tileSpawn:Number = 0;		// Spawn when breaking blocks
 		public var kolEnHid:int = 3;			// Hidden normal enemies
 		public var kol_phoenix:int = 0;
 		
 		public var detecting:Boolean = false;
-		public var t_alarm:int = 0;			// Alarm counter
+		public var t_alarm:int = 0;				// Alarm counter
 		public var t_alarmsp:int = 0;			// Enemy spawn counter
 		
 		// Bonuses and Experience
@@ -153,16 +152,9 @@ package locdata
 		public var biom:int = 0;
 		public var locksLevel:Number = 0;		// Locks level 0-25
 		public var mechLevel:Number = 0;		// Mines and mechanisms level 0-7
-		public var weaponLevel:Number = 0;	// Level of randomly dropped weapons
-		public var enemyLevel:int = 0;		// Enemy level
-		public var earMult:Number = 1; 		// Mob hearing multiplier
-		
-		
-		
-		
-		
-		
-		
+		public var weaponLevel:Number = 0;		// Level of randomly dropped weapons
+		public var enemyLevel:int = 0;			// Enemy level
+		public var earMult:Number = 1; 			// Mob hearing multiplier
 		
 //**************************************************************************************************************************
 //
@@ -170,18 +162,17 @@ package locdata
 //
 //**************************************************************************************************************************
 
-
 // ------------------------------------------------------------------------------------------------
 // First stage - create and build according to the map from xml
 
-		public function Room(l:Level, nroom:XML, rnd:Boolean, opt:Object=null) 
+		public function Room(l:Level, nroom:XML, rnd:Boolean, opt:Object = null) 
 		{
 			level = l;
 			roomWidth = Settings.roomTileWidth;
 			roomHeight = Settings.roomTileHeight;
 			roomPixelWidth = roomWidth * Settings.tilePixelWidth;
 			roomPixelHeight = roomHeight * Settings.tilePixelHeight;
-			otstoy=new Tile(-1,-1);
+			otstoy = new Tile(-1, -1);
 
 			units 			= [];
 			ups 			= [];
@@ -199,7 +190,7 @@ package locdata
 			bonuses 		= [];
 			maxdy 			= Settings.maxdy;
 
-			if (rnd) ramka=1;
+			if (rnd) ramka = 1;
 			if (opt) 
 			{
 				if (opt.prob) ramka = 0;
@@ -241,60 +232,60 @@ package locdata
 			}
 
 			// Options
-			backwall 	= level.levelTemplate.backwall;
-			sndMusic  	= level.levelTemplate.sndMusic;
-			postMusic 	= level.levelTemplate.postMusic;
-			rad 		= level.levelTemplate.rad;
-			wrad 		= level.levelTemplate.wrad;
-			wdam 		= level.levelTemplate.wdam;
-			wtipdam 	= level.levelTemplate.wtipdam;
-			tipWater 	= level.levelTemplate.tipWater;
-			color 		= level.levelTemplate.color;
-			visMult 	= level.levelTemplate.visMult;
-			opacWater 	= level.levelTemplate.opacWater;
-			darkness 	= level.levelTemplate.darkness;
+			backwall = level.levelTemplate.backwall;
+			sndMusic = level.levelTemplate.sndMusic;
+			postMusic = level.levelTemplate.postMusic;
+			rad = level.levelTemplate.rad;
+			wrad = level.levelTemplate.wrad;
+			wdam = level.levelTemplate.wdam;
+			wtipdam = level.levelTemplate.wtipdam;
+			tipWater = level.levelTemplate.tipWater;
+			color = level.levelTemplate.color;
+			visMult = level.levelTemplate.visMult;
+			opacWater = level.levelTemplate.opacWater;
+			darkness = level.levelTemplate.darkness;
 			if (nroom.options.length()) 
 			{
-				if (nroom.options.@backwall.length()) backwall=nroom.options.@backwall;
-				if (nroom.options.@backform.length()) backform=nroom.options.@backform;
-				if (nroom.options.@transparentBackground.length()) transparentBackground=true;
-				if (nroom.options.@music.length()) sndMusic=nroom.options.@music;
-				if (nroom.options.@rad.length()) rad=nroom.options.@rad;
-				if (nroom.options.@wrad.length()) wrad=nroom.options.@wrad;
-				if (nroom.options.@wtip.length()) tipWater=nroom.options.@wtip;
-				if (nroom.options.@wopac.length()) opacWater=nroom.options.@wopac;
-				if (nroom.options.@wdam.length()) wdam=nroom.options.@wdam;
-				if (nroom.options.@wtipdam.length()) wtipdam=nroom.options.@wtipdam;
-				if (nroom.options.@bezdna.length()) bezdna=true;
-				if (nroom.options.@wlevel.length()) waterLevel=nroom.options.@wlevel;
-				if (nroom.options.@base.length()) base=true;
-				if (nroom.options.@noblack.length()) black=false;
-				if (nroom.options.@train.length()) train=true;
-				if (nroom.options.@color.length()) color=nroom.options.@color;
-				if (nroom.options.@colorfon.length()) colorfon=nroom.options.@colorfon;
-				if (nroom.options.@vis.length()) visMult=nroom.options.@vis;
-				if (nroom.options.@nomap.length()) noMap=true;
-				if (nroom.options.@entip.length()) tipEnemy=nroom.options.@entip;
-				if (nroom.options.@lon.length()) lightOn=nroom.options.@lon;
-				if (nroom.options.@dark.length()) darkness=nroom.options.@dark;
-				if (nroom.options.@retdark.length()) retDark=true;
-				if (nroom.options.@levitoff.length()) levitOn=false;
-				if (nroom.options.@portoff.length()) portOn=false;
-				if (nroom.options.@desoff.length()) destroyOn=false;
-				if (nroom.options.@petoff.length()) petOn=false;
-				if (nroom.options.@spawn.length()) tipSpawn=nroom.options.@spawn;
-				if (nroom.options.@kolspawn.length()) kolEnSpawn=nroom.options.@kolspawn;
-				if (nroom.options.@tilespawn.length()) tileSpawn=nroom.options.@tilespawn;
-				if (nroom.options.@items.length()) itemsTip=nroom.options.@items;
-				if (nroom.options.@maxdy.length()) maxdy=nroom.options.@maxdy;
-				if (nroom.options.@sky.length())  sky=true;
-				if (nroom.options.@zoom.length()) zoom=nroom.options.@zoom;
-				if (nroom.options.@trus.length()) trus=nroom.options.@trus;
+				if (nroom.options.@backwall.length()) backwall = nroom.options.@backwall;
+				if (nroom.options.@backform.length()) backform = nroom.options.@backform;
+				if (nroom.options.@transparentBackground.length()) transparentBackground = true;
+				if (nroom.options.@music.length()) sndMusic = nroom.options.@music;
+				if (nroom.options.@rad.length()) rad = nroom.options.@rad;
+				if (nroom.options.@wrad.length()) wrad = nroom.options.@wrad;
+				if (nroom.options.@wtip.length()) tipWater = nroom.options.@wtip;
+				if (nroom.options.@wopac.length()) opacWater = nroom.options.@wopac;
+				if (nroom.options.@wdam.length()) wdam = nroom.options.@wdam;
+				if (nroom.options.@wtipdam.length()) wtipdam = nroom.options.@wtipdam;
+				if (nroom.options.@bezdna.length()) bezdna = true;
+				if (nroom.options.@wlevel.length()) waterLevel = nroom.options.@wlevel;
+				if (nroom.options.@base.length()) base = true;
+				if (nroom.options.@noblack.length()) black = false;
+				if (nroom.options.@train.length()) train = true;
+				if (nroom.options.@color.length()) color = nroom.options.@color;
+				if (nroom.options.@colorfon.length()) colorfon = nroom.options.@colorfon;
+				if (nroom.options.@vis.length()) visMult = nroom.options.@vis;
+				if (nroom.options.@nomap.length()) noMap = true;
+				if (nroom.options.@entip.length()) tipEnemy = nroom.options.@entip;
+				if (nroom.options.@lon.length()) lightOn = nroom.options.@lon;
+				if (nroom.options.@dark.length()) darkness = nroom.options.@dark;
+				if (nroom.options.@retdark.length()) retDark = true;
+				if (nroom.options.@levitoff.length()) levitOn = false;
+				if (nroom.options.@portoff.length()) portOn = false;
+				if (nroom.options.@desoff.length()) destroyOn = false;
+				if (nroom.options.@petoff.length()) petOn = false;
+				if (nroom.options.@spawn.length()) tipSpawn = nroom.options.@spawn;
+				if (nroom.options.@kolspawn.length()) kolEnSpawn = nroom.options.@kolspawn;
+				if (nroom.options.@tilespawn.length()) tileSpawn = nroom.options.@tilespawn;
+				if (nroom.options.@items.length()) itemsTip = nroom.options.@items;
+				if (nroom.options.@maxdy.length()) maxdy = nroom.options.@maxdy;
+				if (nroom.options.@sky.length())  sky = true;
+				if (nroom.options.@zoom.length()) zoom = nroom.options.@zoom;
+				if (nroom.options.@trus.length()) trus = nroom.options.@trus;
 				if (!black) 
 				{
 					for (i = 0; i < roomWidth; i++) 
 					{
-						for (j  =0; j < roomHeight; j++) 
+						for (j = 0; j < roomHeight; j++) 
 						{
 							(roomTileArray[i][j] as Tile).visi = 1;
 						}
@@ -330,7 +321,7 @@ package locdata
 					{
 						jis = arri[i];
 					}
-					if (jis == null) jis='';
+					if (jis == null) jis = '';
 					roomTileArray[i][j].parseLevelXML(jis, mirror);
 					if (roomTileArray[i][j].stair != 0) // Shelf on top of the ladder
 					{  
@@ -351,19 +342,19 @@ package locdata
 							|| ramka == 5 && (i <= 10 || i >= 37)
 							|| ramka == 6 && j >= 16
 							|| ramka == 7 && (i <= 10 || i >= 37) && j >= 16
-							|| ramka == 8 && (i == roomWidth-1)
+							|| ramka == 8 && (i == roomWidth - 1)
 						) roomTileArray[i][j].phis = 1;
 						else if (roomTileArray[i][j].phis >= 1) roomTileArray[i][j].indestruct = true;
 					}
 				}
 			}
 			
-			// Possible passages to other locations
-			if (nroom.doors.length() > 0) 
+			if (nroom.doors.length() > 0) // Possible passages to other locations
 			{
-				var s:String=nroom.doors[0];
-				doors=s.split('.');
-				if (mirror) {
+				var s:String = nroom.doors[0];
+				doors = s.split('.');
+				if (mirror) 
+				{
 					var d;
 					d = doors[6];
 					doors[6] = doors[10];
@@ -391,20 +382,16 @@ package locdata
 				for (i = 0; i < 22; i++) doors[i] = 2;
 			}
 			
-			// Visibility
-			lDist1 *= visMult;
+			lDist1 *= visMult; // Visibility
 			lDist2 *= visMult;
 			if (isNaN(lDist1)) 
 			{
 				lDist1 = 300;
 				lDist2 = 1000;
 			}
-			// Color filter
-			cTransform = colorFilter(color);
-			if (colorfon) cTransformFon=colorFilter(colorfon);
-			
-			// Object spawnpoints
-			objsT = [];
+			cTransform = colorFilter(color); // Color filter
+			if (colorfon) cTransformFon = colorFilter(colorfon);
+			objsT = []; // Object spawnpoints
 			for each(var obj:XML in nroom.obj) 
 			{
 				var xmll:XML = XmlBook.getXML("objects").obj.(@id == obj.@id)[0];
@@ -424,12 +411,12 @@ package locdata
 			}
 			
 			// Background objects
-			for each(obj in nroom.back) 
+			for each(obj in nroom.back)
 			{
-				backobjs.push(new BackObj(this, obj.@id,obj.@x * Tile.tilePixelWidth, obj.@y*Tile.tilePixelHeight, obj));
+				backobjs.push(new BackObj(this, obj.@id,obj.@x * Tile.tilePixelWidth, obj.@y * Tile.tilePixelHeight, obj));
 			}
 
-			if (zoom > 1) 
+			if (zoom > 1)
 			{
 				roomPixelWidth  *= zoom;
 				roomPixelHeight *= zoom;
@@ -437,9 +424,8 @@ package locdata
 		}
 		
 		// Color filter
-		public function colorFilter(filter:String=''):ColorTransform 
+		public function colorFilter(filter:String = ''):ColorTransform 
 		{
-			
 			var colorT = new ColorTransform();
 			var red:Number;
 			var green:Number;
@@ -555,77 +541,77 @@ package locdata
 			var dyr:Boolean = false;
 			if (n >= 17)
 			{
-				q=(n-17)*9+4;
-				dyr=roomTileArray[q+1][0].hole() || dyr;
-				dyr=roomTileArray[q+2][0].hole() || dyr;
-				roomTileArray[q+1][1].hole();
-				roomTileArray[q+2][1].hole();
-				setNoObj(q+1,0,0,2);
-				setNoObj(q+2,0,0,2);
-				if (fak>2) 
+				q = (n - 17) * 9 + 4;
+				dyr = roomTileArray[q + 1][0].hole() || dyr;
+				dyr = roomTileArray[q + 2][0].hole() || dyr;
+				roomTileArray[q + 1][1].hole();
+				roomTileArray[q + 2][1].hole();
+				setNoObj(q + 1, 0, 0, 2);
+				setNoObj(q + 2, 0, 0, 2);
+				if (fak > 2) 
 				{
-					dyr=roomTileArray[q][0].hole() || dyr;
-					dyr=roomTileArray[q+3][0].hole() || dyr;
+					dyr = roomTileArray[q][0].hole() || dyr;
+					dyr = roomTileArray[q + 3][0].hole() || dyr;
 					roomTileArray[q][1].hole();
-					roomTileArray[q+3][1].hole();
-					setNoObj(q,0,0,2);
-					setNoObj(q+3,0,0,2);
+					roomTileArray[q + 3][1].hole();
+					setNoObj(q, 0, 0, 2);
+					setNoObj(q + 3, 0, 0, 2);
 				}
-				if (dyr) addSignPost(q+2,0,-90);
+				if (dyr) addSignPost(q + 2, 0, -90);
 			} 
-			else if (n>=11) 
+			else if (n >= 11) 
 			{
-				q=(n-11)*4+3;
-				dyr=roomTileArray[0][q].hole() || dyr;
-				dyr=roomTileArray[0][q-1].hole() || dyr;
+				q = (n - 11) * 4 + 3;
+				dyr = roomTileArray[0][q].hole() || dyr;
+				dyr = roomTileArray[0][q - 1].hole() || dyr;
 				roomTileArray[1][q].hole();
-				roomTileArray[1][q-1].hole();
-				setNoObj(0,q,5,0);
-				setNoObj(0,q-1,5,0);
-				if (fak>2) 
+				roomTileArray[1][q - 1].hole();
+				setNoObj(0, q, 5, 0);
+				setNoObj(0, q - 1, 5, 0);
+				if (fak > 2) 
 				{
-					dyr=roomTileArray[0][q-2].hole() || dyr;
-					roomTileArray[1][q-2].hole();
+					dyr=roomTileArray[0][q - 2].hole() || dyr;
+					roomTileArray[1][q - 2].hole();
 				} 
-				if (dyr) addSignPost(0,q,180);
-				addEnSpawn(Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
+				if (dyr) addSignPost(0, q, 180);
+				addEnSpawn(Tile.tilePixelWidth, (q + 1) * Tile.tilePixelHeight - 1);
 			} 
-			else if (n>=6) 
+			else if (n >= 6) 
 			{
-				q=(n-6)*9+4;
-				dyr=roomTileArray[q+1][roomHeight-1].hole() || dyr;
-				dyr=roomTileArray[q+2][roomHeight-1].hole() || dyr;
-				roomTileArray[q+1][roomHeight-2].hole();
-				roomTileArray[q+2][roomHeight-2].hole();
-				setNoObj(q+1,roomHeight-1,0,-2);
-				setNoObj(q+2,roomHeight-1,0,-2);
-				if (fak>2) 
+				q = (n - 6) * 9 + 4;
+				dyr = roomTileArray[q + 1][roomHeight - 1].hole() || dyr;
+				dyr = roomTileArray[q + 2][roomHeight - 1].hole() || dyr;
+				roomTileArray[q + 1][roomHeight - 2].hole();
+				roomTileArray[q + 2][roomHeight - 2].hole();
+				setNoObj(q + 1, roomHeight - 1, 0, -2);
+				setNoObj(q + 2, roomHeight - 1, 0, -2);
+				if (fak > 2) 
 				{
-					dyr=roomTileArray[q][roomHeight-1].hole() || dyr;
-					dyr=roomTileArray[q+3][roomHeight-1].hole() || dyr;
-					roomTileArray[q][roomHeight-2].hole();
-					roomTileArray[q+3][roomHeight-2].hole();
-					setNoObj(q,roomHeight-1,0,-2);
-					setNoObj(q+3,roomHeight-1,0,-2);
+					dyr = roomTileArray[q][roomHeight - 1].hole() || dyr;
+					dyr = roomTileArray[q + 3][roomHeight - 1].hole() || dyr;
+					roomTileArray[q][roomHeight - 2].hole();
+					roomTileArray[q + 3][roomHeight - 2].hole();
+					setNoObj(q, roomHeight - 1, 0, -2);
+					setNoObj(q + 3,roomHeight - 1, 0, -2);
 				} 
-				if (dyr) addSignPost(q+2,roomHeight,90);
+				if (dyr) addSignPost(q + 2, roomHeight, 90);
 			} 
-			else if (n>=0) 
+			else if (n >= 0) 
 			{
-				q=(n)*4+3;
-				dyr=roomTileArray[roomWidth-1][q].hole() || dyr;
-				dyr=roomTileArray[roomWidth-1][q-1].hole() || dyr;
-				roomTileArray[roomWidth-2][q].hole();
-				roomTileArray[roomWidth-2][q-1].hole();
-				setNoObj(roomWidth-1,q,-5,0);
-				setNoObj(roomWidth-1,q-1,-5,0);
-				if (fak>2) 
+				q = (n) * 4 + 3;
+				dyr = roomTileArray[roomWidth - 1][q].hole() || dyr;
+				dyr = roomTileArray[roomWidth - 1][q - 1].hole() || dyr;
+				roomTileArray[roomWidth - 2][q].hole();
+				roomTileArray[roomWidth - 2][q - 1].hole();
+				setNoObj(roomWidth - 1, q, -5, 0);
+				setNoObj(roomWidth - 1, q - 1, -5, 0);
+				if (fak > 2) 
 				{
-					dyr=roomTileArray[roomWidth-1][q-2].hole() || dyr;
-					roomTileArray[roomWidth-2][q-2].hole();
+					dyr = roomTileArray[roomWidth - 1][q - 2].hole() || dyr;
+					roomTileArray[roomWidth - 2][q - 2].hole();
 				} 
-				if (dyr) addSignPost(roomWidth,q,0);
-				addEnSpawn((roomWidth-1)*Tile.tilePixelWidth, (q+1)*Tile.tilePixelHeight-1);
+				if (dyr) addSignPost(roomWidth, q, 0);
+				addEnSpawn((roomWidth - 1) * Tile.tilePixelWidth, (q + 1) * Tile.tilePixelHeight - 1);
 			}
 		}
 		
@@ -634,9 +620,9 @@ package locdata
 		{
 			var sign:MovieClip;
 			sign = new signPost();
-			sign.x=nx*Tile.tilePixelWidth;
-			sign.y=ny*Tile.tilePixelHeight;
-			sign.rotation=r;
+			sign.x = nx * Tile.tilePixelWidth;
+			sign.y = ny * Tile.tilePixelHeight;
+			sign.rotation = r;
 			signposts.push(sign);
 		}
 		
@@ -646,10 +632,10 @@ package locdata
 			var obj:Object = {};
 			if (xmll) 
 			{
-				var size:int=xmll.@size;
-				if (size<=0) size=1;
-				obj.x=(nx+0.5*size)*Tile.tilePixelWidth;
-				obj.y=(ny+1)*Tile.tilePixelHeight-1;
+				var size:int = xmll.@size;
+				if (size <= 0) size = 1;
+				obj.x = (nx + 0.5 * size) * Tile.tilePixelWidth;
+				obj.y = (ny + 1) * Tile.tilePixelHeight - 1;
 			} 
 			else 
 			{
@@ -663,24 +649,24 @@ package locdata
 		private function setNoObj(nx:int, ny:int, dx:int, dy:int):void
 		{
 			var i:int;
-			if (dx>0) for (i=nx; i<=nx+dx; i++) roomTileArray[i][ny].place=false;
-			if (dx<0) for (i=nx+dx; i<=nx; i++) roomTileArray[i][ny].place=false;
-			if (dy>0) for (i=ny; i<=ny+dy; i++) roomTileArray[nx][i].place=false;
-			if (dy<0) for (i=ny+dy; i<=ny; i++) roomTileArray[nx][i].place=false;
+			if (dx > 0) for (i = nx; i <= nx + dx; i++) roomTileArray[i][ny].place = false;
+			if (dx < 0) for (i = nx + dx; i <= nx; i++) roomTileArray[i][ny].place = false;
+			if (dy > 0) for (i = ny; i <= ny + dy; i++) roomTileArray[nx][i].place = false;
+			if (dy < 0) for (i = ny + dy; i <= ny; i++) roomTileArray[nx][i].place = false;
 		}
 		
 		
 		// Main frame, call after creating passages
 		public function mainFrame():void
 		{
-			var border:String='A';
-			if (level && level.levelTemplate) border=level.levelTemplate.border;
-			for (var j=0; j<roomWidth; j++) 
+			var border:String = 'A';
+			if (level && level.levelTemplate) border = level.levelTemplate.border;
+			for (var j = 0; j < roomWidth; j++) 
 			{
 				if (roomTileArray[j][0].phis>=1) roomTileArray[j][0].mainFrame(border);
 				if (roomTileArray[j][roomHeight-1].phis>=1) roomTileArray[j][roomHeight-1].mainFrame(border);
 			}
-			for (j=0; j<roomHeight; j++) 
+			for (j = 0; j<roomHeight; j++) 
 			{
 				if (roomTileArray[0][j].phis>=1) roomTileArray[0][j].mainFrame(border);
 				if (roomTileArray[roomWidth-1][j].phis>=1) roomTileArray[roomWidth-1][j].mainFrame(border);
@@ -729,7 +715,7 @@ package locdata
 						{
 							if (!roomTileArray[ups[i][j].x][ups[i][j].y].place) 
 							{
-								ups[i].splice(j,1);
+								ups[i].splice(j, 1);
 								j--;
 							}
 						}
@@ -768,7 +754,7 @@ package locdata
 		{
 			var nx:int = Math.floor(Math.random() * (roomWidth - 2) + 1);
 			var ny:int = Math.floor(Math.random() * (roomHeight - 2) + 1);
-			if (roomTileArray[nx][ny].phis==0) 
+			if (roomTileArray[nx][ny].phis == 0) 
 			{
 				LootGen.lootCont(this, (nx + 0.5) * Tile.tilePixelWidth, (ny + 0.8) * Tile.tilePixelHeight, 'metal');
 			}
@@ -776,7 +762,7 @@ package locdata
 		
 		// Create a unit, nx, ny - coordinates in blocks if abs=false, and in pixels if abs=true
 		// emerg>0 - smooth appearance over X ticks
-		public function createUnit(tip:String,nx:int,ny:int,abs:Boolean=false,xml:XML=null,cid:String=null, emerg:int=0):Unit 
+		public function createUnit(tip:String, nx:int, ny:int, abs:Boolean = false, xml:XML = null, cid:String = null, emerg:int = 0):Unit 
 		{
 			if (tip == 'mines') 
 			{
@@ -786,9 +772,9 @@ package locdata
 				return null;
 			}
 
-			if (level.rnd && tip=='transm') 
+			if (level.rnd && tip == 'transm') 
 			{
-				if ((xml==null || xml.@on.length()==0) && Math.random()<0.5) return null;
+				if ((xml == null || xml.@on.length() == 0) && Math.random() < 0.5) return null;
 			}
 
 			if (xml && xml.@trigger.length() && GameSession.currentSession.game.triggers[xml.@trigger]=='1') return null;
@@ -798,43 +784,43 @@ package locdata
 			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj=GameSession.currentSession.game.objs[xml.@code];
 
 			//не генерировать юнита, который сдох
-			if (loadObj && loadObj.dead>0 && loadObj.loot!=2)
+			if (loadObj && loadObj.dead > 0 && loadObj.loot != 2)
 			{
 				return null;
 			}
 			var un:Unit;
 			var scid:String;
-			var hero:int=0;
-			var inWater:Boolean=false;
+			var hero:int = 0;
+			var inWater:Boolean = false;
 
-			if ((biom==1 || biom==5) && !abs)
+			if ((biom == 1 || biom == 5) && !abs)
 			{
-				inWater=getTile(nx,ny).water>0;
+				inWater = getTile(nx, ny).water > 0;
 			}
-			var s:String=randomUnit(tip,inWater); //определить, является ли юнит случайным, если да, то сгенерировать его id
+			var s:String = randomUnit(tip, inWater); //определить, является ли юнит случайным, если да, то сгенерировать его id
 			//если тип был случайным и удалось сгенерировать его id
 
-			if (s!='') 
+			if (s != '') 
 			{
-				if (cid) scid=cid;
-				else scid=randomCid(s);
-				if (s=='slmine') s='slime';
-				un=Unit.create(s,locDifLevel,xml,loadObj,scid);
+				if (cid) scid = cid;
+				else scid = randomCid(s);
+				if (s == 'slmine') s = 'slime';
+				un = Unit.create(s, locDifLevel, xml, loadObj, scid);
 			}
 
 			//если юнит не был случайным, или не получилось сгенерировать по id=s, попробовать сгенерировать по id=tip
-			if ((s=='' && !homeStable) || un==null) 
+			if ((s == '' && !homeStable) || un == null) 
 			{
 				if (cid) scid=cid;
 				else scid=randomCid(tip);
-				un=Unit.create(tip,locDifLevel,xml,loadObj,scid);
+				un = Unit.create(tip, locDifLevel, xml, loadObj, scid);
 			}
 
-			if (un!=null) 
+			if (un != null) 
 			{
-				var enl=enemyLevel;
-				if (level.rnd && levelProb=='') {//геройский юнит
-					if (Math.random()<Math.min(0.05,locDifLevel/100+0.02)) hero=Math.floor(Math.random()*4+1);	
+				var enl = enemyLevel;
+				if (level.rnd && levelProb == '') {//геройский юнит
+					if (Math.random() < Math.min(0.05, locDifLevel / 100 + 0.02)) hero = Math.floor(Math.random() * 4 + 1);	
 				}
 				if (hero==0 && !un.boss) enl=Math.round(enl*(1.1-Math.random()*0.4));
 				un.setLevel(enl);
@@ -912,181 +898,181 @@ package locdata
 		//создать предмет, стоящий на ящике
 		public function createSur(box:Box, nsur:String=null):void
 		{
-			if (nsur==null) 
+			if (nsur == null) 
 			{
-				if (Math.random()>0.25) return;
-				if (biom==0) nsur='fan';
-				if (biom==2) nsur='lamp';
-				if (biom==3) nsur='kofe';
-				if (nsur==null) return;
+				if (Math.random() > 0.25) return;
+				if (biom == 0) nsur = 'fan';
+				if (biom == 2) nsur = 'lamp';
+				if (biom == 3) nsur = 'kofe';
+				if (nsur == null) return;
 			}
-			var item:Item=new Item(null, nsur, 1);
-			var l:Loot=new Loot(this,item,box.X,box.Y-box.scY-3,false,false,false);
+			var item:Item = new Item(null, nsur, 1);
+			var l:Loot=new Loot(this, item, box.X, box.Y - box.scY - 3, false, false, false);
 			if (base) 
 			{
-				l.inter.active=false;
-				l.levitPoss=false;
+				l.inter.active = false;
+				l.levitPoss = false;
 			}
 		}
 		
 		//создать скрытый юнит или дополнительный объект
-		public function createHidden(nx:int,ny:int):void
+		public function createHidden(nx:int, ny:int):void
 		{
-			if (biom==10 || biom==11) return;
-			if (tipEnemy==0) createUnit('zombie',nx,ny, false, <unit dig='2'/>);
-			else if (tipEnemy==2) createObj('robocell','box',nx,ny);
-			else if (tipEnemy==1 || tipEnemy==3) createObj('alarm','box',nx,ny);
-			else if (tipEnemy==6) createUnit('lov',nx,ny);
+			if (biom == 10 || biom == 11) return;
+			if (tipEnemy == 0) createUnit('zombie', nx, ny, false, <unit dig = '2'/>);
+			else if (tipEnemy == 2) createObj('robocell', 'box', nx, ny);
+			else if (tipEnemy == 1 || tipEnemy==3) createObj('alarm', 'box', nx, ny);
+			else if (tipEnemy == 6) createUnit('lov', nx, ny);
 		}
 		
 		//облака газа
 		public function createClouds(lvl:int, ncloud:String=null):void
 		{
-			if (ncloud==null) 
+			if (ncloud == null) 
 			{
-				if (biom==1) 
+				if (biom == 1) 
 				{
-					ncloud='tcloud1';
-					if (lvl>=2) return;
+					ncloud = 'tcloud1';
+					if (lvl >= 2) return;
 				}
-				if (biom==5) 
+				if (biom == 5) 
 				{
-					ncloud='pcloud1';
+					ncloud = 'pcloud1';
 				}
 			}
-			if (ncloud!=null) 
+			if (ncloud != null) 
 			{
-				var kol:int=1;
-				if (biom==1) kol=Math.random()*5;
-				if (biom==5) 
+				var kol:int = 1;
+				if (biom == 1) kol = Math.random() * 5;
+				if (biom == 5) 
 				{
-					if (lvl==0) kol=Math.random()*2;
-					else kol=Math.random()*3;
+					if (lvl == 0) kol = Math.random() * 2;
+					else kol = Math.random() * 3;
 				}
-				for (var i=0; i<kol; i++) 
+				for (var i = 0; i < kol; i++) 
 				{
-					var nx:int=Math.floor(Math.random()*(roomWidth-4)+2);
-					var ny:int=Math.floor(Math.random()*(roomHeight-4)+2);
+					var nx:int = Math.floor(Math.random() * (roomWidth - 4) + 2);
+					var ny:int = Math.floor(Math.random() * (roomHeight - 4) + 2);
 					if (cp) 
 					{
-						var dnx=cp.X-(nx*Settings.tilePixelWidth+20);
-						var dny=cp.Y-(ny*Settings.tilePixelHeight+40);
-						if (dnx*dnx+dny*dny<80*80) continue;
+						var dnx = cp.X - (nx * Settings.tilePixelWidth + 20);
+						var dny = cp.Y - (ny * Settings.tilePixelHeight + 40);
+						if (dnx * dnx + dny * dny < 80 * 80) continue;
 					}
-					if (biom==1 && lvl==1 && ny>15) ny=15;
-					if (biom==5 && lvl==0) ny=Math.floor(Math.random()*15+9);
-					createObj(ncloud,'box',nx,ny);
+					if (biom == 1 && lvl == 1 && ny > 15) ny = 15;
+					if (biom == 5 && lvl == 0) ny = Math.floor(Math.random() * 15 + 9);
+					createObj(ncloud, 'box', nx, ny);
 				}
 			}
 		}
 		
 		//определение id случайного юнита
-		public function randomUnit(tip:String, inWater:Boolean=false):String 
+		public function randomUnit(tip:String, inWater:Boolean = false):String 
 		{
-			var s:String='';
+			var s:String = '';
 			switch (tip) 
 			{
 				case 'enl2':
-					if (biom==10) s='stabpon';
-					else if (tipEnemy==0) s='zombie';
-					else if (tipEnemy==2) 
+					if (biom == 10) s = 'stabpon';
+					else if (tipEnemy == 0) s = 'zombie';
+					else if (tipEnemy == 2) 
 					{
-						if (biom==2 && locDifLevel>=12 && Math.random()<Math.min(locDifLevel/100,0.15)) s='eqd';
-						else if (locDifLevel>=5 && Math.random()<0.1) s='landturret';
-						else if (locDifLevel>=6 && Math.random()<Math.min(locDifLevel/40,0.3)) s='gutsy';
-						else if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/10,0.5)) s='protect';
-						else s='robot';
+						if (biom == 2 && locDifLevel >= 12 && Math.random() < Math.min(locDifLevel / 100, 0.15)) s = 'eqd';
+						else if (locDifLevel >= 5 && Math.random() < 0.1) s = 'landturret';
+						else if (locDifLevel >= 6 && Math.random() < Math.min(locDifLevel / 40, 0.3)) s = 'gutsy';
+						else if (locDifLevel >= 2 && Math.random() < Math.min(locDifLevel / 10, 0.5)) s = 'protect';
+						else s = 'robot';
 					} 
-					else if (tipEnemy==3) s='slaver';
-					else if (tipEnemy==4) s='merc';
-					else if (tipEnemy==5) s='alicorn';
-					else if (tipEnemy==6) s='zebra';
-					else if (tipEnemy==7) 
+					else if (tipEnemy == 3) s = 'slaver';
+					else if (tipEnemy == 4) s = 'merc';
+					else if (tipEnemy == 5) s = 'alicorn';
+					else if (tipEnemy == 6) s = 'zebra';
+					else if (tipEnemy == 7) 
 					{
-						if (Math.random()<0.4) 
+						if (Math.random() < 0.4) 
 						{
-							if (Math.random()<0.5) s='gutsy';
-							else s='protect';
+							if (Math.random() < 0.5) s = 'gutsy';
+							else s = 'protect';
 						} 
-						else s='ranger';
+						else s = 'ranger';
 					} 
-					else if (tipEnemy==8) 
+					else if (tipEnemy == 8) 
 					{
-						if (Math.random()<0.75) s='zombie';
-						else s='necros'
+						if (Math.random() < 0.75) s = 'zombie';
+						else s = 'necros'
 					} 
-					else if (tipEnemy==9) 
+					else if (tipEnemy == 9) 
 					{
-						if (Math.random()<0.1) s='hellhound';
-						else if (Math.random()<0.07) s='landturret';
-						else s='encl';
+						if (Math.random() < 0.1) s = 'hellhound';
+						else if (Math.random() < 0.07) s = 'landturret';
+						else s = 'encl';
 					} 
-					else if (tipEnemy==10) s='hellhound';
-					else if (tipEnemy==11) 
+					else if (tipEnemy == 10) s = 'hellhound';
+					else if (tipEnemy == 11) 
 					{
-						if (Math.random()<0.3) s='hellhound';
-						else s='encl';
+						if (Math.random() < 0.3) s = 'hellhound';
+						else s = 'encl';
 					} 
-					else s='raider';
+					else s = 'raider';
 				break;
 				case 'enl1':
-					if (biom==10 || biom==11) return '';
-					if ((biom==1 || biom==5) && inWater) 
+					if (biom == 10 || biom == 11) return '';
+					if ((biom == 1 || biom == 5) && inWater) 
 					{
-						s='fish';
+						s = 'fish';
 					} 
-					else if (biom==5) 
+					else if (biom == 5) 
 					{
-						if (Math.random()<0.3) s='scorp3';
-						else s='slime';
+						if (Math.random() < 0.3) s = 'scorp3';
+						else s = 'slime';
 					} 
-					else if (biom==6) 
+					else if (biom == 6) 
 					{
-						s='roller';
+						s = 'roller';
 					} 
-					else if (tipEnemy==2 && locDifLevel>=4 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10) 
+					else if (tipEnemy == 2 && locDifLevel >= 4 || tipEnemy == 7 || tipEnemy == 9 || tipEnemy == 10) 
 					{
-						if ((roomCoordinateX+roomCoordinateY)%2==0) s='roller';
-						else s='msp';
+						if ((roomCoordinateX + roomCoordinateY)%2 == 0) s = 'roller';
+						else s = 'msp';
 					} 
-					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) 
+					else if (tipEnemy == 0 || tipEnemy == 5 || tipEnemy == 6) 
 					{
-						if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) 
+						if (locDifLevel >= 2 && Math.random() < Math.min(locDifLevel / 30, 0.5)) 
 						{
-							s='scorp';
+							s = 'scorp';
 						} 
-						else if ((roomCoordinateX+roomCoordinateY)%2==0) s='slime';
-						else s='ant';
-						if (biom==1 && Math.random()<0.25) s='rat';
+						else if ((roomCoordinateX+roomCoordinateY)%2 == 0) s = 'slime';
+						else s = 'ant';
+						if (biom == 1 && Math.random() < 0.25) s = 'rat';
 					} 
-					else if (locDifLevel>=2 && Math.random()<Math.min(locDifLevel/30,0.5)) s='molerat';
-					else if (Math.random()<0.6) s='tarakan';
-					else s='rat';
+					else if (locDifLevel >= 2 && Math.random() < Math.min(locDifLevel / 30, 0.5)) s = 'molerat';
+					else if (Math.random() < 0.6) s = 'tarakan';
+					else s = 'rat';
 				break;
 				case 'enc1':
 					if (biom==10) 
 					{
 						s='turret';
 					} 
-					else if ((biom==1 || biom==5) && inWater) 
+					else if ((biom == 1 || biom == 5) && inWater) 
 					{
 						s='fish';
 					} 
 					else if (biom==5) 
 					{
 						if ((roomCoordinateX+roomCoordinateY)%2==0) s='bloodwing';
-						else s='slime';
+						else s = 'slime';
 					} 
-					else if (biom==6 || biom==4) 
+					else if (biom == 6 || biom == 4) 
 					{
-						s='cturret';
+						s = 'cturret';
 					} 
 					else if (tipEnemy==0 || tipEnemy==5 || tipEnemy==6) 
 					{
 						if (biom==1 && Math.random()<0.6) s='slime';
 						else s='bloodwing';
 					} 
-					else s='turret';
+					else s = 'turret';
 				break;
 				case 'enf1':
 					if (biom==10) return '';
@@ -1104,26 +1090,27 @@ package locdata
 					else if (tipEnemy==11 || tipEnemy==7 || tipEnemy==9 || tipEnemy==10 || tipEnemy==2 && locDifLevel>10 && Math.random()<Math.min(locDifLevel/40,0.5)) s='dron';
 				break;
 				case 'lov':
-					if (biom==10 || biom==11) return '';
-					if (biom==5) 
+					if (biom == 10 || biom == 11) return '';
+					if (biom == 5) 
 					{
-						s='slmine';
-					} else if (tipEnemy==0) 
-					{
-						if ((roomCoordinateX+roomCoordinateY)%2==0) s='slmine';
-						else s='trap';
+						s = 'slmine';
 					} 
-					else if ((tipEnemy==1 || tipEnemy==3 || tipEnemy==4 || tipEnemy==6)&&(roomCoordinateX+roomCoordinateY)%2==0) 
+					else if (tipEnemy == 0) 
 					{
-						if (locDifLevel>=10 && Math.random()<0.5) s='trridge';
-						else if (Math.random()<0.5) s='trplate';
-						else s='trcans';
+						if ((roomCoordinateX+roomCoordinateY)%2 == 0) s = 'slmine';
+						else s = 'trap';
 					} 
-					else if ((biom==2 && tipEnemy==2 || tipEnemy==7 || tipEnemy==9) &&(roomCoordinateX+roomCoordinateY)%2==0) 
+					else if ((tipEnemy == 1 || tipEnemy == 3 || tipEnemy == 4 || tipEnemy == 6)&&(roomCoordinateX + roomCoordinateY)%2 == 0) 
 					{
-						s='trlaser';
+						if (locDifLevel >= 10 && Math.random() < 0.5) s = 'trridge';
+						else if (Math.random() < 0.5) s = 'trplate';
+						else s = 'trcans';
 					} 
-					else s='mine';
+					else if ((biom == 2 && tipEnemy == 2 || tipEnemy == 7 || tipEnemy == 9) &&(roomCoordinateX + roomCoordinateY)%2 == 0) 
+					{
+						s = 'trlaser';
+					} 
+					else s = 'mine';
 				break;
 			}
 			return s;
@@ -1260,7 +1247,7 @@ package locdata
 				'mine': function():String
 				{
 					if (biom == 4) return 'plamine'
-					if (biom==2 && randNum < Math.min(locDifLevel / 20, 0.4)) return 'plamine';
+					if (biom == 2 && randNum < Math.min(locDifLevel / 20, 0.4)) return 'plamine';
 					if (randNum < Math.min(locDifLevel / 20, 0.75)) return 'mine';
 					return 'hmine';
 				}
@@ -1292,28 +1279,28 @@ package locdata
 		{
 			var obj:Obj;
 			var size:int = XmlBook.getXML("objects").obj.(@id == id).@size;
-			if (size<=0) size=1;
-			var loadObj:Object=null;
-			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj=GameSession.currentSession.game.objs[xml.@code];
-			if (tip=='box' || tip=='door') 
+			if (size <= 0) size = 1;
+			var loadObj:Object = null;
+			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj = GameSession.currentSession.game.objs[xml.@code];
+			if (tip == 'box' || tip == 'door') 
 			{
-				obj=new Box(this, id, (nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1, xml, loadObj);
+				obj = new Box(this, id, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1, xml, loadObj);
 				objs.push(obj);
 				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
 				//создать феникса
-				if (xml && xml.@ph=='1' && !GameSession.currentSession.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
-				if (xml && xml.@transm=='1') createTransmitter((obj as Box));
-				if (level.rnd && level.levelTemplate.biom==0 && !GameSession.currentSession.game.triggers['pet_phoenix'] && kol_phoenix==0 && level.kol_phoenix<3 && Math.random()<0.02) 
+				if (xml && xml.@ph == '1' && !GameSession.currentSession.game.triggers['pet_phoenix']) createPhoenix((obj as Box));
+				if (xml && xml.@transm == '1') createTransmitter((obj as Box));
+				if (level.rnd && level.levelTemplate.biom == 0 && !GameSession.currentSession.game.triggers['pet_phoenix'] && kol_phoenix == 0 && level.kol_phoenix < 3 && Math.random() < 0.02) 
 				{
 					createPhoenix(obj as Box);
 				}
 				if ((obj is Box) && (obj as Box).sur && level.rnd) createSur(obj as Box);
 				if (!level.rnd && xml && xml.@sur.length()) createSur(obj as Box, xml.@sur);
-				if ((obj is Box) && (obj as Box).electroDam>electroDam && !obj.inter.open) electroDam=(obj as Box).electroDam;
+				if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) electroDam = (obj as Box).electroDam;
 			} 
-			else if (tip=='trap') 
+			else if (tip == 'trap') 
 			{
-				obj=new Trap(this, id,(nx+0.5*size)*Tile.tilePixelWidth, (ny+1)*Tile.tilePixelHeight-1);
+				obj = new Trap(this, id,(nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1);
 			} 
 			else if (tip=='checkpoint') 
 			{
@@ -1382,8 +1369,8 @@ package locdata
 			if (spawnPoints.length > 0) 
 			{
 				var sp = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
-				createObj('exit','box',sp.x,sp.y,<obj name='exit' prob={level.levelTemplate.exitProb+s} time='20' inter='8' sign='1'/>);
-				isCheck=true;
+				createObj('exit', 'box', sp.x, sp.y, <obj name = 'exit' prob = {level.levelTemplate.exitProb + s} time = '20' inter = '8' sign = '1'/>);
+				isCheck = true;
 			}
 		}
 		//создание двери испытаний в случайной точке появления
@@ -1391,8 +1378,8 @@ package locdata
 		{
 			if (spawnPoints.length > 0) 
 			{
-				var sp = spawnPoints[Math.floor(Math.random()*spawnPoints.length)];
-				createObj(nid,'box',sp.x,sp.y,<obj prob={nprob} objectName={Res.txt('map',nprob)} time='20' inter='8'/>);
+				var sp = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+				createObj(nid, 'box', sp.x, sp.y, <obj prob = {nprob} objectName = {Res.txt('map', nprob)} time = '20' inter = '8'/>);
 				isCheck = true;
 				return true;
 			}
@@ -1400,13 +1387,13 @@ package locdata
 		}
 		
 		// Creates the golden horseshoes I think...
-		public function createXpBonuses(kol:int=5):void
+		public function createXpBonuses(kol:int = 5):void
 		{
 			if (homeStable || homeAtk) return;
 			var nx:int, ny:int, x1:int, x2:int, y1:int, y2:int;
-			var mesto:int=4;
-			var n:int=5;
-			maxXp=kol;
+			var mesto:int = 4;
+			var n:int = 5;
+			maxXp = kol;
 			for (var i:int = 1; i <= 100; i++) 
 			{
 				x1 = 2;
@@ -1435,20 +1422,20 @@ package locdata
 				}
 				nx = Math.floor(x1 + Math.random() * (x2 - x1));
 				ny = Math.floor(y1 + Math.random() * (y2 - y1));
-				if (getTile(nx,ny).phis==0 && (getTile(nx-1,ny).phis==0 || getTile(nx+1,ny).phis==0)) 
+				if (getTile(nx, ny).phis == 0 && (getTile(nx - 1, ny).phis == 0 || getTile(nx + 1, ny).phis == 0)) 
 				{
-					createObj('xp','bonus',nx,ny);
+					createObj('xp', 'bonus', nx, ny);
 					kolXp++;
-					if (mesto>0) mesto--;
-					if (kolXp>=kol) return;
+					if (mesto > 0) mesto--;
+					if (kolXp >= kol) return;
 				} 
 				else 
 				{
 					n--;
-					if (n<=0) 
+					if (n <= 0) 
 					{
-						n=5;
-						if (mesto>0) mesto--;
+						n = 5;
+						if (mesto > 0) mesto--;
 					}
 				}
 			}
@@ -1466,18 +1453,18 @@ package locdata
 //**************************************************************************************************************************
 		
 		// Activate when the player character enters the room
-		public function reactivate(n:int=0):void
+		public function reactivate(n:int = 0):void
 		{
-			var obj:Pt=firstObj;
+			var obj:Pt = firstObj;
 			while (obj) 
 			{
-				nextObj=obj.nobj;
-				obj.setNull(n-nAct>2 || n==0 || prob &&!prob.closed);
-				obj=nextObj;
+				nextObj = obj.nobj;
+				obj.setNull(n - nAct > 2 || n == 0 || prob &&!prob.closed);
+				obj = nextObj;
 			}
 
 			resetUnits();
-			if (n>0) nAct = n;
+			if (n > 0) nAct = n;
 			showSign(false);
 			roomActive = true;    //Set the room to active.
 			visited = true; 
@@ -1488,7 +1475,7 @@ package locdata
 		
 		public function resetUnits():void
 		{
-			units=units.filter(isAct);
+			units = units.filter(isAct);
 		}
 		
 		private function isAct(element:*, index:int, arr:Array):Boolean 
@@ -1497,9 +1484,6 @@ package locdata
 			if (element is unitdata.UnitPet) return true;
             return (element.sost < 4);
         }
-		
-		// Deactivate the room  This doesn't do anything.
-		//This function is actually overwritten later??? wtf?
 
 		public function unloadRoom():void
 		{
@@ -1560,7 +1544,7 @@ package locdata
 				firstObj = obj.nobj;
 			}
 			obj.in_chain = false;
-			obj.nobj=obj.pobj = null;
+			obj.nobj = obj.pobj = null;
 			obj.remVisual();
 		}
 		
@@ -1593,7 +1577,6 @@ package locdata
 		public function collisionUnit(X:Number, Y:Number, scX:Number = 0, scY:Number = 0):Boolean 
 		{
 			var X1:Number = X - scX / 2, X2:Number = X + scX / 2, Y1:Number = Y - scY;
-			
 			var startX:int	 = X1 / Tile.tilePixelWidth | 0;
 			var endX:int 	= X2 / Tile.tilePixelWidth | 0;
 			var startY:int 	= Y1 / Tile.tilePixelHeight | 0;
@@ -1610,7 +1593,7 @@ package locdata
 			return false;
 		}
 
-		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj=null):Boolean 
+		public function isLine(nx:Number, ny:Number, cx:Number, cy:Number, obj:Obj = null):Boolean 
 		{
 			var ndx:Number = cx - nx;
 			var ndy:Number = cy - ny;
@@ -1634,8 +1617,15 @@ package locdata
 		// Tile contours
 		public function tileKontur(tx:int, ty:int, tile:Tile):void
 		{
-			var a0:Boolean,a1:Boolean,a2:Boolean,a3:Boolean,a4:Boolean,a5:Boolean,a6:Boolean,a7:Boolean;
-			if (tile.phis==1) 
+			var a0:Boolean;
+			var a1:Boolean;
+			var a2:Boolean;
+			var a3:Boolean;
+			var a4:Boolean;
+			var a5:Boolean;
+			var a6:Boolean;
+			var a7:Boolean;
+			if (tile.phis == 1) 
 			{
 				a0 = uslKontur(tx - 1, ty - 1);
 				a1 = uslKontur(tx, ty - 1);
@@ -1651,21 +1641,21 @@ package locdata
 				tile.kont4 = insKontur(a5, a3, a4);
 				if (b != '') 
 				{
-					if (!a1) a1=uslPontur(tx, ty - 1);
-					if (!a3) a3=uslPontur(tx + 1, ty);
-					if (!a5) a5=uslPontur(tx, ty + 1);
-					if (!a7) a7=uslPontur(tx - 1, ty);
-					tile.pont1=insKontur(a1, a7, a0);
-					tile.pont2=insKontur(a1, a3, a2);
-					tile.pont3=insKontur(a5, a7, a6);
-					tile.pont4=insKontur(a5, a3, a4);
+					if (!a1) a1 = uslPontur(tx, ty - 1);
+					if (!a3) a3 = uslPontur(tx + 1, ty);
+					if (!a5) a5 = uslPontur(tx, ty + 1);
+					if (!a7) a7 = uslPontur(tx - 1, ty);
+					tile.pont1 = insKontur(a1, a7, a0);
+					tile.pont2 = insKontur(a1, a3, a2);
+					tile.pont3 = insKontur(a5, a7, a6);
+					tile.pont4 = insKontur(a5, a3, a4);
 				}
 			} 
 			else 
 			{
 				var b:String = tile.tileRearTexture;
 				var vse:Boolean = (backwall == 'sky');
-				a0 = uslBontur(tx - 1,ty - 1, b, vse);
+				a0 = uslBontur(tx - 1, ty - 1, b, vse);
 				a1 = uslBontur(tx, ty - 1, b, vse);
 				a2 = uslBontur(tx + 1, ty - 1, b, vse);
 				a3 = uslBontur(tx + 1, ty, b, vse);
@@ -1699,18 +1689,18 @@ package locdata
 		private function uslPontur(nx:int,ny:int):Boolean 
 		{
 			if (nx < 0 || nx >= roomWidth || ny<0 || ny >= roomHeight) return true;
-			return (roomTileArray[nx][ny].tileRearTexture!='' || roomTileArray[nx][ny].shelf >0 );
+			return (roomTileArray[nx][ny].tileRearTexture!='' || roomTileArray[nx][ny].shelf > 0);
 		}
 
 		// Back contours without a wall
-		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean 
+		private function uslBontur(nx:int, ny:int, b:String = '', vse:Boolean = false):Boolean 
 		{
-			if (nx<0 || nx >= roomWidth || ny < 0 || ny >= roomHeight) return true;
+			if (nx < 0 || nx >= roomWidth || ny < 0 || ny >= roomHeight) return true;
 			return (roomTileArray[nx][ny].tileRearTexture == b || vse && roomTileArray[nx][ny].tileRearTexture != '' || roomTileArray[nx][ny].phis == 1 || roomTileArray[nx][ny].shelf > 0);
 		}
 		
 		// Tile damage
-		public function hitTile(t:Tile, hit:int, nx:int,ny:int, tip:int=9):void
+		public function hitTile(t:Tile, hit:int, nx:int, ny:int, tip:int = 9):void
 		{
 			// Damage from falling
 			if (tip == 100 && hit <= 50 && (t.damageThreshold > 0 || t.indestruct)) return;
@@ -1744,7 +1734,7 @@ package locdata
 						t.die();
 						try 
 						{
-							if (tileSpawn>0 && Math.random() < tileSpawn) enemySpawn(true,true);
+							if (tileSpawn > 0 && Math.random() < tileSpawn) enemySpawn(true, true);
 						} 
 						catch(err) 
 						{
@@ -1774,7 +1764,7 @@ package locdata
 				{				
 					t.door.die(4);
 				} 				
-				isRebuild=true;		// Change the room configuration		
+				isRebuild = true;		// Change the room configuration		
 				if (t.Y < waterLevel) // Recalculate water
 				{		
 					recalcTiles.push(t);
@@ -1799,7 +1789,6 @@ package locdata
 		// Water physics   
 		private function recalcWater():void
 		{
-			//trace(recalcTiles.length);
 			var rec:Array = recalcTiles;
 			recalcTiles = [];
 			isRecalc = false;
@@ -1814,46 +1803,44 @@ package locdata
 					tr = getTile(t.X + 1, t.Y);
 					tt = getTile(t.X, t.Y - 1);
 					tb = getTile(t.X, t.Y + 1);
-					if ((tb.phis==1 || tb.water==1) && (tr.phis==1 || tr.water==1) && (tl.phis==1 || tl.water==1) && (tl.water==1 || tr.water==1 || tt.water==1)) 
+					if ((tb.phis == 1 || tb.water == 1) && (tr.phis == 1 || tr.water == 1) && (tl.phis == 1 || tl.water == 1) && (tl.water == 1 || tr.water == 1 || tt.water == 1)) 
 					{
-						t.water=1;
+						t.water = 1;
 						if (roomActive) grafon.drawWater(t);
 					} 
 					else 
 					{
-						if (tl.water>0 && t.phis!=1) 
+						if (tl.water > 0 && t.phis != 1) 
 						{
-							tl.water=0;
+							tl.water = 0;
 							recalcTiles.push(tl);
 							if (roomActive) grafon.drawWater(tl);
-							isRecalc=true;
+							isRecalc = true;
 						}
-						if (tr.water>0 && t.phis!=1) 
+						if (tr.water > 0 && t.phis != 1) 
 						{
-							tr.water=0;
+							tr.water = 0;
 							recalcTiles.push(tr);
 							if (roomActive) grafon.drawWater(tr);
-							isRecalc=true;
+							isRecalc = true;
 						}
-						if (tt.water>0 && t.phis!=1) 
+						if (tt.water > 0 && t.phis != 1) 
 						{
-							tt.water=0;
+							tt.water = 0;
 							recalcTiles.push(tt);
 							if (roomActive) grafon.drawWater(tt);
-							isRecalc=true;
+							isRecalc = true;
 						}
 					}
-					t.recalc=false;
+					t.recalc = false;
 				}
 			}
-			var obj:Pt=firstObj;
+			var obj:Pt = firstObj;
 			while (obj) 
 			{
 				if (obj is Obj) (obj as Obj).checkStay();
-				obj=obj.nobj;
+				obj = obj.nobj;
 			}
-
-			//for each(var box in objs) if (box is Box) box.checkStay();
 		}
 		
 		// Check for the possibility of placing a ghost wall, returns true if nothing obstructs
@@ -1943,9 +1930,9 @@ package locdata
 		
 		public function drawMapObj(m, obj:Obj, color:uint):void
 		{
-			for (var i = (roomCoordinateX - level.minLocX) 		* Settings.roomTileWidth + Math.floor(obj.X1 / Settings.tilePixelWidth + 0.5); i <= (roomCoordinateX - level.minLocX) * Settings.roomTileWidth + Math.floor(obj.X2 / Settings.tilePixelWidth - 0.5); i++) 
+			for (var i = (roomCoordinateX - level.minLocX) * Settings.roomTileWidth + Math.floor(obj.X1 / Settings.tilePixelWidth + 0.5); i <= (roomCoordinateX - level.minLocX) * Settings.roomTileWidth + Math.floor(obj.X2 / Settings.tilePixelWidth - 0.5); i++) 
 			{
-				for (var j = (roomCoordinateY - level.minLocY) 	* Settings.roomTileHeight + Math.floor(obj.Y1 / Settings.tilePixelHeight + 0.4); j <= (roomCoordinateY - level.minLocY) * Settings.roomTileHeight + Math.floor(obj.Y2 / Settings.tilePixelHeight - 0.5); j++) 
+				for (var j = (roomCoordinateY - level.minLocY) * Settings.roomTileHeight + Math.floor(obj.Y1 / Settings.tilePixelHeight + 0.4); j <= (roomCoordinateY - level.minLocY) * Settings.roomTileHeight + Math.floor(obj.Y2 / Settings.tilePixelHeight - 0.5); j++) 
 				{
 					m.setPixel(i, j, color);
 				}
@@ -2020,21 +2007,22 @@ package locdata
 		// Turn on everything
 		public function allon():void
 		{
-			color='yellow';
-			cTransform=colorFilter(color);
-			lightOn=1;
-			darkness=-20;
+			color = 'yellow';
+			cTransform = colorFilter(color);
+			lightOn = 1;
+			darkness = -20;
 			gg.inLoc(this);
 			for each(var obj in units) 
 			{
-				obj.cTransform=cTransform;
+				obj.cTransform = cTransform;
 			}
 			for each(var obj in objs) 
 			{
-				obj.cTransform=cTransform;
-				if (obj.inter) {
-					if (obj.inter.lockTip=='4') obj.inter.setAct('open',0);
-					obj.inter.active=true;
+				obj.cTransform = cTransform;
+				if (obj.inter) 
+				{
+					if (obj.inter.lockTip == '4') obj.inter.setAct('open', 0);
+					obj.inter.active = true;
 					obj.inter.update();
 				}
 			}
@@ -2047,18 +2035,18 @@ package locdata
 		// Turn off everything
 		public function alloff():void
 		{
-			color='black';
-			cTransform=colorFilter(color);
-			lightOn=-1;
-			darkness=20;
+			color = 'black';
+			cTransform = colorFilter(color);
+			lightOn = -1;
+			darkness = 20;
 			gg.inLoc(this);
 			for each(var obj in units) 
 			{
-				obj.cTransform=cTransform;
+				obj.cTransform = cTransform;
 			}
 			for each(var obj in objs) 
 			{
-				obj.cTransform=cTransform;
+				obj.cTransform = cTransform;
 			}
 			for each(var obj in backobjs) 
 			{
@@ -2068,13 +2056,13 @@ package locdata
 		}
 		
 		// Spawn an enemy at the spawn point
-		public function enemySpawn(one:Boolean=false, getGG:Boolean=false, tipSp:String=null):void
+		public function enemySpawn(one:Boolean = false, getGG:Boolean = false, tipSp:String = null):void
 		{
-			if (kolEnSpawn<=0 || enspawn==null || enspawn.length == 0) return;
+			if (kolEnSpawn <= 0 || enspawn == null || enspawn.length == 0) return;
 			kolEnSpawn--;
-			if (!one) t_alarmsp=Math.floor(Math.random()*30);
-			var sp:Object=enspawn[Math.floor(Math.random()*enspawn.length)];
-			var un:Unit=createUnit((tipSp==null)?tipSpawn:tipSp,sp.x,sp.y,true,null,null,30);
+			if (!one) t_alarmsp = Math.floor(Math.random() * 30);
+			var sp:Object = enspawn[Math.floor(Math.random() * enspawn.length)];
+			var un:Unit = createUnit((tipSp == null)?tipSpawn:tipSp,sp.x,sp.y,true,null,null,30);
 			if (getGG) 
 			{
 				un.alarma(gg.X, gg.Y);
@@ -2088,18 +2076,18 @@ package locdata
 		// Spawn an enemy from a wave
 		public function waveSpawn(w:XML, n:int=0, spart:String=null):Unit 
 		{
-			if (w==null) return null;
+			if (w == null) return null;
 			if (enspawn.length == 0) return null;
-			var sp:Object=enspawn[n];
-			if (sp==null) sp=enspawn[Math.floor(Math.random()*enspawn.length)];
-			var un:Unit=createUnit(w.@id,sp.x,sp.y,true,w,w.@cid,30);
-			if (spart!=null) Emitter.emit(spart,this,sp.x,sp.y);
+			var sp:Object = enspawn[n];
+			if (sp == null) sp = enspawn[Math.floor(Math.random() * enspawn.length)];
+			var un:Unit = createUnit(w.@id, sp.x, sp.y, true, w, w.@cid, 30);
+			if (spart != null) Emitter.emit(spart, this, sp.x, sp.y);
 			if (un) 
 			{
-				un.trup=false;
-				un.isRes=false;
-				un.fraction=1;
-				un.wave=1;
+				un.trup = false;
+				un.isRes = false;
+				un.fraction = 1;
+				un.wave = 1;
 				un.alarma();
 				return un;
 			}
@@ -2109,10 +2097,10 @@ package locdata
 		// Cause an earthquake
 		public function earthQuake(n:int):void
 		{
-			if (quake<n) 
+			if (quake < n) 
 			{
-				quake=n;
-				GameSession.currentSession.quake(n,n/4);
+				quake = n;
+				GameSession.currentSession.quake(n, n / 4);
 			}
 		}
 		
@@ -2178,7 +2166,7 @@ package locdata
 			if (dist2 < 0) dist2 = lDist2;
 			if (nx == -10000) 
 			{
-				nx = gg.X+gg.storona * 12;
+				nx = gg.X + gg.storona * 12;
 				ny = gg.Y1 + gg.stayY * 0.247;
 			}
 			var n1:Number, n2:Number;
@@ -2194,77 +2182,77 @@ package locdata
 					var rasst = dx * dx + dy * dy;
 					if (rasst >= dist2 * dist2) 
 					{
-						if (retDark && roomTileArray[i][j].t_visi>0) 
+						if (retDark && roomTileArray[i][j].t_visi > 0) 
 						{
-							roomTileArray[i][j].t_visi-=0.025;
-							if (roomTileArray[i][j].t_visi<0) roomTileArray[i][j].t_visi=0;
-							grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
+							roomTileArray[i][j].t_visi -= 0.025;
+							if (roomTileArray[i][j].t_visi < 0) roomTileArray[i][j].t_visi = 0;
+							setLightingPixel32(i, j);
 						}
 						continue;
 					}
 					var rasst1:Number = Math.sqrt(rasst);
-					if (rasst1<=dist1) n2=1;
-					else n2=(dist2-rasst1)/(dist2-dist1);
+					if (rasst1 <= dist1) n2 = 1;
+					else n2 = (dist2 - rasst1) / (dist2 - dist1);
 					//видимость по линии
-					if (rasst<=dist2*dist2) 
+					if (rasst <= dist2 * dist2) 
 					{
-						var dex:Number,dey:Number,maxe:int;
-						if (Math.abs(dx)==Math.abs(dy)) dy++;
-						if (Math.abs(dx)>=Math.abs(dy)) //двигаемся по х
+						var dex:Number, dey:Number, maxe:int;
+						if (Math.abs(dx) == Math.abs(dy)) dy++;
+						if (Math.abs(dx) >= Math.abs(dy)) //двигаемся по х
 						{
-							if (dx>0) 
+							if (dx > 0) 
 							{
-								dex=Tile.tilePixelWidth;
-								dey=dy/dx*Tile.tilePixelHeight;
+								dex = Tile.tilePixelWidth;
+								dey = dy / dx * Tile.tilePixelHeight;
 							} 
 							else 
 							{
-								dex=-Tile.tilePixelWidth;
-								dey=-dy/dx*Tile.tilePixelHeight;
+								dex = -Tile.tilePixelWidth;
+								dey = -dy / dx * Tile.tilePixelHeight;
 							}
-							maxe=dx/dex;
+							maxe = dx / dex;
 						} 
 						else 
 						{
-							if (dy>0) 
+							if (dy > 0) 
 							{
-								dey=Tile.tilePixelHeight;
-								dex=dx/dy*Tile.tilePixelWidth;
+								dey = Tile.tilePixelHeight;
+								dex = dx / dy * Tile.tilePixelWidth;
 							} 
 							else 
 							{
-								dey=-Tile.tilePixelHeight;
-								dex=-dx/dy*Tile.tilePixelWidth;
+								dey = -Tile.tilePixelHeight;
+								dex = -dx / dy * Tile.tilePixelWidth;
 							}
-							maxe=dy/dey;
+							maxe = dy / dey;
 						}
 						for (var e:int = 1; e <= maxe; e++) 
 						{
-							var t:Tile=getAbsTile(nx+e*dex, ny+e*dey);
-							var opac:Number=t.opac;
-							if (opacWater>0 && t.water>0 && opacWater>opac) opac=opacWater;
-							if (opac>0) 
+							var t:Tile = getAbsTile(nx + e * dex, ny + e * dey);
+							var opac:Number = t.opac;
+							if (opacWater > 0 && t.water > 0 && opacWater > opac) opac = opacWater;
+							if (opac > 0) 
 							{
-								n2-=opac;
-								if (n2<=0) 
+								n2 -= opac;
+								if (n2 <= 0) 
 								{
-									n2=0;
+									n2 = 0;
 									break;
 								}
 							}
 						}
 					}
-					if (n2>1) n2=1;
-					if (n2>n1+0.01) 
+					if (n2 > 1) n2 = 1;
+					if (n2 > n1 + 0.01) 
 					{
-						roomTileArray[i][j].t_visi=n2;
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
+						roomTileArray[i][j].t_visi = n2;
+						setLightingPixel32(i, j);
 					} 
-					else if (retDark && n2<n1-0.01) 
+					else if (retDark && n2 < n1 - 0.01) 
 					{
-						roomTileArray[i][j].t_visi-=0.025;
-						if (roomTileArray[i][j].t_visi<n2) roomTileArray[i][j].t_visi=n2;
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
+						roomTileArray[i][j].t_visi -= 0.025;
+						if (roomTileArray[i][j].t_visi < n2) roomTileArray[i][j].t_visi = n2;
+						setLightingPixel32(i, j);
 					}
 				}
 			}
@@ -2280,14 +2268,18 @@ package locdata
 				{
 					if (roomTileArray[i][j].visi!=roomTileArray[i][j].t_visi) 
 					{
-						grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
+						setLightingPixel32(i, j);
 					}
 				}
 			}
 		}
 		
-		//дать опыт
-		public function takeXP(dxp:int, nx:Number=-1, ny:Number=-1, un:Boolean=false):void
+		private function setLightingPixel32(i:int, j:int):void //Cutting down on code re-use, not sure what this actually does yet.
+		{
+			grafon.lightBmp.setPixel32(i,j+1,Math.floor((1-roomTileArray[i][j].updVisi())*255)*0x1000000);
+		}
+
+		public function takeXP(dxp:int, nx:Number = -1, ny:Number = -1, un:Boolean = false):void //дать опыт
 		{
 			if (un) 
 			{
@@ -2298,69 +2290,30 @@ package locdata
 				} 
 				else 
 				{
-					summXp-=dxp;
+					summXp -= dxp;
 				}
-				level.summXp+=dxp;
+				level.summXp += dxp;
 			}
-			if (dxp>0) GameSession.currentSession.pers.expa(dxp,nx,ny);
+			if (dxp > 0) GameSession.currentSession.pers.expa(dxp, nx, ny);
 		}
 		
-		
-		//обработка за кадром
-		public function stepInvis():void
+		public function stepInvis():void //обработка за кадром
 		{
-			//for each (var un:Unit in units) if (!un.player) un.step();
-			//for each (var obj:Obj in objs) obj.step();
 			var numb:int = 0;
-			var obj:Pt=firstObj;
-			if (warning>0) warning--;
+			var obj:Pt = firstObj;
+			if (warning > 0) warning--;
 			while (obj) 
 			{
-				nextObj=obj.nobj;
+				nextObj = obj.nobj;
 				try 
 				{
 					obj.step();
-				} catch(err) 
-				{
-					GameSession.currentSession.showError(err, obj.err());
-				}
-				obj=nextObj;
-				numb++;
-				if (numb>10000) 
-				{
-					trace('alarma');
-					break;
-				}
-			}
-			if (isRebuild) rebuild();
-			if (isRecalc) recalcWater();
-			if (t_gwall==1) gwalls();
-			if (t_gwall>0) t_gwall--;
-		}
-		
-		public function step():void
-		{
-			gg.step(); 
-			if (prob) prob.step();
-			// Iterate through a chain of objects
-			var numb:int = 0;
-			var obj:Pt=firstObj;
-			if (warning>0) warning--;
-			while (obj) 
-			{
-				nextObj=obj.nobj;
-				try 
-				{
-					obj.step();
-					// Determine the object under the cursor
-					if ((obj is Obj) && (obj as Obj).onCursor>0 && obj!=gg && (celObj==null || (obj as Obj).onCursor>=celObj.onCursor)) celObj=(obj as Obj);
 				} 
 				catch(err) 
 				{
 					GameSession.currentSession.showError(err, obj.err());
 				}
-				obj=nextObj;
-				// Check for infinite loop prevention
+				obj = nextObj;
 				numb++;
 				if (numb > 10000) 
 				{
@@ -2368,45 +2321,73 @@ package locdata
 					break;
 				}
 			}
-			if (unitCoord && unitCoord.step) unitCoord.step();
-			if (celObj && celObj.onCursor<=0) celObj=null;
-			if (black) 
-			{
-				if (gg.dx+gg.osndx>0.5 || gg.dy+gg.osndy>0.5 || gg.dx+gg.osndx<-0.5 || gg.dy+gg.osndy<-0.5 || isRelight || isRebuild) lighting();
-				else if (relight_t>0) lighting2();
-			}
-			isRelight=false;
-			getDist();
-			// If needed, rebuild the room
 			if (isRebuild) rebuild();
 			if (isRecalc) recalcWater();
-			if (t_gwall==1) gwalls();
-			if (t_gwall>0) t_gwall--;
-			// Show/hide transition markers based on player position
-			if (sign_vis && GameSession.currentSession.possiblyOut() ||  !sign_vis && !GameSession.currentSession.possiblyOut()) showSign(!sign_vis);
-			// Handle game alarms and enemy spawns
-			if (t_alarm>0) 
+			if (t_gwall == 1) gwalls();
+			if (t_gwall > 0) t_gwall--;
+		}
+		
+		public function step():void
+		{
+			gg.step(); 
+			if (prob) prob.step();
+			var numb:int = 0; // Iterate through a chain of objects
+			var obj:Pt = firstObj;
+			if (warning > 0) warning--;
+			while (obj) 
+			{
+				nextObj = obj.nobj;
+				try 
+				{
+					obj.step();
+					if ((obj is Obj) && (obj as Obj).onCursor > 0 && obj != gg && (celObj == null || (obj as Obj).onCursor >= celObj.onCursor)) celObj = (obj as Obj); // Determine the object under the cursor
+				} 
+				catch(err) 
+				{
+					GameSession.currentSession.showError(err, obj.err());
+				}
+				obj = nextObj;
+				numb++; // Check for infinite loop prevention
+				if (numb > 10000) 
+				{
+					trace('alarma');
+					break;
+				}
+			}
+			if (unitCoord && unitCoord.step) unitCoord.step();
+			if (celObj && celObj.onCursor <= 0) celObj = null;
+			if (black) 
+			{
+				if (gg.dx + gg.osndx > 0.5 || gg.dy + gg.osndy > 0.5 || gg.dx + gg.osndx < -0.5 || gg.dy + gg.osndy < -0.5 || isRelight || isRebuild) lighting();
+				else if (relight_t > 0) lighting2();
+			}
+			isRelight = false;
+			getDist();
+			if (isRebuild) rebuild(); // If needed, rebuild the room
+			if (isRecalc) recalcWater();
+			if (t_gwall == 1) gwalls();
+			if (t_gwall > 0) t_gwall--;
+			if (sign_vis && GameSession.currentSession.possiblyOut() || !sign_vis && !GameSession.currentSession.possiblyOut()) showSign(!sign_vis); // Show/hide transition markers based on player position
+			if (t_alarm > 0) // Handle game alarms and enemy spawns
 			{
 				t_alarm--;
 			}
-			if (t_alarmsp>0) 
+			if (t_alarmsp > 0) 
 			{
 				t_alarmsp--;
-				if (t_alarmsp==0) enemySpawn();
+				if (t_alarmsp == 0) enemySpawn();
 			}
-			// Handle screen shaking (earthquake effect)
-			if (quake>0) quake--;
-			if (trus>0) GameSession.currentSession.quake(trus/2,trus);
+			if (quake > 0) quake--; // Handle screen shaking (earthquake effect)
+			if (trus > 0) GameSession.currentSession.quake(trus / 2, trus);
 		}
 		
-		// Kill all enemies and open all containers
-		public function getAll():int 
+		public function getAll():int //Kill all enemies and open all containers
 		{
-			GameSession.currentSession.summxp=0;
-			GameSession.currentSession.pers.expa(unXp*9);
+			GameSession.currentSession.summxp = 0;
+			GameSession.currentSession.pers.expa(unXp * 9);
 			for each (var un:Unit in units) 
 			{
-				if (un.fraction!=Unit.F_PLAYER && un.xp>0) un.damage(100000,Unit.D_INSIDE);
+				if (un.fraction != Unit.F_PLAYER && un.xp > 0) un.damage(100000, Unit.D_INSIDE);
 			}
 			for each (var box:Box in objs) 
 			{
@@ -2423,9 +2404,7 @@ package locdata
 			}
 		}
 		
-		
-		//дистанция между гг и активным объектом
-		private function getDist():void
+		private function getDist():void //дистанция между гг и активным объектом
 		{
 			if (getTile(Math.round(GameSession.currentSession.celX/Tile.tilePixelWidth),Math.round(GameSession.currentSession.celY/Tile.tilePixelHeight)).visi<0.1) celObj=null;
 			if (celObj) 
@@ -2435,9 +2414,7 @@ package locdata
 			else celDist = -1;
 		}
 		
-		
-		//показать/скрыть указатели перехода
-		private function showSign(n:Boolean):void
+		private function showSign(n:Boolean):void //показать/скрыть указатели перехода
 		{
 			for each (var s in signposts) s.visible = n;
 			sign_vis = n;
@@ -2454,6 +2431,7 @@ package locdata
 				}
 			}
 		}
+
 		public function remGrenade(g:Bullet):void
 		{
 			if (grenades[0] == g) grenades[0] = null;
@@ -2466,8 +2444,7 @@ package locdata
 			}
 		}
 		
-		// Save all objects
-		public function saveObjs(arr:Array):void
+		public function saveObjs(arr:Array):void // Save all objects
 		{
 			for each (var obj:Obj in saves) 
 			{
