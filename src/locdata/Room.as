@@ -231,10 +231,10 @@ package locdata
 		public function buildLoc(nroom:XML):void
 		{
 			// Create an array of tiles
-			for (var i = 0; i < roomWidth; i++) 
+			for (var i:int = 0; i < roomWidth; i++) 
 			{
 				roomTileArray[i] = [];
-				for (var j = 0; j < roomHeight; j++) 
+				for (var j:int = 0; j < roomHeight; j++) 
 				{
 					roomTileArray[i][j] = new Tile(i,j);
 				}
@@ -1651,28 +1651,28 @@ package locdata
 				tile.kont4 = insKontur(a5, a3, a4);
 				if (b != '') 
 				{
-					if (!a1) a1=uslPontur(tx, ty-1);
-					if (!a3) a3=uslPontur(tx+1,ty);
-					if (!a5) a5=uslPontur(tx, ty+1);
-					if (!a7) a7=uslPontur(tx-1,ty);
-					tile.pont1=insKontur(a1,a7,a0);
-					tile.pont2=insKontur(a1,a3,a2);
-					tile.pont3=insKontur(a5,a7,a6);
-					tile.pont4=insKontur(a5,a3,a4);
+					if (!a1) a1=uslPontur(tx, ty - 1);
+					if (!a3) a3=uslPontur(tx + 1, ty);
+					if (!a5) a5=uslPontur(tx, ty + 1);
+					if (!a7) a7=uslPontur(tx - 1, ty);
+					tile.pont1=insKontur(a1, a7, a0);
+					tile.pont2=insKontur(a1, a3, a2);
+					tile.pont3=insKontur(a5, a7, a6);
+					tile.pont4=insKontur(a5, a3, a4);
 				}
 			} 
 			else 
 			{
 				var b:String = tile.tileRearTexture;
 				var vse:Boolean = (backwall == 'sky');
-				a0 = uslBontur(tx-1,ty-1, b, vse);
-				a1 = uslBontur(tx,  ty-1, b, vse);
-				a2 = uslBontur(tx+1,ty-1, b, vse);
-				a3 = uslBontur(tx+1,ty, b, vse);
-				a4 = uslBontur(tx+1,ty+1, b, vse);
-				a5 = uslBontur(tx,  ty+1,b, vse);
-				a6 = uslBontur(tx-1,ty+1,b, vse);
-				a7 = uslBontur(tx-1,ty,b, vse);
+				a0 = uslBontur(tx - 1,ty - 1, b, vse);
+				a1 = uslBontur(tx, ty - 1, b, vse);
+				a2 = uslBontur(tx + 1, ty - 1, b, vse);
+				a3 = uslBontur(tx + 1, ty, b, vse);
+				a4 = uslBontur(tx + 1, ty + 1, b, vse);
+				a5 = uslBontur(tx, ty + 1, b, vse);
+				a6 = uslBontur(tx - 1, ty + 1,b, vse);
+				a7 = uslBontur(tx - 1, ty, b, vse);
 				tile.pont1 = insKontur(a1, a7, a0);
 				tile.pont2 = insKontur(a1, a3, a2);
 				tile.pont3 = insKontur(a5, a7, a6);
@@ -1682,7 +1682,7 @@ package locdata
 		
 		private function insKontur(a:Boolean, b:Boolean, c:Boolean):int 
 		{
-			if (a && b) return c?0:1;
+			if (a && b) return c ? 0:1;
 			else if (!a && b) return 2;
 			else if (a && !b) return 3;
 			else return 4;
@@ -1691,7 +1691,7 @@ package locdata
 		// Front contours
 		private function uslKontur(nx:int,ny:int):Boolean 
 		{
-			if (nx<0 || nx>=roomWidth || ny<0 || ny>=roomHeight) return true;
+			if (nx < 0 || nx >= roomWidth || ny < 0 || ny >= roomHeight) return true;
 			return (roomTileArray[nx][ny].phis == 1 || roomTileArray[nx][ny].door != null);
 		}
 
@@ -1699,14 +1699,14 @@ package locdata
 		private function uslPontur(nx:int,ny:int):Boolean 
 		{
 			if (nx < 0 || nx >= roomWidth || ny<0 || ny >= roomHeight) return true;
-			return (roomTileArray[nx][ny].back!='' || roomTileArray[nx][ny].shelf >0 );
+			return (roomTileArray[nx][ny].tileRearTexture!='' || roomTileArray[nx][ny].shelf >0 );
 		}
 
 		// Back contours without a wall
 		private function uslBontur(nx:int,ny:int,b:String='',vse:Boolean=false):Boolean 
 		{
 			if (nx<0 || nx >= roomWidth || ny < 0 || ny >= roomHeight) return true;
-			return (roomTileArray[nx][ny].back == b || vse && roomTileArray[nx][ny].back != '' || roomTileArray[nx][ny].phis == 1 || roomTileArray[nx][ny].shelf > 0);
+			return (roomTileArray[nx][ny].tileRearTexture == b || vse && roomTileArray[nx][ny].tileRearTexture != '' || roomTileArray[nx][ny].phis == 1 || roomTileArray[nx][ny].shelf > 0);
 		}
 		
 		// Tile damage

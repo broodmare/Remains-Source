@@ -535,18 +535,13 @@
 			//####################
 			GameSession.currentSession.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
 			try
-			{
-				var tile:Tile; 					//Define a tile as an object to hold the current tile's properties in the grid.
-				var tileSprite:MovieClip; 		//Define a tileSprite as an MovieClip to hold the current tile's sprite.
-
-				for (var k:int = 0; k < room.roomWidth; k++) //for each tile in theroom's horizontal rows...
+			{					
+				for (var k:int = 0; k < room.roomWidth; k++) //for each tile in the room's horizontal rows...
 				{
 					for (var l:int = 0; l < room.roomHeight; l++) //for each tile in the room's vertical columns...
 					{
 
-						tile = room.getTile(k, l); //Set the tile to modify as the current tile in the grid.
-
-						
+						var tile:Tile = room.getTile(k, l); //Set the tile to modify as the current tile in the grid.
 						room.tileKontur(k, l, tile);
 
 						if (tileArray[tile.tileTexture]) tileArray[tile.tileTexture].used = true;
@@ -557,6 +552,7 @@
 						{
 							var spriteWidth:int = k * tilepixelwidth;
 							var spriteHeight:int = l * tilepixelheight;
+							var tileSprite:MovieClip;
 
 							if (tile.vid > 0) 
 							{				
