@@ -880,39 +880,36 @@ package locdata
 //				*** Functions ***
 //==============================================================================================================================		
 		
-		//enter the level
-		public function enterLevel(first:Boolean = false, coord:String = null):void
+		
+		public function enterLevel(first:Boolean = false, coord:String = null):void //enter the level
 		{
 			trace('Level.as/enterLevel - Entering level...');
 
 			levelTemplate.visited = true;
+			locZ = 0;
+			prob = '';
+
 			if (coord != null) 
 			{
-
 				var narr:Array = coord.split(':');
-
-				if (narr.length >= 1) locX = narr[0]; else locX = 0;
-				if (narr.length >= 2) locY = narr[1]; else locY = 0;
-				locZ = 0;
-				prob = '';
-				activateRoom();
-				setGGToSpawnPoint();
+				locX = narr.length >= 1 ? narr[0] : 0;
+				locY = narr.length >= 2 ? narr[1] : 0;
 			} 
 			else if (currentCP && !first) 
 			{
 				GameSession.currentSession.pers.currentCP = currentCP;
 				gotoCheckPoint();
 				currentCP.activate();
+				return; // Avoid calling activateRoom and setGGToSpawnPoint.
 			} 
 			else 
 			{
 				locX = levelTemplate.begLocX;
 				locY = levelTemplate.begLocY;
-				locZ = 0;
-				prob = '';
-				activateRoom();
-				setGGToSpawnPoint();
 			}
+
+			activateRoom();
+			setGGToSpawnPoint();
 		}
 		
 		public function saveObjs(arr:Array):void
@@ -931,8 +928,7 @@ package locdata
 			}
 		}
 		
-		//Move the character to the spawn point
-		public function setGGToSpawnPoint():void
+		public function setGGToSpawnPoint():void //Move the character to the spawn point
 		{
 			if (room == null)
 			{

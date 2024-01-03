@@ -342,9 +342,8 @@ package
 			return string.replace(/\r\n/g, '<br>');
 		}
 		
-
-		// String representation of game time
-		public static function gameTime(n:Number):String 
+		//TODO: See how this is related to 'Game.as/gameTime'.
+		public static function gameTime(n:Number):String // String representation of game time
 		{
 			var sec:int = Math.round(n / 1000);
 			var h:int = Math.floor(sec / 3600);
@@ -354,10 +353,6 @@ package
 			return h.toString() + ':' + ((m < 10) ? '0':'') + m + ':' + ((s < 10)?'0':'') + s;
 		}
 		
-
-		
-		
-
 		public static function rainbow(s:String):String 
 		{
 			var n:int = 0;
@@ -370,11 +365,9 @@ package
 			}
 			return res;
 		}
-		
 
-		public static function getVis(id:String, def:Class = null):MovieClip 
+		public static function getVis(id:String, def:Class = null):MovieClip
 		{
-			trace('Res/getVis() - getVis Executing...');
 			var r:Class;
 			try 
 			{
@@ -387,7 +380,6 @@ package
 			if (r) return new r()
 			else return null;
 		}
-		
 
 		public static function getClass(id1:String, id2:String = null, def:Class = null):Class 
 		{
@@ -413,8 +405,5 @@ package
 			}
 			return r;
 		}
-		
-
 	}
-	
 }

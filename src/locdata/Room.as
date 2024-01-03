@@ -44,7 +44,6 @@ package locdata
 		public var black:Boolean = true;	// Fog of war
 		
 		// Objects
-		public var grafon:Grafon;
 		public var roomTileArray:Array;	// Room tile array
 		public var otstoy:Tile;			// Empty tile
 		public var units:Array;			// Array of Units
@@ -183,7 +182,7 @@ package locdata
 
 		public function Room(l:Level, nroom:XML, rnd:Boolean, roomParamObj:Object = null) 
 		{
-			trace('Room.as/Room() - Building room: "' + nroom.@name + '" and adding it to the level room array.');
+			//trace('Room.as/Room() - Building room: "' + nroom.@name + '" and adding it to the level room array.');
 			try
 			{
 				level = l;
@@ -234,7 +233,7 @@ package locdata
 				trace('Room.as/Room() - ERROR while Building room: "' + nroom.@name + '".');
 			}
 			
-			trace('Room.as/Room() - Room: "' + nroom.@name + '" finished.');
+			//trace('Room.as/Room() - Room: "' + nroom.@name + '" finished.');
 		}
 
 		public function buildLoc(nroom:XML):void // Build according to the xml map
@@ -1729,7 +1728,7 @@ package locdata
 						{
 
 						}
-						if (roomActive) grafon.tileDie(t, tip);
+						if (roomActive) GameSession.currentSession.grafon.tileDie(t, tip);
 					}
 				} 
 				else if (t.phis >= 1)  // If it's not destroyed but damage was dealt
@@ -1763,7 +1762,7 @@ package locdata
 			if (t.phis >= 1) 
 			{
 				t.die();
-				if (roomActive) grafon.tileDie(t, 4);
+				if (roomActive) GameSession.currentSession.grafon.tileDie(t, 4);
 			}
 		}
 		
@@ -1795,7 +1794,7 @@ package locdata
 					if ((tb.phis == 1 || tb.water == 1) && (tr.phis == 1 || tr.water == 1) && (tl.phis == 1 || tl.water == 1) && (tl.water == 1 || tr.water == 1 || tt.water == 1)) 
 					{
 						t.water = 1;
-						if (roomActive) grafon.drawWater(t);
+						if (roomActive) GameSession.currentSession.grafon.drawWater(t);
 					} 
 					else 
 					{
@@ -1803,21 +1802,21 @@ package locdata
 						{
 							tl.water = 0;
 							recalcTiles.push(tl);
-							if (roomActive) grafon.drawWater(tl);
+							if (roomActive) GameSession.currentSession.grafon.drawWater(tl);
 							isRecalc = true;
 						}
 						if (tr.water > 0 && t.phis != 1) 
 						{
 							tr.water = 0;
 							recalcTiles.push(tr);
-							if (roomActive) grafon.drawWater(tr);
+							if (roomActive) GameSession.currentSession.grafon.drawWater(tr);
 							isRecalc = true;
 						}
 						if (tt.water > 0 && t.phis != 1) 
 						{
 							tt.water = 0;
 							recalcTiles.push(tt);
-							if (roomActive) grafon.drawWater(tt);
+							if (roomActive) GameSession.currentSession.grafon.drawWater(tt);
 							isRecalc = true;
 						}
 					}
@@ -2256,7 +2255,7 @@ package locdata
 		
 		private function setLightingPixel32(i:int, j:int):void //Cutting down on code re-use, not sure what this actually does yet.
 		{
-			grafon.lightBmp.setPixel32(i, j + 1, Math.floor((1 - roomTileArray[i][j].updVisi()) * 255) * 0x1000000);
+			GameSession.currentSession.grafon.lightBmp.setPixel32(i, j + 1, Math.floor((1 - roomTileArray[i][j].updVisi()) * 255) * 0x1000000);
 		}
 
 		public function takeXP(dxp:int, nx:Number = -1, ny:Number = -1, un:Boolean = false):void //дать опыт

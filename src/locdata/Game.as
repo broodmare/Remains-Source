@@ -12,7 +12,6 @@ package locdata
 	//TODO - Calling entire script file multiple times, fix that later.
 	public class Game 
 	{
-		
 		public var levelArray:Array;
 		public var probs:Array;
 		public var vendors:Array;
@@ -38,7 +37,6 @@ package locdata
 		public var mReturn:Boolean 		= true;	// Can return to the base camp
 		
 		var objs:Array;
-		
 
 		public function Game() 
 		{
@@ -133,7 +131,7 @@ package locdata
 			return obj;
 		}
 		
-		public function init(loadObj:Object = null, opt:Object = null)
+		public function init(loadObj:Object = null, opt:Object = null):void
 		{
 			if (loadObj) 
 			{
@@ -202,11 +200,11 @@ package locdata
 				curLevelID = loadObj.level;
 				if (curLevelID != 'rbl') missionId = loadObj.level;
 			} 
-			else if (opt && opt.skipTraining) 	// Skip training
+			else if (opt && opt.skipTraining) // Skip training
 			{		
 				triggers['dial_dialCalam2'] = 1;
 			} 
-			else 									// Do not skip training
+			else // Do not skip training
 			{									
 				curLevelID = 'begin';
 			}
@@ -243,8 +241,7 @@ package locdata
 			Level.locN += 5;
 			if (GameSession.currentSession.level && objs) GameSession.currentSession.level.saveObjs(objs);
 
-			///Check if the game should transition to a random encounter
-			Encounter();
+			Encounter(); //Check if the game should transition to a random encounter
 
 			curLevel = levelArray[curLevelID];
 			if (curLevel == null) curLevel = levelArray['rbl'];
@@ -281,10 +278,10 @@ package locdata
 					trace(curLevel.tip == 'base')
 				}
 			}
-			GameSession.currentSession.gg.remEffect('potion_fly');
 
+			GameSession.currentSession.gg.remEffect('potion_fly');
 			GameSession.currentSession.gui.messText('', Res.txt('map', curLevel.id) + (curLevel.rnd?(' - ' + (curLevel.landStage + 1)):''), GameSession.currentSession.gg.Y < 300);
-			
+
 			if (!curLevel.rnd) curLevel.visited = true;
 			mReturn = (triggers['noreturn'] <= 0);
 			if (curLevel.upStage) 
@@ -293,10 +290,8 @@ package locdata
 			}
 		}
 		
-		// Redirect to another room
-		public function Encounter():void
+		public function Encounter():void // Redirect to another room
 		{
-
 			switch(curLevelID)
 			{
 				case 'random_canter':
@@ -318,17 +313,15 @@ package locdata
 					trace('Game.as/Encounter() - curLevelID: "' + curLevelID + '" is not an encounter, returning.');
 					break;
 			}
-}
+		}
 		
-		/*Transition to a new room
-			gotoLevel(newLand:String)
-			GameSession.currentSession.exitLevel();
-			enterCurrentLevel();
-			GameSession.currentSession.activateLevel(curLevel.level);
-			GameSession.currentSession.level.enterLevel(first);
-			activateRoom();
-		*/
-		
+		//Transition to a new room
+		//	Game.as/ 		gotoLevel(newLand:String)
+		//	GameSession.as/ GameSession.currentSession.exitLevel();
+		//	Game.as/ 		enterCurrentLevel();
+		//	GameSession.as/ GameSession.currentSession.activateLevel(curLevel.level);
+		//	GameSession.as/ GameSession.currentSession.level.enterLevel(first);
+		//	Game.as/ 		activateRoom();
 		public function gotoLevel(newLevel:String, coord:String = null, fast:Boolean = false):void
 		{
 			trace('Game.as/gotoLevel() - Moving to a new level: "' + newLevel + '."');
@@ -371,9 +364,9 @@ package locdata
 		public function gotoNextLevel():void
 		{
 			trace('Game.as/gotoNextLevel() - Moving to a next level: "' + missionId + '."');
-			GameSession.currentSession.pers.prevCPCode 	= null;
-			GameSession.currentSession.pers.currentCPCode 	= null;
-			curLevel.level.currentCP 		= null;
+			GameSession.currentSession.pers.prevCPCode = null;
+			GameSession.currentSession.pers.currentCPCode = null;
+			curLevel.level.currentCP = null;
 			crea = true;
 			curLevel.level.refill();
 			gotoLevel(missionId);
@@ -385,13 +378,9 @@ package locdata
 			curLevel.upStage = true;
 		}
 		
-		// Check the possibility of traveling through the map
-		public function checkTravel(lid):Boolean 
+		public function checkTravel(lid):Boolean // Check the possibility of traveling through the map
 		{
-			// Check based on curLevelID
 			if (this.curLevelID == 'grave') return false;
-
-			// Use a switch statement for different values of triggers['fin']
 			switch(triggers['fin'])
 			{
 				case 0:
@@ -420,19 +409,18 @@ package locdata
 		
 		public function addQuest(id:String, loadObj:Object=null, noVis:Boolean=false, snd:Boolean=true, showDial:Boolean=true):Quest 
 		{
-			// Check if the quest exists, if so...
-			if (quests[id]) 
+			
+			if (quests[id]) // Check if the quest exists
 			{
-				// If it is not active, make it active
-				if (quests[id].state==0) 
+				
+				if (quests[id].state == 0) // If it is not active, make it active
 				{
-					quests[id].state=1;
+					quests[id].state = 1;
 					GameSession.currentSession.gui.infoText('addTask',quests[id].objectName);
 					Snd.ps('quest');
-					// Check stages, if all are completed, close it immediately
-					quests[id].isClosed();
+					quests[id].isClosed(); // Check stages, if all are completed, close it immediately
 					quests[id].deposit();
-					if (quests[id].state==2) GameSession.currentSession.gui.infoText('doneTask',quests[id].objectName);
+					if (quests[id].state == 2) GameSession.currentSession.gui.infoText('doneTask',quests[id].objectName);
 				}
 				return quests[id];
 			}
@@ -465,7 +453,7 @@ package locdata
 			var q:Quest = quests[id];
 			if (q == null) 
 			{
-				q=addQuest(id, null, true);
+				q = addQuest(id, null, true);
 			}
 			if (q == null || q.state == 2) 
 			{
@@ -484,17 +472,16 @@ package locdata
 					}
 				}
 			} 
-			catch(err) 
+			catch(err:Error) 
 			{
-
+				trace('Game.as/showQuest() - ERROR.');
 			}
 		}
 		
-		public function closeQuest(id:String, sid:String=null):void
+		public function closeQuest(id:String, sid:String = null):void
 		{
-			var q:Quest=quests[id];
-			// If the quest stage is completed, but the quest is not taken, add it as inactive
-			if (q == null) 
+			var q:Quest = quests[id];
+			if (q == null) // If the quest stage is completed, but the quest is not taken, add it as inactive
 			{
 				q = addQuest(id, null, true);
 			}
@@ -550,8 +537,7 @@ package locdata
 			triggers[id] = n;
 		}
 		
-		// Determine how many items were generated
-		public function getLimit(id:String):int 
+		public function getLimit(id:String):int // Determine how many items were generated
 		{
 			if (limits[id]) return limits[id];
 			if (triggers[id]) 
@@ -563,8 +549,7 @@ package locdata
 			return 0;
 		}
 		
-		// Increase the limit by 1, stage=1 - during generation, stage=2 - when taken
-		public function addLimit(id:String, etap:int):void
+		public function addLimit(id:String, etap:int):void // Increase the limit by 1, stage=1 - during generation, stage=2 - when taken
 		{
 			if (etap == 1) 
 			{
@@ -580,11 +565,9 @@ package locdata
 		
 		public function runScript(scr:String, own:Obj = null):Boolean 
 		{
-			// Retrieve the entire XML file for scripts
-			var scriptsXML:XML = XmlBook.getXML("scripts");
-
-			// Navigate to the correct XMLList of script elements and filter by ID
-			var xmlList:XMLList = scriptsXML.scr.(@id == scr);
+			//TODO: Stop copying the entire XML.
+			var scriptsXML:XML = XmlBook.getXML("scripts"); // Retrieve the entire XML file for scripts
+			var xmlList:XMLList = scriptsXML.scr.(@id == scr); // Navigate to the correct XMLList of script elements and filter by ID
 
 			if (xmlList.length()) 
 			{
@@ -596,18 +579,12 @@ package locdata
 			return false;
 		}
 		
-		// Create a script from gamedata
-		public function getScript(scr:String, own:Obj = null):Script 
+		public function getScript(scr:String, own:Obj = null):Script // Create a script from gamedata
 		{
+    		var scriptsXML:XML = XmlBook.getXML("scripts"); 	// Retrieve the entire XML file for scripts
+    		var xmlList:XMLList = scriptsXML.scr.(@id == scr); 	// Navigate to the correct XMLList of script elements and filter by ID
 
-			// Retrieve the entire XML file for scripts
-    		var scriptsXML:XML = XmlBook.getXML("scripts");
-
-			// Navigate to the correct XMLList of script elements and filter by ID
-    		var xmlList:XMLList = scriptsXML.scr.(@id == scr);
-
-			//If a script is found by that name, do stuff, otherwise return null.
-			if (xmlList.length()) 
+			if (xmlList.length()) //If a script is found by that name, do stuff, otherwise return null.
 			{
 				var scriptXML:XML = xmlList[0];
 				return new Script(scriptXML, (own == null) ? GameSession.currentSession.level : own.room.level, own);
@@ -615,8 +592,7 @@ package locdata
 			return null;
 		}
 		
-		// String representation of game time
-		public function gameTime(n:Number=0):String 
+		public function gameTime(n:Number = 0):String // String representation of game time
 		{
 			if (n == 0) 
 			{
@@ -626,7 +602,5 @@ package locdata
 			}
 			return Res.gameTime(n);
 		}
-		
 	}
-	
 }

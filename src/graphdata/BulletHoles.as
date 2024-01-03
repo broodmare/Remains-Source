@@ -172,7 +172,7 @@ package graphdata
 			{
 				var erase:MovieClip = new erC();
 				if (erase.totalFrames > 1) erase.gotoAndStop(Math.floor(Math.random() * erase.totalFrames + 1));
-				currentRoom.grafon.frontBmp.draw(erase, backgroundMatrix, null, 'erase', null, true);
+				GameSession.currentSession.grafon.frontBmp.draw(erase, backgroundMatrix, null, 'erase', null, true);
 			}
 			if (drD)
 			{
@@ -189,11 +189,11 @@ package graphdata
 				if (ny - dyry / 2 < 0) rdy = -(ny - dyry / 2);
 				var rect:Rectangle  =  new Rectangle(nx - dyrx / 2 + rdx, ny - dyry / 2 + rdy, nx + dyrx / 2 + rdx, ny + dyry / 2 + rdy);
 				var pt:Point  =  new Point(0, 0);
-				res2.copyChannel(currentRoom.grafon.frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
-				currentRoom.grafon.frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal') ? currentRoom.cTransform:null, bl, null, true);
+				res2.copyChannel(GameSession.currentSession.grafon.frontBmp, rect, pt, BitmapDataChannel.ALPHA, BitmapDataChannel.GREEN);
+				GameSession.currentSession.grafon.frontBmp.draw(nagar, backgroundMatrix, (bl == 'normal') ? currentRoom.cTransform:null, bl, null, true);
 				rect  =  new Rectangle(0, 0, dyrx, dyry);
 				pt = new Point(nx - dyrx / 2 + rdx, ny - dyry / 2 + rdy);
-				currentRoom.grafon.frontBmp.copyChannel(res2, rect, pt, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
+				GameSession.currentSession.grafon.frontBmp.copyChannel(res2, rect, pt, BitmapDataChannel.GREEN, BitmapDataChannel.ALPHA);
 			}
 		}
     }

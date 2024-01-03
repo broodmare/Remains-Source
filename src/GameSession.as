@@ -207,11 +207,19 @@ package
 
 			trace ('GameSession.as/continueLoadingWorld() - Calling setLoadScreen().');
 			setLoadScreen();
-			vgui.visible=vpip.visible=vconsol.visible=skybox.visible=mainCanvas.visible=vsats.visible=loadingScreen.visible=vblack.visible=verror.visible=vscene.visible = false;
+			vgui.visible = false;
+			vpip.visible = false;
+			vconsol.visible = false;
+			skybox.visible = false;
+			mainCanvas.visible = false;
+			vsats.visible = false;
+			loadingScreen.visible = false;
+			vblack.visible = false;
+			verror.visible = false;
+			vscene.visible = false;
 			vscene.stop();
 			
 			trace ('GameSession.as/continueLoadingWorld() - Adding gameContainer children...');
-
 			gameContainer.addChild(loadingScreen);
 			gameContainer.addChild(skybox);
 			gameContainer.addChild(mainCanvas);
@@ -239,8 +247,8 @@ package
 
 			trace('GameSession.as/continueLoadingWorld() - World constructor stage 2 finished.');
 			load_log += 'Stage 2 Ok\n';
-			//FPS counter
-			d1 = d2 = getTimer();
+			
+			d1 = d2 = getTimer(); //FPS counter
 			
 		}
 
@@ -472,26 +480,23 @@ package
 				else nload = 0;
 				saveObj.clear();
 			}
-			
-			// create GUI
+						
 			trace('GameSession.as/startNewGame() - Creating new GUI.');
-			gui = new GUI(vgui);
+			gui = new GUI(vgui); // create GUI
 			gui.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
-
-			// switch PipBuck to normal mode
+			
 			trace('GameSession.as/startNewGame() - Calling pip.toNormalMode().');
-			pip.toNormalMode();
+			pip.toNormalMode(); // switch PipBuck to normal mode
 			pip.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
 
-			// create SATS interface
 			trace('GameSession.as/startNewGame() - Creating new SATS.');
-			sats = new Sats(vsats);
+			sats = new Sats(vsats); // create SATS interface
 			
-			// Load save data from file or slot.
-			if (nload == 99) 
+			
+			if (nload == 99) // Load save data from file or slot.
 			{
 				trace('GameSession.as/startNewGame() - Loading data.');
-				data = loaddata;	// loaded from file
+				data = loaddata; // loaded from file
 			} 
 			else 
 			{
@@ -499,8 +504,7 @@ package
 				data = saveArr[nload].data; // loaded from slot
 			}
 
-			// Start new game
-			if (newGame)	
+			if (newGame) // Start new game
 			{
 				trace('GameSession.as/startNewGame() - Calling "game.init()".');
 				game.init(null, opt); 
@@ -516,19 +520,19 @@ package
 		// stage 1 - create character and inventory
 		public function newGame1():void
 		{
-			trace('GameSession.as/newGame1() - newGame1 is executing.');
+			trace('GameSession.as/newGame1() - Beginning STAGE 1 of a starting a new game. 1/9');
 
 			if (!newGame) appearanceWindow.load(data.app);
 			if (data.hardInv) Settings.hardInv = true; else Settings.hardInv = false;
 			if (opt && opt.hardinv) Settings.hardInv = true;
 
 			// create character
-			trace('GameSession.as/newGame1() - Creating Pers');
+			trace('GameSession.as/newGame1() - Creating Pers. 2/9');
 			pers = new Pers(data.pers, opt);
 			if (newGame) pers.persName=newName;
 
 			// create player character
-			trace('GameSession.as/newGame1() - Creating Player.');
+			trace('GameSession.as/newGame1() - Creating Player. 3/9');
 			try
 			{
 				gg = new UnitPlayer();
@@ -541,7 +545,7 @@ package
 				showError(err);
 			}
 
-			trace('GameSession.as/newGame1() - Setting up player SATS and GUI.');
+			trace('GameSession.as/newGame1() - Setting up player SATS and GUI. 4/9');
 			try
 			{
 				sats.gg = gg;
@@ -555,13 +559,13 @@ package
 
 
 			// create inventory
-			trace('GameSession.as/newGame1() - Creating Inventory');
+			trace('GameSession.as/newGame1() - Creating Inventory. 5/9');
 			invent = new Invent(gg, data.invent, opt);
 
-			trace('GameSession.as/newGame1() - Creating Stand');
+			trace('GameSession.as/newGame1() - Creating Stand. 6/9');
 			stand = new Stand(vstand,invent);
 
-			trace('GameSession.as/newGame1() - Attaching inventory to player');
+			trace('GameSession.as/newGame1() - Attaching inventory to player. 7/9');
 			try
 			{
 				gg.attach();
@@ -574,15 +578,16 @@ package
 			
 
 			// auto save slot number
-			trace('GameSession.as/newGame1() - Autosave setup');
+			trace('GameSession.as/newGame1() - Autosave setup. 8/9');
 			if (!newGame && data.n != null) 
 			{
 				autoSaveN = data.n;
 			}
 			Unit.txtMiss = Res.txt('gui', 'miss');
 			
-			trace('GameSession.as/newGame1() - waitLoadClick()');
-			waitLoadClick();
+			trace('GameSession.as/newGame1() - STAGE 1 of starting a new game complete. Waiting on player input. 9/9');
+			
+			waitLoadClick(); //TODO: Why are we waiting on player input to load the levels? 
 			ng_wait = 2;
 
 		}
@@ -590,33 +595,45 @@ package
 		// Stage 2 - create a terrain and enter it
 		public function newGame2():void
 		{
-			trace('GameSession.as/newGame2() - newGame2 is executing.');
+			trace('GameSession.as/newGame2() - Beginning STAGE 2 of a starting a new game.');
 
-			try 
+			trace('GameSession.as/newGame2() - Visual part. 1/4');
+			try //visual part
 			{
-				
-				//visual part
 				resizeScreen();
 				offLoadScreen();
-				vgui.visible=skybox.visible=mainCanvas.visible = true;
-				vblack.alpha=1;
-				cam.dblack=-10;
+				vgui.visible = true;
+				skybox.visible = true;
+				mainCanvas.visible = true;
+				vblack.alpha = 1;
+				cam.dblack = -10;
 				pip.onoff(-1);
-
-				//enter the current room
-				game.enterCurrentLevel();//!!!!
-				game.beginGame();
-				
-				Snd.off= false;
-				gui.setAll();
-				allStat=1;
-				ng_wait=0;
-			} 
-			catch (err) 
+			}
+			catch(err:Error) 
 			{
-				trace('GameSession.as/newGame2() - Something fucked up.');
+				trace('GameSession.as/newGame2() - ERROR - Visual stage fucked up.');
 				showError(err);
 			}
+
+			trace('GameSession.as/newGame2() - Entering room. 2/4');
+			try //enter the current room
+			{
+				game.enterCurrentLevel(); //!!!!
+				game.beginGame();
+			}
+			catch(err:Error)
+			{
+				trace('GameSession.as/newGame2() - ERROR - Entering room fucked up.');
+				showError(err);
+			}
+
+			trace('GameSession.as/newGame2() - Sound and GUI stuff. 3/4');
+			Snd.off = false;
+			gui.setAll();
+			allStat = 1;
+			ng_wait = 0;
+		
+			trace('GameSession.as/newGame2() - STAGE 2 of starting a new game complete. 4/4');
 		}
 		
 		public function loadGame(nload:int = 0):void
@@ -639,9 +656,7 @@ package
 					trace('GameSession.as/loadGame() - Failed applying cursor "arrow".');
 				}
 
-				//loading object
-				var data:Object;
-
+				var data:Object; //loading object
 				if (nload == 99) 
 				{
 					data = loaddata;
@@ -651,7 +666,6 @@ package
 					data = saveArr[nload].data;
 				}
 
-				//create game
 				Snd.off = true;
 				cam.showOn = false;
 				if (data.hardInv)
@@ -666,11 +680,9 @@ package
 				game.init(data.game);
 				appearanceWindow.load(data.app);
 
-				//create character
 				trace('GameSession.as/loadGame() - Creating Pers.');
-				pers = new Pers(data.pers);
+				pers = new Pers(data.pers); //create character
 
-				//create player unit
 				trace('GameSession.as/loadGame() - Creating player.');
 				gg = new UnitPlayer();
 				gg.ctr = ctr;
@@ -678,7 +690,6 @@ package
 				sats.gg = gg;
 				gui.gg = gg;
 
-				// create an inventory
 				trace('GameSession.as/loadGame() - Creating inventory.');
 				invent = new Invent(gg, data.invent);
 				if (stand) stand.inv = invent;
@@ -687,8 +698,7 @@ package
 				trace('GameSession.as/loadGame() - Attaching inventory to player.');
 				gg.attach();
 
-				// auto-save cell number
-				if (data.n != null) autoSaveN = data.n;
+				if (data.n != null) autoSaveN = data.n; // auto-save cell number
 				
 				offLoadScreen();
 				vgui.visible 		= true;
@@ -737,37 +747,54 @@ package
 			}
 		}
 		
-		// Call when entering a specific area
-		// There is a graphical bug here
-		public function activateRoom(newRoom:Room):void
+		
+		// TODO: There is a graphical bug here (original author comment, not mine)
+		public function activateRoom(newRoom:Room):void // Call when entering a specific area
 		{
-			trace('GameSession.as/activateRoom() - Activating room: "' + newRoom.id + '."');
-			try 
-			{
-				if (room != null) //If a room exists, unload it.
-				{
-					trace('GameSession.as/activateRoom() - unloading previous room.');
-					room.unloadRoom();
-				}
+			trace('GameSession.as/activateRoom() - Activating room: "' + newRoom.id + '". 1/12');
 
-				room = newRoom; //Set the desired area as the current area
-				grafon.drawLoc(room); //Draw the current area 
-				cam.setLoc(room);
-				grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
-				gui.setAll();
-				currentMusic = room.sndMusic;
-				Snd.playMusic(currentMusic);
-				gui.hpBarBoss();
-				if (t_die <= 0) GameSession.currentSession.gg.controlOn();
-				gui.dialText();
-				pers.invMassParam();
-				gc();
-			} 
-			catch (err) 
+			if (room != null) //If a room exists, unload it.
 			{
-				trace('GameSession.as/activateRoom() - Failed activating room.');
-				showError(err);
+				trace('GameSession.as/activateRoom() - unloading previous room.');
+				room.unloadRoom();
 			}
+			trace('GameSession.as/activateRoom() - Activating room. 2/12"');
+			room = newRoom; //Set the current room as the one you want to load.
+
+			trace('GameSession.as/activateRoom() - Activating room. Calling grafon/drawLoc() to render the room. 3/12"');
+			grafon.drawLoc(room); //Call grafon to draw the room.
+			
+			trace('GameSession.as/activateRoom() - Activating room. Setting Camera to current room 4/12"');
+			cam.setLoc(room);
+
+			trace('GameSession.as/activateRoom() - Activating room. Calling grafon.setSkyboxSize to render the skybox. 5/12"');
+			grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
+			
+			trace('GameSession.as/activateRoom() - Activating room. Calling GUI 6/12"');
+			gui.setAll();
+			
+			trace('GameSession.as/activateRoom() - Activating room. Soound stuff 7/12"');
+			currentMusic = room.sndMusic;
+			Snd.playMusic(currentMusic);
+
+			trace('GameSession.as/activateRoom() - Activating room. Calling GUI for Boss HP bars. 8/12"');
+			//TODO: This doesn't need to be called every time, esepecially not here.
+			gui.hpBarBoss();
+
+			trace('GameSession.as/activateRoom() - Activating room. Enabling player controls. 9/12"');
+			if (t_die <= 0) GameSession.currentSession.gg.controlOn();
+
+			trace('GameSession.as/activateRoom() - Activating room. Calling GUI for textbox. 10/12"');
+			gui.dialText();
+			
+			trace('GameSession.as/activateRoom() - Activating room. Calling Pers for pers.invMassParam. 11/12"');
+			pers.invMassParam();
+			
+			trace('GameSession.as/activateRoom() - Activating room. Calling GC. 12/12');
+			gc();
+
+			trace('GameSession.as/activateRoom() - FINISHED activating room: "' + newRoom.id + '".');
+			//showError(err);
 		}
 		
 		public function redrawLoc():void
@@ -968,8 +995,7 @@ package
 				}
 			}
 			
-			//If the game has started, and is also on pause
-			if (allStat >= 1) 
+			if (allStat >= 1) //If the game has started, and is also on pause
 			{
 				cam.calc(gg);
 				gui.step();
@@ -1356,30 +1382,6 @@ package
 			{
 				showError(err);
 			}
-		}
-		
-		public function weaponWrite():void //Debug function?
-		{
-			var un:Unit = new Unit();
-			var s:String = '';
-
-			// Retrieve the XML file for weapons
-			var weaponsXML:XML = XmlBook.getXML("weapons");
-
-			// Iterate over weapon elements in the weapons XML
-			for each (var w:XML in weaponsXML.weapon.(@tip > 0)) 
-			{
-				var weap:Weapon = new Weapon(un, w.@id, 0);
-				s += weap.write() + '\n';
-
-				// Check if the weapon has 'com' element with 'uniq' attribute
-				if (w.com.length() && w.com.@uniq.length()) 
-				{
-					weap = new Weapon(un, w.@id, 1);
-					s += weap.write() + '\n';
-				}
-			}
-			trace('GameSession.as/weaponWrite() - ' + s);
 		}
 	}
 }

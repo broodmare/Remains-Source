@@ -27,10 +27,10 @@
 	import stubs.tileVoda
 	import stubs.tileGwall;
 
-	public class Grafon 
+	public class Grafon
 	{
 
-		public var  room:Room;
+		public var room:Room;
 
 		public var mainCanvas:Sprite;			// Sprite that all 6 layers are drawn onto (Screenspace?)
 		public var layerBackground_1:Sprite;	// Layer 1
@@ -50,7 +50,6 @@
 		public var mapTileWidth:int;  	//Size of map width in tiles
 		public var mapTileHeight:int;	//Size of map height in tiles
 		
-
 		//BITMAPS
 		public var frontBitmap:Bitmap;
 		public var vodaBitmap:Bitmap;
@@ -244,24 +243,17 @@
 			mainCanvas.addChild(borderRight);
 			mainCanvas.addChild(borderLeft);
 
-			//loader array setup
 			grLoaderArray = [];
-		
-			//Resource URL list setup.
+			
 			trace('Grafon.as/Grafon() - Creating resource resource loader array...');
-			for (var j:int = 0; j < resourceURLArray.length; j++)
+			for (var j:int = 0; j < resourceURLArray.length; j++) //Resource URL list setup.
 			{
-				//Populates the array with texture URLs.
-				var resourceURL:String = resourceURLArray[j];
-
-				//Instantiates a graphics loader for each URL in the array to load it's contents.
-				grLoaderArray[j] = new GrLoader(j, resourceURL, this);
+				var resourceURL:String = resourceURLArray[j]; //Populates the array with texture URLs.
+				grLoaderArray[j] = new GrLoader(j, resourceURL, this); //Instantiates a graphics loader for each URL in the array to load it's contents.
 			}
-
 
 			trace('Grafon.as/Grafon() - Adding mouse cursor...');
 			CursorHandler.createCursors();
-
 
 			trace('Grafon.as/Grafon() - Grafon intitialized. ');
 		}
@@ -290,15 +282,11 @@
 		public function materialSetup():void
 		{
 			trace('Grafon.as/materialSetup() - Setting up materials');
-			//tile and backwall material arrays
-			tileArray 		= [];	//Tiles and climbables
-			backwallArray   = []; 	//Backwalls
+			tileArray 		= [];	//Tiles Materials
+			backwallArray   = []; 	//Backwall Materials
 
-			//trace('Grafon.as/Grafon() - FULL Material XML: "' + XmlBook.getXML("materials") + '');
-
-			for each (var newMat in XmlBook.getXML("materials").mat) //for each <mat> item in AllData...
+			for each (var newMat:XML in XmlBook.getXML("materials").mat)
 			{
-				trace('Grafon.as/Grafon() - Material XML: ' + newMat.toString());
 				if (newMat.@vid.length() == 0) // Not a stair or beam
 				{
 					if (newMat.@drawLayer == 2) //Back wall texture
@@ -352,15 +340,13 @@
 			// The grLoader.resource will then (hopefully?) return the result.
 		}
 		
-		// Draw the skybox texture.
 		public function drawSkybox(skybox:MovieClip, textureID:String):void
 		{
 			if (textureID == '' || textureID == null) textureID = 'skyboxDefault';
 			if (skyboxLayer && skybox.contains(skyboxLayer)) skybox.removeChild(skyboxLayer);
 			
-			
-			skyboxLayer = getObj(textureID);						//Set the background to the specified texture.
-			if (skyboxLayer) skybox.addChild(skyboxLayer); 	//If the background exists, add it to the background sprite.
+			skyboxLayer = getObj(textureID); //Set the background to the specified texture.
+			if (skyboxLayer) skybox.addChild(skyboxLayer); //If the background exists, add it to the background sprite.
 		}
 		
 		public function setSkyboxSize(nx:Number, ny:Number):void
@@ -392,8 +378,7 @@
 			}
 		}
 		
-		//Fog of war
-		public function warShadow():void
+		public function warShadow():void //Fog of war
 		{
 			if (GameSession.currentSession.pers.infravis)
 			{
@@ -411,7 +396,7 @@
 		//                  BACKGROUND RENDERING 
 		// ##########################################################
 
-		public function drawLoc(currentLocation:Room):void 
+		public function drawLoc(passedRoom:Room):void 
 		{
 
 			//####################
@@ -420,8 +405,7 @@
 			GameSession.currentSession.gr_stage = 1; 
 			try
 			{
-				room = currentLocation;
-				room.grafon = this;
+				room = passedRoom;
 
 				resX = room.roomWidth * tilepixelwidth;
 				resY = room.roomHeight * tilepixelheight;
@@ -434,16 +418,13 @@
 				trace('Grafon.as/drawLoc() - ERROR during stage 1. Error: "' + err.message + '".');
 				GameSession.currentSession.showError(err)
 			}
-			
-
 
 			//####################
-			//      STAGE 2  
+			//      STAGE 2  DRAWING ROOM BORDERS
 			//####################
 			GameSession.currentSession.gr_stage = 2;
 			try
 			{
-				// Borders
 				borderTop.x = borderBottom.x = -50;
 				borderRight.y = borderLeft.y = 0;
 				borderTop.y = 0;
@@ -466,13 +447,12 @@
 			//      STAGE 3   
 			//####################
 			GameSession.currentSession.gr_stage = 3;
+			frontBmp.lock();
+			backBmp.lock();
+			backBmp2.lock();
+			vodaBmp.lock();
 			try
 			{
-				frontBmp.lock();
-				backBmp.lock();
-				backBmp2.lock();
-				vodaBmp.lock();
-				
 				frontBmp.fillRect(screenArea, 0); 
 				backBmp.fillRect(screenArea, 0);
 				backBmp2.fillRect(screenArea, 0);
@@ -615,7 +595,7 @@
 			GameSession.currentSession.gr_stage = 7;
 			try
 			{
-				drawBackWall(currentLocation.backwall, currentLocation.backform);
+				drawBackWall(room.backwall, room.backform);
 			}
 			catch (err:Error) 
 			{
@@ -757,10 +737,10 @@
 			GameSession.currentSession.gr_stage = 12;   
 			try
 			{
-				if (currentLocation.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
+				if (room.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
 				{
-					frontBmp.colorTransform(frontBmp.rect, currentLocation.cTransform);
-					vodaBmp.colorTransform(vodaBmp.rect, currentLocation.cTransform);
+					frontBmp.colorTransform(frontBmp.rect, room.cTransform);
+					vodaBmp.colorTransform(vodaBmp.rect, room.cTransform);
 				}
 
 				shadBmp.applyFilter(frontBmp, frontBmp.rect, new Point(0, 0), dsFilter);
@@ -778,12 +758,12 @@
 			GameSession.currentSession.gr_stage = 13; // Darkening the background
 			try
 			{
-				if (currentLocation.cTransform) 
+				if (room.cTransform) 
 				{
-					backBmp.colorTransform(backBmp.rect, currentLocation.cTransform);
+					backBmp.colorTransform(backBmp.rect, room.cTransform);
 					ct = new ColorTransform();
 					darkness2 = 1 + (170 - darkness) / 33;
-					ct.concat(currentLocation.cTransform);
+					ct.concat(room.cTransform);
 
 					if (darkness2 > 1) 
 					{
@@ -808,7 +788,7 @@
 			GameSession.currentSession.gr_stage = 14;  
 			try
 			{
-				backBmp2.draw(back, null, currentLocation.cTransform, null, null, false);
+				backBmp2.draw(back, null, room.cTransform, null, null, false);
 			}
 			catch (err:Error) 
 			{
@@ -874,7 +854,7 @@
 					drawTileSprite(tileArray[q], false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
 				}
 
-				backBmp2.draw(back2, null, currentLocation.cTransform, null, null, false); 
+				backBmp2.draw(back2, null, room.cTransform, null, null, false); 
 			}
 			catch (err:Error) 
 			{
@@ -887,11 +867,23 @@
 			//      STAGE 18   
 			//####################
 			GameSession.currentSession.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
+			//Something is wrong with grafon.
+			if (skyboxLayer == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, skyboxLayer is null!');
+			if (frontBmp == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, frontBmp is null!');
+			if (backBmp == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, backBmp is null!');
+			if (backBmp2 == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, backBmp2 is null!');
+			if (vodaBmp == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, vodaBmp is null!');
+			if (defTransform == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, defTransform is null!');
+			//something is wrong with the room
+			if (room == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, room is null!');
+			if (room.cTransform == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, room.cTransform is null!');
+			if (room.cTransformFon == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, room.cTransformFon is null!');
+
 			try
 			{
-				if (currentLocation.cTransform && currentLocation.cTransformFon) 
+				if (room.cTransform && room.cTransformFon)
 				{
-					skyboxLayer.transform.colorTransform = currentLocation.cTransformFon;
+					skyboxLayer.transform.colorTransform = room.cTransformFon;
 				} 
 				else if (skyboxLayer.transform.colorTransform != defTransform) 
 				{
@@ -1038,21 +1030,13 @@
 		// isTopLayer If the material is drawn in front.
 		// isClimbable If the material is a beam/stairs/etc.
 
-		// m must be instantiated for this function!
 		public function drawTileSprite(material:Material, isTopLayer:Boolean = false, isClimbable:Boolean = false):void
 		{
-			
-
 			if (!material.used) return;  //If the material is not used, return.
-
-
-			// If the material should be at the rear and we're drawing to the front, then return, and vice versa
-			if (isTopLayer == material.isBackwall) return;
-
+			if (isTopLayer == material.isBackwall) return; // If the material should be at the rear and we're drawing to the front, then return, and vice versa
 
 			var thisTile:Tile;
 			var spriteContainer:MovieClip;
-
 			var tileCanvas:Sprite 	= new Sprite();
 			var tileTexture:Sprite 	= new Sprite();
 			var maska:Sprite 		= new Sprite();
@@ -1060,7 +1044,6 @@
 			var bmaska:Sprite 		= new Sprite();
 			var floor:Sprite 		= new Sprite();
 			var fmaska:Sprite 		= new Sprite();
-			
 			
 			if (material.texture == null) tileTexture.graphics.beginFill(0x666666);
 			else if (room.homeStable && material.alttexture != null) 
@@ -1080,6 +1063,7 @@
 				tileCanvas.addChild(border);
 				tileCanvas.addChild(bmaska);
 			}
+
 			if (material.floor) 
 			{
 				floor.graphics.beginBitmapFill(material.floor);
@@ -1087,12 +1071,9 @@
 				tileCanvas.addChild(floor);
 				tileCanvas.addChild(fmaska);
 			}
-			
-
-			
-			var isDraw:Boolean = false;
 
 			//Loop for drawing tiles. Draws all tiles in an X axis, then increments the Y axis by 1.
+			var isDraw:Boolean = false;
 			for (var i:int = 0; i < room.roomWidth; i++) //X axis
 			{
 				for (var j:int = 0; j < room.roomHeight; j++) //Y axis
@@ -1150,13 +1131,11 @@
 				}
 			}
 
-
 			if (!isDraw) return; //If the tile's material should not be drawn, return.
 
 			tileTexture.mask = maska; 
 			border.mask = bmaska; 
 			floor.mask = fmaska;
-
 
 			tileTexture.cacheAsBitmap 	= Settings.bitmapCachingOption; 
 			maska.cacheAsBitmap		 	= Settings.bitmapCachingOption; 
@@ -1182,7 +1161,6 @@
 			{
 				backBmp.draw(tileCanvas, null, null, null, null, false);
 			}
-
 
 			function setMask(spriteContainer:MovieClip, materialMask:Class, tile:Tile, k:int, l:int, isTopLayer:Boolean, parent:Sprite):void 
 			{
@@ -1226,20 +1204,18 @@
 			satsBmp.draw(mainCanvas, new Matrix);
 		}
 
-		// Enable SATS overlay??	
-		public function onSats(on:Boolean):void
+		public function onSats(on:Boolean):void // Enable SATS overlay?
 		{
 			layerSats.visible = on;
 			canvasLayerArray[2].visible =! on;
 		}
-			
-		// Drawing water
+
 		public function drawWater(tile:Tile, recurs:Boolean = true):void
 		{
 			var backgroundMatrix:Matrix = new Matrix();
 			backgroundMatrix.tx = tile.X * tilepixelwidth;
 			backgroundMatrix.ty = tile.Y * tilepixelheight;
-			waterMovieClip.gotoAndStop(room.tipWater+1);
+			waterMovieClip.gotoAndStop(room.tipWater + 1);
 			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) waterMovieClip.gotoAndStop(2);
 			else waterMovieClip.gotoAndStop(1);
 			vodaBmp.draw(waterMovieClip, backgroundMatrix, room.cTransform, (tile.water > 0) ? 'normal':'erase', null, false);
