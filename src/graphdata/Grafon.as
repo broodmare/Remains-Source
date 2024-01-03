@@ -427,7 +427,6 @@
 			borderRight.scaleX = borderLeft.scaleX = 2;
 
 
-
 			//####################
 			//      STAGE 3   
 			//####################
@@ -454,7 +453,6 @@
 			colorBmp.fillRect(screenArea, darkness * 0x1000000); //Black
 			shadBmp.fillRect(screenArea, 0xFFFFFFFF); 		   //White
 
-
 				
 			//####################
 			//      STAGE 4   
@@ -464,30 +462,17 @@
 			var back:Sprite = new Sprite();
 			var back2:Sprite = new Sprite();	
 			var voda:Sprite = new Sprite();	
-			try
+
+			for each (var tileMaterial:* in tileArray)
 			{
-				for each (var tileMaterial:* in tileArray)
-				{
-					tileMaterial.used = false;
-				}
+				tileMaterial.used = false;
 			}
-			catch (err:Error) 
+
+			for each (var backwallMaterial:* in backwallArray)
 			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 4a. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
+				backwallMaterial.used = false;
 			}
-			try
-			{
-				for each (var backwallMaterial:* in backwallArray)
-				{
-					backwallMaterial.used = false;
-				}
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 4b. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}	
+
 				
 			//####################
 			//      STAGE 5   		TILE RENDERING
@@ -552,28 +537,22 @@
 			frontBmp.draw(front, null, null, null, null, false);
 
 				
-				
 			//####################
 			//      STAGE 7  		// Background rendering
 			//####################
 			GameSession.currentSession.gr_stage = 7;
 			drawBackWall(room.backwall, room.backform);
-					
+			
+
 			//####################
 			//      STAGE 8  		// BACKWALL LAYER
 			//####################
 			GameSession.currentSession.gr_stage = 8;  //Draw Background items in backwallArray.
 			for (var m:int = 0; m < backwallArray.length; m++)
 			{
-				try 
-				{
-					drawTileSprite(backwallArray[m], false, false);
-				} 
-				catch (err)
-				{
-					GameSession.currentSession.showError(err, 'Error, Stage 8. Back Layer drawing matterial: ' + backwallArray[m].id);
-				}
+				drawTileSprite(backwallArray[m], false, false);
 			}
+
 
 			//####################
 			//      STAGE 9   		// CLIMBABLE LAYER
@@ -581,17 +560,9 @@
 			GameSession.currentSession.gr_stage = 9;  
 			for (var n:int = 0; n < backwallArray.length; n++)
 			{
-				try 
-				{
-					drawTileSprite(backwallArray[n], true, false);
-				} 
-				catch (err)
-				{
-					GameSession.currentSession.showError(err, 'Error, Stage 9. Front Layer drawing matterial: ' + backwallArray[n].id);
-				}
+				drawTileSprite(backwallArray[n], true, false);
 			}
-
-
+			
 
 			//####################
 			//      STAGE 10
@@ -920,46 +891,26 @@
 
 						if (material.textureMask) 
 						{
-							try
-							{
-								setMask(spriteContainer, material.textureMask, thisTile, i, j, isTopLayer, maska);
-							}
-							catch(err)
-							{
-								trace('Grafon.as/drawTileSprite() - applying texturemask failed on tile ', thisTile, 'at ', i, ',', j)
-							}
+							setMask(spriteContainer, material.textureMask, thisTile, i, j, isTopLayer, maska);
 						}
 
 						if (material.borderMask) 
 						{
-							try
-							{
-								setMask(spriteContainer, material.borderMask, thisTile, i, j, isTopLayer, bmaska);
-							}
-							catch(err)
-							{
-								trace('Grafon.as/drawTileSprite() - applying bordermask failed on tile ', thisTile, 'at ', i, ',', j)
-							}
+							setMask(spriteContainer, material.borderMask, thisTile, i, j, isTopLayer, bmaska);
 						}
 
 						if (material.floorMask) 
 						{ 
-							try
+							spriteContainer = new material.floorMask();
+							if (spriteContainer.c1) 
 							{
-								spriteContainer = new material.floorMask();
-								if (spriteContainer.c1) 
-								{
-									spriteContainer.c1.gotoAndStop(thisTile.kont1 + 1);
-									spriteContainer.c2.gotoAndStop(thisTile.kont2 + 1);
-								}
-								fmaska.addChild(spriteContainer);
-								spriteContainer.x = (i + 0.5) * tilepixelwidth;
-								spriteContainer.y = (j + 0.5 + thisTile.zForm / 4) * tilepixelheight;
+								spriteContainer.c1.gotoAndStop(thisTile.kont1 + 1);
+								spriteContainer.c2.gotoAndStop(thisTile.kont2 + 1);
 							}
-							catch(err)
-							{
-								trace('Grafon.as/drawTileSprite() - applying floorMask failed on tile ', thisTile, 'at ', i, ',', j)
-							}
+							fmaska.addChild(spriteContainer);
+							spriteContainer.x = (i + 0.5) * tilepixelwidth;
+							spriteContainer.y = (j + 0.5 + thisTile.zForm / 4) * tilepixelheight;
+
 						}
 					}
 				}
@@ -1041,7 +992,7 @@
 		public function onSats(on:Boolean):void // Enable SATS overlay?
 		{
 			layerSats.visible = on;
-			canvasLayerArray[2].visible =! on;
+			canvasLayerArray[2].visible =!on;
 		}
 
 		public function drawWater(tile:Tile, recurs:Boolean = true):void

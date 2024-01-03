@@ -218,10 +218,10 @@ package
 		
 		public static function setArmor(m:MovieClip):void
 		{
-			var aid:String='';
+			var aid:String = '';
 			if (GameSession.currentSession) 
 			{
-				if (GameSession.currentSession.pip && GameSession.currentSession.pip.active || GameSession.currentSession.mmArmor && GameSession.currentSession.allStat == 0) aid = GameSession.currentSession.pip.ArmorId;
+				if (GameSession.currentSession.pip && GameSession.currentSession.pip.active || GameSession.currentSession.mmArmor && GameSession.currentSession.gameState == 0) aid = GameSession.currentSession.pip.ArmorId;
 				else if (GameSession.currentSession.armorWork != '') aid = GameSession.currentSession.armorWork;
 				else if (Settings.alicorn) aid = 'ali';
 				else aid = Appear.ggArmorId;

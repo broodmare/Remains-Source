@@ -64,8 +64,6 @@
 		public var langReload:Boolean = false;
 		public var langButtonsLoaded:Boolean = false;
 
-		//Symbol linkages defined in the '.fla' file.
-
 		//Difficulty option tickboxes in the new game window.
 		private var difficultyOptionTickboxes:Array; 
 		
@@ -73,7 +71,6 @@
 
 		public function MainMenu(window)
 		{
-			trace('MainMenu.as/MainMenu() - Creating an instance of the main menu MovieClip.');
 			mainMenuWindow = new visMainMenu();
 			mainMenuWindow.newGameWindow.visible = false;
 			mainMenuWindow.loadGameWindow.visible = false;
@@ -82,29 +79,19 @@
 			// Set up difficulty option tickboxes from the newgame window into array for easier code later.
 			difficultyOptionTickboxes = [mainMenuWindow.newGameWindow.dif0, mainMenuWindow.newGameWindow.dif1, mainMenuWindow.newGameWindow.dif2, mainMenuWindow.newGameWindow.dif3, mainMenuWindow.newGameWindow.dif4];
 
-			trace('MainMenu.as/MainMenu() - Main Menu Starting, Calling Settings.as/initialize().');
-			Settings.initialize();
-			
-			trace('MainMenu.as/MainMenu() - Calling XmlBook.as/xmlBookSetup().');
-			XmlBook.xmlBookSetup();
-			
-			trace('MainMenu.as/MainMenu() - Animating the main menu.');
-			mainMenuAnimation = new Displ(mainMenuWindow.mainMenuLittlepip, mainMenuWindow.lightningEffect);
+			Settings.initialize(); //Load all game settings.
+			XmlBook.xmlBookSetup(); //Load all XML data.
+			mainMenuAnimation = new Displ(mainMenuWindow.mainMenuLittlepip, mainMenuWindow.lightningEffect); //Start main menu animation.
 
-			trace('MainMenu.as/MainMenu() - Creating a game container.');
 			gameWindow = window;
 			gameWindow.stage.addEventListener(Event.RESIZE, resizeDisplay);
 			gameWindow.stage.addEventListener(Event.ENTER_FRAME, mainStep);
 
-			trace('MainMenu.as/MainMenu() - Creating new game instance.');
 			currentSession = new GameSession(gameWindow);
 			currentSession.mainMenuWindow = this;
 
-			trace('MainMenu.as/MainMenu() - Turning the main menu on.');
-			mainMenuOn();
-
-			trace('MainMenu.as/MainMenu() - Enabling all main menu buttons for interaction.');
-			mainMenuButtonsListenerToggle(true);
+			mainMenuSetVisibility(true);
+			mainMenuButtonsListenerToggle(true); // Attach all menu button listeners.
 		}
 
 		public function continueLoadingWhenGameSessionExists():void	//currentSession holds all the menu objects, hence the wait...
@@ -135,85 +122,66 @@
 			mainMenuWindow.link.l2.styleSheet 	= style;
 		}
 
-		public function mainMenuOn():void
+		public function mainMenuSetVisibility(isVisible:Boolean):void
 		{
-			trace('MainMenu.as/mainMenuOn() - setting mainMenu.mainMenuActive to true.');
-			mainMenuActive = true;
-
-
-			if (!gameWindow.contains(mainMenuWindow))
+			mainMenuActive = isVisible;
+			switch(isVisible)
 			{
-				gameWindow.addChild(mainMenuWindow);
-			}
-			file.addEventListener(Event.SELECT, selectHandler);
-			file.addEventListener(Event.COMPLETE, completeHandler);
-		}
-		
-		public function mainMenuOff():void
-		{
-			trace('MainMenu.as/mainMenuOff() - setting mainMenu.mainMenuActive to false.');
-			mainMenuActive = false;
+				case true:
+					if (!gameWindow.contains(mainMenuWindow)) gameWindow.addChild(mainMenuWindow);
+					file.addEventListener(Event.SELECT, selectHandler);
+					file.addEventListener(Event.COMPLETE, completeHandler);
+					break;
 
-			for each(var m:* in languageButtons) 
-			{
-				if (m) m.removeEventListener(MouseEvent.CLICK, languageButtonPress);
+				case false:
+					for each(var m:* in languageButtons) 
+					{
+						if (m) m.removeEventListener(MouseEvent.CLICK, languageButtonPress);
+					}
+					if (gameWindow.contains(mainMenuWindow)) gameWindow.removeChild(mainMenuWindow);
+					currentSession.loadingScreen.visible = true;
+					currentSession.loadingScreen.progres.text = Res.txt('gui', 'loading');
+					break;
 			}
-			if (gameWindow.contains(mainMenuWindow)) gameWindow.removeChild(mainMenuWindow);
-			currentSession.loadingScreen.visible = true;
-			currentSession.loadingScreen.progres.text = Res.txt('gui', 'loading');
+			trace('MainMenu.as/mainMenuSetVisibility() - mainMenu is now ' + (isVisible ? 'visible': 'hidden') + '.');
 		}
 
 		public function createMainMenuLanguageButtons():void
 		{
 			trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Creating language buttons.');
-
-
-			try
+			for each(var language:XML in Languages.languageListDictionary)
 			{
-				for each(var language:XML in Languages.languageListDictionary)
+				if(language.lang.@id != "" && language.lang.text() != "")
 				{
-					if(language.lang.@id != "" && language.lang.text() != "")
+					Languages.languageCount++;
+					var button = new LanguageSelectButton(); // .swf Linkage
+
+					var languageId:String = language.lang.@id;
+					var languageName:String = language.lang.text();
+
+					button.txt.text = languageName; // Set the button properties
+					button.y = -Languages.languageCount * 40;
+					button.n.text = languageId;
+					button.n.visible = false;
+					button.addEventListener(MouseEvent.CLICK, languageButtonPress);
+
+					if (mainMenuWindow.languageContainer == null)
 					{
-						Languages.languageCount++;
-						var button = new LanguageSelectButton(); // .swf Linkage
-
-						var languageId:String = language.lang.@id;
-						var languageName:String = language.lang.text();
-
-						//trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageId: "' + languageId + '" languageName : "' + languageName + '"');
-
-						// Set the button properties
-						button.txt.text = languageName;
-						button.y = -Languages.languageCount * 40;
-						button.n.text = languageId;
-						button.n.visible = false;
-						button.addEventListener(MouseEvent.CLICK, languageButtonPress);
-
-						//trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Button done, adding to menu."');
-						if (mainMenuWindow.languageContainer == null)
-						{
-							trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageContainer null!."');
-						}
-						mainMenuWindow.languageContainer.addChild(button)
+						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageContainer null!."');
 					}
-					else // Check languageListDictionary length and output error about a blank entry.
-					{
-						var dictionaryLength:int = 0;
-						for (var key:* in Languages.languageListDictionary)
-						{
-							dictionaryLength++;
-						}
-						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
-					}
-
-					langButtonsLoaded = true;
+					mainMenuWindow.languageContainer.addChild(button)
 				}
+				else // Check languageListDictionary length and output error if there's a blank entry.
+				{
+					var dictionaryLength:int = 0;
+					for (var key:* in Languages.languageListDictionary)
+					{
+						dictionaryLength++;
+					}
+					trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
+				}
+				langButtonsLoaded = true;
 			}
-			catch(err:Error)
-			{
-				trace('MainMenuButtons.as/createMainMenuLanguageButtons() - ERROR: Failed to create language buttons. Error: "' + err.message + '."');
-			}
-
 			trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Created: "' + Languages.languageCount + '" language buttons.');
 
 			if (Languages.languageCount > -1 ) //-1 is the starting value.
@@ -222,25 +190,19 @@
 			}
 		}
 
-		//Language
 		public function updateMainMenuLanguage():void
 		{
-			trace('MainMenu.as/updateMainMenuLanguage() - Updating main menu localization.');
-			//Main Menu Buttons
+			trace('MainMenu.as/updateMainMenuLanguage() - Updating mainMenu language.');
 			updateMenuButtonLocalization();
-
-			// All window text set through 'Res.as'.
 			localizeMainMenuWindows()
 
-			//New Game difficulty options
-			for (var i:int = 0; i < difficultyOptionCount; i++) 
+			for (var i:int = 0; i < difficultyOptionCount; i++) //New Game difficulty options
 			{
 				mainMenuWindow.newGameWindow['dif' + i].mode.text 		= Res.txt('gui', 'dif' + i);
 				mainMenuWindow.newGameWindow['dif' + i].modeinfo.text 	= Res.formatText(Res.txt('gui', 'dif' + i, 1));
 			}
-
-			//New Game playthrough options
-			for (var j:int = 1; j <= playthroughOptionCount; j++) 
+			
+			for (var j:int = 1; j <= playthroughOptionCount; j++) //New Game playthrough options
 			{
 				mainMenuWindow.newGameWindow['infoOpt' + j].text = Res.txt('gui', 'opt' + j);
 			}
@@ -249,22 +211,14 @@
 
 			currentSession.appearanceWindow.setLang();
 
-			mainMenuWindow.adviceSnippetBox.text 	= Res.advText(currentSession.nadv);
-			mainMenuWindow.adviceSnippetBox.y 		= gameWindow.stage.stageHeight - mainMenuWindow.adviceSnippetBox.textHeight - 40;
-
-
-			mainMenuWindow.info.txt.htmlText 	= Res.txt('gui', 'inform') + '<br>' + Res.txt('gui', 'inform', 1);
-			mainMenuWindow.info.visible 		= (mainMenuWindow.info.txt.text.length > 0);
-
+			mainMenuWindow.adviceSnippetBox.text = Res.advText(currentSession.nadv);
+			mainMenuWindow.adviceSnippetBox.y = gameWindow.stage.stageHeight - mainMenuWindow.adviceSnippetBox.textHeight - 40;
+			mainMenuWindow.info.txt.htmlText = Res.txt('gui', 'inform') + '<br>' + Res.txt('gui', 'inform', 1);
+			mainMenuWindow.info.visible = (mainMenuWindow.info.txt.text.length > 0);
 
 			setScrollInfo();
-
 			trace('MainMenu.as/updateMainMenuLanguage() - Finished updating mainMenu language.');
 		}
-		
-
-
-
 		
 		public function setMenuSize():void
 		{
@@ -288,7 +242,6 @@
 			mainMenuWindow.info.scroll.height = mainMenuWindow.link.y - mainMenuWindow.info.y - 20;
 
 			setScrollInfo();
-
 		}
 		
 		public function setScrollInfo():void
@@ -307,8 +260,8 @@
 			if (mainMenuActive) setMenuSize();
 		}
 
-		//Main menu loading
-		public function openLoadGameWindow():void
+		
+		public function openLoadGameWindow():void //Main menu loading
 		{
 			trace('MainMenu.as/openLoadGameWindow() - Executing openLoadGameWindow().');
 			mainMenuWindow.loadGameWindow.visible 			= true;
@@ -376,14 +329,13 @@
 			animOn = true;
 		}
 
-		//select slot
-		public function funLoadSlot(event:MouseEvent):void
+		public function funLoadSlot(event:MouseEvent):void //select slot
 		{
 			loadCell = event.currentTarget.id.text;
 			if (loadReg == 1 && loadCell == 0) return;
 			if (loadReg == 0 && event.currentTarget.ggName.text == '') return;
 			closeLoadGameWindow();
-			mainMenuOff();
+			mainMenuSetVisibility(false);
 			mainMenuButtonsListenerToggle(false);
 			command = 3;
 			if (loadReg == 1) com = 'new';
@@ -395,8 +347,7 @@
 			interdata.PipPageOpt.showSaveInfo(savefileArray[event.currentTarget.id.text], mainMenuWindow.loadGameWindow);
 		}
 		
-		//New Game Window
-		public function openNewGameWindow():void
+		public function openNewGameWindow():void //New Game Window
 		{
 			trace('MainMenu.as/openNewGameWindow() - Executing openNewGameWindow().');
 			mainMenuWindow.newGameWindow.visible = true;
@@ -416,7 +367,7 @@
 				mainMenuWindow.newGameWindow['checkOpt' + j].addEventListener(MouseEvent.MOUSE_OVER, infoOpt);
 			}
 
-			updNewMode();
+			initializeDifficultyOptionList();
 			mainMenuWindow.newGameWindow.pers.gotoAndStop(2);
 			mainMenuWindow.newGameWindow.pers.gotoAndStop(1);
 			animOn = false;
@@ -472,12 +423,11 @@
 				}
 
 			}
-			updNewMode();
+			initializeDifficultyOptionList();
 		}
 
-		public function updNewMode():void
+		public function initializeDifficultyOptionList():void
 		{
-			trace('MainMenu.as/updNewMode() - Updating game difficulty.');
 			for (var i:int = 0; i < 5; i++) // Set all difficulty checkboxes to empty.
 			{
 				difficultyOptionTickboxes[i].fon.gotoAndStop(1);
@@ -490,7 +440,6 @@
 					difficultyOptionTickboxes[j].fon.gotoAndStop(2);
 					break;
 				}
-				
 			}
 		}
 
@@ -507,22 +456,8 @@
 		
 		public function step():void
 		{
-			if (langReload) 
-			{	
-				trace('MainMenu.as/step() - Reloading language.');
-
-				langReload = false;
-				showMainButtons(false);
-
-				currentSession.pip.updateLang();
-				updateMainMenuLanguage();
-			}
-
-			if (XmlBook.bookSetup && !Snd.soundInitialized)
-			{
-				trace('MainMenu.as/step() - XML readyToStart, initializaing sound');
-				Snd.initializeSound();
-			}
+			if (langReload) setMainMenuLanguage();
+			if (XmlBook.bookSetup && !Snd.soundInitialized) Snd.initializeSound();
 
 			if (readyToStart)
 			{
@@ -601,6 +536,14 @@
 
 		}
 		
+		private function setMainMenuLanguage():void
+		{
+			langReload = false;
+			showMainButtons(false);
+			currentSession.pip.updateLang();
+			updateMainMenuLanguage();
+		}
+
 		public function log(s:String):void
 		{
 			mainMenuWindow.mainMenuLoadingLog.text += s + '; ';
@@ -694,7 +637,7 @@
 
 					if (save && save.est) 
 					{
-						mainMenuOff();
+						mainMenuSetVisibility(false);
 						loadCell = n;
 						command  = 3;
 					} 
@@ -812,7 +755,7 @@
 					loadCell = 99;
 					currentSession.loaddata = obj;
 					closeLoadGameWindow();
-					mainMenuOff();
+					mainMenuSetVisibility(false);
 					command = 3;
 					com = 'load';
 				}
@@ -879,7 +822,7 @@
 			} 
 			else 
 			{
-				mainMenuOff();
+				mainMenuSetVisibility(false);
 				loadCell = -1;
 				command  =  3;
 				com 	 = 'new';

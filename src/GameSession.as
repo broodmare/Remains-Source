@@ -48,6 +48,7 @@ package
 		public var skybox:MovieClip;				//Static background
 		public var mainCanvas:Sprite;				//Active area
 
+		//LINKAGES defined in .fla
 		public var loadingScreen:MovieClip;			//Loading image
 		public var vscene:MovieClip;				//Scene
 		public var vblack:MovieClip;				//Darkness
@@ -82,7 +83,8 @@ package
 		//Working variables
 		public var onConsol:Boolean = false;		//Console active
 		public var onPause:Boolean = false;			//Game on pause
-		public var allStat:int = 0; 				//Overall status 0 - game has not started
+		public var gameState:int = 0; 				//Overall status 0 - Game not started; 1 - Game active 2 - Game active, in menu.
+		
 		public var celX:Number;						//Cursor coordinates in room coordinate system
 		public var celY:Number;
 		public var t_battle:int = 0;				//Is there a battle happening or not
@@ -138,58 +140,48 @@ package
 
 		public function GameSession(container:Sprite) 
 		{
-			trace('GameSession.as/World() - Running world constructor.');
+			trace('GameSession.as/GameSession() - Starting game session...');
+			//TODO: This is dumb.
 			GameSession.currentSession = this;
 
 			gameContainer = container;
-
 			swfStage 				= gameContainer.stage;
 			swfStage.tabChildren 	= false;
 			swfStage.addEventListener(Event.DEACTIVATE, onDeactivate);
 
 			//config, immediately loads sound settings
-			trace('GameSession.as/World() - Creating configObj...');
+			trace('GameSession.as/GameSession() - Creating configObj...');
 			configObj = SharedObject.getLocal('config'); //Attempts to load a locally stored SharedObject called "config"
 
 			if (configObj.data.snd)
 			{
-				trace('GameSession.as/World() - Sound settings found in configObj. Calling Snd/load() and passing configObj.');
+				trace('GameSession.as/GameSession() - Sound settings found in configObj. Calling Snd/load() and passing configObj.');
 				Snd.load(configObj.data.snd);
 			}
 
-			trace('GameSession.as/World() - Calling Languages/languageStart.');
+			trace('GameSession.as/GameSession() - Calling Languages/languageStart.');
 			Languages.languageStart();
 			
-			trace('GameSession.as/World() - Checking if language is loaded.');
+			trace('GameSession.as/GameSession() - Checking if language is loaded.');
 			if (Languages.textLoaded)
 			{
-				trace('GameSession.as/World() - Language data already done loading, continuing world setup.');
+				trace('GameSession.as/GameSession() - Language data already done loading, continuing GameSession setup.');
 				continueLoadingWorld()
 			}
-			else
-			{
-				trace('GameSession.as/World() - Language data still loading, waiting...');
-			}
+			else trace('GameSession.as/GameSession() - Language data still loading, waiting...');
 
-			trace('GameSession.as/World() - Stage 1 of world setup finished.');
+			trace('GameSession.as/GameSession() - Stage 1 of GameSession setup finished.');
 			load_log += 'Stage 1 Ok\n';
 		}
 
 		public function continueLoadingWorld():void
 		{
-
-			trace ('GameSession.as/continueLoadingWorld() - Continuing world construction.');
-			trace ('GameSession.as/continueLoadingWorld() - Calling LootGen.init()...');
+			trace ('GameSession.as/continueLoadingWorld() - Continuing GameSession construction.');
 			LootGen.init();
-			trace ('GameSession.as/continueLoadingWorld() - Calling Form.setForms()...');
 			Form.setForms();
-			trace ('GameSession.as/continueLoadingWorld() - Calling Emitter.init()...');
 			Emitter.init();
 			
-			trace ('GameSession.as/continueLoadingWorld() - Creating GUI elements.');
-			loadingScreen 	= new visualWait();
-			
-			trace ('GameSession.as/continueLoadingWorld() - world.appearanceWindow created.');
+			loadingScreen 	 = new visualWait();
 			appearanceWindow = new Appear(); 
 			mainCanvas 		 = new Sprite();
 			vgui 			 = new visualGUI();
@@ -199,57 +191,38 @@ package
 			vsats 			 = new MovieClip();
 			vscene 			 = new visualScene();
 			vblack 			 = new visBlack();
-			vconsol 		 = new visConsol();
 			verror 			 = new visError();
+			vconsol 		 = new visConsol();
 	
 			loadingScreen.cacheAsBitmap = Settings.bitmapCachingOption;
 			vblack.cacheAsBitmap 		= Settings.bitmapCachingOption;
 
-			trace ('GameSession.as/continueLoadingWorld() - Calling setLoadScreen().');
 			setLoadScreen();
-			vgui.visible = false;
-			vpip.visible = false;
-			vconsol.visible = false;
-			skybox.visible = false;
-			mainCanvas.visible = false;
-			vsats.visible = false;
-			loadingScreen.visible = false;
-			vblack.visible = false;
-			verror.visible = false;
-			vscene.visible = false;
-			vscene.stop();
-			
-			trace ('GameSession.as/continueLoadingWorld() - Adding gameContainer children...');
-			gameContainer.addChild(loadingScreen);
-			gameContainer.addChild(skybox);
-			gameContainer.addChild(mainCanvas);
-			gameContainer.addChild(vscene);
-			gameContainer.addChild(vblack);
-			gameContainer.addChild(vpip);
-			gameContainer.addChild(vsats);
-			gameContainer.addChild(vgui);
-			gameContainer.addChild(vstand);
-			gameContainer.addChild(verror);
-			gameContainer.addChild(vconsol);
+
+			var mainMenuChildren:Array = 
+			[
+				"loadingScreen", "skybox", "mainCanvas", "vscene", "vblack",
+				"vpip", "vsats", "vgui", "vstand", "verror",  "vconsol"
+        	];
+			for each (var child:String in mainMenuChildren) 
+			{
+				this[child].visible = false;
+				if (child == "vscene") this[child].stop();
+				gameContainer.addChild(this[child]);
+			}
 
 			//ERROR LOG STUFF
 			verror.butCopy.addEventListener(flash.events.MouseEvent.CLICK, function():void {Clipboard.generalClipboard.clear();Clipboard.generalClipboard.setData(flash.desktop.ClipboardFormats.TEXT_FORMAT, verror.txt.text);});
 			verror.butClose.addEventListener(flash.events.MouseEvent.CLICK, function():void {verror.visible = false;});
 			verror.butForever.addEventListener(flash.events.MouseEvent.CLICK, function():void {Settings.errorShow = false; verror.visible = false;});
-			
-			vstand.visible = false;
-			
-			trace('GameSession.as/continueLoadingWorld() - Creating Grafon object.');
-			grafon = new Grafon(mainCanvas);
 
-			trace('GameSession.as/continueLoadingWorld() - Creating Camera object.');
+			grafon = new Grafon(mainCanvas);
 			cam = new Camera(this);
 
-			trace('GameSession.as/continueLoadingWorld() - World constructor stage 2 finished.');
+			trace('GameSession.as/continueLoadingWorld() - GameSession constructor stage 2 finished.');
 			load_log += 'Stage 2 Ok\n';
 			
 			d1 = d2 = getTimer(); //FPS counter
-			
 		}
 
 //=============================================================================================================
@@ -320,7 +293,7 @@ package
 			Snd.loadMusic();
 
 			init2Done = true;
-			trace('GameSession.as/init2() - World initialized.');
+			trace('GameSession.as/init2() - GameSession initialized.');
 		}
 
 		public function configObjSetup():void
@@ -403,17 +376,17 @@ package
 		//Pause and calling the pipbuck if focus is lost
 		public function onDeactivate(event:Event):void  
 		{
-			if (allStat == 1) 
+			if (gameState == 1) 
 			{
 				pip.onoff(11);
 			}
-			if (allStat> 0 && !Settings.alicorn) saveGame();
+			if (gameState > 0 && !Settings.alicorn) saveGame();
 		}
 		
 		//Pause and call pipbuck if window size is changed
 		public function resizeScreen():void
 		{
-			if (allStat > 0) 
+			if (gameState > 0) 
 			{
 				cam.setLoc(room);
 			} 
@@ -428,14 +401,13 @@ package
 				loadingScreen.x = swfStage.stageWidth  / 2;
 				loadingScreen.y = swfStage.stageHeight / 2;
 			}
-			if (allStat == 1 && !Settings.testMode) pip.onoff(11);
+			if (gameState == 1 && !Settings.testMode) pip.onoff(11);
 		}
 		
-		//Console call
-		public function consolOnOff():void
+		public function consolOnOff():void //Toggle the console on or off.
 		{
-			onConsol =! onConsol; //Toggles the state of onConsole
-			consol.vis.visible = onConsol; //Toggles the visibility of consol depending on the state of onConsol
+			onConsol =! onConsol;
+			consol.vis.visible = onConsol;
 			if (onConsol) swfStage.focus = consol.vis.input;
 		}
 		
@@ -456,13 +428,15 @@ package
 		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null):void
 		{
 			trace('GameSession.as/startNewGame() - Starting a new game.');
+			//TODO: Remove testMode.
 			if (Settings.testMode && !Settings.chitOn) 
 			{
 				trace('GameSession.as/startNewGame() - Tried starting new game with test mode on.');
 				loadingScreen.progres.text = 'error';
 				return;
 			}
-			allStat = -1;
+
+			//gameState = -1; // I don't think this is necessary.
 			opt = nopt;
 			newName = nnewName;
 
@@ -526,57 +500,8 @@ package
 			if (data.hardInv) Settings.hardInv = true; else Settings.hardInv = false;
 			if (opt && opt.hardinv) Settings.hardInv = true;
 
-			// create character
-			trace('GameSession.as/newGame1() - Creating Pers. 2/9');
-			pers = new Pers(data.pers, opt);
-			if (newGame) pers.persName=newName;
-
-			// create player character
-			trace('GameSession.as/newGame1() - Creating Player. 3/9');
-			try
-			{
-				gg = new UnitPlayer();
-				gg.ctr = ctr;
-				gg.sats = sats;
-			}
-			catch(err:Error)
-			{
-				trace('GameSession.as/newGame1() - ERROR: Unable to create player');
-				showError(err);
-			}
-
-			trace('GameSession.as/newGame1() - Setting up player SATS and GUI. 4/9');
-			try
-			{
-				sats.gg = gg;
-				gui.gg = gg;
-			}
-			catch(err:Error)
-			{
-				trace('GameSession.as/newGame1() - ERROR: Unable to set up player SATS and GUI');
-				showError(err);
-			}
-
-
-			// create inventory
-			trace('GameSession.as/newGame1() - Creating Inventory. 5/9');
-			invent = new Invent(gg, data.invent, opt);
-
-			trace('GameSession.as/newGame1() - Creating Stand. 6/9');
-			stand = new Stand(vstand,invent);
-
-			trace('GameSession.as/newGame1() - Attaching inventory to player. 7/9');
-			try
-			{
-				gg.attach();
-			}
-			catch(err:Error)
-			{
-				trace('GameSession.as/newGame1() - ERROR: Player is null');
-				showError(err);
-			}
+			initializePlayer(true);
 			
-
 			// auto save slot number
 			trace('GameSession.as/newGame1() - Autosave setup. 8/9');
 			if (!newGame && data.n != null) 
@@ -586,56 +511,80 @@ package
 			Unit.txtMiss = Res.txt('gui', 'miss');
 			
 			trace('GameSession.as/newGame1() - STAGE 1 of starting a new game complete. Waiting on player input. 9/9');
-			
-			waitLoadClick(); //TODO: Why are we waiting on player input to load the levels? 
-			ng_wait = 2;
 
+			//TODO: Why are we waiting on player input to load the levels? 
+			waitLoadClick(); 
+			ng_wait = 2;
 		}
 		
-		// Stage 2 - create a terrain and enter it
-		public function newGame2():void
+		
+		public function newGame2():void // Stage 2 - Initialize the level, then enter it
 		{
 			trace('GameSession.as/newGame2() - Beginning STAGE 2 of a starting a new game.');
 
 			trace('GameSession.as/newGame2() - Visual part. 1/4');
-			try //visual part
-			{
-				resizeScreen();
-				offLoadScreen();
-				vgui.visible = true;
-				skybox.visible = true;
-				mainCanvas.visible = true;
-				vblack.alpha = 1;
-				cam.dblack = -10;
-				pip.onoff(-1);
-			}
-			catch(err:Error) 
-			{
-				trace('GameSession.as/newGame2() - ERROR - Visual stage fucked up.');
-				showError(err);
-			}
+			resizeScreen();
+			hideLoadingScreen();
+			vgui.visible = true;
+			skybox.visible = true;
+			mainCanvas.visible = true;
+			vblack.alpha = 1;
+			cam.dblack = -10;
+			pip.onoff(-1);
 
-			trace('GameSession.as/newGame2() - Entering room. 2/4');
-			try //enter the current room
-			{
-				game.initializeLevel(); //!!!!
-				game.beginGame();
-			}
-			catch(err:Error)
-			{
-				trace('GameSession.as/newGame2() - ERROR - Entering room fucked up.');
-				showError(err);
-			}
+			trace('GameSession.as/newGame2() - Initializing level and entering room. 2/4');
+			game.initializeLevel(); //!!!!
+			game.beginGame();
+
 
 			trace('GameSession.as/newGame2() - Sound and GUI stuff. 3/4');
 			Snd.off = false;
 			gui.setAll();
-			allStat = 1;
+			gameState = 1;
 			ng_wait = 0;
 		
 			trace('GameSession.as/newGame2() - STAGE 2 of starting a new game complete. 4/4');
 		}
 		
+		private function initializePlayer(isNewPlayer:Boolean):void
+		{
+			trace('GameSession.as/playerInitialization() - Initializing player, SATS, and GUI.');
+
+			if (isNewPlayer)
+			{
+				pers = new Pers(data.pers, opt); // Create new pers (Player container?)
+				pers.persName = newName; // Change default name if necessary. 
+				
+			}
+			else
+			{
+				pers = new Pers(data.pers);
+			}
+
+			gg = new UnitPlayer(); // Create new player unit.
+			gg.ctr = ctr; // Add reference to controller to player unit.
+			gg.sats = sats; // Add reference to sats to player unit.
+			sats.gg = gg; // Add reference to player unit to SATS.
+			gui.gg = gg; // Add reference to player unit to GUI.
+
+			if (isNewPlayer)
+			{
+				invent = new Invent(gg, data.invent, opt); 	// Initialize player inventory.
+				stand = new Stand(vstand, invent); 			// Initialize item stand.
+			}
+			else
+			{
+				invent = new Invent(gg, data.invent);
+			}
+
+			if (stand) stand.inv = invent;
+			else stand = new Stand(vstand, invent);
+
+			gg.attach(); // Attach inventory to player unit.
+			
+			trace('GameSession.as/playerInitialization() - Player initialized.');
+		}
+
 		public function loadGame(nload:int = 0):void
 		{
 			try 
@@ -668,39 +617,18 @@ package
 
 				Snd.off = true;
 				cam.showOn = false;
-				if (data.hardInv)
-				{
-					Settings.hardInv = true; 
-				}
-				else 
-				{
-					Settings.hardInv = false;
-				}
+				
+				Settings.hardInv = data.hardInv;
+
 				game = new Game();
 				game.init(data.game);
 				appearanceWindow.load(data.app);
 
-				trace('GameSession.as/loadGame() - Creating Pers.');
-				pers = new Pers(data.pers); //create character
-
-				trace('GameSession.as/loadGame() - Creating player.');
-				gg = new UnitPlayer();
-				gg.ctr = ctr;
-				gg.sats = sats;
-				sats.gg = gg;
-				gui.gg = gg;
-
-				trace('GameSession.as/loadGame() - Creating inventory.');
-				invent = new Invent(gg, data.invent);
-				if (stand) stand.inv = invent;
-				else stand = new Stand(vstand,invent);
-
-				trace('GameSession.as/loadGame() - Attaching inventory to player.');
-				gg.attach();
+				initializePlayer(false);
 
 				if (data.n != null) autoSaveN = data.n; // auto-save cell number
 				
-				offLoadScreen();
+				hideLoadingScreen();
 				vgui.visible 		= true;
 				skybox.visible 		= true;
 				mainCanvas.visible 	= true;
@@ -720,7 +648,7 @@ package
 				Snd.off = false;
 				trace('GameSession.as/loadGame() - gui.setAll.');
 				gui.setAll();
-				allStat = 1;
+				gameState = 1;
 				trace('GameSession.as/loadGame() - Loading game finished.');
 			} 
 			catch (err) 
@@ -780,31 +708,15 @@ package
 		
 		public function redrawLoc():void
 		{
-			try 
-			{
-				grafon.drawLoc(room);
-				cam.setLoc(room);
-				gui.setAll();
-			} 
-			catch (err) 
-			{
-				showError(err);
-			}
+			grafon.drawLoc(room);
+			cam.setLoc(room);
+			gui.setAll();
 		}
 		
-		public function renderSkybox(l:Level):void
+		public function renderSkybox():void
 		{
-			trace('Game.as/renderSkybox() - Rendering skybox for level: "' + l.levelTemplate.id + '", Type: ' + l.levelTemplate.tip + '".');
-			try 
-			{
-				level = l;
-				grafon.drawSkybox(skybox, level.levelTemplate.skybox);
-			} 
-			catch (err) 
-			{
-				trace('Game.as/renderSkybox() - ERROR - Failed while rendering skybox!');
-				showError(err);
-			}
+			trace('Game.as/renderSkybox() - Rendering skybox for level: "' + level.levelTemplate.id + '".');
+			grafon.drawSkybox(skybox, level.levelTemplate.skybox);
 		}
 
 		public function exitLevel(fast:Boolean = false):void
@@ -836,7 +748,7 @@ package
 					vblack.alpha = 0;
 					cam.dblack = 0;
 					setLoadScreen(getLoadScreen());
-					Snd.off=true;
+					Snd.off = true;
 				}
 				if (t_exit == 19) 
 				{
@@ -848,9 +760,11 @@ package
 				{
 					Mouse.show();
 					Snd.off = false;
-					offLoadScreen();
-					vgui.visible=skybox.visible=mainCanvas.visible = true;
-					vblack.alpha=1;
+					hideLoadingScreen();
+					vgui.visible = true;
+					skybox.visible = true;
+					mainCanvas.visible = true;
+					vblack.alpha = 1;
 					cam.dblack = -10;
 					gg.controlOn();
 					pip.gamePause = false;
@@ -909,7 +823,7 @@ package
 		public function step():void // Main loop
 		{
 
-			if (verror.visible) 
+			if (verror.visible) // Pause gameplay with an error message is showing.
 			{
 				return;
 			}
@@ -920,10 +834,9 @@ package
 			}
 
 			ctr.step();	//Process controls
-
 			Snd.step(); //Process sound
 
-			if (ng_wait > 0) 
+			if (ng_wait > 0) //GAME STATE: WAITING FOR PLAYER INPUT
 			{
 				if (ng_wait == 1) 
 				{
@@ -938,7 +851,7 @@ package
 
 			if (!onConsol && !pip.active) swfStage.focus = swfStage;
 			
-			if (allStat == 1 && !onPause) //Only if the game has started and not paused, game loops
+			if (gameState == 1 && !onPause) //GAME STATE 1: RUNNING, NOT PAUSED
 			{
 				if (t_exit > 0) //exit loop
 				{
@@ -991,7 +904,7 @@ package
 				}
 			}
 			
-			if (allStat >= 1) //If the game has started, and is also on pause
+			if (gameState >= 1) //GAME STATE 2: RUNNING, IN MENU
 			{
 				cam.calc(gg);
 				gui.step();
@@ -1039,7 +952,7 @@ package
 					ctr.keyStates.keySats = false;
 				}
 
-				allStat = (pip.active || sats.active || stand.active || gui.guiPause) ? 2:1;
+				gameState = (pip.active || sats.active || stand.active || gui.guiPause) ? 2:1; //If any of these are active, game state is set to 'in menu', otherwise game state is set to 'running'.
 				
 				if (consol && consol.visoff) 
 				{
@@ -1199,9 +1112,8 @@ package
 			loadingScreen.story.lmb.visible = true;
 		}
 		
-		public function offLoadScreen():void // Remove the loading screen
+		public function hideLoadingScreen():void // Remove the loading screen
 		{
-			trace('GameSession.as/offLoadScreen() - offLoadScreen() executing, removing loading screen.');
 			loadingScreen.visible = false;
 			loadingScreen.story.visible = false;
 			loadingScreen.skill.visible = loadingScreen.progres.visible = true;
@@ -1254,16 +1166,17 @@ package
 			vscene.visible = false;
 		}
 		
-		public function endgame(n:int = 0):void // Final credits or game over
+		public function endgame(n:int = 0):void // Final credits or gameover
 		{
-			loadingScreen.visible=skybox.visible = false;
+			loadingScreen.visible = false;
+			skybox.visible = false;
 			var s:String;
 			if (n == 1) 
 			{
 				showScene('gameover');
 				s = Res.lpName(Res.txt('gui', 'end_bad'));
 			} 
-			else if (pers.rep>=pers.repGood) 
+			else if (pers.rep >= pers.repGood) 
 			{
 				showScene('endgame');
 				s = Res.lpName(Res.txt('gui', 'end_good'));
@@ -1272,16 +1185,10 @@ package
 			else 
 			{
 				showScene('endgame');
-				s=Res.lpName(Res.txt('gui', 'end_norm'));
+				s = Res.lpName(Res.txt('gui', 'end_norm'));
 			}
-			try 
-			{
-				vscene.sc.txt.htmlText=s;
-			} 
-			catch(err)
-			{
 
-			}
+			vscene.sc.txt.htmlText = s;
 		}
 
 //=============================================================================================================
@@ -1305,8 +1212,8 @@ package
 		{
 			if (n == -2) 
 			{
-				n 			= autoSaveN;
-				var save 	= saveArr[n];
+				n = autoSaveN;
+				var save = saveArr[n];
 				saveToObj(save.data);
 				save.flush();
 				trace('GameSession.as/saveGame() - Конец');
@@ -1335,49 +1242,36 @@ package
 		
 		public function saveConfig():void
 		{
-			try 
+			configObj.data.ctr = ctr.save();
+			configObj.data.snd = Snd.save();
+			configObj.data.language 	= Languages.languageName;
+			configObj.data.chit 		= (Settings.chitOn ? 1:0);
+			configObj.data.dialon 		= Settings.dialOn;
+			configObj.data.zoom100 		= Settings.zoom100;
+			configObj.data.help 		= Settings.helpMess;
+			configObj.data.mat 			= Settings.matFilter;
+			configObj.data.hit 			= Settings.showHit;
+			configObj.data.systemCursor = Settings.systemCursor;
+			configObj.data.hintTele 	= Settings.hintTele;
+			configObj.data.showFavs 	= Settings.showFavs;
+			configObj.data.quakeCam 	= Settings.quakeCam;
+			configObj.data.errorShowOpt = Settings.errorShowOpt;
+			configObj.data.app = appearanceWindow.save();
+
+			if (lastCom != null) configObj.data.lastCom = lastCom;
+				
+			var configProperties:Array = 
+			[
+				"vsWeaponNew", "vsWeaponRep", "vsAmmoAll", "vsAmmoTek", "vsExplAll",
+				"vsMedAll", "vsHimAll", "vsEqipAll", "vsStuffAll", "vsVal", 
+				"vsBook", "vsFood", "vsComp", "vsIngr"
+			];
+			for each (var property:String in configProperties) 
 			{
-				configObj.data.ctr = ctr.save();
-				configObj.data.snd = Snd.save();
-
-				configObj.data.language 	= Languages.languageName;
-				configObj.data.chit 		= (Settings.chitOn ? 1:0);
-				configObj.data.dialon 		= Settings.dialOn;
-				configObj.data.zoom100 		= Settings.zoom100;
-				configObj.data.help 		= Settings.helpMess;
-				configObj.data.mat 			= Settings.matFilter;
-				configObj.data.hit 			= Settings.showHit;
-				configObj.data.systemCursor = Settings.systemCursor;
-				configObj.data.hintTele 	= Settings.hintTele;
-				configObj.data.showFavs 	= Settings.showFavs;
-				configObj.data.quakeCam 	= Settings.quakeCam;
-				configObj.data.errorShowOpt = Settings.errorShowOpt;
-
-				configObj.data.app = appearanceWindow.save();
-
-				if (lastCom != null) configObj.data.lastCom = lastCom;
-					
-				configObj.data.vsWeaponNew 	= Settings.vsWeaponNew	? 0:1;
-				configObj.data.vsWeaponRep 	= Settings.vsWeaponRep	? 0:1;
-				configObj.data.vsAmmoAll 	= Settings.vsAmmoAll	? 0:1;	
-				configObj.data.vsAmmoTek 	= Settings.vsAmmoTek	? 0:1;	
-				configObj.data.vsExplAll 	= Settings.vsExplAll	? 0:1;	
-				configObj.data.vsMedAll 	= Settings.vsMedAll		? 0:1;
-				configObj.data.vsHimAll 	= Settings.vsHimAll		? 0:1;
-				configObj.data.vsEqipAll 	= Settings.vsEqipAll	? 0:1;
-				configObj.data.vsStuffAll 	= Settings.vsStuffAll	? 0:1;
-				configObj.data.vsVal 		= Settings.vsVal		? 0:1;
-				configObj.data.vsBook 		= Settings.vsBook		? 0:1;
-				configObj.data.vsFood 		= Settings.vsFood		? 0:1;
-				configObj.data.vsComp 		= Settings.vsComp		? 0:1;
-				configObj.data.vsIngr 		= Settings.vsIngr		? 0:1;
-
-				configObj.flush();
-			} 
-			catch (err) 
-			{
-				showError(err);
+				configObj.data[property] = Settings[property] ? 0 : 1;
 			}
+
+			configObj.flush();
 		}
 	}
 }

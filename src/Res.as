@@ -139,27 +139,30 @@ package
 			return false;
 		}
 
+		//TODO: This is getting called hundreds of times per second, investigate.
 		public static function messText(id:String, v:int = 0, imp:Boolean = true):String 
 		{
-			trace('Res.as/messText() - messText Executing...');
 			var s:String = '';
 			try 
 			{
-				if (localizationFile == null) trace('Res.as/messText() - localizationFile is null.');
+				if (localizationFile == null) 
+				{
+					trace('Res.as/messText() - localizationFile is null.');
+					return s;
+				}
 				var xml:XMLList = localizationFile.txt.(@id == id);
 
 				if (xml.length() == 0) 
 				{
-					return '';
+					return s;
 				}
 
 				if (!imp && !(xml.@imp > 0)) 
 				{
-					return '';
+					return s;
 				}
 
-				trace('Res.as/messText() - Checking version...');
-				var stringType:int = xml.@imp;
+				var stringType:int = xml.@imp; // Version check?
 
 				if (v == 1) 
 				{
@@ -205,7 +208,6 @@ package
 							else s += s1 + '<br>';
 						}
 					} 
-
 					else 
 					{
 						s = xml.n[0];
