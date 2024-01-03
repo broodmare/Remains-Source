@@ -118,7 +118,7 @@
 		
 		public var nn:int;									// Something for side quests? Why is this here?
 
-		public var waterMovieClip:MovieClip;  				// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
+		public var voda:MovieClip;  				// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
 
 		public function Grafon(nvis:Sprite)
 		{
@@ -403,44 +403,29 @@
 			//      STAGE 1   	
 			//####################
 			GameSession.currentSession.gr_stage = 1; 
-			try
-			{
-				room = passedRoom;
+			room = passedRoom;
+			resX = room.roomWidth * tilepixelwidth;
+			resY = room.roomHeight * tilepixelheight;
+			
+			var transparentBackground:Boolean = room.transparentBackground;
+			if (room.backwall == 'sky') transparentBackground = true;	//If the decorative background layer is sky, set traansparentBackground to true.
 
-				resX = room.roomWidth * tilepixelwidth;
-				resY = room.roomHeight * tilepixelheight;
-				
-				var transparentBackground:Boolean = room.transparentBackground;
-				if (room.backwall == 'sky') transparentBackground = true;	//If the decorative background layer is sky, set traansparentBackground to true.
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 1. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
 
 			//####################
 			//      STAGE 2  DRAWING ROOM BORDERS
 			//####################
 			GameSession.currentSession.gr_stage = 2;
-			try
-			{
-				borderTop.x = borderBottom.x = -50;
-				borderRight.y = borderLeft.y = 0;
-				borderTop.y = 0;
-				borderLeft.x = 0;
-				borderBottom.y = room.roomPixelHeight - 1;
-				borderRight.x = room.roomPixelWidth - 1;
-				borderTop.scaleX = borderBottom.scaleX = room.roomPixelWidth / 100 + 1;
-				borderTop.scaleY = borderBottom.scaleY = 2;
-				borderRight.scaleY = borderLeft.scaleY = room.roomPixelHeight / 100;
-				borderRight.scaleX = borderLeft.scaleX = 2;
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 2. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+			borderTop.x = borderBottom.x = -50;
+			borderRight.y = borderLeft.y = 0;
+			borderTop.y = 0;
+			borderLeft.x = 0;
+			borderBottom.y = room.roomPixelHeight - 1;
+			borderRight.x = room.roomPixelWidth - 1;
+			borderTop.scaleX = borderBottom.scaleX = room.roomPixelWidth / 100 + 1;
+			borderTop.scaleY = borderBottom.scaleY = 2;
+			borderRight.scaleY = borderLeft.scaleY = room.roomPixelHeight / 100;
+			borderRight.scaleX = borderLeft.scaleX = 2;
+
 
 
 			//####################
@@ -451,30 +436,24 @@
 			backBmp.lock();
 			backBmp2.lock();
 			vodaBmp.lock();
-			try
-			{
-				frontBmp.fillRect(screenArea, 0); 
-				backBmp.fillRect(screenArea, 0);
-				backBmp2.fillRect(screenArea, 0);
-				vodaBmp.fillRect(screenArea, 0);
-				satsBmp.fillRect(screenArea, 0);
-				
-				lightBmp.fillRect(lightRect, 0xFF000000); //White
-				setLight();
-				layerLighting.visible = room.black && Settings.black;
-				warShadow();
-				
-				var darkness:int = 0xAA + room.darkness;
-				if (darkness > 0xFF) darkness = 0xFF;
-				if (darkness < 0) darkness = 0;
-				colorBmp.fillRect(screenArea, darkness * 0x1000000); //Black
-				shadBmp.fillRect(screenArea, 0xFFFFFFFF); 		   //White
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 3. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+
+			frontBmp.fillRect(screenArea, 0); 
+			backBmp.fillRect(screenArea, 0);
+			backBmp2.fillRect(screenArea, 0);
+			vodaBmp.fillRect(screenArea, 0);
+			satsBmp.fillRect(screenArea, 0);
+			
+			lightBmp.fillRect(lightRect, 0xFF000000); //White
+			setLight();
+			layerLighting.visible = room.black && Settings.black;
+			warShadow();
+			
+			var darkness:int = 0xAA + room.darkness;
+			if (darkness > 0xFF) darkness = 0xFF;
+			if (darkness < 0) darkness = 0;
+			colorBmp.fillRect(screenArea, darkness * 0x1000000); //Black
+			shadBmp.fillRect(screenArea, 0xFFFFFFFF); 		   //White
+
 
 				
 			//####################
@@ -484,7 +463,7 @@
 			var front:Sprite = new Sprite();	//Why are these defined and instantiated here?
 			var back:Sprite = new Sprite();
 			var back2:Sprite = new Sprite();	
-			var waterMovieClip:Sprite = new Sprite();	
+			var voda:Sprite = new Sprite();	
 			try
 			{
 				for each (var tileMaterial:* in tileArray)
@@ -511,274 +490,198 @@
 			}	
 				
 			//####################
-			//      STAGE 5   
+			//      STAGE 5   		TILE RENDERING
 			//####################
 			GameSession.currentSession.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
-			try
-			{					
-				for (var k:int = 0; k < room.roomWidth; k++) //for each tile in the room's horizontal rows...
+			for (var k:int = 0; k < room.roomWidth; k++) //for each tile in the room's horizontal rows...
+			{
+				for (var l:int = 0; l < room.roomHeight; l++) //for each tile in the room's vertical columns...
 				{
-					for (var l:int = 0; l < room.roomHeight; l++) //for each tile in the room's vertical columns...
+					var tile:Tile = room.getTile(k, l); //Set the tile to modify as the current tile in the grid.
+					room.tileKontur(k, l, tile);
+
+					if (tileArray[tile.tileTexture]) tileArray[tile.tileTexture].used = true;
+					if (backwallArray[tile.tileRearTexture]) backwallArray[tile.tileRearTexture].used = true;
+
+
+					if (tile.vid > 0 || tile.vid2 > 0 || tile.water)
 					{
+						var spriteWidth:int = k * tilepixelwidth;
+						var spriteHeight:int = l * tilepixelheight;
+						var tileSprite:MovieClip;
 
-						var tile:Tile = room.getTile(k, l); //Set the tile to modify as the current tile in the grid.
-						room.tileKontur(k, l, tile);
-
-						if (tileArray[tile.tileTexture]) tileArray[tile.tileTexture].used = true;
-						if (backwallArray[tile.tileRearTexture]) backwallArray[tile.tileRearTexture].used = true;
-
-
-						if (tile.vid > 0 || tile.vid2 > 0 || tile.water)
-						{
-							var spriteWidth:int = k * tilepixelwidth;
-							var spriteHeight:int = l * tilepixelheight;
-							var tileSprite:MovieClip;
-
-							if (tile.vid > 0) 
-							{				
-								tileSprite = new tileFront();
-								tileSprite.gotoAndStop(tile.vid);
-								if (tile.vRear) back2.addChild(tileSprite);
-								else front.addChild(tileSprite);
-								tileSprite.x = spriteWidth;
-								tileSprite.y = spriteHeight;
+						if (tile.vid > 0) 
+						{				
+							tileSprite = new tileFront();
+							tileSprite.gotoAndStop(tile.vid);
+							if (tile.vRear) back2.addChild(tileSprite);
+							else front.addChild(tileSprite);
+							tileSprite.x = spriteWidth;
+							tileSprite.y = spriteHeight;
+						}
+						if (tile.vid2 > 0) 
+						{				
+							tileSprite = new tileFront();
+							tileSprite.gotoAndStop(tile.vid2);
+							if (tile.v2Rear) back2.addChild(tileSprite);
+							else front.addChild(tileSprite);
+							tileSprite.x = spriteWidth;
+							tileSprite.y = spriteHeight;
+						}
+						if (tile.water) 
+						{				
+							tileSprite = new tileVoda();
+							tileSprite.gotoAndStop(room.tipWater+1);
+							if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) 
+							{
+								tileSprite.voda.gotoAndStop(2); //CRASH HERE
 							}
-							if (tile.vid2 > 0) 
-							{				
-								tileSprite = new tileFront();
-								tileSprite.gotoAndStop(tile.vid2);
-								if (tile.v2Rear) back2.addChild(tileSprite);
-								else front.addChild(tileSprite);
-								tileSprite.x = spriteWidth;
-								tileSprite.y = spriteHeight;
-							}
-							if (tile.water) 
-							{				
-								tileSprite = new tileVoda();
-								tileSprite.gotoAndStop(room.tipWater+1);
-								if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) tileSprite.waterMovieClip.gotoAndStop(2);
-								tileSprite.x = spriteWidth;
-								tileSprite.y = spriteHeight;
-								waterMovieClip.addChild(tileSprite);
-							}
+							tileSprite.x = spriteWidth;
+							tileSprite.y = spriteHeight;
+							voda.addChild(tileSprite);
 						}
 					}
 				}
 			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 5. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
 
-				
 			//####################
 			//      STAGE 6   
 			//####################
 			GameSession.currentSession.gr_stage = 6;
-			try
-			{
-				
-				vodaBmp.draw(waterMovieClip, null, null, null, null, false);
-				frontBmp.draw(front, null, null, null, null, false);
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 6. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+			vodaBmp.draw(voda, null, null, null, null, false);
+			frontBmp.draw(front, null, null, null, null, false);
+
 				
 				
 			//####################
-			//      STAGE 7  		// TILE LAYER
+			//      STAGE 7  		// Background rendering
 			//####################
 			GameSession.currentSession.gr_stage = 7;
-			try
-			{
-				drawBackWall(room.backwall, room.backform);
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 7. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+			drawBackWall(room.backwall, room.backform);
 					
-
 			//####################
 			//      STAGE 8  		// BACKWALL LAYER
 			//####################
 			GameSession.currentSession.gr_stage = 8;  //Draw Background items in backwallArray.
-			try
+			for (var m:int = 0; m < backwallArray.length; m++)
 			{
-				for (var m:int = 0; m < backwallArray.length; m++)
+				try 
 				{
-					try 
-					{
-						drawTileSprite(backwallArray[m], false, false);
-					} 
-					catch (err)
-					{
-						GameSession.currentSession.showError(err, 'Error, Stage 8. Back Layer drawing matterial: ' + backwallArray[m].id);
-					}
+					drawTileSprite(backwallArray[m], false, false);
+				} 
+				catch (err)
+				{
+					GameSession.currentSession.showError(err, 'Error, Stage 8. Back Layer drawing matterial: ' + backwallArray[m].id);
 				}
 			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 8. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
-
 
 			//####################
 			//      STAGE 9   		// CLIMBABLE LAYER
 			//####################
 			GameSession.currentSession.gr_stage = 9;  
-			try
+			for (var n:int = 0; n < backwallArray.length; n++)
 			{
-				for (var n:int = 0; n < backwallArray.length; n++)
+				try 
 				{
-					try 
-					{
-						drawTileSprite(backwallArray[n], true, false);
-					} 
-					catch (err)
-					{
-						GameSession.currentSession.showError(err, 'Error, Stage 9. Front Layer drawing matterial: ' + backwallArray[n].id);
-					}
+					drawTileSprite(backwallArray[n], true, false);
+				} 
+				catch (err)
+				{
+					GameSession.currentSession.showError(err, 'Error, Stage 9. Front Layer drawing matterial: ' + backwallArray[n].id);
 				}
 			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 9. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+
 
 
 			//####################
 			//      STAGE 10
 			//####################
-			GameSession.currentSession.gr_stage = 10; 
-			try
-			{
-				satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-				var darkness2:Number = 1 - (255 - darkness) /150;
-
-				//background objects
-				var ct:ColorTransform = new ColorTransform();
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 10. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
-
+			GameSession.currentSession.gr_stage = 10;
+			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
+			var darkness2:Number = 1 - (255 - darkness) /150;
+			var ct:ColorTransform = new ColorTransform(); //background objects
 
 			//####################
 			//      STAGE 11  
 			//####################
-			GameSession.currentSession.gr_stage = 11; // Drawing background object sprites. 
-			try
+			GameSession.currentSession.gr_stage = 11; // Drawing background object sprites.
+			for (var o:int = -2; o <= 3; o++) 
 			{
-				for (var o:int = -2; o <= 3; o++) 
-				{
-					if (o == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
+				if (o == -1) backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 
 
-					for (var p:int = 0; p > room.backobjs.length; p++)
-					{	
-						if (room.backobjs[p].layer == o && !room.backobjs[p].er || o == -2 && room.backobjs[p].er) 
+				for (var p:int = 0; p > room.backobjs.length; p++)
+				{	
+					if (room.backobjs[p].layer == o && !room.backobjs[p].er || o == -2 && room.backobjs[p].er) 
+					{
+						var backgroundMatrix:Matrix = new Matrix(); //New matrix to hold the translation data for the objects in the background.
+
+						backgroundMatrix.scale(room.backobjs[p].scX, room.backobjs[p].scY);
+
+						backgroundMatrix.tx = room.backobjs[p].X; // Object sprite's X offset
+						backgroundMatrix.ty = room.backobjs[p].Y; // Object sprite's Y offset
+						ct.alphaMultiplier = room.backobjs[p].alpha;
+
+
+						if (room.backobjs[p].vis) 
 						{
-							var backgroundMatrix:Matrix = new Matrix(); //New matrix to hold the translation data for the objects in the background.
-
-							backgroundMatrix.scale(room.backobjs[p].scX, room.backobjs[p].scY);
-
-							backgroundMatrix.tx = room.backobjs[p].X; // Object sprite's X offset
-							backgroundMatrix.ty = room.backobjs[p].Y; // Object sprite's Y offset
-							ct.alphaMultiplier = room.backobjs[p].alpha;
-
-
-							if (room.backobjs[p].vis) 
+							if (o <= 0) 
 							{
-								if (o <= 0) 
+								ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
+								backBmp.draw(room.backobjs[p].vis, backgroundMatrix, ct, room.backobjs[p].blend, null, true);
+							} 
+							else 
+							{
+								if (room.backobjs[p].light) 
 								{
-									ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
-									backBmp.draw(room.backobjs[p].vis, backgroundMatrix, ct, room.backobjs[p].blend, null, true);
+									if (darkness2 >= 0.43) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
+									else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 0.55+darkness2;
 								} 
-								else 
-								{
-									if (room.backobjs[p].light) 
-									{
-										if (darkness2 >= 0.43) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
-										else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 0.55+darkness2;
-									} 
-									else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
-									backBmp2.draw(room.backobjs[p].vis, backgroundMatrix, ct, room.backobjs[p].blend, null, true);
-									if (room.backobjs[p].light) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
-									else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
-								}
+								else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
+								backBmp2.draw(room.backobjs[p].vis, backgroundMatrix, ct, room.backobjs[p].blend, null, true);
+								if (room.backobjs[p].light) ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = 1;
+								else ct.redMultiplier = ct.greenMultiplier = ct.blueMultiplier = darkness2;
 							}
-							
-							if (room.backobjs[p].erase) satsBmp.draw(room.backobjs[p].erase, backgroundMatrix, null, 'erase', null, true);
-							if (room.backobjs[p].light) colorBmp.draw(room.backobjs[p].light, backgroundMatrix, ct, 'normal', null, true);
 						}
+						
+						if (room.backobjs[p].erase) satsBmp.draw(room.backobjs[p].erase, backgroundMatrix, null, 'erase', null, true);
+						if (room.backobjs[p].light) colorBmp.draw(room.backobjs[p].light, backgroundMatrix, ct, 'normal', null, true);
 					}
 				}
 			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 11. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
-
 
 			//####################
 			//      STAGE 12   - Apply Stage color transforms.
 			//####################
 			GameSession.currentSession.gr_stage = 12;   
-			try
+			if (room.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
 			{
-				if (room.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
-				{
-					frontBmp.colorTransform(frontBmp.rect, room.cTransform);
-					vodaBmp.colorTransform(vodaBmp.rect, room.cTransform);
-				}
+				frontBmp.colorTransform(frontBmp.rect, room.cTransform);
+				vodaBmp.colorTransform(vodaBmp.rect, room.cTransform);
+			}
 
-				shadBmp.applyFilter(frontBmp, frontBmp.rect, new Point(0, 0), dsFilter);
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 12. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+			shadBmp.applyFilter(frontBmp, frontBmp.rect, new Point(0, 0), dsFilter);
 
 
 			//####################
 			//      STAGE 13  - //Lighting
 			//####################
 			GameSession.currentSession.gr_stage = 13; // Darkening the background
-			try
+			if (room.cTransform) 
 			{
-				if (room.cTransform) 
+				backBmp.colorTransform(backBmp.rect, room.cTransform);
+				ct = new ColorTransform();
+				darkness2 = 1 + (170 - darkness) / 33;
+				ct.concat(room.cTransform);
+
+				if (darkness2 > 1) 
 				{
-					backBmp.colorTransform(backBmp.rect, room.cTransform);
-					ct = new ColorTransform();
-					darkness2 = 1 + (170 - darkness) / 33;
-					ct.concat(room.cTransform);
-
-					if (darkness2 > 1) 
-					{
-						ct.redMultiplier *= darkness2;
-						ct.greenMultiplier *= darkness2;
-						ct.blueMultiplier *= darkness2;
-					}
-
-					backBmp2.colorTransform(backBmp2.rect, ct);
+					ct.redMultiplier *= darkness2;
+					ct.greenMultiplier *= darkness2;
+					ct.blueMultiplier *= darkness2;
 				}
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 13. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
+
+				backBmp2.colorTransform(backBmp2.rect, ct);
 			}
 
 
@@ -786,141 +689,75 @@
 			//      STAGE 14  		//Color Filter
 			//####################
 			GameSession.currentSession.gr_stage = 14;  
-			try
-			{
-				backBmp2.draw(back, null, room.cTransform, null, null, false);
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 14. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+			backBmp2.draw(back, null, room.cTransform, null, null, false);
 
 
 			//####################
 			//      STAGE 15		// SATS 
 			//####################
 			GameSession.currentSession.gr_stage = 15;
-			try
+			if (transparentBackground) 
 			{
-				if (transparentBackground) 
-				{
-					satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-				}
-
-				backBmp.draw(colorBmp, null, null, 'hardlight');
-				backBmp.draw(shadBmp);
-
-				if (transparentBackground) 
-				{
-					backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-				}
+				satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 			}
-			catch (err:Error) 
+
+			backBmp.draw(colorBmp, null, null, 'hardlight');
+			backBmp.draw(shadBmp);
+
+			if (transparentBackground) 
 			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 15. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
+				backBmp.copyChannel(satsBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 			}
+
 				
-
 			//####################
 			//      STAGE 16 - Render Pink Cloud if it exists.
 			//####################
 			GameSession.currentSession.gr_stage = 16; 
-			try
+			if (room.gas > 0)
 			{
-				if (room.gas > 0)
-				{
-					backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
-					backgroundMatrix.ty = 520;
-					backBmp2.draw(getObj('back_pink_t', bgObjectCount), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
-				}
+				backgroundMatrix = new Matrix(); //Create a new transformation matrix and move the pink cloud to the bottom of the screen.
+				backgroundMatrix.ty = 520;
+				backBmp2.draw(getObj('back_pink_t', bgObjectCount), backgroundMatrix, new ColorTransform(1, 1, 1, 0.3));
 			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 16. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+
 
 
 			//####################
 			//      STAGE 17
 			//####################
 			GameSession.currentSession.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
-			try
+			for (var q:int = 0; q > tileArray.length; q++)
 			{
-				for (var q:int = 0; q > tileArray.length; q++)
-				{
-					drawTileSprite(tileArray[q], false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
-				}
+				drawTileSprite(tileArray[q], false, true);	//For each material in tileArray, draw the tile sprite. THIS IS WORKING.
+			}
 
-				backBmp2.draw(back2, null, room.cTransform, null, null, false); 
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 17. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
+			backBmp2.draw(back2, null, room.cTransform, null, null, false); 
+
 
 
 			//####################
 			//      STAGE 18   
 			//####################
 			GameSession.currentSession.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
-			//Something is wrong with grafon.
-			if (skyboxLayer == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, skyboxLayer is null!');
-			if (frontBmp == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, frontBmp is null!');
-			if (backBmp == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, backBmp is null!');
-			if (backBmp2 == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, backBmp2 is null!');
-			if (vodaBmp == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, vodaBmp is null!');
-			if (defTransform == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, defTransform is null!');
-			//something is wrong with the room
-			if (room == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, room is null!');
-			if (room.cTransform == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, room.cTransform is null!');
-			if (room.cTransformFon == null) trace('Grafon.as/drawLoc() - ERROR DURING STAGE 18, room.cTransformFon is null!');
+			if (room.cTransform && room.cTransformFon)
+			{
+				skyboxLayer.transform.colorTransform = room.cTransformFon;
+			} 
+			else if (skyboxLayer.transform.colorTransform != defTransform) 
+			{
+				skyboxLayer.transform.colorTransform = defTransform;
+			}
 
-			try
-			{
-				if (room.cTransform && room.cTransformFon)
-				{
-					skyboxLayer.transform.colorTransform = room.cTransformFon;
-				} 
-				else if (skyboxLayer.transform.colorTransform != defTransform) 
-				{
-					skyboxLayer.transform.colorTransform = defTransform;
-				}
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 18. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
-			finally
-			{
-				frontBmp.unlock();
-				backBmp.unlock();
-				backBmp2.unlock();
-				vodaBmp.unlock();
-			}
-			
-			//####################
-			//      STAGE 19
-			//####################
-			GameSession.currentSession.gr_stage = 19;  //Render all game objects.
-			try
-			{
-				drawAllObjs();  //Draw all active objects
-			}
-			catch (err:Error) 
-			{
-				trace('Grafon.as/drawLoc() - ERROR during stage 19. Error: "' + err.message + '".');
-				GameSession.currentSession.showError(err)
-			}
-			
-			//####################
-			//      STAGE 20 - FINISHED
-			//####################
-			GameSession.currentSession.gr_stage = 0;  //Screen is now rendered, reset graphics rendering stage.
+			frontBmp.unlock();
+			backBmp.unlock();
+			backBmp2.unlock();
+			vodaBmp.unlock();
+
+			GameSession.currentSession.gr_stage = 19;  // STAGE 19 - Render all game objects.
+			drawAllObjs();  //Draw all active objects
+
+			GameSession.currentSession.gr_stage = 0;  // STAGE 20 - FINISHED
 		}
 		
 
@@ -971,10 +808,8 @@
 			}
 		}
 		
-		// Filling the back wall with texture
-		public function drawBackWall(tex:String, sposob:int = 0):void
+		public function drawBackWall(tex:String, sposob:int = 0):void // Filling the back wall with texture
 		{
-			
 			if (tex == 'sky') return;
 			var backgroundMatrix:Matrix = new Matrix();
 			var fill:BitmapData = getObj(tex);
@@ -982,25 +817,24 @@
 			var baseSprite:Sprite = new Sprite();
 			baseSprite.graphics.beginBitmapFill(fill);
 
-			if (sposob == 0) 
+			switch (sposob) 
 			{
-				baseSprite.graphics.drawRect(0, 0, finalWidth, finalHeight);
-			} 
-			
-			else if (sposob == 1) 
-			{
-				baseSprite.graphics.drawRect(0, 0, 11 * tilepixelwidth - 10, finalHeight);
-				baseSprite.graphics.drawRect(37 * tilepixelwidth + 10, 0, finalWidth, finalHeight);
-			} 
+				case 0:
+					baseSprite.graphics.drawRect(0, 0, finalWidth, finalHeight);
+					break;
 
-			else if (sposob == 2)
-			{
-				baseSprite.graphics.drawRect(0, 16 * tilepixelheight + 10, finalWidth, finalHeight);
-			} 
+				case 1:
+					baseSprite.graphics.drawRect(0, 0, 11 * tilepixelwidth - 10, finalHeight);
+					baseSprite.graphics.drawRect(37 * tilepixelwidth + 10, 0, finalWidth, finalHeight);
+					break;
 
-			else if (sposob == 3) 
-			{
-				baseSprite.graphics.drawRect(0, 24 * tilepixelheight + 10, finalWidth, finalHeight);
+				case 2:
+					baseSprite.graphics.drawRect(0, 16 * tilepixelheight + 10, finalWidth, finalHeight);
+					break;
+
+				case 3:
+					baseSprite.graphics.drawRect(0, 24 * tilepixelheight + 10, finalWidth, finalHeight);
+					break;
 			}
 
 			backBmp.draw(baseSprite, backgroundMatrix, null, null, null, false);
@@ -1215,10 +1049,10 @@
 			var backgroundMatrix:Matrix = new Matrix();
 			backgroundMatrix.tx = tile.X * tilepixelwidth;
 			backgroundMatrix.ty = tile.Y * tilepixelheight;
-			waterMovieClip.gotoAndStop(room.tipWater + 1);
-			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) waterMovieClip.gotoAndStop(2);
-			else waterMovieClip.gotoAndStop(1);
-			vodaBmp.draw(waterMovieClip, backgroundMatrix, room.cTransform, (tile.water > 0) ? 'normal':'erase', null, false);
+			voda.gotoAndStop(room.tipWater + 1);
+			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) voda.gotoAndStop(2);
+			else voda.gotoAndStop(1);
+			vodaBmp.draw(voda, backgroundMatrix, room.cTransform, (tile.water > 0) ? 'normal':'erase', null, false);
 			if (recurs) drawWater(room.getTile(tile.X, tile.Y + 1), false);
 		}
 			
@@ -1295,7 +1129,7 @@
 				rx1 = nx2 - 25;
 				rx2 = nx1 + 25;
 			}
-			if (ny1<ny2)
+			if (ny1 < ny2)
 			{
 				ry1 = ny1 - 25;
 				ry2 = ny2 + 25;
