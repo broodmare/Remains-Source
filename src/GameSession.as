@@ -618,7 +618,7 @@ package
 			trace('GameSession.as/newGame2() - Entering room. 2/4');
 			try //enter the current room
 			{
-				game.enterCurrentLevel(); //!!!!
+				game.initializeLevel(); //!!!!
 				game.beginGame();
 			}
 			catch(err:Error)
@@ -711,8 +711,8 @@ package
 				t_die		= 0;
 				t_battle	= 0;
 
-				trace('GameSession.as/loadGame() - Entering current level.');
-				game.enterCurrentLevel();
+				trace('GameSession.as/loadGame() - Initializing level.');
+				game.initializeLevel();
 				trace('GameSession.as/loadGame() - Beginning game.');
 				game.beginGame();
 				log = '';
@@ -729,24 +729,6 @@ package
 				showError(err);
 			}
 		}
-		
-		// Call when entering a specific level
-		public function activateLevel(l:Level):void
-		{
-			trace('GameSession.as/activateLevel() - Activating level ID: "' + l.levelTemplate.id + '", Type: ' + l.levelTemplate.tip + '".');
-			try 
-			{
-				level = l;
-				grafon.drawSkybox(skybox, level.levelTemplate.skybox);
-				trace('GameSession.as/activateLevel() - Success.');
-			} 
-			catch (err) 
-			{
-				trace('GameSession.as/activateLevel() - Failed to activate level.');
-				showError(err);
-			}
-		}
-		
 		
 		// TODO: There is a graphical bug here (original author comment, not mine)
 		public function activateRoom(newRoom:Room):void // Call when entering a specific area
@@ -794,7 +776,6 @@ package
 			gc();
 
 			trace('GameSession.as/activateRoom() - FINISHED activating room: "' + newRoom.id + '".');
-			//showError(err);
 		}
 		
 		public function redrawLoc():void
@@ -811,6 +792,21 @@ package
 			}
 		}
 		
+		public function renderSkybox(l:Level):void
+		{
+			trace('Game.as/renderSkybox() - Rendering skybox for level: "' + l.levelTemplate.id + '", Type: ' + l.levelTemplate.tip + '".');
+			try 
+			{
+				level = l;
+				grafon.drawSkybox(skybox, level.levelTemplate.skybox);
+			} 
+			catch (err) 
+			{
+				trace('Game.as/renderSkybox() - ERROR - Failed while rendering skybox!');
+				showError(err);
+			}
+		}
+
 		public function exitLevel(fast:Boolean = false):void
 		{
 			trace('GameSession.as/exitLevel() - exiting Level.');
@@ -845,7 +841,7 @@ package
 				if (t_exit == 19) 
 				{
 					cur('arrow');
-					game.enterCurrentLevel();
+					game.initializeLevel();
 				}
 				if (t_exit == 18 && clickReq> 0) waitLoadClick();
 				if (t_exit == 16) 
@@ -888,7 +884,7 @@ package
 						if (gg.sost == 3) 
 						{
 							game.curLevelID = game.baseId;
-							game.enterCurrentLevel();
+							game.initializeLevel();
 						} 
 						else 
 						{

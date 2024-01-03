@@ -235,9 +235,9 @@ package locdata
 			return true;
 		}
 		
-		public function enterCurrentLevel():void
+		public function initializeLevel():void
 		{
-			trace('Game.as/enterCurrentLevel() - Entering current level.');
+			trace('Game.as/initializeLevel() - Entering current level.');
 			Level.locN += 5;
 			if (GameSession.currentSession.level && objs) GameSession.currentSession.level.saveObjs(objs);
 
@@ -260,8 +260,13 @@ package locdata
 			}
 			if (!first) triggers['firstroom'] = 1;
 			crea = false;
-			GameSession.currentSession.activateLevel(curLevel.level);
+
+			trace('Game.as/initializeLevel() - Rendering skybox.');
+			GameSession.currentSession.renderSkybox(curLevel.level);
+
+			trace('Game.as/initializeLevel() - calling enterLevel');
 			GameSession.currentSession.level.enterLevel(first, curCoord);
+			
 			curCoord = null;
 
 			if (curLevel.id == 'rbl') 
@@ -289,7 +294,7 @@ package locdata
 				curLevel.upStage = false;
 			}
 		}
-		
+
 		public function Encounter():void // Redirect to another room
 		{
 			switch(curLevelID)
@@ -318,9 +323,9 @@ package locdata
 		//Transition to a new room
 		//	Game.as/ 		gotoLevel(newLand:String)
 		//	GameSession.as/ GameSession.currentSession.exitLevel();
-		//	Game.as/ 		enterCurrentLevel();
-		//	GameSession.as/ GameSession.currentSession.activateLevel(curLevel.level);
-		//	GameSession.as/ GameSession.currentSession.level.enterLevel(first);
+		//	Game.as/ 		initializeLevel(); - INITIALIZE LEVEL
+		//	GameSession.as/ GameSession.currentSession.renderSkybox(curLevel.level); - RENDER THE SKYBOX
+		//	GameSession.as/ GameSession.currentSession.level.enterLevel(first); - ENTER THE LEVEL
 		//	Game.as/ 		activateRoom();
 		public function gotoLevel(newLevel:String, coord:String = null, fast:Boolean = false):void
 		{
