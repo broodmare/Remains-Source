@@ -333,21 +333,21 @@ package interdata
 			else if (page2==4) 
 			{
 				vis.info.y = vis.nazv.y;
-				var s:String=Res.messText(event.currentTarget.id.text,0,false);
+				var s:String = Res.messText(event.currentTarget.id.text, 0, false);
 				s=s.replace(/&lp/g,GameSession.currentSession.pers.persName);
 				s=s.replace(/\[/g,"<span class='yel'>");
 				s=s.replace(/\]/g,"</span>");
-				vis.info.htmlText=s;
+				vis.info.htmlText = s;
 			} 
-			else if (page2==5) 
+			else if (page2 == 5) 
 			{
 				if (vis.ico.numChildren>0) vis.ico.removeChildAt(0);
 				Unit.initIco(event.currentTarget.id.text)
 				if (Unit.arrIcos[event.currentTarget.id.text]) vis.ico.addChild(Unit.arrIcos[event.currentTarget.id.text]);
-				vis.nazv.text=event.currentTarget.objectName.text;
+				vis.nazv.text = event.currentTarget.nazv.text;
 				vis.info.htmlText=Res.txt('unit',event.currentTarget.id.text,1)+'\n'+infoUnit(event.currentTarget.id.text, event.currentTarget.kol.text);
 				vis.info.y=vis.ico.y+vis.ico.height+20;
-				vis.ico.x=685-vis.ico.width/2; //460 910
+				vis.ico.x = 685 - vis.ico.width / 2;
 			}
 			if (vis.scText) vis.scText.visible=false;
 			if (vis.info.height<vis.info.textHeight && vis.scText) 
@@ -371,7 +371,7 @@ package interdata
 		//set public
 		public function infoUnit(id:String, kol):String 
 		{
-			var n:int=0, delta;
+			var n:int = 0, delta;
 			//юнит
 			var un = XmlBook.getXML("units").unit.(@id == id);
 			if (un.length()==0 || un.@cat!='3') return '';
@@ -382,10 +382,10 @@ package interdata
 				var pun = XmlBook.getXML("units").unit.(@id == un.@parent);
 			}
 			//дельта
-			delta=getParam(un,pun,'vis','dkill');
-			if (delta==null) delta=5;
-			if (delta<=0) n=10;
-			else n=Math.floor(int(kol)/delta);
+			delta=getParam(un, pun, 'vis', 'dkill');
+			if (delta == null) delta = 5;
+			if (delta <= 0) n = 10;
+			else n = Math.floor(int(kol) / delta);
 			
 			var v_hp=getParam(un,pun,'comb','hp');
 			var v_skin=getParam(un,pun,'comb','skin');
@@ -408,7 +408,7 @@ package interdata
 				if (n>=1) 
 				{
 					//ХП
-					s+=Res.txt('pip', 'hp')+': '+yel(v_hp)+'\n';
+					s += Res.txt('pip', 'hp')+': '+yel(v_hp)+'\n';
 					//порог урона и броня
 					if (v_skin) 	s+=Res.txt('pip', 'skin')+': '+yel(v_skin)+'\n';
 					if (v_aqual) 

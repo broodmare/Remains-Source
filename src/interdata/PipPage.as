@@ -224,9 +224,9 @@ package interdata
 				{
 					vis.info.text = '';
 				}
-				if (vis.objectName != null) 
+				if (vis.nazv != null) 
 				{
-					vis.objectName.text = '';
+					vis.nazv.text = '';
 				}
 				if (vis.bottext != null) 
 				{
@@ -471,21 +471,20 @@ package interdata
 			if (tip == 'item') s = Res.txt('item', id, 1)
 			else s = Res.txt('eff', id, 1);
 			if (id.substr(-3) == '_ad') id=id.substr(0, id.length - 3);
-			var dp = XmlBook.getXML(tip);
-			if (dp.length() == 0) return s;
-			dp = dp.(@id == id);
+
+			var dp = XmlBook.getXML(tip).skill.(@id == id);
 			if (dp.length() == 0) return s;
 			dp = dp[0];
 
 			//определение текущего уровня
 			var lvl = 1;
 			var pers:Pers = GameSession.currentSession.pers;
-			if (tip == 'perk')
+			if (tip == 'perks')
 			{
 				lvl = pers.perks[id];
 				if (lvl == null) lvl = 0;
 			} 
-			else if (tip == 'skill') 
+			else if (tip == 'skills') 
 			{
 				lvl=pers.getSkLevel(pers.skills[id]);
 			} 
@@ -805,7 +804,7 @@ package interdata
 		//set public
 		public function infoItem(tip:String, id:String, objectName:String, craft:int=0):void
 		{
-			vis.objectName.text = objectName;
+			vis.nazv.text = objectName;
 			var s:String = '';
 			if (id.substr(0, 2) == 's_') 
 			{
@@ -847,19 +846,23 @@ package interdata
 				}
 				if (craft==1) s+=craftInfo(id);
 			} 
-			else if (tip==Item.L_AMMO) 
+			else if (tip == Item.L_AMMO) 
 			{
-				var ammo=inv.items[id].xml;
-				if (ammo.@base.length()) {
-					vis.objectName.text=Res.txt('item',ammo.@base);
-					if (ammo.@mod>0) {
-						vis.objectName.text+='\n'+Res.txt('pip', 'ammomod_'+ammo.@mod);
-					} else {
-						vis.objectName.text+='\n'+Res.txt('pip', 'ammomod_0');
+				var ammo = inv.items[id].xml;
+				if (ammo.@base.length()) 
+				{
+					vis.nazv.text = Res.txt('item',ammo.@base);
+					if (ammo.@mod>0) 
+					{
+						vis.nazv.text += '\n' + Res.txt('pip', 'ammomod_' + ammo.@mod);
+					} 
+					else 
+					{
+						vis.nazv.text += '\n' + Res.txt('pip', 'ammomod_0');
 					}
 				}
 				setIco();
-				s=infoStr(tip, id);
+				s = infoStr(tip, id);
 			} 
 			else 
 			{

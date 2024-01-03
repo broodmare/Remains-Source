@@ -551,7 +551,7 @@
 
 		public function mainStep(event:Event):void  // Runs when entering the frame.
 		{
-			if (mainMenuActive) 
+			if (mainMenuActive)
 			{
 				step();
 			}
@@ -592,6 +592,12 @@
 				currentSession.step();
 			}
 		}
+
+//########################################
+//##
+//##	WINDOWS AND BUTTONS
+//##
+//########################################
 
 
 		private function localizeMainMenuWindows():void
@@ -687,8 +693,6 @@
 
 		}
 
-
-
 		public function showMainButtons(bool:Boolean):void
 		{
 			mainMenuWindow.newGameButton.visible  = bool;
@@ -764,8 +768,8 @@
 			{
 				trace('MainMenuButtons.as/completeHandler() - Error load');
 			}
-			
-       }	
+       	}
+
 		public function languageButtonPress(event:MouseEvent):void //What to do when a langauge button is pressed.
 		{
 			trace('MainMenuButtons.as/languageButtonPress() - Language : "' + event.currentTarget.n.text + '" pressed. Current Language: "' + Languages.languageName + '."');
@@ -788,28 +792,22 @@
 			
 		}
 
-
-
-
 		//Load Game Window
 		public function clickedButtonLoadGame(event:MouseEvent):void
 		{
 			ffil = [new FileFilter(Res.txt('pip', 'gamesaves') + " (*.sav)", "*.sav")];
 			file.browse(ffil);
 		}
-
 		public function clickedButtonCloseLoadGameWindow(event:MouseEvent):void
 		{
 			closeLoadGameWindow();
 		}
-
 
 		//New Game Window
 		public function clickedButtonCloseNewGameWindow(event:MouseEvent):void
 		{
 			closeNewGameWindow();
 		}
-
 		public function clickedButtonStartNewGame(event:MouseEvent):void //click OK in the new game window
 		{
 			trace('MainMenuButtons.as/clickedButtonStartNewGame() - Executing clickedButtonStartNewGame().');
@@ -848,7 +846,6 @@
 			mainMenuWindow.adviceSnippetBox.text = Res.advText(currentSession.nadv);
 			mainMenuWindow.adviceSnippetBox.y = gameWindow.stage.stageHeight - mainMenuWindow.adviceSnippetBox.textHeight - 40;
 		}
-
 		public function updateMenuButtonLocalization():void
 		{
 			trace('MainMenuButtons.as/updateMainMenuLanguage() - Updating main menu button localization.');
@@ -873,6 +870,4 @@
 			menuButton.txt.visible = (menuButton.glow.textWidth < 1)
 		}
 	}
-
-
 }

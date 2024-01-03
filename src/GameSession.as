@@ -115,7 +115,6 @@ package
 		public var load_log:String = '';			//This is the text that apepars onscreen during boot.
 
 		//Maps
-		public var levelPath:String;					//TODO: Check if this is needed.
 		public var allLevelsArray:Array;				//Stores all rooms for the current level as an array of XMLs.
 		public var levelsFound:int = 0;
 		public var levelsLoaded:int = 0;
@@ -273,9 +272,10 @@ package
 			trace('GameSession.as/init2() - Applying mouse settings.');
 			if (!Settings.systemCursor) Mouse.cursor = 'arrow';
 			
-			//loading room maps
-			allLevelsArray = [];
 			trace('GameSession.as/init2() - Creating allLevelsArray and loading all level XMLs from the XMLbook.');
+			allLevelsArray = [];
+
+			//TODO: Stop copying this entire XML file.
 			var levelsXML:XML = XmlBook.getXML("levels");
 
 			for each(var levelData:XML in levelsXML.level) 
@@ -373,8 +373,7 @@ package
 			}
 		}
 
-		//Pause and calling the pipbuck if focus is lost
-		public function onDeactivate(event:Event):void  
+		public function onDeactivate(event:Event):void //Pause and calling the pipbuck if focus is lost 
 		{
 			if (gameState == 1) 
 			{
@@ -383,8 +382,7 @@ package
 			if (gameState > 0 && !Settings.alicorn) saveGame();
 		}
 		
-		//Pause and call pipbuck if window size is changed
-		public function resizeScreen():void
+		public function resizeScreen():void //Pause and call pipbuck if window size is changed
 		{
 			if (gameState > 0) 
 			{
@@ -436,7 +434,7 @@ package
 				return;
 			}
 
-			//gameState = -1; // I don't think this is necessary.
+			gameState = -1;
 			opt = nopt;
 			newName = nnewName;
 
@@ -708,15 +706,10 @@ package
 		
 		public function redrawLoc():void
 		{
+			trace('GameSession.as/redrawLoc() - REDRAWING ROOM');
 			grafon.drawLoc(room);
 			cam.setLoc(room);
 			gui.setAll();
-		}
-		
-		public function renderSkybox():void
-		{
-			trace('Game.as/renderSkybox() - Rendering skybox for level: "' + level.levelTemplate.id + '".');
-			grafon.drawSkybox(skybox, level.levelTemplate.skybox);
 		}
 
 		public function exitLevel(fast:Boolean = false):void
@@ -820,9 +813,8 @@ package
 			}
 		}
 
-		public function step():void // Main loop
+		public function step():void
 		{
-
 			if (verror.visible) // Pause gameplay with an error message is showing.
 			{
 				return;

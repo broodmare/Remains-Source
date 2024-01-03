@@ -331,22 +331,32 @@
 		//							Initial Room Drawing
 		//================================================================================================		
 		
+		// When this function is called, it takes a texture name and grLoader ID.
+		// It then looks through the current Grafon's grLoaderArray for [loaderID].
+		// In [LoaderID] it will then try run the getObj function contained inside it's 'resource' property.
+		// The grLoader.resource will then (hopefully?) return the result.
 		public function getObj(textureName:String, loaderID:int = 0):* 
 		{
-			return this.grLoaderArray[loaderID].resource.getObj(textureName);
-			// When this function is called, it takes a texture name and grLoader ID.
-			// It then looks through the current Grafon's grLoaderArray for [loaderID].
-			// In [LoaderID] it will then try run the getObj function contained inside it's 'resource' property.
-			// The grLoader.resource will then (hopefully?) return the result.
+			trace('Grafon.as/getObj - Attempting to load texture: "' + textureName + '".');
+			var obj:* = grLoaderArray[loaderID].resource.getObj(textureName);
+			trace('Grafon.as/getObj - Returning: ', obj);
+			return obj;
 		}
 		
-		public function drawSkybox(skybox:MovieClip, textureID:String):void
+		public function drawSkybox():void
 		{
-			if (textureID == '' || textureID == null) textureID = 'skyboxDefault';
-			if (skyboxLayer && skybox.contains(skyboxLayer)) skybox.removeChild(skyboxLayer);
+			var textureID:String = GameSession.currentSession.level.levelTemplate.skybox;
+			if (textureID == '' || textureID == null) textureID = 'fonDefault';
+			trace('Grafon.as/drawSkybox() - Rendering skybox texture ID: "' + textureID + '".');
+
+			if (skyboxLayer && GameSession.currentSession.skybox.contains(skyboxLayer)) GameSession.currentSession.skybox.removeChild(skyboxLayer);
 			
+			trace('Grafon.as/drawSkybox() - ATTEMPING TO SET skyboxLayer');
 			skyboxLayer = getObj(textureID); //Set the background to the specified texture.
-			if (skyboxLayer) skybox.addChild(skyboxLayer); //If the background exists, add it to the background sprite.
+			if (skyboxLayer != null) trace('Grafon.as/drawSkybox() - Sucessfully set skyboxLayer!');
+			else trace('Grafon.as/drawSkybox() - ERROR WHILE SETTING skyboxLayer!');
+
+			if (skyboxLayer) GameSession.currentSession.skybox.addChild(skyboxLayer); //If the background exists, add it to the background sprite.
 		}
 		
 		public function setSkyboxSize(nx:Number, ny:Number):void
@@ -362,7 +372,7 @@
 				} 
 				else 
 				{
-					var koef:Number = skyboxLayer.width/skyboxLayer.height;
+					var koef:Number = skyboxLayer.width / skyboxLayer.height;
 					skyboxLayer.x = skyboxLayer.y = 0;
 					if (nx >= ny*koef)
 					{
@@ -402,6 +412,7 @@
 			//####################
 			//      STAGE 1   	
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 1/20');
 			GameSession.currentSession.gr_stage = 1; 
 			room = passedRoom;
 			resX = room.roomWidth * tilepixelwidth;
@@ -414,6 +425,7 @@
 			//####################
 			//      STAGE 2  DRAWING ROOM BORDERS
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 2/20');
 			GameSession.currentSession.gr_stage = 2;
 			borderTop.x = borderBottom.x = -50;
 			borderRight.y = borderLeft.y = 0;
@@ -430,6 +442,7 @@
 			//####################
 			//      STAGE 3   
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 3/20');
 			GameSession.currentSession.gr_stage = 3;
 			frontBmp.lock();
 			backBmp.lock();
@@ -457,6 +470,7 @@
 			//####################
 			//      STAGE 4   
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 4/20');
 			GameSession.currentSession.gr_stage = 4;
 			var front:Sprite = new Sprite();	//Why are these defined and instantiated here?
 			var back:Sprite = new Sprite();
@@ -477,6 +491,7 @@
 			//####################
 			//      STAGE 5   		TILE RENDERING
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 5/20');
 			GameSession.currentSession.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
 			for (var k:int = 0; k < room.roomWidth; k++) //for each tile in the room's horizontal rows...
 			{
@@ -514,12 +529,12 @@
 							tileSprite.y = spriteHeight;
 						}
 						if (tile.water) 
-						{				
+						{
 							tileSprite = new tileVoda();
 							tileSprite.gotoAndStop(room.tipWater+1);
 							if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) 
 							{
-								tileSprite.voda.gotoAndStop(2); //CRASH HERE
+								tileSprite.voda.gotoAndStop(2);
 							}
 							tileSprite.x = spriteWidth;
 							tileSprite.y = spriteHeight;
@@ -532,6 +547,7 @@
 			//####################
 			//      STAGE 6   
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 6/20');
 			GameSession.currentSession.gr_stage = 6;
 			vodaBmp.draw(voda, null, null, null, null, false);
 			frontBmp.draw(front, null, null, null, null, false);
@@ -540,6 +556,7 @@
 			//####################
 			//      STAGE 7  		// Background rendering
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 7/20');
 			GameSession.currentSession.gr_stage = 7;
 			drawBackWall(room.backwall, room.backform);
 			
@@ -547,6 +564,7 @@
 			//####################
 			//      STAGE 8  		// BACKWALL LAYER
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 8/20');
 			GameSession.currentSession.gr_stage = 8;  //Draw Background items in backwallArray.
 			for (var m:int = 0; m < backwallArray.length; m++)
 			{
@@ -557,6 +575,7 @@
 			//####################
 			//      STAGE 9   		// CLIMBABLE LAYER
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 9/20');
 			GameSession.currentSession.gr_stage = 9;  
 			for (var n:int = 0; n < backwallArray.length; n++)
 			{
@@ -567,6 +586,7 @@
 			//####################
 			//      STAGE 10
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 10/20');
 			GameSession.currentSession.gr_stage = 10;
 			satsBmp.copyChannel(backBmp, backBmp.rect, new Point(0, 0), BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
 			var darkness2:Number = 1 - (255 - darkness) /150;
@@ -575,6 +595,7 @@
 			//####################
 			//      STAGE 11  
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 11/20');
 			GameSession.currentSession.gr_stage = 11; // Drawing background object sprites.
 			for (var o:int = -2; o <= 3; o++) 
 			{
@@ -624,6 +645,7 @@
 			//####################
 			//      STAGE 12   - Apply Stage color transforms.
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 12/20');
 			GameSession.currentSession.gr_stage = 12;   
 			if (room.cTransform) //If the current room has a color transform, apply it to the front and water bitmaps.
 			{
@@ -637,6 +659,7 @@
 			//####################
 			//      STAGE 13  - //Lighting
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 13/20');
 			GameSession.currentSession.gr_stage = 13; // Darkening the background
 			if (room.cTransform) 
 			{
@@ -659,6 +682,7 @@
 			//####################
 			//      STAGE 14  		//Color Filter
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 14/20');
 			GameSession.currentSession.gr_stage = 14;  
 			backBmp2.draw(back, null, room.cTransform, null, null, false);
 
@@ -666,6 +690,7 @@
 			//####################
 			//      STAGE 15		// SATS 
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 15/20');
 			GameSession.currentSession.gr_stage = 15;
 			if (transparentBackground) 
 			{
@@ -684,6 +709,7 @@
 			//####################
 			//      STAGE 16 - Render Pink Cloud if it exists.
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 16/20');
 			GameSession.currentSession.gr_stage = 16; 
 			if (room.gas > 0)
 			{
@@ -697,6 +723,7 @@
 			//####################
 			//      STAGE 17
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 17/20');
 			GameSession.currentSession.gr_stage = 17;  //Draw foreground objects such as beams, stairs, etc. 
 			for (var q:int = 0; q > tileArray.length; q++)
 			{
@@ -710,24 +737,31 @@
 			//####################
 			//      STAGE 18   
 			//####################
+			trace('Grafon.as/drawLoc - RENDERING STEP 18/20');
 			GameSession.currentSession.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
-			if (room.cTransform && room.cTransformFon)
+			if (skyboxLayer != null)
 			{
-				skyboxLayer.transform.colorTransform = room.cTransformFon;
-			} 
-			else if (skyboxLayer.transform.colorTransform != defTransform) 
-			{
-				skyboxLayer.transform.colorTransform = defTransform;
+				if (room.cTransform && room.cTransformFon)
+				{
+					skyboxLayer.transform.colorTransform = room.cTransformFon;
+				} 
+				else if (skyboxLayer.transform.colorTransform != defTransform) 
+				{
+					skyboxLayer.transform.colorTransform = defTransform;
+				}
 			}
+			else trace('Grafon.as/drawLoc() - ERROR IN STAGE 18 - skyboxLayer is null!');
 
 			frontBmp.unlock();
 			backBmp.unlock();
 			backBmp2.unlock();
 			vodaBmp.unlock();
 
+			trace('Grafon.as/drawLoc - RENDERING STEP 19/20');
 			GameSession.currentSession.gr_stage = 19;  // STAGE 19 - Render all game objects.
 			drawAllObjs();  //Draw all active objects
 
+			trace('Grafon.as/drawLoc - RENDERING FINISHED 20/20');
 			GameSession.currentSession.gr_stage = 0;  // STAGE 20 - FINISHED
 		}
 		

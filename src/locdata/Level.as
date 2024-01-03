@@ -861,19 +861,19 @@ package locdata
 				}
 				room.kolEnHid=Math.floor(Math.random()*4);
 			}
-			if (room.tipEnemy==5 || room.tipEnemy==10) 
+			if (room.tipEnemy == 5 || room.tipEnemy == 10) 
 			{
-				room.setKolEn(2,1,3,1);
+				room.setKolEn(2, 1, 3, 1);
 			}
-			if (levelTemplate.biom==11) 
+			if (levelTemplate.biom == 11) 
 			{
-					room.setKolEn(2,5,8,0);
+					room.setKolEn(2, 5, 8, 0);
 			}
 		}
 		
 		public function createMap():void
 		{
-			map=new BitmapData(Settings.roomTileWidth*(maxLocX-minLocX), Settings.roomTileHeight*(maxLocY-minLocY),true,0);
+			map = new BitmapData(Settings.roomTileWidth * (maxLocX - minLocX), Settings.roomTileHeight * (maxLocY - minLocY), true, 0);
 		}
 		
 //==============================================================================================================================		
@@ -881,9 +881,11 @@ package locdata
 //==============================================================================================================================		
 		
 		
-		public function enterLevel(first:Boolean = false, coord:String = null):void //enter the level
+		public function enterLevel(first:Boolean = false, coord:String = null):void
 		{
 			trace('Level.as/enterLevel - Entering level...');
+
+			GameSession.currentSession.grafon.drawSkybox(); // Render Skybox
 
 			levelTemplate.visited = true;
 			locZ = 0;
@@ -915,13 +917,13 @@ package locdata
 		public function saveObjs(arr:Array):void
 		{
 			if (rnd) return;
-			for (var i:int = minLocX; i<maxLocX; i++) 
+			for (var i:int = minLocX; i < maxLocX; i++) 
 			{
-				for (var j:int = minLocY; j<maxLocY; j++) 
+				for (var j:int = minLocY; j < maxLocY; j++) 
 				{
-					for (var e=minLocZ; e<maxLocZ; e++) 
+					for (var e = minLocZ; e < maxLocZ; e++) 
 					{
-						if (roomArray[i][j][e]==null) continue;
+						if (roomArray[i][j][e] == null) continue;
 						roomArray[i][j][e].saveObjs(arr);
 					}
 				}
@@ -973,27 +975,13 @@ package locdata
 
 			if (prob != '')
 			{
-				if (probs != null)
-				{
-					newRoom = probs[prob][locX][locY][locZ];
-				}
-				else
-				{
-					trace('Level.as/activateRoom() - Error: Failed to set up new room, probs is null.')
-				}
-				
+				if (probs != null) newRoom = probs[prob][locX][locY][locZ];
+				else trace('Level.as/activateRoom() - Error: Failed to set up new room, probs is null.')
 			}
 			else
 			{
-				if (roomArray != null)
-				{
-					newRoom = roomArray[locX][locY][locZ];
-				}
-				else
-				{
-					trace('Level.as/activateRoom() - Error: Failed to set up new room, roomArray is null.')
-				}
-				
+				if (roomArray != null) newRoom = roomArray[locX][locY][locZ];
+				else trace('Level.as/activateRoom() - Error: Failed to set up new room, roomArray is null.')
 			}
 
 			if (newRoom != null)

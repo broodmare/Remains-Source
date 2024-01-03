@@ -244,15 +244,15 @@
 				statHead.numb.text=Res.txt('pip', 'is2');
 				for each (var dp:XML in XmlBook.getXML("perks").perk) 
 				{
-					if (dp.@tip==1) 
+					if (dp.@tip == 1) 
 					{
-						var res:int=pers.perkPoss(dp.@id, dp);
-						if (res<0) continue;
-						var numb=pers.perks[dp.@id];
-						if (numb==null) numb=0;
-						var maxlvl=1;
-						if (dp.@lvl.length()) maxlvl=dp.@lvl;
-						var n:Object={id:dp.@id, objectName:Res.txt('eff',dp.@id), lvl:(numb+1), maxlvl:maxlvl, ok:(res>0), sort:(1-res)};
+						var res:int = pers.perkPoss(dp.@id, dp);
+						if (res < 0) continue;
+						var numb = pers.perks[dp.@id];
+						if (numb == null) numb = 0;
+						var maxlvl = 1;
+						if (dp.@lvl.length()) maxlvl = dp.@lvl;
+						var n:Object = {id:dp.@id, objectName:Res.txt('eff', dp.@id), lvl:(numb+1), maxlvl:maxlvl, ok:(res>0), sort:(1-res)};
 						arr.push(n);
 					}
 				}
@@ -430,11 +430,11 @@
 						if (Settings.alicorn && Res.istxt('eff',id+'_al')) 
 						{
 							vis.info.htmlText=Res.rainbow(Res.txt('eff',id+'_al'));
-							vis.info.htmlText+='<br><br>'+effStr('skill',id+'_al');
+							vis.info.htmlText+='<br><br>'+effStr('skills',id+'_al');
 						} 
 						else 
 						{
-							vis.info.htmlText=effStr('skill',id);
+							vis.info.htmlText=effStr('skills',id);
 						}
 					} 
 					else if (page2==6) 
@@ -456,12 +456,16 @@
 		//set public 
 		public function selSkill(id:String):void
 		{
-			if (pers.skillIsPost(id) && skills[id].lvl<Pers.maxPostSkLvl || skills[id].lvl<maxSkLvl) {
-				if (skillPoint>0) {
+			if (pers.skillIsPost(id) && skills[id].lvl < Pers.maxPostSkLvl || skills[id].lvl < maxSkLvl) 
+			{
+				if (skillPoint>0) 
+				{
 					skills[id].lvl++;
 					skillPoint--;
 					vis.butOk.visible=true;
-				} else {
+				}
+				else 
+				{
 					GameSession.currentSession.gui.infoText('noSkillPoint');
 				}
 			}

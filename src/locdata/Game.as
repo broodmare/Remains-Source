@@ -261,9 +261,8 @@ package locdata
 			if (!first) triggers['firstroom'] = 1;
 			crea = false;
 
-			trace('Game.as/initializeLevel() - Updating current level and rendering skybox.');
-			GameSession.currentSession.level = curLevel.level; // Pulled setting the current level out of 'renderSkybox()'.
-			GameSession.currentSession.renderSkybox();
+			trace('Game.as/initializeLevel() - Updating the current GameSession level.');
+			GameSession.currentSession.level = curLevel.level;
 
 			trace('Game.as/initializeLevel() - calling enterLevel');
 			GameSession.currentSession.level.enterLevel(first, curCoord);

@@ -319,29 +319,29 @@ package interdata
 			if (page2==1) 
 			{
 				assId=event.currentTarget.id.text;
-				infoItem(Item.L_WEAPON,event.currentTarget.rid.text,event.currentTarget.objectName.text);
+				infoItem(Item.L_WEAPON,event.currentTarget.rid.text, event.currentTarget.nazv.text);
 			}
-			if (page2==2) 
+			if (page2 == 2) 
 			{
 				assId=event.currentTarget.id.text;
-				infoItem(Item.L_ARMOR,event.currentTarget.id.text,event.currentTarget.objectName.text);
+				infoItem(Item.L_ARMOR,event.currentTarget.id.text, event.currentTarget.nazv.text);
 			}
-			if (page2==3 || page2==4) 
+			if (page2 == 3 || page2 == 4) 
 			{
 				if (page2==3) assId=event.currentTarget.id.text;
-				infoItem(Item.L_ITEM,event.currentTarget.id.text,event.currentTarget.objectName.text);
+				infoItem(Item.L_ITEM,event.currentTarget.id.text, event.currentTarget.nazv.text);
 			}
-			if (page2==5) 
+			if (page2 == 5) 
 			{
-				infoItem(Item.L_AMMO,event.currentTarget.id.text,event.currentTarget.objectName.text);
+				infoItem(Item.L_AMMO,event.currentTarget.id.text, event.currentTarget.nazv.text);
 			}
-			if (page2>=3) 
+			if (page2 >= 3) 
 			{
-				if (event.currentTarget.id.text!=overId) 
+				if (event.currentTarget.id.text != overId) 
 				{
-					overId=event.currentTarget.id.text;
-					overItem=event.currentTarget;
-					over_t=30;
+					overId = event.currentTarget.id.text;
+					overItem = event.currentTarget;
+					over_t = 30;
 				}
 			}
 		}

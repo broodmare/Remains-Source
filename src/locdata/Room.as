@@ -182,58 +182,50 @@ package locdata
 
 		public function Room(l:Level, nroom:XML, rnd:Boolean, roomParamObj:Object = null) 
 		{
-			//trace('Room.as/Room() - Building room: "' + nroom.@name + '" and adding it to the level room array.');
-			try
+
+			level = l;
+			roomWidth = Settings.roomTileWidth;
+			roomHeight = Settings.roomTileHeight;
+			roomPixelWidth = roomWidth * Settings.tilePixelWidth;
+			roomPixelHeight = roomHeight * Settings.tilePixelHeight;
+			otstoy = new Tile(-1, -1);
+
+			units 			= [];
+			ups 			= [];
+			objs 			= [];
+			activeObjects 	= [];
+			areas 			= [];
+			saves 			= [];
+			enspawn 		= [];
+			backobjs 		= [];
+			roomTileArray 	= [];
+			signposts 		= [];
+			recalcTiles 	= [];
+			spawnPoints 	= [];
+			grenades 		= [];
+			bonuses 		= [];
+			maxdy 			= Settings.maxdy;
+
+			if (rnd) roomBorderType = 1;
+
+			if (roomParamObj) //This is made by level.as when needed.
 			{
-				level = l;
-				roomWidth = Settings.roomTileWidth;
-				roomHeight = Settings.roomTileHeight;
-				roomPixelWidth = roomWidth * Settings.tilePixelWidth;
-				roomPixelHeight = roomHeight * Settings.tilePixelHeight;
-				otstoy = new Tile(-1, -1);
-
-				units 			= [];
-				ups 			= [];
-				objs 			= [];
-				activeObjects 	= [];
-				areas 			= [];
-				saves 			= [];
-				enspawn 		= [];
-				backobjs 		= [];
-				roomTileArray 	= [];
-				signposts 		= [];
-				recalcTiles 	= [];
-				spawnPoints 	= [];
-				grenades 		= [];
-				bonuses 		= [];
-				maxdy 			= Settings.maxdy;
-
-				if (rnd) roomBorderType = 1;
-
-				if (roomParamObj) //This is made by level.as when needed.
-				{
-					if (roomParamObj.prob) roomBorderType = 0;
-					if (roomParamObj.mirror) mirror = true;
-					if (roomParamObj.water != null) waterLevel = roomParamObj.water;
-					if (roomParamObj.ramka != null) roomBorderType = roomParamObj.ramka;
-					if (roomBorderType == 5) backform = 1;
-					if (roomBorderType == 6) backform = 2;
-					if (roomParamObj.backform) backform = roomParamObj.backform;
-					if (roomParamObj.transparentBackground) transparentBackground = roomParamObj.transparentBackground;
-					if (roomParamObj.home) homeStable = true;
-					if (roomParamObj.atk) homeAtk = true;
-				}
-				for (var i:int = 0; i < kolEn.length; i++) ups[i] = [];
-				noHolesPlace = rnd;
-				
-				buildLoc(nroom);
+				if (roomParamObj.prob) roomBorderType = 0;
+				if (roomParamObj.mirror) mirror = true;
+				if (roomParamObj.water != null) waterLevel = roomParamObj.water;
+				if (roomParamObj.ramka != null) roomBorderType = roomParamObj.ramka;
+				if (roomBorderType == 5) backform = 1;
+				if (roomBorderType == 6) backform = 2;
+				if (roomParamObj.backform) backform = roomParamObj.backform;
+				if (roomParamObj.transparentBackground) transparentBackground = roomParamObj.transparentBackground;
+				if (roomParamObj.home) homeStable = true;
+				if (roomParamObj.atk) homeAtk = true;
 			}
-			catch(err:Error)
-			{
-				trace('Room.as/Room() - ERROR while Building room: "' + nroom.@name + '".');
-			}
+			for (var i:int = 0; i < kolEn.length; i++) ups[i] = [];
+			noHolesPlace = rnd;
 			
-			//trace('Room.as/Room() - Room: "' + nroom.@name + '" finished.');
+			buildLoc(nroom);
+
 		}
 
 		public function buildLoc(nroom:XML):void // Build according to the xml map
@@ -2316,15 +2308,15 @@ package locdata
 			while (obj) 
 			{
 				nextObj = obj.nobj;
-				try 
-				{
+				//try 
+				//{
 					obj.step();
 					if ((obj is Obj) && (obj as Obj).onCursor > 0 && obj != gg && (celObj == null || (obj as Obj).onCursor >= celObj.onCursor)) celObj = (obj as Obj); // Determine the object under the cursor
-				} 
-				catch(err) 
-				{
-					GameSession.currentSession.showError(err, obj.err());
-				}
+				//} 
+				//catch(err) 
+				//{
+					//GameSession.currentSession.showError(err, obj.err());
+				//}
 				obj = nextObj;
 				numb++; // Check for infinite loop prevention
 				if (numb > 10000) 
