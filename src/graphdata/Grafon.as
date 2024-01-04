@@ -20,7 +20,6 @@
 
 	import components.Settings;
 	import components.XmlBook;
-	import systems.TileFilter;
 
 	import stubs.visBlack;
 	import stubs.tileFront;

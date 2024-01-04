@@ -7,8 +7,6 @@ package graphdata
 	import flash.filters.DropShadowFilter;
 	import flash.filters.BitmapFilter; 
 	import flash.display.BitmapData;
-
-	import systems.TileFilter;
 	
 	public class Material 
 	{
