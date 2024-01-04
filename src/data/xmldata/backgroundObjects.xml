@@ -1,4 +1,4 @@
-<backgrounds>
+<backgroundObjects>
 	<back id='' n='окна и двери'/>
 	<back id='fwindow' er='1' n='Окно завода' x2='6' y2='6'/>
 	<back id='bwindow' er='1' n='Большое окно' x2='4' y2='2'/>
@@ -196,4 +196,4 @@
 	<back id='qgraff' x2='25' y2='13' s='-1' nope='1' alpha='0.85'/>
 	<back id='celest' n='Статуя Селестии' s='2' x2='12' y2='11'/>
 	<back id='pink' n='Розовое облако' nope='1' s='3' x2='48' y2='12'/>
-</backgrounds>
+</backgroundObjects>

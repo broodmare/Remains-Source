@@ -336,9 +336,9 @@
 		// The grLoader.resource will then (hopefully?) return the result.
 		public function getObj(textureName:String, loaderID:int = 0):* 
 		{
-			trace('Grafon.as/getObj - Attempting to load texture: "' + textureName + '".');
 			var obj:* = grLoaderArray[loaderID].resource.getObj(textureName);
-			trace('Grafon.as/getObj - Returning: ', obj);
+			if (!obj) trace('Grafon.as/getObj - ERROR while Attempting to load texture: "' + textureName + '".');
+
 			return obj;
 		}
 		
@@ -1009,7 +1009,7 @@
 				else 
 				{
 					spriteLists[id] = getObj(id, spriteCount);
-					if (spriteLists[id] == null) spriteLists[id] = getObj(id, spriteCount+1);
+					if (spriteLists[id] == null) spriteLists[id] = getObj(id, spriteCount + 1);
 				}
 			}
 			if (spriteLists[id] == null) trace('Grafon.as/getSpriteList() - No sprites', id)

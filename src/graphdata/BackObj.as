@@ -15,25 +15,28 @@ package graphdata
 		public var Y:Number;
 		public var scX:Number = 1;
 		public var scY:Number = 1;
-		public var vis:MovieClip;
-		public var erase:MovieClip;
-		public var light:MovieClip;
+
+		public var vis:MovieClip; 	// Texture of the background object.
+		public var erase:MovieClip;	// Parts to erase from the background object texture.
+		public var light:MovieClip; // Texture to overlay on the background object (Light Glow).
+		
 		public var frame:int = 1;
 		public var frameOn:int = 0;
 		public var frameOff:int = 0;
 		public var blend:String = 'normal';
 		public var alpha:Number = 1;
 		public var layer:int = 0;
-		public var er:Boolean = false;	// erasure
+		public var er:Boolean = false;	// Erasure
 
-		public function BackObj(newRoom:Room, nid:String, nx:Number, ny:Number, xml:XML = null) 
+		public function BackObj(newRoom:Room, nid:String, nx:Number, ny:Number, xml:XML = null)
 		{
 			id = nid;
 			X = nx;
 			Y = ny;
 
-			var node:XML = XmlBook.getXML("backgrounds").back.(@id == id)[0];
+			var node:XML = XmlBook.getXML("backgroundObjects").back.(@id == id)[0];
 			var wid:int = node.@x2 * Settings.tilePixelWidth;
+
 			if (xml && xml.@w.length()) wid = xml.@w * Settings.tilePixelWidth
 			if (!(wid > 0)) wid = Settings.tilePixelWidth;
 			if (newRoom && newRoom.mirror) 
@@ -57,10 +60,13 @@ package graphdata
 			{
 				X = nx + wid;
 				scX = -1;
-			} 
-			vis = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_t', Grafon.bgObjectCount);
-			erase = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_e', Grafon.bgObjectCount);
-			light = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_l', Grafon.bgObjectCount);
+			}
+			
+			//TODO: This is called 3 times for every background object even if it doesn't have an erase or light textures.
+			vis = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_t', Grafon.bgObjectCount); 	// Texture
+			erase = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_e', Grafon.bgObjectCount); 	// Erase parts of texture?
+			light = GameSession.currentSession.grafon.getObj('back_' + (node.@tid.length() ? node.@tid:id) + '_l', Grafon.bgObjectCount); 	// Light
+
 			if (node.@fr.length()) frame = node.@fr;
 			else if (newRoom.lightOn > 0 && node.@lon.length()) frame = node.@lon;
 			else if (newRoom.lightOn < 0 && node.@loff.length()) frame = node.@loff;
