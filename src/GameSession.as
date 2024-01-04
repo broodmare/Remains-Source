@@ -489,28 +489,23 @@ package
 			ng_wait = 1;
 		}
 		
-		// stage 1 - create character and inventory
-		public function newGame1():void
+		public function newGame1():void // stage 1 - create character and inventory
 		{
-			trace('GameSession.as/newGame1() - Beginning STAGE 1 of a starting a new game. 1/9');
-
+			trace('GameSession.as/newGame1() - Starting a new game.');
 			if (!newGame) appearanceWindow.load(data.app);
 			if (data.hardInv) Settings.hardInv = true; else Settings.hardInv = false;
 			if (opt && opt.hardinv) Settings.hardInv = true;
 
 			initializePlayer(true);
 			
-			// auto save slot number
-			trace('GameSession.as/newGame1() - Autosave setup. 8/9');
-			if (!newGame && data.n != null) 
+			if (!newGame && data.n != null) // auto save slot number 
 			{
 				autoSaveN = data.n;
 			}
 			Unit.txtMiss = Res.txt('gui', 'miss');
-			
-			trace('GameSession.as/newGame1() - STAGE 1 of starting a new game complete. Waiting on player input. 9/9');
 
-			//TODO: Why are we waiting on player input to load the levels? 
+			//TODO: Why are we waiting on player input to load the levels? It lets you read the intro text, but there's no reason to stop loading things.
+			trace('GameSession.as/newGame1() - Waiting on player input to finish starting a new game.');
 			waitLoadClick(); 
 			ng_wait = 2;
 		}
