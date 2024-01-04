@@ -6,8 +6,11 @@ asconfig.json
 .vscode/
 .idea/
 qodana.yaml
+.gitignore
+gitignore
 src/.github/
 bin/
 Sound/
 Rooms/
 Remains.as3proj
+

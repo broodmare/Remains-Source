@@ -4,12 +4,10 @@ package components
 
     public class Settings
     {
-
-		//Main Menu
+		// Main Menu Variables
 		public static var version:String = '1.1.0';
 
-
-		//Global constants
+		// Global constants
         public static var actionDist:int = 40000;
 		public static const tilePixelWidth:int 	= 40;	//Tile Width
 		public static const tilePixelHeight:int = 40;	//Tile Height
@@ -25,13 +23,9 @@ package components
 		public static const unitXPMult:Number   = 2;
 		public static const kolHK:int           = 12;	//number of hotkeys
 		public static const kolQS:int           = 4;	//number of quick spells
-			
 		public static const boxDamage:Number = 0.2;		//box attack strength multiplier
 
-		//Gameplay variables
-		
-
-		//Settings variables
+		// Settings
 		public static var enemyAct:int;				//enemy activity, should be 3. If 0, enemies will not be active
 		public static var addCheckSP:Boolean;		//add skill points when visiting checkpoints
 		public static var weaponsLevelsOff:Boolean;	//disable using weapons of incorrect level
@@ -81,53 +75,34 @@ package components
 		
         public static var bitmapCachingOption:Boolean;
 
-        //files
+        // Resource library locations
         public static var soundPath:String;
         public static var musicPath:String;
         public static var levelPath:String;
-
-
         public static var textureURL:String;
         public static var spriteURL:String;
         public static var sprite1URL:String;
-        
+        public static var musicXMLLocation:String;
+		public static var soundXMLLocation:String;
+		public static var languageXMLLocation:String;
+		public static var xmlBookDataLocation:String;
+
+		// Working variables
         public static var musicTracksFound:int;
 		public static var musicTracksLoaded:int;
 		public static var soundFilesFound:int;
 		public static var soundFilesLoaded:int;
 
-
-
-		public static var musicXMLLocation:String;
-		public static var soundXMLLocation:String;
-		
-		public static var languageXMLLocation:String;
-		public static var xmlBookDataLocation:String;
-
-
-
-
         public function Settings()
         {
 
-
-
         }
-
-
-
-
 
         public static function initialize():void
         {
+		trace('Settings.as/initialize() - Initializing Settings.');
 
-		//Settings variables
-		trace('Settings.as/initialize() - Settings initializing...');
-
-
-
-
-        //Game settings
+        // Game settings
 		maxParts            = 100;			//maximum particles
 		shineObjs           = false;		//objects glow
 		systemCursor        = false;		//system cursor
@@ -139,9 +114,7 @@ package components
 		errorShowOpt        = true;
         bitmapCachingOption = true;			//Bitcaching to trade RAM for peformance. Default was on, added this as an option.
 
-		//Gameplay settings
-
-        //General player settings
+        // General player settings
 		hardInv             = false;		//limited inventory
 		alicorn             = false;        //Alicorn armor mode
 		zoom100             = false;		//zoom 100%
@@ -152,7 +125,7 @@ package components
 		weaponsLevelsOff    = true;	        //disable using weapons of incorrect level
 		quakeCam            = true;	        //camera shake
 
-        //Debug options
+        // Debug options
 		testMode            = false;		//Test mode
 		chitOn              = false;
 		chit                = ''; 			//current cheat
@@ -167,7 +140,7 @@ package components
 		black               = true;			//display fog of war
 		enemyAct            = 3;			//enemy activity, should be 3. If 0, enemies will not be active
 
-        //Autopickup options
+        // Autopickup options
 		vsWeaponNew         = true;		    //automatically take new weapon if there is room
 		vsWeaponRep         = true;		    //automatically take weapon for repair
 		vsAmmoAll           = true;		
@@ -183,14 +156,13 @@ package components
 		vsComp              = true;		
 		vsIngr              = true;
 
-
-        //files
-        soundPath 	    	= 'sound/';
-        musicPath 	    	= 'sound/music/';
+        // Resource library locations
+        soundPath 	    	= 'data/sound/';
+        musicPath 	    	= 'data/music/';
         textureURL 	    	= 'data/texture.swf';
         spriteURL 	    	= 'data/sprite.swf';
         sprite1URL 	    	= 'data/sprite1.swf';
-        levelPath 	    	= 'Rooms/';
+        levelPath 	    	= 'data/Rooms/';
 
 		languageXMLLocation = 'data/xmldata/';
 		xmlBookDataLocation = 'data/xmldata/';
@@ -206,7 +178,6 @@ package components
 		musicTracksLoaded   = 1; //Quick hack, fogriv me jegus
 
 		trace('Settings.as/settingsSetup() - Settings initialized.');
-
         }
 	}
 }
