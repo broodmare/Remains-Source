@@ -580,123 +580,83 @@ package
 
 		public function loadGame(nload:int = 0):void
 		{
-			try 
+			comLoad = -1;
+			if (room) 
 			{
-				comLoad = -1;
-				if (room) 
-				{
-					room.unloadRoom();
-				}
-				level = null;
-				room = null;
-				try 
-				{
-					cur('arrow');
-				} 
-				catch(err)
-				{
-					trace('GameSession.as/loadGame() - Failed applying cursor "arrow".');
-				}
-
-				var data:Object; //loading object
-				if (nload == 99) 
-				{
-					data = loaddata;
-				} 
-				else 
-				{
-					data = saveArr[nload].data;
-				}
-
-				Snd.off = true;
-				cam.showOn = false;
-				
-				Settings.hardInv = data.hardInv;
-
-				game = new Game();
-				game.init(data.game);
-				appearanceWindow.load(data.app);
-
-				initializePlayer(false);
-
-				if (data.n != null) autoSaveN = data.n; // auto-save cell number
-				
-				hideLoadingScreen();
-				vgui.visible 		= true;
-				skybox.visible 		= true;
-				mainCanvas.visible 	= true;
-				vblack.alpha		= 1;
-				cam.dblack			= -10;
-				pip.onoff(-1);
-				gui.allOn();
-				t_die		= 0;
-				t_battle	= 0;
-
-				trace('GameSession.as/loadGame() - Initializing level.');
-				game.initializeLevel();
-				trace('GameSession.as/loadGame() - Beginning game.');
-				game.beginGame();
-				log = '';
-				trace('GameSession.as/loadGame() - Turning on sound.');
-				Snd.off = false;
-				trace('GameSession.as/loadGame() - gui.setAll.');
-				gui.setAll();
-				gameState = 1;
-				trace('GameSession.as/loadGame() - Loading game finished.');
-			} 
-			catch (err) 
-			{
-				trace('GameSession.as/loadGame() - Something fucked up loading the game.');
-				showError(err);
+				room.unloadRoom();
 			}
+			level = null;
+			room = null;
+			cur('arrow');
+
+			var data:Object; //loading object
+
+			if (nload == 99) data = loaddata;
+			else data = saveArr[nload].data;
+
+			Snd.off = true;
+			cam.showOn = false;			
+			Settings.hardInv = data.hardInv;
+
+			game = new Game();
+			game.init(data.game);
+			appearanceWindow.load(data.app);
+
+			initializePlayer(false);
+
+			if (data.n != null) autoSaveN = data.n; // auto-save cell number
+			
+			hideLoadingScreen();
+			vgui.visible 		= true;
+			skybox.visible 		= true;
+			mainCanvas.visible 	= true;
+			vblack.alpha		= 1;
+			cam.dblack			= -10;
+			pip.onoff(-1);
+			gui.allOn();
+			t_die		= 0;
+			t_battle	= 0;
+
+			trace('GameSession.as/loadGame() - Initializing level.');
+			game.initializeLevel();
+
+			trace('GameSession.as/loadGame() - Beginning game.');
+			game.beginGame();
+
+			log = '';
+			Snd.off = false;
+			gui.setAll();
+			gameState = 1;
+
+			trace('GameSession.as/loadGame() - Finished loading game.');
 		}
 		
 		// TODO: There is a graphical bug here (original author comment, not mine)
+		// Previously AtivateLoc [sic]
 		public function activateRoom(newRoom:Room):void // Call when entering a specific area
 		{
-			trace('GameSession.as/activateRoom() - Activating room: "' + newRoom.id + '". 1/12');
+			trace('GameSession.as/activateRoom() - Transitioning to room: "' + newRoom.id + '".');
 
-			if (room != null) //If a room exists, unload it.
-			{
-				trace('GameSession.as/activateRoom() - unloading previous room.');
-				room.unloadRoom();
-			}
-			trace('GameSession.as/activateRoom() - Activating room. 2/12"');
+			if (room != null) room.unloadRoom(); //If a room exists, unload it.
 			room = newRoom; //Set the current room as the one you want to load.
 
-			trace('GameSession.as/activateRoom() - Activating room. Calling grafon/drawLoc() to render the room. 3/12"');
 			grafon.drawLoc(room); //Call grafon to draw the room.
-			
-			trace('GameSession.as/activateRoom() - Activating room. Setting Camera to current room 4/12"');
-			cam.setLoc(room);
 
-			trace('GameSession.as/activateRoom() - Activating room. Calling grafon.setSkyboxSize to render the skybox. 5/12"');
+			cam.setLoc(room);
 			grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
-			
-			trace('GameSession.as/activateRoom() - Activating room. Calling GUI 6/12"');
 			gui.setAll();
-			
-			trace('GameSession.as/activateRoom() - Activating room. Soound stuff 7/12"');
+
 			currentMusic = room.sndMusic;
 			Snd.playMusic(currentMusic);
 
-			trace('GameSession.as/activateRoom() - Activating room. Calling GUI for Boss HP bars. 8/12"');
 			//TODO: This doesn't need to be called every time, esepecially not here.
 			gui.hpBarBoss();
 
-			trace('GameSession.as/activateRoom() - Activating room. Enabling player controls. 9/12"');
-			if (t_die <= 0) GameSession.currentSession.gg.controlOn();
-
-			trace('GameSession.as/activateRoom() - Activating room. Calling GUI for textbox. 10/12"');
+			if (t_die <= 0) GameSession.currentSession.gg.controlOn(); //Enable player controls
 			gui.dialText();
-			
-			trace('GameSession.as/activateRoom() - Activating room. Calling Pers for pers.invMassParam. 11/12"');
 			pers.invMassParam();
-			
-			trace('GameSession.as/activateRoom() - Activating room. Calling GC. 12/12');
-			gc();
 
-			trace('GameSession.as/activateRoom() - FINISHED activating room: "' + newRoom.id + '".');
+			gc(); // Pause the game for a moment if needed for garbage collection.
 		}
 		
 		public function redrawLoc():void
@@ -711,109 +671,85 @@ package
 		{
 			trace('GameSession.as/exitLevel() - exiting Level.');
 			if (t_exit > 0) return;
+
 			gg.controlOff();
 			pip.gamePause = true;
-			if (fast) 
-			{
-				t_exit = 21;
-			} 
-			else 
-			{
-				t_exit = 100;
-			}
+
+			if (fast) t_exit = 21;
+			else t_exit = 100;
+
 		}
 		
 		public function exitStep():void
 		{
-			try 
-			{
-				t_exit--;
+			t_exit--;
 
-				if (t_exit == 99) cam.dblack = 1.5; // Fade to black for level change. (Canterlot, Factory, etc.)
+			if (t_exit == 99) cam.dblack = 1.5; // Fade to black for level change. (Canterlot, Factory, etc.)
 
-				if (t_exit == 20) 
-				{
-					vblack.alpha = 0;
-					cam.dblack = 0;
-					setLoadScreen(getLoadScreen());
-					Snd.off = true;
-				}
-				if (t_exit == 19) 
-				{
-					cur('arrow');
-					game.initializeLevel();
-				}
-				if (t_exit == 18 && clickReq> 0) waitLoadClick();
-				if (t_exit == 16) 
-				{
-					Mouse.show();
-					Snd.off = false;
-					hideLoadingScreen();
-					vgui.visible = true;
-					skybox.visible = true;
-					mainCanvas.visible = true;
-					vblack.alpha = 1;
-					cam.dblack = -10;
-					gg.controlOn();
-					pip.gamePause = false;
-				}
-				if (t_exit == 1) 
-				{
-					gui.allOn();
-				}
-			} 
-			catch (err) 
+			if (t_exit == 20) 
 			{
-				showError(err);
+				vblack.alpha = 0;
+				cam.dblack = 0;
+				setLoadScreen(getLoadScreen());
+				Snd.off = true;
+			}
+			if (t_exit == 19) 
+			{
+				cur('arrow');
+				game.initializeLevel();
+			}
+			if (t_exit == 18 && clickReq> 0) waitLoadClick();
+			if (t_exit == 16) 
+			{
+				Mouse.show();
+				Snd.off = false;
+				hideLoadingScreen();
+				vgui.visible = true;
+				skybox.visible = true;
+				mainCanvas.visible = true;
+				vblack.alpha = 1;
+				cam.dblack = -10;
+				gg.controlOn();
+				pip.gamePause = false;
+			}
+			if (t_exit == 1) 
+			{
+				gui.allOn();
 			}
 		}
 		
 		public function ggDieStep():void
 		{
-			try 
+			t_die--;
+			if (t_die == 200) cam.dblack = 2.2;
+			if (t_die == 150) 
 			{
-				t_die--;
-				if (t_die == 200) cam.dblack = 2.2;
-				if (t_die == 150) 
+				if (Settings.alicorn) 
 				{
-					if (Settings.alicorn) 
+					game.runScript('gameover');
+					t_die = 0;
+				} 
+				else 
+				{
+					if (gg.sost == 3) 
 					{
-						game.runScript('gameover');
-						t_die = 0;
+						game.curLevelID = game.baseId;
+						game.initializeLevel();
 					} 
-					else 
-					{
-						if (gg.sost == 3) 
-						{
-							game.curLevelID = game.baseId;
-							game.initializeLevel();
-						} 
-						else 
-						{
-							level.gotoCheckPoint();
-						}
-						cam.dblack = -4;
-						gg.vis.visible = true;
-					}
+					else level.gotoCheckPoint();
+
+					cam.dblack = -4;
+					gg.vis.visible = true;
 				}
-				if (t_die == 100) gg.resurect();
-				if (t_die == 1) 
-				{
-					gg.controlOn();
-				}
-			} 
-			catch (err) 
-			{
-				showError(err);
 			}
+			if (t_die == 100) gg.resurect();
+			if (t_die == 1) gg.controlOn();
 		}
 
 		public function step():void
 		{
-			if (verror.visible) // Pause gameplay with an error message is showing.
-			{
-				return;
-			}
+			if (verror.visible) return; // Pause gameplay with an error message is showing.
+
 			if (!Languages.textLoaded)
 			{
 				trace('GameSession.as/step() - Language data still loading, waiting.');
@@ -822,7 +758,7 @@ package
 
 			ctr.step();	//Process controls
 			Snd.step(); //Process sound
-
+			
 			if (ng_wait > 0) //GAME STATE: WAITING FOR PLAYER INPUT
 			{
 				if (ng_wait == 1) 
@@ -995,17 +931,19 @@ package
 		{
 			if (!Settings.errorShow || !Settings.errorShowOpt) return;
 
-			try 
+			// Error pop-up window localization
+			try
 			{
 				verror.info.text 			= Res.txt('pip', 'error');
 				verror.butClose.text.text 	= Res.txt('pip', 'err_close');
 				verror.butForever.text.text = Res.txt('pip', 'err_dont_show');
 				verror.butCopy.text.text 	= Res.txt('pip', 'err_copy_to_clipboard');
-			} 
-			catch (err:Error) 
-			{
-				
 			}
+			catch(error:Error)
+			{
+				trace('GameSession.as/showError - ERROR: Could not localize text for the error popup window! Error: "' + error.message + '".');
+			}
+			
 
 			verror.txt.text = err.message + '\n' + err.getStackTrace();
 			verror.txt.text += '\n' + 'gr_stage: ' + gr_stage;
@@ -1053,14 +991,8 @@ package
 				loadingScreen.story.visible = true;
 				loadingScreen.skill.visible = loadingScreen.progres.visible = false;
 
-				if (n == 0) 
-				{
-					loadingScreen.story.txt.htmlText = '<i>' + Res.txt('gui', 'story') + '</i>';
-				} 
-				else 
-				{
-					loadingScreen.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
-				}
+				if (n == 0) loadingScreen.story.txt.htmlText = '<i>' + Res.txt('gui', 'story') + '</i>';
+				else loadingScreen.story.txt.htmlText = '<i>' + 'История' + n + '</i>';
 
 				clickReq = 1;
 			}
@@ -1069,27 +1001,16 @@ package
 			loadingScreen.cacheAsBitmap = true;
 		}
 		
-		public function getLoadScreen():int // Determine which loading screen to display
+		public function getLoadScreen():int // Determine which loading screen to display.
 		{
-			
-			try //Changed from just returning -1 by default. The rest of this code was unreachable.
-			{
-				var nscr:int = game.levelArray[game.curLevelID].loadScr;
+			var nscr:int = game.levelArray[game.curLevelID].loadScr;
 
-				if (nscr >= 0 && (game.triggers['loadScr'] == null || game.triggers['loadScr'] < nscr))
-				{
-					game.triggers['loadScr'] = nscr;
-					return nscr;
-				}
-				else
-				{
-					return -1;
-				}
-			} 
-			catch(err) 
+			if (nscr >= 0 && (game.triggers['loadScr'] == null || game.triggers['loadScr'] < nscr))
 			{
-				trace('GameSession.as/getLoadScreen() - ERROR during this function.');
+				game.triggers['loadScr'] = nscr;
+				return nscr;
 			}
+
 			return -1;
 		}
 		
@@ -1122,23 +1043,17 @@ package
 			}  
 			catch(err)
 			{
+				trace('GameSession.as/showScene() - ERROR: Could not show Scene: "' + sc + '" using backup instead.');
 				vscene.gotoAndStop(1);
 			}
 
-			try 
+			if (n > 0) 
 			{
-				if (n > 0) 
-				{
-					vscene.sc.gotoAndPlay(n);
-				} 
-				else
-				{
-					vscene.sc.gotoAndPlay(1);
-				}
+				vscene.sc.gotoAndPlay(n);
 			} 
-			catch(err)
+			else
 			{
-
+				vscene.sc.gotoAndPlay(1);
 			}
 
 			vscene.visible = true;

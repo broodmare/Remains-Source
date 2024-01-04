@@ -559,55 +559,50 @@ package locdata
 		
 		public function buildSpecifLevel():void
 		{
-			try
+
+			var i:int;
+			var j:int;
+			var e:int;
+			var loc1:Room;
+			var loc2:Room;
+
+			// Determine the actual sizes (of what, the room? the level?)
+			for each(var roomTemplate:RoomTemplate in allRoom) 
 			{
-				var i:int;
-				var j:int;
-				var e:int;
-				var loc1:Room;
-				var loc2:Room;
+				if (roomTemplate.roomCoordinateX < minLocX) minLocX = roomTemplate.roomCoordinateX;
+				if (roomTemplate.roomCoordinateY < minLocY) minLocY = roomTemplate.roomCoordinateY;
+				if (roomTemplate.roomCoordinateX + 1 > maxLocX) maxLocX = roomTemplate.roomCoordinateX + 1;
+				if (roomTemplate.roomCoordinateY + 1 > maxLocY) maxLocY = roomTemplate.roomCoordinateY + 1;
+			}
 
-				// Determine the actual sizes (of what, the room? the level?)
-				for each(var roomTemplate:RoomTemplate in allRoom) 
-				{
-					if (roomTemplate.roomCoordinateX < minLocX) minLocX = roomTemplate.roomCoordinateX;
-					if (roomTemplate.roomCoordinateY < minLocY) minLocY = roomTemplate.roomCoordinateY;
-					if (roomTemplate.roomCoordinateX + 1 > maxLocX) maxLocX = roomTemplate.roomCoordinateX + 1;
-					if (roomTemplate.roomCoordinateY + 1 > maxLocY) maxLocY = roomTemplate.roomCoordinateY + 1;
-				}
+			roomArray = [];
+			for (i = minLocX; i < maxLocX; i++) 
+			{
+				roomArray[i] = [];
+				for (j = minLocY; j < maxLocY; j++) roomArray[i][j] = [];
+			}
 
-				roomArray = [];
-				for (i = minLocX; i < maxLocX; i++) 
-				{
-					roomArray[i] = [];
-					for (j = minLocY; j < maxLocY; j++) roomArray[i][j] = [];
-				}
+			//populate array with rooms from the allRoom.
+			for each(roomTemplate in allRoom) 
+			{
+				loc1 = newRoom(roomTemplate, roomTemplate.roomCoordinateX, roomTemplate.roomCoordinateY, roomTemplate.roomCoordinateZ);
+				roomArray[roomTemplate.roomCoordinateX][roomTemplate.roomCoordinateY][roomTemplate.roomCoordinateZ] = loc1;
+			}
 
-				//populate array with rooms from the allRoom.
-				for each(roomTemplate in allRoom) 
+			//place objects
+			for (i = minLocX; i < maxLocX; i++) 
+			{
+				for (j = minLocY; j < maxLocY; j++) 
 				{
-					loc1 = newRoom(roomTemplate, roomTemplate.roomCoordinateX, roomTemplate.roomCoordinateY, roomTemplate.roomCoordinateZ);
-					roomArray[roomTemplate.roomCoordinateX][roomTemplate.roomCoordinateY][roomTemplate.roomCoordinateZ] = loc1;
-				}
-
-				//place objects
-				for (i = minLocX; i < maxLocX; i++) 
-				{
-					for (j = minLocY; j < maxLocY; j++) 
+					for (e = minLocZ; e<maxLocZ; e++) 
 					{
-						for (e = minLocZ; e<maxLocZ; e++) 
-						{
-							if (roomArray[i][j][e] == null) continue;
-							roomArray[i][j][e].setObjects();
-							roomArray[i][j][e].preStep();
-						}
+						if (roomArray[i][j][e] == null) continue;
+						roomArray[i][j][e].setObjects();
+						roomArray[i][j][e].preStep();
 					}
 				}
 			}
-			catch (err)
-			{
-				trace('Error while building specified level.', allRoom)
-			}
+
 			buildProbs();
 		}
 		
@@ -667,21 +662,17 @@ package locdata
 				}
 			}
 			if (rndRoom.length == 0) return false;
-			var pid:String, did:String='doorprob';
-			if (imp && impProb) pid=impProb;
-			else if (rndRoom.length == 1) pid=rndRoom[0];
-			else pid=rndRoom[Math.floor(Math.random()*rndRoom.length)];
-			try 
-			{
-				if (levelTemplate.levelData.prob.(@id==pid).@tip=='2') did='doorboss';
-			} 
-			catch (err)
-			{
 
-			}
+			var pid:String, did:String = 'doorprob';
+
+			if (imp && impProb) pid=impProb;
+			else if (rndRoom.length == 1) pid = rndRoom[0];
+			else pid = rndRoom[Math.floor(Math.random() * rndRoom.length)];
+
+			if (levelTemplate.levelData.prob.(@id == pid).@tip == '2') did = 'doorboss';
+			
 			if (!newRoom.createDoorProb(did,pid)) return false;
 			buildProb(pid);
-			//trace(pid);
 			return true;
 		}
 		
@@ -701,7 +692,6 @@ package locdata
 			else 
 			{
 				roomTemplate = allRoom[Math.floor(Math.random() * allRoom.length)];
-				trace('нет локации ' + ntip);
 			}
 			roomTemplate.kol--;
 			return newRoom(roomTemplate, roomCoordinateX, roomCoordinateY, 0, opt);
@@ -736,8 +726,7 @@ package locdata
 			} 
 			else 
 			{
-				//array of all rooms suitable for random selection
-				for each(roomTemplate in allRoom) 
+				for each(roomTemplate in allRoom) //array of all rooms suitable for random selection
 				{
 					if (roomTemplate.rnd) 
 					{
@@ -747,10 +736,9 @@ package locdata
 				roomTemplate = rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			}
 			roomTemplate.kol--;
-			if (levelTemplate.conf==4) roomTemplate.kol=0;	//rooms on a military base are used only once
+			if (levelTemplate.conf == 4) roomTemplate.kol = 0;	//rooms on a military base are used only once
 			return newRoom(roomTemplate, roomCoordinateX, roomCoordinateY, 0, opt);
 		}
-		
 		
 		//create a new room based on the given Room template, at the specified coordinates
 		public function newRoom(roomTemplate:RoomTemplate, roomCoordinateX:int, roomCoordinateY:int, roomCoordinateZ:int=0, opt:Object=null):Room 
@@ -765,15 +753,15 @@ package locdata
 			if (roomCoordinateZ > 0) room.id += '_' + roomCoordinateZ;
 			room.unXp=levelTemplate.xp;
 			
-			// Set the difficulty level gradient
-			var deep:Number=0;
+			
+			var deep:Number = 0; // Set the difficulty level gradient
 			if (rnd) 
 			{
-				if (levelTemplate.conf==0) deep=roomCoordinateY/2;	
-				if (levelTemplate.conf==1) deep=roomCoordinateY;
-				if (levelTemplate.conf==2) deep=roomCoordinateY*2.5;
+				if (levelTemplate.conf == 0) deep = roomCoordinateY / 2;	
+				if (levelTemplate.conf == 1) deep = roomCoordinateY;
+				if (levelTemplate.conf == 2) deep = roomCoordinateY * 2.5;
 			}
-			setLocDif(room,deep);
+			setLocDif(room, deep);
 			
 			room.addPlayer(gg);
 			return room;
@@ -783,91 +771,91 @@ package locdata
 		public function setLocDif(room:Room, deep:Number):void
 		{
 			var ml:Number = levelDifficultyLevel + deep;
-			room.locDifLevel=ml;
-			room.locksLevel=ml*0.7;	// level of locks
-			room.mechLevel=ml/4;		// level of mines and mechanisms
-			room.weaponLevel=1+ml/4;	// level of encountered weapons
-			room.enemyLevel=ml;		// level of enemies
+			room.locDifLevel = ml;
+			room.locksLevel = ml * 0.7;	// level of locks
+			room.mechLevel = ml / 4;		// level of mines and mechanisms
+			room.weaponLevel = 1 + ml / 4;	// level of encountered weapons
+			room.enemyLevel = ml;		// level of enemies
 
 			// influence of difficulty settings
-			if (GameSession.currentSession.game.globalDif<2) room.earMult*=0.5;
-			if (GameSession.currentSession.game.globalDif>2) room.enemyLevel+=(GameSession.currentSession.game.globalDif-2)*2;	// level of enemies based on difficulty
+			if (GameSession.currentSession.game.globalDif < 2) room.earMult *= 0.5;
+			if (GameSession.currentSession.game.globalDif > 2) room.enemyLevel += (GameSession.currentSession.game.globalDif - 2) * 2;	// level of enemies based on difficulty
 			// type of enemies
-			if (levelTemplate.biom==0 && Math.random()<0.25) room.tipEnemy=1;
-			if (room.tipEnemy<0) room.tipEnemy=Math.floor(Math.random() * 3);
-			if (levelTemplate.biom==1) room.tipEnemy=0;
-			if (levelTemplate.biom==2 && room.tipEnemy == 1 && Math.random() < ml / 20) room.tipEnemy = 3;	// slave traders
-			if (levelTemplate.biom==3) 
+			if (levelTemplate.biom == 0 && Math.random() < 0.25) room.tipEnemy = 1;
+			if (room.tipEnemy < 0) room.tipEnemy = Math.floor(Math.random() * 3);
+			if (levelTemplate.biom == 1) room.tipEnemy = 0;
+			if (levelTemplate.biom == 2 && room.tipEnemy == 1 && Math.random() < ml / 20) room.tipEnemy = 3;	// slave traders
+			if (levelTemplate.biom == 3) 
 			{
-				room.tipEnemy=Math.floor(Math.random()*3)+3;			 // 4-mercenaries, 5-unicorns
+				room.tipEnemy = Math.floor(Math.random() * 3) + 3; // 4-mercenaries, 5-unicorns
 			}
-			if (ml>12 && (levelTemplate.biom==0 || levelTemplate.biom==2 || levelTemplate.biom==3) && Math.random()<0.1) room.tipEnemy=6;	// zebras
-			if (levelTemplate.biom==4) room.tipEnemy=7;	// steel+robots
-			if (levelTemplate.biom==5) 
+			if (ml > 12 && (levelTemplate.biom == 0 || levelTemplate.biom == 2 || levelTemplate.biom == 3) && Math.random() < 0.1) room.tipEnemy = 6;	// zebras
+			if (levelTemplate.biom == 4) room.tipEnemy = 7;	// steel+robots
+			if (levelTemplate.biom == 5) 
 			{
-				if (Math.random()<0.3) room.tipEnemy=5;
-				else room.tipEnemy=8;	// pink
+				if (Math.random() < 0.3) room.tipEnemy = 5;
+				else room.tipEnemy = 8;	// pink
 			}
-			if (levelTemplate.biom==6) 
+			if (levelTemplate.biom == 6) 
 			{
-				if (Math.random()>0.3) room.tipEnemy=9;	// enclave
-				else room.tipEnemy=10;// greyhounds
+				if (Math.random() > 0.3) room.tipEnemy = 9;	// enclave
+				else room.tipEnemy = 10;// greyhounds
 			}
-			if (levelTemplate.biom==11) room.tipEnemy=11; // enclave and greyhounds
+			if (levelTemplate.biom == 11) room.tipEnemy = 11; // enclave and greyhounds
 			// number of enemies
 			// type, minimum, maximum, random increase
-			if (ml<4) 
+			if (ml < 4) 
 			{
-				room.setKolEn(1,3,5,2);
-				room.setKolEn(2,2,4,0);
-				room.setKolEn(3,3,4,2);
-				room.setKolEn(4,1,2,0);
-				room.setKolEn(5,1,4,2);
-				if (room.tipEnemy==6) room.setKolEn(2,1,3,0);
-				if (room.kolEnSpawn==0) 
+				room.setUnitSpawnLimits(1, 3, 5, 2);
+				room.setUnitSpawnLimits(2, 2, 4, 0);
+				room.setUnitSpawnLimits(3, 3, 4, 2);
+				room.setUnitSpawnLimits(4, 1, 2, 0);
+				room.setUnitSpawnLimits(5, 1, 4, 2);
+				if (room.tipEnemy == 6) room.setUnitSpawnLimits(2, 1, 3, 0);
+				if (room.kolEnSpawn == 0) 
 				{
-					if (room.tipEnemy!=5) room.setKolEn(-1,1,2);
+					if (room.tipEnemy != 5) room.setUnitSpawnLimits(-1, 1, 2);
 				}
-				room.kolEnHid=0;
+				room.kolEnHid = 0;
 			} 
-			else if (ml<10) 
+			else if (ml < 10) 
 			{
-				room.setKolEn(1,3,6,2);
-				if (Math.random()<0.15) room.setKolEn(2,1,1,0);
-				else if (room.tipEnemy==6) room.setKolEn(2,2,3,0);
-				else room.setKolEn(2,2,5,0);
-				room.setKolEn(3,3,5,2);
-				room.setKolEn(4,2,3,1);
-				room.setKolEn(5,2,4,2);
-				if (room.kolEnSpawn==0) 
+				room.setUnitSpawnLimits(1, 3, 6, 2);
+				if (Math.random() < 0.15) room.setUnitSpawnLimits(2, 1, 1, 0);
+				else if (room.tipEnemy == 6) room.setUnitSpawnLimits(2, 2, 3, 0);
+				else room.setUnitSpawnLimits(2, 2, 5, 0);
+				room.setUnitSpawnLimits(3, 3, 5, 2);
+				room.setUnitSpawnLimits(4, 2, 3, 1);
+				room.setUnitSpawnLimits(5, 2, 4, 2);
+				if (room.kolEnSpawn == 0) 
 				{
-					if (room.tipEnemy!=5) room.setKolEn(-1,2,3);
+					if (room.tipEnemy != 5) room.setUnitSpawnLimits(-1, 2, 3);
 				}
-				room.kolEnHid=Math.floor(Math.random()*3);
+				room.kolEnHid = Math.floor(Math.random() * 3);
 			} 
 			else 
 			{
-				room.setKolEn(1,4,6,2);
-				if (Math.random()<0.15) room.setKolEn(2,1,2,0);
-				else if (room.tipEnemy==6) room.setKolEn(2,3,4,0);
-				else room.setKolEn(2,3,6,0);
-				room.setKolEn(3,4,7,2);
-				room.setKolEn(4,2,4,1);
-				room.setKolEn(5,3,6,2);
-				if (room.kolEnSpawn==0) 
+				room.setUnitSpawnLimits(1, 4, 6, 2);
+				if (Math.random() < 0.15) room.setUnitSpawnLimits(2, 1, 2, 0);
+				else if (room.tipEnemy == 6) room.setUnitSpawnLimits(2, 3, 4, 0);
+				else room.setUnitSpawnLimits(2, 3, 6, 0);
+				room.setUnitSpawnLimits(3, 4, 7, 2);
+				room.setUnitSpawnLimits(4, 2, 4, 1);
+				room.setUnitSpawnLimits(5, 3, 6, 2);
+				if (room.kolEnSpawn == 0) 
 				{
-					if (room.tipEnemy!=5) room.setKolEn(-1,2,4);
-					else if (Math.random()>0.4) room.setKolEn(-1,1,3);
+					if (room.tipEnemy != 5) room.setUnitSpawnLimits(-1, 2, 4);
+					else if (Math.random() > 0.4) room.setUnitSpawnLimits(-1, 1, 3);
 				}
-				room.kolEnHid=Math.floor(Math.random()*4);
+				room.kolEnHid = Math.floor(Math.random() * 4);
 			}
 			if (room.tipEnemy == 5 || room.tipEnemy == 10) 
 			{
-				room.setKolEn(2, 1, 3, 1);
+				room.setUnitSpawnLimits(2, 1, 3, 1);
 			}
 			if (levelTemplate.biom == 11) 
 			{
-					room.setKolEn(2, 5, 8, 0);
+					room.setUnitSpawnLimits(2, 5, 8, 0);
 			}
 		}
 		
@@ -932,11 +920,7 @@ package locdata
 		
 		public function setGGToSpawnPoint():void //Move the character to the spawn point
 		{
-			if (room == null)
-			{
-				trace('Level.as/setGGToSpawnPoint() - ERROR: Room is null.');
-			}
-			trace('Level.as/setGGToSpawnPoint() - Setting player at spawnpoint in room: "' + room.id + '" levelTemplate: "' + room.roomTemplate.id + '".');
+			trace('Level.as/setGGToSpawnPoint() - Moving player to spawnpoint in room: "' + room.id + '".');
 
 			var roomCoordinateX:int = 3;
 			var roomCoordinateY:int = 3;
@@ -948,10 +932,7 @@ package locdata
 				roomCoordinateX = room.spawnPoints[n].x;
 				roomCoordinateY = room.spawnPoints[n].y;
 			}
-			else
-			{
-				trace('No valid spawnpoints found. Room: ', room)
-			}
+			else trace('Level.as/setGGToSpawnPoint() - ERROR: No valid spawnpoints found in Room: "' + room.id + '"!')
 
 			gg.setLocPos((roomCoordinateX + 1) * Tile.tilePixelWidth, (roomCoordinateY + 1) * Tile.tilePixelHeight - 1);
 			gg.dx = 3;
@@ -960,16 +941,15 @@ package locdata
 
 		}
 		
-
-		//Activate the room with the current coordinates
-		public function activateRoom():Boolean 
+		//TODO: Why is this returning a bool?
+		public function activateRoom():Boolean //Activate the room with the current coordinates
 		{
 			trace('Level.as/activateRoom() - Activating room.');
 			var newRoom:Room;
 
 			if (prob != '' && probs[prob] == null)
 			{
-				trace('Level.as/activateRoom() - Error: Prob null, returning false early.');
+				trace('Level.as/activateRoom() - ERROR: Room does not have a valid trial! Stopping room activation.');
 				return false;
 			}
 

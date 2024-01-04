@@ -686,7 +686,7 @@ package locdata
 			if (level.rnd && GameSession.currentSession.pers.modMetal > 0 && Math.random() < GameSession.currentSession.pers.modMetal) putRandomLoot();
 		}
 		
-		public function setKolEn(en:int, min:int, max:int, spl:int = 0):void // Set the number of random enemies
+		public function setUnitSpawnLimits(en:int, min:int, max:int, spl:int = 0):void // Set the number of random enemies
 		{
 			if (en == -1) 
 			{
