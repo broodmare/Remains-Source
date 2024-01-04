@@ -27,6 +27,7 @@ Possible Goals:
     - Rewrite parts of the UI to remove the dependency on Adobe Animate to compile.
     - Implement modern flash rendering and hardware acceleration with the Starling Engine.
     - Improvements or stand-alone level editor.
+    - Unlocked refresh rate, while the animations are set at 30fps, other elements may be able to refresh faster.
     - NPC behavior modification.
     - Support for custom scripts/quests/etc.
 ```
@@ -61,15 +62,91 @@ Broad Overview of Changes:
 
 ```
 Requirements to work on this project and compile:
-    - Adobe Animate
-    - Fallout Equestria: Remains source code
-    - A programming environment like JStudio, Visual Studio, Notepad++, etc.
-        Note: I currently use Visual Studio Code as it's the only IDE with support for ActionScript via third party extensions.
+    - Adobe Animate ("What be a pirate's favorite letter? Tis the C")
+    - Fallout Equestria: Remains source code <https://drive.google.com/uc?id=1m8k_yV1zFC-KmQafSGHaCipeuAsEjqPr>
+    - A programming environment like IntelliJ, Visual Studio, Notepad++, etc.
+        Note: I currently use Visual Studio Code as it's the only IDE with support for ActionScript via the "ActionScript &MXML" and "AS3, MXML, and SWF Extenstion Pack" extensions.
 
 Optional Tools:
     - Adobe Scout
         Good for performance debugging, but doesn't have as much detail when an error occurs as Adobe Animate.
 ```
+
+```
+New Folder Structure and File Decsriptions
+
+    [src] - Main directory for the game
+        [data] - Directory for extracted resources and compiled '.swf' resource libraries
+            xmldata - XML files and previously hard-coded XML data. These are loaded into an array at runtime inside the XmlBook class.
+            sound - .mp3 sound files previously contained in the 'sound.swf' library.
+            music - .mp3 sound files
+            rooms - Each '.xml' file is a level. The XML contains all possible rooms for that level.
+        [components] - Classes for storing data about the game.
+            Settings.as
+            XmlBook.as
+        [graphdata] - Classes for rendering the screen.
+            BackObj.as
+            BulletHoles.as
+            CursorHander.as
+            Displ.as
+            Emitter.as
+            Grafon.as - Renders the current room.
+            GrLoader.as - Loads resources from '.swf.' libraries.
+            Material.as
+            Part.as
+        [interdata] - Classes to handle the GUI.
+            Appear.as - Player appearance
+            Camera.as
+            Ctr.as - Player movement controller
+            GUI.as
+            Keystates.as - Object to hold the state of all keypresses.
+            PipBuck.as
+            PipPage.as
+            PipPageApp.as
+            PipPageInfo.as
+            PipPageInv.as
+            PipPageMed.as
+            PipPageOpt.as
+            PipPageStat.as
+            PipPageVault.as
+            PipPageVend.as
+            PipPageWork.as
+            Sats.as
+            SatsCel.as
+            Stand.as
+        [locdata] - Classes to handle items in the game. (Levels, Rooms, Tiles, etc.)
+            Area.as
+            Bonus.as
+            Box.as
+            CheckPoint.as
+            Form.as
+            Game.as
+            Level.as
+            LevelLoader.as
+            LevelTemplate.as
+            Loot.as
+            Probation.as
+            Quest.as
+            Room.as
+            RoomTemplate.as
+            Tile.as
+            Trap.as
+        [roomdata] - ???
+        [servdata] - Scripts
+        [stubs] - These are used to reduce compiler errors and serve no other purpose. The actual classes are contained in the '.fla' files, however IDEs and Compilers other than Adobe Flash cannot see these linkages.
+        [systems] - Classes for manipulating data (eg. Load XML files)
+        [unitdata] - Classes for ingame units AND some other things (Armor, Coordinates, Effects, Inventory, Spells)
+        [weapondata] - Classes for handling Weapons, Attacks, and Bullets.
+
+        GameSession.as - Main class that holds everything needed for the game
+        Main.as - Class reponsible for intitial loading screen and opening the MainMenu
+        MainMenu.as - Class responsible for main menu functions and starting a new GameSession.
+        Obj.as - Primitive class for objects.
+        Pt.as - Primitive class for objects.
+        Res.as - Class resposible for localizing text.
+        Snd.as - Class resposible for playing sound and music.
+```
+
 
 
 ```
