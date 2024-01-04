@@ -1,228 +1,78 @@
 # Remains-Source
+---
 
+This project is an attempt to translate, re-write, and optimize the Fallout Equestria: Remains game made by Empalu.
 
+This is not a complete remake and still uses Flash and ActionScript instead of a new engine.
 
 ---
 
-Rework of the game made by Emaplu.
-
----
 
 ```
-Remains.fla --
-zastavka -> loadingWidget.
-	duplicated zastavka removed.
-MainFE renamed to Main.
-import 'fe.Obj' calls changed to import 'Obj'.
-Removed import protection.
-Exported audio changed from Mono to Stereo.
-Exported audio set at 128kbs mp3.
-Flash version 30 -> 32.
-voda -> waterMovieClip
-pink -> pinkCloudMovieClip
-govno -> greenCloudMovieClip
+Current project goals:
 
-butEng removed.
-butRus removed.
+    - Load all XML data at runtime instead of being hardcoded.
+    - Load as many resources possible from a directory instead of .swf libraries.
+    - Translate the source code into English.
+    - Make the source code easy to read and understand through refactoring and properly descriptive variable/function naming.
+    - Convert all code to use strict typing. This will make it easier to port to other languages eventually if needed.
+    - Document how the source code functions.
+    - Optimize the source code when possible.
+```
 
-butLang 
-	[russian] -> "langauge" so it's more obvious when mainMenu is broke.
+```
+Possible Goals:
 
+    - Loading multiple XML sources and patching at startup to allow for multiple mod files.
+    - Rewrite parts of the UI to remove the dependency on Adobe Animate to compile.
+    - Implement modern flash rendering and hardware acceleration with the Starling Engine.
+    - Improvements or stand-alone level editor.
+    - NPC behavior modification.
+    - Support for custom scripts/quests/etc.
+```
 
+```
+FAQ:
 
+    Q: Does the game currently work?
+    A: No.
 
-"Test" levels, quest, and checks removed.
+    Q: Does the game function the same as the original?
+    A: Ideally yes, however due to the nature of re-writing large parts of code, some things may end up working slightly differently.
 
-vfon = background
+    Q: Will you continue working on the base game or story?
+    A: No. However, this would allow other people to continue to work on the game and create content without the need for Adobe Flash, recompiling the game, or having to distribute multiple copies of the game for each change.
 
+    Q: Is this compatible with the old source code files?
+    A: No. Part of localization was to change the names of some properties in the '.fla' project files. The original '.as' files or new ones based it may not work correctly or at all.
+```
 
-Renamed all 'loc' variables to avoid compiler ambigiuity with the loc folder.
-Renamed all folders to reduce compiler ambiguity.
-Reduced import nesting.
-moved language files into '/data'.
-moved '.swf' files into '/data'.
-moved .xml files to '/data'.
-Removed built in levels option/check.
+```
+Broad Overview of Changes:
 
-Appear --
-	Load()
-		Fixed 'l' being defined twice.
+    - Restructured the entire project layout.
+    - Ongoing translation and formatting on almost every file, this has broken a lot of things.
+    - Grafon (The rendering class) and its alternative version have been reduced to one class and heavily modified. (Status: Mostly Non-functional)
+    - The MainMenu class has been heavily re-written. (Status: Functional)
+    - Hardcoded XML files have been removed from the source code and are loaded at runtime via a new XMLBook class.
+    - Res.as (The class responsible for text localization.) has been rewritten and simplified dramatically. (Status: Functional, Buggy)
+    - Sounds have been unpacked from a '.swf' library. (Status: Unknowm Functionality)
+```
 
-Ctr --
-	Grouped all key states into a keyState object.
-		
-Emitter --
-	step()
-		Fixed Emitter.emit setting rx twice instead of rx and ry.
-	
-Form --
-	Fixed loop in setForms().
-	fForms 	-> tileForms.
-	oForms 	-> otherForms.
-	id 		-> formID
-	ed 		-> formLayer
-	tip 	-> formType.
-	back 	-> formRearTextureID
-	rear 	-> formHasRearTexture.
-	mat 	-> formMaterial
-	
-Game --
-	lands 	-> levelArray.
-	gotoLand -> gotoLevel.
-	exitLand -> exitLevel.
-	enterToCurLand -> enterCurrentLevel.
-	
-GameData --
-	Split into levels.xml, npcs.xml, scripts.xml, quests.xml, and vendors.xml
-	
-Grafon --
-	Moved initializers into the constructor instead of in the class definition.
-	Fixed for loop in constructor.
-	Fixed 'i' being defined twice in constructor.
-	Fixed for loop in drawAllObjs().
-	setBackgroundSize() -> setSkyboxSize.
-	transpFon -> transparentBackground.
-	drawBackWall() -> drawDecorativeBackground().
-	(currentLocation.backwall, currentLocation.backform)
-	
-	vfon 		-> background.
-	numbObj 	-> canvasLayerCount.
-	visObjs 	-> canvasLayerArray.
-	drawFon 	-> drawSkybox().
-	setFonSize 	-> setBackgroundSize
-	
-	visual 		-> mainCanvas
-	visBack 	-> layerBackground_1.
-	visBack2 	-> layerBackground_2.
-	visVoda 	-> layerWater.
-	visaFront 	-> vis
-	visLight 	-> layerLighting.
-	visSats 	-> layerSats.
-	sloy 		-> layer.
-	ram* -> border*
-	
-	toFront -> isTopLayer
+```
+Requirements to work on this project and compile:
+    - Adobe Animate
+    - Fallout Equestria: Remains source code
+    - A programming environment like JStudio, Visual Studio, Notepad++, etc.
+        Note: I currently use Visual Studio Code as it's the only IDE with support for ActionScript via third party extensions.
 
-	numbMat 	-> materialCount
-	numbFon 	-> skyboxCount
-	numbBack 	-> bgObjectCount
-	numbObj 	-> objectCount
-	numbSprite  -> spriteCount
-	back - what backwall is behind a tile.
-	drawlayer - normal staircases '3', all other climbables '4'.
-	vid - only climbables.
-	1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-	rear - should be drawn behind normal staircases? only normal staircasese don't have this.
-	lurk - only mechanism and pipes.
-	
-languageList.xml (formerly lang.xml)--
-	default -> defaultLang.
+Optional Tools:
+    - Adobe Scout
+        Good for performance debugging, but doesn't have as much detail when an error occurs as Adobe Animate.
+```
 
 
-Level (formerly Land) --
-	Land() -> Level().
-	enterLand -> enterLevel().
-	
-	
-LevelTemplates (formerly LandAct) --
-	LandAct() -> LevelTemplates().
-	
-Main --
-	zastavka -> loadingWidget.
-	
-MainMenu --
-	MainMenu()
-		Changed passed variable from a Sprite to a MovieClip.
-	Consolidated event listeners.
-	
-Material --
-		Imports a 'mask' propety from 'AllData.xml' as a generic class. This was changed to be imported as a string.
-		If the import failed, it was set as a class that doesn't exist (TileMask).
-		rear -> isBackwall
-		Filter array changed to a static object and moved to 'TileFilter.as'.
-	
-Res --
-	d 	 -> gameData.
-	type -> classDataKey.
-	removed pipText().
-	removed guiText().
-	
-Room (formerly Location) --
-	space 	-> roomTileArray
-	unloadLocation() -> unloadRoom().
-	locationActive -> roomActive.
-	landProb -> roomProb
-	acts 	-> activeObjects.
-	limX 	-> roomPixelWidth
-	limY 	-> roomPixelHeight
-	spaceX 	-> roomWidth
-	spaceY 	-> roomHeight
-	rx 		-> roomCoordinateX
-	ry 		-> roomCoordinateY
-	rz 		-> roomCoordinateZ
-	
-	removed endLand().
-	
-	
-RoomTemplate (formerly Room)
-
-RoomContainer (formerly Rooms)
-
-Sats --
-	concatenating strings method changed from '+=' to '.appendText()' for performance.
-Snd --
-	inited 		-> soundInitialized.
-	onSnd 		-> soundEnabled.
-	onMusic 	-> musicEnabled.
-	shumArr 	-> soundStage.
-	resSounds 	-> soundResourceData
-
-
-
-Tile --
-	dec() 	-> parseLevelXML().
-	front 	-> tileTexture
-	back 	-> tileRearTexture
-	rear 	-> tileHasRearTexture.
-	mat 	-> tileMaterial.
-
-Unit --
-	SetLevel()
-		Set MaxHP before HP.
-		Before HP was being set before a max value was calculated.
-		
-World --
-	ativateLand() -> activateLevel().
-	allLandsLoaded -> allLevelsLoaded
-	landData -> allLevelsArray
-	vfon -> skybox.
-	main -> mainDisplay
-	kolLands -> levelsFound
-	kolLandsLoaded -> levelsLoaded
-	visual -> mainCanvas
-	vWait -> loadingScreen
-	landDifLevel -> levelDifficultyLevel
-	w -> world
-	CellsX -> roomTileWidth
-	CellsY -> roomTileHeight
-	Settings moved into their own component class.
-	Language loader moved into their own system class.
-	removed extra setTransform() call during appearance menu initialization.
-	removed savePath variable.
-	Create configObj sooner, language setup needs it to complete it's tasks.
-	
-Texture.fla --
-	fonCanter 		-> skyboxCanterlot
-	fonClear 		-> skyboxClear
-	fonDarkClouds 	-> skyboxDarkClouds
-	fonDefault 		-> skyboxDefault
-	fonEnclave 		-> skyboxEnclave
-	fonFinalb 		-> skyboxFinalB
-	fonFire 		-> skyboxFire
-	fonRuins 		-> skyboxRuins
-	fonWay 			-> skyboxWay
-
-
+```
 Cyclomatic complexity Highscore:
 
 Unitplayer.control - 331
@@ -246,11 +96,6 @@ Invent.take - 81
 Script.com - 79
 GUI.setCelObj - 79
 PipPageInv.setSubPages - 75
-
-
-
 ```
-
-
 =======
 
