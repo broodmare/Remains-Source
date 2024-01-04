@@ -88,7 +88,7 @@ New Folder Structure and File Decsriptions
             BackObj.as
             BulletHoles.as
             CursorHander.as
-            Displ.as
+            Displ.as - Class that handles the mainMenu background animation.
             Emitter.as
             Grafon.as - Renders the current room.
             GrLoader.as - Loads resources from '.swf.' libraries.

@@ -40,7 +40,7 @@
 		public var layerSats:Sprite;			// Layer 6
 		
 		public var canvasLayerArray:Array;
-		public var skyboxLayer:MovieClip;
+		public var skyboxTexture:MovieClip;
 		
 		public var resX:int;
 		public var resY:int;
@@ -337,51 +337,46 @@
 		public function getObj(textureName:String, loaderID:int = 0):* 
 		{
 			var obj:* = grLoaderArray[loaderID].resource.getObj(textureName);
-			if (!obj) trace('Grafon.as/getObj - ERROR while Attempting to load texture: "' + textureName + '".');
-
 			return obj;
 		}
 		
-		public function drawSkybox():void
+		public function changeSkybox():void
 		{
 			var textureID:String = GameSession.currentSession.level.levelTemplate.skybox;
 			if (textureID == '' || textureID == null) textureID = 'fonDefault';
-			trace('Grafon.as/drawSkybox() - Rendering skybox texture ID: "' + textureID + '".');
+			trace('Grafon.as/changeSkybox() - Rendering skybox texture ID: "' + textureID + '".');
 
-			if (skyboxLayer && GameSession.currentSession.skybox.contains(skyboxLayer)) GameSession.currentSession.skybox.removeChild(skyboxLayer);
-			
-			trace('Grafon.as/drawSkybox() - ATTEMPING TO SET skyboxLayer');
-			skyboxLayer = getObj(textureID); //Set the background to the specified texture.
-			if (skyboxLayer != null) trace('Grafon.as/drawSkybox() - Sucessfully set skyboxLayer!');
-			else trace('Grafon.as/drawSkybox() - ERROR WHILE SETTING skyboxLayer!');
+			if (skyboxTexture && GameSession.currentSession.skybox.contains(skyboxTexture)) GameSession.currentSession.skybox.removeChild(skyboxTexture); //Remove the old skybox texture from the canvas.
 
-			if (skyboxLayer) GameSession.currentSession.skybox.addChild(skyboxLayer); //If the background exists, add it to the background sprite.
+			skyboxTexture = getObj(textureID); // Retrieve the skybox texture.
+			if (skyboxTexture) GameSession.currentSession.skybox.addChild(skyboxTexture); //Add the texture to the canvas for rendering.
+			else trace('Grafon.as/changeSkybox() - ERROR - Could not change skybox texture!');
 		}
 		
 		public function setSkyboxSize(nx:Number, ny:Number):void
 		{
-			if (skyboxLayer)
+			if (skyboxTexture)
 			{
 				if (nx > screenResX && ny > screenResY)
 				{
-					skyboxLayer.x = mainCanvas.x;
-					skyboxLayer.y = mainCanvas.y;
-					skyboxLayer.width = screenResX;
-					skyboxLayer.height = screenResY;
+					skyboxTexture.x = mainCanvas.x;
+					skyboxTexture.y = mainCanvas.y;
+					skyboxTexture.width = screenResX;
+					skyboxTexture.height = screenResY;
 				} 
 				else 
 				{
-					var koef:Number = skyboxLayer.width / skyboxLayer.height;
-					skyboxLayer.x = skyboxLayer.y = 0;
+					var koef:Number = skyboxTexture.width / skyboxTexture.height;
+					skyboxTexture.x = skyboxTexture.y = 0;
 					if (nx >= ny*koef)
 					{
-						skyboxLayer.width = nx;
-						skyboxLayer.height = nx/koef;
+						skyboxTexture.width = nx;
+						skyboxTexture.height = nx/koef;
 					} 
 					else 
 					{
-						skyboxLayer.height = ny;
-						skyboxLayer.width  = ny * koef;
+						skyboxTexture.height = ny;
+						skyboxTexture.width  = ny * koef;
 					}
 				}
 			}
@@ -738,18 +733,18 @@
 			//####################
 			trace('Grafon.as/drawLoc - RENDERING STEP 18/20');
 			GameSession.currentSession.gr_stage = 18; //Unlock all bitmaps, as the background is now rendered.
-			if (skyboxLayer != null)
+			if (skyboxTexture != null)
 			{
 				if (room.cTransform && room.cTransformFon)
 				{
-					skyboxLayer.transform.colorTransform = room.cTransformFon;
+					skyboxTexture.transform.colorTransform = room.cTransformFon;
 				} 
-				else if (skyboxLayer.transform.colorTransform != defTransform) 
+				else if (skyboxTexture.transform.colorTransform != defTransform) 
 				{
-					skyboxLayer.transform.colorTransform = defTransform;
+					skyboxTexture.transform.colorTransform = defTransform;
 				}
 			}
-			else trace('Grafon.as/drawLoc() - ERROR IN STAGE 18 - skyboxLayer is null!');
+			else trace('Grafon.as/drawLoc() - ERROR IN STAGE 18 - skyboxTexture is null!');
 
 			frontBmp.unlock();
 			backBmp.unlock();
@@ -1153,7 +1148,7 @@
 			if (n == 0)
 			{
 				mainCanvas.filters = [];
-				skyboxLayer.filters = [];
+				skyboxTexture.filters = [];
 			} 
 			else if (n == 1)
 			{
@@ -1182,7 +1177,7 @@
 			else if (n > 100)
 			{
 				mainCanvas.filters  = [new BlurFilter(n - 100, n - 100)];
-				skyboxLayer.filters = [new BlurFilter(n - 100, n - 100)];
+				skyboxTexture.filters = [new BlurFilter(n - 100, n - 100)];
 			}
 		}
 	}

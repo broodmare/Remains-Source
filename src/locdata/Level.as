@@ -885,7 +885,7 @@ package locdata
 		{
 			trace('Level.as/enterLevel - Entering level...');
 
-			GameSession.currentSession.grafon.drawSkybox(); // Render Skybox
+			GameSession.currentSession.grafon.changeSkybox(); // Render Skybox
 
 			levelTemplate.visited = true;
 			locZ = 0;
