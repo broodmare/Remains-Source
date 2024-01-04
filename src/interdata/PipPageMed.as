@@ -1,6 +1,5 @@
 package interdata 
 {
-	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	
@@ -33,15 +32,11 @@ package interdata
 			vis.but3.visible = false;
 			vis.but4.visible = false;
 			vis.but5.visible = false;
-			trace('PipPageMed.as/PipPageMed() - Created PipPageMed page.');
 		}
 
 		//подготовка страниц
-		//set public
 		public override function setSubPages():void
 		{
-			trace('PipPageMed.as/setSubPages() - updating subPages.');
-
 			setIco();
 			if (pip.npcInter == 'adoc') 
 			{
@@ -108,13 +103,9 @@ package interdata
 				arr.push({id:'poison', objectName:Res.txt('pip', 'poison'), lvl:Math.round(gg.poison*10)/10, price:cena});
 			}
 			showBottext();
-
-			trace('PipPageMed.as/setSubPages() - Finished updating subPages.');
-
 		}
 		
 		//показ одного элемента
-		//set public
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			if (obj.id != null) item.id.text = obj.id;
@@ -135,26 +126,24 @@ package interdata
 		}
 		
 		//информация об элементе
-		//set public
 		public override function statInfo(event:MouseEvent):void
 		{
-				if (event.currentTarget.id.text!='') 
+				if (event.currentTarget.id.text != '') 
 				{
 					vis.objectName.text = Res.txt('pip', event.currentTarget.id.text);
 					var s:String = Res.txt('pip', event.currentTarget.id.text, 1);
 					vis.info.htmlText=s;
 				} 
-				else
-				{
-					vis.objectName.text=vis.info.htmlText = '';
-				}
+				else vis.objectName.text=vis.info.htmlText = '';
 		}
 		
 		public override function page2Click(event:MouseEvent):void
 		{
 			if (GameSession.currentSession.ctr.setkeyOn) return;
-			page2=int(event.currentTarget.id.text);
+			
+			page2 = int(event.currentTarget.id.text);
 			pip.snd(2);
+			
 			if (page2 == 2) 
 			{
 				page2 = 1;
@@ -162,21 +151,16 @@ package interdata
 				pip.currentPage.page2 = 1;
 				pip.currentPage.setStatus();
 			} 
-			else 
-			{
-				setStatus();
-			}
+			else setStatus();
 		}
 
-		//set public
 		public function showBottext():void
 		{
 			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('item','gel')+': '+yel(plata.kol);
 			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('item','good')+': '+yel(plata.kol);
 			else vis.bottext.htmlText=Res.txt('pip', 'caps')+': '+yel(plata.kol);
 		}
-		
-		//set public
+
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
@@ -184,97 +168,97 @@ package interdata
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
+
 			var cena:Number;
-			infoItemId=event.currentTarget.id.text;
 			var need:String;
-			var mon=plata.kol;
-			if (infoItemId=='hp') 
+			var mon = plata.kol;
+
+			infoItemId = getSimplifiedItemId(event.currentTarget.id.text);
+			switch (infoItemId) 
 			{
-				cena=(gg.maxhp-gg.hp-gg.rad)*priceHP;
-				if (cena>plata.kol) cena=plata.kol;
-				gg.heal(cena/priceHP,0,false);
-				plata.kol-=Math.round(cena);
-			} 
-			else if (infoItemId=='rad') 
-			{
-				cena=(gg.rad)*priceRad;
-				if (cena>plata.kol) cena=plata.kol;
-				gg.heal(cena/priceRad,2,false);
-				plata.kol-=Math.round(cena);
-			} 
-			else if (infoItemId=='cut') 
-			{
-				cena=(gg.cut)*priceCut;
-				if (cena>plata.kol) cena=plata.kol;
-				gg.heal(cena/priceCut,3,false);
-				plata.kol-=Math.round(cena);
-			} 
-			else if (infoItemId=='poison') 
-			{
-				cena=(gg.poison)*pricePoison;
-				if (cena>plata.kol) cena=plata.kol;
-				gg.heal(cena/pricePoison,4,false);
-				plata.kol-=Math.round(cena);
-			} 
-			else if (infoItemId.substr(0,9)=='statBlood') 
-			{
-				if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) cena=raz*priceBlood; else cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
-				if (cena>plata.kol) cena=plata.kol;
-				if (gg.pers.bloodHP<=2 && plata.kol<=0 && gg.pers.level<6) 
-				{
-					gg.pers.heal(49,5);
-				} else gg.pers.heal(cena/priceBlood,5);
-				plata.kol-=Math.round(cena);
-			} 
-			else if (infoItemId.substr(0,8)=='statMana') 
-			{
-				if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) cena=razMana*priceMana; else cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
-				if (cena>plata.kol) cena=plata.kol;
-				gg.pers.heal(cena/priceMana,6);
-				plata.kol-=Math.round(cena);
-			} 
-			else if (infoItemId.substr(0,8)=='statHead') 
-			{
-				if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
-				if (cena>plata.kol) cena=plata.kol;
-				if (gg.pers.headHP<=2 && plata.kol<=0 && gg.pers.level<6) 
-				{
-					gg.pers.heal(49,1);
-				} 
-				else gg.pers.heal(cena/priceOrgan,1);
-				plata.kol-=Math.round(cena);
-			} 
-			else if (infoItemId.substr(0,8)=='statTors') 
-			{
-				if (gg.pers.inMaxHP-gg.pers.torsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
-				if (cena>plata.kol) cena=plata.kol;
-				if (gg.pers.torsHP<=2 && plata.kol<=0 && gg.pers.level<6) 
-				{
-					gg.pers.heal(49,2);
-				} 
-				else gg.pers.heal(cena/priceOrgan,2);
-				plata.kol-=Math.round(cena);
+				case 'hp':
+					cena = (gg.maxhp - gg.hp - gg.rad) * priceHP;
+					if (cena > plata.kol) cena = plata.kol;
+					gg.heal(cena / priceHP, 0, false);
+					break;
+
+				case 'rad':
+					cena = (gg.rad) * priceRad;
+					if (cena > plata.kol) cena = plata.kol;
+					gg.heal(cena / priceRad, 2, false);
+					break;
+
+				case 'cut':
+					cena = (gg.cut) * priceCut;
+					if (cena > plata.kol) cena = plata.kol;
+					gg.heal(cena / priceCut, 3, false);
+					break;
+
+				case 'poison':
+					cena = (gg.poison) * pricePoison;
+					if (cena > plata.kol) cena = plata.kol;
+					gg.heal(cena / pricePoison, 4, false);
+					break;
+
+				case 'statBlood':
+					if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) cena=raz*priceBlood; else cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
+					if (cena>plata.kol) cena=plata.kol;
+					if (gg.pers.bloodHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49, 5);
+					else gg.pers.heal(cena/priceBlood,5);
+					break;
+				
+				case 'statMana':
+						if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) cena=razMana*priceMana; else cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
+						if (cena>plata.kol) cena=plata.kol;
+
+						gg.pers.heal(cena/priceMana,6);
+						break;
+
+				case 'statHead':
+						if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
+						if (cena>plata.kol) cena=plata.kol;
+
+						if (gg.pers.headHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49, 1);
+						else gg.pers.heal(cena/priceOrgan,1);
+						break;
+				
+				case 'statTors':
+						if (gg.pers.inMaxHP-gg.pers.torsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
+						if (cena>plata.kol) cena=plata.kol;
+
+						if (gg.pers.torsHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49,2);
+						else gg.pers.heal(cena/priceOrgan,2);
+						break;
+				case 'statLegs':
+						if (gg.pers.inMaxHP-gg.pers.legsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
+						if (cena>plata.kol) cena=plata.kol;
+
+						if (gg.pers.legsHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49,3);
+						else gg.pers.heal(cena/priceOrgan,3);
+						break;
+				default
+					trace('PipPageMed.as/itemClick() - ERROR: UNHANDLED CASE!');
+					break;
 			}
-			else if (infoItemId.substr(0,8)=='statLegs') 
-			{
-				if (gg.pers.inMaxHP-gg.pers.legsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
-				if (cena>plata.kol) cena=plata.kol;
-				if (gg.pers.legsHP<=2 && plata.kol<=0 && gg.pers.level<6) 
-				{
-					gg.pers.heal(49,3);
-				} 
-				else gg.pers.heal(cena/priceOrgan,3);
-				plata.kol-=Math.round(cena);
-			}
-			if (plata.id=='money' && plata.kol<mon && pip.vendor) 
-			{
-				pip.vendor.money+=(mon-plata.kol);
-			}
+			plata.kol -= Math.round(cena);
+
+			if (plata.id == 'money' && plata.kol < mon && pip.vendor) pip.vendor.money += (mon - plata.kol);
+
 			pip.snd(1);
 			setStatus();
 			showBottext();
 			pip.setRPanel();
 		}
+
+		private function getSimplifiedItemId(infoItemId:String):String 
+		{
+			if (infoItemId.indexOf('statBlood') == 0) return 'statBlood';
+			if (infoItemId.indexOf('statMana')  == 0) return 'statMana';
+			if (infoItemId.indexOf('statHead')  == 0) return 'statHead';
+			if (infoItemId.indexOf('statTors')  == 0) return 'statTors';
+			if (infoItemId.indexOf('statLegs')  == 0) return 'statLegs';
+
+			return infoItemId;
+		}
 	}
-	
 }
