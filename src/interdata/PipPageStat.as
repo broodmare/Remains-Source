@@ -373,7 +373,6 @@
 
 					vis.info.htmlText += '<br><br>';
 
-					// This is where the helper function is used.
 					if (id.indexOf('statHead') == 0) 
 					{
 						var lvl:int = getSeverityLevel(id, 'statHead', 3);
@@ -408,7 +407,8 @@
 				else 
 				{
 					vis.nazv.text=objectName;
-					if (page2==4) {
+					if (page2==4) 
+					{
 						if (id=='drunk') 
 						{
 							vis.info.htmlText=effStr('eff',id,drunk-1);
@@ -492,60 +492,66 @@
 				if (selectedPerk == '') vis.bottext.htmlText=Res.txt('pip', 'chooseperk');
 				else vis.bottext.htmlText = textAsColor('pink', Res.txt('eff',selectedPerk));
 			}
-			//TODO: Implement the switch-case stuff from PipPageMed.as
+
 			if (page2 == 5 && infoItemId != '') 
 			{
 				var ci:String = '';
-				if (infoItemId == 'hp') 
+				var simplifiedID:String = getSimplifiedItemId(infoItemId)
+
+				switch (simplifiedID)
 				{
-					vis.bottext.htmlText = Res.txt('pip', 'healpotions') + ': ' + textAsColor('yellow', inv.items['pot1'].kol + inv.items['pot2'].kol + inv.items['pot3'].kol);
-				} 
-				else if (infoItemId == 'rad') 
-				{
-					ci = 'antiradin';
-				} 
-				else if (infoItemId == 'cut') 
-				{
-					ci = 'pot0';
-				} 
-				else if (infoItemId == 'poison') 
-				{
-					ci = 'antidote';
-				} 
-				else if (infoItemId.indexOf('statBlood') == 0)
-				{
-					ci = 'bloodpak';
-				} 
-				else if (infoItemId.indexOf('statMana') == 0)
-				{
-					vis.bottext.htmlText = Res.txt('item','potm1') + ': ' + textAsColor('yellow', inv.items['potm1'].kol + inv.items['potm2'].kol + inv.items['potm3'].kol);
-				} 
-				else if (infoItemId == 'phoenix') 
-				{
-					ci = 'radcookie';
-				} 
-				else if (infoItemId.indexOf('statHead') == 0)
-				{
-					ci = gg.invent.getMed(1);
-					if (ci == '') vis.bottext.text = '';
-				} 
-				else if (infoItemId.indexOf('statTors') == 0)
-				{
-					ci = gg.invent.getMed(2);
-					if (ci == '') vis.bottext.text = '';
-				} 
-				else if (infoItemId.indexOf('statLegs') == 0)
-				{
-					ci = gg.invent.getMed(3);
-					if (ci == '') vis.bottext.text = '';
+					case 'hp':
+						vis.bottext.htmlText = Res.txt('pip', 'healpotions') + ': ' + textAsColor('yellow', inv.items['pot1'].kol + inv.items['pot2'].kol + inv.items['pot3'].kol);
+						break;
+
+					case 'rad':
+						ci = 'antiradin';
+						break;
+
+					case 'cut':
+						ci = 'pot0';
+						break;
+
+					case 'poison':
+						ci = 'antidote';
+						break;
+
+					case 'statBlood':
+						ci = 'bloodpak';
+						break;
+
+					case 'statMana':
+						vis.bottext.htmlText = Res.txt('item','potm1') + ': ' + textAsColor('yellow', inv.items['potm1'].kol + inv.items['potm2'].kol + inv.items['potm3'].kol);
+						break;
+
+					case 'phoenix':
+						ci = 'radcookie';
+						break;
+
+					case 'post_':
+						ci = 'detoxin';
+						break;
+
+					case 'statHead':
+						ci = gg.invent.getMed(1);
+						if (ci == '') vis.bottext.text = '';
+						break;
+
+					case 'statTors':
+						ci = gg.invent.getMed(2);
+						if (ci == '') vis.bottext.text = '';
+						break;
+
+					case 'statLegs':
+						ci = gg.invent.getMed(3);
+						if (ci == '') vis.bottext.text = '';
+						break;
+
 				}
-				else if (infoItemId.indexOf('post_') == 0)
-				{
-					ci = 'detoxin'
-				}
+
 				if (ci != '') vis.bottext.htmlText = Res.txt('item', ci) + ': ' + textAsColor('yellow', inv.items[ci].kol);
 			}
-		}
+		}		
 		
 		public override function itemClick(event:MouseEvent):void
 		{
@@ -554,6 +560,7 @@
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
+
 			if (page2==2) 
 			{
 				var id=event.currentTarget.id.text;
@@ -562,71 +569,93 @@
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
 				pip.snd(1);
 			}
-			if (page2==6) 
+
+			if (page2 == 6) 
 			{
-				if (event.currentTarget.alpha>=1) 
+				if (event.currentTarget.alpha >= 1) 
 				{
-					vis.butOk.visible=true;
-					selectedPerk=event.currentTarget.id.text;
+					vis.butOk.visible = true;
+					selectedPerk = event.currentTarget.id.text;
 				}
 				pip.snd(1);
 			}
-			if (page2 == 5 && infoItemId != '') 
+
+			if (page2 == 5 && infoItemId != '') //Clicking on status problems to heal them using the appropriate item.
 			{
 				infoItemId = event.currentTarget.id.text;
 				var need:String;
-				if (infoItemId == 'hp') 
+				var simplifiedID:String = getSimplifiedItemId(infoItemId)
+
+				switch (simplifiedID)
 				{
-					inv.usePotion();
-				} 
-				else if (infoItemId == 'rad') 
-				{
-					inv.usePotion('antiradin');
-				} 
-				else if (infoItemId == 'cut') 
-				{
-					inv.usePotion('pot0');
-				} 
-				else if (infoItemId=='poison') 
-				{
-					inv.usePotion('antidote');
+					case 'hp':
+						inv.usePotion();
+						break;
+
+					case 'rad':
+						inv.usePotion('antiradin');
+						break;
+
+					case 'cut':
+						inv.usePotion('pot0');
+						break;
+
+					case 'poison':
+						inv.usePotion('antidote');
+						break;
+
+					case 'statBlood':
+						inv.usePotion('bloodpak');
+						break;
+
+					case 'statMana':
+						inv.usePotion('mana');
+						break;
+
+					case 'phoenix':
+						inv.usePotion('radcookie');
+						break;
+
+					case 'post_':
+						inv.usePotion('detoxin');
+						break;
+
+					case 'statHead':
+						need = gg.invent.getMed(1);
+						if (need != '') inv.usePotion(need, 1);
+						break;
+
+					case 'statTors':
+						need = gg.invent.getMed(2);
+						if (need != '') inv.usePotion(need, 2);
+						break;
+
+					case 'statLegs':
+						need = gg.invent.getMed(3);
+						if (need != '') inv.usePotion(need, 3);
+						break;
+
 				}
-				else if (infoItemId.indexOf('statBlood') == 0)
-				{
-					inv.usePotion('bloodpak');
-				} 
-				else if (infoItemId=='phoenix') 
-				{
-					inv.usePotion('radcookie');
-				} 
-				else if (infoItemId.indexOf('statHead') == 0)
-				{
-					need=gg.invent.getMed(1);
-					if (need!='') inv.usePotion(need,1);
-				} 
-				else if (infoItemId.indexOf('statTors') == 0)
-				{
-					need=gg.invent.getMed(2);
-					if (need!='') inv.usePotion(need,2);
-				}
-				else if (infoItemId.indexOf('statLegs') == 0)
-				{
-					need=gg.invent.getMed(3);
-					if (need!='') inv.usePotion(need,3);
-				} 
-				else if (infoItemId.indexOf('statMana') == 0)
-				{
-					inv.usePotion('mana');
-				} 
-				else if (infoItemId.indexOf('post_') == 0)
-				{
-					inv.usePotion('detoxin');
-				}
+
 				setStatus();
 				pip.snd(1);
 				pip.setRPanel();
 			}
 			showBottext();
+		}
+
+		// Helper function for switch-cases. These strings have nubmers at the end, eg. 'statBlood2' to represent intensity levels.
+		// This removes the trailing number if applicable so the switch-case can do an instant comparison to check for matches.
+		private function getSimplifiedItemId(infoItemId:String):String  
+		{
+			if (infoItemId.indexOf('statBlood') == 0) return 'statBlood';
+			if (infoItemId.indexOf('statMana')  == 0) return 'statMana';
+			if (infoItemId.indexOf('statHead')  == 0) return 'statHead';
+			if (infoItemId.indexOf('statTors')  == 0) return 'statTors';
+			if (infoItemId.indexOf('statLegs')  == 0) return 'statLegs';
+			if (infoItemId.indexOf('detoxin')   == 0) return 'detoxin';
+
+			return infoItemId;
 		}
 
 		public override function itemRightClick(event:MouseEvent):void
@@ -636,13 +665,15 @@
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==2) 
+
+			if (page2 == 2) 
 			{
-				var id=event.currentTarget.id.text;
+				var id = event.currentTarget.id.text;
 				unselSkill(id);
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
 				pip.snd(1);
 			}
+
 			showBottext();
 		}
 
@@ -653,12 +684,12 @@
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==2) 
+			if (page2 == 2) 
 			{
-				var n=0;
+				var n = 0;
 				for (var i in skills) 
 				{
-					n+=skills[i].lvl-skills[i].minlvl;
+					n += skills[i].lvl-skills[i].minlvl;
 				}
 				if (n<=pers.skillPoint) 
 				{
@@ -672,16 +703,16 @@
 				pip.snd(3);
 				GameSession.currentSession.saveGame();
 			} 
-			else if (page2==3) 
+			else if (page2 == 3) 
 			{
-				page2=6;
+				page2 = 6;
 				pip.snd(2);
-				selectedPerk='';
+				selectedPerk = '';
 			} 
-			else if (page2==6) 
+			else if (page2 == 6) 
 			{
-				if (selectedPerk!='' && pers.perkPoint>0) pers.addPerk(selectedPerk,true);
-				page2=3;
+				if (selectedPerk != '' && pers.perkPoint > 0) pers.addPerk(selectedPerk, true);
+				page2 = 3;
 				pip.snd(3);
 				pip.setRPanel();
 				GameSession.currentSession.saveGame();
@@ -691,9 +722,9 @@
 		
 		public function gotoDef(event:MouseEvent):void
 		{
-			if (page2==6) 
+			if (page2 == 6) 
 			{
-				page2=3;
+				page2 = 3;
 				setStatus();
 				pip.snd(2);
 			}
