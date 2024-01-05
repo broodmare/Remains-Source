@@ -13,7 +13,14 @@ package interdata
 
 	import stubs.visPipInvItem;
 	
-	public class PipPageInv extends PipPage
+	//	sub-category cheat-sheet
+	//	1 - Weapons
+	//	2 - Armor
+	//	3 - Equipment
+	//	4 - Other
+	//	5 - Ammunition
+
+	public class PipPageInv extends PipPage //This category is called "Inventory" in-game.
 	{
 		var assId:String=null;
 		var assArr:Array;
@@ -58,22 +65,22 @@ package interdata
 			assId 	= null;
 			dat 	= new Date().getTime();
 
-			if (page2 != 4) 
+			if (subCategory != 4) 
 			{
-				setTopText('invupr' + page2);
+				setTopText('invupr' + subCategory);
 			}
 			inv.calcMass();
 			inv.calcWeaponMass();
-			if (page2 == 1) 
+			if (subCategory == 1) 
 			{		//оружие
 				inv.getKolAmmos();
 				assArr=[];
-				statHead.fav.text=Res.txt('pip', 'ii1');
-				statHead.nazv.text=Res.txt('pip', 'ii2');
-				statHead.hp.text=Res.txt('pip', 'ii3');
-				statHead.ammo.text='';
-				statHead.mass.text='';
-				statHead.ammotip.text=Res.txt('pip', 'ii4');
+				statHead.fav.text = Res.txt('pip', 'ii1');
+				statHead.nazv.text = Res.txt('pip', 'ii2');
+				statHead.hp.text = Res.txt('pip', 'ii3');
+				statHead.ammo.text = '';
+				statHead.mass.text = '';
+				statHead.ammotip.text = Res.txt('pip', 'ii4');
 				for each(var obj in inv.weapons) 
 				{
 					if (obj is Weapon) 
@@ -124,7 +131,7 @@ package interdata
 				if (arr.length) arr.sortOn(['sort1','sort2','sort3','objectName'],[0,0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('pip','massInv0',0,true)+'<br><br>'+Res.txt('pip','massInv1',0,true);
 			} 
-			else if (page2 == 2) 
+			else if (subCategory == 2) 
 			{	//броня
 				statHead.fav.text=Res.txt('pip', 'ii1');
 				statHead.nazv.text=Res.txt('pip', 'ii2');
@@ -145,8 +152,8 @@ package interdata
 				if (arr.length) arr.sortOn(['trol','sort'],[0,Array.NUMERIC]);
 				pip.massText=Res.txt('pip','massInv0',0,true)+'<br><br>'+Res.txt('pip','massInv2',0,true);
 			} 
-			else if (page2==3 || page2==4 || page2==5) 
-			{	//снаряжение
+			else if (subCategory == 3 || subCategory == 4 || subCategory == 5) //снаряжение
+			{	
 				assArr=[];
 				statHead.fav.text=Res.txt('pip', 'ii1');
 				statHead.nazv.text=Res.txt('pip', 'ii2');
@@ -166,7 +173,8 @@ package interdata
 					var itemTip=0;
 					if (node.@tip=='a' || node.@tip=='e') itemTip=2;
 					else if (node.@us>0) itemTip=1;
-					if ((itemTip==1 && page2==3) || (itemTip==0 && page2==4) || (itemTip==2 && page2==5)) {
+					if ((itemTip == 1 && subCategory == 3) || (itemTip == 0 && subCategory == 4) || (itemTip == 2 && subCategory == 5)) 
+					{
 						var tcat:String;
 						if (Res.istxt('pip',node.@tip)) tcat=Res.txt('pip', node.@tip);
 						else tcat=Res.txt('pip', 'stuff');
@@ -179,16 +187,16 @@ package interdata
 						n.sort=n.cat;
 						n.sort2=node.@sort.length()?node.@sort:0;
 						//патроны к текущему оружию вперёд
-						if (page2==5 && gg.currentWeapon && gg.currentWeapon.tip<4 && (gg.currentWeapon.ammoBase==node.@base || gg.currentWeapon.ammoBase==node.@id)) n.sort='0'+n.sort;
+						if (subCategory == 5 && gg.currentWeapon && gg.currentWeapon.tip<4 && (gg.currentWeapon.ammoBase==node.@base || gg.currentWeapon.ammoBase==node.@id)) n.sort='0'+n.sort;
 						arr.push(n);
 						assArr[n.id]=n;
 					}
 				}
-				if (page2==3) pip.reqKey=true;
+				if (subCategory == 3) pip.reqKey = true;
 				if (arr.length) arr.sortOn(['sort','sort2','objectName'],[0,Array.NUMERIC,0]);
 				pip.massText=Res.txt('pip','massInv0',0,true)+'<br><br>'+Res.txt('pip','massInv3',0,true);
 			}
-			pip.helpText=Res.txt('pip','helpInv'+page2,0,true);
+			pip.helpText = Res.txt('pip','helpInv' + subCategory, 0, true);
 			if (arr.length == 0) 
 			{
 				vis.emptytext.text=Res.txt('pip', 'emptyinv');
@@ -207,18 +215,20 @@ package interdata
 			vis.bottext.htmlText=Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', pip.money);
 			if (Settings.hardInv) 
 			{
-				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);
-				else if (page2==3) vis.bottext.htmlText+='    '+inv.retMass(1);
-				else if (page2==4) vis.bottext.htmlText+='    '+inv.retMass(3);
-				else if (page2==5) vis.bottext.htmlText+='    '+inv.retMass(2);
+				if (subCategory == 1) vis.bottext.htmlText = '    ' + inv.retMass(4) + '    ' + inv.retMass(5);
+				else if (subCategory == 3) vis.bottext.htmlText += '    ' + inv.retMass(1);
+				else if (subCategory == 4) vis.bottext.htmlText += '    ' + inv.retMass(3);
+				else if (subCategory == 5) vis.bottext.htmlText += '    ' + inv.retMass(2);
 			}
 		}
 		
 		//показ одного элемента
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
-			item.id.text=obj.id;
-			item.id.visible=item.rid.visible=item.cat.visible=false;
+			item.id.text = obj.id;
+			item.id.visible = false;
+			item.rid.visible = false;
+			item.cat.visible = false;
 			item.alpha=1;
 			item.nazv.alpha=1;
 			item.mass.text='';
@@ -240,7 +250,7 @@ package interdata
 			{
 				item.trol.gotoAndStop(1);
 			}
-			if (page2==1) 
+			if (subCategory == 1) 
 			{
 				item.ramka.visible=(GameSession.currentSession.gg.newWeapon && GameSession.currentSession.gg.newWeapon.id==obj.id) || (GameSession.currentSession.gg.currentSpell && GameSession.currentSession.gg.currentSpell.id==obj.id);
 				if (item.ramka.visible) selItem=item;
@@ -261,7 +271,7 @@ package interdata
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
 			} 
-			else if (page2==2) 
+			else if (subCategory == 2) 
 			{
 				item.ramka.visible=false;
 				if (Settings.hardInv && !GameSession.currentSession.room.base && obj.trol=='armor1' && GameSession.currentSession.gg.prevArmor!=obj.id && obj.clo==0) item.alpha=0.4;
@@ -301,26 +311,26 @@ package interdata
 		public override function statInfo(event:MouseEvent):void
 		{
 			assId=null;
-			if (page2==1) 
+			if (subCategory == 1) 
 			{
 				assId=event.currentTarget.id.text;
 				infoItem(Item.L_WEAPON,event.currentTarget.rid.text, event.currentTarget.nazv.text);
 			}
-			if (page2 == 2) 
+			if (subCategory == 2) 
 			{
 				assId=event.currentTarget.id.text;
 				infoItem(Item.L_ARMOR,event.currentTarget.id.text, event.currentTarget.nazv.text);
 			}
-			if (page2 == 3 || page2 == 4) 
+			if (subCategory == 3 || subCategory == 4) 
 			{
-				if (page2==3) assId=event.currentTarget.id.text;
+				if (subCategory == 3) assId=event.currentTarget.id.text;
 				infoItem(Item.L_ITEM,event.currentTarget.id.text, event.currentTarget.nazv.text);
 			}
-			if (page2 == 5) 
+			if (subCategory == 5) 
 			{
 				infoItem(Item.L_AMMO,event.currentTarget.id.text, event.currentTarget.nazv.text);
 			}
-			if (page2 >= 3) 
+			if (subCategory >= 3) 
 			{
 				if (event.currentTarget.id.text != overId) 
 				{
@@ -344,14 +354,14 @@ package interdata
 				return;
 			}
 			var ci:String = event.currentTarget.id.text;
-			if (page2 == 1) 
+			if (subCategory == 1) 
 			{
 				GameSession.currentSession.gg.changeWeapon(ci);
 				selItem = event.currentTarget as MovieClip;
 				setStatus(false);
 				pip.snd(1);
 			} 
-			else if (page2 == 2) 
+			else if (subCategory == 2) 
 			{
 				if (GameSession.currentSession.gg.changeArmor(ci)) 
 				{
@@ -359,23 +369,24 @@ package interdata
 				}
 				pip.snd(1);
 			} 
-			else if (page2==3) 
+			else if (subCategory == 3) 
 			{
-				if (ci=='retr') 
+				if (ci == 'retr') 
 				{
 					if (Settings.alicorn)
 					{
-						GameSession.currentSession.gui.infoText('alicornNot',null,null,false);
+						GameSession.currentSession.gui.infoText('alicornNot', null, null, false);
 						return;
 					}
-					if (GameSession.currentSession.game.curLevelID==GameSession.currentSession.game.baseId) return;
-					else if (GameSession.currentSession.possiblyOut()>=2) GameSession.currentSession.gui.infoText('noUseCombat'); 
+					if (GameSession.currentSession.game.curLevelID == GameSession.currentSession.game.baseId) return;
+					else if (GameSession.currentSession.possiblyOut() >= 2) GameSession.currentSession.gui.infoText('noUseCombat'); 
 					else buttonOk('retr');
 				} 
-				else if (ci=='mworkbench' || ci=='mworkexpl' || ci=='mworklab')
+				else if (ci == 'mworkbench' || ci == 'mworkexpl' || ci == 'mworklab')
 				{
-					if (GameSession.currentSession.t_battle>0) {
-						GameSession.currentSession.gui.infoText('noUseCombat',null,null,false);
+					if (GameSession.currentSession.t_battle>0) 
+					{
+						GameSession.currentSession.gui.infoText('noUseCombat', null, null, false);
 					} 
 					else 
 					{
@@ -392,7 +403,7 @@ package interdata
 				pip.snd(1);
 				over_t=2;
 			} 
-			else if (page2==5) 
+			else if (subCategory == 5) 
 			{
 				if (gg.invent.weapons[ci]) 
 				{
@@ -412,7 +423,7 @@ package interdata
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==1) 
+			if (subCategory == 1) 
 			{
 				var obj = assArr[event.currentTarget.id.text];
 				obj.respect=GameSession.currentSession.invent.respectWeapon(event.currentTarget.id.text);
@@ -421,7 +432,7 @@ package interdata
 				showBottext();
 				pip.snd(1);
 			}
-			if (page2>=3) 
+			if (subCategory >= 3) 
 			{
 				if (GameSession.currentSession.room.base) 
 				{
@@ -448,7 +459,7 @@ package interdata
 			trace('назначение клавиши', num, assId);
 			pip.snd(1);
 			var temp=assId;
-			if (page2<=3 && assId!=null) 
+			if (subCategory <= 3 && assId!=null) 
 			{
 				GameSession.currentSession.invent.favItem(assId, num);
 				setStatus(false);
@@ -458,14 +469,14 @@ package interdata
 		
 		public function showH(event:MouseEvent):void
 		{
-			if (actCurrent=='showhidden') 
-			{			//показать скрытое оружие
+			if (actCurrent=='showhidden') //показать скрытое оружие
+			{
 				pip.showHidden=!pip.showHidden;
 				setStatus();
 				pip.snd(2);
 			} 
-			else if (actCurrent=='retr') 
-			{		//Возврат на базу
+			else if (actCurrent=='retr') //Возврат на базу
+			{
 				if (inv.items['retr'].kol>0 && GameSession.currentSession.game.triggers['noreturn']!=1) 
 				{
 					inv.minusItem('retr');
@@ -475,7 +486,7 @@ package interdata
 				pip.onoff(-1);
 			} 
 			else if (actCurrent=='drop') 
-			{		
+			{
 				for each (var obj in arr) //выбросить вещи
 				{
 					if (obj.drop>0) inv.drop(obj.id, obj.drop);

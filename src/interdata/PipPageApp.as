@@ -11,7 +11,6 @@ package interdata
 	public class PipPageApp extends PipPage
 	{
 		
-
 		public function PipPageApp(npip:PipBuck, npp:String)
 		{
 			itemClass = visPipQuestItem;
@@ -26,13 +25,13 @@ package interdata
 			GameSession.currentSession.gg.refreshVis();
 			pip.onoff(-1);
 		}
+
 		//принять настройки внешности
 		public function funVidCancel():void
 		{
 			pip.onoff(-1);
 		}
 
-		//set public
 		public override function setSubPages():void
 		{
 			trace('PipPageApp.as/setSubPages() - updating subPages.');
@@ -42,7 +41,7 @@ package interdata
 			statHead.visible 	= false;
 
 			setTopText();
-			if (page2 == 1) 
+			if (subCategory == 1) 
 			{
 				pip.ArmorId = '';
 				GameSession.currentSession.appearanceWindow.attach(vis, funVidOk, funVidCancel);
@@ -50,12 +49,6 @@ package interdata
 				GameSession.currentSession.appearanceWindow.window.x = 444;
 				GameSession.currentSession.appearanceWindow.window.fon.visible = false;
 			}
-			
-			trace('PipPageApp.as/setSubPages() - Finished updating subPages.');
-
 		}
-		
-		
 	}
-	
 }

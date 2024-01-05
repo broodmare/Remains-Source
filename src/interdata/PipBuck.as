@@ -380,7 +380,7 @@ package interdata
 			currentPage = pages[page];
 			if (currentPage is PipPage) 
 			{
-				if (p2 > 0) currentPage.page2 = p2;
+				if (p2 > 0) currentPage.subCategory = p2;
 				currentPage.setStatus();
 			}
 			if (!light) setRPanel();

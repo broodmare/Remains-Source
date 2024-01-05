@@ -13,7 +13,12 @@ package interdata
 	import components.Settings;
 	import components.XmlBook;
 	
-	public class PipPageWork extends PipPage
+	//	sub-category cheat-sheet
+	//	1 - Create
+	//	2 - Enhance
+	//	3 - Repair
+
+	public class PipPageWork extends PipPage //This category is called "Craft" in-game
 	{
 		
 		var assId:String = null;
@@ -27,18 +32,14 @@ package interdata
 			itemClass = visPipInvItem;
 			super(npip, npp);
 			vis.but4.visible = false;
-			vis.but5.visible = false;
-			trace('PipPageWork.as/PipPageWork() - Created PipPageWork page.');
-														
+			vis.but5.visible = false;										
 		}
 
 		//подготовка страниц
 		public override function setSubPages():void
 		{
-			trace('PipPageWork.as/setSubPages() - updating subPages.');
-
-			if (pip.workTip == 'mworklab') pip.workTip='lab';
-			if (pip.workTip == 'mworkexpl') pip.workTip='expl';
+			if (pip.workTip ==  'mworklab') pip.workTip = 'lab';
+			if (pip.workTip == 'mworkexpl') pip.workTip = 'expl';
 
 			vis.but1.visible = true;
 			vis.but2.visible = true;
@@ -49,13 +50,13 @@ package interdata
 				vis.but1.visible = false;
 				vis.but2.visible = false;
 
-				page2 = 3;
+				subCategory = 3;
 			} 
 			else if (pip.workTip == 'stove' || pip.workTip == 'lab' || pip.workTip == 'expl') 
 			{
 				vis.but2.visible = false;
 				vis.but3.visible = false;
-				page2 = 1;
+				subCategory = 1;
 			}
 			
 			vis.bottext.text = Res.txt('pip', 'caps') + ': ' + pip.money;
@@ -67,14 +68,14 @@ package interdata
 			statHead.rid.visible=false;
 			statHead.mass.text='';
 			vis.bottext.text='';
-			if (page2==1) //крафт
+			if (subCategory == 1) //крафт
 			{		
 				assArr=[];
-				statHead.fav.text='';
-				statHead.nazv.text=Res.txt('pip', 'work1');
-				statHead.hp.text=Res.txt('pip', 'iv6');
-				statHead.ammo.text='';
-				statHead.ammotip.text='';
+				statHead.fav.text = '';
+				statHead.nazv.text = Res.txt('pip', 'work1');
+				statHead.hp.text = Res.txt('pip', 'iv6');
+				statHead.ammo.text = '';
+				statHead.ammotip.text = '';
 				for (var s:String in inv.items) 
 				{
 					if (s == '' || inv.items[s] == null || inv.items[s].kol <= 0) continue;
@@ -125,18 +126,18 @@ package interdata
 					statHead.visible=false;
 				}
 			} 
-			else if (page2==2) 
-			{	//улучшение
-				statHead.fav.text='';
-				statHead.nazv.text='';//Res.txt('pip', 'ii2');
-				statHead.hp.text='';
-				statHead.ammo.text='';
-				statHead.ammotip.text='';
-				if (gg.pers.maxArmorLvl>0) 
+			else if (subCategory == 2) //улучшение
+			{	
+				statHead.fav.text = '';
+				statHead.nazv.text = '';
+				statHead.hp.text = '';
+				statHead.ammo.text = '';
+				statHead.ammotip.text = '';
+				if (gg.pers.maxArmorLvl > 0) 
 				{
 					for each(var arm:Armor in inv.armors) 
 					{
-						if (arm.lvl>=0 && arm.lvl<arm.maxlvl && arm.lvl<gg.pers.maxArmorLvl) 
+						if (arm.lvl >= 0 && arm.lvl < arm.maxlvl && arm.lvl < gg.pers.maxArmorLvl) 
 						{
 							n={tip:Item.L_ARMOR, id:arm.id, objectName:arm.objectName, lvl:arm.lvl, sort:('a'+arm.sort)};
 							arr.push(n);
@@ -145,10 +146,10 @@ package interdata
 				}
 				for each(var weap:Weapon in inv.weapons) 
 				{
-					if (weap==null) continue;
-					if (weap.skill==3 && weap.variant==0 && weap.respect!=3) 
+					if (weap == null) continue;
+					if (weap.skill == 3 && weap.variant == 0 && weap.respect != 3) 
 					{
-						n={tip:Item.L_WEAPON, id:weap.id, objectName:weap.objectName, sort:('w'+weap.objectName)};
+						n = {tip:Item.L_WEAPON, id:weap.id, objectName:weap.objectName, sort:('w'+weap.objectName)};
 						arr.push(n);
 					}
 				}
@@ -164,8 +165,8 @@ package interdata
 					statHead.visible=false;
 				}
 			} 
-			else if (page2==3) 
-			{	//ремонт
+			else if (subCategory == 3) //ремонт
+			{	
 				assArr=[];
 				statHead.fav.text='';
 				statHead.nazv.text=Res.txt('pip', 'ii2');
@@ -228,17 +229,17 @@ package interdata
 			item.mass.text='';
 			item.fav.text='';
 			item.hp.text=item.ammotip.text='';
-			item.alpha=1;
-			if (page2==1) 
+			item.alpha = 1;
+			if (subCategory == 1) 
 			{
 				if (obj.ok>1) item.alpha=0.5;
 				if (obj.kol>0) item.hp.text=obj.kol;
 			} 
-			else if (page2==2) 
+			else if (subCategory == 2) 
 			{
 
 			} 
-			else if (page2==3) 
+			else if (subCategory == 3) 
 			{
 				item.hp.text=Math.round(obj.hp/obj.maxhp*1000)/10+'%';
 				item.ammotip.text=Math.round(obj.rep*gg.pers.repairMult*1000)/10+'%';
@@ -249,14 +250,15 @@ package interdata
 		//информация об элементе
 		public override function statInfo(event:MouseEvent):void
 		{
-			assId=null;
-			if (page2==1) 
+			assId = null;
+			if (subCategory == 1) 
 			{
 				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text, 1);
 			}
-			if (page2==2) 
+			if (subCategory == 2) 
 			{
-				if (event.currentTarget.cat.text==Item.L_ARMOR) {
+				if (event.currentTarget.cat.text==Item.L_ARMOR) 
+				{
 					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text, 2);
 				}
 				else 
@@ -264,7 +266,7 @@ package interdata
 					infoItem(event.currentTarget.cat.text,event.currentTarget.id.text+'^1',event.currentTarget.objectName.text+' - II', 2);
 				}
 			}
-			if (page2==3) 
+			if (subCategory == 3) 
 			{
 				infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text);
 				if (event.currentTarget.cat.text==Item.L_ARMOR) {
@@ -330,7 +332,7 @@ package interdata
 			var cid:String=event.currentTarget.id.text;
 			var ccat:String=event.currentTarget.cat.text;
 			var cnazv:String=event.currentTarget.objectName.text
-			if (page2==1) 
+			if (subCategory == 1) 
 			{
 				var sch = XmlBook.getXML("items").item.(@id == 's_' + cid);
 				if (sch.length()) sch=sch[0];
@@ -402,7 +404,7 @@ package interdata
 					}
 				}
 			} 
-			else if (page2==2) 
+			else if (subCategory == 2) 
 			{
 				if (ccat==Item.L_ARMOR) 
 				{
@@ -433,7 +435,7 @@ package interdata
 					setStatus();
 				}
 			} 
-			else if (page2==3) 
+			else if (subCategory == 3) 
 			{
 				var obj=assArr[cid];
 				if (ccat==Item.L_ARMOR) 

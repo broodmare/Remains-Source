@@ -53,8 +53,8 @@ package interdata
 		
 		var signs:Array = [0, 0, 0, 0, 0, 0];
 		
-		var page2:int = 1;
-		var scrl:int = 0;
+		var subCategory:int = 1; // sub-catgegory page, The Inventory category for example has the following sub-categories: 'weapons', 'armor', 'equipment', 'other', 'ammunition'
+		var scrl:int = 0; // Current scroll amount
 		
 		var infIco:MovieClip;
 		var itemFilter:GlowFilter 		= new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
@@ -116,7 +116,7 @@ package interdata
 			for (var j:int  = 1; j <= 5; j++)
 			{
 				item = vis.getChildByName('but' + j) as MovieClip;
-				item.addEventListener(MouseEvent.CLICK, page2Click);
+				item.addEventListener(MouseEvent.CLICK, clickedSubCategory);
 				item.text.text = Res.txt('pip', pp + j);
 				item.id.text = j;
 				item.id.visible = false;
@@ -192,10 +192,10 @@ package interdata
 			}
 		}
 
-		public function page2Click(event:MouseEvent):void
+		public function clickedSubCategory(event:MouseEvent):void
 		{
 			if (GameSession.currentSession.ctr.setkeyOn) return;
-			page2 = int(event.currentTarget.id.text);
+			subCategory = int(event.currentTarget.id.text);
 			setStatus();
 			pip.snd(2);
 		}
@@ -206,7 +206,7 @@ package interdata
 			{
 				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
 
-				if (page2 == i) item.gotoAndStop(2);
+				if (subCategory == i) item.gotoAndStop(2);
 				else if (signs[i] > 0) item.gotoAndStop(signs[i] + 2);
 				else item.gotoAndStop(1);
 			}
@@ -1079,7 +1079,7 @@ package interdata
 		//установить кнопки категорий
 		public function setCats():void
 		{
-			var arr = tips[page2];
+			var arr = tips[subCategory];
 			if (arr == null) 
 			{
 				vis.cats.visible = false;
@@ -1105,14 +1105,14 @@ package interdata
 					}
 				}
 			}
-			selCat(cat[page2]);
+			selCat(cat[subCategory]);
 		}
 
 		//выбор подкатегории инвентаря
 		public function selCatEvent(event:MouseEvent):void
 		{
 			var n:int = int(event.currentTarget.name.substr(3));
-			cat[page2] = n;
+			cat[subCategory] = n;
 			setStatus();
 		}
 		
@@ -1125,7 +1125,7 @@ package interdata
 			vis.cats['cat'+n].fon.gotoAndStop(2);
 			try 
 			{
-				curTip=tips[page2][n];
+				curTip=tips[subCategory][n];
 			} 
 			catch (err) 
 			{

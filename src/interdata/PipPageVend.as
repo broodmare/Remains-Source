@@ -19,7 +19,14 @@ package interdata
 	
 	import components.Settings;
 	
-	public class PipPageVend extends PipPage
+	//	sub-category cheat-sheet
+	//	1 - Buy
+	//	2 - Sell
+	//	3 - Repair
+	//	4 - Quests
+	//	5 - Log
+
+	public class PipPageVend extends PipPage //This category is called "Trading" in-game
 	{
 		
 		var vend:Vendor;
@@ -90,17 +97,17 @@ package interdata
 			vis.but4.visible=true;
 			statHead.price.x=504;
 			statHead.price.width=150;
-			if (npcId=='') 
+			if (npcId == '') 
 			{
-				if (page2==4) page2=1;
-				vis.but4.visible=false;
+				if (subCategory == 4) subCategory = 1;
+				vis.but4.visible = false;
 			}
-			if (npcInter=='vr') vis.but3.text.text=Res.txt('pip', 'vend3');
-			if (npcInter=='doc') vis.but3.text.text=Res.txt('pip', 'med1');
-			if (npcInter=='v') 
+			if (npcInter ==  'vr') vis.but3.text.text = Res.txt('pip', 'vend3');
+			if (npcInter == 'doc') vis.but3.text.text = Res.txt('pip', 'med1');
+			if (npcInter ==   'v') 
 			{
-				vis.but3.visible=false;
-				if (page2==3) page2=1;
+				vis.but3.visible = false;
+				if (subCategory == 3) subCategory = 1;
 			}
 			statHead.rid.visible=false;
 			var ns:NumericStepper=statHead.ns;
@@ -111,7 +118,7 @@ package interdata
 				vis.visible=false;
 				return;
 			}
-			if (page2==1) 
+			if (subCategory == 1) 
 			{
 				assArr=[];
 				pip.money=inv.money.kol;
@@ -170,7 +177,7 @@ package interdata
 				vis.butOk.text.text=Res.txt('pip', 'transaction');
 				vis.butOk.visible=false;
 			} 
-			if (page2==2) 
+			if (subCategory == 2) 
 			{
 				assArr=[];
 				pip.money=inv.money.kol;
@@ -224,7 +231,7 @@ package interdata
 				}
 				setIco();
 			}
-			if (page2==3) 
+			if (subCategory == 3) 
 			{
 				assArr=[];
 				setTopText('inforepair');
@@ -276,7 +283,7 @@ package interdata
 				}
 				vis.butOk.visible=false;
 			}
-			if (page2==4) 
+			if (subCategory == 4) 
 			{
 				statHead.visible=false;
 				if (npcId=='' || vend==null || vend.xml==null || vend.xml.task.length()==0) 
@@ -348,14 +355,14 @@ package interdata
 			}
 		}
 		
-		public override function page2Click(event:MouseEvent):void
+		public override function clickedSubCategory(event:MouseEvent):void
 		{
 			if (GameSession.currentSession.ctr.setkeyOn) return;
-			page2=int(event.currentTarget.id.text);
+			subCategory = int(event.currentTarget.id.text);
 			pip.snd(2);
-			if (page2==3 && npcInter=='doc') 
+			if (subCategory == 3 && npcInter=='doc') 
 			{
-				page2=1;
+				subCategory = 1;
 				pip.onoff(6);
 			} 
 			else 
@@ -366,18 +373,18 @@ package interdata
 		
 		public function showBottext():void
 		{
-			if (page2==1 && vend) 
+			if (subCategory == 1 && vend) 
 			{
 				vis.bottext.htmlText=Res.txt('pip', 'caps')+': ' + numberAsColor('yellow', pip.money)+' (';
 				if (vend.kolBou>0) vis.bottext.htmlText+='-' + numberAsColor('yellow', Math.ceil(vend.kolBou))+'; ';
 				vis.bottext.htmlText += numberAsColor('yellow', Math.floor(pip.money-vend.kolBou))+' '+Res.txt('pip', 'ost')+')';
 			}
-			if (page2==2 && vend) 
+			if (subCategory == 2 && vend) 
 			{
 				vis.bottext.htmlText = Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', pip.money) + ' (+' + numberAsColor('yellow', Math.floor(vend.kolSell)) + ')';
 				if (!inbase) vis.bottext.htmlText += '   ' + Res.txt('pip', 'vcaps')+': ' + numberAsColor('yellow', vend.money);
 			}
-			if (page2==3) vis.bottext.htmlText=Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', inv.money.kol);
+			if (subCategory == 3) vis.bottext.htmlText=Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', inv.money.kol);
 		}
 		
 		//показ одного элемента
@@ -400,7 +407,7 @@ package interdata
 			{
 				item.trol.gotoAndStop(1);
 			}
-			if (page2==1) 
+			if (subCategory == 1) 
 			{
 				item.lvl.visible=true;
 				item.lvl.gotoAndStop(obj.barter+1);
@@ -409,10 +416,10 @@ package interdata
 				item.nazv.text=obj.objectName;
 				if (obj.tip==Item.L_WEAPON || obj.tip==Item.L_ARMOR) 
 				{
-					item.hp.text=Math.round(obj.sost*100)+'%';
-					if (obj.bou==0) item.kol.text=Res.txt('pip', 'est');
+					item.hp.text = Math.round(obj.sost * 100) + '%';
+					if (obj.bou == 0) item.kol.text = Res.txt('pip', 'est');
 					else item.kol.text=Res.txt('pip', 'sel');
-					item.price.text=Math.round(obj.price*obj.mp);
+					item.price.text = Math.round(obj.price * obj.mp);
 				} 
 				else 
 				{
@@ -425,7 +432,7 @@ package interdata
 					item.price.text=Math.round(obj.price*obj.mp*10)/10;
 				}
 			} 
-			if (page2==2) 
+			if (subCategory == 2) 
 			{
 				item.cat.text=obj.tip;
 				item.rid.text=obj.id;
@@ -439,7 +446,7 @@ package interdata
 				ns.value=obj.bou;
 				item.kol.text=obj.kol-obj.bou;
 			} 
-			if (page2==3) 
+			if (subCategory == 3) 
 			{
 				item.cat.text=obj.tip;
 				item.nazv.text=obj.objectName;
@@ -451,7 +458,7 @@ package interdata
 				if (obj.variant>0) item.rid.text=obj.id+'^'+obj.variant;
 				else item.rid.text=obj.id;
 			} 
-			if (page2==4) 
+			if (subCategory == 4) 
 			{
 				item.cat.text=obj.state;
 				item.nazv.text=obj.objectName;
@@ -473,11 +480,11 @@ package interdata
 		//информация об элементе
 		public override function statInfo(event:MouseEvent):void
 		{
-			if (page2==1 || page2==2 || page2==3) 
+			if (subCategory == 1 || subCategory == 2 || subCategory == 3) 
 			{
 				infoItem(event.currentTarget.cat.text,event.currentTarget.rid.text,event.currentTarget.objectName.text);
 			}
-			if (page2==4) 
+			if (subCategory == 4) 
 			{
 				vis.nazv.text=event.currentTarget.objectName.text;
 				var s:String=infoQuest(event.currentTarget.id.text);
@@ -505,29 +512,29 @@ package interdata
 			if (buy.tip==Item.L_SPELL && vend.buys2[buy.id]) vend.buys2[buy.id].checkAuto(true);
 			vis.butOk.visible=true;
 			if (buy.kol-buy.bou<n) n=buy.kol-buy.bou;
-			if (page2==1 && Math.round(buy.price*buy.mp*n)>pip.money-vend.kolBou) //!!!
+			if (subCategory == 1 && Math.round(buy.price * buy.mp * n) > pip.money - vend.kolBou) //!!!
 			{
 				trace(buy.price, buy.mp, n, pip.money, vend.kolBou)
-				n=Math.floor((pip.money-vend.kolBou)/(buy.price*buy.mp));
+				n = Math.floor((pip.money-vend.kolBou)/(buy.price*buy.mp));
 				trace(n);
-				if (n<=0) 
+				if (n <= 0) 
 				{
-					GameSession.currentSession.gui.infoText('noMoney',Math.round(buy.price*buy.mp-(pip.money-vend.kolBou)));
+					GameSession.currentSession.gui.infoText('noMoney', Math.round(buy.price * buy.mp - (pip.money - vend.kolBou)));
 					return;
 				}
 			}
-			buy.bou+=n;
-			if (page2==1) vend.kolBou+=buy.price*buy.mp*n;
-			if (page2==2) vend.kolSell+=buy.price*n;
+			buy.bou += n;
+			if (subCategory==1) vend.kolBou  += buy.price * buy.mp * n;
+			if (subCategory==2) vend.kolSell += buy.price * n;
 		}
 		
 		public function unselBuy(buy:Object, n:int=1):void
 		{
-			if (buy==null || buy.bou<=0) return;
-			if (buy.bou<n) n=buy.bou;
-			buy.bou-=n;
-			if (page2==1) vend.kolBou-=buy.price*buy.mp*n;
-			if (page2==2) vend.kolSell-=buy.price*n;
+			if (buy == null || buy.bou <= 0) return;
+			if (buy.bou < n) n = buy.bou;
+			buy.bou -= n;
+			if (subCategory == 1) vend.kolBou  -= buy.price * buy.mp * n;
+			if (subCategory == 2) vend.kolSell -= buy.price * n;
 		}
 		
 		public function nsClick(event:MouseEvent):void
@@ -537,7 +544,7 @@ package interdata
 
 		public function nsCh(event:Event):void
 		{
-			if (page2==1 || page2==2) 
+			if (subCategory == 1 || subCategory == 2) 
 			{
 				var buy:Object=assArr[event.currentTarget.parent.rid.text];
 				var n=event.currentTarget.value-buy.bou;
@@ -553,7 +560,7 @@ package interdata
 		
 		public override function itemClick(event:MouseEvent):void
 		{
-			if (page2==1 || page2==2) 
+			if (subCategory == 1 || subCategory == 2) 
 			{
 				var buy:Object=assArr[event.currentTarget.rid.text];
 				var n=1;
@@ -563,7 +570,7 @@ package interdata
 				else selBuy(buy, n);
 				setStatItem(event.currentTarget as MovieClip, buy);
 			}
-			if (page2==3) 
+			if (subCategory == 3) 
 			{
 				if (inv.money.kol<=0) return;
 				var price:int=event.currentTarget.price.text;
@@ -605,7 +612,7 @@ package interdata
 				GameSession.currentSession.gui.setWeapon();
 				pip.setRPanel();
 			}
-			if (page2==4) 
+			if (subCategory == 4) 
 			{
 				try 
 				{
@@ -630,7 +637,7 @@ package interdata
 
 		public override function itemRightClick(event:MouseEvent):void
 		{
-			if (page2==1 || page2==2) 
+			if (subCategory == 1 || subCategory == 2) 
 			{
 				var buy:Object=assArr[event.currentTarget.rid.text];
 				var n=1;
@@ -645,11 +652,11 @@ package interdata
 		
 		public function transOk(event:MouseEvent):void
 		{
-			if (page2==1) 
+			if (subCategory == 1) 
 			{
 				trade(assArr);
 			}
-			if (page2==2) 
+			if (subCategory == 2) 
 			{
 				if (selall) sellAll();
 				else sell(assArr);

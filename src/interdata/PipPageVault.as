@@ -20,7 +20,12 @@ package interdata
 
 	import stubs.visPipVaultItem;
 	
-	public class PipPageVault extends PipPage
+	//	sub-category cheat-sheet
+	//	1 - Equipment
+	//	2 - Ammunition
+	//	3 - Stuff
+
+	public class PipPageVault extends PipPage //This category is called "Storage" in-game. It's used for the orange chests bases to store items.
 	{
 		
 		var assArr:Array;
@@ -55,7 +60,6 @@ package interdata
 			trace('PipPageVault.as/PipPageVault() - Created PipPageVault page.');
 		}
 
-		//set public
 		//подготовка страниц
 		public override function setSubPages():void
 		{
@@ -69,33 +73,32 @@ package interdata
 			setTopText('vaultupr');
 			vis.butOk.visible=false;
 			inv.calcMass();
-				for (var s in inv.items) {
+				for (var s in inv.items) 
+				{
 					if (s=='' || (inv.items[s].kol<=0 && inv.items[s].vault<=0) || inv.items[s].invis) continue;
 					var node:XML=inv.items[s].xml;
 					if (node==null) continue;
 					if (node.@tip=='money' || node.@tip=='paint' || node.@tip=='spell' || node.@tip=='spec' || node.@tip=='key' || node.@tip=='instr' || node.@tip=='impl' || node.@tip=='art' || node.@tip=='scheme') continue;
-					if (inv.items[s].invCat==page2) {
+					if (inv.items[s].invCat == subCategory) 
+					{
 						var tcat:String;
 						if (Res.istxt('pip',node.@tip)) tcat=Res.txt('pip', node.@tip);
 						else tcat=Res.txt('pip', 'stuff');
 						var n={tip:node.@tip, id:s, objectName:((node.@tip=='e')?Res.txt('weapon',s):inv.items[s].objectName), kol:inv.items[s].kol, vault:inv.items[s].vault, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
 						if (node.@tip=='valuables') n.price=node.@price;
-						if (node.@tip=='food' && node.@ftip=='1') {
-							n.trol='drink';
-						}
-						if (node.@keep>0) {
-							n.keep=true;
-						}
-						n.sort=n.cat;
+						if (node.@tip=='food' && node.@ftip=='1') n.trol='drink';
+						if (node.@keep>0) n.keep = true;
+						n.sort = n.cat;
 						n.sort2=node.@sort.length()?node.@sort:0;
 						arr.push(n);
 						assArr[n.id]=n;
 					}
 				}
 				if (arr.length) arr.sortOn(['sort','sort2','objectName'],[0,Array.NUMERIC,0]);
-			if (page2==2 || page2==3) {
-				vis.butOk.text.text=Res.txt('pip', 'tovault');
-				vis.butOk.visible=true;
+			if (subCategory == 2 || subCategory == 3) 
+			{
+				vis.butOk.text.text = Res.txt('pip', 'tovault');
+				vis.butOk.visible = true;
 			}
 				
 			setIco();
@@ -104,7 +107,7 @@ package interdata
 		
 		public function showBottext():void
 		{
-			if (Settings.hardInv) vis.bottext.text=inv.retMass(page2);
+			if (Settings.hardInv) vis.bottext.text=inv.retMass(subCategory);
 			else vis.bottext.text='';
 		}
 		
@@ -200,9 +203,11 @@ package interdata
 		{
 			var ab:String=item.id;
 			if (item.tip=='a' && item.xml && item.xml.@base.length()) ab=item.xml.@base;
-			for each(var weap:Weapon in inv.weapons) {
+			for each(var weap:Weapon in inv.weapons) 
+			{
 				if (weap==null) continue;
-				if (weap.respect==0 || weap.respect==2) {
+				if (weap.respect==0 || weap.respect==2) 
+				{
 					if (weap.tip==4 && ab==weap.id) return true;
 					if (ab==weap.ammoBase) return true;
 				}
@@ -212,11 +217,14 @@ package interdata
 
 		public function sbrosHlam():void
 		{
-			for (var s in arr) {
-				if (arr[s].tip!='food' && arr[s].tip!='book' && arr[s].tip!='sphera' && arr[s].tip!='valuables' && !arr[s].keep) {
+			for (var s in arr) 
+			{
+				if (arr[s].tip!='food' && arr[s].tip!='book' && arr[s].tip!='sphera' && arr[s].tip!='valuables' && !arr[s].keep) 
+				{
 					var item:Item=inv.items[arr[s].id];
 					if (item==null) continue;
-					if (arr[s].tip=='a' || arr[s].tip=='e' || arr[s].tip=='compw') {
+					if (arr[s].tip=='a' || arr[s].tip=='e' || arr[s].tip=='compw') 
+					{
 						if (checkAmmo(item)) continue;
 					}
 					var dmass=item.kol*item.mass;
@@ -232,11 +240,10 @@ package interdata
 		
 		public function transOk(event:MouseEvent):void
 		{
-			if (page2==2 || page2==3) 
+			if (subCategory == 2 || subCategory == 3) 
 			{
 				sbrosHlam();
 			}
 		}
 	}
-	
 }

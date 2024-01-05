@@ -21,7 +21,14 @@
 	import stubs.visPipOptItem;
 	import stubs.logText;
 
-	public class PipPageOpt extends PipPage
+	//	sub-category cheat-sheet
+	//	1 - Load
+	//	2 - Save
+	//	3 - Options
+	//	4 - Control
+	//	5 - Log
+
+	public class PipPageOpt extends PipPage //This category is called "Main menu" in-game
 	{
 		
 		var setkeyAction:String;
@@ -67,7 +74,7 @@
 			vis.info.y			= 160;
 			nSave				= -1;
 
-			if (page2 == 3)
+			if (subCategory == 3)
 			{
 				try
 				{
@@ -102,12 +109,12 @@
 				}
 				catch (err:Error)
 				{
-					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '". Error: "' + err.message + '".');
+					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + subCategory + '". Error: "' + err.message + '".');
 				}
 
 			}
 
-			if (page2 == 6) 
+			if (subCategory == 6) 
 			{
 				try
 				{
@@ -133,12 +140,12 @@
 				}
 				catch (err:Error)
 				{
-					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
+					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + subCategory + '"');
 				}
 
 			}
 
-			if (page2 == 4) 
+			if (subCategory == 4) 
 			{
 				try
 				{
@@ -159,12 +166,12 @@
 				}
 				catch (err:Error)
 				{
-					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
+					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + subCategory + '"');
 				}
 
 			}
 
-			if (page2 == 5) 
+			if (subCategory == 5) 
 			{
 				try
 				{
@@ -177,11 +184,11 @@
 				}
 				catch (err)
 				{
-					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
+					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + subCategory + '"');
 				}
 			}
 
-			if (page2 == 1 || page2 == 2) 
+			if (subCategory == 1 || subCategory == 2) 
 			{
 				try
 				{
@@ -192,7 +199,7 @@
 					if (pip.light) return;
 					vis.butDef.visible = true;
 					GameSession.currentSession.appearanceWindow.saveOst();
-					if (page2 == 1) 
+					if (subCategory == 1) 
 					{
 						setTopText('infoload');
 						vis.butOk.text.text = Res.txt('pip', 'opt1');
@@ -216,7 +223,7 @@
 						var obj1:Object = saveObj(save,i);
 						arr.push(obj1);
 					}
-					if (page2 == 2 && GameSession.currentSession.pers.hardcoreMode) 
+					if (subCategory == 2 && GameSession.currentSession.pers.hardcoreMode) 
 					{
 						showSaveInfo(arr[nSave], vis);
 					}
@@ -226,7 +233,7 @@
 				}
 				catch (err:Error)
 				{
-					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + page2 + '"');
+					trace('PipPageOpt.as/setSubPages() - Failed updating page 2. Page 2: "' + subCategory + '"');
 				}
 
 			}
@@ -275,7 +282,7 @@
 			item.ramka.visible=false;
 			item.level.text = '';
 			
-			if (page2==3 || page2==6) 
+			if (subCategory == 3 || subCategory == 6) 
 			{
 				item.nazv.text = Res.txt('pip', obj.id);
 				item.ggName.text = '';
@@ -301,7 +308,7 @@
 					if (!ch.hasEventListener(Event.CHANGE)) ch.addEventListener(Event.CHANGE,optCheck);
 				}
 			}
-			if (page2==4) 
+			if (subCategory == 4) 
 			{
 				item.key1.visible=item.key2.visible=true;
 				item.numb.text=item.ggName.text='';
@@ -309,7 +316,7 @@
 				setVisKey(obj.a1,item.key1);
 				setVisKey(obj.a2,item.key2);
 			}
-			if (page2==1 || page2==2) 
+			if (subCategory == 1 || subCategory == 2) 
 			{
 				item.nazv.text=obj.objectName;
 				item.numb.text=obj.date;
@@ -375,7 +382,7 @@
 			if (pip.light) 
 			{
 				vis.but5.visible = vis.but1.visible = vis.but2.visible = false;
-				if (page2==1 || page2==2) page2=3;
+				if (subCategory == 1 || subCategory == 2) subCategory = 3;
 			}
 			else 
 			{
@@ -444,7 +451,7 @@
 					else GameSession.currentSession.cam.isZoom=2;
 				}
 			}
-			if (page2 == 6) 
+			if (subCategory == 6) 
 			{
 				GameSession.currentSession[id] = sel;
 				GameSession.currentSession.checkLoot = true;
@@ -456,7 +463,7 @@
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (GameSession.currentSession.ctr.setkeyOn) return;
-			if (page2 == 3) 
+			if (subCategory == 3) 
 			{
 				if (event.currentTarget.id.text=='fullscreen') 
 				{
@@ -464,11 +471,11 @@
 				}
 				if (event.currentTarget.id.text=='autotake') 
 				{
-					page2 = 6;
+					subCategory = 6;
 					setStatus();
 				}
 			} 
-			else if (page2 == 4) 
+			else if (subCategory == 4) 
 			{
 				if (event.target.parent.name=='key1' || event.target.name=='key1') setkeyCell=1;
 				else if (event.target.parent.name=='key2' || event.target.name=='key2') setkeyCell=2;
@@ -477,16 +484,16 @@
 				setkeyAction=event.currentTarget.id.text;
 				showSetKey();
 			} 
-			else if (page2 == 1 || page2 == 2) 
+			else if (subCategory == 1 || subCategory == 2) 
 			{
-				if (pip.gamePause && page2 == 2) 
+				if (pip.gamePause && subCategory == 2) 
 				{
 					GameSession.currentSession.gui.infoText('gamePause');
 					return;
 				}
-				if (page2 == 2 && gg.pers.hardcoreMode) return;
+				if (subCategory == 2 && gg.pers.hardcoreMode) return;
 				var numb:int = event.currentTarget.id.text;
-				if (page2 == 1 && event.currentTarget.numb.text == '') return;
+				if (subCategory == 1 && event.currentTarget.numb.text == '') return;
 				nSave = numb;
 				setStatItems();
 				showSaveInfo(arr[numb], vis);
@@ -498,7 +505,7 @@
 		//применить настройки
 		public function transOk(event:MouseEvent):void
 		{
-			if (page2==4) 
+			if (subCategory == 4) 
 			{
 				for (var i in arr) 
 				{
@@ -510,29 +517,29 @@
 				GameSession.currentSession.ctr.updateKeys();
 				GameSession.currentSession.saveConfig();
 			} 
-			else if (page2==1) 
+			else if (subCategory == 1) 
 			{
 				GameSession.currentSession.comLoad=nSave;
 			} 
-			else if (page2==2) 
+			else if (subCategory == 2) 
 			{
 				if (pip.gamePause) 
 				{
 					GameSession.currentSession.gui.infoText('gamePause');
 					return;
 				}
-					try 
-					{
-						GameSession.currentSession.saveGame(nSave);
-						GameSession.currentSession.gui.infoText('SaveGame');
-						nSave=-1;
-						vis.butOk.visible=false;
-						setStatus();
-					}
-					catch (err:Error) 
-					{
-						GameSession.currentSession.gui.infoText('noSaveGame');
-					}
+				try 
+				{
+					GameSession.currentSession.saveGame(nSave);
+					GameSession.currentSession.gui.infoText('SaveGame');
+					nSave=-1;
+					vis.butOk.visible=false;
+					setStatus();
+				}
+				catch (err:Error) 
+				{
+					GameSession.currentSession.gui.infoText('noSaveGame');
+				}
 			}
 		}
 		
@@ -563,19 +570,19 @@
 		
 		public function gotoDef(event:MouseEvent):void
 		{
-			if (page2==4) 
+			if (subCategory == 4) 
 			{
 				GameSession.currentSession.ctr.gotoDef();
 				GameSession.currentSession.ctr.updateKeys();
 				GameSession.currentSession.saveConfig();
 				setStatus();
 			} 
-			else if (page2==1) 
+			else if (subCategory == 1) 
 			{
 				ffil=[new FileFilter(Res.txt('pip', 'gamesaves')+" (*.sav)", "*.sav")];
 				file.browse(ffil);
 			} 
-			else if (page2==2) 
+			else if (subCategory == 2) 
 			{
 				if (pip.gamePause) 
 				{
@@ -583,7 +590,7 @@
 					return;
 				}
 				//сохранить в файл
-				var obj:Object={};
+				var obj:Object = {};
 				GameSession.currentSession.saveToObj(obj);
 				var ba:ByteArray=new ByteArray();
 				ba.writeObject(obj);
@@ -634,16 +641,15 @@
 		//информация об элементе
 		public override function statInfo(event:MouseEvent):void
 		{
-			if (page2==3 || page2==6) 
+			if (subCategory == 3 || subCategory == 6) 
 			{
 				vis.info.htmlText=Res.txt('pip',event.currentTarget.id.text,1);
 			} 
-			else if (page2==1 || page2==2) 
+			else if (subCategory == 1 || subCategory == 2) 
 			{
 				if (nSave<0) showSaveInfo(arr[event.currentTarget.id.text],vis);
 			} 
 			else vis.info.text='';
 		}
 	}
-	
 }

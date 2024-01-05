@@ -8,7 +8,12 @@ package interdata
 	import unitdata.Pers;
 	import servdata.Item;
 	
-	public class PipPageMed extends PipPage{
+	//	sub-category cheat-sheet
+	//	1 - Healing
+	//	2 - Trading
+
+	public class PipPageMed extends PipPage //This category is called "Healing" in-game. This only appears when interacting with Doc-Sepsis
+	{
 		
 		var pers:Pers;
 		var infoItemId:String	= '';
@@ -69,7 +74,7 @@ package interdata
 			statHead.price.text = Res.txt('pip', 'medprice');
 			vis.butOk.visible = vis.butDef.visible=false;
 
-			if (page2 == 1) 
+			if (subCategory == 1) 
 			{
 				gg.pers.checkHP();
 				setTopText('usemed2');
@@ -137,18 +142,18 @@ package interdata
 				else vis.nazv.text=vis.info.htmlText = '';
 		}
 		
-		public override function page2Click(event:MouseEvent):void
+		public override function clickedSubCategory(event:MouseEvent):void
 		{
 			if (GameSession.currentSession.ctr.setkeyOn) return;
 			
-			page2 = int(event.currentTarget.id.text);
+			subCategory = int(event.currentTarget.id.text);
 			pip.snd(2);
 			
-			if (page2 == 2) 
+			if (subCategory == 2) 
 			{
-				page2 = 1;
+				subCategory = 1;
 				pip.onoff(4);
-				pip.currentPage.page2 = 1;
+				pip.currentPage.subCategory = 1;
 				pip.currentPage.setStatus();
 			} 
 			else setStatus();

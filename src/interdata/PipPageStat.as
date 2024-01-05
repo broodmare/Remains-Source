@@ -12,7 +12,14 @@
 	
 	import stubs.visPipStatItem;
 	
-	public class PipPageStat extends PipPage
+	//	sub-category cheat-sheet
+	//	1 - Main
+	//	2 - Skills
+	//	3 - Perks
+	//	4 - Effects
+	//	5 - Health
+
+	public class PipPageStat extends PipPage //This category is called "Status" in-game.
 	{
 		
 		var pers:Pers;
@@ -49,7 +56,7 @@
 			vis.butOk.visible = false;
 			vis.butDef.visible = false;
 			drunk = 0;
-			if (page2 == 1) 
+			if (subCategory == 1) 
 			{
 				statHead.nazv.text = '';
 				statHead.numb.text = '';
@@ -104,7 +111,7 @@
 					}
 				}
 			} 
-			else if (page2==5) 
+			else if (subCategory == 5) 
 			{
 				if (GameSession.currentSession.game.triggers['nomed']>0) 
 				{
@@ -149,7 +156,7 @@
 					}
 				}
 			} 
-			else if (page2==2) 
+			else if (subCategory == 2) 
 			{	
 				setTopText('infoskills');
 				skillPoint=pers.skillPoint;
@@ -165,7 +172,7 @@
 				}
 				vis.butOk.text.text=Res.txt('pip', 'accept');
 			} 
-			else if (page2==3) 
+			else if (subCategory == 3) 
 			{
 				perkPoint=pers.perkPoint;
 				statHead.nazv.text=Res.txt('pip', 'is5');
@@ -196,15 +203,17 @@
 					arr.sortOn(['sort','objectName']);
 				}
 			} 
-			else if (page2==4) 
+			else if (subCategory == 4) 
 			{
 				statHead.nazv.text=Res.txt('pip', 'is3');
 				statHead.numb.text=Res.txt('pip', 'is4');
 				statHead.numb.x=500;
-				for (var sk in gg.effects) {
+				for (var sk in gg.effects) 
+				{
 					var ef=gg.effects[sk];
 					var n={id:ef.id, objectName:Res.txt('eff',ef.id), lvl:'∞'};
-					if (ef.ad) {
+					if (ef.ad) 
+					{
 						var str=Res.txt('eff',ef.id+'_ad');
 						if (str!='') 
 						{
@@ -235,7 +244,7 @@
 					statHead.visible=true;
 				}
 			} 
-			else if (page2==6) 
+			else if (subCategory == 6) 
 			{
 				perkPoint=pers.perkPoint;
 				statHead.nazv.text=Res.txt('pip', 'is5');
@@ -285,8 +294,8 @@
 			item.numb.text = obj.lvl;
 			if (obj.maxlvl && obj.maxlvl > 1 && obj.maxlvl < 1000) item.numb.text += '/' + obj.maxlvl;
 			item.alpha = 1;
-			if (page2 == 4) item.numb.x = 500;
-			if (page2 == 2) 
+			if (subCategory == 4) item.numb.x = 500;
+			if (subCategory == 2) 
 			{
 				if (obj.post > 0) 
 				{
@@ -309,7 +318,7 @@
 					item.numb.x = 525;
 				}
 			}
-			if (page2==6) 
+			if (subCategory == 6) 
 			{
 				if (!obj.ok) item.alpha=0.4;
 			}
@@ -325,14 +334,14 @@
 		{
 			var id:String = event.currentTarget.id.text;
 			var objectName:String = event.currentTarget.nazv.text;
-			if (page2==2 || page2==3 || page2==6) setIco(5,id);
+			if (subCategory == 2 || subCategory == 3 || subCategory == 6) setIco(5,id);
 			else setIco();
 			if (id!='') 
 			{
-				if (page2==1) 
+				if (subCategory == 1) 
 				{
-					infoItemId=id;
-					if (id=='diff') 
+					infoItemId = id;
+					if (id == 'diff') 
 					{
 						vis.nazv.text=Res.txt('pip',id);
 						vis.info.htmlText=Res.txt('gui','dif'+GameSession.currentSession.game.globalDif,1);
@@ -346,7 +355,7 @@
 					var xml = XmlBook.getXML("parameters").param.(@id == id);
 					if (xml.length() && xml.@f>0) vis.info.htmlText+=factor(xml.@v);
 				} 
-				else if (page2==5) 
+				else if (subCategory == 5) 
 				{
 					infoItemId=id;
 					showBottext();
@@ -407,7 +416,7 @@
 				else 
 				{
 					vis.nazv.text=objectName;
-					if (page2==4) 
+					if (subCategory==4) 
 					{
 						if (id=='drunk') 
 						{
@@ -416,7 +425,7 @@
 						else if (objectName==n_food) vis.info.htmlText=Res.txt('eff','food',1)+'<br><br>'+effStr('eff',id);
 						else vis.info.htmlText=effStr('eff',id);
 					} 
-					else if (page2==2) 
+					else if (subCategory == 2) 
 					{
 						if (Settings.alicorn && Res.istxt('eff',id+'_al')) 
 						{
@@ -428,11 +437,11 @@
 							vis.info.htmlText=effStr('skills',id);
 						}
 					} 
-					else if (page2==6) 
+					else if (subCategory == 6) 
 					{
 						vis.info.htmlText=effStr('perks',id, 1);
 					} 
-					else if (page2==3) 
+					else if (subCategory == 3) 
 					{
 						vis.info.htmlText=effStr('perks',id);
 					}
@@ -484,16 +493,16 @@
 		public function showBottext():void
 		{
 			vis.bottext.text='';
-			if (page2 == 1) vis.bottext.htmlText = Res.txt('pip',      'tgame') + ': ' + GameSession.currentSession.game.gameTime();
-			if (page2 == 2) vis.bottext.htmlText = Res.txt('pip', 'skillpoint') + ': ' + numberAsColor('pink', skillPoint);
-			if (page2 == 3) vis.bottext.htmlText = Res.txt('pip',  'perkpoint') + ': ' + numberAsColor('pink', perkPoint);
-			if (page2 == 6) 
+			if (subCategory == 1) vis.bottext.htmlText = Res.txt('pip',      'tgame') + ': ' + GameSession.currentSession.game.gameTime();
+			if (subCategory == 2) vis.bottext.htmlText = Res.txt('pip', 'skillpoint') + ': ' + numberAsColor('pink', skillPoint);
+			if (subCategory == 3) vis.bottext.htmlText = Res.txt('pip',  'perkpoint') + ': ' + numberAsColor('pink', perkPoint);
+			if (subCategory == 6) 
 			{
 				if (selectedPerk == '') vis.bottext.htmlText=Res.txt('pip', 'chooseperk');
 				else vis.bottext.htmlText = textAsColor('pink', Res.txt('eff',selectedPerk));
 			}
 
-			if (page2 == 5 && infoItemId != '') 
+			if (subCategory == 5 && infoItemId != '') 
 			{
 				var ci:String = '';
 				var simplifiedID:String = getSimplifiedItemId(infoItemId)
@@ -561,7 +570,7 @@
 				return;
 			}
 
-			if (page2==2) 
+			if (subCategory == 2) 
 			{
 				var id=event.currentTarget.id.text;
 				if (event.ctrlKey) unselSkill(id);
@@ -570,7 +579,7 @@
 				pip.snd(1);
 			}
 
-			if (page2 == 6) 
+			if (subCategory == 6) 
 			{
 				if (event.currentTarget.alpha >= 1) 
 				{
@@ -580,7 +589,7 @@
 				pip.snd(1);
 			}
 
-			if (page2 == 5 && infoItemId != '') //Clicking on status problems to heal them using the appropriate item.
+			if (subCategory == 5 && infoItemId != '') //Clicking on status problems to heal them using the appropriate item.
 			{
 				infoItemId = event.currentTarget.id.text;
 				var need:String;
@@ -666,7 +675,7 @@
 				return;
 			}
 
-			if (page2 == 2) 
+			if (subCategory == 2) 
 			{
 				var id = event.currentTarget.id.text;
 				unselSkill(id);
@@ -684,7 +693,7 @@
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
-			if (page2 == 2) 
+			if (subCategory == 2) 
 			{
 				var n = 0;
 				for (var i in skills) 
@@ -703,16 +712,16 @@
 				pip.snd(3);
 				GameSession.currentSession.saveGame();
 			} 
-			else if (page2 == 3) 
+			else if (subCategory == 3) 
 			{
-				page2 = 6;
+				subCategory = 6;
 				pip.snd(2);
 				selectedPerk = '';
 			} 
-			else if (page2 == 6) 
+			else if (subCategory == 6) 
 			{
 				if (selectedPerk != '' && pers.perkPoint > 0) pers.addPerk(selectedPerk, true);
-				page2 = 3;
+				subCategory = 3;
 				pip.snd(3);
 				pip.setRPanel();
 				GameSession.currentSession.saveGame();
@@ -722,9 +731,9 @@
 		
 		public function gotoDef(event:MouseEvent):void
 		{
-			if (page2 == 6) 
+			if (subCategory == 6) 
 			{
-				page2 = 3;
+				subCategory = 3;
 				setStatus();
 				pip.snd(2);
 			}
