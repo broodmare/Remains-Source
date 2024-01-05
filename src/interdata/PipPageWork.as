@@ -32,7 +32,6 @@ package interdata
 														
 		}
 
-		//set public
 		//подготовка страниц
 		public override function setSubPages():void
 		{
@@ -68,7 +67,8 @@ package interdata
 			statHead.rid.visible=false;
 			statHead.mass.text='';
 			vis.bottext.text='';
-			if (page2==1) {		//крафт
+			if (page2==1) //крафт
+			{		
 				assArr=[];
 				statHead.fav.text='';
 				statHead.nazv.text=Res.txt('pip', 'work1');
@@ -77,13 +77,13 @@ package interdata
 				statHead.ammotip.text='';
 				for (var s:String in inv.items) 
 				{
-					if (s=='' || inv.items[s]==null || inv.items[s].kol<=0) continue;
-					var node=inv.items[s].xml;
-					if (node==null) continue;
-					if (node.@tip=='scheme' && (node.@work.length() == 0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {//node.@work=='stove' && pip.workTip=='lab' ||
+					if (s == '' || inv.items[s] == null || inv.items[s].kol <= 0) continue;
+					var node = inv.items[s].xml;
+					if (node == null) continue;
+					if (node.@tip == 'scheme' && (node.@work.length() == 0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {//node.@work=='stove' && pip.workTip=='lab' ||
 						var ok:int=1;
 						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
-						var wid:String=s.substr(2);
+						var wid:String = s.substr(2);
 						if (inv.weapons[wid]) 
 						{
 							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) 
@@ -124,7 +124,6 @@ package interdata
 					vis.emptytext.text=Res.txt('pip', 'emptycreate');
 					statHead.visible=false;
 				}
-					
 			} 
 			else if (page2==2) 
 			{	//улучшение
@@ -215,10 +214,8 @@ package interdata
 					statHead.visible=false;
 				}
 			}
-			trace('PipPageWork.as/setSubPages() - Finished updating subPages.');
 		}
 		
-		//set public
 		//показ одного элемента
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
@@ -249,8 +246,6 @@ package interdata
 			item.ammo.text='';
 		}
 		
-		
-		//set public
 		//информация об элементе
 		public override function statInfo(event:MouseEvent):void
 		{
@@ -286,29 +281,27 @@ package interdata
 			}
 		}
 		
-		//set public
 		public function showBottext(cid):void
 		{
 			if (inv.items[cid]) 
 			{
-				vis.bottext.htmlText=Res.txt('item',cid)+ ': '+yel(inv.items[cid].kol);
-				if (GameSession.currentSession.room.base && inv.items[cid].vault>0) vis.bottext.htmlText+=' (+'+yel(inv.items[cid].vault)+' '+Res.txt('pip', 'invault')+')';
+				vis.bottext.htmlText = Res.txt('item', cid) + ': ' + numberAsColor('yellow', inv.items[cid].kol);
+				if (GameSession.currentSession.room.base && inv.items[cid].vault > 0) vis.bottext.htmlText += ' (+' + numberAsColor('yellow', inv.items[cid].vault) + ' ' + Res.txt('pip', 'invault') + ')';
 			} 
-			else 
-			{
-				vis.bottext.htmlText='';
-			}
+			else vis.bottext.htmlText = '';
 		}
 		
-		//set public
 		public function checkScheme(sch:XML):Boolean
 		{
-			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) {
+			if (sch.@skill.length() && sch.@lvl.length() && gg.pers.getSkillLevel(sch.@skill)<sch.@lvl) 
+			{
 				GameSession.currentSession.gui.infoText('needSkill', Res.txt('eff',sch.@skill), sch.@lvl);	//требуется навык
 				return false;
 			}
-			for each(var c in sch.craft) {
-				if (inv.items[c.@id]==null || (inv.items[c.@id].kol+inv.items[c.@id].vault)<c.@kol) {
+			for each(var c in sch.craft) 
+			{
+				if (inv.items[c.@id]==null || (inv.items[c.@id].kol+inv.items[c.@id].vault)<c.@kol) 
+				{
 					GameSession.currentSession.gui.infoText('noMaterials');
 					return false;
 				}
@@ -316,7 +309,6 @@ package interdata
 			return true;
 		}
 		
-		//set public
 		//вычесть нужное для крафта количество компонентов
 		public function minusCraftComp(sch):void
 		{
@@ -326,7 +318,6 @@ package interdata
 			}
 		}
 		
-		//set public
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
@@ -506,9 +497,5 @@ package interdata
 			inv.calcMass();
 			pip.setRPanel();
 		}
-		
-		
-		
 	}
-	
 }

@@ -49,7 +49,7 @@
 			vis.butOk.visible = false;
 			vis.butDef.visible = false;
 			drunk = 0;
-			if (page2==1) 
+			if (page2 == 1) 
 			{
 				statHead.nazv.text = '';
 				statHead.numb.text = '';
@@ -58,7 +58,7 @@
 				arr.push({objectName:Res.txt('pip', 'expa'), lvl:gg.pers.xpCur+' ('+(gg.pers.xpNext-gg.pers.xpCur)+')'});
 				arr.push({id:'diff', objectName:Res.txt('pip', 'diff'), lvl:Res.txt('gui', 'dif'+GameSession.currentSession.game.globalDif)});
 				arr.push({id:'reput', objectName:Res.txt('pip', 'reput'), lvl:(gg.pers.rep+' ('+gg.pers.repTex()+')')});
-				var arm:String='';
+				var arm:String = '';
 				
 				for (var i = 0; i < XmlBook.getXML("parameters").param.length(); i++) 
 				{
@@ -75,23 +75,25 @@
 							continue;
 						}
 						var param;
-						if (xml.@tip=='4') param=gg.vulner[xml.@v];
-						else if (gg.hasOwnProperty(xml.@v)) param=gg[xml.@v];
-						else if (gg.pers.hasOwnProperty(xml.@v)) param=gg.pers[xml.@v];
+
+						if (xml.@tip == '4') param=gg.vulner[xml.@v];
+						else if (gg.hasOwnProperty(xml.@v)) param = gg[xml.@v];
+						else if (gg.pers.hasOwnProperty(xml.@v)) param = gg.pers[xml.@v];
 						else 
 						{
 							trace('нет переменной', xml.@v);
 							continue;
 						}
-						if (xml.@tip=='0') 
+
+						if (xml.@tip == '0') 
 						{
 							if (param>0) arr.push({id:xml.@id, objectName:objectName, lvl:Res.numb(param)});
 						}
-						if (xml.@tip=='1') 
+						if (xml.@tip == '1') 
 						{
 							if (param!=1 || GameSession.currentSession.pers.factor[xml.@v] && GameSession.currentSession.pers.factor[xml.@v].length > 1) arr.push({id:xml.@id, objectName:objectName, lvl:((param>=1?'+':'')+Res.numb((param-1)*100)+'%')});
 						}
-						if (xml.@tip=='2') 
+						if (xml.@tip == '2') 
 						{
 							arr.push({id:xml.@id, objectName:objectName, lvl:(Res.numb(param*100)+'%')});
 						}
@@ -358,7 +360,7 @@
 						if (lvl>0) lvl--;
 						vis.info.htmlText=effStr('eff',id+'_ad',lvl);
 					} 
-					else if (id=='phoenix') 
+					else if (id == 'phoenix') 
 					{
 						vis.nazv.text=objectName;
 						vis.info.htmlText=Res.txt('unit','phoenix',1);
@@ -369,36 +371,35 @@
 						vis.info.htmlText=Res.txt('pip',id,1);
 					}
 
-					vis.info.htmlText+='<br><br>';
-					if (id.substr(0,8)=='statHead') 
+					vis.info.htmlText += '<br><br>';
+
+					// This is where the helper function is used.
+					if (id.indexOf('statHead') == 0) 
 					{
-						lvl=id.substr(8,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_head',lvl);
+						var lvl:int = getSeverityLevel(id, 'statHead', 3);
+						if (lvl > 0) vis.info.htmlText += effStr('perks', 'trauma_head', lvl);
 					}
-					if (id.substr(0,8)=='statTors') 
+					if (id.indexOf('statTors') == 0) 
 					{
-						lvl=id.substr(8,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_tors',lvl);
+						lvl = getSeverityLevel(id, 'statTors', 3);
+						if (lvl > 0) vis.info.htmlText += effStr('perks', 'trauma_tors', lvl);
 					}
-					if (id.substr(0,8)=='statLegs') 
+					if (id.indexOf('statLegs') == 0) 
 					{
-						lvl=id.substr(8,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_legs',lvl);
+						lvl = getSeverityLevel(id, 'statLegs', 3);
+						if (lvl > 0) vis.info.htmlText += effStr('perks', 'trauma_legs', lvl);
 					}
-					if (id.substr(0,9)=='statBlood') 
+					if (id.indexOf('statBlood') == 0) 
 					{
-						lvl=id.substr(9,1);
-						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_blood',lvl);
+						lvl = getSeverityLevel(id, 'statBlood', 3);
+						if (lvl > 0) vis.info.htmlText += effStr('perks', 'trauma_blood', lvl);
 					}
-					if (id.substr(0,8)=='statMana') 
+					if (id.indexOf('statMana') == 0) 
 					{
-						lvl=id.substr(8,1);
-						if (lvl>2) vis.info.htmlText+=effStr('perks','trauma_mana',lvl);
+						lvl = getSeverityLevel(id, 'statMana', 2);
+						if (lvl > 0) vis.info.htmlText += effStr('perks', 'trauma_mana', lvl);
 					}
+
 					if (id=='hp') vis.info.htmlText+=factor('maxhp');
 					if (id=='radx') vis.info.htmlText+=factor('radX');
 					if (id=='resbleeding') vis.info.htmlText+=factor('13');
@@ -441,8 +442,19 @@
 			{
 				vis.nazv.text=vis.info.htmlText='';
 			}
+
+			// Get the severity level of a status by reading the number at the end of a given string. eg. 'statHead2' -> 2.
+			function getSeverityLevel(id:String, baseString:String, maxLevel:int):int 
+			{
+				if (id.indexOf(baseString) == 0)
+				{
+					var lvl:int = parseInt(id.substr(baseString.length, 1));
+					return Math.min(lvl, maxLevel);
+				}
+				return 0;
+			}
 		}
-		
+
 		public function selSkill(id:String):void
 		{
 			if (pers.skillIsPost(id) && skills[id].lvl < Pers.maxPostSkLvl || skills[id].lvl < maxSkLvl) 
@@ -472,64 +484,66 @@
 		public function showBottext():void
 		{
 			vis.bottext.text='';
-			if (page2==1) vis.bottext.htmlText=Res.txt('pip', 'tgame')+': '+GameSession.currentSession.game.gameTime();
-			if (page2==2) vis.bottext.htmlText=Res.txt('pip', 'skillpoint')+': '+pink(skillPoint);
-			if (page2==3) vis.bottext.htmlText=Res.txt('pip', 'perkpoint')+': '+pink(perkPoint);
-			if (page2==6) {
-				if (selectedPerk=='') vis.bottext.htmlText=Res.txt('pip', 'chooseperk');
-				else vis.bottext.htmlText=pink(Res.txt('eff',selectedPerk));
-			}
-			if (page2==5 && infoItemId!='') 
+			if (page2 == 1) vis.bottext.htmlText = Res.txt('pip',      'tgame') + ': ' + GameSession.currentSession.game.gameTime();
+			if (page2 == 2) vis.bottext.htmlText = Res.txt('pip', 'skillpoint') + ': ' + numberAsColor('pink', skillPoint);
+			if (page2 == 3) vis.bottext.htmlText = Res.txt('pip',  'perkpoint') + ': ' + numberAsColor('pink', perkPoint);
+			if (page2 == 6) 
 			{
-				var ci:String='';
-				if (infoItemId=='hp') 
+				if (selectedPerk == '') vis.bottext.htmlText=Res.txt('pip', 'chooseperk');
+				else vis.bottext.htmlText = textAsColor('pink', Res.txt('eff',selectedPerk));
+			}
+			//TODO: Implement the switch-case stuff from PipPageMed.as
+			if (page2 == 5 && infoItemId != '') 
+			{
+				var ci:String = '';
+				if (infoItemId == 'hp') 
 				{
-					vis.bottext.htmlText=Res.txt('pip', 'healpotions')+': '+yel(inv.items['pot1'].kol+inv.items['pot2'].kol+inv.items['pot3'].kol);
+					vis.bottext.htmlText = Res.txt('pip', 'healpotions') + ': ' + textAsColor('yellow', inv.items['pot1'].kol + inv.items['pot2'].kol + inv.items['pot3'].kol);
 				} 
-				else if (infoItemId=='rad') 
+				else if (infoItemId == 'rad') 
 				{
-					ci='antiradin';
+					ci = 'antiradin';
 				} 
-				else if (infoItemId=='cut') 
+				else if (infoItemId == 'cut') 
 				{
-					ci='pot0';
+					ci = 'pot0';
 				} 
-				else if (infoItemId=='poison') 
+				else if (infoItemId == 'poison') 
 				{
-					ci='antidote';
+					ci = 'antidote';
 				} 
-				else if (infoItemId.substr(0,9)=='statBlood') 
+				else if (infoItemId.indexOf('statBlood') == 0)
 				{
-					ci='bloodpak';
+					ci = 'bloodpak';
 				} 
-				else if (infoItemId.substr(0,8)=='statMana') 
+				else if (infoItemId.indexOf('statMana') == 0)
 				{
-					vis.bottext.htmlText=Res.txt('item','potm1')+': '+yel(inv.items['potm1'].kol+inv.items['potm2'].kol+inv.items['potm3'].kol);
+					vis.bottext.htmlText = Res.txt('item','potm1') + ': ' + textAsColor('yellow', inv.items['potm1'].kol + inv.items['potm2'].kol + inv.items['potm3'].kol);
 				} 
-				else if (infoItemId=='phoenix') 
+				else if (infoItemId == 'phoenix') 
 				{
-					ci='radcookie';
+					ci = 'radcookie';
 				} 
-				else if (infoItemId.substr(0,8)=='statHead') 
+				else if (infoItemId.indexOf('statHead') == 0)
 				{
-					ci=gg.invent.getMed(1);
-					if (ci=='') vis.bottext.text='';
+					ci = gg.invent.getMed(1);
+					if (ci == '') vis.bottext.text = '';
 				} 
-				else if (infoItemId.substr(0,8)=='statTors') 
+				else if (infoItemId.indexOf('statTors') == 0)
 				{
-					ci=gg.invent.getMed(2);
-					if (ci=='') vis.bottext.text='';
+					ci = gg.invent.getMed(2);
+					if (ci == '') vis.bottext.text = '';
 				} 
-				else if (infoItemId.substr(0,8)=='statLegs') 
+				else if (infoItemId.indexOf('statLegs') == 0)
 				{
-					ci=gg.invent.getMed(3);
-					if (ci=='') vis.bottext.text='';
-				} 
-				else if (infoItemId.substr(0,5)=='post_') 
-				{
-					ci='detoxin'
+					ci = gg.invent.getMed(3);
+					if (ci == '') vis.bottext.text = '';
 				}
-				if (ci!='') vis.bottext.htmlText=Res.txt('item',ci)+': '+yel(inv.items[ci].kol);
+				else if (infoItemId.indexOf('post_') == 0)
+				{
+					ci = 'detoxin'
+				}
+				if (ci != '') vis.bottext.htmlText = Res.txt('item', ci) + ': ' + textAsColor('yellow', inv.items[ci].kol);
 			}
 		}
 		
@@ -576,8 +590,8 @@
 				else if (infoItemId=='poison') 
 				{
 					inv.usePotion('antidote');
-				} 
-				else if (infoItemId.substr(0,9)=='statBlood') 
+				}
+				else if (infoItemId.indexOf('statBlood') == 0)
 				{
 					inv.usePotion('bloodpak');
 				} 
@@ -585,26 +599,26 @@
 				{
 					inv.usePotion('radcookie');
 				} 
-				else if (infoItemId.substr(0,8)=='statHead') 
+				else if (infoItemId.indexOf('statHead') == 0)
 				{
 					need=gg.invent.getMed(1);
 					if (need!='') inv.usePotion(need,1);
 				} 
-				else if (infoItemId.substr(0,8)=='statTors') 
+				else if (infoItemId.indexOf('statTors') == 0)
 				{
 					need=gg.invent.getMed(2);
 					if (need!='') inv.usePotion(need,2);
-				} 
-				else if (infoItemId.substr(0,8)=='statLegs') 
+				}
+				else if (infoItemId.indexOf('statLegs') == 0)
 				{
 					need=gg.invent.getMed(3);
 					if (need!='') inv.usePotion(need,3);
 				} 
-				else if (infoItemId.substr(0,8)=='statMana') 
+				else if (infoItemId.indexOf('statMana') == 0)
 				{
 					inv.usePotion('mana');
 				} 
-				else if (infoItemId.substr(0,5)=='post_') 
+				else if (infoItemId.indexOf('post_') == 0)
 				{
 					inv.usePotion('detoxin');
 				}
@@ -684,6 +698,5 @@
 				pip.snd(2);
 			}
 		}
-	}
-	
+	}	
 }

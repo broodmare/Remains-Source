@@ -612,22 +612,22 @@
 				vis.pers.head.morda.magic.visible=false;
 				vis.pers.visible=true;
 				vis.info.y=vis.pers.y+25;
-				vis.info.htmlText+=Res.txt('pip', 'level')+': '+yel(obj.level)+'\n';
+				vis.info.htmlText+=Res.txt('pip', 'level')+': ' + textAsColor('yellow', obj.level)+'\n';
 				vis.info.htmlText+=obj.level+'\n';
 				vis.info.htmlText+='\n';
-				vis.info.htmlText+=Res.txt('pip', 'diff')+': '+yel(obj.dif)+'\n';
+				vis.info.htmlText+=Res.txt('pip', 'diff')+': ' + textAsColor('yellow', obj.dif)+'\n';
 				if (obj.hard==1) vis.info.htmlText+=Res.txt('gui', 'opt2')+'\n';
-				if (obj.hard==2) vis.info.htmlText+=red(Res.txt('pip', 'dead'))+'\n';
+				if (obj.hard==2) vis.info.htmlText+=textAsColor('red', Res.txt('pip', 'dead'))+'\n';
 				if (obj.hardInv==1) vis.info.htmlText+=Res.txt('gui', 'opt6')+'\n';
 				if (obj.rndpump==1) vis.info.htmlText+=Res.txt('gui', 'opt4')+'\n';
-				if (obj.ver) vis.info.htmlText+=Res.txt('gui', 'version')+': '+yel(obj.ver)+'\n';
-				vis.info.htmlText+=Res.txt('pip', 'tgame')+': '+yel(obj.time)+'\n';
-				vis.info.htmlText+=Res.txt('pip', 'saved')+': '+yel(obj.date)+'\n';
+				if (obj.ver) vis.info.htmlText+=Res.txt('gui', 'version')+': ' + textAsColor('yellow', obj.ver)+'\n';
+				vis.info.htmlText += Res.txt('pip', 'tgame') + ': ' + textAsColor('yellow', obj.time) + '\n';
+				vis.info.htmlText += Res.txt('pip', 'saved') + ': ' + textAsColor('yellow', obj.date) + '\n';
 			} 
 			else 
 			{
-				vis.nazv.text='';
-				vis.pers.visible=false;
+				vis.nazv.text = '';
+				vis.pers.visible = false;
 			}
 		}
 		

@@ -311,15 +311,13 @@ package interdata
 				}
 				if (l.dif>0) s+='\n\n'+Res.txt('pip', 'recLevel')+' '+Math.round(l.dif);
 				if (l.dif>GameSession.currentSession.pers.level) s+='\n\n'+Res.txt('pip', 'wrLevel');
-				if (GameSession.currentSession.pers.speedShtr>=3) {
-					s+='\n\n'+red(Res.txt('pip', 'speedshtr3'));
-				} else if (GameSession.currentSession.pers.speedShtr==2) {
-					s+='\n\n'+red(Res.txt('pip', 'speedshtr2'));
-				} else if (GameSession.currentSession.pers.speedShtr==1) {
-					s+='\n\n'+red(Res.txt('pip', 'speedshtr1'));
-				}
+
+				if 		(GameSession.currentSession.pers.speedShtr >= 3) s+='\n\n' + textAsColor('red', Res.txt('pip', 'speedshtr3'));
+				else if (GameSession.currentSession.pers.speedShtr == 2) s+='\n\n' + textAsColor('red', Res.txt('pip', 'speedshtr2'));
+				else if (GameSession.currentSession.pers.speedShtr == 1) s+='\n\n' + textAsColor('red', Res.txt('pip', 'speedshtr1'));
+
 				if (GameSession.currentSession.pers.speedShtr>=1) s+='\n'+Res.txt('pip', 'speedshtr0');
-				vis.info.htmlText=s;
+				vis.info.htmlText = s;
 			} 
 			else if (page2==4) 
 			{
@@ -351,7 +349,7 @@ package interdata
 		
 		public function getParam(un, pun, cat:String, param:String):* 
 		{
-			if (un.length()==0) return null;
+			if (un.length() == 0) return null;
 			if (un[cat].length() && un[cat].attribute(param).length()) return un[cat].attribute(param);
 			if (pun==null || pun.length()==0) return null;
 			if (pun[cat].length() && pun[cat].attribute(param).length()) return pun[cat].attribute(param);
@@ -361,18 +359,17 @@ package interdata
 		public function infoUnit(id:String, kol):String 
 		{
 			var n:int = 0, delta;
-			//юнит
-			var un = XmlBook.getXML("units").unit.(@id == id);
+			
+			var un = XmlBook.getXML("units").unit.(@id == id); //юнит
 			if (un.length()==0 || un.@cat!='3') return '';
-			//родитель
-			var pun;
-			if (un.@parent.length()) 
-			{
-				var pun = XmlBook.getXML("units").unit.(@id == un.@parent);
-			}
-			//дельта
-			delta=getParam(un, pun, 'vis', 'dkill');
+			
+			var pun; //родитель
+			if (un.@parent.length()) pun = XmlBook.getXML("units").unit.(@id == un.@parent);
+
+			
+			delta = getParam(un, pun, 'vis', 'dkill'); //дельта
 			if (delta == null) delta = 5;
+
 			if (delta <= 0) n = 10;
 			else n = Math.floor(int(kol) / delta);
 			
@@ -391,19 +388,19 @@ package interdata
 			var v_stipdam=getParam(un,pun,'vis','stipdam');
 			
 			var s:String='\n';
+
 			if (un.comb.length()) 
 			{
 				var node=un.comb[0];
 				if (n>=1) 
 				{
-					//ХП
-					s += Res.txt('pip', 'hp')+': '+yel(v_hp)+'\n';
-					//порог урона и броня
-					if (v_skin) 	s+=Res.txt('pip', 'skin')+': '+yel(v_skin)+'\n';
+					s += Res.txt('pip', 'hp')+': ' + textAsColor('yellow', v_hp)+'\n'; //ХП
+					
+					if (v_skin) 	s+=Res.txt('pip', 'skin')+': '+textAsColor('yellow', v_skin)+'\n'; //порог урона и броня
 					if (v_aqual) 
 					{
-						if (v_armor) 	s+=Res.txt('pip', 'armor')+': '+yel(v_armor)+' ('+(v_aqual*100)+'%)  ';
-						if (v_marmor) 	s+=Res.txt('pip', 'marmor')+': '+yel(v_marmor)+' ('+(v_aqual*100)+'%)';
+						if (v_armor) 	s+=Res.txt('pip', 'armor')+': ' + textAsColor('yellow', v_armor)+' ('+(v_aqual*100)+'%)  ';
+						if (v_marmor) 	s+=Res.txt('pip', 'marmor') + ': '+textAsColor('yellow', v_marmor)+' ('+(v_aqual*100)+'%)';
 						if (v_armor || v_marmor)s+='\n';
 					}
 				}
@@ -412,14 +409,20 @@ package interdata
 					if ((v_visdam==1 || v_visdam==3) && v_damage) 
 					{
 						s+=Res.txt('pip', 'dam_melee')+': ';
-						if (v_tipdam) s+=blue(Res.txt('pip', 'tipdam'+v_tipdam)); else s+=blue(Res.txt('pip', 'tipdam2'));
-						s+=' ('+yel(v_damage)+')\n'
+
+						if (v_tipdam) s += textAsColor('blue', Res.txt('pip', 'tipdam') + numberAsColor('blue', v_tipdam)); 
+						else 		  s += textAsColor('blue', Res.txt('pip', 'tipdam2'));
+						
+						s += ' (' + textAsColor('yellow', v_damage) + ')\n'
 					}
 					if ((v_visdam==2 || v_visdam==3) && v_sdamage) 
 					{
 						s+=Res.txt('pip', 'dam_shoot')+': ';
-						if (v_stipdam) s+=blue(Res.txt('pip', 'tipdam'+v_stipdam)); else s+=blue(Res.txt('pip', 'tipdam0'));
-						s+=' ('+yel(v_sdamage)+')\n'
+
+						if (v_stipdam) s += textAsColor('blue', Res.txt('pip', 'tipdam') + numberAsColor('blue', v_stipdam)); 
+						else 		   s += textAsColor('blue', Res.txt('pip', 'tipdam0'));
+
+						s += ' (' + textAsColor('yellow', v_sdamage) + ')\n'
 					}
 					if (un.w.length()) 
 					{
@@ -430,14 +433,14 @@ package interdata
 							{
 								if (wk) s+=', ';
 								else s+=Res.txt('pip', 'enemy_weap')+': ';
-								s+=blue(Res.txt('weapon', weap.@id));
+								s += textAsColor('blue', Res.txt('weapon', weap.@id));
 								try 
 								{
 									var w = XmlBook.getXML("weapons").weapon.(@id == weap.@id);
 									var dam=0;
 									if (w.char[0].@damage>0) dam+=Number(w.char[0].@damage);
 									if (w.char[0].@damexpl>0) dam+=Number(w.char[0].@damexpl);
-									s+=' ('+yel(Res.numb(dam))+')';
+									s+=' (' + textAsColor('yellow', Res.numb(dam))+')';
 								} 
 								catch (err) 
 								{
@@ -449,15 +452,16 @@ package interdata
 						s+='\n';
 					}
 				}
-				//уклонение
-				if (n>=3) {
-					if (v_dexter!=null) 	s+=Res.txt('pip', 'dexter')+': '+yel((v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
-					if (v_observ) 	s+=Res.txt('pip', 'observ')+': '+yel((v_observ>0?'+':'')+v_observ)+'\n';
-					if (v_skill!=null) 	s+=Res.txt('pip', 'weapskill')+': '+yel(Math.round(v_skill*100)+'%')+'\n';
+				
+				if (n>=3) //уклонение
+				{
+					if (v_dexter!=null) 	s+=Res.txt('pip', 'dexter')+': ' + textAsColor('yellow', (v_dexter>1?'+':'')+Math.round((v_dexter-1)*100)+'%')+'\n';
+					if (v_observ) 	s+=Res.txt('pip', 'observ')+': ' + textAsColor('yellow', (v_observ>0?'+':'')+v_observ)+'\n';
+					if (v_skill!=null) 	s+=Res.txt('pip', 'weapskill')+': ' + textAsColor('yellow', Math.round(v_skill*100)+'%')+'\n';
 				}
 			}
-			//сопротивления
-			if (n>=3 && un.vulner.length()) 
+			
+			if (n>=3 && un.vulner.length()) //сопротивления
 			{
 				s+=Res.txt('pip', 'resists')+': ';
 				node=un.vulner[0];
@@ -479,7 +483,7 @@ package interdata
 		
 		public function vulner(n:int, val:Number):String 
 		{
-			return blue(Res.txt('pip', 'tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
+			return textAsColor('blue', Res.txt('pip', 'tipdam' + n)) + ': ' + textAsColor('yellow', Math.round((1 - val) * 100) + '%   ');
 		}
 		
 		public override function itemClick(event:MouseEvent):void
@@ -548,21 +552,25 @@ package interdata
 		{
 			visMap.vmap.startDrag();
 		}
+
 		public function onMouseUp(event:MouseEvent):void 
 		{
 			visMap.vmap.stopDrag();
 			setMapSize();
 		}
+
 		public function funZoomP(event:MouseEvent):void 
 		{
 			mapScale++;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
+
 		public function funZoomM(event:MouseEvent):void 
 		{
 			mapScale--;
 			setMapSize(visMap.fon.width/2, visMap.fon.height/2);
 		}
+
 		public function funCenter(event:MouseEvent):void 
 		{
 			visMap.vmap.x=visMap.fon.width/2-plTag.x;
@@ -571,24 +579,24 @@ package interdata
 		
 		public function setMapSize(cx:Number=350, cy:Number=285):void
 		{
-			if (mapScale>6) mapScale=6;
-			if (mapScale<1) mapScale=1;
-			map.scaleX=map.scaleY=mapScale;
-			var tx=(visMap.vmap.x-cx)*mapScale/ms;
-			var ty=(visMap.vmap.y-cy)*mapScale/ms;
-			visMap.vmap.x=tx+cx;
-			visMap.vmap.y=ty+cy;
-			plTag.x=GameSession.currentSession.level.ggX/Settings.tilePixelWidth*mapScale;
-			plTag.y=GameSession.currentSession.level.ggY/Settings.tilePixelHeight*mapScale;
-			ms=mapScale;
+			if (mapScale > 6) mapScale = 6;
+			if (mapScale < 1) mapScale = 1;
+			map.scaleX = map.scaleY=mapScale;
+			var tx = (visMap.vmap.x - cx) * mapScale / ms;
+			var ty = (visMap.vmap.y - cy) * mapScale / ms;
+			visMap.vmap.x = tx + cx;
+			visMap.vmap.y = ty + cy;
+			plTag.x = GameSession.currentSession.level.ggX / Settings.tilePixelWidth  * mapScale;
+			plTag.y = GameSession.currentSession.level.ggY / Settings.tilePixelHeight * mapScale;
+			ms = mapScale;
 		}
 		
 		public override function scroll(dn:int=0):void
 		{
 			if (page2==1) 
 			{
-				if (dn>0) mapScale++;
-				if (dn<0) mapScale--;
+				if (dn > 0) mapScale++;
+				if (dn < 0) mapScale--;
 				setMapSize(visMap.mouseX, visMap.mouseY);
 			}
 		}

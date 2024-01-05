@@ -204,7 +204,7 @@ package interdata
 		
 		public function showBottext():void
 		{
-			vis.bottext.htmlText=Res.txt('pip', 'caps') + ': '+yel(pip.money);
+			vis.bottext.htmlText=Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', pip.money);
 			if (Settings.hardInv) 
 			{
 				if (page2==1) vis.bottext.htmlText='    '+inv.retMass(4)+'    '+inv.retMass(5);

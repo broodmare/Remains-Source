@@ -368,16 +368,16 @@ package interdata
 		{
 			if (page2==1 && vend) 
 			{
-				vis.bottext.htmlText=Res.txt('pip', 'caps')+': '+yel(pip.money)+' (';
-				if (vend.kolBou>0) vis.bottext.htmlText+='-'+yel(Math.ceil(vend.kolBou))+'; ';
-				vis.bottext.htmlText+=yel(Math.floor(pip.money-vend.kolBou))+' '+Res.txt('pip', 'ost')+')';
+				vis.bottext.htmlText=Res.txt('pip', 'caps')+': ' + numberAsColor('yellow', pip.money)+' (';
+				if (vend.kolBou>0) vis.bottext.htmlText+='-' + numberAsColor('yellow', Math.ceil(vend.kolBou))+'; ';
+				vis.bottext.htmlText += numberAsColor('yellow', Math.floor(pip.money-vend.kolBou))+' '+Res.txt('pip', 'ost')+')';
 			}
 			if (page2==2 && vend) 
 			{
-				vis.bottext.htmlText=Res.txt('pip', 'caps')+': '+yel(pip.money)+' (+'+yel(Math.floor(vend.kolSell))+')';
-				if (!inbase) vis.bottext.htmlText+='   '+Res.txt('pip', 'vcaps')+': '+yel(vend.money);
+				vis.bottext.htmlText = Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', pip.money) + ' (+' + numberAsColor('yellow', Math.floor(vend.kolSell)) + ')';
+				if (!inbase) vis.bottext.htmlText += '   ' + Res.txt('pip', 'vcaps')+': ' + numberAsColor('yellow', vend.money);
 			}
-			if (page2==3) vis.bottext.htmlText=Res.txt('pip', 'caps')+': '+yel(inv.money.kol);
+			if (page2==3) vis.bottext.htmlText=Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', inv.money.kol);
 		}
 		
 		//показ одного элемента
@@ -727,6 +727,5 @@ package interdata
 			showBottext();
 			setStatItems();
 		}
-	}
-	
+	}	
 }

@@ -156,9 +156,9 @@ package interdata
 
 		public function showBottext():void
 		{
-			if (pip.npcInter=='adoc') vis.bottext.htmlText=Res.txt('item','gel')+': '+yel(plata.kol);
-			else if (pip.npcInter=='vdoc') vis.bottext.htmlText=Res.txt('item','good')+': '+yel(plata.kol);
-			else vis.bottext.htmlText=Res.txt('pip', 'caps')+': '+yel(plata.kol);
+			if (pip.npcInter == 'adoc') vis.bottext.htmlText = Res.txt('item','gel')+': ' + numberAsColor('yellow', plata.kol);
+			else if (pip.npcInter == 'vdoc') vis.bottext.htmlText = Res.txt('item','good')+': ' + numberAsColor('yellow', plata.kol);
+			else vis.bottext.htmlText = Res.txt('pip', 'caps') + ': ' + numberAsColor('yellow', plata.kol);
 		}
 
 		public override function itemClick(event:MouseEvent):void

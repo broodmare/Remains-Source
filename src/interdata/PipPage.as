@@ -130,6 +130,7 @@ package interdata
 			setStyle(vis.bottext);
 		}
 		
+		//Text color definitions
 		public static function setStyle(tt:TextField):void
 		{
 			var style:StyleSheet = new StyleSheet(); 
@@ -142,7 +143,7 @@ package interdata
 			style.setStyle(".red", styleObj);	//красный
 
 			styleObj.color = "#FFFF33"; 
-			style.setStyle(".yel", styleObj);	//жёлтый
+			style.setStyle(".yellow", styleObj);	//жёлтый
 
 			styleObj.color = "#FF9900"; 
 			style.setStyle(".or", styleObj);	//оранжевый
@@ -151,10 +152,10 @@ package interdata
 			style.setStyle(".pink", styleObj);	//розовый
 
 			styleObj.color = "#00FFFF"; 
-			style.setStyle(".blu", styleObj);	//голубой
+			style.setStyle(".blue", styleObj);	//голубой
 
 			styleObj.color = "#99CCFF"; 
-			style.setStyle(".mass", styleObj);	//серо-голубой
+			style.setStyle(".lightBlue", styleObj);	//серо-голубой
 
 			styleObj.color = "#007E4B"; 
 			style.setStyle(".dark", styleObj);	//7 - тёмно-зелёный
@@ -169,6 +170,16 @@ package interdata
 			style.setStyle(".purp", styleObj);	//фиолет
 
 			tt.styleSheet = style;
+		}
+
+		//Print colored text
+		public static function textAsColor(color:String, text:String):String
+		{
+			return "<span class = " + "'" + color + "'" + ">" + text + "</span>";
+		}
+		public static function numberAsColor(color:String, number:Number):String
+		{
+			return "<span class = " + "'" + color + "'" + ">" + number.toString() + "</span>";
 		}
 		
 		public function updateLang():void
@@ -389,30 +400,7 @@ package interdata
 				}
 			}
 		}
-		
-		//Print colored text. 
-		//TODO: Merge these.
-		public static function yel(s):String 
-		{
-			return "<span class = 'yel'>" + s + "</span>";
-		}
-		public static function red(s):String 
-		{
-			return "<span class = 'red'>" + s + "</span>";
-		}
-		public static function pink(s):String 
-		{
-			return "<span class = 'pink'>" + s + "</span>";
-		}
-		public static function mass(s):String 
-		{
-			return "<span class = 'mass'>" + s + "</span>";
-		}
-		public static function blue(s):String 
-		{
-			return "<span class = 'blu'>" + s + "</span>";
-		}
-		
+
 		//добавить в текстовую строку значения
 		public static function addVar(s:String, xml:XML):String 
 		{
@@ -465,7 +453,7 @@ package interdata
 				s += '<br>';
 				for each(var eff in dp.eff) 
 				{
-					s += '<br>' + (eff.@id.length() ? Res.txt('pip', eff.@id):Res.txt('pip', 'refeff')) + ': ' + yel(eff.attribute('n' + lvl));
+					s += '<br>' + (eff.@id.length() ? Res.txt('pip', eff.@id):Res.txt('pip', 'refeff')) + ': ' + textAsColor('yellow', eff.attribute('n' + lvl));
 				}
 			}
 			
@@ -476,9 +464,9 @@ package interdata
 				{
 					if (sk.@tip == 'm') 
 					{
-						var add = mass('+1');
-						if (sk.@vd > 0) add = mass('+' + sk.@vd) + ' '+Res.txt('pip', 'perlevel');
-						if (sk.@v1 > 0) add = mass('+' + sk.@v1);
+						var add = textAsColor('lightBlue', '+1');
+						if (sk.@vd > 0) add = textAsColor('lightBlue', '+') + numberAsColor('lightBlue', sk.@vd) + ' ' + Res.txt('pip', 'perlevel');
+						if (sk.@v1 > 0) add = textAsColor('lightBlue', '+') + numberAsColor('lightBlue', sk.@v1);
 						s += '<br>' + Res.txt('pip', 'add_' + sk.@id)+' ' + add;
 					}
 				}
@@ -511,8 +499,9 @@ package interdata
 						if (pers.getSkLevel(pers.skills[req.@id]) < reqlevel) ok = false;
 					}
 					s1 += ': ' + reqlevel;
-					if (ok)	s += yel(s1);
-					else s += red(s1);
+
+					if (ok)	s += textAsColor('yellow', s1);
+					else 	s += textAsColor('red', s1);
 				}
 			}
 			return s;
@@ -537,14 +526,14 @@ package interdata
 				if (razn == 1) skillConf = 0.75;
 				if (razn >= 2) skillConf = 0.5;
 				w.skillConf = skillConf;
-				s += Res.txt('pip', 'weapontip') + ': ' + yel(Res.txt('pip', 'weapontip' + w.skill));
+				s += Res.txt('pip', 'weapontip') + ': ' + textAsColor('yellow', Res.txt('pip', 'weapontip' + w.skill));
 				if (w.lvl > 0) 
 				{
-					s += '\n' + Res.txt('pip', 'lvl') + ': ' + yel(w.lvl);
-					s += '\n' + Res.txt('pip', 'islvl') + ': ' + yel(gg.pers.getWeapLevel(w.skill));
+					s += '\n' + Res.txt('pip', 'lvl') + ': ' + numberAsColor('yellow', w.lvl);
+					s += '\n' + Res.txt('pip', 'islvl') + ': ' + numberAsColor('yellow', gg.pers.getWeapLevel(w.skill));
 					if (razn > 0) s += "<span class = 'red'>";
 
-					if (w.lvlNoUse && razn > 0 || razn > 2) s += ' ('+Res.txt('pip', 'weapnouse') + ')</span>';
+					if (w.lvlNoUse && razn > 0 || razn > 2) s += ' (' + Res.txt('pip', 'weapnouse') + ')</span>';
 					else if (razn > 0)
 					{
 						if (razn == 2) 
@@ -564,29 +553,29 @@ package interdata
 				}
 				if (w.perslvl > 0) 
 				{
-					s += '\n' + Res.txt('pip', 'perslvl') + ': ' + yel(w.perslvl);
-					s += '\n' + Res.txt('pip', 'isperslvl') + ': ' + yel(gg.pers.level);
-					if (gg.pers.level < w.perslvl) s += red(' (' + Res.txt('pip', 'weapnouse') + ')');
+					s += '\n' + Res.txt('pip', 'perslvl') + ': ' + numberAsColor('yellow', w.perslvl);
+					s += '\n' + Res.txt('pip', 'isperslvl') + ': ' + numberAsColor('yellow', gg.pers.level);
+					if (gg.pers.level < w.perslvl) s += textAsColor('red', ' (' + Res.txt('pip', 'weapnouse') + ')');
 				}
 				s += '\n' + Res.txt('pip', 'damage') + ': ';
 				var wdam:Number = w.damage, wdamexpl:Number = w.damageExpl;
 				if (w.damage > 0) 
 				{
-					s += yel(Math.round(w.damage * 10) / 10);
+					s += numberAsColor('yellow', Math.round(w.damage * 10) / 10);
 					wdam = w.resultDamage(w.damage,gg.pers.weaponSkills[w.skill]);
 					if (wdam != w.damage) 
 					{
-						s += ' (' + yel(Math.round(wdam * 10) / 10) + ')';
+						s += ' (' + numberAsColor('yellow', Math.round(wdam * 10) / 10) + ')';
 					}
 				}
 				if (w.damage > 0 && w.damageExpl > 0) s += ' + ';
 				if (w.damageExpl > 0) 
 				{
-					s += yel(Math.round(w.damageExpl * w.damMult * 10) / 10);
+					s += numberAsColor('yellow', Math.round(w.damageExpl * w.damMult * 10) / 10);
 					wdamexpl = w.resultDamage(w.damageExpl, gg.pers.weaponSkills[w.skill]);
 					if (wdamexpl!=w.damageExpl) 
 					{
-						s += ' ('+yel(Math.round(wdamexpl * 10) / 10)+')';
+						s += ' (' + numberAsColor('yellow', Math.round(wdamexpl * 10) / 10) + ')';
 					}
 					s += ' ' + Res.txt('pip', 'expldam');
 				}
@@ -595,26 +584,26 @@ package interdata
 				var wrapid:Number = w.resultRapid(w.rapid);
 				if (w.tip != 4) 
 				{
-					s += '\n'+Res.txt('pip', 'aps') + ': ' + yel(Number(Settings.fps / wrapid).toFixed(1));
-					s += '\n'+Res.txt('pip', 'dps') + ': ' + yel(Number((wdam + wdamexpl) * w.kol * Settings.fps / wrapid).toFixed(1));
-					if (w.holder) s += ' (' + yel(Number((wdam + wdamexpl) * w.kol * Settings.fps / (wrapid + w.reload * w.reloadMult / w.holder * w.rashod)).toFixed(1)) + ')';
+					s += '\n'+Res.txt('pip', 'aps') + ': ' + textAsColor('yellow', Number(Settings.fps / wrapid).toFixed(1));
+					s += '\n'+Res.txt('pip', 'dps') + ': ' + textAsColor('yellow', Number((wdam + wdamexpl) * w.kol * Settings.fps / wrapid).toFixed(1));
+					if (w.holder) s += ' (' + textAsColor('yellow', Number((wdam + wdamexpl) * w.kol * Settings.fps / (wrapid + w.reload * w.reloadMult / w.holder * w.rashod)).toFixed(1)) + ')';
 				}
-				s += '\n' + Res.txt('pip', 'critch') + ': ' + yel(Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + '%');
-				s += '\n' + Res.txt('pip', 'tipdam') + ': ' + blue(Res.txt('pip', 'tipdam' + w.tipDamage));
-				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('pip', 'inv5') + ': ' + yel(Res.txt('item', w.ammo));
-				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('pip', 'holder') + ': ' + yel(w.holder);
-				if (w.rashod> 1 ) s += ' (' + yel(w.rashod) + ' ' + Res.txt('pip', 'rashod') + ')';
-				if (w.tip == 5) s += '\n' + Res.txt('pip', 'dmana') + ': ' + yel(Math.round(w.mana));
-				if (w.precision > 0) s +='\n' + Res.txt('pip', 'prec') + ': ' + yel(Math.round(w.precision * w.precMult / 40));
-				if (w.pier+w.pierAdd > 0) s +='\n' + Res.txt('pip', 'pier') + ': ' + yel(Math.round(w.pier + w.pierAdd));
-				if (!w.noSats) 
+				s += '\n' + Res.txt('pip', 'critch') + ': ' + textAsColor('yellow', Math.round((w.critCh + w.critchAdd + gg.critCh) * 100) + '%');
+				s += '\n' + Res.txt('pip', 'tipdam') + ': ' + textAsColor('blue', Res.txt('pip', 'tipdam' + w.tipDamage));
+				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('pip', 'inv5') + ': ' + textAsColor('yellow', Res.txt('item', w.ammo));
+				if (w.tip < 4 && w.holder > 0) s += '\n' + Res.txt('pip', 'holder') + ': ' + numberAsColor('yellow', w.holder);
+				if (w.rashod> 1 ) s += ' (' + numberAsColor('yellow', w.rashod) + ' ' + Res.txt('pip', 'rashod') + ')';
+				if (w.tip == 5) s += '\n' + Res.txt('pip', 'dmana') + ': ' + numberAsColor('yellow', Math.round(w.mana));
+				if (w.precision > 0) s +='\n' + Res.txt('pip', 'prec') + ': ' + numberAsColor('yellow', Math.round(w.precision * w.precMult / 40));
+				if (w.pier+w.pierAdd > 0) s +='\n' + Res.txt('pip', 'pier') + ': ' + numberAsColor('yellow', Math.round(w.pier + w.pierAdd));
+				if (!w.noSats)
 				{
 					s+='\n'+Res.txt('pip', 'ap')+': ';
 					if (razn>0) s+="<span class = 'red'>";
 					else s+="<span class = 'yel'>";
 					s+=Math.round(w.satsCons*w.consMult/skillConf*gg.pers.satsMult);
 					s+="</span>";
-					if (w.satsQue>1) s+=' (x'+yel(w.satsQue)+')';
+					if (w.satsQue>1) s+=' (x' + numberAsColor('yellow', w.satsQue) + ')';
 				}
 				if (w.destroy >= 100) 
 				{
@@ -622,7 +611,7 @@ package interdata
 				}
 				if (w.opt && w.opt.perk) 
 				{
-					s += '\n' + Res.txt('pip', 'refperk') + ': ' + pink(Res.txt('eff', w.opt.perk));
+					s += '\n' + Res.txt('pip', 'refperk') + ': ' + textAsColor('pink', Res.txt('eff', w.opt.perk));
 				}
 				var sinf:String = Res.txt('weapon', id, 1);
 				if (sinf == '') sinf = Res.txt('weapon', w.id, 1);
@@ -635,16 +624,17 @@ package interdata
 				var a:Armor = inv.armors[id];
 				if (a == null) a = pip.arrArmor[id];
 
-				if (a.armor_qual > 0) s += Res.txt('pip', 'aqual')+': ' + yel(Math.round(a.armor_qual*100)+'%');
-				if (a.armor > 0) s += '\n' + Res.txt('pip', 'armor')+': ' + yel(Math.round(a.armor));
-				if (a.marmor > 0) s += '\n' + Res.txt('pip', 'marmor')+': ' + yel(Math.round(a.marmor));
-				if (a.dexter != 0) s += '\n' + Res.txt('pip', 'dexter')+': ' + yel(Math.round(a.dexter*100)+'%');
-				if (a.sneak != 0) s += '\n' + Res.txt('pip', 'sneak')+': ' + yel(Math.round(a.sneak*100)+'%');
-				if (a.meleeMult != 1) s += '\n' + Res.txt('pip', 'meleedamage') + ': +'+yel(Math.round((a.meleeMult-1)*100)+'%');
-				if (a.gunsMult != 1) s += '\n' + Res.txt('pip', 'gunsdamage') + ': +'+yel(Math.round((a.gunsMult-1)*100)+'%');
-				if (a.magicMult != 1) s += '\n' + Res.txt('pip', 'spelldamage') + ': +'+yel(Math.round((a.magicMult-1)*100)+'%');
-				if (a.crit!=0) s += '\n' + Res.txt('pip', 'critch')+': +' + yel(Math.round(a.crit*100)+'%');
-				if (a.radVul<1) s += '\n' + Res.txt('pip', 'radx')+': ' + yel(Math.round((1-a.radVul)*100)+'%');
+				//TODO: I think I uncolored the % symbols.
+				if (a.armor_qual > 0) s += Res.txt('pip', 'aqual')+': ' + numberAsColor('yellow', Math.round(a.armor_qual * 100)) + '%';
+				if (a.armor > 0) s += '\n' + Res.txt('pip', 'armor')+': ' + numberAsColor('yellow', Math.round(a.armor));
+				if (a.marmor > 0) s += '\n' + Res.txt('pip', 'marmor')+': ' + numberAsColor('yellow', Math.round(a.marmor));
+				if (a.dexter != 0) s += '\n' + Res.txt('pip', 'dexter')+': ' + numberAsColor('yellow', Math.round(a.dexter * 100)) + '%';
+				if (a.sneak != 0) s += '\n' + Res.txt('pip', 'sneak')+': ' + numberAsColor('yellow', Math.round(a.sneak * 100)) + '%';
+				if (a.meleeMult != 1) s += '\n' + Res.txt('pip', 'meleedamage') + ': +' + numberAsColor('yellow', Math.round((a.meleeMult - 1) * 100)) + '%';
+				if (a.gunsMult != 1) s += '\n' + Res.txt('pip', 'gunsdamage') + ': +' + numberAsColor('yellow', Math.round((a.gunsMult-1) * 100)) + '%';
+				if (a.magicMult != 1) s += '\n' + Res.txt('pip', 'spelldamage') + ': +' + numberAsColor('yellow', Math.round((a.magicMult-1) * 100)) + '%';
+				if (a.crit!=0) s += '\n' + Res.txt('pip', 'critch')+': +' + numberAsColor('yellow', Math.round(a.crit * 100)) + '%';
+				if (a.radVul<1) s += '\n' + Res.txt('pip', 'radx')+': ' + numberAsColor('yellow', Math.round((1 - a.radVul) * 100)) + '%';
 
 				// Print armor resistances as a percentage in yellow text if the resistance is not 0.
 				var resistanceTypesArray:Array = 
@@ -660,7 +650,7 @@ package interdata
 
 					if (a.resist[resistanceValue] != 0 && a.resist[resistanceValue] != null) 
 					{
-						s += '\n' + Res.txt('pip', resistanceLabel) + ': ' + yel(Math.round(a.resist[resistanceValue] * 100) + '%');
+						s += '\n' + Res.txt('pip', resistanceLabel) + ': ' + numberAsColor('yellow', Math.round(a.resist[resistanceValue] * 100)) + '%';
 					}
 				}
 
@@ -688,13 +678,13 @@ package interdata
 				}
 
 				s += '\n';
-				if (ammo.@damage.length()) s+='\n'+Res.txt('pip', 'damage')+': x'+yel(ammo.@damage);
-				if (ammo.@pier.length()) s+='\n'+Res.txt('pip', 'pier')+': '+yel(ammo.@pier);
-				if (ammo.@armor.length()) s+='\n'+Res.txt('pip', 'tarmor')+': x'+yel(ammo.@armor);
-				if (ammo.@prec.length()) s+='\n'+Res.txt('pip', 'prec')+': x'+yel(ammo.@prec);
+				if (ammo.@damage.length()) s+='\n'+Res.txt('pip', 'damage')+': x' + textAsColor('yellow', ammo.@damage);
+				if (ammo.@pier.length()) s+='\n'+Res.txt('pip', 'pier')+': ' + textAsColor('yellow', ammo.@pier);
+				if (ammo.@armor.length()) s+='\n'+Res.txt('pip', 'tarmor')+': x' + textAsColor('yellow', ammo.@armor);
+				if (ammo.@prec.length()) s+='\n'+Res.txt('pip', 'prec')+': x' + textAsColor('yellow', ammo.@prec);
 				if (ammo.@det>0) s+='\n'+Res.txt('pip', 'det');
 				if (Settings.hardInv && ammo.@m>0) s+='\n\n'+Res.txt('pip', 'mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.txt('pip', 'vault'+inv.items[id].invCat)+')';
-				if (ammo.@sell > 0) s += '\n' + Res.txt('pip', 'sell') + ": " + yel(ammo.@sell);
+				if (ammo.@sell > 0) s += '\n' + Res.txt('pip', 'sell') + ": " + textAsColor('yellow', ammo.@sell);
 			} 
 			else 
 			{
@@ -709,53 +699,50 @@ package interdata
 				if (tip == 'med' || tip == 'food'|| tip == 'pot' || tip == 'him') 
 				{
 					if (pot.@hhp.length() || pot.@hhplong.length())
-					s+='\n'+Res.txt('pip', 'healhp')+': '+yel(Math.round(pot.@hhp*GameSession.currentSession.pers.healMult));
-					if (pot.@hhplong.length()) s+='+'+yel(Math.round(pot.@hhplong*GameSession.currentSession.pers.healMult));
-					if (pot.@hrad.length()) s+='\n'+Res.txt('pip', 'healrad')+': '+yel(Math.round(pot.@hrad*GameSession.currentSession.pers.healMult));
-					if (pot.@hcut.length()) s+='\n'+Res.txt('pip', 'healcut')+': '+yel(Math.round(pot.@hcut));
-					if (pot.@hpoison.length()) s+='\n'+Res.txt('pip', 'healpoison')+': '+yel(Math.round(pot.@hpoison));
-					if (pot.@horgan.length()) s+='\n'+Res.txt('pip', 'healorgan')+': '+yel(Math.round(pot.@horgan));
-					if (pot.@horgans.length()) s+='\n'+Res.txt('pip', 'healorgans')+': '+yel(Math.round(pot.@horgans));
-					if (pot.@hblood.length()) s+='\n'+Res.txt('pip', 'healblood')+': '+yel(Math.round(pot.@hblood));
-					if (pot.@hmana.length()) s+='\n'+Res.txt('pip', 'healmana')+': '+yel(Math.round(pot.@hmana*GameSession.currentSession.pers.healManaMult));
-					if (pot.@alc.length()) s+='\n'+Res.txt('pip', 'alcohol')+': '+yel(Math.round(pot.@alc));
-					if (pot.@rad.length()) s+='\n'+Res.txt('pip', 'rad')+': '+yel(Math.round(pot.@rad));
-					if (pot.@effect.length()) 
-					{
-						s+='\n'+Res.txt('pip', 'refeff')+': '+effStr('eff',pot.@effect);
-					}
-					if (pot.@perk.length()) s+='\n'+pink(Res.txt('eff',pot.@perk))+': '+Res.txt('pip', 'level')+' '+(GameSession.currentSession.pers.perks[pot.@perk]>0?GameSession.currentSession.pers.perks[pot.@perk]:'0');
-					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
+					s += '\n'+Res.txt('pip', 'healhp') + ': ' + numberAsColor('yellow', Math.round(pot.@hhp * GameSession.currentSession.pers.healMult));
+					if (pot.@hhplong.length()) 	s += '+' + numberAsColor('yellow', Math.round(pot.@hhplong * GameSession.currentSession.pers.healMult));
+					if (pot.@hrad.length()) 	s += '\n' + Res.txt('pip', 'healrad') 	 + ': ' + numberAsColor('yellow', Math.round(pot.@hrad * GameSession.currentSession.pers.healMult));
+					if (pot.@hcut.length()) 	s += '\n' + Res.txt('pip', 'healcut') 	 + ': ' + numberAsColor('yellow', Math.round(pot.@hcut));
+					if (pot.@hpoison.length()) 	s += '\n' + Res.txt('pip', 'healpoison') + ': ' + numberAsColor('yellow', Math.round(pot.@hpoison));
+					if (pot.@horgan.length()) 	s += '\n' + Res.txt('pip', 'healorgan')  + ': ' + numberAsColor('yellow', Math.round(pot.@horgan));
+					if (pot.@horgans.length()) 	s += '\n' + Res.txt('pip', 'healorgans') + ': ' + numberAsColor('yellow', Math.round(pot.@horgans));
+					if (pot.@hblood.length()) 	s += '\n' + Res.txt('pip', 'healblood')  + ': ' + numberAsColor('yellow', Math.round(pot.@hblood));
+					if (pot.@hmana.length()) 	s += '\n' + Res.txt('pip', 'healmana') 	 + ': ' + numberAsColor('yellow', Math.round(pot.@hmana * GameSession.currentSession.pers.healManaMult));
+					if (pot.@alc.length()) 		s += '\n' + Res.txt('pip', 'alcohol') 	 + ': ' + numberAsColor('yellow', Math.round(pot.@alc));
+					if (pot.@rad.length()) 		s += '\n' + Res.txt('pip', 'rad') 		 + ': ' + numberAsColor('yellow', Math.round(pot.@rad));
+					if (pot.@effect.length()) 	s += '\n' + Res.txt('pip', 'refeff') + ': '+effStr('eff',pot.@effect);
+					if (pot.@perk.length()) 	s += '\n' + textAsColor('pink', Res.txt('eff',pot.@perk))+': '+Res.txt('pip', 'level')+' '+(GameSession.currentSession.pers.perks[pot.@perk]>0?GameSession.currentSession.pers.perks[pot.@perk]:'0');
+					if (pot.@maxperk.length()) 	s += '/' + pot.@maxperk;
 				}
 				if (tip=='book') 
 				{
-					if (GameSession.currentSession.pers.skills[id]!=null) s+='\n'+Res.txt('pip', 'skillup')+': '+pink(Res.txt('eff',id));
+					if (GameSession.currentSession.pers.skills[id]!=null) s+='\n'+Res.txt('pip', 'skillup')+': ' + textAsColor('pink', Res.txt('eff',id));
 				}
 				if (tip=='spell') 
 				{
-					s+='\n'+Res.txt('pip', 'dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*GameSession.currentSession.pers.allDManaMult))+')';
-					s+='\n'+Res.txt('pip', 'culd')+': '+yel(pot.@culd+Res.txt('gui', 'sec'))+' ('+yel(Math.round(pot.@culd*GameSession.currentSession.pers.spellDown)+Res.txt('gui', 'sec'))+')';
-					s+='\n'+Res.txt('pip', 'is1')+': '+pink((pot.@tele>0)?Res.txt('eff','tele'):Res.txt('eff','magic'));
+					s += '\n' + Res.txt('pip', 'dmana2') + ': ' + textAsColor('yellow', pot.@mana)+' (' + numberAsColor('yellow', Math.round(pot.@mana * GameSession.currentSession.pers.allDManaMult)) + ')';
+					s += '\n' + Res.txt('pip',   'culd') + ': ' + textAsColor('yellow', pot.@culd + Res.txt('gui', 'sec'))+' (' + numberAsColor('yellow', Math.round(pot.@culd*GameSession.currentSession.pers.spellDown)) + Res.txt('gui', 'sec') + ')';
+					s += '\n' + Res.txt('pip',    'is1') + ': ' + textAsColor('pink', (pot.@tele > 0) ? Res.txt('eff', 'tele') : Res.txt('eff', 'magic'));
 				}
 				if (id=='rep') 
 				{
 					if (pot.@hp.length()) hhp=pot.@hp*gg.pers.repairMult;
-					if (hhp>0) s+='\n'+Res.txt('pip', 'effect')+': '+yel(Math.round(hhp));
+					if (hhp>0) s+='\n'+Res.txt('pip', 'effect')+': ' + numberAsColor('yellow', Math.round(hhp));
 				}
 				if (pot.@pet_info.length()) 
 				{
 					var pet:UnitPet=gg.pets[pot.@pet_info];
 					if (pet) 
 					{
-						s+='\n'+Res.txt('pip', 'hp')+': '+yel(Math.round(pet.hp))+'/'+yel(Math.round(pet.maxhp));
-						s+='\n'+Res.txt('pip', 'skin')+': '+yel(Math.round(pet.skin));
-						if (pet.allVulnerMult<1) s+='\n'+Res.txt('pip', 'allresist')+': '+yel(Math.round((1-pet.allVulnerMult)*100)+'%');
-						s+='\n'+Res.txt('pip', 'damage')+': '+yel(Math.round(pet.dam));
+						s+='\n'+Res.txt('pip', 'hp')+': ' + numberAsColor('yellow', Math.round(pet.hp)) + '/' + numberAsColor('yellow', Math.round(pet.maxhp));
+						s+='\n'+Res.txt('pip', 'skin')+': ' + numberAsColor('yellow', Math.round(pet.skin));
+						if (pet.allVulnerMult<1) s+='\n'+Res.txt('pip', 'allresist') + ': ' + numberAsColor('yellow', Math.round((1 - pet.allVulnerMult) * 100)) + '%';
+						s+='\n'+Res.txt('pip', 'damage')+': ' + numberAsColor('yellow', Math.round(pet.dam));
 					}
 				}
 				if (tip=='paint') s=Res.txt('pip','paint',1);
 				if (Settings.hardInv && pot.@m>0) s+='\n\n'+Res.txt('pip', 'mass')+": <span class = 'mass'>"+pot.@m+"</span> ("+Res.txt('pip', 'vault'+inv.items[id].invCat)+')';
-				if (pot.@sell>0) s+='\n'+Res.txt('pip', 'sell')+": "+yel(pot.@sell);
+				if (pot.@sell>0) s+='\n'+Res.txt('pip', 'sell')+": " + textAsColor('yellow', pot.@sell);
 			}
 			return s;
 		}
@@ -882,17 +869,17 @@ package interdata
 					if (st.invis && st.state<2) continue;
 					s+="\n";
 					if (st.state==2) s+="<span class = 'dark'>";
-					s += yel(n + '.') + " "
+					s += textAsColor('yellow', n + '.') + " "
 					if (st.hidden && st.state < 2 && st.est <= 0) s += '?????';
 					else s+=st.objectName;
 					if (st.collect && st.colTip==0) 
 					{
 						if (st.give) 
 						{
-							s += ' (' + yel(st.gived + '/' + st.kol) + ')';
-							if (st.est > 0 && st.state < 2) s += ' (' + yel('+' + st.est) + ')';
+							s += ' (' + textAsColor('yellow', st.gived + '/' + st.kol) + ')';
+							if (st.est > 0 && st.state < 2) s += ' (' + textAsColor('yellow', '+' + st.est) + ')';
 						} 
-						else s += ' ('+yel(st.est + '/' + st.kol) + ')';
+						else s += ' (' + textAsColor('yellow', st.est + '/' + st.kol) + ')';
 					}
 					if (st.nn) s += ' (' + Res.txt('pip', 'nn') + ')';
 					if (st.state==2) s += "</span>";
@@ -912,7 +899,7 @@ package interdata
 			
 			if (GameSession.currentSession.pers.factor[id] is Array) 
 			{
-				if (xmlTip == '4') lines.push('- ' + Res.txt('pip', 'begvulner') + ': ' + yel('100%'));
+				if (xmlTip == '4') lines.push('- ' + Res.txt('pip', 'begvulner') + ': ' + textAsColor('yellow', '100%'));
 				
 				for each (var obj in GameSession.currentSession.pers.factor[id]) 
 				{
@@ -937,7 +924,7 @@ package interdata
 				
 				if (obj && (xmlTip == '3' || xmlTip == '4')) 
 				{
-					lines.push('- ' + Res.txt('pip', 'result') + ': 100% - ' + yel(Res.numb(obj.res * 100) + '%') + ' = ' + yel(Res.numb((1 - obj.res) * 100) + '%'));
+					lines.push('- ' + Res.txt('pip', 'result') + ': 100% - ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%') + ' = ' + textAsColor('yellow', Res.numb((1 - obj.res) * 100) + '%'));
 				}
 			}
 			
@@ -955,15 +942,15 @@ package interdata
 			var s:String = '';
 			if (xmlTip == '0') 
 			{
-				if (obj.res != 0) s = Res.txt('pip', 'begval') + ': ' + yel(Res.numb(obj.res));
+				if (obj.res != 0) s = Res.txt('pip', 'begval') + ': ' + textAsColor('yellow', Res.numb(obj.res));
 			} 
 			else if (xmlTip == '3') 
 			{
-				s = Res.txt('pip', 'begvulner') + ': ' + yel(Res.numb(obj.res * 100) + '%');
+				s = Res.txt('pip', 'begvulner') + ': ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%');
 			} 
 			else 
 			{
-				s = Res.txt('pip', 'begval') + ': ' + yel(Res.numb(obj.res * 100) + '%');
+				s = Res.txt('pip', 'begval') + ': ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%');
 			}
 			return s;
 		}
@@ -1001,44 +988,44 @@ package interdata
 
 		private function handleAdd(obj:Object, xmlTip:String):String 
 		{
-			var s:String = (obj.val > 0 ? '+' : '-') + ' ' + yel(Math.abs(obj.val));
+			var s:String = (obj.val > 0 ? '+' : '-') + ' ' + numberAsColor('yellow', Math.abs(obj.val));
 			if (xmlTip != '0') 
 			{
-				s = (obj.val > 0 ? '+' : '-') + ' ' + yel(Res.numb(Math.abs(obj.val * 100)) + '%');
-				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
+				s = (obj.val > 0 ? '+' : '-') + ' ' + textAsColor('yellow', Res.numb(Math.abs(obj.val * 100)) + '%');
+				s += ' = ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%');
 			}
 			return s;
 		}
 
 		private function handleMult(obj:Object, xmlTip:String):String 
 		{
-			var s:String = 'x ' + yel(obj.val);
+			var s:String = 'x ' + textAsColor('yellow', obj.val);
 			if (xmlTip == '0') 
 			{
-				s += ' = ' + yel(Res.numb(obj.res));
+				s += ' = ' + textAsColor('yellow', Res.numb(obj.res));
 			} 
 			else if (xmlTip == '3' || xmlTip == '4') 
 			{
-				s += 'x (1 ' + (obj.val < 1 ? '-' : '+') + ' ' + yel(Math.abs(Math.round(100 - obj.val * 100)) * 0.01) + ')';
-				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
+				s += 'x (1 ' + (obj.val < 1 ? '-' : '+') + ' ' + numberAsColor('yellow', Math.abs(Math.round(100 - obj.val * 100)) * 0.01) + ')';
+				s += ' = ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%');
 			} 
 			else 
 			{
-				s += ' = ' + yel(Res.numb(obj.res * 100) + '%');
+				s += ' = ' + textAsColor('yellow', Res.numb(obj.res * 100) + '%');
 			}
 			return s;
 		}
 
 		private function handleMin(obj:Object, xmlTip:String):String 
 		{
-			var s:String = '- ' + yel(Res.numb(Math.abs(obj.val * 100)) + '%');
-			s += ' = ' + yel(Res.numb((obj.res) * 100) + '%');
+			var s:String = '- ' + textAsColor('yellow', Res.numb(Math.abs(obj.val * 100)) + '%');
+			s += ' = ' + textAsColor('yellow', Res.numb((obj.res) * 100) + '%');
 			return s;
 		}
 
 		private function handleElse(obj:Object, xmlTip:String):String 
 		{
-			var s:String = (xmlTip == '0') ? yel(obj.val) : yel(Res.numb(obj.val * 100) + '%');
+			var s:String = (xmlTip == '0') ? textAsColor('yellow', obj.val) : textAsColor('yellow', Res.numb(obj.val * 100) + '%');
 			return s;
 		}
 				
