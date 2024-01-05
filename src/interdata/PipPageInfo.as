@@ -1,6 +1,5 @@
 package interdata 
 {
-	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.display.Bitmap;
@@ -67,15 +66,12 @@ package interdata
 			visMap.butZoomP.addEventListener(MouseEvent.CLICK,funZoomP);
 			visMap.butZoomM.addEventListener(MouseEvent.CLICK,funZoomM);
 			visMap.butCenter.addEventListener(MouseEvent.CLICK,funCenter);
-			trace('PipPageInfo.as/PipPageInfo() - Created PipPageInfo page.');
 		}
 		
 
 		//set public
 		public override function setSubPages():void
 		{
-			trace('PipPageInfo.as/setSubPages() - updating subPages.');
-
 			vis.bottext.visible		= false;
 			vis.butOk.visible		= false;
 			statHead.visible		= false;
@@ -236,17 +232,14 @@ package interdata
 				}
 				arr=arr.filter(isKol);		//отфильтровать
 			}
-
-			trace('PipPageInfo.as/setSubPages() - Finished updating subPages.');
-
 		}
 		
 		private function isKol(element:*, index:int, arr:Array):Boolean 
 		{
             return (element.kol >= 0 || element.cat == '1');
-        }		
+        }
+
 		//один эемент списка
-		//set public
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text 			= obj.id;
@@ -296,8 +289,6 @@ package interdata
 			}
 		}
 
-		
-		//set public
 		public override function statInfo(event:MouseEvent):void //информация об элементе
 		{
 			vis.info.y=vis.ico.y;
@@ -358,7 +349,6 @@ package interdata
 			}
 		}
 		
-		//set public
 		public function getParam(un, pun, cat:String, param:String):* 
 		{
 			if (un.length()==0) return null;
@@ -368,7 +358,6 @@ package interdata
 			return null;
 		}
 		
-		//set public
 		public function infoUnit(id:String, kol):String 
 		{
 			var n:int = 0, delta;
@@ -488,14 +477,11 @@ package interdata
 			return s;
 		}
 		
-		//set public
 		public function vulner(n:int, val:Number):String 
 		{
 			return blue(Res.txt('pip', 'tipdam'+n))+': '+yel(Math.round((1-val)*100)+'%   ');
 		}
 		
-		
-		//set public
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
@@ -529,22 +515,19 @@ package interdata
 			}
 		}
 		
-		//set public
 		public function transOk(event:MouseEvent):void
 		{
-			if (pip.gamePause) {
+			if (pip.gamePause) 
+			{
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
 			if (page2==3 && (pip.travel || Settings.testMode)) 
 			{
-				if (game.levelArray[targetLand] && game.levelArray[targetLand].loaded) {
+				if (game.levelArray[targetLand] && game.levelArray[targetLand].loaded) 
+				{
 					game.beginMission(targetLand);
 					pip.onoff(-1);
-				} 
-				else 
-				{
-					
 				}
 			}
 			if (page2==2) 
@@ -586,7 +569,6 @@ package interdata
 			visMap.vmap.y=visMap.fon.height/2-plTag.y;
 		}
 		
-		//set public
 		public function setMapSize(cx:Number=350, cy:Number=285):void
 		{
 			if (mapScale>6) mapScale=6;
@@ -611,18 +593,14 @@ package interdata
 			}
 		}
 
-		//set public
 		public function funWMapClick(event:MouseEvent):void
 		{
 			trace(event.currentTarget.name);
 		}
 
-		//set public
 		public function funWMapOver(event:MouseEvent):void
 		{
 			//trace(event.currentTarget.name);
-		}
-		
+		}		
 	}
-	
 }

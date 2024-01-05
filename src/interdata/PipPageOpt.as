@@ -59,23 +59,13 @@
 		//подготовка страниц
 		public override function setSubPages():void
 		{
-			trace('PipPageOpt.as/setSubPages() - updating subPages.');
-
-			try
-			{
-				info.visible 		= false;
-				statHead.visible 	= false;
-				vis.butOk.visible 	= false;
-				vis.butDef.visible	= false;
-				vis.pers.visible	= false;
-				vis.info.y			= 160;
-				nSave				= -1;
-				trace('PipPageOpt.as/setSubPages() - Sucessfully cleared data.');
-			}
-			catch (err:Error)
-			{
-				trace('PipPageOpt.as/setSubPages() - Failed clearing data.');
-			}
+			info.visible 		= false;
+			statHead.visible 	= false;
+			vis.butOk.visible 	= false;
+			vis.butDef.visible	= false;
+			vis.pers.visible	= false;
+			vis.info.y			= 160;
+			nSave				= -1;
 
 			if (page2 == 3)
 			{
@@ -85,68 +75,30 @@
 					{
 						trace('PipPageOpt.as/setSubPages() - statHead is null.');
 					}
-					
-					trace('PipPageOpt.as/setSubPages() - Step 01/17 - setting statHead text.');
 
 					statHead.nazv.text = ''; 
 					statHead.numb.text = '';
-
-
 
 					if (arr == null)
 					{
 						trace('PipPageOpt.as/setSubPages() - arr is null.');
 					}
-
-					trace('PipPageOpt.as/setSubPages() - Step 02/17 - push "fullscreen".');
 					arr.push({id:'fullscreen'});
-
-					trace('PipPageOpt.as/setSubPages() - Step 03/17 - push "zoom100".');
 					arr.push({id:'zoom100', 	check:Settings.zoom100});
-
-					trace('PipPageOpt.as/setSubPages() - Step 04/17 - push "quake".');
 					arr.push({id:'quake', 		check:Settings.quakeCam});
-
-					trace('PipPageOpt.as/setSubPages() - Step 05/17 - push "opt1_1".');
 					arr.push({id:'opt1_1', 		numb:Math.round(Snd.globalVol * 100)});
-
-					trace('PipPageOpt.as/setSubPages() - Step 06/17 - push "opt1_2".');
 					arr.push({id:'opt1_2', 		numb:Math.round(Snd.musicVol  * 100)});
-
-					trace('PipPageOpt.as/setSubPages() - Step 07/17 - push "opt1_3".');
 					arr.push({id:'opt1_3', 		numb:Math.round(Snd.stepVol   * 100)});
-
-					trace('PipPageOpt.as/setSubPages() - Step 08/17 - push "help_mess".');
 					arr.push({id:'help_mess', 	check:Settings.helpMess});
-
-					trace('PipPageOpt.as/setSubPages() - Step 09/17 - push "dial_on".');
 					arr.push({id:'dial_on', 	check:Settings.dialOn});
-
-					trace('PipPageOpt.as/setSubPages() - Step 10/17 - push "show_hit1".');
 					arr.push({id:'show_hit1', 	check:Settings.showHit > 0});
-
-					trace('PipPageOpt.as/setSubPages() - Step 11/17 - push "show_hit2".');
 					arr.push({id:'show_hit2', 	check:Settings.showHit == 2});
-
-					trace('PipPageOpt.as/setSubPages() - Step 12/17 - push "hint_tele".');
 					arr.push({id:'hint_tele', 	check:Settings.hintTele});
-
-					trace('PipPageOpt.as/setSubPages() - Step 13/17 - push "sys_cur".');
 					arr.push({id:'sys_cur', 	check:Settings.systemCursor});
-
-					trace('PipPageOpt.as/setSubPages() - Step 14/17 - push "show_favs".');
 					arr.push({id:'show_favs', 	check:Settings.showFavs});
-
-					trace('PipPageOpt.as/setSubPages() - Step 15/17 - push "mat_filter".');
 					arr.push({id:'mat_filter', 	check:Settings.matFilter});
-
-					trace('PipPageOpt.as/setSubPages() - Step 16/17 - push "err_show".');
 					arr.push({id:'err_show', 	check:Settings.errorShowOpt});
-
-					trace('PipPageOpt.as/setSubPages() - Step 17/17 - push "autotake".');
 					arr.push({id:'autotake'});
-
-					trace('PipPageOpt.as/setSubPages() - Sucessfully updated page 2.');
 				}
 				catch (err:Error)
 				{
@@ -311,7 +263,6 @@
 			return obj;
 		}		
 		
-		//set public
 		//показ одного элемента
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
@@ -371,7 +322,6 @@
 			}
 		}
 		
-		//set public 
 		//установить визуальное отображение клавиши
 		public function setVisKey(n,vis):void
 		{
@@ -593,22 +543,28 @@
 
 		private function completeHandler(event:Event):void
 		{
-			try {
+			try 
+			{
 				var obj:Object=file.data.readObject();
-				if (obj && obj.est==1) {
+				if (obj && obj.est==1) 
+				{
 					GameSession.currentSession.comLoad=99;
 					GameSession.currentSession.loaddata=obj;
 					return;
 				}
-			} catch(err) {}
+			} 
+			catch(err) 
+			{
+				
+			}
 			GameSession.currentSession.gui.infoText('noLoadGame');
 			trace('Error load');
        }		
 		
-		//set public
 		public function gotoDef(event:MouseEvent):void
 		{
-			if (page2==4) {
+			if (page2==4) 
+			{
 				GameSession.currentSession.ctr.gotoDef();
 				GameSession.currentSession.ctr.updateKeys();
 				GameSession.currentSession.saveConfig();
@@ -632,7 +588,8 @@
 				var ba:ByteArray=new ByteArray();
 				ba.writeObject(obj);
 				var sfile = new FileReference();
-				try {
+				try 
+				{
 					sfile.save(ba,gg.pers.persName+'('+gg.pers.level+').sav');
 				} 
 				catch(err) 
@@ -641,7 +598,6 @@
 				}
 			}
 		}
-		
 		
 		public static function showSaveInfo(obj:Object, vis:MovieClip):void
 		{
@@ -675,7 +631,6 @@
 			}
 		}
 		
-		//set public
 		//информация об элементе
 		public override function statInfo(event:MouseEvent):void
 		{

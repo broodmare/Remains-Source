@@ -35,15 +35,11 @@
 			vis.butOk.addEventListener(MouseEvent.CLICK,  transOk);
 			vis.butDef.addEventListener(MouseEvent.CLICK, gotoDef);
 			n_food = Res.txt('eff', 'food');
-			trace('PipPageStat.as/PipPageStat() - Created PipPageStat page.');
 		}
 		
-		//set public
 		//подготовка страниц
 		public override function setSubPages():void
 		{
-			trace('PipPageStat.as/setSubPages() - updating subPages.');
-
 			setIco();
 			pers = GameSession.currentSession.pers;
 			maxSkLvl = Pers.maxSkLvl;
@@ -262,12 +258,8 @@
 				vis.butDef.visible=true;
 			}
 			showBottext();
-
-			trace('PipPageStat.as/setSubPages() - Finished updating subPages.');
-
 		}
 		
-		//set public 
 		public override function setSigns():void
 		{
 			super.setSigns();
@@ -278,7 +270,6 @@
 		}
 		
 		//показ одного элемента
-		//set public 
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			if (obj.id!=null) item.id.text=obj.id; else item.id.text='';
@@ -328,7 +319,6 @@
 		}
 		
 		//информация об элементе
-		//set public 
 		public override function statInfo(event:MouseEvent):void
 		{
 			var id:String = event.currentTarget.id.text;
@@ -384,30 +374,30 @@
 					{
 						lvl=id.substr(8,1);
 						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_head',lvl);
+						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_head',lvl);
 					}
 					if (id.substr(0,8)=='statTors') 
 					{
 						lvl=id.substr(8,1);
 						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_tors',lvl);
+						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_tors',lvl);
 					}
 					if (id.substr(0,8)=='statLegs') 
 					{
 						lvl=id.substr(8,1);
 						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_legs',lvl);
+						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_legs',lvl);
 					}
 					if (id.substr(0,9)=='statBlood') 
 					{
 						lvl=id.substr(9,1);
 						if (lvl>3) lvl=3;
-						if (lvl>0) vis.info.htmlText+=effStr('perk','trauma_blood',lvl);
+						if (lvl>0) vis.info.htmlText+=effStr('perks','trauma_blood',lvl);
 					}
 					if (id.substr(0,8)=='statMana') 
 					{
 						lvl=id.substr(8,1);
-						if (lvl>2) vis.info.htmlText+=effStr('perk','trauma_mana',lvl);
+						if (lvl>2) vis.info.htmlText+=effStr('perks','trauma_mana',lvl);
 					}
 					if (id=='hp') vis.info.htmlText+=factor('maxhp');
 					if (id=='radx') vis.info.htmlText+=factor('radX');
@@ -439,11 +429,11 @@
 					} 
 					else if (page2==6) 
 					{
-						vis.info.htmlText=effStr('perk',id, 1);
+						vis.info.htmlText=effStr('perks',id, 1);
 					} 
 					else if (page2==3) 
 					{
-						vis.info.htmlText=effStr('perk',id);
+						vis.info.htmlText=effStr('perks',id);
 					}
 				}
 			} 
@@ -453,7 +443,6 @@
 			}
 		}
 		
-		//set public 
 		public function selSkill(id:String):void
 		{
 			if (pers.skillIsPost(id) && skills[id].lvl < Pers.maxPostSkLvl || skills[id].lvl < maxSkLvl) 
@@ -471,7 +460,6 @@
 			}
 		}
 
-		//set public 
 		public function unselSkill(id:String):void
 		{
 			if (skills[id].lvl>skills[id].minlvl) 
@@ -481,7 +469,6 @@
 			}
 		}
 		
-		//set public 
 		public function showBottext():void
 		{
 			vis.bottext.text='';
@@ -546,7 +533,6 @@
 			}
 		}
 		
-		//set public 
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
@@ -629,14 +615,15 @@
 			showBottext();
 		}
 
-		//set public 
 		public override function itemRightClick(event:MouseEvent):void
 		{
-			if (pip.gamePause) {
+			if (pip.gamePause) 
+			{
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==2) {
+			if (page2==2) 
+			{
 				var id=event.currentTarget.id.text;
 				unselSkill(id);
 				setStatItem(event.currentTarget as MovieClip, skills[id]);
@@ -645,20 +632,24 @@
 			showBottext();
 		}
 
-		//set public 
 		public function transOk(event:MouseEvent):void
 		{
-			if (pip.gamePause) {
+			if (pip.gamePause) 
+			{
 				GameSession.currentSession.gui.infoText('gamePause');
 				return;
 			}
-			if (page2==2) {
+			if (page2==2) 
+			{
 				var n=0;
-				for (var i in skills) {
+				for (var i in skills) 
+				{
 					n+=skills[i].lvl-skills[i].minlvl;
 				}
-				if (n<=pers.skillPoint) {
-					for (i in skills) {
+				if (n<=pers.skillPoint) 
+				{
+					for (i in skills) 
+					{
 						pers.addSkill(skills[i].id, skills[i].lvl-skills[i].minlvl, true);
 					}
 					pers.setParameters();
@@ -666,11 +657,15 @@
 				}
 				pip.snd(3);
 				GameSession.currentSession.saveGame();
-			} else if (page2==3) {
+			} 
+			else if (page2==3) 
+			{
 				page2=6;
 				pip.snd(2);
 				selectedPerk='';
-			} else if (page2==6) {
+			} 
+			else if (page2==6) 
+			{
 				if (selectedPerk!='' && pers.perkPoint>0) pers.addPerk(selectedPerk,true);
 				page2=3;
 				pip.snd(3);
@@ -680,10 +675,10 @@
 			setStatus();
 		}
 		
-		//set public 
 		public function gotoDef(event:MouseEvent):void
 		{
-			if (page2==6) {
+			if (page2==6) 
+			{
 				page2=3;
 				setStatus();
 				pip.snd(2);

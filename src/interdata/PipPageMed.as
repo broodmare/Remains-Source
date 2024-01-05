@@ -130,11 +130,11 @@ package interdata
 		{
 				if (event.currentTarget.id.text != '') 
 				{
-					vis.objectName.text = Res.txt('pip', event.currentTarget.id.text);
+					vis.nazv.text = Res.txt('pip', event.currentTarget.id.text);
 					var s:String = Res.txt('pip', event.currentTarget.id.text, 1);
 					vis.info.htmlText=s;
 				} 
-				else vis.objectName.text=vis.info.htmlText = '';
+				else vis.nazv.text=vis.info.htmlText = '';
 		}
 		
 		public override function page2Click(event:MouseEvent):void
@@ -201,43 +201,52 @@ package interdata
 					break;
 
 				case 'statBlood':
-					if (gg.pers.inMaxHP-gg.pers.bloodHP>raz) cena=raz*priceBlood; else cena=(gg.pers.inMaxHP-gg.pers.bloodHP)*priceBlood;
-					if (cena>plata.kol) cena=plata.kol;
-					if (gg.pers.bloodHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49, 5);
-					else gg.pers.heal(cena/priceBlood,5);
+					if (gg.pers.inMaxHP - gg.pers.bloodHP > raz) cena = raz * priceBlood; 
+					else cena = (gg.pers.inMaxHP - gg.pers.bloodHP) * priceBlood;
+
+					if (cena > plata.kol) cena = plata.kol;
+
+					if (healCheckPassed(gg.pers.bloodHP)) gg.pers.heal(49, 5);
+					else gg.pers.heal(cena / priceBlood, 5);
 					break;
 				
 				case 'statMana':
-						if (gg.pers.inMaxMana-gg.pers.manaHP>razMana) cena=razMana*priceMana; else cena=(gg.pers.inMaxMana-gg.pers.manaHP)*priceMana;
-						if (cena>plata.kol) cena=plata.kol;
+					if (gg.pers.inMaxMana - gg.pers.manaHP > razMana) cena = razMana * priceMana; 
+					else cena = (gg.pers.inMaxMana - gg.pers.manaHP) * priceMana;
 
-						gg.pers.heal(cena/priceMana,6);
-						break;
+					if (cena > plata.kol) cena = plata.kol;
+
+					gg.pers.heal(cena / priceMana, 6);
+					break;
 
 				case 'statHead':
-						if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.headHP)*priceOrgan;
-						if (cena>plata.kol) cena=plata.kol;
+					if (gg.pers.inMaxHP-gg.pers.headHP>raz) cena = raz * priceOrgan; 
+					else cena = (gg.pers.inMaxHP - gg.pers.headHP) * priceOrgan;
 
-						if (gg.pers.headHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49, 1);
-						else gg.pers.heal(cena/priceOrgan,1);
-						break;
+					if (cena > plata.kol) cena = plata.kol;
+
+					if (healCheckPassed(gg.pers.headHP)) gg.pers.heal(49, 1);
+					else gg.pers.heal(cena / priceOrgan, 1);
+					break;
 				
 				case 'statTors':
-						if (gg.pers.inMaxHP-gg.pers.torsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.torsHP)*priceOrgan;
-						if (cena>plata.kol) cena=plata.kol;
+					if (gg.pers.inMaxHP - gg.pers.torsHP > raz) cena = raz * priceOrgan; 
+					else cena = (gg.pers.inMaxHP - gg.pers.torsHP) * priceOrgan;
 
-						if (gg.pers.torsHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49,2);
-						else gg.pers.heal(cena/priceOrgan,2);
-						break;
+					if (cena > plata.kol) cena = plata.kol;
+
+					if (healCheckPassed(gg.pers.torsHP)) gg.pers.heal(49, 2);
+					else gg.pers.heal(cena / priceOrgan, 2);
+					break;
+
 				case 'statLegs':
-						if (gg.pers.inMaxHP-gg.pers.legsHP>raz) cena=raz*priceOrgan; else cena=(gg.pers.inMaxHP-gg.pers.legsHP)*priceOrgan;
-						if (cena>plata.kol) cena=plata.kol;
+					if (gg.pers.inMaxHP - gg.pers.legsHP > raz) cena = raz * priceOrgan; 
+					else cena = (gg.pers.inMaxHP - gg.pers.legsHP) * priceOrgan;
 
-						if (gg.pers.legsHP<=2 && plata.kol<=0 && gg.pers.level<6) gg.pers.heal(49,3);
-						else gg.pers.heal(cena/priceOrgan,3);
-						break;
-				default
-					trace('PipPageMed.as/itemClick() - ERROR: UNHANDLED CASE!');
+					if (cena > plata.kol) cena = plata.kol;
+
+					if (healCheckPassed(gg.pers.legsHP)) gg.pers.heal(49, 3);
+					else gg.pers.heal(cena / priceOrgan, 3);
 					break;
 			}
 			plata.kol -= Math.round(cena);
@@ -259,6 +268,12 @@ package interdata
 			if (infoItemId.indexOf('statLegs')  == 0) return 'statLegs';
 
 			return infoItemId;
+		}
+
+		private function healCheckPassed(input:Number):Boolean // Helper function for itemClick, cuts down on code re-use.
+		{
+			if (input <= 2 && plata.kol <= 0 && gg.pers.level < 6) return true
+			else return false;
 		}
 	}
 }

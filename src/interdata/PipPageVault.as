@@ -59,8 +59,6 @@ package interdata
 		//подготовка страниц
 		public override function setSubPages():void
 		{
-			trace('PipPageVault.as/setSubPages() - updating subPages.');
-
 			assArr=[];
 			statHead.ns.visible=statHead.id.visible=statHead.cat.visible=false;
 			statHead.nazv.text=Res.txt('pip', 'ii2');
@@ -102,18 +100,14 @@ package interdata
 				
 			setIco();
 			showBottext();
-
-			trace('PipPageVault.as/setSubPages() - Finished updating subPages.');
 		}
 		
-		//set public
 		public function showBottext():void
 		{
 			if (Settings.hardInv) vis.bottext.text=inv.retMass(page2);
 			else vis.bottext.text='';
 		}
 		
-		//set public
 		//показ одного элемента
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
@@ -141,14 +135,12 @@ package interdata
 			item.ns.value=obj.vault;
 		}
 		
-		//set public
 		//информация об элементе
 		public override function statInfo(event:MouseEvent):void
 		{
 			infoItem(event.currentTarget.cat.text,event.currentTarget.id.text,event.currentTarget.objectName.text);
 		}
 		
-		//set public
 		public function chKol(mc, n:int=0):void
 		{
 			var obj=assArr[mc.id.text]
@@ -165,29 +157,26 @@ package interdata
 			inv.mass[item.invCat]-=dmass;
 			showBottext();
 			pip.setRPanel();
-			if (mc) {
-				if (obj.kol==0) mc.objectName.alpha=0.5;
-				else mc.objectName.alpha=1;
-				mc.kol.text=obj.kol;
-				mc.ns.value=obj.vault;
-				mc.mass2.text=Settings.hardInv?Res.numb(obj.mass*obj.kol):'';
+			if (mc) 
+			{
+				if (obj.kol==0) mc.nazv.alpha = 0.5;
+				else mc.nazv.alpha = 1;
+				mc.kol.text = obj.kol;
+				mc.ns.value = obj.vault;
+				mc.mass2.text = Settings.hardInv?Res.numb(obj.mass*obj.kol):'';
 			}
 		}
 		
-		
-		//set public
 		public function nsClick(event:MouseEvent):void
 		{
 			event.stopPropagation();
 		}
 
-		//set public
 		public function nsCh(event:Event):void
 		{
 			chKol(event.currentTarget.parent, event.currentTarget.value);
 		}
 		
-		//set public
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (event.ctrlKey) chKol(event.currentTarget, 0);
@@ -198,7 +187,6 @@ package interdata
 			event.stopPropagation();
 		}
 
-		//set public
 		public override function itemRightClick(event:MouseEvent):void
 		{
 			chKol(event.currentTarget, 0);
@@ -208,7 +196,6 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		//set public
 		public function checkAmmo(item:Item):Boolean 
 		{
 			var ab:String=item.id;
@@ -223,7 +210,6 @@ package interdata
 			return false;
 		}
 
-		//set public
 		public function sbrosHlam():void
 		{
 			for (var s in arr) {
@@ -244,7 +230,6 @@ package interdata
 			pip.setRPanel();
 		}
 		
-		//set public
 		public function transOk(event:MouseEvent):void
 		{
 			if (page2==2 || page2==3) 

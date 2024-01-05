@@ -16,7 +16,7 @@ package interdata
 		public var ist:Array;
 		public var istN:int = 0;
 		
-		var help:XML = <chit>
+		private var help:XML = <chit>
 			<a>all - add everything</a>
 			<a>all weapon - add all weapons</a>
 			<a>all armor - add all armor</a>
@@ -118,12 +118,12 @@ package interdata
 		
 		public var visoff:Boolean = false;
 		
-		function off():void
+		public function off():void
 		{
 			visoff = true;
 		}
 		
-		function analis():void
+		public function analis():void
 		{
 			var str:String = vis.input.text;
 			ist.push(str);
@@ -372,10 +372,6 @@ package interdata
 					GameSession.currentSession.testLoot=true;
 					trace('получено опыта', GameSession.currentSession.room.getAll());
 					GameSession.currentSession.testLoot=false;
-				}
-				if (s[0]=='err') 
-				{
-					GameSession.currentSession.landError=!GameSession.currentSession.landError;
 				}
 				if (s[0]=='getloc') 
 				{

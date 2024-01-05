@@ -81,27 +81,24 @@ package interdata
 		//подготовка страниц
 		public override function setSubPages():void
 		{
-			trace('PipPageVend.as/setSubPages() - updating subPages.');
-
 			vend=pip.vendor;
 			npcId=pip.npcId;
-			if (vend) {
-				vend.kolBou=0;
-			}
+			if (vend) vend.kolBou=0;
 			inbase=GameSession.currentSession.room.base;
 			npcInter=pip.npcInter;
 			vis.but3.visible=true;
 			vis.but4.visible=true;
 			statHead.price.x=504;
 			statHead.price.width=150;
-			if (npcId=='') {
+			if (npcId=='') 
+			{
 				if (page2==4) page2=1;
 				vis.but4.visible=false;
 			}
-			//trace(npcId, npcInter)
 			if (npcInter=='vr') vis.but3.text.text=Res.txt('pip', 'vend3');
 			if (npcInter=='doc') vis.but3.text.text=Res.txt('pip', 'med1');
-			if (npcInter=='v') {
+			if (npcInter=='v') 
+			{
 				vis.but3.visible=false;
 				if (page2==3) page2=1;
 			}
@@ -109,11 +106,13 @@ package interdata
 			var ns:NumericStepper=statHead.ns;
 			ns.visible=false;
 			setCats();
-			if (vend==null) {
+			if (vend==null) 
+			{
 				vis.visible=false;
 				return;
 			}
-			if (page2==1) {
+			if (page2==1) 
+			{
 				assArr=[];
 				pip.money=inv.money.kol;
 				setTopText('infotrade');
@@ -121,7 +120,6 @@ package interdata
 				statHead.hp.text=Res.txt('pip', 'iv2')+' / '+Res.txt('pip', 'iv6');
 				statHead.price.text=Res.txt('pip', 'iv3');
 				statHead.kol.text=Res.txt('pip', 'iv4');
-				//statHead.bou.text='';
 				statHead.cat.visible=false;
 				for each(var b:Item in vend.buys) 
 				{
@@ -320,11 +318,8 @@ package interdata
 			}
 			setIco();
 			showBottext();
-
-			trace('PipPageVend.as/setSubPages() - Finished updating subPages.');
 		}
 		
-		//set public
 		public override function setSigns():void
 		{
 			if (vend==null) return;
@@ -369,7 +364,6 @@ package interdata
 			}
 		}
 		
-		//set public 
 		public function showBottext():void
 		{
 			if (page2==1 && vend) 
@@ -386,7 +380,6 @@ package interdata
 			if (page2==3) vis.bottext.htmlText=Res.txt('pip', 'caps')+': '+yel(inv.money.kol);
 		}
 		
-		//set public
 		//показ одного элемента
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
@@ -477,7 +470,6 @@ package interdata
 			}
 		}
 		
-		//set public
 		//информация об элементе
 		public override function statInfo(event:MouseEvent):void
 		{
@@ -499,7 +491,6 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		//set public
 		public function selBuy(buy:Object, n:int=1):void
 		{
 			if (selall) vis.butOk.text.text=Res.txt('pip', 'transaction');
@@ -530,7 +521,6 @@ package interdata
 			if (page2==2) vend.kolSell+=buy.price*n;
 		}
 		
-		//set public
 		public function unselBuy(buy:Object, n:int=1):void
 		{
 			if (buy==null || buy.bou<=0) return;
@@ -540,13 +530,11 @@ package interdata
 			if (page2==2) vend.kolSell-=buy.price*n;
 		}
 		
-		//set public
 		public function nsClick(event:MouseEvent):void
 		{
 			event.stopPropagation();
 		}
 
-		//set public
 		public function nsCh(event:Event):void
 		{
 			if (page2==1 || page2==2) 
@@ -563,7 +551,6 @@ package interdata
 			}
 		}
 		
-		//set public
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) 
@@ -641,7 +628,6 @@ package interdata
 			event.stopPropagation();
 		}
 
-		//set public
 		public override function itemRightClick(event:MouseEvent):void
 		{
 			if (page2==1 || page2==2) 
@@ -657,7 +643,6 @@ package interdata
 			event.stopPropagation();
 		}
 		
-		//set public
 		public function transOk(event:MouseEvent):void
 		{
 			if (page2==1) 

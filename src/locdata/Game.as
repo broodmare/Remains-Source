@@ -261,10 +261,7 @@ package locdata
 			if (!first) triggers['firstroom'] = 1;
 			crea = false;
 
-			trace('Game.as/initializeLevel() - Updating the current GameSession level.');
 			GameSession.currentSession.level = curLevel.level;
-
-			trace('Game.as/initializeLevel() - calling enterLevel');
 			GameSession.currentSession.level.enterLevel(first, curCoord);
 			
 			curCoord = null;
@@ -315,7 +312,7 @@ package locdata
 					break;
 
 				default:
-					trace('Game.as/Encounter() - curLevelID: "' + curLevelID + '" is not an encounter, returning.');
+					trace('Game.as/Encounter() - curLevelID: "' + curLevelID + '" is not an encounter.');
 					break;
 			}
 		}
@@ -465,35 +462,32 @@ package locdata
 				return;
 			}
 			q.showSub(sid);
-			try 
+
+			for each (var q1 in q.subs) 
 			{
-				for each (var q1 in q.subs) 
+				if (q1.id == sid) 
 				{
-					if (q1.id == sid) 
-					{
-						GameSession.currentSession.gui.infoText('addTask2', q1.objectName);
-						Snd.ps('quest');
-						break;
-					}
+					GameSession.currentSession.gui.infoText('addTask2', q1.objectName);
+					Snd.ps('quest');
+					break;
 				}
-			} 
-			catch(err:Error) 
-			{
-				trace('Game.as/showQuest() - ERROR.');
 			}
 		}
 		
 		public function closeQuest(id:String, sid:String = null):void
 		{
 			var q:Quest = quests[id];
+			
 			if (q == null) // If the quest stage is completed, but the quest is not taken, add it as inactive
 			{
 				q = addQuest(id, null, true);
 			}
+
 			if (q == null || q.state == 2) 
 			{
 				return;
 			}
+
 			if (sid == null || sid == '' || int(sid) < 0) 
 			{
 				q.close();

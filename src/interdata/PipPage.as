@@ -169,7 +169,6 @@ package interdata
 			style.setStyle(".purp", styleObj);	//фиолет
 
 			tt.styleSheet = style;
-			//trace('PipPage.as/SetStyle() - Style applied successfully.');
 		}
 		
 		public function updateLang():void
@@ -205,44 +204,13 @@ package interdata
 		public function setStatus(flop:Boolean = true):void
 		{
 
-			//Clear text
-			try
-			{
-				if (pip.reqKey != null) 
-				{
-					pip.reqKey = false;
-				}
-				if (statHead.id != null) 
-				{
-					statHead.id.text = '';
-				}
-				if (vis.visible != null) 
-				{
-					vis.visible = true;
-				}
-				if (vis.info != null) 
-				{
-					vis.info.text = '';
-				}
-				if (vis.nazv != null) 
-				{
-					vis.nazv.text = '';
-				}
-				if (vis.bottext != null) 
-				{
-					vis.bottext.text = '';
-				}
-				if (vis.emptytext != null) 
-				{
-					vis.emptytext.text = '';
-				}
-				
-
-			}
-			catch (err)
-			{
-				trace('PipPage.as/setStatus() - Error clearing text. Error: "' + err.message + '".');
-			}
+			if (pip.reqKey != null) pip.reqKey = false;
+			if (statHead.id != null) statHead.id.text = '';
+			if (vis.visible != null) vis.visible = true;
+			if (vis.info != null) vis.info.text = '';
+			if (vis.nazv != null) vis.nazv.text = '';
+			if (vis.bottext != null) vis.bottext.text = '';
+			if (vis.emptytext != null) vis.emptytext.text = '';
 
 			arr = [];
 
@@ -257,16 +225,12 @@ package interdata
 			pip.vis.butMass.visible = false;
 			pip.vishelp.visible 	= false;
 
-			trace('PipPage.as/setStatus() - Setting subPages.');
 			setSubPages();
 
-			trace('PipPage.as/setStatus() - Setting StatItems.');
 			setStatItems(flop ? 0 : -1);
 
-			trace('PipPage.as/setStatus() - Scrollbar initiailization.');
 			var sc:ScrollBar = vis.scBar;
 
-			
 			if (arr.length > maxrows) 
 			{
 				sc.visible 			 = true;
@@ -279,54 +243,45 @@ package interdata
 				sc.visible = false;
 			}
 
-			trace('PipPage.as/setStatus() - Turning off all button highlights.');
-			setSigns();
+			setSigns(); // Turn off all button highlights
 
-			trace('PipPage.as/setStatus() - Creating buttons.)');
 			setButtons();
 		}
 		
 		
-		//Set public
 		public function setSubPages():void // Preparation of pages
 		{
 
 		}
 		
-		//Set public
 		public function setSigns():void // Which buttons are highlighted.
 		{
 			signs = [0, 0, 0, 0, 0, 0];
 		}
 		
-		//Set public
 		// Display of a single element
 		public function setStatItem(item:MovieClip, obj:Object):void
 		{
 
 		}
 		
-		//Set public
 		// Information about the element
 		public function statInfo(event:MouseEvent):void
 		{
 
 		}
 		
-		//Set public
 		public function itemClick(event:MouseEvent):void
 		{
 
 		}
 
-		//Set public
 		public function itemRightClick(event:MouseEvent):void
 		{
 
 		}
 		
 		// Show all elements
-		//Set public
 		public function setStatItems(n:int = -1):void
 		{
 			if (n >= 0) scrl = n;
@@ -344,7 +299,6 @@ package interdata
 			}
 		}
 		
-		//Set public
 		public function setIco(tip:int = 0, id:String = ''):void
 		{
 			if (infIco && vis.ico.contains(infIco)) vis.ico.removeChild(infIco);
@@ -362,12 +316,14 @@ package interdata
 				else 
 				{
 					var vWeapon:Class = w.vWeapon;
-					var node:XMLList = XmlBook.getXML("weapons").weapon.(@id == id);
-					if (node.length()) 
+					var nodeList:XMLList = XmlBook.getXML("weapons").weapon.(@id == id); //Create an XMLList of all nodes matching the given ID
+
+					var node:XML = nodeList[0]; // Access the first (and presumably only) XML node in the list.
+					if (node.vis.length() > 0 && node.vis[0].@vico.length() > 0) 
 					{
-						node=node[0];
-						if (node.vis.length() && node.vis[0].@vico.length()) vWeapon = Res.getClass(node.vis[0].@vico, null);
+						vWeapon = Res.getClass(node.vis[0].@vico, null);
 					}
+
 					if (vWeapon == null) 
 					{
 						vWeapon = Res.getClass('vis' + id, null);
@@ -434,6 +390,8 @@ package interdata
 			}
 		}
 		
+		//Print colored text. 
+		//TODO: Merge these.
 		public static function yel(s):String 
 		{
 			return "<span class = 'yel'>" + s + "</span>";
@@ -494,26 +452,15 @@ package interdata
 				if (ad >= pers.ad2) lvl = 2;
 				if (ad >= pers.ad3) lvl = 3;
 			} 
-			else if (dp.@him == '1') 
-			{
-				lvl = pers.himLevel;
-			}
+			else if (dp.@him == '1') lvl = pers.himLevel;
 
 			lvl += dlvl;
+			
+			if (lvl > 1 && dp.textvar[lvl - 1]) s = addVar(s, dp.textvar[lvl-1]); //вставка в текст числовых значений
+			else if (dp.textvar.length()) s = addVar(s, dp.textvar[0]);
 
-			//trace(id, lvl);
-			//вставка в текст числовых значений
-			if (lvl > 1 && dp.textvar[lvl - 1]) 
-			{
-				s = addVar(s, dp.textvar[lvl-1]);
-			}
-			else if (dp.textvar.length()) 
-			{
-				s = addVar(s, dp.textvar[0]);
-			}
 
-			//добавление особых эффектов
-			if (dp.eff.length() && lvl > 0) 
+			if (dp.eff.length() && lvl > 0) //добавление особых эффектов
 			{
 				s += '<br>';
 				for each(var eff in dp.eff) 
@@ -521,8 +468,8 @@ package interdata
 					s += '<br>' + (eff.@id.length() ? Res.txt('pip', eff.@id):Res.txt('pip', 'refeff')) + ': ' + yel(eff.attribute('n' + lvl));
 				}
 			}
-			//добавление эффектов веса
-			if (Settings.hardInv && dp.sk.length())
+			
+			if (Settings.hardInv && dp.sk.length()) // добавление эффектов веса
 			{
 				s += '<br>';
 				for each(var sk in dp.sk) 
@@ -536,8 +483,8 @@ package interdata
 					}
 				}
 			}
-			//добавление требований
-			if (dp.req.length()) 
+			
+			if (dp.req.length()) // добавление требований
 			{
 				s += '<br><br>' + Res.txt('pip', 'requir');
 				lvl--;
@@ -669,13 +616,13 @@ package interdata
 					s+="</span>";
 					if (w.satsQue>1) s+=' (x'+yel(w.satsQue)+')';
 				}
-				if (w.destroy>=100) 
+				if (w.destroy >= 100) 
 				{
-					s+='\n'+Res.txt('pip', 'destroy');
+					s += '\n' + Res.txt('pip', 'destroy');
 				}
 				if (w.opt && w.opt.perk) 
 				{
-					s+='\n'+Res.txt('pip', 'refperk')+': '+pink(Res.txt('eff',w.opt.perk));
+					s += '\n' + Res.txt('pip', 'refperk') + ': ' + pink(Res.txt('eff', w.opt.perk));
 				}
 				var sinf:String = Res.txt('weapon', id, 1);
 				if (sinf == '') sinf = Res.txt('weapon', w.id, 1);
@@ -683,34 +630,41 @@ package interdata
 				if (Settings.hardInv && w.tip == 4) s += '\n\n' + Res.txt('pip', 'mass') + ": <span class = 'mass'>" + inv.items[id].xml.@m + "</span> (" + Res.txt('pip', 'vault' + inv.items[id].invCat) + ')';
 				s += '\n\n' + sinf;
 			} 
-			else if (tip==Item.L_ARMOR) 
+			else if (tip == Item.L_ARMOR) 
 			{
-				var a:Armor=inv.armors[id];
-				if (a==null) a=pip.arrArmor[id];
-				if (a.armor_qual>0) s+=Res.txt('pip', 'aqual')+': '+yel(Math.round(a.armor_qual*100)+'%');
-				if (a.armor>0) s+='\n'+Res.txt('pip', 'armor')+': '+yel(Math.round(a.armor));
-				if (a.marmor>0) s+='\n'+Res.txt('pip', 'marmor')+': '+yel(Math.round(a.marmor));
-				if (a.dexter!=0) s+='\n'+Res.txt('pip', 'dexter')+': '+yel(Math.round(a.dexter*100)+'%');
-				if (a.sneak!=0) s+='\n'+Res.txt('pip', 'sneak')+': '+yel(Math.round(a.sneak*100)+'%');
-				if (a.meleeMult!=1) s+='\n'+Res.txt('pip', 'meleedamage')+': +'+yel(Math.round((a.meleeMult-1)*100)+'%');
-				if (a.gunsMult!=1) s+='\n'+Res.txt('pip', 'gunsdamage')+': +'+yel(Math.round((a.gunsMult-1)*100)+'%');
-				if (a.magicMult!=1) s+='\n'+Res.txt('pip', 'spelldamage')+': +'+yel(Math.round((a.magicMult-1)*100)+'%');
-				if (a.crit!=0) s+='\n'+Res.txt('pip', 'critch')+': +'+yel(Math.round(a.crit*100)+'%');
-				if (a.radVul<1) s+='\n'+Res.txt('pip', 'radx')+': '+yel(Math.round((1-a.radVul)*100)+'%');
-				if (a.resist[Unit.D_BUL]!=0) s+='\n'+Res.txt('pip', 'bullet')+': '+yel(Math.round(a.resist[Unit.D_BUL]*100)+'%');
-				if (a.resist[Unit.D_EXPL]!=0) s+='\n'+Res.txt('pip', 'expl')+': '+yel(Math.round(a.resist[Unit.D_EXPL]*100)+'%');
-				if (a.resist[Unit.D_PHIS]!=0) s+='\n'+Res.txt('pip', 'phis')+': '+yel(Math.round(a.resist[Unit.D_PHIS]*100)+'%');
-				if (a.resist[Unit.D_BLADE]!=0) s+='\n'+Res.txt('pip', 'blade')+': '+yel(Math.round(a.resist[Unit.D_BLADE]*100)+'%');
-				if (a.resist[Unit.D_FANG]!=0) s+='\n'+Res.txt('pip', 'fang')+': '+yel(Math.round(a.resist[Unit.D_FANG]*100)+'%');
-				if (a.resist[Unit.D_FIRE]!=0) s+='\n'+Res.txt('pip', 'fire')+': '+yel(Math.round(a.resist[Unit.D_FIRE]*100)+'%');
-				if (a.resist[Unit.D_LASER]!=0) s+='\n'+Res.txt('pip', 'laser')+': '+yel(Math.round(a.resist[Unit.D_LASER]*100)+'%');
-				if (a.resist[Unit.D_PLASMA]!=0) s+='\n'+Res.txt('pip', 'plasma')+': '+yel(Math.round(a.resist[Unit.D_PLASMA]*100)+'%');
-				if (a.resist[Unit.D_SPARK]!=0) s+='\n'+Res.txt('pip', 'spark')+': '+yel(Math.round(a.resist[Unit.D_SPARK]*100)+'%');
-				if (a.resist[Unit.D_CRIO]!=0) s+='\n'+Res.txt('pip', 'crio')+': '+yel(Math.round(a.resist[Unit.D_CRIO]*100)+'%');
-				if (a.resist[Unit.D_VENOM]!=0) s+='\n'+Res.txt('pip', 'venom')+': '+yel(Math.round(a.resist[Unit.D_VENOM]*100)+'%');
-				if (a.resist[Unit.D_ACID]!=0) s+='\n'+Res.txt('pip', 'acid')+': '+yel(Math.round(a.resist[Unit.D_ACID]*100)+'%');
-				if (a.resist[Unit.D_NECRO]!=0) s+='\n'+Res.txt('pip', 'necro')+': '+yel(Math.round(a.resist[Unit.D_NECRO]*100)+'%');
-				s += '\n\n' + Res.txt('armor', id, 1);
+				var a:Armor = inv.armors[id];
+				if (a == null) a = pip.arrArmor[id];
+
+				if (a.armor_qual > 0) s += Res.txt('pip', 'aqual')+': ' + yel(Math.round(a.armor_qual*100)+'%');
+				if (a.armor > 0) s += '\n' + Res.txt('pip', 'armor')+': ' + yel(Math.round(a.armor));
+				if (a.marmor > 0) s += '\n' + Res.txt('pip', 'marmor')+': ' + yel(Math.round(a.marmor));
+				if (a.dexter != 0) s += '\n' + Res.txt('pip', 'dexter')+': ' + yel(Math.round(a.dexter*100)+'%');
+				if (a.sneak != 0) s += '\n' + Res.txt('pip', 'sneak')+': ' + yel(Math.round(a.sneak*100)+'%');
+				if (a.meleeMult != 1) s += '\n' + Res.txt('pip', 'meleedamage') + ': +'+yel(Math.round((a.meleeMult-1)*100)+'%');
+				if (a.gunsMult != 1) s += '\n' + Res.txt('pip', 'gunsdamage') + ': +'+yel(Math.round((a.gunsMult-1)*100)+'%');
+				if (a.magicMult != 1) s += '\n' + Res.txt('pip', 'spelldamage') + ': +'+yel(Math.round((a.magicMult-1)*100)+'%');
+				if (a.crit!=0) s += '\n' + Res.txt('pip', 'critch')+': +' + yel(Math.round(a.crit*100)+'%');
+				if (a.radVul<1) s += '\n' + Res.txt('pip', 'radx')+': ' + yel(Math.round((1-a.radVul)*100)+'%');
+
+				// Print armor resistances as a percentage in yellow text if the resistance is not 0.
+				var resistanceTypesArray:Array = 
+				[
+					{key: 'D_BUL', label: 'bullet'}, {key: 'D_EXPL', label: 'expl'}, {key: 'D_PHIS', label: 'phis'}, {key: 'D_BLADE', label: 'blade'},  {key: 'D_FANG', label: 'fang'}, 
+					{key: 'D_FIRE', label: 'fire'}, {key: 'D_LASER', label: 'laser'}, {key: 'D_PLASMA', label: 'plasma'},  {key: 'D_SPARK', label: 'spark'}, {key: 'D_CRIO', label: 'crio'}, 
+					{key: 'D_VENOM', label: 'venom'}, {key: 'D_ACID', label: 'acid'},  {key: 'D_NECRO', label: 'necro'}
+				];
+				for each (var resistanceType:Object in resistanceTypesArray)
+				{
+					var resistanceValue:int = Unit[resistanceType.key];
+					var resistanceLabel:String = resistanceType.label;
+
+					if (a.resist[resistanceValue] != 0 && a.resist[resistanceValue] != null) 
+					{
+						s += '\n' + Res.txt('pip', resistanceLabel) + ': ' + yel(Math.round(a.resist[resistanceValue] * 100) + '%');
+					}
+				}
+
+				s += '\n\n' + Res.txt('armor', id, 1); // Armor description.
 			} 
 			else if (tip == Item.L_AMMO) 
 			{
@@ -740,19 +694,19 @@ package interdata
 				if (ammo.@prec.length()) s+='\n'+Res.txt('pip', 'prec')+': x'+yel(ammo.@prec);
 				if (ammo.@det>0) s+='\n'+Res.txt('pip', 'det');
 				if (Settings.hardInv && ammo.@m>0) s+='\n\n'+Res.txt('pip', 'mass')+": <span class = 'mass'>"+ammo.@m+"</span> ("+Res.txt('pip', 'vault'+inv.items[id].invCat)+')';
-				if (ammo.@sell>0) s+='\n'+Res.txt('pip', 'sell')+": "+yel(ammo.@sell);
+				if (ammo.@sell > 0) s += '\n' + Res.txt('pip', 'sell') + ": " + yel(ammo.@sell);
 			} 
 			else 
 			{
-				var hhp:Number=0;
-				s=Res.txt('item',id,1)+'\n';
+				var hhp:Number = 0;
+				s = Res.txt('items', id, 1) + '\n';
 				var pot:XML = inv.items[id].xml;
-				tip=pot.@tip;
-				if (tip=='instr' || tip=='impl'|| tip=='art') 
+				tip = pot.@tip;
+				if (tip == 'instr' || tip == 'impl'|| tip == 'art') 
 				{
-					s=effStr('item',id)+'\n';
+					s = effStr('items', id) + '\n';
 				}
-				if (tip=='med' || tip=='food'|| tip=='pot' || tip=='him') 
+				if (tip == 'med' || tip == 'food'|| tip == 'pot' || tip == 'him') 
 				{
 					if (pot.@hhp.length() || pot.@hhplong.length())
 					s+='\n'+Res.txt('pip', 'healhp')+': '+yel(Math.round(pot.@hhp*GameSession.currentSession.pers.healMult));
@@ -773,21 +727,26 @@ package interdata
 					if (pot.@perk.length()) s+='\n'+pink(Res.txt('eff',pot.@perk))+': '+Res.txt('pip', 'level')+' '+(GameSession.currentSession.pers.perks[pot.@perk]>0?GameSession.currentSession.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) s+='/'+pot.@maxperk;
 				}
-				if (tip=='book') {
+				if (tip=='book') 
+				{
 					if (GameSession.currentSession.pers.skills[id]!=null) s+='\n'+Res.txt('pip', 'skillup')+': '+pink(Res.txt('eff',id));
 				}
-				if (tip=='spell') {
+				if (tip=='spell') 
+				{
 					s+='\n'+Res.txt('pip', 'dmana2')+': '+yel(pot.@mana)+' ('+yel(Math.round(pot.@mana*GameSession.currentSession.pers.allDManaMult))+')';
 					s+='\n'+Res.txt('pip', 'culd')+': '+yel(pot.@culd+Res.txt('gui', 'sec'))+' ('+yel(Math.round(pot.@culd*GameSession.currentSession.pers.spellDown)+Res.txt('gui', 'sec'))+')';
 					s+='\n'+Res.txt('pip', 'is1')+': '+pink((pot.@tele>0)?Res.txt('eff','tele'):Res.txt('eff','magic'));
 				}
-				if (id=='rep') {
+				if (id=='rep') 
+				{
 					if (pot.@hp.length()) hhp=pot.@hp*gg.pers.repairMult;
 					if (hhp>0) s+='\n'+Res.txt('pip', 'effect')+': '+yel(Math.round(hhp));
 				}
-				if (pot.@pet_info.length()) {
+				if (pot.@pet_info.length()) 
+				{
 					var pet:UnitPet=gg.pets[pot.@pet_info];
-					if (pet) {
+					if (pet) 
+					{
 						s+='\n'+Res.txt('pip', 'hp')+': '+yel(Math.round(pet.hp))+'/'+yel(Math.round(pet.maxhp));
 						s+='\n'+Res.txt('pip', 'skin')+': '+yel(Math.round(pet.skin));
 						if (pet.allVulnerMult<1) s+='\n'+Res.txt('pip', 'allresist')+': '+yel(Math.round((1-pet.allVulnerMult)*100)+'%');
@@ -801,7 +760,6 @@ package interdata
 			return s;
 		}
 		
-		//set public
 		public function infoItem(tip:String, id:String, objectName:String, craft:int=0):void
 		{
 			vis.nazv.text = objectName;
@@ -815,7 +773,6 @@ package interdata
 				else tip = Item.L_ITEM;
 			}
 
-			//trace(tip);
 			if (tip == Item.L_WEAPON || tip == Item.L_EXPL) 
 			{
 				if (craft > 0) setIco();
@@ -873,7 +830,7 @@ package interdata
 			}
 
 			vis.info.htmlText=s;
-			vis.info.height=680-vis.info.y; //475;
+			vis.info.height=680-vis.info.y;
 			vis.info.scaleX=vis.info.scaleY=1;
 			if (vis.scText) vis.scText.visible=false;
 			if (vis.info.height<vis.info.textHeight && vis.scText) 
@@ -915,7 +872,7 @@ package interdata
 		{
 				var q:Quest=GameSession.currentSession.game.quests[id];
 				if (q==null) return '';
-				vis.objectName.text=q.objectName;
+				vis.nazv.text=q.objectName;
 				var s:String=q.info;
 				if (q.empl) s+='<br><br>'+Res.txt('unit',q.empl);
 				s+='\n';
@@ -1123,7 +1080,6 @@ package interdata
 			return true;
 		}
 		
-		//Set public
 		public function initCats():void
 		{
 			for (var i:int = 0; i<=kolCats; i++) 
@@ -1134,25 +1090,30 @@ package interdata
 		}
 		
 		//установить кнопки категорий
-		//Set public
 		public function setCats():void
 		{
 			var arr = tips[page2];
-			if (arr == null) {
-				vis.cats.visible=false;
+			if (arr == null) 
+			{
+				vis.cats.visible = false;
 				return;
 			}
 			vis.cats.visible=true;
 			var ntip;
-			for (var i=0; i<=kolCats; i++) {
+			for (var i=0; i<=kolCats; i++) 
+			{
 				ntip=arr[i];
 				if (ntip==null) vis.cats['cat'+i].visible=false;
-				else {
+				else 
+				{
 					if (ntip is Array) ntip=ntip[0];
 					vis.cats['cat'+i].visible=true;
-					try {
+					try 
+					{
 						vis.cats['cat'+i].ico.gotoAndStop(ntip);
-					} catch (err) {
+					} 
+					catch (err) 
+					{
 						vis.cats['cat'+i].ico.gotoAndStop(1);
 					}
 				}
@@ -1160,7 +1121,6 @@ package interdata
 			selCat(cat[page2]);
 		}
 
-		
 		//выбор подкатегории инвентаря
 		public function selCatEvent(event:MouseEvent):void
 		{
@@ -1176,7 +1136,8 @@ package interdata
 				vis.cats['cat'+i].fon.gotoAndStop(1);
 			}
 			vis.cats['cat'+n].fon.gotoAndStop(2);
-			try {
+			try 
+			{
 				curTip=tips[page2][n];
 			} 
 			catch (err) 
@@ -1184,11 +1145,9 @@ package interdata
 				curTip = '';
 			}
 			if (curTip == null) curTip = '';
-			//trace(curTip);
 		}
 		
 		//проверить соответствии категории
-		//Set public
 		public function checkCat(tip:String):Boolean 
 		{
 			if (curTip == '' || curTip == null || curTip == tip) return true;
@@ -1199,24 +1158,16 @@ package interdata
 			return false;
 		}
 		
-		//Set public
 		public function statScroll(event:ScrollEvent):void
 		{
 			setStatItems(event.position);
 		}
 
-		//Set public
 		public function onMouseWheel1(event:MouseEvent):void 
 		{
 			if (GameSession.currentSession.ctr.setkeyOn) return;
-			try 
-			{
-				if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
-			} 
-			catch(err)
-			{
+			if (vis.scText && vis.scText.visible && vis.mouseX>vis.info.x) return;
 
-			}
 			scroll(event.delta);
 			if (!vis.scBar.visible) return;
 			if (event.delta < 0) (event.currentTarget as MovieClip).scBar.scrollPosition++;
@@ -1234,5 +1185,4 @@ package interdata
 
 		}
 	}
-	
 }

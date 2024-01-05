@@ -148,7 +148,7 @@
 
 		public function createMainMenuLanguageButtons():void
 		{
-			trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Creating language buttons.');
+			trace('MainMenu.as/createMainMenuLanguageButtons() - Creating language buttons.');
 			for each(var language:XML in Languages.languageListDictionary)
 			{
 				if(language.lang.@id != "" && language.lang.text() != "")
@@ -167,7 +167,7 @@
 
 					if (mainMenuWindow.languageContainer == null)
 					{
-						trace('MainMenuButtons.as/createMainMenuLanguageButtons() - languageContainer null!."');
+						trace('MainMenu.as/createMainMenuLanguageButtons() - languageContainer null!."');
 					}
 					mainMenuWindow.languageContainer.addChild(button)
 				}
@@ -178,11 +178,11 @@
 					{
 						dictionaryLength++;
 					}
-					trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
+					trace('MainMenu.as/createMainMenuLanguageButtons() - Skipping blank language in languageListDictionary. languageListDictionary length: "' + dictionaryLength + '".');
 				}
 				langButtonsLoaded = true;
 			}
-			trace('MainMenuButtons.as/createMainMenuLanguageButtons() - Created: "' + Languages.languageCount + '" language buttons.');
+			trace('MainMenu.as/createMainMenuLanguageButtons() - Created: "' + Languages.languageCount + '" language buttons.');
 
 			if (Languages.languageCount > -1 ) //-1 is the starting value.
 			{
@@ -622,11 +622,11 @@
 
 		private function mainMenuButtonPress(event:MouseEvent):void
 		{
-			trace('MainMenuButtons.as/mainMenuButtonPress() - "' + event.currentTarget.name + '" pressed.');
+			trace('MainMenu.as/mainMenuButtonPress() - "' + event.currentTarget.name + '" pressed.');
 			switch(event.currentTarget.name)
 			{
         		case "continueGameButton":
-					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening Continue Game window.');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening Continue Game window.');
 					var n:int = 0;
 					var maxDate:Number = 0;
 					for (var i:int = 0; i <= currentSession.saveCount; i++) 
@@ -655,26 +655,26 @@
            			break;
 
         		case "loadGameButton":
-					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening Load Game window.');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening Load Game window.');
 					currentSession.mmArmor = true;
 					closeNewGameWindow();
 					loadReg = 0;
 					openLoadGameWindow();
 					break;
 				case "newGameButton":
-					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening New Game window.');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening New Game window.');
 					currentSession.mmArmor = false;
 					closeLoadGameWindow();
 					openNewGameWindow();
 					break;
 				case "optionsButton":
-					trace('MainMenuButtons.as/mainMenuButtonPress() - Opening Options window.');
+					trace('MainMenu.as/mainMenuButtonPress() - Opening Options window.');
 					closeNewGameWindow();
 					closeLoadGameWindow();
 					currentSession.pip.onoff();
 					break;
 				case "aboutButton":
-					trace('MainMenuButtons.as/mainMenuButtonPress() - Executing funAbout().');
+					trace('MainMenu.as/mainMenuButtonPress() - Executing funAbout().');
 					mainMenuWindow.aboutWindow.title.text = Res.txt('gui', 'about');
 					var s:String = Res.formatText(Res.txt('gui','about', 1));
 					s += '<br><br>' + Res.txt('gui', 'usedmusic') + '<br>';
@@ -687,7 +687,7 @@
 					mainMenuWindow.aboutWindow.scroll.maxScrollPosition = mainMenuWindow.aboutWindow.txt.maxScrollV;
 					break;
 				default:
-           			trace("MainMenuButtons.as/mainMenuButtonPress() - Unknown button pressed");
+           			trace("MainMenu.as/mainMenuButtonPress() - Unknown button pressed");
             		break;
 			}
 
@@ -695,13 +695,11 @@
 
 		public function showMainButtons(bool:Boolean):void
 		{
-			mainMenuWindow.newGameButton.visible  = bool;
+			mainMenuWindow.newGameButton.visible = bool;
 			mainMenuWindow.loadGameButton.visible = bool;
 			mainMenuWindow.continueGameButton.visible = bool;
-			mainMenuWindow.optionsButton.visible      = bool;
-			mainMenuWindow.aboutButton.visible    = bool;
-
-			trace('MainMenuButtons.as/showMainButtons() - Turned main buttons ' + (bool ? 'on' : 'off') + '.');
+			mainMenuWindow.optionsButton.visible = bool;
+			mainMenuWindow.aboutButton.visible = bool;
 		}
 
 		public function clickedButtonCloseAboutWindow(event:MouseEvent):void
@@ -766,26 +764,26 @@
 			} 
 			catch(err:Error) 
 			{
-				trace('MainMenuButtons.as/completeHandler() - Error load');
+				trace('MainMenu.as/completeHandler() - Error load');
 			}
        	}
 
 		public function languageButtonPress(event:MouseEvent):void //What to do when a langauge button is pressed.
 		{
-			trace('MainMenuButtons.as/languageButtonPress() - Language : "' + event.currentTarget.n.text + '" pressed. Current Language: "' + Languages.languageName + '."');
+			trace('MainMenu.as/languageButtonPress() - Language : "' + event.currentTarget.n.text + '" pressed. Current Language: "' + Languages.languageName + '."');
 
 			mainMenuWindow.mainMenuLoadingLog.text = '';
 			var newLanguage:String = event.currentTarget.n.text;
 			if (newLanguage == Languages.languageName) 
 			{
-				trace('MainMenuButtons.as/languageButtonPress() - New langauge is the same as old language, returning.');
+				trace('MainMenu.as/languageButtonPress() - New langauge is the same as old language, returning.');
 				return;
 			}
 
-			trace('MainMenuButtons.as/languageButtonPress() - Calling Languages/changeLanguage().');
+			trace('MainMenu.as/languageButtonPress() - Calling Languages/changeLanguage().');
 			Languages.changeLanguage(newLanguage);
 
-			trace('MainMenuButtons.as/languageButtonPress() - Setting langReload to true and turning off buttons.');
+			trace('MainMenu.as/languageButtonPress() - Setting langReload to true and turning off buttons.');
 			langReload = true;
 			showMainButtons(false);
 			mainMenuWindow.mainMenuLoadingLog.text = 'Loading';
@@ -810,7 +808,7 @@
 		}
 		public function clickedButtonStartNewGame(event:MouseEvent):void //click OK in the new game window
 		{
-			trace('MainMenuButtons.as/clickedButtonStartNewGame() - Executing clickedButtonStartNewGame().');
+			trace('MainMenu.as/clickedButtonStartNewGame() - Executing clickedButtonStartNewGame().');
 
 			closeNewGameWindow();
 			if (mainMenuWindow.newGameWindow.checkOpt2.selected) //show slot selection window
@@ -830,8 +828,6 @@
 		// Main Menu hints
 		public function showNextAdviceSnippet(event:MouseEvent):void
 		{
-			trace('MainMenuButtons.as/showNextAdviceSnippet() - Executing.');
-
 			currentSession.nadv++;
 			if (currentSession.nadv >= currentSession.koladv) currentSession.nadv = 0;
 			mainMenuWindow.adviceSnippetBox.text = Res.advText(currentSession.nadv);
@@ -839,8 +835,6 @@
 		}
 		public function showPreviousAdviceSnippet(event:MouseEvent):void
 		{
-			trace('MainMenuButtons.as/showPreviousAdviceSnippet() - Executing.');
-
 			currentSession.nadv--;
 			if (currentSession.nadv < 0) currentSession.nadv = currentSession.koladv - 1;
 			mainMenuWindow.adviceSnippetBox.text = Res.advText(currentSession.nadv);
@@ -848,11 +842,6 @@
 		}
 		public function updateMenuButtonLocalization():void
 		{
-			trace('MainMenuButtons.as/updateMainMenuLanguage() - Updating main menu button localization.');
-			if (mainMenuWindow == null)
-			{
-				trace('MainMenuButtons.as/updateMainMenuLanguage() - ERROR: Main menu target is null!');
-			}
 			updateButtonText(mainMenuWindow.continueGameButton, Res.txt('gui', 'contgame'));
 			updateButtonText(mainMenuWindow.newGameButton, Res.txt('gui', 'newgame'));
 			updateButtonText(mainMenuWindow.loadGameButton, Res.txt('gui', 'loadgame'));
@@ -866,7 +855,7 @@
 		public function updateButtonText(menuButton:MovieClip, localizedText:String):void
 		{
 			menuButton.txt.text = localizedText;
-			menuButton.glow.text 	= localizedText;
+			menuButton.glow.text = localizedText;
 			menuButton.txt.visible = (menuButton.glow.textWidth < 1)
 		}
 	}

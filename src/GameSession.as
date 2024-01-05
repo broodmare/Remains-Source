@@ -131,7 +131,6 @@ package
 
 		public var d1:int;
 		public var d2:int;
-		public var landError:Boolean = false;
 
 		public var constructorFinished:Boolean = false; // Used by main menu to start constructor part 2 and not call it repeatedly.
 		public var init2Done:Boolean = false;
@@ -170,7 +169,6 @@ package
 			else trace('GameSession.as/GameSession() - Language data still loading, waiting...');
 
 			trace('GameSession.as/GameSession() - Stage 1 of GameSession setup finished.');
-			load_log += 'Stage 1 Ok\n';
 		}
 
 		public function continueLoadingWorld():void
@@ -180,18 +178,18 @@ package
 			Form.setForms();
 			Emitter.init();
 			
-			loadingScreen 	 = new visualWait();
-			appearanceWindow = new Appear(); 
-			mainCanvas 		 = new Sprite();
-			vgui 			 = new visualGUI();
-			skybox 			 = new MovieClip();
+			loadingScreen 	 = new visualWait();// Loading screen
+			appearanceWindow = new Appear(); 	// Appearance Editor window
+			mainCanvas 		 = new Sprite();	// Rendered frames.
+			vgui 			 = new visualGUI();	
+			skybox 			 = new MovieClip();	//Skybox texture container.
 			vpip 			 = new visPipBuck();
 			vstand 			 = new visualStand();
 			vsats 			 = new MovieClip();
 			vscene 			 = new visualScene();
 			vblack 			 = new visBlack();
-			verror 			 = new visError();
-			vconsol 		 = new visConsol();
+			verror 			 = new visError(); 	// Error message pop-up.
+			vconsol 		 = new visConsol(); // Cheat console
 	
 			loadingScreen.cacheAsBitmap = Settings.bitmapCachingOption;
 			vblack.cacheAsBitmap 		= Settings.bitmapCachingOption;
@@ -219,7 +217,6 @@ package
 			cam = new Camera(this);
 
 			trace('GameSession.as/continueLoadingWorld() - GameSession constructor stage 2 finished.');
-			load_log += 'Stage 2 Ok\n';
 			
 			d1 = d2 = getTimer(); //FPS counter
 		}
@@ -275,19 +272,13 @@ package
 			trace('GameSession.as/init2() - Creating allLevelsArray and loading all level XMLs from the XMLbook.');
 			allLevelsArray = [];
 
-			//TODO: Stop copying this entire XML file.
-			var levelsXML:XML = XmlBook.getXML("levels");
-
-			for each(var levelData:XML in levelsXML.level) 
+			for each(var levelData:XML in XmlBook.getXML("levels").level) 
 			{
 				var levelLoader:LevelLoader = new LevelLoader(levelData.@id);
 				levelsFound++;
 				allLevelsArray[levelData.@id] = levelLoader;
 			}
-
 			trace('GameSession.as/init2() - Levels found: "' + levelsFound + '."');
-			
-			load_log += 'Stage 3 Ok\n';
 
 			trace('GameSession.as/init2() - Calling Sound/loadMusic.');
 			Snd.loadMusic();
@@ -299,7 +290,7 @@ package
 		public function configObjSetup():void
 		{
 
-			trace('GameSession.as/configObjSetup() - Executing configObjSetup()...');
+			trace('GameSession.as/configObjSetup() - Executing configObjSetup().');
 			if (configObj.data.dialon 	!= null) Settings.dialOn = configObj.data.dialon;
 			if (configObj.data.zoom100 	!= null) Settings.zoom100 = configObj.data.zoom100;
 
@@ -633,9 +624,9 @@ package
 		
 		// TODO: There is a graphical bug here (original author comment, not mine)
 		// Previously AtivateLoc [sic]
-		public function activateRoom(newRoom:Room):void // Call when entering a specific area
+		public function transitionToRoom(newRoom:Room):void // Call when entering a specific area
 		{
-			trace('GameSession.as/activateRoom() - Transitioning to room: "' + newRoom.id + '".');
+			trace('GameSession.as/transitionToRoom() - Transitioning to room: "' + newRoom.id + '".');
 
 			if (room != null) room.unloadRoom(); //If a room exists, unload it.
 			room = newRoom; //Set the current room as the one you want to load.
@@ -758,7 +749,7 @@ package
 
 			ctr.step();	//Process controls
 			Snd.step(); //Process sound
-			
+
 			if (ng_wait > 0) //GAME STATE: WAITING FOR PLAYER INPUT
 			{
 				if (ng_wait == 1) 
@@ -927,12 +918,11 @@ package
 		}
 		
 		//TODO: Pull out into own class.
-		public function showError(err:Error, dop:String = null):void
+		public function showError(error:Error, extraInfo:String = null):void
 		{
 			if (!Settings.errorShow || !Settings.errorShowOpt) return;
 
-			// Error pop-up window localization
-			try
+			try // Error pop-up window localization
 			{
 				verror.info.text 			= Res.txt('pip', 'error');
 				verror.butClose.text.text 	= Res.txt('pip', 'err_close');
@@ -943,11 +933,10 @@ package
 			{
 				trace('GameSession.as/showError - ERROR: Could not localize text for the error popup window! Error: "' + error.message + '".');
 			}
-			
 
-			verror.txt.text = err.message + '\n' + err.getStackTrace();
-			verror.txt.text += '\n' + 'gr_stage: ' + gr_stage;
-			if (dop != null) verror.txt.text += '\n' + dop;
+			verror.txt.text = error.message + '\n' + error.getStackTrace(); // Stack trace.
+			verror.txt.text += '\n' + 'gr_stage: ' + gr_stage;			// Graphics stage when the error occured. 
+			if (extraInfo != null) verror.txt.text += '\n' + extraInfo; // Print any extra info given.
 			verror.visible = true;
 		}
 		

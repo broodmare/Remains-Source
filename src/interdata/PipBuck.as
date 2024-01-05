@@ -74,16 +74,13 @@ package interdata
 
 		public function PipBuck(vpip:MovieClip) 
 		{
-			trace('PipBuck.as/PipBuck - PipBuck() executing...');
 			light 			 = true;
 			vis 			 = vpip;
 			vis.visible 	 = false;
 			vis.skin.visible = false;
 			vis.fon.visible  = false;
 			
-			//buttons
-			trace('PipBuck.as/PipBuck - PipBuck() Creating pipbuck buttons...');
-			for (var i:int = 0; i <= kolPages; i++) 
+			for (var i:int = 0; i <= kolPages; i++) //buttons
 			{
 				
 				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
@@ -95,10 +92,8 @@ package interdata
 			vis.but0.visible = true;
 			vis.but0.addEventListener(MouseEvent.CLICK, pipClose);
 
-			trace('PipBuck.as/PipBuck() - Calling Res/txt().');
 			vis.but0.text.text = Res.txt('pip', 'mainclose');
 
-			trace('PipBuck.as/PipBuck() - Creating pipbuck pages...');
 			pages =
 			[
 				null,
@@ -112,18 +107,15 @@ package interdata
 				new PipPageApp(this,  'app'),
 				new PipPageVault(this,'vault')
 			];
-			trace('PipBuck.as/PipBuck() - PipBuck() Finished creating pages.');
 
 			page = kolPages;
 			currentPage = pages[page];
 
-			trace('PipBuck.as/PipBuck() - Creating visHelp....');
 			vishelp = new visPipHelp();
 			vishelp.x = 168;
 			vishelp.y = 138;
 			vis.addChild(vishelp);
 
-			trace('PipBuck.as/PipBuck() - Creating setKey...');
 			vissetkey = new visSetKey();
 			vissetkey.visible = false;
 			vissetkey.x = 600;
@@ -131,7 +123,6 @@ package interdata
 			vis.addChild(vissetkey);
 
 			vishelp.visible = false;
-			trace('PipBuck.as/PipBuck() - Setting pipbuck style on vishelp...');
 			PipPage.setStyle(vishelp.txt);
 
 			vis.butHelp.addEventListener(MouseEvent.MOUSE_OVER, helpShow);
@@ -139,12 +130,10 @@ package interdata
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OVER, massShow);
 			vis.butMass.addEventListener(MouseEvent.MOUSE_OUT,  massUnshow);
 
-			trace('PipBuck.as/PipBuck() - Setting pipbuck style on toptext...');
 			PipPage.setStyle(vis.toptext.txt);
 			
 			vis.pr.visible = false;
-			
-			trace('PipBuck.as/PipBuck() - Creating ritems array...');
+
 			ritems = [];
 			for (var j:int = 0; j < kolRItems; j++) 
 			{
@@ -158,23 +147,15 @@ package interdata
 				//item.nazv.visible = false; (This was breaking loading the main menu, but present in original code.)
 				item.visible = false;
 			}
-
-			trace('PipBuck.as/PipBuck() - PipBuck constructor finished.');
 		}
 		
 		public function updateLang():void
 		{
-			trace('Pipbuck.as/updateLang() - Attempting to update each pipPage language.');
-			
-
 			vis.but0.text.text = Res.txt('pip', 'mainclose');
 
 			for each(var p in pages) //Run the language update function in every pipbuck page.
 			{
-				if (p is PipPage) 
-				{	
-					p.updateLang();
-				}
+				if (p is PipPage) p.updateLang();
 			}
 
 			currentPage.setStatus();
@@ -218,14 +199,8 @@ package interdata
 			{
 				var item:MovieClip = vis.getChildByName('but' + i) as MovieClip;
 
-				if (page == i) 
-				{
-					item.gotoAndStop(2);
-				}
-				else 
-				{
-					item.gotoAndStop(1);
-				}
+				if (page == i) item.gotoAndStop(2);
+				else item.gotoAndStop(1);
 
 				if (i == 4 && (page == 6 || page == 7 || page == 8 || page == 9)) item.gotoAndStop(2);
 			}
@@ -241,14 +216,9 @@ package interdata
 		//Показать/скрыть
 		public function onoff(turn:int = 0, p2:int = 0):void
 		{
-			trace('PipBuck.as/onoff() - Toggling pipbuck on/off...');
-
 			reqKey = false;
 
-			if (active && turn == 11) 
-			{
-				return;
-			} 
+			if (active && turn == 11) return;
 			else if (turn == 0) 
 			{
 				active =! active;
@@ -359,7 +329,7 @@ package interdata
 				vis.x = 0;
 				vis.y = 0;
 
-				if (nx/1200<ny/800) 
+				if (nx / 1200 < ny / 800) 
 				{
 					vis.scaleX = nx / 1200;
 					vis.scaleY = nx / 1200;
@@ -420,10 +390,7 @@ package interdata
 		public function assignKey(num:int):void
 		{
 			if (!active) return;
-			if (currentPage is PipPageInv) 
-			{
-				(currentPage as PipPageInv).assignKey(num);
-			}
+			if (currentPage is PipPageInv) (currentPage as PipPageInv).assignKey(num);
 		}
 		
 		public function helpShow(event:MouseEvent):void
@@ -448,10 +415,9 @@ package interdata
 			vishelp.visible = false;
 		}
 		
-
 		public function allItems():void
 		{
-			trace('PipBuck.as/allItems() - Creating arrays for the pipbuck to hold all armor sets and weapons.');
+			// Creating arrays for the pipbuck to hold all armor sets and weapons.
 			arrWeapon = [];
 			arrArmor  = [];
 			var owner:Unit = new Unit(); // Placeholder empty unit.
@@ -459,13 +425,11 @@ package interdata
 			var w:Weapon;
 			var a:Armor;
 
-			trace('PipBuck.as/allItems() - Retreiving weapon and armor XML files from XmlBook.');
+			// Retreiving weapon and armor XML files from XmlBook.
 			var weaponsXML:XML = XmlBook.getXML("weapons");
 			var armorsXML:XML  = XmlBook.getXML("armors");
 
-
-			trace('PipBuck.as/allItems() - Iterating through weapons and placing them in the weaponArray.');
-			for each (var weap in weaponsXML.weapon.(@tip > 0))
+			for each (var weap in weaponsXML.weapon.(@tip > 0)) //Iterating through weapons and placing them in the weaponArray
 			{
 				try
 				{
@@ -481,11 +445,9 @@ package interdata
 				{
 					trace('PipBuck.as/allItems() - Error creating weapon: "' + weap.@id + '".');
 				}
-
 			}
 
-			trace('PipBuck.as/allItems() - Iterating through armor sets and placing them in the armorArray.');
-			for each (var armor in armorsXML.armor)
+			for each (var armor in armorsXML.armor) //Iterating through armor sets and placing them in the armorArray
 			{
 				try
 				{
@@ -496,15 +458,11 @@ package interdata
 				{
 					trace('PipBuck.as/allItems() - Error creating armor: "' + armor.@id + '".');
 				}
-
 			}
-
-			trace('PipBuck.as/allItems() - Finished setting up all armor sets and weapons for the pipbuck.');
 		}
 		
 		public function setRPanel():void
 		{
-			trace('PipBuck.as/setRPanel() - setRPanel() executing...');
 			if (light || !active) return;
 			var gg:UnitPlayer = GameSession.currentSession.gg;
 			var pers:Pers 	  = GameSession.currentSession.pers;
@@ -515,29 +473,14 @@ package interdata
 			ritem1(4, pers.bloodHP, pers.inMaxHP,   !GameSession.currentSession.game.triggers['nomed']);
 			ritem1(5, pers.manaHP,  pers.inMaxMana, !GameSession.currentSession.game.triggers['nomed']);
 
-			if (gg.pet) 
-			{
-				ritem1(6, gg.pet.hp,gg.pet.maxhp);
-			}
-			else 
-			{
-				ritem1(6, 0 ,0, false);
-			}
+			if (gg.pet) ritem1(6, gg.pet.hp,gg.pet.maxhp);
+			else ritem1(6, 0 ,0, false);
 
-			if (gg.currentWeapon && gg.currentWeapon.tip <= 3) 
-			{
-				ritem2(7,gg.currentWeapon.hp,gg.currentWeapon.maxhp); 
-			}
-			else 
-			{
-				ritem1(7, 0, 0, false);
-			}
+			if (gg.currentWeapon && gg.currentWeapon.tip <= 3) ritem2(7,gg.currentWeapon.hp,gg.currentWeapon.maxhp); 
+			else ritem1(7, 0, 0, false);
 
 			if (gg.currentArmor) ritem2(8, gg.currentArmor.hp, gg.currentArmor.maxhp); 
-			else 
-			{
-				ritem1(8, 0, 0, false);
-			}
+			else ritem1(8, 0, 0, false);
 
 			ritems[9].txt.htmlText = "<span class = 'yel'>" + gg.invent.money.kol + "</span>"
 			ritem3(10,inv.massW,pers.maxmW,    Settings.hardInv);
@@ -550,40 +493,26 @@ package interdata
 		public function ritem1(n:int, hp:Number, maxhp:Number, usl = true):void
 		{
 			ritems[n].visible = usl;
-			if (usl) 
-			{
-				ritems[n].txt.htmlText="<span class = '" + med(hp, maxhp) + "'>" + Math.round(hp) + "</span>" + ' / ' + Math.round(maxhp);
-			} 
-			else 
-			{
-				ritems[n].txt.htmlText = '';
-			}
+
+			if (usl) ritems[n].txt.htmlText="<span class = '" + med(hp, maxhp) + "'>" + Math.round(hp) + "</span>" + ' / ' + Math.round(maxhp);
+			else ritems[n].txt.htmlText = '';
+
 		}
 
 		public function ritem2(n:int, hp:Number, maxhp:Number, usl = true):void
 		{
 			ritems[n].visible = usl;
-			if (usl) 
-			{
-				ritems[n].txt.htmlText = "<span class = '" + med(hp, maxhp) + "'>" + Math.round(hp / maxhp*100) + "%</span>";
-			} 
-			else 
-			{
-				ritems[n].txt.htmlText = '';
-			}
+
+			if (usl) ritems[n].txt.htmlText = "<span class = '" + med(hp, maxhp) + "'>" + Math.round(hp / maxhp*100) + "%</span>";
+			else ritems[n].txt.htmlText = '';
 		}
 
 		public function ritem3(n:int, hp:Number, maxhp:Number, usl = true):void
 		{
-			ritems[n].visible=usl;
-			if (usl) 
-			{
-				ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
-			} 
-			else 
-			{
-				ritems[n].txt.htmlText='';
-			}
+			ritems[n].visible = usl;
+
+			if (usl) ritems[n].txt.htmlText="<span class='mass'><span class = '"+((hp>maxhp)?'red':'')+"'>"+Math.round(hp)+"</span>"+' / '+Math.round(maxhp)+"</span>";
+			else ritems[n].txt.htmlText = '';
 		}
 		
 		public function med(hp:Number, maxhp:Number):String
@@ -596,35 +525,20 @@ package interdata
 		public function setArmor(aid:String):void
 		{
 			ArmorId = aid;
-			try 
-			{
-				// Retrieve the entire XML file for armors
-				var armorsXML:XML = XmlBook.getXML("armors");
 
-				// Navigate to the correct XMLList of armor elements and filter by ID
-				var armorXMLList:XMLList = armorsXML.armor.(@id == aid);
+			// Retrieve the entire XML file for armors
+			var armorsXML:XML = XmlBook.getXML("armors");
 
-				if (armorXMLList.length() > 0) 
-				{
-					hideMane = armorXMLList[0].@hide;
-				} 
-				else 
-				{
-					hideMane = 0;
-				}
-			} 
-			catch (err) 
-			{
-				hideMane = 0;
-			}
+			// Navigate to the correct XMLList of armor elements and filter by ID
+			var armorXMLList:XMLList = armorsXML.armor.(@id == aid);
+
+			if (armorXMLList.length() > 0) hideMane = armorXMLList[0].@hide;
+			else hideMane = 0;
 		}
-		
 		
 		public function step():void
 		{
 			if (currentPage) currentPage.step();
 		}
-
 	}
-	
 }

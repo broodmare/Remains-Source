@@ -412,21 +412,21 @@ package interdata
 				if (arrfav[i]) 
 				{
 					mc.visible=true;
-					mc.objectName.text=arrfav[i].objectName;
+					mc.nazv.text=arrfav[i].objectName;
 
 					if (arrfav[i].ammo!=null) mc.ammo.text=arrfav[i].ammo;
 					else mc.ammo.text='';
 
-					if (i<=Settings.kolHK) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+arrfav[i].fav);
+					if (i<=Settings.kolHK) mc.fav.text=GameSession.currentSession.ctr.retKey('keyWeapon'+arrfav[i].fav);
 					else if (i<=Settings.kolHK*2+4) 
 					{
-						if (i<=Settings.kolHK*2) mc.fav.text='^'+GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+(arrfav[i].fav-Settings.kolHK));
-						else mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keySpell'+(arrfav[i].fav-Settings.kolHK*2));
+						if (i<=Settings.kolHK*2) mc.fav.text='^'+GameSession.currentSession.ctr.retKey('keyWeapon'+(arrfav[i].fav-Settings.kolHK));
+						else mc.fav.text=GameSession.currentSession.ctr.retKey('keySpell'+(arrfav[i].fav-Settings.kolHK*2));
 						mc.x=screenX-400;
 					} 
-					else if (i==Settings.kolHK*2+5) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyGrenad');
-					else if (i==Settings.kolHK*2+6) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyMagic');
-					else if (i==Settings.kolHK*2+7) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyDef');
+					else if (i==Settings.kolHK*2+5) mc.fav.text=GameSession.currentSession.ctr.retKey('keyGrenad');
+					else if (i==Settings.kolHK*2+6) mc.fav.text=GameSession.currentSession.ctr.retKey('keyMagic');
+					else if (i==Settings.kolHK*2+7) mc.fav.text=GameSession.currentSession.ctr.retKey('keyDef');
 
 					try 
 					{
@@ -461,11 +461,11 @@ package interdata
 				var mc:MovieClip=vis.selector.getChildByName('s'+i);
 				if (selMode==1 && (i==1 || i==7)) mc.visible=false;
 				else mc.visible=true;
-				mc.objectName.text=arr[n].objectName;
+				mc.nazv.text=arr[n].objectName;
 				if (arr[n].ammo!=null) mc.ammo.text=arr[n].ammo;
 				else mc.ammo.text='';
-				if (arr[n].fav>Settings.kolHK && arr[n].fav<=Settings.kolHK*2) mc.fav.text='^'+GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+(arr[n].fav-Settings.kolHK));
-				else if (arr[n].fav>0 && arr[n].fav<=Settings.kolHK) mc.fav.text=GameSession.currentSession.ctr.keyStates.retKey('keyWeapon'+arr[n].fav);
+				if (arr[n].fav>Settings.kolHK && arr[n].fav<=Settings.kolHK*2) mc.fav.text='^'+GameSession.currentSession.ctr.retKey('keyWeapon'+(arr[n].fav-Settings.kolHK));
+				else if (arr[n].fav>0 && arr[n].fav<=Settings.kolHK) mc.fav.text=GameSession.currentSession.ctr.retKey('keyWeapon'+arr[n].fav);
 				else mc.fav.text='';
 				try 
 				{
@@ -884,7 +884,7 @@ package interdata
 				celobj.visible=true;
 				if (gg.teleObj.warn>0)  warn='warn';
 				s="<span class = '"+warn+"'>"+gg.teleObj.objectName+"</span>"
-				if (Settings.hintTele) s+='\n'+GameSession.currentSession.ctr.keyStates.retKey('keyTele')+' - '+txtDrop;
+				if (Settings.hintTele) s+='\n'+GameSession.currentSession.ctr.retKey('keyTele')+' - '+txtDrop;
 				celobj.text=s;
 				GameSession.currentSession.cam.setKoord(celobj,gg.teleObj.X,gg.teleObj.Y);
 			} 
@@ -925,7 +925,7 @@ package interdata
 				if (celObj.inter && celObj.inter.stateText!='') s+=' ['+celObj.inter.stateText+']';
 				//Telekinesis
 				if (!GameSession.currentSession.room.base && celObj.stay && celObj.levitPoss && GameSession.currentSession.room.celDist<=GameSession.currentSession.pers.teleDist && celObj.massa<=GameSession.currentSession.pers.maxTeleMassa) {
-					if (Settings.hintTele) s+='\n'+GameSession.currentSession.ctr.keyStates.retKey('keyTele')+' - '+txtTele;
+					if (Settings.hintTele) s+='\n'+GameSession.currentSession.ctr.retKey('keyTele')+' - '+txtTele;
 					//Glow
 					if (Settings.shineObjs && celObj.vis) {
 						celObj.vis.transform.colorTransform=gg.shineTransform;
@@ -941,7 +941,7 @@ package interdata
 						//if (Settings.showAddInfo) s+='\nзамок '+celObj.inter.lock+';'+celObj.inter.lockLevel+', мина '+celObj.inter.mine+', уровень['+celObj.inter.allDif+']';
 						if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && gg.invent.items[celObj.inter.lockKey] && gg.invent.items[celObj.inter.lockKey].kol>0) {
 							s+='\n';
-							if (Settings.hintKeys) s+=GameSession.currentSession.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
+							if (Settings.hintKeys) s+=GameSession.currentSession.ctr.retKey('keyAction')+' ('+txtHold+') - ';
 							s+=Res.txt('gui', 'usekey');
 						 // Locked, key needed, but not available
 						} else if (celObj.inter.mine<=0 && celObj.inter.lock>0 && celObj.inter.lockKey && celObj.inter.lockTip==0) {
@@ -953,7 +953,7 @@ package interdata
 							s+="\n(<span class = 'r3'>"+txtUndef0+"</span>)"; 
 						} else if (celObj.inter.actionText!='') {
 							var acts:String ='\n';
-							if (Settings.hintKeys) acts+=GameSession.currentSession.ctr.keyStates.retKey('keyAction')+' ('+txtHold+') - ';
+							if (Settings.hintKeys) acts+=GameSession.currentSession.ctr.retKey('keyAction')+' ('+txtHold+') - ';
 							acts+=celObj.inter.actionText;
 							if (celObj.inter.mine>0) {			//есть минирование
 								s+=acts+dif(celObj.inter.mine, celObj.inter.mineTip);		
@@ -974,7 +974,7 @@ package interdata
 						}
 					} else {
 						s+='\n';
-						if (Settings.hintKeys) s+=GameSession.currentSession.ctr.keyStates.retKey('keyAction')+' - ';
+						if (Settings.hintKeys) s+=GameSession.currentSession.ctr.retKey('keyAction')+' - ';
 						s+=celObj.inter.actionText;
 					}
 				} else if (celObj.warn>0)  {
@@ -984,7 +984,7 @@ package interdata
 				}
 				if (celObj.inter && GameSession.currentSession.room.celDist <= Settings.actionDist) {
 					acts="\n<span class = 'r3'>";
-					if (Settings.hintKeys) acts+=GameSession.currentSession.ctr.keyStates.retKey('keyCrack')+' - ';
+					if (Settings.hintKeys) acts+=GameSession.currentSession.ctr.retKey('keyCrack')+' - ';
 					if (celObj.inter.mineTip==6 && celObj.inter.mine>0) {
 						s+=acts+Res.txt('gui', 'actalarm')+"</span>";
 					} else if (celObj.inter.lockTip==1 && celObj.inter.needRuna(gg)) {
@@ -1235,7 +1235,7 @@ package interdata
 			}
 			for (var i:int = 1; i<=5; i++) 
 			{
-				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+GameSession.currentSession.ctr.keyStates.retKey(xml.attribute('s'+i))+"</span>");
+				if (xml.attribute('s'+i).length())  s=s.replace('@'+i,"<span class='imp'>"+GameSession.currentSession.ctr.retKey(xml.attribute('s'+i))+"</span>");
 			}
 			s=s.replace(/\[/g,"<span class='yel'>");
 			s=s.replace(/\]/g,"</span>");

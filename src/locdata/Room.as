@@ -1712,14 +1712,9 @@ package locdata
 					else if (t.phis >= 1) // If it's a regular solid block
 					{		
 						t.die();
-						try 
-						{
-							if (tileSpawn > 0 && Math.random() < tileSpawn) enemySpawn(true, true);
-						} 
-						catch(err) 
-						{
 
-						}
+						if (tileSpawn > 0 && Math.random() < tileSpawn) enemySpawn(true, true);
+
 						if (roomActive) GameSession.currentSession.grafon.tileDie(t, tip);
 					}
 				} 
@@ -1924,7 +1919,7 @@ package locdata
 //				Usage
 //
 //**************************************************************************************************************************
-		public function allAct(emit:Obj, allact:String, allid:String=''):void // Command to all objects
+		public function allAct(emit:Obj, allact:String, allid:String = ''):void // Command to all objects
 		{
 			var obj:Obj;
 			for each (obj in objs) 
@@ -2276,14 +2271,7 @@ package locdata
 			while (obj) 
 			{
 				nextObj = obj.nobj;
-				try 
-				{
-					obj.step();
-				} 
-				catch(err) 
-				{
-					GameSession.currentSession.showError(err, obj.err());
-				}
+				obj.step();
 				obj = nextObj;
 				numb++;
 				if (numb > 10000) 
@@ -2308,15 +2296,10 @@ package locdata
 			while (obj) 
 			{
 				nextObj = obj.nobj;
-				//try 
-				//{
-					obj.step();
-					if ((obj is Obj) && (obj as Obj).onCursor > 0 && obj != gg && (celObj == null || (obj as Obj).onCursor >= celObj.onCursor)) celObj = (obj as Obj); // Determine the object under the cursor
-				//} 
-				//catch(err) 
-				//{
-					//GameSession.currentSession.showError(err, obj.err());
-				//}
+
+				obj.step();
+				if ((obj is Obj) && (obj as Obj).onCursor > 0 && obj != gg && (celObj == null || (obj as Obj).onCursor >= celObj.onCursor)) celObj = (obj as Obj); // Determine the object under the cursor
+
 				obj = nextObj;
 				numb++; // Check for infinite loop prevention
 				if (numb > 10000) 

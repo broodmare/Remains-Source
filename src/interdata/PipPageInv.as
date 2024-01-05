@@ -15,7 +15,6 @@ package interdata
 	
 	public class PipPageInv extends PipPage
 	{
-		
 		var assId:String=null;
 		var assArr:Array;
 		var actCurrent:String = '';
@@ -24,8 +23,6 @@ package interdata
 		var overItem:Object;
 		var over_t:int;
 		var dat:Number = 0;
-		
-		
 
 		public function PipPageInv(npip:PipBuck, npp:String) 
 		{
@@ -45,15 +42,11 @@ package interdata
 			['','a','e']];
 
 			initCats();
-			trace('PipPageInv.as/PipPageInv() - Created PipPageInv page.');
 		}
 		
 		//подготовка страниц
-		//set public
 		public override function setSubPages():void
 		{
-			trace('PipPageInv.as/setSubPages() - updating subPages.');
-
 			vis.butOk.visible 		= false;
 			statHead.cat.visible 	= false;
 			statHead.rid.visible 	= false;
@@ -207,12 +200,8 @@ package interdata
 				statHead.visible=true;
 			}
 			showBottext();
-
-			trace('PipPageInv.as/setSubPages() - Finished updating subPages.');
-
 		}
 		
-		//set public
 		public function showBottext():void
 		{
 			vis.bottext.htmlText=Res.txt('pip', 'caps') + ': '+yel(pip.money);
@@ -225,9 +214,7 @@ package interdata
 			}
 		}
 		
-		
 		//показ одного элемента
-		//set public
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
 			item.id.text=obj.id;
@@ -310,9 +297,7 @@ package interdata
 			}
 		}
 		
-		
 		//информация об элементе
-		//set public
 		public override function statInfo(event:MouseEvent):void
 		{
 			assId=null;
@@ -346,7 +331,6 @@ package interdata
 			}
 		}
 		
-		//set public
 		public override function itemClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
@@ -421,7 +405,6 @@ package interdata
 			showBottext();
 		}
 		
-		//set public
 		public override function itemRightClick(event:MouseEvent):void
 		{
 			if (pip.gamePause) 
@@ -473,7 +456,6 @@ package interdata
 			assId=temp;
 		}
 		
-		//set public
 		public function showH(event:MouseEvent):void
 		{
 			if (actCurrent=='showhidden') 
@@ -493,8 +475,8 @@ package interdata
 				pip.onoff(-1);
 			} 
 			else if (actCurrent=='drop') 
-			{		//выбросить вещи
-				for each (var obj in arr) 
+			{		
+				for each (var obj in arr) //выбросить вещи
 				{
 					if (obj.drop>0) inv.drop(obj.id, obj.drop);
 				}
@@ -503,33 +485,21 @@ package interdata
 			}
 		}
 		
-		//set public
 		public function buttonOk(act:String):void
 		{
-			vis.butOk.visible=true;
-			vis.butOk.text.text=Res.txt('pip', act);
-			actCurrent=act;
+			vis.butOk.visible = true;
+			vis.butOk.text.text = Res.txt('pip', act);
+			actCurrent = act;
 		}
-		
 		
 		public override function step():void
 		{
-			if (over_t>0) over_t--;
-			if (over_t==1 && overItem) 
+			if (over_t > 0) over_t--;
+			if (over_t == 1 && overItem) 
 			{
-				try 
-				{
-					if (overItem.fav.text=='☩' || overItem.fav.text=='+') overItem.fav.text='';
-					inv.items[overId].nov=0;
-				} 
-				catch (err) 
-				{
-
-				}
-				
+				if (overItem.fav.text == '☩' || overItem.fav.text == '+') overItem.fav.text = '';
+				inv.items[overId].nov = 0;
 			}
 		}
-		
 	}
-	
 }
