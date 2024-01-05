@@ -35,7 +35,6 @@ package interdata
 			vis.but5.visible = false;										
 		}
 
-		//подготовка страниц
 		public override function setSubPages():void
 		{
 			if (pip.workTip ==  'mworklab') pip.workTip = 'lab';
@@ -47,30 +46,40 @@ package interdata
 
 			if (pip.workTip == 'mworkbench') 
 			{
-				vis.but1.visible = false;
-				vis.but2.visible = false;
-
-				subCategory = 3;
+				showOnlyRepairCategory();
 			} 
 			else if (pip.workTip == 'stove' || pip.workTip == 'lab' || pip.workTip == 'expl') 
 			{
-				vis.but2.visible = false;
-				vis.but3.visible = false;
-				subCategory = 1;
+				showOnlyCreateCategory();
 			}
-			
+
 			vis.bottext.text = Res.txt('pip', 'caps') + ': ' + pip.money;
-			vis.butOk.visible=false;
-			statHead.cat.visible=false;
+			vis.butOk.visible = false;
+			statHead.cat.visible = false;
 			setIco();
-			assId=null;
+			assId = null;
 			var n;
-			statHead.rid.visible=false;
-			statHead.mass.text='';
-			vis.bottext.text='';
-			if (subCategory == 1) //крафт
-			{		
-				assArr=[];
+			statHead.rid.visible = false;
+			statHead.mass.text = '';
+			vis.bottext.text = '';
+
+			switch (subCategory)
+			{
+				case 1:
+					createCategoryLogic();
+					break;
+				case 2:
+					enhanceCategoryLogic();
+					break;
+				case 3:
+					repairCategoryLogic();
+					break;
+			}
+		
+		
+			function createCategoryLogic():void
+			{
+				assArr = [];
 				statHead.fav.text = '';
 				statHead.nazv.text = Res.txt('pip', 'work1');
 				statHead.hp.text = Res.txt('pip', 'iv6');
@@ -81,53 +90,55 @@ package interdata
 					if (s == '' || inv.items[s] == null || inv.items[s].kol <= 0) continue;
 					var node = inv.items[s].xml;
 					if (node == null) continue;
-					if (node.@tip == 'scheme' && (node.@work.length() == 0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) {//node.@work=='stove' && pip.workTip=='lab' ||
-						var ok:int=1;
-						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill)<node.@lvl) ok=2;
+					if (node.@tip == 'scheme' && (node.@work.length() == 0 || node.@work==pip.workTip || node.@work=='expl' && pip.workTip=='work')) 
+					{
+						var ok:int = 1;
+						if (node.@skill.length() && node.@lvl.length() && gg.pers.getSkillLevel(node.@skill) < node.@lvl) ok = 2;
 						var wid:String = s.substr(2);
+
 						if (inv.weapons[wid]) 
 						{
-							if (inv.weapons[wid].respect==3 || inv.weapons[wid].tip==4) 
+							if (inv.weapons[wid].respect == 3 || inv.weapons[wid].tip == 4) 
 							{
-								n={tip:Item.L_WEAPON, id:wid, objectName:Res.txt('weapon',wid), ok:ok ,sort:node.@skill+node.@lvl};
+								n = {tip:Item.L_WEAPON, id:wid, objectName:Res.txt('weapon', wid), ok:ok, sort:node.@skill + node.@lvl};
 								if (inv.items[wid] && inv.items[wid].kol>0) n.kol=inv.items[wid].kol;
 								arr.push(n);
-								assArr[n.id]=n;
+								assArr[n.id] = n;
 							}
 						} 
 						else if (inv.armors[wid]) 
 						{
 							if (inv.armors[wid].lvl<0) 
 							{
-								n={tip:Item.L_ARMOR, id:wid, objectName:Res.txt('armor',wid), ok:ok ,sort:node.@skill+node.@lvl};
+								n = {tip:Item.L_ARMOR, id:wid, objectName:Res.txt('armor', wid), ok:ok, sort:node.@skill + node.@lvl};
 								arr.push(n);
 							}
 						} 
 						else 
 						{
 							var node1 = XmlBook.getXML("items").item.(@id == wid);
-							if (node1.length()==0) continue;
+							if (node1.length() == 0) continue;
 							if ((node1.@tip==Item.L_IMPL || node1.@one>0) && inv.items[wid].kol>0) continue;	//только одна штука
-							n={tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, objectName:Res.txt('item',wid), ok:ok , sort:node.@skill+node.@lvl};
+							n = {tip:(node1.@tip==Item.L_IMPL?Item.L_IMPL:Item.L_ITEM), kol:inv.items[wid].kol, id:wid, objectName:Res.txt('item', wid), ok:ok, sort:node.@skill+node.@lvl};
 							arr.push(n);
-							assArr[n.id]=n;
+							assArr[n.id] = n;
 						}
 					}
 				}
 				if (arr.length) 
 				{
 					arr.sortOn(['ok','sort']);
-					vis.emptytext.text='';
-					statHead.visible=true;
+					vis.emptytext.text = '';
+					statHead.visible = true;
 				} 
 				else 
 				{
 					vis.emptytext.text=Res.txt('pip', 'emptycreate');
 					statHead.visible=false;
 				}
-			} 
-			else if (subCategory == 2) //улучшение
-			{	
+			}
+			function enhanceCategoryLogic():void
+			{
 				statHead.fav.text = '';
 				statHead.nazv.text = '';
 				statHead.hp.text = '';
@@ -139,7 +150,7 @@ package interdata
 					{
 						if (arm.lvl >= 0 && arm.lvl < arm.maxlvl && arm.lvl < gg.pers.maxArmorLvl) 
 						{
-							n={tip:Item.L_ARMOR, id:arm.id, objectName:arm.objectName, lvl:arm.lvl, sort:('a'+arm.sort)};
+							n = {tip:Item.L_ARMOR, id:arm.id, objectName:arm.objectName, lvl:arm.lvl, sort:('a'+arm.sort)};
 							arr.push(n);
 						}
 					}
@@ -164,24 +175,24 @@ package interdata
 					vis.emptytext.text=Res.txt('pip', 'emptyupgrade');
 					statHead.visible=false;
 				}
-			} 
-			else if (subCategory == 3) //ремонт
-			{	
-				assArr=[];
-				statHead.fav.text='';
-				statHead.nazv.text=Res.txt('pip', 'ii2');
-				statHead.hp.text=Res.txt('pip', 'ii3');
-				statHead.ammo.text='';
-				statHead.ammotip.text=Res.txt('pip', 'repairto');
+			}
+			function repairCategoryLogic():void
+			{
+				assArr = [];
+				statHead.fav.text = '';
+				statHead.nazv.text = Res.txt('pip', 'ii2');
+				statHead.hp.text = Res.txt('pip', 'ii3');
+				statHead.ammo.text = '';
+				statHead.ammotip.text = Res.txt('pip', 'repairto');
 				setTopText('inforepair');
 				if (inv.items['owl'] && inv.items['owl'].kol) 
 				{
 					GameSession.currentSession.pers.setRoboowl();
 					if (GameSession.currentSession.pers.owlhpProc<1) 
 					{
-						n={tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:GameSession.currentSession.pers.owlhp*GameSession.currentSession.pers.owlhpProc, maxhp:GameSession.currentSession.pers.owlhp, rep:owlRep/GameSession.currentSession.pers.owlhp};
+						n = {tip:Item.L_INSTR, id:'owl', objectName:inv.items['owl'].objectName, hp:GameSession.currentSession.pers.owlhp*GameSession.currentSession.pers.owlhpProc, maxhp:GameSession.currentSession.pers.owlhp, rep:owlRep/GameSession.currentSession.pers.owlhp};
 						arr.push(n);
-						assArr[n.id]=n;
+						assArr[n.id] = n;
 					}
 					
 				}
@@ -204,19 +215,35 @@ package interdata
 						assArr[n.id]=n;
 					}
 				}
+
 				if (arr.length) 
 				{
-					vis.emptytext.text='';
-					statHead.visible=true;
+					vis.emptytext.text = '';
+					statHead.visible = true;
 				} 
 				else 
 				{
-					vis.emptytext.text=Res.txt('pip', 'emptyrep');
-					statHead.visible=false;
+					vis.emptytext.text = Res.txt('pip', 'emptyrep');
+					statHead.visible = false;
 				}
 			}
 		}
-		
+
+
+		private function showOnlyCreateCategory():void
+		{
+			vis.but2.visible = false;
+			vis.but3.visible = false;
+			subCategory = 1;
+		}
+		private function showOnlyRepairCategory():void
+		{
+			vis.but1.visible = false;
+			vis.but2.visible = false;
+			subCategory = 3;
+		}
+
+
 		//показ одного элемента
 		public override function setStatItem(item:MovieClip, obj:Object):void
 		{
