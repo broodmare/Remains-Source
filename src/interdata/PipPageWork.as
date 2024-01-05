@@ -8,6 +8,7 @@ package interdata
 	import unitdata.UnitPlayer;
 	import weapondata.Weapon;
 	import servdata.Item;
+	import servdata.QuestHelper;
 	import unitdata.UnitPet;
 	
 	import components.Settings;
@@ -419,7 +420,7 @@ package interdata
 					if (inv.items[cid].xml && inv.items[cid].xml.@one=='1') setStatus();
 					setStatItem(event.currentTarget as MovieClip, obj);
 				}
-				GameSession.currentSession.game.checkQuests(cid);
+				QuestHelper.checkQuests(cid);
 				if (Settings.helpMess && inv.items[cid]) 
 				{
 					var lmess:String=inv.items[cid].mess;

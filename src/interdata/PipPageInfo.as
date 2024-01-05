@@ -10,6 +10,7 @@ package interdata
 	import locdata.Quest;
 	import locdata.LevelTemplate;
 	import unitdata.Unit;
+	import servdata.QuestHelper;
 	
 	import components.Settings;
 	import components.XmlBook;
@@ -546,7 +547,7 @@ package interdata
 					if (task.@man=='1') continue;
 					if (checkQuest(task)) {
 						var q:Quest=game.quests[task.@id];
-						if (q==null || q.state==0) game.addQuest(task.@id,null,false,false,false);
+						if (q==null || q.state==0) QuestHelper.addQuest(task.@id,null,false,false,false);
 					}
 				}
 				setStatus();

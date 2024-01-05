@@ -12,6 +12,7 @@ package interdata
 	import unitdata.UnitPlayer;
 	import unitdata.UnitPet;
 	import servdata.Item;
+	import servdata.QuestHelper;
 	import servdata.Vendor;
 	import weapondata.Weapon;
 	import locdata.Quest;
@@ -622,7 +623,7 @@ package interdata
 						quest.chGive(npcId, true);
 						quest.chReport(npcId, true);
 					} 
-					else GameSession.currentSession.game.addQuest(event.currentTarget.id.text);
+					else QuestHelper.addQuest(event.currentTarget.id.text);
 				} 
 				catch(err) 
 				{

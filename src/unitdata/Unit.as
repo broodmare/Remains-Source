@@ -16,6 +16,7 @@ package unitdata
 	import weapondata.*;
 	import locdata.*;
 	import servdata.*;
+	import servdata.QuestHelper;
 	import graphdata.Emitter;
 	import graphdata.Grafon;
 	import graphdata.Part;
@@ -3003,13 +3004,13 @@ package unitdata
 			if (questId) 
 			{
 				if (room.level.itemScripts[questId]) room.level.itemScripts[questId].start();
-				GameSession.currentSession.game.incQuests(questId);
+				QuestHelper.incQuests(questId);
 			}
 			if (wave && room.prob) room.prob.checkWave(true);
 			// Perform an action like destroying a certain number of enemies with a specific weapon
 			if (dieWeap!=null && GameSession.currentSession.game.triggers['look_'+dieWeap]>0 && xp>0) 
 			{
-				GameSession.currentSession.game.incQuests('kill_'+dieWeap);
+				QuestHelper.incQuests('kill_' + dieWeap);
 			}
 		}
 

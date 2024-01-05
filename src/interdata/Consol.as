@@ -7,6 +7,7 @@ package interdata
 	import flash.ui.Keyboard;
 
 	import unitdata.Unit;
+	import servdata.QuestHelper;
 	
 	import components.Settings;
 	
@@ -264,7 +265,7 @@ package interdata
 					if (GameSession.currentSession.invent.items[s[1]]==null) return;
 					if (s.length == 3) GameSession.currentSession.invent.items[s[1]].kol=int(s[2]);
 					else if (s.length == 2) GameSession.currentSession.invent.items[s[1]].kol++;
-					GameSession.currentSession.game.checkQuests(s[1]);
+					QuestHelper.checkQuests(s[1]);
 					GameSession.currentSession.pers.setParameters();
 				}
 				if (s[0]=='ammo') 

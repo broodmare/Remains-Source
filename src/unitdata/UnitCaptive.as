@@ -4,6 +4,8 @@ package unitdata
 	import flash.filters.GlowFilter;
 	import flash.display.MovieClip;
 	
+	import servdata.QuestHelper;
+	
 	import stubs.visualCaptive;
 	
 	public class UnitCaptive extends Unit
@@ -96,7 +98,7 @@ package unitdata
 			fraction=0;
 			if (questId) {
 				if (room.level.itemScripts[questId]) room.level.itemScripts[questId].start();
-				GameSession.currentSession.game.incQuests(questId);
+				QuestHelper.incQuests(questId);
 			}
 			statusCapt=1;
 		}

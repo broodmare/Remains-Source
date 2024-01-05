@@ -3,6 +3,7 @@ package servdata
 
 	import locdata.Level;
 	import unitdata.Unit;
+	import servdata.QuestHelper;
 	
 	import components.Settings;
 	
@@ -274,11 +275,11 @@ package servdata
 				}
 				if (obj.act == 'quest') 
 				{
-					GameSession.currentSession.game.addQuest(obj.val);
+					QuestHelper.addQuest(obj.val);
 				}
 				if (obj.act == 'showstage')
 				{
-					GameSession.currentSession.game.showQuest(obj.val, obj.n);
+					QuestHelper.showQuest(obj.val, obj.n);
 				}
 				if (obj.act == 'show') 
 				{
@@ -286,7 +287,7 @@ package servdata
 				}
 				if (obj.act == 'stage') 
 				{
-					GameSession.currentSession.game.closeQuest(obj.val, obj.n);
+					QuestHelper.closeQuest(obj.val, obj.n);
 				}
 				if (obj.act == 'trigger') 
 				{

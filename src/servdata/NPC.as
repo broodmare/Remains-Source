@@ -2,6 +2,7 @@ package servdata
 {
 	
 	import unitdata.UnitNPC;
+	import servdata.QuestHelper;
 	
 	import components.Settings;
 	
@@ -336,7 +337,7 @@ package servdata
 			{
 				if (GameSession.currentSession.game.quests[xml.quest.@id]==null) 
 				{
-					GameSession.currentSession.game.addQuest(xml.quest.@id);
+					QuestHelper.addQuest(xml.quest.@id);
 					return;
 				}
 			}
@@ -392,7 +393,7 @@ package servdata
 				setStatus();
 				if (xml && xml.quest.length()) 
 				{
-					GameSession.currentSession.game.closeQuest(xml.quest.@id,xml.quest.@cid);
+					QuestHelper.closeQuest(xml.quest.@id,xml.quest.@cid);
 				}
 			}
 		}
@@ -420,8 +421,8 @@ package servdata
 					rep=2;
 					GameSession.currentSession.gui.dialog('dialPatient5');
 					GameSession.currentSession.game.triggers['patient_tr2']='wait';
-					GameSession.currentSession.game.closeQuest('patientHeal', '3');
-					GameSession.currentSession.game.showQuest('patientHeal', '4');
+					QuestHelper.closeQuest('patientHeal', '3');
+					QuestHelper.showQuest('patientHeal', '4');
 				} 
 				else 
 				{	// No medicine
@@ -437,9 +438,9 @@ package servdata
 				GameSession.currentSession.gui.dialog('dialPatient3');
 				rep=1;
 				GameSession.currentSession.game.triggers['patient_tr1']=1;
-				GameSession.currentSession.game.closeQuest('patientHeal', '1');
-				GameSession.currentSession.game.showQuest('patientHeal', '2');
-				GameSession.currentSession.game.showQuest('patientHeal', '3');
+				QuestHelper.closeQuest('patientHeal', '1');
+				QuestHelper.showQuest('patientHeal', '2');
+				QuestHelper.showQuest('patientHeal', '3');
 			}
 			refresh();
 		}

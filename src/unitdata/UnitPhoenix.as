@@ -1,14 +1,12 @@
 package unitdata 
 {
-
-	import weapondata.Bullet;
+	import weapondata.Bullet;	
+	import servdata.QuestHelper;
 	
 	public class UnitPhoenix extends Unit 
 	{
-		
-		var t_fall:int=0;
-		//var tameScr:Script;
-		static var questOk:Boolean=false;
+		var t_fall:int = 0;
+		static var questOk:Boolean = false;
 		
 		public function UnitPhoenix(cid:String=null, ndif:Number=100, xml:XML=null, loadObj:Object=null)
 		{
@@ -49,26 +47,27 @@ package unitdata
 		
 		public override function expl():void
 		{
-			newPart('green_spark',25);
+			newPart('green_spark', 25);
 		}
 
 		public override function animate():void
 		{
-			if (aiState==0) animState='stay';
+			if (aiState == 0) animState = 'stay';
 			else animState='fly';
-			if (animState!=animState2) {
+
+			if (animState != animState2) 
+			{
 				anims[animState].restart();
-				animState2=animState;
+				animState2 = animState;
 			}
-			if (!anims[animState].st) {
-				blit(anims[animState].id,Math.floor(anims[animState].f));
-			}
+			if (!anims[animState].st) blit(anims[animState].id, Math.floor(anims[animState].f));
 			anims[animState].step();
 		}
 		
 		public override function command(com:String, val:String=null):void
 		{
-			if (com=='tame') {
+			if (com=='tame') 
+			{
 				die();
 				var pet:UnitPet=GameSession.currentSession.gg.pets['phoenix'];
 				GameSession.currentSession.gg.callPet('phoenix');
@@ -84,39 +83,41 @@ package unitdata
 		
 		public function tame():void
 		{
-			if (!questOk) GameSession.currentSession.game.addQuest('tamePhoenix');
-			storona=(X>GameSession.currentSession.gg.X)?-1:1;
-			if (GameSession.currentSession.invent.items['radcookie'].kol>0) {
-				GameSession.currentSession.game.incQuests('tame_ph');
+			if (!questOk) QuestHelper.addQuest('tamePhoenix');
+			storona = (X > GameSession.currentSession.gg.X) ? -1:1;
+			
+			if (GameSession.currentSession.invent.items['radcookie'].kol > 0) 
+			{
+				QuestHelper.incQuests('tame_ph');
 				GameSession.currentSession.invent.minusItem('radcookie');
 				if (GameSession.currentSession.game.triggers['tame']) GameSession.currentSession.game.triggers['tame']++;
-				else GameSession.currentSession.game.triggers['tame']=1;
-				if (GameSession.currentSession.game.triggers['tame']>=5 && !GameSession.currentSession.game.triggers['pet_phoenix']) {	//приручить
-					if (GameSession.currentSession.game.runScript('tamePhoenix',this)) GameSession.currentSession.game.triggers['pet_phoenix']=1;
+				else GameSession.currentSession.game.triggers['tame'] = 1;
 
-				} else {
+				if (GameSession.currentSession.game.triggers['tame'] >= 5 && !GameSession.currentSession.game.triggers['pet_phoenix']) //приручить
+				{	
+					if (GameSession.currentSession.game.runScript('tamePhoenix', this)) GameSession.currentSession.game.triggers['pet_phoenix'] = 1;
+				} 
+				else 
+				{
 					die();
-					GameSession.currentSession.gui.messText('phoenixFeed2','',Y<300);
+					GameSession.currentSession.gui.messText('phoenixFeed2', '', Y < 300);
 				}
-			} else {
-				GameSession.currentSession.gui.messText('phoenixFeed1','',Y<300);
-			}
-			if (GameSession.currentSession.game) {
-				GameSession.currentSession.game.triggers['frag_'+id]=0;
-			}
+			} 
+			else GameSession.currentSession.gui.messText('phoenixFeed1', '', Y < 300);
+
+			if (GameSession.currentSession.game) GameSession.currentSession.game.triggers['frag_' + id] = 0;
 		}
 		
 		public override function control():void
 		{
 			if (!stay) t_fall++;
-			if (t_fall>=3 || dx>1 || dx<-1) die();
-			if (!questOk && room.celObj==this) {
-				GameSession.currentSession.game.triggers['frag_'+id]=0;
-				GameSession.currentSession.game.addQuest('tamePhoenix');
-				questOk=true;
+			if (t_fall >= 3 || dx > 1 || dx < -1) die();
+			if (!questOk && room.celObj == this)
+			{
+				GameSession.currentSession.game.triggers['frag_' + id] = 0;
+				QuestHelper.addQuest('tamePhoenix');
+				questOk = true;
 			}
 		}
-
-	}
-	
+	}	
 }

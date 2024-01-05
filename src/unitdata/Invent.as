@@ -8,6 +8,7 @@ package unitdata
 	import servdata.Item;
 	import servdata.LootGen;
 	import servdata.Script;
+	import servdata.QuestHelper;
 	import locdata.Loot;
 	
 	import components.Settings;
@@ -952,7 +953,7 @@ package unitdata
 				}
 				//если объект критичный, подтвердить получение
 				if (l.imp==2 && l.cont) l.cont.receipt();
-				var res:String=GameSession.currentSession.game.checkQuests(l.id);
+				var res:String = QuestHelper.checkQuests(l.id);
 				if (res!=null) 
 				{
 					GameSession.currentSession.gui.infoText('collect',res);
