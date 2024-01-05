@@ -5,6 +5,7 @@ package locdata
 	import servdata.Script;
 	
 	import components.Settings;
+	import systems.Languages;
 	
 	public class Quest 
 	{
@@ -127,7 +128,8 @@ package locdata
 			{
 				invis=loadObj.invis;
 			}
-			var node = Res.localizationFile.txt.(@id == pid);
+			//TODO: Don't access languages' stuff directly like this.
+			var node = Languages.currentLanguageData.txt.(@id == pid);
 			if (node.length()) 
 			{
 				node = node[0]

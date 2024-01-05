@@ -284,11 +284,11 @@
 				slot.id.visible = false;
 				if (save != null && save.est != null) 
 				{
-					slot.objectName.text = (i == 0)?Res.txt('pip', 'autoslot'):(Res.txt('pip', 'saveslot') + ' ' + i);
+					slot.nazv.text = (i == 0)?Res.txt('pip', 'autoslot'):(Res.txt('pip', 'saveslot') + ' ' + i);
 					slot.ggName.text = (save.pers.persName == null) ? '-------':save.pers.persName;
 					if (save.pers.level != null) slot.ggName.text += ' ('+save.pers.level+')';
-					if (save.pers.dead) slot.objectName.text += ' [†]';
-					else if (save.pers.hardcore) slot.objectName.text += ' {!}';
+					if (save.pers.dead) slot.nazv.text += ' [†]';
+					else if (save.pers.hardcore) slot.nazv.text += ' {!}';
 					slot.date.text = (save.date == null)  ? '-------':Res.getDate(save.date);
 					slot.level.text = (save.date == null) ? '':Res.txt('map', save.game.level).substr(0, 18);
 				} 
@@ -678,7 +678,8 @@
 					mainMenuWindow.aboutWindow.title.text = Res.txt('gui', 'about');
 					var s:String = Res.formatText(Res.txt('gui','about', 1));
 					s += '<br><br>' + Res.txt('gui', 'usedmusic') + '<br>';
-					s += "<br><span class='music'>" + Res.formatText(Res.localizationFile.gui.(@id == 'usedmusic').info[0]) + "</span>"
+					//TODO: Don't access languages' stuff directly like this.
+					s += "<br><span class='music'>" + Res.formatText(Languages.currentLanguageData.gui.(@id == 'usedmusic').info[0]) + "</span>"
 					s += "<br><br><a href='https://creativecommons.org/licenses/by-nc/4.0/legalcode'>Music CC-BY License</a>";
 					mainMenuWindow.aboutWindow.txt.styleSheet 	= style;
 					mainMenuWindow.aboutWindow.txt.htmlText 	= s;

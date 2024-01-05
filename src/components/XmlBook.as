@@ -85,17 +85,35 @@ package components
 			}
         }
         
-        public static function getXML(xmlKey:String):XML
+        public static function getXML(xmlKey:String):XML // Return an entire page.
         {
             if (xmlBook.hasOwnProperty(xmlKey)) 
             {
                 return xmlBook[xmlKey];
             } 
-            else 
+
+            trace('XmlBook.as/getXML() - ERROR: XMLBook Page could not be found! XML Page Key: "' + xmlKey + '".');
+            return null;
+
+        }  
+
+        public static function findXMLNode(xmlKey:String, nodeID:String):XML // Return specific nodes from a page.
+        {
+            var xmlNode:XML;
+
+            if (xmlBook.hasOwnProperty(xmlKey)) //Check if the XML file exists in the XmlBook
             {
-                trace('XmlBook.as/getXML() - Invalid XmlBook Lookup: "' + xmlKey + '."');
-                return null;
+                var xmlList:XMLList = xmlBook[xmlKey].nodeID.(@id == nodeID); // If it does, retrieve a list of all nodes that match the given ID.
+
+                if (xmlList.length()) 
+                {
+                    xmlNode = xmlList[0]; // Grab the (hopefully) only node so it can be returned.
+                    return xmlNode;
+                }
             }
-        }   
+            
+            trace('XmlBook.as/findXMLNode() - ERROR: Node could not be found! XML Page Key: "' + xmlKey + '", Node ID: "' + nodeID + '".');
+            return null;
+        }
     }
 }

@@ -10,6 +10,7 @@ package interdata
 	import servdata.QuestHelper;
 	
 	import components.Settings;
+	import systems.Languages;
 	
 	public class Consol 
 	{
@@ -17,6 +18,7 @@ package interdata
 		public var ist:Array;
 		public var istN:int = 0;
 		
+		//TODO: Extract this.
 		private var help:XML = <chit>
 			<a>all - add everything</a>
 			<a>all weapon - add all weapons</a>
@@ -77,22 +79,18 @@ package interdata
 			vis.butEnter.addEventListener(MouseEvent.CLICK,onButEnter);
 			vis.butClose.addEventListener(MouseEvent.CLICK,onButClose);
 			for each(var i in help.a) vis.help.text += i + '\n';
-			for each(i in Res.localizationFile.weapon) vis.list1.text += i.@id + ' \t' + i.n[0] + '\n';
-			for each(i in Res.localizationFile.item) vis.list2.text += i.@id + ' \t' + i.n[0] + '\n';
-			for each(i in Res.localizationFile.ammo) vis.list2.text += i.@id + ' \t' + i.n[0] + '\n';
+			//TODO: Don't access languages' stuff directly like this.
+			for each(i in Languages.currentLanguageData.weapon) vis.list1.text += i.@id + ' \t' + i.n[0] + '\n';
+			for each(i in Languages.currentLanguageData.item) vis.list2.text += i.@id + ' \t' + i.n[0] + '\n';
+			for each(i in Languages.currentLanguageData.ammo) vis.list2.text += i.@id + ' \t' + i.n[0] + '\n';
 			vis.help.visible = vis.list1.visible = vis.list2.visible = false;
 		}
 		
 		public function onKeyboardDownEvent(event:KeyboardEvent):void 
 		{
-			if (event.keyCode==Keyboard.ENTER) 
-			{
-				analis();
-			}
-			if (event.keyCode == Keyboard.END || event.keyCode == Keyboard.ESCAPE) 
-			{
-				GameSession.currentSession.consolOnOff();
-			}
+			if (event.keyCode == Keyboard.ENTER) analis();
+			if (event.keyCode == Keyboard.END || event.keyCode == Keyboard.ESCAPE) GameSession.currentSession.consolOnOff();
+
 			if (event.keyCode == Keyboard.UP) 
 			{
 				if (istN > 0) istN--;
@@ -126,6 +124,7 @@ package interdata
 		
 		public function analis():void
 		{
+			var session = GameSession.currentSession;
 			var str:String = vis.input.text;
 			ist.push(str);
 			GameSession.currentSession.lastCom = str;
@@ -133,278 +132,236 @@ package interdata
 			istN = ist.length;
 			vis.input.text = '';
 			var s:Array = str.split(' ');
-				if (s[0]=='clear') 
-				{
-					GameSession.currentSession.cam.dblack = 0;
-					GameSession.currentSession.gg.controlOn();
-					GameSession.currentSession.gg.vis.visible = true;
-					GameSession.currentSession.vblack.alpha = 0;
-					GameSession.currentSession.vblack.visible = false;
-					GameSession.currentSession.t_exit = GameSession.currentSession.t_die=0;
-					GameSession.currentSession.vgui.visible = GameSession.currentSession.skybox.visible = GameSession.currentSession.mainCanvas.visible = true;
+			switch (s[0]) 
+			{
+				case 'clear':
+					session.cam.dblack = 0;
+					session.gg.controlOn();
+					session.gg.vis.visible = true;
+					session.vblack.alpha = 0;
+					session.vblack.visible = false;
+					session.t_exit = 0;
+					session.t_die = 0;
+					session.vgui.visible = true;
+					session.skybox.visible = true;
+					session.mainCanvas.visible = true;
 					Snd.off = false;
-				}
-				if (s[0]=='redraw') 
-				{
-					GameSession.currentSession.redrawLoc();
-				}
-				if (s[0]=='hud') 
-				{
-					GameSession.currentSession.gui.vis.visible=!GameSession.currentSession.gui.vis.visible;
-				}
-				if (s[0]=='die') 
-				{
-					GameSession.currentSession.gg.damage(10000,Unit.D_INSIDE);
-				}
-				if (s[0]=='hardreset' && GameSession.currentSession.pers.dead) 
-				{
-					GameSession.currentSession.pers.dead=false;
-					GameSession.currentSession.t_die=210;
-					GameSession.currentSession.gg.anim('die',true);
-					off();
-				}
-				if (s[0]=='hardinv') 
-				{
-					Settings.hardInv=!Settings.hardInv;
-				}
-				if (s[0]=='res_watcher') 
-				{	//исправление бага с наблюдателем
-					GameSession.currentSession.game.triggers['observer']=1;
-				}
-				if (s[0]=='mqt') 
-				{
-					Settings.chitOn=!Settings.chitOn;
-					GameSession.currentSession.saveConfig();
-					return;
-				}
-				if (!Settings.chitOn) 
-				{
-					off();
-					return;
-				}
-				if (str=='?')
-				{
-					vis.help.visible=vis.list1.visible=vis.list2.visible=!vis.help.visible;
-					return;
-				}
-				if (s[0]=='hardcoreMode') //Toggle Hardcore mode.
-				{
-					GameSession.currentSession.pers.hardcoreMode =! GameSession.currentSession.pers.hardcoreMode;
-				}
-				if (s[0]=='testmode') //Toggle debug testing mode.
-				{
+					break;
+				case 'redraw':
+					session.redrawLoc();
+					break;
+				case 'hud':
+					session.gui.vis.visible =! session.gui.vis.visible;
+					break;
+				case 'die':
+					session.gg.damage(10000, Unit.D_INSIDE);
+					break;
+				case 'hardreset':
+					if (session.pers.dead)
+					{
+						session.pers.dead = false;
+						session.t_die = 210;
+						session.gg.anim('die', true);
+						off();
+					}
+					break;
+				case 'hardinv':
+					Settings.hardInv =! Settings.hardInv;
+					break;
+				case 'res_watcher':
+					session.game.triggers['observer'] = 1; //исправление бага с наблюдателем
+					break;
+				case 'mqt':
+					Settings.chitOn =! Settings.chitOn;
+					session.saveConfig();
+					break;
+				case '?':
+					vis.help.visible = vis.list1.visible = vis.list2.visible =! vis.help.visible;
+					break;
+				//TODO: Re-implement check that chitOn == true for commands below this point.
+				case 'hardcoreMode':
+					session.pers.hardcoreMode =! session.pers.hardcoreMode;
+					break;
+				case 'testmode':
 					Settings.testMode =! Settings.testMode;
-				}
-				if (s[0]=='dif') 
-				{
-					GameSession.currentSession.game.globalDif=s[1];
-					if (GameSession.currentSession.game.globalDif<0) GameSession.currentSession.game.globalDif=0;
-					if (GameSession.currentSession.game.globalDif>4) GameSession.currentSession.game.globalDif=4;
-					GameSession.currentSession.pers.setGlobalDif(GameSession.currentSession.game.globalDif);
-					GameSession.currentSession.pers.setParameters();
-				}
-				if (s[0]=='all') 
-				{
-					if (s.length==1)
+					break;
+				case 'dif':
+					session.game.globalDif = s[1];
+					if (session.game.globalDif < 0) session.game.globalDif = 0;
+					if (session.game.globalDif > 4) session.game.globalDif = 4;
+					session.pers.setGlobalDif(session.game.globalDif);
+					session.pers.setParameters();
+					break;
+				case 'all':
+					if (s.length == 1)
 					{
-						GameSession.currentSession.invent.addAll();
-						GameSession.currentSession.pers.addSkillPoint(10);
+						session.invent.addAll();
+						session.pers.addSkillPoint(10);
 					}
-					else if (s[1]=='weapon') GameSession.currentSession.invent.addAllWeapon();
-					else if (s[1]=='ammo') GameSession.currentSession.invent.addAllAmmo();
-					else if (s[1]=='item') GameSession.currentSession.invent.addAllItem();
-					else if (s[1]=='armor') GameSession.currentSession.invent.addAllArmor();
+					else if (s[1]=='weapon') session.invent.addAllWeapon();
+					else if (s[1]=='ammo') session.invent.addAllAmmo();
+					else if (s[1]=='item') session.invent.addAllItem();
+					else if (s[1]=='armor') session.invent.addAllArmor();
 					off();
-				}
-				if (s[0]=='min') 
-				{
-					GameSession.currentSession.invent.addMin();
+					break;
+				case 'min':
+					session.invent.addMin();
 					off();
-				}
-				if (s[0]=='god') 
-				{
-					Settings.godMode=!Settings.godMode;
-				}
-				if (s[0]=='lvl' || s[0]=='level') 
-				{
-					GameSession.currentSession.pers.setForcLevel(s[1]);
-				}
-				if (s[0]=='xp') 
-				{
-					GameSession.currentSession.pers.expa(s[1]);
-				}
-				if (s[0]=='sp') 
-				{
-					if (s.length == 1) GameSession.currentSession.pers.addSkillPoint();
-					else GameSession.currentSession.pers.addSkillPoint(int(s[1]));
-				}
-				if (s[0]=='pp') 
-				{
-					if (s.length == 1) GameSession.currentSession.pers.perkPoint++;
-					else  GameSession.currentSession.pers.perkPoint+=int(s[1]);
-				}
-				if (s[0]=='weapon') 
-				{
-					if (s.length == 2) GameSession.currentSession.invent.addWeapon(s[1]);
-					else if (s.length > 2) GameSession.currentSession.invent.updWeapon(s[1],1)
-				}
-				if (s[0]=='remw') 
-				{
-					if (s.length == 2) GameSession.currentSession.invent.remWeapon(s[1]);
-				}
-				if (s[0]=='armor') 
-				{
-					if (s.length == 2) GameSession.currentSession.invent.addArmor(s[1]);
-				}
-				if (s[0]=='money') 
-				{
-					if (s.length == 2) GameSession.currentSession.invent.items['money'].kol=int(s[1]);
-				}
-				if (s[0]=='item') 
-				{
-					if (GameSession.currentSession.invent.items[s[1]]==null) return;
-					if (s.length == 3) GameSession.currentSession.invent.items[s[1]].kol=int(s[2]);
-					else if (s.length == 2) GameSession.currentSession.invent.items[s[1]].kol++;
+					break;
+				case 'god':
+					Settings.godMode =! Settings.godMode;
+					break;
+				case 'level':
+					session.pers.setForcLevel(s[1]);
+					break;
+				case 'xp':
+					session.pers.expa(s[1]);
+					break;
+				case 'sp':
+					if (s.length == 1) session.pers.addSkillPoint();
+					else session.pers.addSkillPoint(int(s[1]));
+					break;
+				case 'pp':
+					if (s.length == 1) session.pers.perkPoint++;
+					else  session.pers.perkPoint+=int(s[1]);
+					break;
+				case 'weapon':
+					if (s.length == 2) session.invent.addWeapon(s[1]);
+					else if (s.length > 2) session.invent.updWeapon(s[1],1)
+					break;
+				case 'remw':
+					if (s.length == 2) session.invent.remWeapon(s[1]);
+					break;
+				case 'armor':
+					if (s.length == 2) session.invent.addArmor(s[1]);
+					break;
+				case 'money':
+					if (s.length == 2) session.invent.items['money'].kol=int(s[1]);
+					break;
+				case 'item':
+					if (session.invent.items[s[1]]==null) return;
+					if (s.length == 3) session.invent.items[s[1]].kol=int(s[2]);
+					else if (s.length == 2) session.invent.items[s[1]].kol++;
 					QuestHelper.checkQuests(s[1]);
-					GameSession.currentSession.pers.setParameters();
-				}
-				if (s[0]=='ammo') 
-				{
-					if (s.length == 3) GameSession.currentSession.invent.items[s[1]].kol=int(s[2]);
-				}
-				if (s[0]=='perk') 
-				{
-					if (s.length == 2) GameSession.currentSession.pers.addPerk(s[1]);
-				}
-				if (s[0]=='skill') 
-				{
-					if (s.length == 3) GameSession.currentSession.pers.setSkill(s[1], s[2]);
-				}
-				if (s[0]=='eff') 
-				{
-					if (s.length == 2) GameSession.currentSession.gg.addEffect(s[1]);
-				}
-				if (s[0]=='res') 
-				{
-					if (GameSession.currentSession.gg.effects.length > 0) 
+					session.pers.setParameters();
+					break;
+				case 'ammo':
+					if (s.length == 3) session.invent.items[s[1]].kol=int(s[2]);
+					break;
+				case 'perk':
+					if (s.length == 2) session.pers.addPerk(s[1]);
+					break;
+				case 'skill':
+					if (s.length == 3) session.pers.setSkill(s[1], s[2]);
+					break;
+				case 'eff':
+					if (s.length == 2) session.gg.addEffect(s[1]);
+					break;
+				case 'res':
+					if (session.gg.effects.length > 0) 
 					{
-						for each (var eff in GameSession.currentSession.gg.effects) eff.unsetEff();
+						for each (var eff in session.gg.effects) eff.unsetEff();
 					}
-				}
-				if (s[0]=='repair') 
-				{
-					GameSession.currentSession.gg.currentWeapon.repair(1000000);
-				}
-				if (s[0]=='refill') 
-				{
-					GameSession.currentSession.game.refillVendors();
-				}
-				if (s[0]=='rep') 
-				{
-					if (s.length == 2) GameSession.currentSession.pers.rep=int(s[1]);
-				}
-				if (s[0]=='crack') 
-				{
-					if (s.length == 2 && GameSession.currentSession.gg.currentWeapon) GameSession.currentSession.gg.currentWeapon.hp=Math.round(GameSession.currentSession.gg.currentWeapon.maxhp*Number(s[1])/100);
-				}
-				if (s[0]=='break') 
-				{
-					if (s.length == 2 && GameSession.currentSession.gg.currentArmor) GameSession.currentSession.gg.currentArmor.hp=Math.round(GameSession.currentSession.gg.currentArmor.maxhp*Number(s[1])/100);
-				}
-				if (s[0]=='heal') 
-				{
-					GameSession.currentSession.gg.heal(10000);
-				}
-				if (s[0]=='rad') 
-				{
-					GameSession.currentSession.gg.rad=s[1];
-					GameSession.currentSession.gui.setAll();
-				}
-				if (s[0]=='mana') 
-				{
-					GameSession.currentSession.pers.manaHP=int(s[1]);
-					GameSession.currentSession.pers.setParameters();
-				}
-				if (s[0]=='check') 
-				{
-					GameSession.currentSession.level.gotoCheckPoint();
-				}
-				if (s[0]=='goto') 
-				{
-					if (s.length == 3) GameSession.currentSession.level.gotoXY(s[1],s[2]);
-				}
-				if (s[0]=='map') 
-				{
-					Settings.drawAllMap=!Settings.drawAllMap;
-				}
-				if (s[0]=='black') 
-				{
-					Settings.black=!Settings.black;
-					GameSession.currentSession.grafon.layerLighting.visible=Settings.black && GameSession.currentSession.room.black;
-				}
-				if (s[0]=='battle') 
-				{
-					Settings.testBattle=!Settings.testBattle;
-				}
-				if (s[0]=='testeff') 
-				{
-					Settings.testEff=!Settings.testEff;
-				}
-				if (s[0]=='testdam') 
-				{
-					Settings.testDam=!Settings.testDam;
-				}
-				if (s[0]=='enemy') 
-				{
-					if (Settings.enemyAct==3) Settings.enemyAct=0;
-					else Settings.enemyAct=3;
-				}
-				if (s[0]=='lim') 
-				{
-					if (s.length == 2) GameSession.currentSession.level.lootLimit=Number(s[1]);
-				}
-				if (s[0]=='fly' || s[0]=='port' || s[0]=='emit') 
-				{
-					Settings.chit=s[0];
-					Settings.chitX=s[1];
-				}
-				if (s[0]=='getroom') 
-				{
-					GameSession.currentSession.testLoot=true;
-					trace('получено опыта', GameSession.currentSession.room.getAll());
-					GameSession.currentSession.testLoot=false;
-				}
-				if (s[0]=='getloc') 
-				{
-					GameSession.currentSession.testLoot=true;
-					trace('получено опыта', GameSession.currentSession.level.getAll());
-					GameSession.currentSession.testLoot=false;		
-				}
-				if (s[0]=='alicorn') 
-				{
-					if (Settings.alicorn) GameSession.currentSession.gg.alicornOff();
-					else GameSession.currentSession.gg.alicornOn();
-				}
-				if (s[0]=='st') 
-				{
-					if (s.length == 3) GameSession.currentSession.game.triggers[s[1]]=s[2];
-				}
-				if (s[0]=='trigger') 
-				{
-					if (s.length == 2) GameSession.currentSession.gui.infoText('trigger',s[1],GameSession.currentSession.game.triggers[s[1]]);
-				}
-				if (s[0]=='triggers') 
-				{
-					if (s.length > 1) GameSession.currentSession.gui.infoText('trigger',s[1],GameSession.currentSession.game.triggers[s[1]]);
+					break;
+				case 'repair':
+					session.gg.currentWeapon.repair(1000000);
+					break;
+				case 'refill':
+					session.game.refillVendors();
+					break;
+				case 'rep':
+					if (s.length == 2) session.pers.rep=int(s[1]);
+					break;
+				case 'crack':
+					if (s.length == 2 && session.gg.currentWeapon) session.gg.currentWeapon.hp=Math.round(session.gg.currentWeapon.maxhp*Number(s[1])/100);
+					break;
+				case 'break':
+					if (s.length == 2 && session.gg.currentArmor) session.gg.currentArmor.hp=Math.round(session.gg.currentArmor.maxhp*Number(s[1])/100);
+					break;
+				case 'heal':
+					session.gg.heal(10000);
+					break;
+				case 'rad':
+					session.gg.rad=s[1];
+					session.gui.setAll();
+					break;
+				case 'mana':
+					session.pers.manaHP = int(s[1]);
+					session.pers.setParameters();
+					break;
+				case 'check':
+					session.level.gotoCheckPoint();
+					break;
+				case 'goto':
+					if (s.length == 3) session.level.gotoXY(s[1], s[2]);
+					break;
+				case 'map':
+					Settings.drawAllMap =! Settings.drawAllMap;
+					break;
+				case 'black':
+					Settings.black =! Settings.black;
+					session.grafon.layerLighting.visible = Settings.black && session.room.black;
+					break;
+				case 'battle':
+					Settings.testBattle =! Settings.testBattle;
+					break;
+				case 'testeff':
+					Settings.testEff =! Settings.testEff;
+					break;
+				case 'testdam':
+					Settings.testDam =! Settings.testDam;
+					break;
+				case 'enemy':
+					if (Settings.enemyAct == 3) Settings.enemyAct = 0;
+					else Settings.enemyAct = 3;
+					break;
+				case 'lim':
+					if (s.length == 2) session.level.lootLimit = Number(s[1]);
+					break;
+				case 'fly':
+					Settings.chit  = s[0];
+					Settings.chitX = s[1];
+					break;
+				case 'port':
+					Settings.chit  = s[0];
+					Settings.chitX = s[1];
+					break;
+				case 'emit':
+					Settings.chit  = s[0];
+					Settings.chitX = s[1];
+					break;
+				case 'getroom':
+					session.testLoot = true;
+					trace('получено опыта', session.room.getAll());
+					session.testLoot = false;
+					break;
+				case 'getloc':
+					session.testLoot = true;
+					trace('получено опыта', session.level.getAll());
+					session.testLoot = false;
+					break;
+				case 'alicorn':
+					if (Settings.alicorn) session.gg.alicornOff();
+					else session.gg.alicornOn();
+					break;
+				case 'st':
+					if (s.length == 3) session.game.triggers[s[1]]=s[2];
+					break;
+				case 'trigger':
+					if (s.length == 2) session.gui.infoText('trigger',s[1],session.game.triggers[s[1]]);
+					break;
+				case 'triggers':
+					if (s.length > 1) session.gui.infoText('trigger',s[1],session.game.triggers[s[1]]);
 					else 
 					{
-						for (var i in GameSession.currentSession.game.triggers)  GameSession.currentSession.gui.infoText('trigger',i,GameSession.currentSession.game.triggers[i]);
+						for (var i in session.game.triggers)  session.gui.infoText('trigger',i,session.game.triggers[i]);
 					}
-				}
-				
-			GameSession.currentSession.gui.setAll();
+					break;
+				default:
+					off();
+					break;
+			}
+			session.gui.setAll();
 		}
-
-	}
-	
+	}	
 }

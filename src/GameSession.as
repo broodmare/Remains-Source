@@ -314,13 +314,14 @@ package
 				appearanceWindow.setTransforms();
 			}
 			
+			//TODO: Don't access languages' stuff directly like this.
 			trace('GameSession.as/configObjSetup() - Fetching number of advice snippets.');
-			if (Res.localizationFile == null || Res.localizationFile.advice == undefined) 
+			if (Languages.currentLanguageData == null || Languages.currentLanguageData == undefined) 
 			{
-   				trace('GameSession.as/configObjSetup() - Either Res.localizationFile is null or <advice> element is missing');
+   				trace('GameSession.as/configObjSetup() - Either Languages.currentLanguageData is null or <advice> element is missing');
 				return;
 			}
-			koladv = Res.localizationFile.advice[0].a.length();
+			koladv = Languages.currentLanguageData[0].a.length();
 			trace('GameSession.as/configObjSetup() - Snippets found: "' + koladv + '."');
 
 			trace('GameSession.as/configObjSetup() - Fetching last advice ID. ID: ' + configObj.data.nadv + '.');
@@ -609,7 +610,7 @@ package
 
 			trace('GameSession.as/loadGame() - Initializing level.');
 			game.initializeLevel();
-			
+
 			log = '';
 			Snd.off = false;
 			gui.setAll();

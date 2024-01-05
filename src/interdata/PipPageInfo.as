@@ -14,6 +14,7 @@ package interdata
 	
 	import components.Settings;
 	import components.XmlBook;
+	import systems.Languages;
 	
 	import stubs.visPipQuestItem;
 	import stubs.visPipInfo;
@@ -189,7 +190,8 @@ package interdata
 				var doparr:Array=[];
 				for each (var note:String in game.notes) 
 				{
-					var xml=Res.localizationFile.txt.(@id==note);
+					//TODO: Don't access languages' stuff directly like this.
+					var xml = Languages.currentLanguageData.txt.(@id==note);
 					var nico:int=0;
 					if (xml && xml.@imp>0) 
 					{

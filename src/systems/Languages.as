@@ -83,16 +83,11 @@ package systems
 
 		public static function applyLanguage(languageID:String):void
 		{
-
 			currentLanguageData = languageListDictionary[languageID];
 			languageName = currentLanguageData.lang.@id;
-
-			
-			trace('Languages.as/applyLanguage() - Lanuage applied: "' + languageName + '."');
-			Res.localizationFile = currentLanguageData;
-			
 			textLoaded = true;
-			trace('Languages.as/applyLanguage() - Language setup complete.');
+
+			trace('Languages.as/applyLanguage() - Lanuage applied: "' + languageName + '."');
 		}
 
 

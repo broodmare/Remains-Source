@@ -20,6 +20,7 @@ package interdata
 	import weapondata.WPaint;
 	
 	import components.Settings;
+	import systems.Languages;
 	
 	public class GUI 
 	{
@@ -151,7 +152,6 @@ package interdata
 			vis.portCel.gotoAndStop(1);
 			vis.portCel.visible = false;
 
-			trace('GUI.as/GUI() -  Calling Res.txt() to set pipbuck GUI text.');
 			txtTele			= Res.txt('gui', 'tele');
 			txtOpen			= Res.txt('gui', 'open');
 			txtSoft			= Res.txt('gui', 'soft');
@@ -237,6 +237,7 @@ package interdata
 				mess.mess.width = 500;
 				mess.x = (nx - 500) / 2;
 			}
+
 			if (screenX < 1200) 
 			{
 				dial.scaleX = dial.scaleY = screenX / 1200;
@@ -247,6 +248,7 @@ package interdata
 				dial.scaleX = dial.scaleY = 1;
 				dial.x = (screenX - 1200) / 2;
 			}
+			
 			inform.x = Math.round(screenX / 2);
 			imp.x 	 = Math.round(screenX / 2);
 			imp.y 	 = Math.round(screenY / 2 - 50);
@@ -1206,7 +1208,8 @@ package interdata
 
 			if (id is String) 
 			{
-				xml = Res.localizationFile.txt.(@id == id);
+				//TODO: Don't access languages' stuff directly like this.
+				xml = Languages.currentLanguageData.txt.(@id == id);
 				if (xml.length() == 0) return false;
 				xml = xml.n[0];
 				if (xml.length() == 0) return false;
@@ -1346,26 +1349,12 @@ package interdata
 			}
 			if (Math.abs(infoAlpha - realAlpha) > 0.01) 
 			{
-				if (infoAlpha>realAlpha) 
-				{
-					realAlpha += 0.1;
-				}
-				if (infoAlpha<realAlpha) 
-				{
-					realAlpha -= 0.1;
-				}
-				
-				//trace(vis.info.alpha)
+				if (infoAlpha>realAlpha) realAlpha += 0.1;
+				if (infoAlpha<realAlpha) realAlpha -= 0.1;
 			}
 			
-			if (gg.t_port>15) 
-			{
-				showPortCel()
-			} 
-			else 
-			{
-				vis.portCel.visible=false;
-			}
+			if (gg.t_port>15) showPortCel()
+			else vis.portCel.visible=false;
 
 			if (Math.abs(vis.info.alpha-realAlpha)>0.05) vis.info.alpha=realAlpha;
 
@@ -1437,7 +1426,5 @@ package interdata
 		{
 			vis.sats.visible = turn && active;
 		}
-
-	}
-	
+	}	
 }

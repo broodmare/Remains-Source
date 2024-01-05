@@ -5,11 +5,11 @@ package
 	import flash.display.MovieClip;
 	
 	import components.Settings;
+	import systems.Languages;
 	
 	public class Res 
 	{
-		
-		public static var localizationFile:XML;
+		private static var localizationFile = Languages.currentLanguageData;
 		private static var rainbowcol:Array = ['red','or','yel','green','blu','purp'];
 
 		public function Res() 
@@ -71,7 +71,7 @@ package
 			} 
 			catch (err:Error) 
 			{
-				//trace('Res.as/txt() - Failed to retrieve string ID: "' + id + '", with classKey: "' + classKey + '". Error: "' + err.message + '".');
+				trace('Res.as/txt() - Failed to retrieve string ID: "' + id + '", with classKey: "' + classKey + '". Error: "' + err.message + '".');
 				xmlNodeText = 'ERROR';
 				return xmlNodeText;
 			}
@@ -89,7 +89,6 @@ package
 				
 				if (xmlNode && xmlNode.attribute("s1").length() > 0) 
 				{
-					trace('Res.as/txt() - Attempting to add control key: "' + xmlNode.@s1 + '"');
 					try 
 					{
 						xmlNodeText = addKeys(xmlNodeText, xmlNode);
@@ -145,35 +144,30 @@ package
 			var s:String = '';
 			try 
 			{
-				if (localizationFile == null) 
-				{
-					trace('Res.as/messText() - localizationFile is null.');
-					return s;
-				}
-				var xml:XMLList = localizationFile.txt.(@id == id);
+				var nodeList:XMLList = localizationFile.txt.(@id == id); // Create a list of all matching nodes from the language XML.
 
-				if (xml.length() == 0) 
+				if (nodeList.length() == 0) // If the list is empty, return a blank string
 				{
 					return s;
 				}
 
-				if (!imp && !(xml.@imp > 0)) 
+				if (!imp && !(nodeList.@imp > 0)) 
 				{
 					return s;
 				}
 
-				var stringType:int = xml.@imp; // Version check?
+				var stringType:int = nodeList.@imp; // Version check?
 
 				if (v == 1) 
 				{
-					s = xml.info[0];
+					s = nodeList.info[0];
 				}
 
 				else 
 				{
-					if (xml.n[0].r.length()) 
+					if (nodeList.n[0].r.length()) 
 					{
-						for each (var node:XML in xml.n[0].r) 
+						for each (var node:XML in nodeList.n[0].r) 
 						{
 							var s1:String = node.toString();
 							if (node.@m.length()) 
@@ -210,17 +204,17 @@ package
 					} 
 					else 
 					{
-						s = xml.n[0];
+						s = nodeList.n[0];
 					}
 				}
 				
 				s = lpName(s);
 				s = s.replace(/\[br\]/g, '<br>');
-				if (xml.@s1.length()) 
+				if (nodeList.@s1.length()) 
 				{
 					for (var j:int = 1; j <= 5; j++) 
 					{
-						if (xml.attribute('s' + j).length())  s = s.replace('@' + j, "<span classData='r2'>" + GameSession.currentSession.ctr.retKey(xml.attribute('s' + j)) + "</span>");
+						if (nodeList.attribute('s' + j).length())  s = s.replace('@' + j, "<span classData='r2'>" + GameSession.currentSession.ctr.retKey(nodeList.attribute('s' + j)) + "</span>");
 					}
 				}
 			} 

@@ -12,7 +12,7 @@ package locdata
 	import components.XmlBook;
 
 	//TODO - Calling entire script file multiple times, fix that later.
-	public class Game 
+	public class Game // Holds game data
 	{
 		public var levelArray:Array;
 		public var probs:Array;
@@ -445,30 +445,25 @@ package locdata
 			}
 		}
 		
-		public function runScript(scr:String, own:Obj = null):Boolean 
+		public function runScript(script:String, own:Obj = null):Boolean 
 		{
-			//TODO: Stop copying the entire XML.
-			var scriptsXML:XML = XmlBook.getXML("scripts"); // Retrieve the entire XML file for scripts
-			var xmlList:XMLList = scriptsXML.scr.(@id == scr); // Navigate to the correct XMLList of script elements and filter by ID
+			var scriptXML:XML = XmlBook.findXMLNode("scripts", script);
 
-			if (xmlList.length()) 
+			if (scriptXML != null)
 			{
-				var scriptXML:XML = xmlList[0];
-				var runScr:Script = new Script(scriptXML, GameSession.currentSession.level, own);
-				runScr.start();
+				var newScript:Script = new Script(scriptXML, GameSession.currentSession.level, own);
+				newScript.start();
 				return true;
 			}
 			return false;
 		}
 		
-		public function getScript(scr:String, own:Obj = null):Script // Create a script from gamedata
+		public function getScript(script:String, own:Obj = null):Script // Create a script from gamedata
 		{
-    		var scriptsXML:XML = XmlBook.getXML("scripts"); 	// Retrieve the entire XML file for scripts
-    		var xmlList:XMLList = scriptsXML.scr.(@id == scr); 	// Navigate to the correct XMLList of script elements and filter by ID
+    		var scriptXML:XML = XmlBook.findXMLNode("scripts", script);
 
-			if (xmlList.length()) //If a script is found by that name, do stuff, otherwise return null.
+			if (scriptXML != null)
 			{
-				var scriptXML:XML = xmlList[0];
 				return new Script(scriptXML, (own == null) ? GameSession.currentSession.level : own.room.level, own);
 			}
 			return null;
