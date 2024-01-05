@@ -31,8 +31,6 @@ package interdata
 	
 	public class PipPage 
 	{
-
-
 		var vis:MovieClip;
 
 		var arr:Array;
@@ -48,8 +46,8 @@ package interdata
 		var inv:Invent;
 		var gg:UnitPlayer;
 		
-		var isLC:Boolean = false;
-		var isRC:Boolean = false; //реакция на клик
+		var isLC:Boolean = false; //Leftclicked
+		var isRC:Boolean = false; //Rightclicked
 		
 		var signs:Array = [0, 0, 0, 0, 0, 0];
 		
@@ -57,20 +55,20 @@ package interdata
 		var scrl:int = 0; // Current scroll amount
 		
 		var infIco:MovieClip;
-		var itemFilter:GlowFilter 		= new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
-		var itemTrans:ColorTransform 	= new ColorTransform(1, 1, 1);
+		var itemFilter:GlowFilter = new GlowFilter(0x00FF88, 1, 3, 3, 3, 1);
+		var itemTrans:ColorTransform = new ColorTransform(1, 1, 1);
 		
-		var pp:String; //pipPage
-		
-		var kolCats:int=6;
+		var pp:String; 			//Category name
+		var kolCats:int = 6; 	// Number of Sub-Categories
 		var cat:Array=[0, 0, 0, 0, 0, 0, 0];
+
 		var curTip = '';
 		var tips:Array = [[]];
 		
 		//setStatItems - update all elements without reloading the page
 		//setStatus - fully refresh the page"
 
-		public function PipPage(npip:PipBuck, npp:String) 
+		public function PipPage(npip:PipBuck, npp:String) // Probably better to call this a Category?
 		{
 			
 			pip = npip;
@@ -624,17 +622,16 @@ package interdata
 				var a:Armor = inv.armors[id];
 				if (a == null) a = pip.arrArmor[id];
 
-				//TODO: I think I uncolored the % symbols.
-				if (a.armor_qual > 0) s += Res.txt('pip', 'aqual')+': ' + numberAsColor('yellow', Math.round(a.armor_qual * 100)) + '%';
-				if (a.armor > 0) s += '\n' + Res.txt('pip', 'armor')+': ' + numberAsColor('yellow', Math.round(a.armor));
-				if (a.marmor > 0) s += '\n' + Res.txt('pip', 'marmor')+': ' + numberAsColor('yellow', Math.round(a.marmor));
-				if (a.dexter != 0) s += '\n' + Res.txt('pip', 'dexter')+': ' + numberAsColor('yellow', Math.round(a.dexter * 100)) + '%';
-				if (a.sneak != 0) s += '\n' + Res.txt('pip', 'sneak')+': ' + numberAsColor('yellow', Math.round(a.sneak * 100)) + '%';
-				if (a.meleeMult != 1) s += '\n' + Res.txt('pip', 'meleedamage') + ': +' + numberAsColor('yellow', Math.round((a.meleeMult - 1) * 100)) + '%';
-				if (a.gunsMult != 1) s += '\n' + Res.txt('pip', 'gunsdamage') + ': +' + numberAsColor('yellow', Math.round((a.gunsMult-1) * 100)) + '%';
-				if (a.magicMult != 1) s += '\n' + Res.txt('pip', 'spelldamage') + ': +' + numberAsColor('yellow', Math.round((a.magicMult-1) * 100)) + '%';
-				if (a.crit!=0) s += '\n' + Res.txt('pip', 'critch')+': +' + numberAsColor('yellow', Math.round(a.crit * 100)) + '%';
-				if (a.radVul<1) s += '\n' + Res.txt('pip', 'radx')+': ' + numberAsColor('yellow', Math.round((1 - a.radVul) * 100)) + '%';
+				if (a.armor_qual > 0) 		   s += Res.txt('pip', 'aqual')  + ': ' + numberAsColor('yellow', Math.round(a.armor_qual * 100)) + textAsColor('yellow', '%');
+				if (a.armor > 0) 		s += '\n' + Res.txt('pip', 'armor')  + ': ' + numberAsColor('yellow', Math.round(a.armor));
+				if (a.marmor > 0) 		s += '\n' + Res.txt('pip', 'marmor') + ': ' + numberAsColor('yellow', Math.round(a.marmor));
+				if (a.dexter != 0) 		s += '\n' + Res.txt('pip', 'dexter') + ': ' + numberAsColor('yellow', Math.round(a.dexter * 100)) + textAsColor('yellow', '%');
+				if (a.sneak != 0) 		s += '\n' + Res.txt('pip', 'sneak')  + ': ' + numberAsColor('yellow', Math.round(a.sneak * 100)) + textAsColor('yellow', '%');
+				if (a.meleeMult != 1) 	s += '\n' + Res.txt('pip', 'meleedamage') + ': +' + numberAsColor('yellow', Math.round((a.meleeMult - 1) * 100)) + textAsColor('yellow', '%');
+				if (a.gunsMult != 1) 	s += '\n' + Res.txt('pip', 'gunsdamage')  + ': +' + numberAsColor('yellow', Math.round((a.gunsMult-1) * 100)) + textAsColor('yellow', '%');
+				if (a.magicMult != 1) 	s += '\n' + Res.txt('pip', 'spelldamage') + ': +' + numberAsColor('yellow', Math.round((a.magicMult-1) * 100)) + textAsColor('yellow', '%');
+				if (a.crit != 0) 		s += '\n' + Res.txt('pip', 'critch') 	  + ': +' + numberAsColor('yellow', Math.round(a.crit * 100)) + textAsColor('yellow', '%');
+				if (a.radVul < 1) 		s += '\n' + Res.txt('pip', 'radx') 		  + ': '  + numberAsColor('yellow', Math.round((1 - a.radVul) * 100)) + textAsColor('yellow', '%');
 
 				// Print armor resistances as a percentage in yellow text if the resistance is not 0.
 				var resistanceTypesArray:Array = 
@@ -1045,6 +1042,7 @@ package interdata
 				}
 				
 		//проверка квеста на доступность
+		//TODO: This can be moved.
 		public function checkQuest(task:XML):Boolean 
 		{
 			//проверка на доступ к местности
@@ -1071,7 +1069,7 @@ package interdata
 		{
 			for (var i:int = 0; i<=kolCats; i++) 
 			{
-				vis.cats['cat'+i].addEventListener(MouseEvent.CLICK,selCatEvent);
+				vis.cats['cat' + i].addEventListener(MouseEvent.CLICK,selCatEvent);
 			}
 			selCat();
 		}
