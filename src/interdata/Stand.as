@@ -1,7 +1,5 @@
 ﻿package interdata 
-{
-	//Стенд для оружия, коллекционных вещей и ачивок
-	
+{	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.filters.GlowFilter;
@@ -25,7 +23,20 @@
 	import stubs.itemStand;
 	import stubs.itemIco;
 
-	public class Stand 
+	// Categories:
+	//	Melee Weapons
+	//	Firearms
+	//	Magical Energy
+	//	Explosives
+	//	Other Weapons
+	//	Magic
+	//	Armor
+	//	Amulets
+	//	Artifacts
+
+	//	Close
+
+	public class Stand //This is called the "Weapon Rack" in-game.
 	{
 
 		public var active:Boolean = false;
@@ -56,8 +67,8 @@
 		{
 
 			trace('Stand.as/Stand() - Stand initializing.');
-			vis=vstand;
-			inv=ninv;
+			vis = vstand;
+			inv = ninv;
 			pages 	= [];
 			buttons = [];
 			weapons = [];
@@ -154,12 +165,11 @@
 					item.goldstar.stop();
 					item.objectName.text = Res.txt('weapon', weap.@id);
 
-
-					//изображение
+					//icons
 					var infIco:MovieClip;
 					var r:Number = 1;
 
-					if (weap.@tip == 5) //заклинание
+					if (weap.@tip == 5) //spells
 					{	
 						infIco = new itemIco();
 						try 
@@ -186,7 +196,6 @@
 						{
 							vWeapon = Res.getClass('vis' + weap.@id, null);
 						}
-						//TODO: Check if this can be else
 						if (vWeapon != null) 
 						{
 							infIco = new vWeapon();
@@ -270,14 +279,12 @@
 					str++;
 				}
 
-
 				item.id.text = arm.@id;
 				item.id.visible = false;
 				item.objectName.text = Res.txt('armor', arm.@id);
 
 				pages[n].addChild(item);
 				armors[arm.@id] = item;
-
 
 				if (n == 6) 
 				{
@@ -290,18 +297,13 @@
 					m.tx = -dvis.getRect(dvis).left + 1;
 					m.ty = -dvis.getRect(dvis).top  + 1;
 					m.scale(sc,sc);
-					try 
-					{
-						dvis.pip1.visible = false;
-						dvis.sleg1.mark.visible = false;
-						dvis.sleg2.mark.visible = false;
-						dvis.head.morda.magic.visible = false;
-						dvis.head.morda.eye.visible = false;
-					} 
-					catch (err) 
-					{
 
-					}
+					dvis.pip1.visible = false;
+					dvis.sleg1.mark.visible = false;
+					dvis.sleg2.mark.visible = false;
+					dvis.head.morda.magic.visible = false;
+					dvis.head.morda.eye.visible = false;
+
 					var bmpd:BitmapData = new BitmapData(sprX, sprY, true, 0x00000000);
 					bmpd.draw(dvis, m);
 					var bmp:Bitmap = new Bitmap(bmpd);
@@ -318,22 +320,15 @@
 			}
 
 
-			Appear.transp 			= false;
-			GameSession.currentSession.armorWork 	= '';
+			Appear.transp = false;
+			GameSession.currentSession.armorWork = '';
 		}
 		
 		public function showMass():void
 		{
-			vis.bottext.htmlText='';
-			try 
-			{
-				if (page <= 4) vis.bottext.htmlText=inv.retMass(4);
-				if (page == 5) vis.bottext.htmlText=inv.retMass(5);
-			} 
-			catch (err) 
-			{
-
-			}
+			vis.bottext.htmlText = '';
+			if (page <= 4) vis.bottext.htmlText = inv.retMass(4);
+			if (page == 5) vis.bottext.htmlText = inv.retMass(5);
 		}
 		
 		public function showWeaponList(n:int):void
@@ -391,8 +386,8 @@
 			}
 		}
 		
-		//n - 0-нет, 1-обычное, 2-уникальное
-		//respect - 0-новое, 1-скрытое, 2-используемое, 3-схема
+		//n 	  - 0 - No,  1 - Normal, 2 - Unique
+		//respect - 0 - New, 1 - Hidden, 2 - Used, 3 - Scheme
 		public function showWeapon(item:MovieClip, n:int, respect:int):void
 		{
 			if (n == 0) 
@@ -464,10 +459,10 @@
 		
 		public function itemClick(event:MouseEvent):void
 		{
-			var id=event.currentTarget.id.text;
-			if (inv.weapons[id]==null || inv.weapons[id].respect==3) return;
-			var resp=inv.respectWeapon(id);
-			showWeapon(event.currentTarget as MovieClip,-1,resp);
+			var id = event.currentTarget.id.text;
+			if (inv.weapons[id] == null || inv.weapons[id].respect == 3) return;
+			var resp = inv.respectWeapon(id);
+			showWeapon(event.currentTarget as MovieClip, -1, resp);
 			if (Settings.hardInv) showMass();
 		}
 
@@ -581,8 +576,7 @@
 			}
 		}
 
-		//коррекция размеров
-		public function resizeScreen(nx:int, ny:int):void
+		public function resizeScreen(nx:int, ny:int):void 
 		{
 			if (nx >= 1200 && ny >= 800) 
 			{
@@ -606,5 +600,4 @@
 			}
 		}
 	}
-	
 }
