@@ -518,7 +518,6 @@ package
 
 			trace('GameSession.as/newGame2() - Initializing level and entering room. 2/4');
 			game.initializeLevel(); //!!!!
-			game.beginGame();
 
 
 			trace('GameSession.as/newGame2() - Sound and GUI stuff. 3/4');
@@ -610,10 +609,7 @@ package
 
 			trace('GameSession.as/loadGame() - Initializing level.');
 			game.initializeLevel();
-
-			trace('GameSession.as/loadGame() - Beginning game.');
-			game.beginGame();
-
+			
 			log = '';
 			Snd.off = false;
 			gui.setAll();

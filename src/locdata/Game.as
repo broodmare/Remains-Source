@@ -344,11 +344,6 @@ package locdata
 			}
 		}
 		
-		public function beginGame():void
-		{
-
-		}
-		
 		public function beginMission(nid:String = null):void
 		{
 			if (nid == curLevelID) return;
