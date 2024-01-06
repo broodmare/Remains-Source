@@ -414,14 +414,14 @@ package interdata
 			var s:String;
 			if (tip == 'item') s = Res.txt('item', id, 1)
 			else s = Res.txt('eff', id, 1);
-			if (id.substr(-3) == '_ad') id=id.substr(0, id.length - 3);
+			if (id.substr(-3) == '_ad') id = id.substr(0, id.length - 3);
 
-			var dp = XmlBook.getXML(tip).skill.(@id == id);
-			if (dp.length() == 0) return s;
-			dp = dp[0];
+			var dp = XmlBook.findXMLNode(tip, id)
 
 			//определение текущего уровня
 			var lvl = 1;
+
+
 			var pers:Pers = GameSession.currentSession.pers;
 			if (tip == 'perks')
 			{
@@ -707,7 +707,7 @@ package interdata
 					if (pot.@hmana.length()) 	s += '\n' + Res.txt('pip', 'healmana') 	 + ': ' + numberAsColor('yellow', Math.round(pot.@hmana * GameSession.currentSession.pers.healManaMult));
 					if (pot.@alc.length()) 		s += '\n' + Res.txt('pip', 'alcohol') 	 + ': ' + numberAsColor('yellow', Math.round(pot.@alc));
 					if (pot.@rad.length()) 		s += '\n' + Res.txt('pip', 'rad') 		 + ': ' + numberAsColor('yellow', Math.round(pot.@rad));
-					if (pot.@effect.length()) 	s += '\n' + Res.txt('pip', 'refeff') + ': '+effStr('eff',pot.@effect);
+					if (pot.@effect.length()) 	s += '\n' + Res.txt('pip', 'refeff') + ': ' + effStr('effects',pot.@effect);
 					if (pot.@perk.length()) 	s += '\n' + textAsColor('pink', Res.txt('eff',pot.@perk))+': '+Res.txt('pip', 'level')+' '+(GameSession.currentSession.pers.perks[pot.@perk]>0?GameSession.currentSession.pers.perks[pot.@perk]:'0');
 					if (pot.@maxperk.length()) 	s += '/' + pot.@maxperk;
 				}

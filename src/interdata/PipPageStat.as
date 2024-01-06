@@ -361,18 +361,18 @@
 					showBottext();
 					var lvl;
 
-					if (event.currentTarget.cat.text=='ad') 
+					if (event.currentTarget.cat.text == 'ad') 
 					{
-						vis.nazv.text=Res.txt('eff',id+'_ad');
+						vis.nazv.text = Res.txt('eff',id+'_ad');
 						lvl=0;
 						lvl=int(event.currentTarget.numb.text);
 						if (lvl>0) lvl--;
-						vis.info.htmlText=effStr('eff',id+'_ad',lvl);
+						vis.info.htmlText = effStr('effects', id + '_ad',lvl); //Done via XmlBook lookup, not Res.txt
 					} 
 					else if (id == 'phoenix') 
 					{
 						vis.nazv.text=objectName;
-						vis.info.htmlText=Res.txt('unit','phoenix',1);
+						vis.info.htmlText = Res.txt('unit','phoenix',1);
 					} 
 					else 
 					{
@@ -420,17 +420,17 @@
 					{
 						if (id=='drunk') 
 						{
-							vis.info.htmlText=effStr('eff',id,drunk-1);
+							vis.info.htmlText = effStr('effects',id,drunk-1);
 						} 
-						else if (objectName==n_food) vis.info.htmlText=Res.txt('eff','food',1)+'<br><br>'+effStr('eff',id);
-						else vis.info.htmlText=effStr('eff',id);
+						else if (objectName == n_food) vis.info.htmlText = Res.txt('eff','food',1)+'<br><br>'+effStr('effects',id);
+						else vis.info.htmlText = effStr('effects',id);
 					} 
 					else if (subCategory == 2) 
 					{
 						if (Settings.alicorn && Res.istxt('eff',id+'_al')) 
 						{
-							vis.info.htmlText=Res.rainbow(Res.txt('eff',id+'_al'));
-							vis.info.htmlText+='<br><br>'+effStr('skills',id+'_al');
+							vis.info.htmlText = Res.rainbow(Res.txt('eff',id+'_al'));
+							vis.info.htmlText += '<br><br>' + effStr('skills', id + '_al');
 						} 
 						else 
 						{
