@@ -42,8 +42,8 @@
 		public var canvasLayerArray:Array;
 		public var skyboxTexture:MovieClip;
 		
-		public var resX:int;
-		public var resY:int;
+		//public var resX:int;
+		//public var resY:int;
 
 		//Textured area size
 		public var mapTileWidth:int;  	//Size of map width in tiles
@@ -117,7 +117,22 @@
 		
 		public var nn:int;									// Something for side quests? Why is this here?
 
-		public var voda:MovieClip;  				// Water tile MovieClip from pfe.fla (Why is this defined here? Check if I did that.)
+		public var voda:MovieClip;  						// Water tile MovieClip from pfe.fla
+
+		//moved variables
+		private var transparentBackground:Boolean;
+		private var darkness:int;
+		private var canvasTileFront:Sprite; 							// Texture that ALL tile front textures are drawn to
+		private var canvasTileBack:Sprite; 							// Texture that ALL tile background textures are drawn to
+		private var back2:Sprite; 							// Texture that back walls and skyboxes are drawn to
+		private var canvasWater:Sprite;							// water texture?
+
+		//defines
+		//Colors as ARGB values
+		private static var TRANSPARENT:uint = 0x00000000;
+		private static var BLACK:uint = 0xFF000000;
+		private static var WHITE:uint = 0xFFFFFFFF;
+
 
 		public function Grafon(nvis:Sprite)
 		{
@@ -200,31 +215,31 @@
 			layerLighting.scaleY = tilepixelheight;
 			
 			trace('Grafon.as/Grafon() - Creating bitmaps...');
-			frontBmp 	= new BitmapData(screenResX, screenResY, true, 0x0)
+			frontBmp 	= new BitmapData(screenResX, screenResY, true, TRANSPARENT)
 			frontBitmap =  new Bitmap(frontBmp);
 			visFront.addChild(frontBitmap);
 			
-			backBmp		= new BitmapData(screenResX, screenResY, true, 0x0)
+			backBmp		= new BitmapData(screenResX, screenResY, true, TRANSPARENT)
 			backBitmap 	=  new Bitmap(backBmp);
 			layerBackground_1.addChild(backBitmap);
 			
-			backBmp2 	= new BitmapData(screenResX, screenResY, true, 0x0)
+			backBmp2 	= new BitmapData(screenResX, screenResY, true, TRANSPARENT)
 			backBitmap2 =  new Bitmap(backBmp2);
 			layerBackground_2.addChild(backBitmap2);
 
-			vodaBmp 	= new BitmapData(screenResX, screenResY, true, 0x0)
+			vodaBmp 	= new BitmapData(screenResX, screenResY, true, TRANSPARENT)
 			vodaBitmap  =  new Bitmap(vodaBmp);
 			layerWater.addChild(vodaBitmap);
 			
-			satsBmp 	= new BitmapData(screenResX, screenResY, true, 0);
+			satsBmp 	= new BitmapData(screenResX, screenResY, true, TRANSPARENT);
 			satsBitmap  =  new Bitmap(satsBmp, 'auto', true);
 			layerSats.addChild(satsBitmap);
 			
-			colorBmp 	= new BitmapData(screenResX, screenResY, true, 0);
-			shadBmp 	= new BitmapData(screenResX, screenResY, true, 0);
+			colorBmp 	= new BitmapData(screenResX, screenResY, true, TRANSPARENT);
+			shadBmp 	= new BitmapData(screenResX, screenResY, true, TRANSPARENT);
 			
-			lightBmp 	= new BitmapData(lightX, lightY, true, 0xFF000000);
-			lightBitmap =  new Bitmap(lightBmp, 'auto', true);
+			lightBmp 	= new BitmapData(lightX, lightY, true, BLACK);
+			lightBitmap = new Bitmap(lightBmp, 'auto', true);
 			layerLighting.addChild(lightBitmap);
 
 			borderTop 	 = new visBlack();
@@ -281,8 +296,8 @@
 		public function materialSetup():void
 		{
 			trace('Grafon.as/materialSetup() - Setting up materials');
-			tileArray 		= [];	//Tiles Materials
-			backwallArray   = []; 	//Backwall Materials
+			tileArray 		= [];	//Holds all Backwall Materials regardless of whether they're currently being used.
+			backwallArray   = []; 	//Holds all Backwall Materials regardless of whether they're currently being used.
 
 			for each (var newMat:XML in XmlBook.getXML("materials").mat)
 			{
@@ -400,151 +415,30 @@
 		//                  BACKGROUND RENDERING 
 		// ##########################################################
 
-		public function drawLoc(passedRoom:Room):void 
+		public function drawLoc(roomToRender:Room):void 
 		{
+			GameSession.currentSession.gr_stage = 1;
+			intializeRoomAndSkyType();
 
-			//####################
-			//      STAGE 1   	
-			//####################
-			//trace('Grafon.as/drawLoc - RENDERING STEP 1/20');
-			GameSession.currentSession.gr_stage = 1; 
-			room = passedRoom;
-			resX = room.roomWidth * tilepixelwidth;
-			resY = room.roomHeight * tilepixelheight;
-			
-			var transparentBackground:Boolean = room.transparentBackground;
-			if (room.backwall == 'sky') transparentBackground = true;	//If the decorative background layer is sky, set traansparentBackground to true.
-
-
-			//####################
-			//      STAGE 2  DRAWING ROOM BORDERS
-			//####################
-			//trace('Grafon.as/drawLoc - RENDERING STEP 2/20');
 			GameSession.currentSession.gr_stage = 2;
-			borderTop.x = borderBottom.x = -50;
-			borderRight.y = borderLeft.y = 0;
-			borderTop.y = 0;
-			borderLeft.x = 0;
-			borderBottom.y = room.roomPixelHeight - 1;
-			borderRight.x = room.roomPixelWidth - 1;
-			borderTop.scaleX = borderBottom.scaleX = room.roomPixelWidth / 100 + 1;
-			borderTop.scaleY = borderBottom.scaleY = 2;
-			borderRight.scaleY = borderLeft.scaleY = room.roomPixelHeight / 100;
-			borderRight.scaleX = borderLeft.scaleX = 2;
-
-
-			//####################
-			//      STAGE 3   
-			//####################
-			//trace('Grafon.as/drawLoc - RENDERING STEP 3/20');
+			determineRoomBorderSize();
+			
 			GameSession.currentSession.gr_stage = 3;
-			frontBmp.lock();
-			backBmp.lock();
-			backBmp2.lock();
-			vodaBmp.lock();
+			redrawLighting();
 
-			frontBmp.fillRect(screenArea, 0); 
-			backBmp.fillRect(screenArea, 0);
-			backBmp2.fillRect(screenArea, 0);
-			vodaBmp.fillRect(screenArea, 0);
-			satsBmp.fillRect(screenArea, 0);
-			
-			lightBmp.fillRect(lightRect, 0xFF000000); //White
-			setLight();
-			layerLighting.visible = room.black && Settings.black;
-			warShadow();
-			
-			var darkness:int = 0xAA + room.darkness;
-			if (darkness > 0xFF) darkness = 0xFF;
-			if (darkness < 0) darkness = 0;
-			colorBmp.fillRect(screenArea, darkness * 0x1000000); //Black
-			shadBmp.fillRect(screenArea, 0xFFFFFFFF); 		   //White
-
-				
-			//####################
-			//      STAGE 4   
-			//####################
-			//trace('Grafon.as/drawLoc - RENDERING STEP 4/20');
 			GameSession.currentSession.gr_stage = 4;
-			var front:Sprite = new Sprite();	//Why are these defined and instantiated here?
-			var back:Sprite = new Sprite();
-			var back2:Sprite = new Sprite();	
-			var voda:Sprite = new Sprite();	
+			resetScreen();
 
-			for each (var tileMaterial:* in tileArray)
-			{
-				tileMaterial.used = false;
-			}
-
-			for each (var backwallMaterial:* in backwallArray)
-			{
-				backwallMaterial.used = false;
-			}
-
-				
-			//####################
-			//      STAGE 5   		TILE RENDERING
-			//####################
-			//trace('Grafon.as/drawLoc - RENDERING STEP 5/20');
-			GameSession.currentSession.gr_stage = 5;  // Creates a 2D grid, and iterates through it to draw the tiles(?)
-			for (var k:int = 0; k < room.roomWidth; k++) //for each tile in the room's horizontal rows...
-			{
-				for (var l:int = 0; l < room.roomHeight; l++) //for each tile in the room's vertical columns...
-				{
-					var tile:Tile = room.getTile(k, l); //Set the tile to modify as the current tile in the grid.
-					room.tileKontur(k, l, tile);
-
-					if (tileArray[tile.tileTexture]) tileArray[tile.tileTexture].used = true;
-					if (backwallArray[tile.tileRearTexture]) backwallArray[tile.tileRearTexture].used = true;
-
-
-					if (tile.vid > 0 || tile.vid2 > 0 || tile.water)
-					{
-						var spriteWidth:int = k * tilepixelwidth;
-						var spriteHeight:int = l * tilepixelheight;
-						var tileSprite:MovieClip;
-
-						if (tile.vid > 0) 
-						{				
-							tileSprite = new tileFront();
-							tileSprite.gotoAndStop(tile.vid);
-							if (tile.vRear) back2.addChild(tileSprite);
-							else front.addChild(tileSprite);
-							tileSprite.x = spriteWidth;
-							tileSprite.y = spriteHeight;
-						}
-						if (tile.vid2 > 0) 
-						{				
-							tileSprite = new tileFront();
-							tileSprite.gotoAndStop(tile.vid2);
-							if (tile.v2Rear) back2.addChild(tileSprite);
-							else front.addChild(tileSprite);
-							tileSprite.x = spriteWidth;
-							tileSprite.y = spriteHeight;
-						}
-						if (tile.water) 
-						{
-							tileSprite = new tileVoda();
-							tileSprite.gotoAndStop(room.tipWater+1);
-							if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) 
-							{
-								tileSprite.voda.gotoAndStop(2);
-							}
-							tileSprite.x = spriteWidth;
-							tileSprite.y = spriteHeight;
-							voda.addChild(tileSprite);
-						}
-					}
-				}
-			}
+			GameSession.currentSession.gr_stage = 5;
+			drawAllTilesToCanvas();
 
 			//####################
 			//      STAGE 6   
 			//####################
 			//trace('Grafon.as/drawLoc - RENDERING STEP 6/20');
 			GameSession.currentSession.gr_stage = 6;
-			vodaBmp.draw(voda, null, null, null, null, false);
-			frontBmp.draw(front, null, null, null, null, false);
+			vodaBmp.draw(canvasWater, null, null, null, null, false);
+			frontBmp.draw(canvasTileFront, null, null, null, null, false);
 
 				
 			//####################
@@ -678,7 +572,7 @@
 			//####################
 			//trace('Grafon.as/drawLoc - RENDERING STEP 14/20');
 			GameSession.currentSession.gr_stage = 14;  
-			backBmp2.draw(back, null, room.cTransform, null, null, false);
+			backBmp2.draw(canvasTileBack, null, room.cTransform, null, null, false);
 
 
 			//####################
@@ -757,9 +651,135 @@
 
 			//trace('Grafon.as/drawLoc - RENDERING FINISHED 20/20');
 			GameSession.currentSession.gr_stage = 0;  // STAGE 20 - FINISHED
+
+			// HELPER FUNCTIONS
+			function intializeRoomAndSkyType() // Stage 1
+			{
+				room = roomToRender;
+			
+				transparentBackground = room.transparentBackground;
+				if (room.backwall == 'sky') transparentBackground = true;
+			}
+
+			function determineRoomBorderSize():void // Stage 2
+			{
+				borderTop.x = borderBottom.x = -50;
+				borderRight.y = borderLeft.y = 0;
+				borderTop.y = 0;
+				borderLeft.x = 0;
+				borderBottom.y = room.roomPixelHeight - 1;
+				borderRight.x = room.roomPixelWidth - 1;
+				borderTop.scaleX = borderBottom.scaleX = room.roomPixelWidth / 100 + 1;
+				borderTop.scaleY = borderBottom.scaleY = 2;
+				borderRight.scaleY = borderLeft.scaleY = room.roomPixelHeight / 100;
+				borderRight.scaleX = borderLeft.scaleX = 2;
+			}
+
+			function redrawLighting():void // Stage 3
+			{
+				var bitmapArray:Array = 
+				[
+					frontBmp, backBmp, backBmp2, vodaBmp
+				];
+				for each (var bmp:BitmapData in bitmapArray)
+				{
+					bmp.lock();
+					bmp.fillRect(screenArea, TRANSPARENT);
+				}
+				satsBmp.fillRect(screenArea,  TRANSPARENT); // I don't know why sats is not locked.
+				lightBmp.fillRect(lightRect, BLACK);
+
+				setLight();
+				layerLighting.visible = room.black && Settings.black;
+				
+				warShadow();
+				
+				darkness = 0xAA + room.darkness;
+				if (darkness > 0xFF) darkness = 0xFF;
+				if (darkness < 0) darkness = 0;
+				colorBmp.fillRect(screenArea, darkness * 0x1000000);
+				shadBmp.fillRect(screenArea, WHITE);
+			}
+
+			function resetScreen():void // Stage 4
+			{
+				//TODO: Call these a canvas or something.
+				canvasTileFront = new Sprite();
+				canvasTileBack  = new Sprite();
+				back2 = new Sprite();
+				canvasWater  = new Sprite();
+
+				// Set all tile and background materials as not being drawn.
+				for each (var tileMaterial:Material in tileArray)
+				{
+					tileMaterial.used = false;
+				}
+				for each (var backwallMaterial:Material in backwallArray)
+				{
+					backwallMaterial.used = false;
+				}
+			}
+
+			function drawAllTilesToCanvas():void // Stage 5
+			{
+				for (var k:int = 0; k < room.roomWidth; k++) //for each tile in the room's horizontal rows...
+				{
+					for (var l:int = 0; l < room.roomHeight; l++) //for each tile in the room's vertical columns...
+					{
+						var tile:Tile = room.getTile(k, l); // Get the information of the current tile we're drawing.
+
+						room.tileKontur(k, l, tile); //???
+
+						// Set the used property to true on all textures being used.
+						if (tileArray[tile.tileTexture]) tileArray[tile.tileTexture].used = true;
+						if (backwallArray[tile.tileRearTexture]) backwallArray[tile.tileRearTexture].used = true;
+
+						var spriteWidth:int = k * tilepixelwidth;
+						var spriteHeight:int = l * tilepixelheight;
+						
+						var tileContainer:MovieClip;
+
+						// Determine if the container should be a tile or water object. Both of these linkages are defined in the '.fla'.
+						if (tile.vid > 0) 
+						{
+							// New moviewclip to hold the texture
+							tileContainer = new tileFront();
+							tileContainer.gotoAndStop(tile.vid);
+
+							// Determine the correct canvas and add the texture to it
+							if (tile.vRear) back2.addChild(tileContainer);
+							else canvasTileFront.addChild(tileContainer);
+
+							// Move the texture to the correct position on the canvas
+							tileContainer.x = spriteWidth;
+							tileContainer.y = spriteHeight;
+						}
+						if (tile.vid2 > 0) 
+						{				
+							tileContainer = new tileFront();
+							tileContainer.gotoAndStop(tile.vid2);
+							if (tile.v2Rear) back2.addChild(tileContainer);
+							else canvasTileFront.addChild(tileContainer);
+							tileContainer.x = spriteWidth;
+							tileContainer.y = spriteHeight;
+						}
+						if (tile.water) 
+						{
+							tileContainer = new tileVoda();
+							tileContainer.gotoAndStop(room.tipWater + 1);
+							if (room.getTile(k, l - 1).water == 0 && room.getTile(k, l - 1).phis == 0) 
+							{
+								tileContainer.voda.gotoAndStop(2);
+							}
+							tileContainer.x = spriteWidth;
+							tileContainer.y = spriteHeight;
+							canvasWater.addChild(tileContainer);
+						}
+					}
+				}
+			}
 		}
 		
-
 		//****************************************************************************************************************************
 
 		//                                                FUNCTIONS
@@ -805,16 +825,17 @@
 			}
 		}
 		
-		public function drawBackWall(tex:String, sposob:int = 0):void // Filling the back wall with texture
+		public function drawBackWall(tex:String, drawingMode:int = 0):void // Filling the back wall with texture
 		{
 			if (tex == 'sky') return;
+
 			var backgroundMatrix:Matrix = new Matrix();
 			var fill:BitmapData = getObj(tex);
 			if (fill == null) fill = getObj('tBackWall')
 			var baseSprite:Sprite = new Sprite();
 			baseSprite.graphics.beginBitmapFill(fill);
 
-			switch (sposob) 
+			switch (drawingMode) 
 			{
 				case 0:
 					baseSprite.graphics.drawRect(0, 0, finalWidth, finalHeight);
@@ -837,7 +858,6 @@
 			backBmp.draw(baseSprite, backgroundMatrix, null, null, null, false);
 		}
 		
-
 		//Identify this function. Condensed 8 if else statements here. Original for reference: spriteContainer.c1.gotoAndStop(tile.kont1 + 1); 
 		public function setMCT(spriteContainer:MovieClip, tile:Tile, isTopLayer:Boolean):void
 		{
@@ -868,39 +888,39 @@
 
 			var thisTile:Tile;
 			var spriteContainer:MovieClip;
-			var tileCanvas:Sprite 	= new Sprite();
+			var newTileSprite:Sprite 	= new Sprite();
+			
 			var tileTexture:Sprite 	= new Sprite();
-			var maska:Sprite 		= new Sprite();
+			var tileTextureMask:Sprite = new Sprite();
+
 			var border:Sprite 		= new Sprite();
-			var bmaska:Sprite 		= new Sprite();
+			var borderMask:Sprite 		= new Sprite();
+
 			var floor:Sprite 		= new Sprite();
-			var fmaska:Sprite 		= new Sprite();
+			var floorMask:Sprite 		= new Sprite();
 			
 			if (material.texture == null) tileTexture.graphics.beginFill(0x666666);
-			else if (room.homeStable && material.alttexture != null) 
-			{
-				tileTexture.graphics.beginBitmapFill(material.alttexture);
-			}
+			else if (room.homeStable && material.alttexture != null) tileTexture.graphics.beginBitmapFill(material.alttexture);
 			else tileTexture.graphics.beginBitmapFill(material.texture);
 
 			tileTexture.graphics.drawRect(0, 0, finalWidth, finalHeight);
-			tileCanvas.addChild(tileTexture);
-			tileCanvas.addChild(maska);
+			newTileSprite.addChild(tileTexture);
+			newTileSprite.addChild(tileTextureMask);
 
 			if (material.border) 
 			{
 				border.graphics.beginBitmapFill(material.border);
 				border.graphics.drawRect(0, 0, finalWidth, finalHeight);
-				tileCanvas.addChild(border);
-				tileCanvas.addChild(bmaska);
+				newTileSprite.addChild(border);
+				newTileSprite.addChild(borderMask);
 			}
 
 			if (material.floor) 
 			{
 				floor.graphics.beginBitmapFill(material.floor);
 				floor.graphics.drawRect(0, 0, finalWidth, finalHeight);
-				tileCanvas.addChild(floor);
-				tileCanvas.addChild(fmaska);
+				newTileSprite.addChild(floor);
+				newTileSprite.addChild(floorMask);
 			}
 
 			//Loop for drawing tiles. Draws all tiles in an X axis, then increments the Y axis by 1.
@@ -915,16 +935,9 @@
 					{
 						isDraw = true;
 
-						if (material.textureMask) 
-						{
-							setMask(spriteContainer, material.textureMask, thisTile, i, j, isTopLayer, maska);
-						}
-
-						if (material.borderMask) 
-						{
-							setMask(spriteContainer, material.borderMask, thisTile, i, j, isTopLayer, bmaska);
-						}
-
+						// Determine the applicable mask types, then draw them.
+						if (material.textureMask) setMask(spriteContainer, material.textureMask, thisTile, i, j, isTopLayer,  tileTextureMask);
+						if (material.borderMask)  setMask(spriteContainer,  material.borderMask, thisTile, i, j, isTopLayer, borderMask);
 						if (material.floorMask) 
 						{ 
 							spriteContainer = new material.floorMask();
@@ -933,10 +946,9 @@
 								spriteContainer.c1.gotoAndStop(thisTile.kont1 + 1);
 								spriteContainer.c2.gotoAndStop(thisTile.kont2 + 1);
 							}
-							fmaska.addChild(spriteContainer);
+							floorMask.addChild(spriteContainer);
 							spriteContainer.x = (i + 0.5) * tilepixelwidth;
 							spriteContainer.y = (j + 0.5 + thisTile.zForm / 4) * tilepixelheight;
-
 						}
 					}
 				}
@@ -944,34 +956,24 @@
 
 			if (!isDraw) return; //If the tile's material should not be drawn, return.
 
-			tileTexture.mask = maska; 
-			border.mask = bmaska; 
-			floor.mask = fmaska;
+			tileTexture.mask = tileTextureMask; 
+			border.mask = borderMask; 
+			floor.mask = floorMask;
 
-			tileTexture.cacheAsBitmap 	= Settings.bitmapCachingOption; 
-			maska.cacheAsBitmap		 	= Settings.bitmapCachingOption; 
-			border.cacheAsBitmap	 	= Settings.bitmapCachingOption; 
-			bmaska.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
-			floor.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
-			fmaska.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
+			tileTexture.cacheAsBitmap 		= Settings.bitmapCachingOption; 
+			tileTextureMask.cacheAsBitmap 	= Settings.bitmapCachingOption; 
+			border.cacheAsBitmap	 		= Settings.bitmapCachingOption; 
+			borderMask.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
+			floor.cacheAsBitmap 	 		= Settings.bitmapCachingOption; 
+			floorMask.cacheAsBitmap 	 	= Settings.bitmapCachingOption; 
 
-			if (material.appliedFilters) //If the material has any filters...
-			{
-				tileCanvas.filters = material.appliedFilters;  // Apply them to the sprite.
-			}
+			if (material.appliedFilters) newTileSprite.filters = material.appliedFilters; //If the material has any filters, apply them to the sprite.
 
-			if (isTopLayer)
-			{
-				frontBmp.draw(tileCanvas, null, null, null, null, false);
-			}
-			else if (isClimbable) 
-			{
-				backBmp2.draw(tileCanvas, null, room.cTransform, null, null, false);
-			}
-			else 
-			{
-				backBmp.draw(tileCanvas, null, null, null, null, false);
-			}
+			// Determine the type of tile, then draw it.
+			if 		(isTopLayer)  frontBmp.draw(newTileSprite, null, null, null, null, false);
+			else if (isClimbable) backBmp2.draw(newTileSprite, null, room.cTransform, null, null, false);
+			else 				   backBmp.draw(newTileSprite, null, null, null, null, false);
+
 
 			function setMask(spriteContainer:MovieClip, materialMask:Class, tile:Tile, k:int, l:int, isTopLayer:Boolean, parent:Sprite):void 
 			{
@@ -987,8 +989,6 @@
 				}
 			}
 		}
-		
-		
 
 		//================================================================================================		
 		//							Execution Time
@@ -1029,7 +1029,7 @@
 			voda.gotoAndStop(room.tipWater + 1);
 			if (room.getTile(tile.X, tile.Y - 1).water == 0 && room.getTile(tile.X, tile.Y - 1).phis == 0 ) voda.gotoAndStop(2);
 			else voda.gotoAndStop(1);
-			vodaBmp.draw(voda, backgroundMatrix, room.cTransform, (tile.water > 0) ? 'normal':'erase', null, false);
+			vodaBmp.draw(canvasWater, backgroundMatrix, room.cTransform, (tile.water > 0) ? 'normal':'erase', null, false);
 			if (recurs) drawWater(room.getTile(tile.X, tile.Y + 1), false);
 		}
 			
