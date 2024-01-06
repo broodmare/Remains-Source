@@ -465,87 +465,84 @@ package unitdata
 			
 		}
 		
-		public function setGlobalDif(ndif:int=2):void
+		public function setGlobalDif(ndif:int = 2):void
 		{
-			//trace('difff',ndif);
-			if (ndif==0) 
+			switch(ndif)
 			{
-				begHP=200;
-				lvlHP=25;
-				organMult=0.2;
-				dieDamage=0;
-				critHeal=0.2;
-				teleMana=0;
-				priceBlood = priceOrgan = 0.5;
-				priceRad=1;
-				pricePoison = priceCut = 4;
-				difCapsMult=1;
-				himBadDif=1;
-				petRes=20;
-			} 
-			else if (ndif==1) 
-			{
-				begHP=150;
-				lvlHP=25;
-				organMult=0.5;
-				dieDamage=0;
-				critHeal=0.2;
-				teleMana=0;
-				priceBlood = priceOrgan = 0.5;
-				priceRad = 1;
-				pricePoison = priceCut = 4;
-				difCapsMult=1;
-				himBadDif=1;
-				petRes=20;
-			} 
-			else if (ndif==2) 
-			{
-				begHP=100;
-				lvlHP=20;
-				organMult = 1;
-				dieDamage = 0.15;
-				critHeal = 0.2;
-				teleMana = 0.5;
-				priceBlood = priceOrgan = 0.5;
-				priceRad=1;
-				pricePoison = priceCut = 4;
-				difCapsMult=1;
-				himBadDif=1.3;
-				petRes=30;
-			} 
-			else if (ndif==3) 
-			{
-				begHP=70;
-				lvlHP=15;
-				organMult=1;
-				dieDamage=0.25;
-				critHeal=0.1;	//восстановление от критических эффектов
-				teleMana=1;
-				priceBlood=priceOrgan=1;
-				priceRad=1.5;
-				pricePoison = priceCut = 6;
-				difCapsMult=1;
-				himBadDif=2;
-				petRes=60;
-				neujazMax=20;
-				bonusHealMult=0.75;
-			} 
-			else if (ndif==4) 
-			{
-				begHP=40;
-				lvlHP=10;
-				organMult=1;
-				dieDamage=0.35;
-				critHeal=0.1;	//восстановление от критических эффектов
-				teleMana=1;
-				priceBlood = priceOrgan = 1;
-				priceRad=1.5;
-				pricePoison = priceCut = 6;
-				difCapsMult=0.5;
-				himBadDif=2.5;
-				petRes=90;
-				neujazMax=15;
-				bonusHealMult=0.5;
+				case 0:
+					begHP=200;
+					lvlHP=25;
+					organMult=0.2;
+					dieDamage=0;
+					critHeal=0.2;
+					teleMana=0;
+					priceBlood = priceOrgan = 0.5;
+					priceRad=1;
+					pricePoison = priceCut = 4;
+					difCapsMult=1;
+					himBadDif=1;
+					petRes=20;
+					break;
+				case 1:
+					begHP=150;
+					lvlHP=25;
+					organMult=0.5;
+					dieDamage=0;
+					critHeal=0.2;
+					teleMana=0;
+					priceBlood = priceOrgan = 0.5;
+					priceRad = 1;
+					pricePoison = priceCut = 4;
+					difCapsMult=1;
+					himBadDif=1;
+					petRes=20;
+					break;
+				case 2:
+					begHP=100;
+					lvlHP=20;
+					organMult = 1;
+					dieDamage = 0.15;
+					critHeal = 0.2;
+					teleMana = 0.5;
+					priceBlood = priceOrgan = 0.5;
+					priceRad=1;
+					pricePoison = priceCut = 4;
+					difCapsMult=1;
+					himBadDif=1.3;
+					petRes=30;
+					break;
+				case 3:
+					begHP=70;
+					lvlHP=15;
+					organMult=1;
+					dieDamage=0.25;
+					critHeal=0.1;	//восстановление от критических эффектов
+					teleMana=1;
+					priceBlood=priceOrgan=1;
+					priceRad=1.5;
+					pricePoison = priceCut = 6;
+					difCapsMult=1;
+					himBadDif=2;
+					petRes=60;
+					neujazMax=20;
+					bonusHealMult=0.75;
+					break;
+				case 4:
+					begHP=40;
+					lvlHP=10;
+					organMult=1;
+					dieDamage=0.35;
+					critHeal=0.1;	//восстановление от критических эффектов
+					teleMana=1;
+					priceBlood = priceOrgan = 1;
+					priceRad=1.5;
+					pricePoison = priceCut = 6;
+					difCapsMult=0.5;
+					himBadDif=2.5;
+					petRes=90;
+					neujazMax=15;
+					bonusHealMult=0.5;
+					break;
 			}
 		}
 		
@@ -737,15 +734,27 @@ package unitdata
 		//вернуть уровень, соответствующий параметру skill оружия
 		public function getWeapLevel(sk:int):int
 		{
-			if (sk == 1) return getSkLevel(skills['melee']);
-			if (sk == 2) return getSkLevel(skills['smallguns']);
-			if (sk == 3) return getSkLevel(skills['repair']);
-			if (sk == 4) return getSkLevel(skills['energy']);
-			if (sk == 5) return getSkLevel(skills['explosives']);
-			if (sk == 6) return getSkLevel(skills['magic']);
-			if (sk == 7) return getSkLevel(skills['tele']);
-			return 100;
+			switch (sk)
+			{
+				case 1:
+					return getSkLevel(skills['melee']);
+				case 2:
+					return getSkLevel(skills['smallguns']);
+				case 3:
+					return getSkLevel(skills['repair']);
+				case 4:
+					return getSkLevel(skills['energy']);
+				case 5:
+					return getSkLevel(skills['explosives']);
+				case 6:
+					return getSkLevel(skills['magic']);
+				case 7:
+					return getSkLevel(skills['tele']);
+				default:
+					return 100;
+			}
 		}
+
 		//вернуть уровень скилла по его названию
 		public function getSkillLevel(sk:String):int 
 		{
@@ -787,17 +796,17 @@ package unitdata
 		//формула из версии 0.6
 		public function xpProgress06(lvl:int):int 
 		{
-			return xpDelta*(lvl)*(lvl+1)/2;
+			return xpDelta * (lvl) * (lvl + 1) / 2;
 		}
 		
 		//принудительно установить количество опыта для сейва старой версии
 		public function recalcXP():void
 		{
-			if (xpVer==0) 
+			if (xpVer == 0) 
 			{
-				var razn:int=xpProgress(level-1)-xpProgress06(level-1);
+				var razn:int = xpProgress(level - 1) - xpProgress06(level - 1);
 				trace('Формулы расчёта опыта разных версий, разница:', razn);
-				xpCur+=razn;
+				xpCur += razn;
 			}
 		}
 		
