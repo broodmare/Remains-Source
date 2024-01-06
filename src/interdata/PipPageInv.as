@@ -161,29 +161,28 @@ package interdata
 				statHead.ammotip.text=Res.txt('pip', 'ii6');
 				statHead.ammo.text='';
 				if (Settings.hardInv) statHead.mass.text=Res.txt('pip', 'ii8');
-				for (s in inv.items) {
-					if (s=='' || inv.items[s].kol<=0 || inv.items[s].invis) continue;
-					var node:XML=inv.items[s].xml;
-					if (node==null) continue;
+				for (s in inv.items) 
+				{
+					if (s == '' || inv.items[s].kol <= 0 || inv.items[s].invis) continue;
+					var node:XML = inv.items[s].xml;
+					if (node == null) continue;
 					
-					if (inv.items[s].nov==1 && (dat-inv.items[s].dat)>1000*60*15) inv.items[s].nov=0;
-					if (inv.items[s].nov==2 && (dat-inv.items[s].dat)>1000*60*5) inv.items[s].nov=0;
+					if (inv.items[s].nov == 1 && (dat - inv.items[s].dat) > 1000 * 60 * 15) inv.items[s].nov = 0;
+					if (inv.items[s].nov == 2 && (dat - inv.items[s].dat) > 1000 * 60 *  5) inv.items[s].nov = 0;
 						
 					if (!checkCat(node.@tip)) continue;
-					var itemTip=0;
-					if (node.@tip=='a' || node.@tip=='e') itemTip=2;
-					else if (node.@us>0) itemTip=1;
+					var itemTip = 0;
+					if (node.@tip == 'a' || node.@tip == 'e') itemTip = 2;
+					else if (node.@us > 0) itemTip = 1;
 					if ((itemTip == 1 && subCategory == 3) || (itemTip == 0 && subCategory == 4) || (itemTip == 2 && subCategory == 5)) 
 					{
 						var tcat:String;
 						if (Res.istxt('pip',node.@tip)) tcat=Res.txt('pip', node.@tip);
 						else tcat=Res.txt('pip', 'stuff');
-						n={tip:node.@tip, id:s, objectName:((node.@tip=='e')?Res.txt('weapon',s):inv.items[s].objectName), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
-						if (node.@tip=='valuables') n.price=node.@price;
-						if (node.@tip=='food' && node.@ftip=='1') {
-							n.trol='drink';
-						}
-						if (node.@tip=='spell' && inv.weapons[s] && inv.weapons[s].respect==1) continue;	//скрытое заклинание
+						n={tip:node.@tip, id:s, objectName:((node.@tip == 'e') ? Res.txt('weapon',s):inv.items[s].objectName), kol:inv.items[s].kol, drop:0, mass:inv.items[s].mass, cat:tcat, trol:node.@tip};
+						if (node.@tip == 'valuables') n.price = node.@price;
+						if (node.@tip == 'food' && node.@ftip == '1') n.trol = 'drink';
+						if (node.@tip == 'spell' && inv.weapons[s] && inv.weapons[s].respect==1) continue;	//скрытое заклинание
 						n.sort=n.cat;
 						n.sort2=node.@sort.length()?node.@sort:0;
 						//патроны к текущему оружию вперёд
@@ -193,19 +192,19 @@ package interdata
 					}
 				}
 				if (subCategory == 3) pip.reqKey = true;
-				if (arr.length) arr.sortOn(['sort','sort2','objectName'],[0,Array.NUMERIC,0]);
-				pip.massText=Res.txt('pip','massInv0',0,true)+'<br><br>'+Res.txt('pip','massInv3',0,true);
+				if (arr.length) arr.sortOn(['sort', 'sort2', 'objectName'], [0, Array.NUMERIC, 0]);
+				pip.massText = Res.txt('pip', 'massInv0', 0, true) + '<br><br>' + Res.txt('pip', 'massInv3', 0, true);
 			}
-			pip.helpText = Res.txt('pip','helpInv' + subCategory, 0, true);
+			pip.helpText = Res.txt('pip', 'helpInv' + subCategory, 0, true);
 			if (arr.length == 0) 
 			{
-				vis.emptytext.text=Res.txt('pip', 'emptyinv');
-				statHead.visible=false;
+				vis.emptytext.text = Res.txt('pip', 'emptyinv');
+				statHead.visible = false;
 			} 
 			else 
 			{
-				vis.emptytext.text='';
-				statHead.visible=true;
+				vis.emptytext.text = '';
+				statHead.visible = true;
 			}
 			showBottext();
 		}
@@ -299,11 +298,11 @@ package interdata
 				else item.ammo.text='';
 				if (item.fav.text=='') 
 				{
-					if (inv.items[obj.id].nov==1) item.fav.text='☩';
-					if (inv.items[obj.id].nov==2) item.fav.text='+';
+					if (inv.items[obj.id].nov == 1) item.fav.text='☩';
+					if (inv.items[obj.id].nov == 2) item.fav.text='+';
 				}
-				if (obj.drop>0) item.ammotip.text=Res.txt('pip', 'drop')+': '+obj.drop;
-				else item.ammotip.text=obj.cat.substring(2);
+				if (obj.drop > 0) item.ammotip.text = Res.txt('pip', 'drop') + ': ' + obj.drop;
+				else item.ammotip.text = obj.cat.substring(2);
 			}
 		}
 		
@@ -323,7 +322,7 @@ package interdata
 			}
 			if (subCategory == 3 || subCategory == 4) 
 			{
-				if (subCategory == 3) assId=event.currentTarget.id.text;
+				if (subCategory == 3) assId = event.currentTarget.id.text;
 				infoItem(Item.L_ITEM,event.currentTarget.id.text, event.currentTarget.nazv.text);
 			}
 			if (subCategory == 5) 
@@ -469,13 +468,13 @@ package interdata
 		
 		public function showH(event:MouseEvent):void
 		{
-			if (actCurrent=='showhidden') //показать скрытое оружие
+			if (actCurrent == 'showhidden') //показать скрытое оружие
 			{
-				pip.showHidden=!pip.showHidden;
+				pip.showHidden =! pip.showHidden;
 				setStatus();
 				pip.snd(2);
 			} 
-			else if (actCurrent=='retr') //Возврат на базу
+			else if (actCurrent == 'retr') //Возврат на базу
 			{
 				if (inv.items['retr'].kol>0 && GameSession.currentSession.game.triggers['noreturn']!=1) 
 				{
@@ -485,13 +484,13 @@ package interdata
 				vis.butOk.visible=false;
 				pip.onoff(-1);
 			} 
-			else if (actCurrent=='drop') 
+			else if (actCurrent == 'drop') 
 			{
 				for each (var obj in arr) //выбросить вещи
 				{
-					if (obj.drop>0) inv.drop(obj.id, obj.drop);
+					if (obj.drop > 0) inv.drop(obj.id, obj.drop);
 				}
-				vis.butOk.visible=false;
+				vis.butOk.visible = false;
 				pip.onoff(-1);
 			}
 		}

@@ -47,13 +47,13 @@ package unitdata
 		{
 			owner = own;
 			weapons = [];
-			favIds = [];
-			armors = [];
-			spells = [];
-			items = [];
-			eqip = [];
-			ammos = [];
-			fav = [];
+			favIds 	= [];
+			armors 	= [];
+			spells 	= [];
+			items 	= [];
+			eqip 	= [];
+			ammos 	= [];
+			fav 	= [];
 			
 			itemsId = [];
 			for each (var node in XmlBook.getXML("items").item) 
@@ -64,20 +64,17 @@ package unitdata
 				if (item.invCat == 1 && item.mass > 0 && node.@perk.length() == 0) eqip.push(node.@id);
 				if (node.@base.length()) ammos[node.@base] = 0;
 			}
-			money=items['money'];
-			pin=items['pin'];
-			gel=items['gel'];
-			good=items['good'];
-			items['']=new Item('', '', 0, 0, <item/>);
-			if (loadObj==null) 
+			money = items['money'];
+			pin = items['pin'];
+			gel = items['gel'];
+			good = items['good'];
+			items[''] = new Item('', '', 0, 0, <item/>);
+			if (loadObj == null) 
 			{
 				if (opt && opt.skipTraining) addMin();
 				else addBegin();
 			} 
-			else 
-			{
-				addLoad(loadObj);
-			}
+			else addLoad(loadObj);
 			cItemMax = itemsId.length;
 		}
 		
@@ -104,21 +101,12 @@ package unitdata
 		public function getMed(n:int):String 	//$$$
 		{
 			var nhp:Number = 0;
-			if (n == 1) 
-			{
-				nhp = gg.pers.inMaxHP - gg.pers.headHP;
-			} 
-			else if (n == 2) 
-			{
-				nhp = gg.pers.inMaxHP - gg.pers.torsHP;
-			} 
-			else if (n == 3) 
-			{
-				nhp = gg.pers.inMaxHP - gg.pers.legsHP;
-			} 
+			if (n == 1) 	 nhp = gg.pers.inMaxHP - gg.pers.headHP;
+			else if (n == 2) nhp = gg.pers.inMaxHP - gg.pers.torsHP;
+			else if (n == 3) nhp = gg.pers.inMaxHP - gg.pers.legsHP;
 			else return '';
 			var list = XmlBook.getXML("items").item;
-			var minRazn:Number=10000;
+			var minRazn:Number = 10000;
 			var nci:String='';
 			for each (var pot in list) 
 			{
@@ -534,7 +522,7 @@ package unitdata
 			return true;
 		}
 		
-		
+		//TODO: This checks multiple XML files instead of the correct one.
 		public function useFav(n:int):void
 		{
 			var ci:String = fav[n];
@@ -786,7 +774,6 @@ package unitdata
 		{
 			for each (var sp in XmlBook.getXML("items").item.(@tip == 'spell')) 
 			{
-
 				try
 				{
 					addSpell(sp.@id);
@@ -795,8 +782,6 @@ package unitdata
 				{
 					trace('Invent.as/addAllSpells() - ERROR while adding spell: "' + sp.@id + '".');
 				}
-				
-				
 			}
 		}
 		
@@ -1335,6 +1320,5 @@ package unitdata
 			
 			return obj;
 		}
-	}
-	
+	}	
 }
