@@ -1,6 +1,5 @@
 package locdata 
 {
-	
 	// Class describing the terrain and player activity related to it
 	// Contained within the game object
 
@@ -14,20 +13,19 @@ package locdata
 		public var level:Level;
 		public var loaded:Boolean = false;
 		
-		public var levelData:XML;
-		public var allroom:XML;
-
+		public var levelParameters:XML;	//
+		public var levelXMLData:XML; 	//
 		
-		public var begLocX:int=0;			// Initial location
-		public var begLocY:int=0;
-		public var mLocX:int=1;				// Terrain size
-		public var mLocY:int=1;
+		public var begLocX:int = 0;			// Initial location
+		public var begLocY:int = 0;
+		public var mLocX:int = 1;			// Terrain size
+		public var mLocY:int = 1;
 		
-		public var dif:Number=0;			// Difficulty level
-		public var biom:int=0;				// Types of enemies and other things encountered
-		public var conf:int=0;				// Room configuration
-		public var gameStage:int=0;			// Game story stage, affects loot drops
-		public var lootLimit:Number=0;			// Limit of special item drops
+		public var dif:Number = 0;			// Difficulty level
+		public var biom:int = 0;			// Types of enemies and other things encountered
+		public var conf:int = 0;			// Room configuration
+		public var gameStage:int = 0;		// Game story stage, affects loot drops
+		public var lootLimit:Number = 0;	// Limit of special item drops
 		public var list:int=0;				// Number in the list
 		public var rnd:Boolean=false;
 		public var autoLevel:Boolean=false;
@@ -65,51 +63,48 @@ package locdata
 		public var access:Boolean=false;
 		public var visited:Boolean=false;
 		public var passed:Boolean=false;
-
 		
-		public function LevelTemplate(l:XML) 
+		public function LevelTemplate(levelParam:XML) 
 		{
-			var levelXML:XML = l;
+			levelParameters = levelParam;
+			id = levelParameters.@id;
 
-			levelData = levelXML;
-			id = levelXML.@id;
-
-			if (levelXML.@tip.length()) 		tip 	= levelXML.@tip;
-			if (levelXML.@dif.length()) 		dif 	= levelXML.@dif;
-			if (levelXML.@biom.length()) 		biom 	= levelXML.@biom;
-			if (levelXML.@conf.length()) 		conf 	= levelXML.@conf;
-			if (levelXML.@stage.length()) 		gameStage = levelXML.@stage;
-			if (levelXML.@limit.length()) 		lootLimit = levelXML.@limit;
-			if (levelXML.@rnd.length()) 		rnd 	= true;
-			if (levelXML.@fin.length()) 		fin 	= levelXML.@fin;
-			if (levelXML.@autolevel.length()) 	autoLevel = true;
-			if (levelXML.@prob.length()) 		prob 	= levelXML.@prob;
-			if (levelXML.@list.length()) 		list 	= levelXML.@list;
-			if (levelXML.@locx.length()) 		begLocX = levelXML.@locx;
-			if (levelXML.@locy.length()) 		begLocY = levelXML.@locy;
-			if (levelXML.@mx.length()) 			mLocX 	= levelXML.@mx;
-			if (levelXML.@my.length()) 			mLocY 	= levelXML.@my;
-			if (levelXML.@acc.length()) 		access 	= true;
-			if (levelXML.@exit.length()) 		exitProb = levelXML.@exit;
-			if (levelXML.@loadscr.length()) 	loadScr = levelXML.@loadscr;
-			if (levelXML.options.length()) 
+			if (levelParameters.@tip.length()) 		tip 	= levelParameters.@tip;
+			if (levelParameters.@dif.length()) 		dif 	= levelParameters.@dif;
+			if (levelParameters.@biom.length()) 		biom 	= levelParameters.@biom;
+			if (levelParameters.@conf.length()) 		conf 	= levelParameters.@conf;
+			if (levelParameters.@stage.length()) 		gameStage = levelParameters.@stage;
+			if (levelParameters.@limit.length()) 		lootLimit = levelParameters.@limit;
+			if (levelParameters.@rnd.length()) 		rnd 	= true;
+			if (levelParameters.@fin.length()) 		fin 	= levelParameters.@fin;
+			if (levelParameters.@autolevel.length()) 	autoLevel = true;
+			if (levelParameters.@prob.length()) 		prob 	= levelParameters.@prob;
+			if (levelParameters.@list.length()) 		list 	= levelParameters.@list;
+			if (levelParameters.@locx.length()) 		begLocX = levelParameters.@locx;
+			if (levelParameters.@locy.length()) 		begLocY = levelParameters.@locy;
+			if (levelParameters.@mx.length()) 			mLocX 	= levelParameters.@mx;
+			if (levelParameters.@my.length()) 			mLocY 	= levelParameters.@my;
+			if (levelParameters.@acc.length()) 		access 	= true;
+			if (levelParameters.@exit.length()) 		exitProb = levelParameters.@exit;
+			if (levelParameters.@loadscr.length()) 	loadScr = levelParameters.@loadscr;
+			if (levelParameters.options.length()) 
 			{
-				if (levelXML.options.@xp.length()) xp=levelXML.options.@xp;
-				if (levelXML.options.@color.length()) color=levelXML.options.@color;
-				if (levelXML.options.@backwall.length()) backwall=levelXML.options.@backwall;
-				if (levelXML.options.@border.length()) border=levelXML.options.@border;
-				if (levelXML.options.@skybox.length()) skybox=levelXML.options.@skybox;
-				if (levelXML.options.@music.length()) sndMusic=levelXML.options.@music;
-				if (levelXML.options.@postmusic.length()) postMusic=true;
-				if (levelXML.options.@rad.length()) rad=levelXML.options.@rad;
-				if (levelXML.options.@wrad.length()) wrad=levelXML.options.@wrad;
-				if (levelXML.options.@wtip.length()) tipWater=levelXML.options.@wtip;
-				if (levelXML.options.@wopac.length()) opacWater=levelXML.options.@wopac;
-				if (levelXML.options.@wdam.length()) wdam=levelXML.options.@wdam;
-				if (levelXML.options.@wtipdam.length()) wtipdam=levelXML.options.@wtipdam;
-				if (levelXML.options.@vis.length()) visMult=levelXML.options.@vis;
-				if (levelXML.options.@darkness.length()) darkness=levelXML.options.@darkness;
-				if (levelXML.options.@art.length()) artFire=levelXML.options.@art;
+				if (levelParameters.options.@xp.length()) xp=levelParameters.options.@xp;
+				if (levelParameters.options.@color.length()) color=levelParameters.options.@color;
+				if (levelParameters.options.@backwall.length()) backwall=levelParameters.options.@backwall;
+				if (levelParameters.options.@border.length()) border=levelParameters.options.@border;
+				if (levelParameters.options.@skybox.length()) skybox=levelParameters.options.@skybox;
+				if (levelParameters.options.@music.length()) sndMusic=levelParameters.options.@music;
+				if (levelParameters.options.@postmusic.length()) postMusic=true;
+				if (levelParameters.options.@rad.length()) rad=levelParameters.options.@rad;
+				if (levelParameters.options.@wrad.length()) wrad=levelParameters.options.@wrad;
+				if (levelParameters.options.@wtip.length()) tipWater=levelParameters.options.@wtip;
+				if (levelParameters.options.@wopac.length()) opacWater=levelParameters.options.@wopac;
+				if (levelParameters.options.@wdam.length()) wdam=levelParameters.options.@wdam;
+				if (levelParameters.options.@wtipdam.length()) wtipdam=levelParameters.options.@wtipdam;
+				if (levelParameters.options.@vis.length()) visMult=levelParameters.options.@vis;
+				if (levelParameters.options.@darkness.length()) darkness=levelParameters.options.@darkness;
+				if (levelParameters.options.@art.length()) artFire=levelParameters.options.@art;
 			}
 		}
 
@@ -118,7 +113,7 @@ package locdata
 		{
 			kolAllProb = 0;
 			kolClosedProb = 0;
-			for each(var xml in levelData.prob) 
+			for each(var xml in levelParameters.prob) 
 			{
 				kolAllProb++;
 				if (GameSession.currentSession.game.triggers['prob_'+xml.@id] != null) kolClosedProb++
@@ -135,6 +130,7 @@ package locdata
 			obj.passed = passed;
 			return obj;
 		}
+
 		public function load(obj:Object):Object
 		{
 			if (obj.cp != null) lastCpCode = obj.cp;

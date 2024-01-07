@@ -3,7 +3,8 @@ package servdata
 	
 	import unitdata.UnitNPC;
 	import servdata.QuestHelper;
-	
+	import locdata.LevelArray;
+
 	import components.Settings;
 	
 	public class NPC 
@@ -206,15 +207,15 @@ package servdata
 						}
 					}
 					if (dial.@prev.length() && trig('dial_'+dial.@prev)!=1) continue; 
-					if (dial.@level.length() && !GameSession.currentSession.game.levelArray[dial.@level].access) continue; 
+					if (dial.@level.length() && !LevelArray.initializedLevelVariants[dial.@level].access) continue; 
 					if (dial.@armor.length() && (GameSession.currentSession.gg.currentArmor==null || GameSession.currentSession.gg.currentArmor.id!=dial.@armor)) continue; 
 					if (dial.@pet.length() && GameSession.currentSession.gg.currentPet!=dial.@pet) continue; 
-					if (dial.@quest.length()) 
-					{						 // If a quest is active
+					if (dial.@quest.length()) // If a quest is active
+					{						
 						var quest = GameSession.currentSession.game.quests[dial.@quest];
 						if (quest == null || quest.state != 1) continue; 
-						if (dial.@sub.length()) 
-						{					// If there is a visible sub-quest
+						if (dial.@sub.length()) // If there is a visible sub-quest
+						{					
 							if (quest.subsId[dial.@sub]==null || quest.subsId[dial.@sub].invis) continue; 
 						}
 					}
@@ -317,18 +318,10 @@ package servdata
 		}
 		
 		// Set the top icon
-		//set public
 		public function setIco(n:String=null):void
 		{
-			try 
-			{
-				if (n==null) owner['ico'].gotoAndStop(owner['icoFrame']);
-				else owner['ico'].gotoAndStop(n);
-			} 
-			catch (err) 
-			{
-
-			}
+			if (n==null) owner['ico'].gotoAndStop(owner['icoFrame']);
+			else owner['ico'].gotoAndStop(n);
 		}
 		
 		public function repair():void
@@ -445,5 +438,4 @@ package servdata
 			refresh();
 		}
 	}
-	
 }

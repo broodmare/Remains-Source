@@ -71,7 +71,7 @@ package
 			} 
 			catch (err:Error) 
 			{
-				trace('Res.as/txt() - Failed to retrieve string ID: "' + id + '", with classKey: "' + classKey + '". Error: "' + err.message + '".');
+				//trace('Res.as/txt() - Failed to retrieve string ID: "' + id + '", with classKey: "' + classKey + '". Error: "' + err.message + '".');
 				xmlNodeText = 'ERROR';
 				return xmlNodeText;
 			}

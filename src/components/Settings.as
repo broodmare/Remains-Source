@@ -162,7 +162,7 @@ package components
         textureURL 	    	= 'data/texture.swf';
         spriteURL 	    	= 'data/sprite.swf';
         sprite1URL 	    	= 'data/sprite1.swf';
-        levelPath 	    	= 'data/Rooms/';
+        levelPath 	    	= 'data/rooms/';
 
 		languageXMLLocation = 'data/xmldata/';
 		xmlBookDataLocation = 'data/xmldata/';

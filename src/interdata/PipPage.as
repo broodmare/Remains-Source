@@ -18,6 +18,7 @@ package interdata
 	import unitdata.Armor;
 	import unitdata.UnitPlayer;
 	import locdata.Quest;
+	import locdata.LevelArray;
 	import weapondata.Weapon;
 	import servdata.Item;
 	import servdata.LootGen;
@@ -1048,7 +1049,7 @@ package interdata
 			//проверка на доступ к местности
 			if (task.@level.length()) 
 			{
-				var level:LevelTemplate=GameSession.currentSession.game.levelArray[task.@level];
+				var level:LevelTemplate = LevelArray.initializedLevelVariants[task.@level];
 				if (level==null) return false;
 				if (!level.access && !level.visited && GameSession.currentSession.pers.level<level.dif) return false;
 			}

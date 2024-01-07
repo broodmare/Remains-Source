@@ -18,7 +18,8 @@ package
 	import flash.external.ExternalInterface;
 
 	import locdata.*;
-	import roomdata.RoomContainer;
+	import locdata.LevelArray;
+
 	import graphdata.Grafon;
 	import graphdata.Part;
 	import graphdata.Emitter;
@@ -78,7 +79,6 @@ package
 		//Room components
 		public var level:Level;						//Current level
 		public var room:Room;						//Current room
-		public var roomContainer:RoomContainer;		//Holds all level data.
 
 		//Working variables
 		public var onConsol:Boolean = false;		//Console active
@@ -114,18 +114,12 @@ package
 		public var koladv:int = 10;					//advice number
 		public var load_log:String = '';			//This is the text that apepars onscreen during boot.
 
-		//Maps
-		public var allLevelsArray:Array;				//Stores all rooms for the current level as an array of XMLs.
-		public var levelsFound:int = 0;
-		public var levelsLoaded:int = 0;
-		public var allLevelsLoaded:Boolean = false;
-
 		//Other
-		public var comLoad:int 		= -1;				//load command
-		public var clickReq:int 	= 0;				//button click request, if set to 1, 2 will only be set after click
-		public var ng_wait:int 		= 0;				//new game wait
-		public var loadScreen:int 	= -1;				//loading screen
-		public var autoSaveN:int 	= 0;				//autosave slot number
+		public var comLoad:int 		= -1;			//load command
+		public var clickReq:int 	= 0;			//button click request, if set to 1, 2 will only be set after click
+		public var ng_wait:int 		= 0;			//new game wait
+		public var loadScreen:int 	= -1;			//loading screen
+		public var autoSaveN:int 	= 0;			//autosave slot number
 		public var log:String 		= '';
 		public var fc:int 			= 0;
 
@@ -134,7 +128,7 @@ package
 
 		public var constructorFinished:Boolean = false; // Used by main menu to start constructor part 2 and not call it repeatedly.
 		public var init2Done:Boolean = false;
-
+		private var levelLoadTimer:int = 0; // Debug message slowdownerer. 
 
 		public function GameSession(container:Sprite) 
 		{
@@ -231,12 +225,6 @@ package
 			
 			if (consol) 
 			{
-				if (!allLevelsLoaded)
-				{
-					trace('GameSession.as/init2() - Checking if all rooms are loaded.');
-					allLevelsLoadedCheck();
-				}
-
 				trace('GameSession.as/init2() - Consol enabled, returning.');
 				return;
 			}
@@ -244,10 +232,7 @@ package
 			trace('GameSession.as/init2() - Calling configObjSetup().');
 			configObjSetup();
 			
-			if (configObj) //Setting last command for console.
-			{
-				lastCom = configObj.data.lastCom;
-			} 
+			if (configObj) lastCom = configObj.data.lastCom; //Setting last command for console.
 			
 			trace('GameSession.as/init2() - Creating new Consol.');
 			consol = new Consol(vconsol, lastCom);
@@ -268,17 +253,8 @@ package
 			
 			trace('GameSession.as/init2() - Applying mouse settings.');
 			if (!Settings.systemCursor) Mouse.cursor = 'arrow';
-			
-			trace('GameSession.as/init2() - Creating allLevelsArray and loading all level XMLs from the XMLbook.');
-			allLevelsArray = [];
 
-			for each(var levelData:XML in XmlBook.getXML("levels").level) 
-			{
-				var levelLoader:LevelLoader = new LevelLoader(levelData.@id);
-				levelsFound++;
-				allLevelsArray[levelData.@id] = levelLoader;
-			}
-			trace('GameSession.as/init2() - Levels found: "' + levelsFound + '."');
+			//Removed loading levels here.
 
 			trace('GameSession.as/init2() - Calling Sound/loadMusic.');
 			Snd.loadMusic();
@@ -294,10 +270,7 @@ package
 			if (configObj.data.dialon 	!= null) Settings.dialOn = configObj.data.dialon;
 			if (configObj.data.zoom100 	!= null) Settings.zoom100 = configObj.data.zoom100;
 
-			if (Settings.zoom100) 
-			{
-				cam.isZoom = 0; 
-			}
+			if (Settings.zoom100) cam.isZoom = 0; 
 			else cam.isZoom = 2;
 
 			if (configObj.data.mat 			!= null) Settings.matFilter 	= configObj.data.mat;
@@ -331,10 +304,7 @@ package
 				configObj.data.nadv++;
 				if (configObj.data.nadv >= koladv) configObj.data.nadv = 0;
 			} 
-			else 
-			{
-				configObj.data.nadv = 1;
-			}
+			else configObj.data.nadv = 1;
 
 			if (configObj.data.chit > 0) 		Settings.chitOn 		= true;
 			if (configObj.data.vsWeaponNew > 0) Settings.vsWeaponNew 	= false;
@@ -355,31 +325,15 @@ package
 			trace('GameSession.as/configObjSetup() - Finished setup.');
 		}
 
-		//TODO: The 'If' check completes early. Investigate.
-		public function allLevelsLoadedCheck():void
-		{
-			if (levelsFound >= levelsLoaded) 
-			{
-				//trace('GameSession.as/allLevelsLoadedCheck() - All levels loaded, setting allLevelsLoaded to true. Levels found: "' + levelsFound + '" Levels Loaded: "' + levelsLoaded + '"');
-				allLevelsLoaded = true;
-			}
-		}
-
 		public function onDeactivate(event:Event):void //Pause and calling the pipbuck if focus is lost 
 		{
-			if (gameState == 1) 
-			{
-				pip.onoff(11);
-			}
+			if (gameState == 1) pip.onoff(11);
 			if (gameState > 0 && !Settings.alicorn) saveGame();
 		}
 		
 		public function resizeScreen():void //Pause and call pipbuck if window size is changed
 		{
-			if (gameState > 0) 
-			{
-				cam.setLoc(room);
-			} 
+			if (gameState > 0) cam.setLoc(room);
 			if (gui) gui.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
 			pip.resizeScreen(swfStage.stageWidth, swfStage.stageHeight);
 			grafon.setSkyboxSize(swfStage.stageWidth, swfStage.stageHeight);
@@ -414,8 +368,7 @@ package
 
 		//Start a new game or load a save. Pass the slot number or -1 for a new game
 		//Stage 0 - create HUD, SATS, and pipuck
-		//Initialize game
-		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null):void
+		public function startNewGame(nload:int = -1, nnewName:String = 'LP', nopt:Object = null):void // Called by the main menu when initializing the game.
 		{
 			trace('GameSession.as/startNewGame() - Starting a new game.');
 			//TODO: Remove testMode.
@@ -431,7 +384,8 @@ package
 			newName = nnewName;
 
 			trace('GameSession.as/startNewGame() - Creating new "Game()".');
-			game = new Game();
+			// TODO: Merge the two areas creating a Game object.
+			game = new Game(); // GAME DATA IS INITIALIZED HERE
 			newGame = nload < 0;
 			if (newGame) 
 			{
@@ -456,32 +410,32 @@ package
 			trace('GameSession.as/startNewGame() - Creating new SATS.');
 			sats = new Sats(vsats); // create SATS interface
 			
-			
-			if (nload == 99) // Load save data from file or slot.
-			{
-				trace('GameSession.as/startNewGame() - Loading data.');
-				data = loaddata; // loaded from file
-			} 
-			else 
-			{
-				trace('GameSession.as/startNewGame() - Loading data.');
-				data = saveArr[nload].data; // loaded from slot
-			}
+			trace('GameSession.as/startNewGame() - Loading data.'); // Load save data from file or slot.
+			if (nload == 99) data = loaddata; // loaded from file
+			else data = saveArr[nload].data; // loaded from slot
 
+			// LEVELS NEED TO BE LOADED BY HERE.
+			trace('GameSession.as/startNewGame() - Waiting on all levels to load.')
+			ng_wait = 1; // Waiting on all levels to be loaded.
+		}
+			
+		private function newGameStage1():void // Levels have been loaded, do other stuff...
+		{
 			if (newGame) // Start new game
 			{
 				trace('GameSession.as/startNewGame() - Calling "game.init()".');
-				game.init(null, opt); 
+				game.init(null, opt);
 			}
 			else 
 			{
 				trace('GameSession.as/startNewGame() - Calling "game.init()".');
 				game.init(data.game);
 			}
-			ng_wait = 1;
+
+			ng_wait = 2;
 		}
-		
-		public function newGame1():void // stage 1 - create character and inventory
+
+		private function newGameStage2():void // stage 1 - create character and inventory
 		{
 			trace('GameSession.as/newGame1() - Starting a new game.');
 			if (!newGame) appearanceWindow.load(data.app);
@@ -496,14 +450,14 @@ package
 			}
 			Unit.txtMiss = Res.txt('gui', 'miss');
 
-			//TODO: Why are we waiting on player input to load the levels? It lets you read the intro text, but there's no reason to stop loading things.
 			trace('GameSession.as/newGame1() - Waiting on player input to finish starting a new game.');
-			waitLoadClick(); 
-			ng_wait = 2;
+			waitLoadClick();
+
+			ng_wait = 3;
 		}
 		
 		
-		public function newGame2():void // Stage 2 - Initialize the level, then enter it
+		private function newGameStage3():void // Stage 2 - Initialize the level, then enter it
 		{
 			trace('GameSession.as/newGame2() - Beginning STAGE 2 of a starting a new game.');
 
@@ -589,7 +543,8 @@ package
 			cam.showOn = false;			
 			Settings.hardInv = data.hardInv;
 
-			game = new Game();
+			// TODO: Merge the two areas creating a Game object.
+			game = new Game();	// GAME DATA (Levels, game data) IS INITIALIZED HERE
 			game.init(data.game);
 			appearanceWindow.load(data.app);
 
@@ -686,7 +641,7 @@ package
 				cur('arrow');
 				game.initializeLevel();
 			}
-			if (t_exit == 18 && clickReq> 0) waitLoadClick();
+			if (t_exit == 18 && clickReq > 0) waitLoadClick();
 			if (t_exit == 16) 
 			{
 				Mouse.show();
@@ -747,17 +702,31 @@ package
 			ctr.step();	//Process controls
 			Snd.step(); //Process sound
 
-			if (ng_wait > 0) //GAME STATE: WAITING FOR PLAYER INPUT
+			if (ng_wait > 0)
 			{
-				if (ng_wait == 1) 
+				
+				if (!LevelArray.allLevelsLoaded) 
 				{
-					newGame1();
-				} 
-				else if (ng_wait == 2) 
-				{
-					if (clickReq != 1) newGame2();
+					levelLoadTimer++
+					if (levelLoadTimer++ > 30) 
+					{
+						trace('GameSession.as/step() - Waiting on levels to finish loading.');
+						levelLoadTimer = 0;
+					}
+					return;
 				}
-				return;
+				switch (ng_wait)
+				{
+					case 1:
+						newGameStage1();
+						break;
+					case 2:
+						newGameStage2();
+						break;
+					case 3:
+						if (clickReq != 1) newGameStage3();
+						break;
+				}
 			}
 
 			if (!onConsol && !pip.active) swfStage.focus = swfStage;
@@ -989,7 +958,7 @@ package
 		
 		public function getLoadScreen():int // Determine which loading screen to display.
 		{
-			var nscr:int = game.levelArray[game.curLevelID].loadScr;
+			var nscr:int = LevelArray.initializedLevelVariants[game.curLevelID].loadScr;
 
 			if (nscr >= 0 && (game.triggers['loadScr'] == null || game.triggers['loadScr'] < nscr))
 			{
@@ -1033,14 +1002,8 @@ package
 				vscene.gotoAndStop(1);
 			}
 
-			if (n > 0) 
-			{
-				vscene.sc.gotoAndPlay(n);
-			} 
-			else
-			{
-				vscene.sc.gotoAndPlay(1);
-			}
+			if (n > 0) vscene.sc.gotoAndPlay(n);
+			else 	   vscene.sc.gotoAndPlay(1);
 
 			vscene.visible = true;
 		}

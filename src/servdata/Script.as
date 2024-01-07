@@ -2,6 +2,8 @@ package servdata
 {
 
 	import locdata.Level;
+	import locdata.LevelArray;
+
 	import unitdata.Unit;
 	import servdata.QuestHelper;
 	
@@ -43,19 +45,19 @@ package servdata
 		public function analiz(xml:XML):void
 		{
 			var act:String, targ:String, val:String, t:int = 0, n:String = '-1', opt1:int = 0, opt2:int = 0;
-			if (xml.@act.length()) // Command
+			if (xml.@act.length()) 							// Command
 			{		
 				act = xml.@act;
 				if (act == 'dial' || act == 'dialog' || act == 'inform' || act == 'landlevel') onTimer = true;
 			}
 			if (xml.@targ.length()) targ = xml.@targ;		// Target
-			if (xml.@val.length()) val = xml.@val;		// Value
-			if (xml.@t.length()) // Delay in seconds
+			if (xml.@val.length()) val = xml.@val;			// Value
+			if (xml.@t.length()) 							// Delay in seconds
 			{						
 				t = Math.round(xml.@t * Settings.fps);
 				if (t > 0) onTimer = true;
 			}
-			if (xml.@n.length()) n = xml.@n;		// Option
+			if (xml.@n.length()) n = xml.@n;				// Option
 			if (xml.@opt1.length()) opt1 = xml.@opt1;		// Option
 			if (xml.@opt2.length()) opt2 = xml.@opt2;		// Option
 			if (act) acts.push({act:act, targ:targ, val:val, t:t, n:n, opt1:opt1, opt2:opt2});
@@ -184,13 +186,13 @@ package servdata
 				}
 				if (obj.act == 'landlevel') 
 				{
-					if (Settings.dialOn && GameSession.currentSession.game.levelArray[actObj.val]) 
+					if (Settings.dialOn && LevelArray.initializedLevelVariants[actObj.val]) 
 					{
 						GameSession.currentSession.gg.controlOff();
 						wait=true;
 						GameSession.currentSession.ctr.active=false;
-						var str:String = Res.txt('map', actObj.val) + "\n" + Res.txt('pip', 'recLevel') + ': ['+GameSession.currentSession.game.levelArray[actObj.val].dif + "]\n" + Res.txt('pip', 'isperslvl') + ': [' + GameSession.currentSession.pers.level + ']';
-						if (GameSession.currentSession.game.levelArray[actObj.val].dif > GameSession.currentSession.pers.level) 
+						var str:String = Res.txt('map', actObj.val) + "\n" + Res.txt('pip', 'recLevel') + ': ['+LevelArray.initializedLevelVariants[actObj.val].dif + "]\n" + Res.txt('pip', 'isperslvl') + ': [' + GameSession.currentSession.pers.level + ']';
+						if (LevelArray.initializedLevelVariants[actObj.val].dif > GameSession.currentSession.pers.level) 
 						{
 							str += '\n\n' + Res.txt('pip', 'wrLevel');
 						}
@@ -307,9 +309,9 @@ package servdata
 				}
 				if (obj.act == 'openland') //открыть местность на карте
 				{	
-					if (GameSession.currentSession.game.levelArray[obj.val]) 
+					if (LevelArray.initializedLevelVariants[obj.val]) 
 					{
-						GameSession.currentSession.game.levelArray[obj.val].access = true;
+						LevelArray.initializedLevelVariants[obj.val].access = true;
 					} 
 					else 
 					{

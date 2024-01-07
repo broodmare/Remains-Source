@@ -8,24 +8,26 @@ package locdata
 	import servdata.Script;
 	import servdata.Vendor;
 	
-	import components.Settings;
+	import locdata.LevelArray;
 	import components.XmlBook;
 
 	//TODO - Calling entire script file multiple times, fix that later.
 	public class Game // Holds game data
 	{
-		public var levelArray:Array;
-		public var probs:Array;
+		// Storage Arrays
 		public var vendors:Array;
 		public var npcs:Array;
-		public var curLevelID:String = '';
-		public var curCoord:String = null;
-		public var curLevel:LevelTemplate;
 		public var triggers:Array;
 		public var notes:Array;
 		public var limits:Array;
 		public var quests:Array;
 		public var names:Array;
+		
+		// Working data for level info
+		// TODO: Find a better spot for these.
+		public var curLevelID:String = '';
+		public var curCoord:String = null;
+		public var curLevel:LevelTemplate;
 		
 		// Game Time
 		public var dBeg:Date;					// Start time of the game
@@ -40,11 +42,9 @@ package locdata
 		
 		var objs:Array;
 
-		public function Game() 
+		public function Game() // Called by GameSession to start a new game.
 		{
 			trace('Game.as/Game() - Running Game constructor.');
-			levelArray  = [];
-			probs 		= [];
 			notes 		= [];
 			vendors 	= [];
 			npcs 		= [];
@@ -52,21 +52,9 @@ package locdata
 			limits 		= [];
 			quests 		= [];
 			names 		= [];
-			
-			for each (var xl in XmlBook.getXML("levels").level)
-			{
-				var level:LevelTemplate = new LevelTemplate(xl);
-				if (GameSession.currentSession.allLevelsArray[xl.@id] && GameSession.currentSession.allLevelsArray[xl.@id].allroom) 
-				{
-					level.allroom = GameSession.currentSession.allLevelsArray[xl.@id].allroom;
-					level.loaded = true;
-				}
-				if (level.prob == 0) levelArray[level.id] = level;
-				else probs[level.id] = level;
-			}
 		}
 
-		public function save():Object 
+		public function save():Object // Create an object holding all of 'Game's properties to save.
 		{
 			var obj:Object = {};
 
@@ -119,11 +107,11 @@ package locdata
 				if (q!=null) obj.quests[i]=q;
 			}
 
-			obj.levelArray = [];
-			for (var i in levelArray) 
+			obj.savedLevelArray = [];
+			for (var i in LevelArray.initializedLevelVariants) 
 			{
-				var l = levelArray[i].save();
-				if (l != null) obj.levelArray[i] = l;
+				var l = LevelArray.initializedLevelVariants[i].save();
+				if (l != null) obj.savedLevelArray[i] = l;
 			}
 
 			var dNow:Date = new Date();
@@ -135,7 +123,7 @@ package locdata
 		
 		public function init(loadObj:Object = null, opt:Object = null):void
 		{
-			trace('Game.as/init() = Initializing game...');
+			trace('Game.as/init() - Initializing game.');
 			if (loadObj) 
 			{
 				if (loadObj.dif != null) globalDif = loadObj.dif;
@@ -181,7 +169,7 @@ package locdata
 				npcs[npc.id] = npc;
 			}
 
-			if (loadObj) 
+			if (loadObj)
 			{
 				for (var i in loadObj.triggers) 
 				{
@@ -195,10 +183,11 @@ package locdata
 				{
 					QuestHelper.addQuest(i, loadObj.quests[i]);
 				}
-				for (var i in loadObj.levelArray)  //!!!!!
+				for (var i in loadObj.savedLevelArray)  // Replace all level variants with their saved equivalent.
 				{
-					if (levelArray[i]) levelArray[i].load(loadObj.levelArray[i]);
+					if (LevelArray.initializedLevelVariants[i]) LevelArray.initializedLevelVariants[i].load(loadObj.savedLevelArray[i]);
 				}
+
 				if (triggers['noreturn'] > 0) mReturn = false; else mReturn = true;
 			}
 
@@ -222,7 +211,8 @@ package locdata
 				}
 			}
 
-			if (levelArray[curLevelID] == null || levelArray[curLevelID].rnd) curLevelID = 'rbl';
+			if (LevelArray.initializedLevelVariants[curLevelID] == null || LevelArray.initializedLevelVariants[curLevelID].rnd) curLevelID = 'rbl'; //Crashing here because it doesn't wait for levels to load.
+
 			addNote('helpControl');
 			addNote('helpGl1');
 			addNote('helpGl2');
@@ -249,8 +239,8 @@ package locdata
 
 			Encounter(); //Check if the game should transition to a random encounter
 
-			curLevel = levelArray[curLevelID];
-			if (curLevel == null) curLevel = levelArray['rbl'];
+			curLevel = LevelArray.initializedLevelVariants[curLevelID];
+			if (curLevel == null) curLevel = LevelArray.initializedLevelVariants['rbl'];
 			var first:Boolean = false;
 			if (!curLevel.rnd && !curLevel.visited) first = true;
 
@@ -331,14 +321,8 @@ package locdata
 		{
 			trace('Game.as/gotoLevel() - Moving to a new level: "' + newLevel + '."');
 
-			if (newLevel != baseId && !GameSession.currentSession.pers.dopusk()) 
-			{
-				GameSession.currentSession.gui.messText('nocont');
-			} 
-			else if (newLevel != baseId && GameSession.currentSession.pers.speedShtr >= 3) 
-			{
-				GameSession.currentSession.gui.messText('nocont2');
-			} 
+			if (newLevel != baseId && !GameSession.currentSession.pers.dopusk()) GameSession.currentSession.gui.messText('nocont');
+			else if (newLevel != baseId && GameSession.currentSession.pers.speedShtr >= 3) GameSession.currentSession.gui.messText('nocont2');
 			else 
 			{
 				curLevelID = newLevel;
@@ -350,13 +334,10 @@ package locdata
 		public function beginMission(nid:String = null):void
 		{
 			if (nid == curLevelID) return;
-			if (nid && levelArray[nid]) 
+			if (nid && LevelArray.initializedLevelVariants[nid] && LevelArray.initializedLevelVariants[nid].tip != 'base') 
 			{
-				if (levelArray[nid].tip != 'base') 
-				{
-					missionId = nid;
-					crea = true;
-				}
+				missionId = nid;
+				crea = true;
 			}
 			gotoLevel(nid);
 		}
@@ -378,20 +359,23 @@ package locdata
 			curLevel.upStage = true;
 		}
 		
-		public function checkTravel(lid):Boolean // Check the possibility of traveling through the map
+		// TODO: unfuck this more, this is still a mess.
+		public function checkTravel(lid):Boolean 
 		{
 			if (this.curLevelID == 'grave') return false;
-			switch(triggers['fin'])
+
+			var currentFin = triggers['fin'];
+			var targetFin = LevelArray.initializedLevelVariants[lid].fin;
+
+			// Define the logic for travel based on 'fin' values
+			switch (currentFin) 
 			{
-				case 0:
-					return true;
-				case 1:
-					return levelArray[lid].fin == 0 || levelArray[lid].fin == 1;
+				case 1: //Combine 1 and 2 cases.
 				case 2:
-					return levelArray[lid].fin == 0 || levelArray[lid].fin == 2;
+					return targetFin == 0 || targetFin == currentFin; // Travel is allowed if targetFin is 0 or 1
 				case 3:
-					return levelArray[lid].fin == 2;
-				default:
+					return targetFin == 2; // Travel is only allowed if targetFin is 2
+				default: // If currentFin is not 1, 2, or 3, always allow travel
 					return true;
 			}
 		}
@@ -431,20 +415,24 @@ package locdata
 			return 0;
 		}
 		
-		public function addLimit(id:String, etap:int):void // Increase the limit by 1, stage=1 - during generation, stage=2 - when taken
+		public function addLimit(id:String, etap:int):void // Increase the limit by 1, stage = 1 - during generation, stage = 2 - when taken
 		{
-			if (etap == 1) 
+			switch (etap)
 			{
-				if (limits[id]) limits[id]++;
-				else limits[id] = 1;
-			}
-			if (etap == 2) 
-			{
-				if (triggers[id]) triggers[id]++;
-				else triggers[id] = 1;
+				case 1:
+					if (limits[id]) limits[id]++;
+					else limits[id] = 1;
+					break;
+				case 2:
+					if (triggers[id]) triggers[id]++;
+					else triggers[id] = 1;
+					break;
+				default:
+					trace('Game.as/addLimit() - ERROR: addLimit called with invalid etap: "' + etap + '"!');
 			}
 		}
 		
+		// TODO: Get rid of mixed return types.
 		public function runScript(script:String, own:Obj = null):Boolean 
 		{
 			var scriptXML:XML = XmlBook.findXMLNode("scripts", script);
@@ -455,9 +443,15 @@ package locdata
 				newScript.start();
 				return true;
 			}
-			return false;
+			else
+			{
+				trace('Game.as/runScript() - ERROR: Script: "' + script + '" not found!');
+				return false;
+			}
+			
 		}
 		
+		// TODO: Get rid of mixed return types.
 		public function getScript(script:String, own:Obj = null):Script // Create a script from gamedata
 		{
     		var scriptXML:XML = XmlBook.findXMLNode("scripts", script);
@@ -466,7 +460,11 @@ package locdata
 			{
 				return new Script(scriptXML, (own == null) ? GameSession.currentSession.level : own.room.level, own);
 			}
-			return null;
+			else
+			{
+				trace('Game.as/getScript() - ERROR: Script: "' + script + '" not found!');
+				return null;
+			}
 		}
 		
 		public function gameTime(n:Number = 0):String // String representation of game time

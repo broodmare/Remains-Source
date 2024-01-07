@@ -37,7 +37,7 @@ package components
                     var xmlBookPageURL:String = xmlFilesLocation + key + ".xml";
                     var loader:XMLLoader = new XMLLoader();
                     
-                    loader.addEventListener(XMLLoader.XML_LOADED, initializeXmlPage); //Anonymous function for each loader to run after each XML file is finished loading.
+                    loader.addEventListener(XMLLoader.XML_LOADED, initializeXmlPage);
                     loader.load(xmlBookPageURL, key);
                 }
             }

@@ -1,5 +1,5 @@
 <levels>
-	<level id='begin' dif='0' file='rooms_begin' locx='0' locy='0' stage='1' limit='1' list='2' tip='story'>
+	<level id='begin' fileName='rooms_begin' dif='0' locx='0' locy='0' stage='1' limit='1' list='2' tip='story'>
 		<options backwall="tBackWall" music='music_begin'/>
 		<scr eve='take' item='mont'>
 			<s1 act="mess" val="trMont" opt1="1"/>
@@ -24,11 +24,11 @@
 		</scr>
 	</level>
 	
-	<level id='surf' dif='0' file='rooms_surf' locx='0' locy='1' stage='2' limit='1' list='3' tip='story'>
+	<level id='surf' fileName='rooms_surf' dif='0' locx='0' locy='1' stage='2' limit='1' list='3' tip='story'>
 		<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_surf'/>
 	</level>
 	
-	<level id='rbl' autolevel='1' dif='0' file='rooms_rbl' locx='0' locy='0' stage='1' list='1' tip='base' fin='0'>
+	<level id='rbl' fileName='rooms_rbl' autolevel='1' dif='0' locx='0' locy='0' stage='1' list='1' tip='base' fin='0'>
 		<options backwall="tStConcrete" skybox='skyboxWay' music='music_base'/>
 		<prob id='bossraider1' level='0' tip='2' close='1'>
 			<con tip='unit' uid='bossraider1F1'/>
@@ -55,7 +55,7 @@
 		</prob>
 	</level>
 	
-	<level id='random_plant' tip='rnd' rnd='1' dif='0' biom='0' conf='0' file='rooms_plant' stage='3' exit='exit_plant' mx='4' my='6' locx='0' locy='0' list='4' loadscr='1'>
+	<level id='random_plant' fileName='rooms_plant' tip='rnd' rnd='1' dif='0' biom='0' conf='0' stage='3' exit='exit_plant' mx='4' my='6' locx='0' locy='0' list='4' loadscr='1'>
 		<options backwall="tBackWall" music='music_plant_1' skybox='skyboxDarkClouds' xp='100'/>
 		<!-- 13 -->
 		<prob id='labirint' prize='1' tip='1'>
@@ -146,11 +146,11 @@
 		</prob>
 	</level>
 	
-	<level id='nio' dif='7' file='rooms_nio' locx='-1' locy='0' stage='2' list='3' tip='story'>
+	<level id='nio' fileName='rooms_nio' dif='7' locx='-1' locy='0' stage='2' list='3' tip='story'>
 		<options backwall="tTiles" color='lab' music='music_plant_2' xp='100'/>
 	</level>
 	
-	<level id='random_sewer' tip='rnd' rnd='1' dif='10' biom='1' conf='2' file='rooms_sewer' stage='4' exit='exit_sewer' mx='8' my='3' locx='0' locy='0' list='6'>
+	<level id='random_sewer' fileName='rooms_sewer' tip='rnd' rnd='1' dif='10' biom='1' conf='2' stage='4' exit='exit_sewer' mx='8' my='3' locx='0' locy='0' list='6'>
 		<options backwall="tMossy" music='music_sewer_1' xp='200' border='M' color='green' wtip='1' wrad='3'/>
 		<!-- 6 -->
 		<prob id='slimes' prize='1' tip='1'><!-- бонг -->
@@ -205,7 +205,7 @@
 		</scr>
 	</level>
 	
-	<level id='raiders' dif='10' file='rooms_raiders' locx='0' locy='1' stage='3' list='5' tip='story' loadscr='2'>
+	<level id='raiders' fileName='rooms_raiders' dif='10' locx='0' locy='1' stage='3' list='5' tip='story' loadscr='2'>
 		<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_raiders'/>
 		<scr eve='take' item='sl_note1'>
 			<s act="control off"/>
@@ -218,7 +218,7 @@
 		</scr>
 	</level>
 	
-	<level id='random_stable' tip='rnd' rnd='1' dif='12' biom='2' conf='1' file='rooms_stable' exit='exit_stable' stage='5' mx='4' my='6' locx='0' locy='0' list='7' loadscr='3'>
+	<level id='random_stable' fileName='rooms_stable' tip='rnd' rnd='1' dif='12' biom='2' conf='1' exit='exit_stable' stage='5' mx='4' my='6' locx='0' locy='0' list='7' loadscr='3'>
 		<options backwall="tStConcrete" music='music_stable_1' xp='200'/>
 		<!-- 13 -->
 		<prob id='doors' level='0' prize='1' tip='1'><!-- криопушка -->
@@ -310,7 +310,7 @@
 		</prob>
 	</level>
 	
-	<level id='core' dif='15' file='rooms_core' locx='5' locy='0' stage='6' list='3' tip='story'>
+	<level id='core' fileName='rooms_core' dif='15' locx='5' locy='0' stage='6' list='3' tip='story'>
 		<options backwall="tStConcrete" color='blue' music='music_stable_2' xp='200'/>
 		<scr eve='take' item='sl_note2'>
 			<s act="control off"/>
@@ -338,11 +338,11 @@
 		</scr>
 	</level>
 	
-	<level id='garages' dif='15' file='rooms_garages' locx='0' locy='0' stage='6' list='5' tip='story'>
+	<level id='garages' fileName='rooms_garages' dif='15' locx='0' locy='0' stage='6' list='5' tip='story'>
 		<options backwall='sky' skybox='skyboxDarkClouds' color='blue' vis='10' music='music_surf'/>
 	</level>
 	
-	<level id='random_mane' tip='rnd' rnd='1' dif='15' biom='3' conf='3' file='rooms_mane' exit='exit_mane' stage='7' mx='5' my='5' locx='0' locy='4' list='9' loadscr='4'>
+	<level id='random_mane' fileName='rooms_mane' tip='rnd' rnd='1' dif='15' biom='3' conf='3' exit='exit_mane' stage='7' mx='5' my='5' locx='0' locy='4' list='9' loadscr='4'>
 		<options backwall="tWindows" skybox='skyboxRuins' music='music_mane_1' vis='2' xp='300' border='N' darkness="-20"/>
 		<!-- 10 -->
 		<prob id='away' level='0' prize='1' tip='1'><!-- фокусирующий кристалл -->
@@ -412,7 +412,7 @@
 		</prob>
 	</level>
 	
-	<level id='mtn' dif='17' file='rooms_mtn' locx='0' locy='8' stage='8' biom='3' list='5' tip='story'>
+	<level id='mtn' fileName='rooms_mtn' dif='17' locx='0' locy='8' stage='8' biom='3' list='5' tip='story'>
 		<options backwall="tTower" skybox='skyboxRuins' music='music_mane_2' vis='2' xp='300' border='N'/>
 		<scr eve='take' item='amul_al'>
 			<s act="control off"/>
@@ -427,17 +427,17 @@
 		</scr>
 	</level>
 	
-	<level id='way' dif='0' file='rooms_way' locx='0' locy='0' stage='8' tip='base'>
+	<level id='way' fileName='rooms_way' dif='0' locx='0' locy='0' stage='8' tip='base'>
 		<options backwall='sky' skybox='skyboxWay' vis='10' music='music_surf'/>
 	</level>
-	<level id='covert' dif='0' file='rooms_covert' locx='-1' locy='0' tip='base' fin='0'>
+	<level id='covert' fileName='rooms_covert' dif='0' locx='-1' locy='0' tip='base' fin='0'>
 		<options backwall='sky' skybox='skyboxWay' vis='10' music='music_covert'/>
 	</level>
-	<level id='src' dif='0' file='rooms_src' locx='0' locy='0' tip='base' fin='0'>
+	<level id='src' fileName='rooms_src' dif='0' locx='0' locy='0' tip='base' fin='0'>
 		<options backwall='tRustPlates' skybox='skyboxWay' vis='10' music='music_base'/>
 	</level>
 	
-	<level id='random_canter' tip='rnd' rnd='1' dif='18' biom='5' conf='5' file='rooms_canter' exit='exit_canter' stage='9' mx='8' my='3' locx='0' locy='0' list='10' loadscr='5'>
+	<level id='random_canter' fileName='rooms_canter' tip='rnd' rnd='1' dif='18' biom='5' conf='5' exit='exit_canter' stage='9' mx='8' my='3' locx='0' locy='0' list='10' loadscr='5'>
 		<options backwall="tConRough" skybox='skyboxCanterlot' music='music_cat_1' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
 		<!-- 9 -->
 		<prob id='buttons6' level='0' tip='1'>
@@ -521,7 +521,7 @@
 		</prob>
 	</level>
 	
-	<level id='minst' dif='20' file='rooms_minst' locx='0' locy='0' stage='9' biom='5' list='5' tip='story'>
+	<level id='minst' fileName='rooms_minst' dif='20' locx='0' locy='0' stage='9' biom='5' list='5' tip='story'>
 		<options backwall="tConRough" skybox='skyboxCanterlot' music='music_minst' xp='400' color='pink' border='Q' wtip='3' wrad='0' wdam='10' wtipdam='19'/>
 		<scr eve='take' item='blackbook'>
 			<s act="control off"/>
@@ -535,26 +535,26 @@
 		</scr>
 	</level>
 	
-	<level id='random_mbase' tip='story' rnd='1' dif='22' biom='4' conf='4' file='rooms_mbase' stage='10' mx='5' my='3' locx='0' locy='0' list='10' loadscr='6'>
+	<level id='random_mbase' fileName='rooms_mbase' tip='story' rnd='1' dif='22' biom='4' conf='4' stage='10' mx='5' my='3' locx='0' locy='0' list='10' loadscr='6'>
 		<options backwall="tMbase" skybox='skyboxWay' music='music_mbase' xp='500' color='red' border='O'/>
 	</level>
-	<level id='bunker' tip='hard' rnd='1' dif='24' biom='4' conf='7' file='rooms_mbase' stage='10' mx='6' my='3' locx='0' locy='0' list='10'>
+	<level id='bunker' fileName='rooms_mbase' tip='hard' rnd='1' dif='24' biom='4' conf='7' stage='10' mx='6' my='3' locx='0' locy='0' list='10'>
 		<options backwall="tMbase" music='music_mbase' xp='500' color='green' border='O'/>
 	</level>
 	
-	<level id='workshop' dif='25' file='rooms_workshop' stage='10' locx='0' locy='0' tip='story'>
+	<level id='workshop' fileName='rooms_workshop' dif='25' stage='10' locx='0' locy='0' tip='story'>
 		<options backwall="tBackWall" music='music_workshop' xp='500'/>
 	</level>
 	
-	<level id='hql' dif='26' file='rooms_hql' stage='10' locx='0' locy='0' tip='story'>
+	<level id='hql' fileName='rooms_hql' dif='26' stage='10' locx='0' locy='0' tip='story'>
 		<options backwall='sky' skybox='skyboxWay' color='blue' vis='10' music='music_hql'/>
 	</level>
 	
-	<level id='post' dif='27' file='rooms_post' stage='11' locx='0' locy='0' tip='story'>
+	<level id='post' fileName='rooms_post' dif='27' stage='11' locx='0' locy='0' tip='story'>
 		<options backwall='sky' skybox='skyboxWay' color='sky' vis='10' music='music_encl_1'/>
 	</level>
 	
-	<level id='random_encl' tip='rnd' rnd='1' dif='27' biom='6' conf='6' file='rooms_encl' exit='exit_encl' stage='11' mx='3' my='8' locx='0' locy='7' list='10' loadscr='7'>
+	<level id='random_encl' fileName='rooms_encl' tip='rnd' rnd='1' dif='27' biom='6' conf='6' exit='exit_encl' stage='11' mx='3' my='8' locx='0' locy='7' list='10' loadscr='7'>
 		<options backwall="tEncl3" skybox='skyboxEnclave' music='music_encl_1' postmusic='1' xp='500' color='sky' border='S' darkness="-30"/>
 		<prob id='buttons7' level='0' tip='1'>
 			<con tip='box' uid='buttons7F1'/>
@@ -611,34 +611,34 @@
 		</prob>
 	</level>
 	
-	<level id='comm' dif='29' file='rooms_comm' stage='11' locx='0' locy='0' tip='story'>
+	<level id='comm' fileName='rooms_comm' dif='29' stage='11' locx='0' locy='0' tip='story'>
 		<options backwall="tEncl3" skybox='skyboxEnclave' music='music_encl_1' xp='500' color='sky' border='S' darkness="-30"/>
 	</level>
 	
-	<level id='art' dif='30' file='rooms_art' stage='12' locx='0' locy='0' tip='story' fin='1'>
+	<level id='art' fileName='rooms_art' dif='30' stage='12' locx='0' locy='0' tip='story' fin='1'>
 		<options backwall="tMbase" skybox='skyboxDarkClouds' music='music_red' postmusic='1' xp='500' color='red' border='O' art='art_trigger'/>
 	</level>
 	
-	<level id='stable_pi' tip='base' rnd='1' conf='10' biom='10' file='rooms_pi' mx='4' my='6' locx='3' locy='5' fin='2'>
+	<level id='stable_pi' fileName='rooms_pi' tip='base' rnd='1' conf='10' biom='10' mx='4' my='6' locx='3' locy='5' fin='2'>
 		<options backwall="tStConcrete" music='music_pi' darkness="-15"/>
 	</level>
-	<level id='stable_pi_atk' tip='rnd' stage='12' rnd='1' conf='11' biom='11' file='rooms_pi' mx='6' my='2' locx='0' locy='0'>
+	<level id='stable_pi_atk' fileName='rooms_pi' tip='rnd' stage='12' rnd='1' conf='11' biom='11' mx='6' my='2' locx='0' locy='0'>
 		<options backwall="tStConcrete" music='music_red' color='fire'/>
 	</level>
 	
-	<level id='stable_pi_surf' tip='story' biom='11' file='rooms_pis' stage='12' locx='1' locy='7'>
+	<level id='stable_pi_surf' fileName='rooms_pis' tip='story' biom='11' stage='12' locx='1' locy='7'>
 		<options backwall='sky' skybox='skyboxFire' vis='3' music='music_encl_2' postmusic='1' color='fire'/>
 	</level>
 	
-	<level id='thunder' tip='story' biom='11' file='rooms_thunder' stage='12' locx='0' locy='0'>
+	<level id='thunder' fileName='rooms_thunder' tip='story' biom='11' stage='12' locx='0' locy='0'>
 		<options backwall='sky' skybox='skyboxFinalB' vis='3' music='music_encl_2' postmusic='1' color='blue'/>
 	</level>
 	
-	<level id='grave' tip='story' file='rooms_grave' locx='0' locy='0'>
+	<level id='grave' fileName='rooms_grave' tip='story' locx='0' locy='0'>
 		<options backwall='sky' skybox='skyboxClear' vis='10' music='music_end' darkness="-50"/>
 	</level>
 	
-	<level id='prob' tip='prob' prob='1' file='rooms_prob'>
+	<level id='prob' fileName='rooms_prob' tip='prob' prob='1' >
 		<options/>
 	</level>
 </levels>

@@ -265,8 +265,6 @@
 				obj.time = Res.gameTime(save.game.t_save);
 				obj.ver = save.ver;
 			}
-
-			trace('PipPageOpt.as/setSubPages() - Finished updating subPages.');
 			return obj;
 		}		
 		

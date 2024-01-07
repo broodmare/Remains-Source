@@ -6,6 +6,8 @@ package locdata
 	import unitdata.UnitPlayer;
 	import unitdata.Pers;
 	
+	import locdata.LevelArray;
+	
 	import components.Settings;
 	import components.XmlBook;
 	
@@ -72,6 +74,8 @@ package locdata
 		
 		public function Level(ngg:UnitPlayer, lt:LevelTemplate, lvl:int) //lvl - character level - 1
 		{
+			// Level template assigned.
+			// Level template loads all rooms into it's allRoom property.
 			trace('Level.as/Level() - Initializing level.')
 			gg = ngg;
 			levelTemplate = lt;
@@ -107,7 +111,7 @@ package locdata
 			gameStage = levelTemplate.gameStage;	//story stage is taken from the level settings
 			itemScripts = []; //attached scripts
 
-			for each(var xl in levelTemplate.levelData.scr) 
+			for each(var xl in levelTemplate.levelXMLData.scr) 
 			{
 				if (xl.@eve == 'take' && xl.@item.length()) 
 				{
@@ -125,11 +129,15 @@ package locdata
 		//Convert from XML to array
 		public function prepareRooms():void
 		{
-			trace('Level.as/prepareRooms() - Loading all rooms from the level template into the allRoom array.');
+			if (levelTemplate == null)
+			{
+				trace('Level.as/prepareRooms() - ERROR: Level template is null!');
+			}
+			trace('Level.as/prepareRooms() - Loading all rooms from template: "' + levelTemplate.id + '" into the allRoom array.');
 			allRoom = [];
 			var roomsFound:int = 0;
 
-			for each(var roomNode in levelTemplate.allroom.room) 
+			for each(var roomNode in levelTemplate.levelXMLData.room) 
 			{
 				allRoom.push(new RoomTemplate(roomNode));
 				roomsFound++;
@@ -606,7 +614,7 @@ package locdata
 			if (probs[nprob] != null) return false;
 			//create a single room
 
-			var arrr:XML = GameSession.currentSession.game.probs['prob'].allroom;
+			var arrr:XML = LevelArray.initializedProbLevels['prob'].allroom;
 			for each(var xml in arrr.roomTemplate) 
 			{
 				if (xml.@name == nprob) 
@@ -634,7 +642,7 @@ package locdata
 		{
 			rndRoom = [];
 			var impProb;
-			for each(var xml in levelTemplate.levelData.prob) 
+			for each(var xml in levelTemplate.levelParameters.prob) 
 			{
 				if (probs[xml.@id] == null && GameSession.currentSession.game.triggers['prob_' + xml.@id] == null && (xml.@levelTemplate.length == 0 || xml.@levelTemplate <= maxlevel)) 
 				{
@@ -650,7 +658,7 @@ package locdata
 			else if (rndRoom.length == 1) pid = rndRoom[0];
 			else pid = rndRoom[Math.floor(Math.random() * rndRoom.length)];
 
-			if (levelTemplate.levelData.prob.(@id == pid).@tip == '2') did = 'doorboss';
+			if (levelTemplate.levelParameters.prob.(@id == pid).@tip == '2') did = 'doorboss';
 			
 			if (!newRoom.createDoorProb(did,pid)) return false;
 			buildProb(pid);
@@ -708,10 +716,7 @@ package locdata
 			{
 				for each(roomTemplate in allRoom) //array of all rooms suitable for random selection
 				{
-					if (roomTemplate.rnd) 
-					{
-						rndRoom.push(roomTemplate);
-					}
+					if (roomTemplate.rnd) rndRoom.push(roomTemplate);
 				}
 				roomTemplate = rndRoom[Math.floor(Math.random()*rndRoom.length)];
 			}

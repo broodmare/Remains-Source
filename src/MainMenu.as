@@ -17,6 +17,7 @@
 	import flash.utils.Timer;
 	import flash.events.TimerEvent;
 
+	import locdata.LevelArray;
 	import interdata.PipPageOpt;
 	import interdata.PipBuck;
 	import graphdata.Displ;
@@ -33,7 +34,6 @@
 		public var gameWindow:Sprite;
 		public var mainMenuWindow; 		//The MainMenu MovieClip from the '.fla' file, everything below goes in it.
 		public var currentSession:GameSession;
-		public var pip:PipBuck; 		// Why does main menu have (possibly its own instance of) this?
 
 		public var loadCell:int 		= -1;
 		public var loadReg:int 			=  0;			// loading mode, 0 - loading, 1 - slot selection for autosave
@@ -64,10 +64,11 @@
 		public var langReload:Boolean = false;
 		public var langButtonsLoaded:Boolean = false;
 
+		// LOADING PROGRESS VARIABLES
+		private var levelLoadingStarted:Boolean = false;
+
 		//Difficulty option tickboxes in the new game window.
 		private var difficultyOptionTickboxes:Array; 
-		
-		
 
 		public function MainMenu(window)
 		{
@@ -459,26 +460,23 @@
 			if (langReload) setMainMenuLanguage();
 			if (XmlBook.bookSetup && !Snd.soundInitialized) Snd.initializeSound();
 
-			if (readyToStart)
+			if (readyToStart && currentSession.pip != null) // This is loading too fast and crashing, adding a check for pipbuck.
 			{
 				//trace('MainMenu.as/step() - Starting menu animation.');
 				if (animOn && !currentSession.pip.active) mainMenuAnimation.anim();
 
-				if (currentSession.allLevelsLoaded && Languages.textLoaded)
+				if (Languages.textLoaded)
 				{
 					if (Settings.musicTracksFound < Settings.musicTracksLoaded) 
 					{
 						mainMenuWindow.mainMenuLoadingLog.text = 'Music files readyToStart!';
 					}
-					else if (Settings.musicTracksFound > Settings.musicTracksLoaded) 
+					else
 					{
-						mainMenuWindow.mainMenuLoadingLog.text = 'Music files readyToStart : ' + Settings.musicTracksLoaded + '/' + Settings.musicTracksFound;
+						mainMenuWindow.mainMenuLoadingLog.text = 'Music files: ' + Settings.musicTracksLoaded + '/' + Settings.musicTracksFound + ' loaded.';
 					}
 				}
-				else
-				{
-					mainMenuWindow.mainMenuLoadingLog.text = '';
-				}
+				else mainMenuWindow.mainMenuLoadingLog.text = '';
 			}
 
 			if (!currentSession.constructorFinished && Languages.textLoaded)
@@ -510,7 +508,7 @@
 						return;
 					}
 
-					if (Languages.textLoaded && currentSession.allLevelsLoaded)
+					if (Languages.textLoaded)
 					{
 						if (!langButtonsLoaded)
 						{
@@ -533,7 +531,6 @@
 					mainMenuWindow.mainMenuLoadingLog.text = 'Loading ' + Math.round(currentSession.grafon.progressLoad * 100) + '%';
 				}
 			}
-
 		}
 		
 		private function setMainMenuLanguage():void
@@ -567,6 +564,13 @@
 				{
 					trace('MainMenu.as/mainStep() - Starting the game.');
 					
+					if (!levelLoadingStarted)
+					{
+						trace('MainMenu.as/mainStep() - Loading all levels.');
+						levelLoadingStarted = true;
+						LevelArray.loadAllGameLevels(); // LEVELS ARE INITIALIZED HERE.
+					}
+
 					var opt:Object;
 					if (com == 'new') 
 					{	
@@ -586,11 +590,7 @@
 					currentSession.startNewGame(loadCell, mainMenuWindow.newGameWindow.inputName.text, opt);
 				}
 			} 
-			
-			else 
-			{
-				currentSession.step();
-			}
+			else currentSession.step();
 		}
 
 //########################################

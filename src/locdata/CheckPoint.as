@@ -1,11 +1,11 @@
 package locdata 
 {
-	
 	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
 	
 	import servdata.Interact;
-	
+	import locdata.LevelArray;
+
 	import components.Settings;
 	import components.XmlBook;
 	
@@ -55,12 +55,19 @@ package locdata
 			vis.y=Y;
 
 			vis.gotoAndStop(1);
-			try {
-				if (id.charAt(10)) {
+			try 
+			{
+				if (id.charAt(10)) 
+				{
 					vis.lock.gotoAndStop(int(id.charAt(10)));
 					locked=true;
-				} else vis.lock.visible=false;
-			} catch (err) {}
+				}
+				else vis.lock.visible = false;
+			} 
+			catch (err) 
+			{
+
+			}
 
 			X1 = X - scX / 2;
 			X2 = X + scX / 2;
@@ -85,14 +92,13 @@ package locdata
 			if (xml && xml.@tele.length()) teleOn=true;
 			if (xml && xml.@hide.length()) hide=true;
 			
-			if (loadObj) {
+			if (loadObj) 
+			{
 				active=loadObj.act;
-				if (active==undefined) active=0;
-				if (active==1)  vis.osn.gotoAndStop('reopen');
-				if (active==2)  {
-					vis.osn.gotoAndStop('open');
-				}
-				if (loadObj.used) used=true;
+				if (active == undefined) active = 0;
+				if (active == 1)  vis.osn.gotoAndStop('reopen');
+				if (active == 2)  vis.osn.gotoAndStop('open');
+				if (loadObj.used) used = true;
 			}
 
 			if (main) 
@@ -126,6 +132,7 @@ package locdata
 				}
 			}
 		}
+
 		public override function remVisual():void
 		{
 			super.remVisual();
@@ -147,7 +154,7 @@ package locdata
 		}
 		
 		//активировать контрольную точку. если параметр true - не добавлять скилл-поинт
-		public function activate(first:Boolean=false)
+		public function activate(first:Boolean = false):void
 		{
 			if (inter.lock > 0 || inter.mine > 0) return;
 			if (active == 2) 
@@ -169,6 +176,7 @@ package locdata
 				room.level.levelTemplate.lastCpCode = code;
 			}
 			room.level.currentCP = this;
+
 			if (first) 
 			{
 				vis.osn.gotoAndStop('open');
@@ -179,8 +187,9 @@ package locdata
 				vis.osn.play();
 				if (GameSession.currentSession.game.mReturn && teleOn && !used) vis.fiol.gotoAndPlay(1);
 			}
+
 			if (used) vis.fiol.gotoAndStop(1);
-			//trace(GameSession.currentSession.game.mReturn)
+
 			if (GameSession.currentSession.game.mReturn && teleOn && !used) 
 			{
 				inter.actFun = teleport;
@@ -197,7 +206,7 @@ package locdata
 			GameSession.currentSession.saveGame();
 		}
 		
-		public function teleport()
+		public function teleport():void
 		{
 			if (!main) 
 			{
@@ -211,15 +220,14 @@ package locdata
 				}
 			} 
 			else if (GameSession.currentSession.game.missionId != 'rbl') GameSession.currentSession.game.gotoLevel(GameSession.currentSession.game.missionId);
-			//trace('GOTO '+GameSession.currentSession.game.curLevelID);
 		}
 		
-		public function areaActivate()
+		public function areaActivate():void
 		{
 			if (active == 0) activate();
 		}
 		
-		public function deactivate()
+		public function deactivate():void
 		{
 			if (main) return;
 			inter.active =! hide;
@@ -238,7 +246,7 @@ package locdata
 			if (inter) inter.step();
 			if (main) 
 			{
-				if (GameSession.currentSession.game.missionId && GameSession.currentSession.game.levelArray[GameSession.currentSession.game.missionId] && GameSession.currentSession.game.levelArray[GameSession.currentSession.game.missionId].tip!='base') inter.active=true;
+				if (GameSession.currentSession.game.missionId && LevelArray.initializedLevelVariants[GameSession.currentSession.game.missionId] && LevelArray.initializedLevelVariants[GameSession.currentSession.game.missionId].tip!='base') inter.active = true;
 				else inter.active = false;
 				return;
 			}
@@ -251,8 +259,6 @@ package locdata
 			
 			if (area) area.step();
 			if (active == 2 && GameSession.currentSession.pers.currentCP != this) deactivate();
-		}
-		
-	}
-	
+		}	
+	}	
 }

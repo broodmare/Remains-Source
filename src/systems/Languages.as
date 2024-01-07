@@ -1,6 +1,5 @@
 package systems
 {
-
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 
@@ -9,8 +8,6 @@ package systems
 
     public class Languages
     {
-
-
 		//Language settings
 		public static var languageName:String = 'en';
 		
@@ -19,19 +16,15 @@ package systems
 		
 		//Loading info
 		public static var currentLanguageData:XML;
-
 		public static var textLoaded:Boolean = false;
 
 		public static var languageLoader:XMLLoader;
 		public static var languageDataLoader:XMLLoader;
 
-		private static const languageFilesLocation:String = Settings.languageXMLLocation
-
         public function Languages()
         {
 			
         }
-
 
 		public static function languageStart():void
 		{
@@ -40,7 +33,7 @@ package systems
 			
 			for (var language:* in languageListDictionary)
 			{
-				var languageFileURL:String = (languageFilesLocation + 'text_' + language + '.xml');
+				var languageFileURL:String = (Settings.languageXMLLocation + 'text_' + language + '.xml');
 
 				//trace('Languages.as/languageStart() - Trying to load: "' + languageFileURL + '"');
 				languageLoader = new XMLLoader();
@@ -53,8 +46,6 @@ package systems
 		//TODO: un-hardcode english.
         public static function languageSetup(event:Event):void
         {
-
-
 			var currentLoader:Object = event.currentTarget;
 			currentLoader.removeEventListener(XMLLoader.XML_LOADED, languageSetup);
 
@@ -73,12 +64,7 @@ package systems
 					applyLanguage(language); 
 				}
 			}
-			else 
-			{
-				trace('Languages.as/languageSetup() - Language file: "' + language + '" not recognized, discarding.');
-			}
-
-			
+			else trace('Languages.as/languageSetup() - Language file: "' + language + '" not recognized, discarding.');
         }
 
 		public static function applyLanguage(languageID:String):void
@@ -102,11 +88,7 @@ package systems
 				applyLanguage(languageName);
 				GameSession.currentSession.saveConfig();
 			}
-			else 
-			{
-				trace('Languages.as/changeLanguage() - Language ID: "' + languageName + '" not recognized, failed to change language.');
-			}
-			
+			else trace('Languages.as/changeLanguage() - Language ID: "' + languageName + '" not recognized, failed to change language.');
 		}
 
 		//TODO: un-hardcode supported languages.
@@ -123,6 +105,5 @@ package systems
 			languageListDictionary["ru"] = new XML();
 			languageListDictionary["ch"] = new XML();
 		}
-		
 	}
 }

@@ -9,6 +9,7 @@ package interdata
 	import locdata.Game;
 	import locdata.Quest;
 	import locdata.LevelTemplate;
+	import locdata.LevelArray;
 	import unitdata.Unit;
 	import servdata.QuestHelper;
 	
@@ -30,7 +31,6 @@ package interdata
 
 	public class PipPageInfo extends PipPage //This category is called "Information" in-game.
 	{
-		
 		var visMap:MovieClip;
 		var visWMap:MovieClip;
 		public var map:Bitmap;
@@ -53,7 +53,6 @@ package interdata
 			//объект карты
 			visMap 	= new visPipMap(); 	// .swf linkage
 			visWMap = new visPipWMap();	// .swf linkage
-
 
 			vis.addChild(visMap);
 			vis.addChild(visWMap);
@@ -87,9 +86,9 @@ package interdata
 			visMap.visible			= false;
 			visWMap.visible			= false;
 			vis.ico.visible			= false;
-			vis.nazv.x		= 458;
+			vis.nazv.x				= 458;
 			vis.info.x				= 458;
-			vis.nazv.width	= 413;
+			vis.nazv.width			= 413;
 			vis.info.width			= 458;
 			pip.vis.butHelp.visible	= false;
 			targetLand				= '';
@@ -143,7 +142,7 @@ package interdata
 				vis.nazv.width=287;
 				vis.info.width=332;
 				if (pip.travel) setTopText('infotravel');
-				for each (var level:LevelTemplate in game.levelArray) 
+				for each (var level:LevelTemplate in LevelArray.initializedLevelVariants) 
 				{
 					if (level.prob) continue;
 					level.calcProbs();
@@ -305,7 +304,7 @@ package interdata
 			} 
 			else if (subCategory == 3) 
 			{
-				var l:LevelTemplate=game.levelArray[event.currentTarget.name];
+				var l:LevelTemplate = LevelArray.initializedLevelVariants[event.currentTarget.name];
 				if (l==null) return;
 				vis.nazv.text=Res.txt('map',l.id);
 				var s:String=Res.txt('map',l.id,1);
@@ -536,7 +535,7 @@ package interdata
 			}
 			if (subCategory == 3 && (pip.travel || Settings.testMode)) 
 			{
-				if (game.levelArray[targetLand] && game.levelArray[targetLand].loaded) 
+				if (LevelArray.initializedLevelVariants[targetLand] && LevelArray.initializedLevelVariants[targetLand].loaded) 
 				{
 					game.beginMission(targetLand);
 					pip.onoff(-1);
