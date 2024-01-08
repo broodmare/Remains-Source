@@ -14,6 +14,7 @@ package locdata
 	import servdata.Item;
 	import unitdata.UnitTurret;
 	
+	import components.ColorRGB;
 	import components.Settings;
 	import components.XmlBook;
 	
@@ -21,7 +22,6 @@ package locdata
 	
 	public class Room 
 	{
-		private const currentRoom:Room = GameSession.currentSession.room;
 
 		public var level:Level;
 		
@@ -46,27 +46,30 @@ package locdata
 		// Objects
 		public var roomTileArray:Array;	// Room tile array
 		public var otstoy:Tile;			// Empty tile
+
+		//Storage arrays
 		public var units:Array;			// Array of Units
 		public var ups:Array;			// Spawn random units
 		public var objs:Array;			// Array of active objects
-		public var bonuses:Array;		// Array of Bonuses
-		public var areas:Array;			// Array of Areas
 		public var activeObjects:Array;	// Array of Active objects (displayed on the map)
+		public var areas:Array;			// Array of Areas
 		public var saves:Array;			// Array of Objects subject to saving
+		public var enspawn:Array;		// Enemy spawn points
 		public var backobjs:Array;		// Array of Background objects
+		public var signposts:Array;		// Room exit symnols
+		public var recalcTiles:Array;	// Recalculate water
+		public var spawnPoints:Array;	// Spawn points
 		public var grenades:Array;		// Array of Active grenades
+		public var bonuses:Array;		// Array of Bonuses
 		public var gg:UnitPlayer;
 		public var celObj:Obj;
 		public var celDist:Number = -1;	// Target object and distance to it
 		public var unitCoord;			// Object for unit coordination
-		
-		// Entrances and Visits
-		public var spawnPoints:Array;	// Spawn points
-		public var enspawn:Array;		// Enemy spawn points
+
 		public var doors:Array;			// Passages to other locations
 		
 		// Exit indicators
-		public var signposts:Array;
+
 		public var sign_vis:Boolean = true;
 
 		public var nAct:int = 0;				// Last visit
@@ -78,7 +81,7 @@ package locdata
 		public var pass_r:Array;
 		public var pass_d:Array;				// Passages to other locations
 		public var objsT:Array;					// Active objects
-		public var recalcTiles:Array;			// Recalculate water
+
 		
 		// Execution chain
 		public var firstObj:Pt;
@@ -94,7 +97,7 @@ package locdata
 
 		// Fog of war reveal distance
 		public var lDist1:int = 300;
-		public var  lDist2:int = 1000;
+		public var lDist2:int = 1000;
 
 		public var quake:int = 0;
 		public var broom:Boolean = false;		// All loot will be automatically picked up
@@ -171,14 +174,14 @@ package locdata
 		public var enemyLevel:int = 0;			// Enemy level
 		public var earMult:Number = 1; 			// Mob hearing multiplier
 		
-//**************************************************************************************************************************
-//
-//				Creation
-//
-//**************************************************************************************************************************
+		//**************************************************************************************************************************
+		//
+		//				Creation
+		//
+		//**************************************************************************************************************************
 
-// ------------------------------------------------------------------------------------------------
-// First stage - create and build according to the map from xml
+		// ------------------------------------------------------------------------------------------------
+		// First stage - create and build according to the map from xml
 
 		public function Room(l:Level, nroom:XML, rnd:Boolean, roomParamObj:Object = null) 
 		{
@@ -186,10 +189,12 @@ package locdata
 			level = l;
 			roomWidth = Settings.roomTileWidth;
 			roomHeight = Settings.roomTileHeight;
-			roomPixelWidth = roomWidth * Settings.tilePixelWidth;
+			roomPixelWidth 	= roomWidth * Settings.tilePixelWidth;
 			roomPixelHeight = roomHeight * Settings.tilePixelHeight;
+			
 			otstoy = new Tile(-1, -1);
 
+			roomTileArray 	= [];
 			units 			= [];
 			ups 			= [];
 			objs 			= [];
@@ -198,13 +203,13 @@ package locdata
 			saves 			= [];
 			enspawn 		= [];
 			backobjs 		= [];
-			roomTileArray 	= [];
 			signposts 		= [];
 			recalcTiles 	= [];
 			spawnPoints 	= [];
 			grenades 		= [];
 			bonuses 		= [];
-			maxdy 			= Settings.maxdy;
+
+			maxdy = Settings.maxdy;
 
 			if (rnd) roomBorderType = 1;
 
@@ -221,11 +226,13 @@ package locdata
 				if (roomParamObj.home) homeStable = true;
 				if (roomParamObj.atk) homeAtk = true;
 			}
-			for (var i:int = 0; i < kolEn.length; i++) ups[i] = [];
+			for (var i:int = 0; i < kolEn.length; i++) 
+			{
+				ups[i] = [];
+			}
 			noHolesPlace = rnd;
 			
 			buildLoc(nroom);
-
 		}
 
 		public function buildLoc(nroom:XML):void // Build according to the xml map
@@ -240,18 +247,18 @@ package locdata
 			}
 
 			// Options
-			backwall = level.levelTemplate.backwall;
-			sndMusic = level.levelTemplate.sndMusic;
-			postMusic = level.levelTemplate.postMusic;
-			rad = level.levelTemplate.rad;
-			wrad = level.levelTemplate.wrad;
-			wdam = level.levelTemplate.wdam;
-			wtipdam = level.levelTemplate.wtipdam;
-			tipWater = level.levelTemplate.tipWater;
-			color = level.levelTemplate.color;
-			visMult = level.levelTemplate.visMult;
-			opacWater = level.levelTemplate.opacWater;
-			darkness = level.levelTemplate.darkness;
+			backwall 	= level.levelTemplate.backwall;
+			sndMusic 	= level.levelTemplate.sndMusic;
+			postMusic 	= level.levelTemplate.postMusic;
+			rad 		= level.levelTemplate.rad;
+			wrad 		= level.levelTemplate.wrad;
+			wdam 		= level.levelTemplate.wdam;
+			wtipdam 	= level.levelTemplate.wtipdam;
+			tipWater 	= level.levelTemplate.tipWater;
+			color 		= level.levelTemplate.color;
+			visMult 	= level.levelTemplate.visMult;
+			opacWater 	= level.levelTemplate.opacWater;
+			darkness 	= level.levelTemplate.darkness;
 			if (nroom.options.length()) 
 			{
 				if (nroom.options.@backwall.length()) backwall = nroom.options.@backwall;
@@ -319,17 +326,13 @@ package locdata
 				for (i = 0; i < roomWidth; i++) 
 				{
 					var jis:String;
-					if (mirror) 
-					{
-						jis = arri[roomWidth - i - 1];
-					} 
-					else 
-					{
-						jis = arri[i];
-					}
+
+					if (mirror) jis = arri[roomWidth - i - 1];
+					else jis = arri[i];
+					
 					if (jis == null) jis = '';
 					roomTileArray[i][j].parseLevelXML(jis, mirror);
-					if (roomTileArray[i][j].stair != 0) // Shelf on top of the ladder
+					if (roomTileArray[i][j].stair != 0) // Shelf on top of a ladder
 					{  
 						if (j > 0 && roomTileArray[i][j].phis == 0 && !roomTileArray[i][j].shelf && roomTileArray[i][j].stair != roomTileArray[i][j - 1].stair) 
 						{
@@ -358,7 +361,7 @@ package locdata
 				doors = s.split('.');
 				if (mirror) 
 				{
-					var d;
+					var d:Array;
 					d = doors[6];
 					doors[6] = doors[10];
 					doors[10] = d;
@@ -396,7 +399,9 @@ package locdata
 			objsT = []; // Object spawnpoints
 			for each(var obj:XML in nroom.obj) 
 			{
-				var xmll:XML = XmlBook.getXML("objects").obj.(@id == obj.@id)[0];
+				var objectID:String = obj.@id;
+				var xmll:XML = XmlBook.findXMLNode("objects", objectID);
+
 				var size:int = xmll.@size;
 				if (size <= 0) size = 1;
 				var nx:int = obj.@x;
@@ -429,108 +434,14 @@ package locdata
 			units.push(un.defpet);
 		}
 
-		public function colorFilter(filter:String = ''):ColorTransform // Color filter
+		public function colorFilter(filterName:String = ''):ColorTransform // Color filter
 		{
 			var colorT = new ColorTransform();
-			var red:Number;
-			var green:Number;
-			var blue:Number;
-			
-			var lookup:Object = 
-			{
-				'green': function():void
-				{
-            		red = 0.8;
-					green = 1.16;
-					blue = 0.8;
-        		},
-				'red': function():void
-				{
-            		red = 1.1;
-					green = 0.9;
-					blue = 0.7;
-        		},
-				'fire': function():void
-				{
-            		red = 1.1;
-					green = 0.7;
-					blue = 0.5;
-        		},
-				'lab': function():void
-				{
-            		red = 0.9;
-					green = 1.1;
-					blue = 0.7;
-        		},
-				'black': function():void
-				{
-            		red = 0.5;
-					green = 0.7;
-					blue = 0.6;
-        		},
-				'blue': function():void
-				{
-            		red = 0.8;
-					green = 0.8;
-					blue = 1.16;
-        		},
-				'sky': function():void
-				{
-            		red = 0.85;
-					green = 1.12;
-					blue = 1.12;
-        		},
-				'yellow': function():void
-				{
-            		red = 1.25;
-					green = 1.2;
-					blue = 0.9;
-        		},
-				'purple': function():void
-				{
-            		red = 1.08;
-					green = 0.8;
-					blue = 1.12;
-        		},
-				'pink': function():void
-				{
-            		red = 1.1;
-					green = 0.9;
-					blue = 1;
-        		},
-				'blood': function():void
-				{
-            		red = 1.08;
-					green = 0.6;
-					blue = 1.08;
-        		},
-				'blood2': function():void
-				{
-            		red = 1;
-					green = 0.1;
-					blue = 0.1;
-        		},
-				'dark': function():void
-				{
-            		red = 0;
-					green = 0;
-					blue = 0;
-        		},
-				'mf': function():void
-				{
-            		red = 0.5;
-					green = 0.5;
-					blue = 1.08;
-        		}
-			}
+			var rgbColor:ColorRGB = ColorRGB.getColorFromTable(filterName);
 
-			if (lookup.hasOwnProperty(filter)) 
-			{
-        		lookup[filter]();
-				colorT.redMultiplier 	= red;
-				colorT.greenMultiplier 	= green;
-				colorT.blueMultiplier 	= blue;
-    		}
+			colorT.redMultiplier 	= rgbColor.red;
+			colorT.greenMultiplier 	= rgbColor.green;
+			colorT.blueMultiplier 	= rgbColor.blue;
 
 			return colorT;
 		}
@@ -1094,8 +1005,8 @@ package locdata
 			return s;
 		}
 		
-		//определение сid случайного юнита
-		public function randomCid(stringType:String):String
+		
+		public function randomCid(stringType:String):String //определение сid случайного юнита
 		{
 			var randNum:Number = Math.random();
 			var lookup:Object = 
@@ -1229,8 +1140,8 @@ package locdata
 					return 'hmine';
 				}
 			}
-			// Check if the 'stringType' exists in the lookup table
-			if (lookup.hasOwnProperty(stringType))
+			
+			if (lookup.hasOwnProperty(stringType)) // Check if the 'stringType' exists in the lookup table
 			{
 				if (stringType == 'scorp' || stringType == 'mine')
 				{
@@ -1250,49 +1161,49 @@ package locdata
 				return null;  // 'stringType' not found
 			}
 		}
-		
-		//создать активный объект, nx,ny-координаты в блоках
-		public function createObj(id:String,tip:String,nx:int,ny:int,xml:XML=null):Obj 
+
+		public function createObj(id:String, tip:String, nx:int, ny:int, xml:XML=null):Obj //создать активный объект, nx,ny-координаты в блоках
 		{
 			var obj:Obj;
 			var size:int = XmlBook.getXML("objects").obj.(@id == id).@size;
 			if (size <= 0) size = 1;
 			var loadObj:Object = null;
 			if (xml && xml.@code.length() && GameSession.currentSession.game.objs.hasOwnProperty(xml.@code)) loadObj = GameSession.currentSession.game.objs[xml.@code];
-			if (tip == 'box' || tip == 'door') 
+			switch (tip)
 			{
-				obj = new Box(this, id, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1, xml, loadObj);
-				objs.push(obj);
-				if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
-				if (xml && xml.@ph == '1' && !GameSession.currentSession.game.triggers['pet_phoenix']) createPhoenix((obj as Box)); //создать феникса
-				if (xml && xml.@transm == '1') createTransmitter((obj as Box));
-				if (level.rnd && level.levelTemplate.biom == 0 && !GameSession.currentSession.game.triggers['pet_phoenix'] && kol_phoenix == 0 && level.kol_phoenix < 3 && Math.random() < 0.02) 
-				{
-					createPhoenix(obj as Box);
-				}
-				if ((obj is Box) && (obj as Box).sur && level.rnd) createSur(obj as Box);
-				if (!level.rnd && xml && xml.@sur.length()) createSur(obj as Box, xml.@sur);
-				if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) electroDam = (obj as Box).electroDam;
-			} 
-			else if (tip == 'trap') 
-			{
-				obj = new Trap(this, id, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1);
-			} 
-			else if (tip == 'checkpoint') 
-			{
-				obj = new CheckPoint(this, id,(nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1, xml, loadObj);
-				if (GameSession.currentSession.game.globalDif <= 1 || level.rnd && GameSession.currentSession.game.globalDif == 2 && Math.random() < 0.33) (obj as CheckPoint).teleOn = true; //установить на контрольных точках телепорты на базу
-				activeObjects.push(obj);
-			} 
-			else if (tip=='area') 
-			{
-				obj=new Area(this, xml, loadObj, mirror);
-				areas.push(obj);
-			} 
-			else if (tip=='bonus') 
-			{
-				obj=new Bonus(this, id,(nx+0.5)*Tile.tilePixelWidth, (ny+0.5)*Tile.tilePixelHeight, xml, loadObj);
-				bonuses.push(obj);
+				case 'box': // OR
+				case 'door':
+					obj = new Box(this, id, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1, xml, loadObj);
+					objs.push(obj);
+					if ((obj is Box) && (obj as Box).un) units.push((obj as Box).un);
+					if (xml && xml.@ph == '1' && !GameSession.currentSession.game.triggers['pet_phoenix']) createPhoenix((obj as Box)); //создать феникса
+					if (xml && xml.@transm == '1') createTransmitter((obj as Box));
+					if (level.rnd && level.levelTemplate.biom == 0 && !GameSession.currentSession.game.triggers['pet_phoenix'] && kol_phoenix == 0 && level.kol_phoenix < 3 && Math.random() < 0.02) 
+					{
+						createPhoenix(obj as Box);
+					}
+					if ((obj is Box) && (obj as Box).sur && level.rnd) createSur(obj as Box);
+					if (!level.rnd && xml && xml.@sur.length()) createSur(obj as Box, xml.@sur);
+					if ((obj is Box) && (obj as Box).electroDam > electroDam && !obj.inter.open) electroDam = (obj as Box).electroDam;
+					break;
+				case 'trap':
+					obj = new Trap(this, id, (nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1);
+					break;
+				case 'checkpoint':
+					obj = new CheckPoint(this, id,(nx + 0.5 * size) * Tile.tilePixelWidth, (ny + 1) * Tile.tilePixelHeight - 1, xml, loadObj);
+					if (GameSession.currentSession.game.globalDif <= 1 || level.rnd && GameSession.currentSession.game.globalDif == 2 && Math.random() < 0.33) (obj as CheckPoint).teleOn = true; //установить на контрольных точках телепорты на базу
+					activeObjects.push(obj);
+					break;
+				case 'area':
+					obj=new Area(this, xml, loadObj, mirror);
+					areas.push(obj);
+					break;
+				case 'bonus':
+					obj=new Bonus(this, id,(nx+0.5)*Tile.tilePixelWidth, (ny+0.5)*Tile.tilePixelHeight, xml, loadObj);
+					bonuses.push(obj);
+					break;
+				default:
+					trace('Room.as/createObj() - ERROR: Unknown object type: "' + tip + '"!');
 			}
 			if (xml && xml.@code.length()) // Assignment of checkpoint objects to the currentCP property of the level.levelTemplate when specific conditions are met.
 			{ 
@@ -1300,23 +1211,25 @@ package locdata
 				obj.code=xml.@code;
 				if (tip=='checkpoint' && !level.rnd) //сохранённая контрольная точка
 				{	
-					if (GameSession.currentSession.pers.currentCPCode!=null && obj.code==GameSession.currentSession.pers.currentCPCode || GameSession.currentSession.pers.prevCPCode!=null && obj.code==GameSession.currentSession.pers.prevCPCode || level.levelTemplate.lastCpCode==obj.code) {
-						level.currentCP=obj as CheckPoint;
+					if (GameSession.currentSession.pers.currentCPCode!=null && obj.code==GameSession.currentSession.pers.currentCPCode || GameSession.currentSession.pers.prevCPCode!=null && obj.code==GameSession.currentSession.pers.prevCPCode || level.levelTemplate.lastCpCode==obj.code)
+					{
+						level.currentCP = obj as CheckPoint;
 					}
 				}
 			}
-			//Добавление объектов, имеющих uid в массив
-			if (xml && xml.@uid.length()) 
+			
+			if (xml && xml.@uid.length()) //Добавление объектов, имеющих uid в массив
 			{
 				obj.uid = xml.@uid;
 				level.uidObjs[obj.uid] = obj;
 			}
+
 			if (xml && xml.@objectName.length()) 
 			{
 				obj.objectName = xml.@objectName;
 			}
-			//Добавление id испытаний
-			if (levelProb == '' && xml && xml.@prob.length() && xml.@prob != '') level.probIds.push(xml.@prob);
+			
+			if (levelProb == '' && xml && xml.@prob.length() && xml.@prob != '') level.probIds.push(xml.@prob); //Добавление id испытаний
 			addObj(obj);
 			return obj;
 		}
@@ -1327,7 +1240,7 @@ package locdata
 			if (spawnPoints.length > 0) 
 			{
 				var sp = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
-				var id = 'checkpoint';
+				var id:String = 'checkpoint';
 				if (!act && level.rnd && Math.random() < 0.5) 
 				{
 					id += Math.floor(Math.random() * 5 + 1);
@@ -1380,26 +1293,27 @@ package locdata
 				y1 = 2;
 				x2 = roomWidth - 2;
 				y2 = roomHeight - 2;
-				if (mesto == 4) 
+				
+				switch (mesto)
 				{
-					x2 = roomWidth / 2;
-					y2 = roomHeight / 2;
-				} 
-				else if (mesto == 3) 
-				{
-					x1 = roomWidth / 2;
-					y2 = roomHeight / 2;
-				} 
-				else if (mesto == 2) 
-				{
-					x2 = roomWidth / 2;
-					y1 = roomHeight / 2;
-				} 
-				else if (mesto == 1) 
-				{
-					x1=roomWidth / 2;
-					y1=roomHeight / 2;
+					case 4:
+						x2 = roomWidth / 2;
+						y2 = roomHeight / 2;
+						break;
+					case 3:
+						x1 = roomWidth / 2;
+						y2 = roomHeight / 2;
+						break;
+					case 2:
+						x2 = roomWidth / 2;
+						y1 = roomHeight / 2;
+						break;
+					case 1:
+						x1=roomWidth / 2;
+						y1=roomHeight / 2;
+						break;
 				}
+
 				nx = Math.floor(x1 + Math.random() * (x2 - x1));
 				ny = Math.floor(y1 + Math.random() * (y2 - y1));
 				if (getTile(nx, ny).phis == 0 && (getTile(nx - 1, ny).phis == 0 || getTile(nx + 1, ny).phis == 0)) 
@@ -1584,7 +1498,7 @@ package locdata
 				var tempX:Number = nx + ndx * i / div;
 				var tempY:Number = ny + ndy * i / div;
 				
-				var t:Tile = currentRoom.getAbsTile(tempX | 0, tempY | 0);
+				var t:Tile = GameSession.currentSession.room.getAbsTile(tempX | 0, tempY | 0);
 				
 				if (t.phis == 1 && tempX >= t.phX1 && tempX <= t.phX2 && tempY >= t.phY1 && tempY <= t.phY2) 
 				{
@@ -1752,7 +1666,6 @@ package locdata
 				if (roomActive) GameSession.currentSession.grafon.tileDie(t, 4);
 			}
 		}
-		
 		
 		// Called on any change in the roomTileArray
 		private function rebuild():void
@@ -2125,8 +2038,10 @@ package locdata
 		
 		public function lighting(nx:int = -10000, ny:int = -10000, dist1:int = -1, dist2:int = -1):void
 		{
+			trace('Room.as/lighting() - Calculating room lighting.');
 			if (!roomActive)
 			{
+				trace('Room.as/lighting() - ERROR: Room is not active!.');
 				return;
 			}
 			if (dist1 < 0) dist1 = lDist1;
@@ -2222,6 +2137,7 @@ package locdata
 					}
 				}
 			}
+			trace('Room.as/lighting() - Finished calculating room lighting.');
 		}
 		
 		public function lighting2():void

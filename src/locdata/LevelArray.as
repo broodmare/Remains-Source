@@ -17,10 +17,10 @@ package locdata
     // These hold LevelTemplate objects after they've been initialized. These are what the game uses while running.
     public static var initializedLevelVariants:Array;
     public static var initializedProbLevels:Array;
-
+    public static var allLevelsLoaded:Boolean = false; // Used by GameSession to tell when all levels are loaded.
+    
     private static var levelsFound:int = 0;
     private static var levelsLoaded:int = 0;
-    public static var allLevelsLoaded:Boolean = false; // Just in case, not sure if it'll be used.
     
     public static function loadAllGameLevels():void // Public function used by Game.as constructor to load all levels.
     {
@@ -38,15 +38,9 @@ package locdata
       for each (var variant:XML in XmlBook.getXML("levels").level)
       {
         var variantName:String = variant.@id;
-        levelVariantArray[variantName] = variant;      // Copy the level settings for each level variant (always unique).
-        trace('LevelArray.as/setupLevelTemplateArray() - Adding an entry for level variant: "' + variantName + '" in the level variant array.');
-
         var templateFileName:String = variant.@fileName;  //  Create a list of new Level data names (sometimes re-used)
-        if (templateFileNameList[templateFileName] == null) 
-        {
-          trace('LevelArray.as/setupLevelTemplateArray() - Adding an entry for template: "' + templateFileName + '" to the template list.');
-          templateFileNameList[templateFileName] = templateFileName;
-        }
+        levelVariantArray[variantName] = variant;         // Copy the level settings for each level variant (always unique).
+        if (templateFileNameList[templateFileName] == null) templateFileNameList[templateFileName] = templateFileName;
       }
 
       loadXMLRoomData();
@@ -55,16 +49,11 @@ package locdata
     // Step 2: Load room data into each base level design.
     private static function loadXMLRoomData():void // Load all data for templates into memory for variants to use.
     {
-      trace('LevelArray.as/loadXMLRoomData() - Loading room data for all base level designs.');
       for each (var fileName:String in templateFileNameList)
       {
-				var levelFilePath:String = (Settings.levelPath + fileName + '.xml');
-
-				trace('LevelArray.as/setupLevelTemplateArray() - loading rooms for template: "' + fileName + '" from: "' + levelFilePath +'".');
-
+				var levelFilePath:String = (Settings.levelPath + fileName + '.xml');        
+				var levelLoader:XMLLoader = new XMLLoader();
         levelsFound++;
-				var levelLoader = new XMLLoader();
-
         levelLoader.addEventListener(XMLLoader.XML_LOADED, createEventListener(fileName, levelRoomDataArray));
 				levelLoader.load(levelFilePath, "setupLevelTemplateArray()");
       }
@@ -87,7 +76,6 @@ package locdata
 
           var levelTemplateXMLData:XML = currentLoader.xmlData;
           levelRoomDataArray[levelTemplate] = levelTemplateXMLData;
-          trace('LevelArray.as/addLevelTemplateData() - Template: "' + levelTemplate + '" loaded.');
 
           levelsLoaded++;
           checkIfAllLevelsLoaded();
