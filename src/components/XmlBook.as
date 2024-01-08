@@ -19,11 +19,6 @@ package components
         private static var pageSetupCounter:int = 0;
         public static var bookSetup:Boolean = false;
 
-		public function XmlBook() 
-		{
-            
-		}
-
         public static function xmlBookSetup():void
         {
 			trace('XmlBook.as/xmlBookSetup() - Loading XML Files.');
@@ -103,7 +98,7 @@ package components
 
             if (xmlBook.hasOwnProperty(xmlKey)) //Check if the XML file exists in the XmlBook
             {
-                var xmlList:XMLList = xmlBook[xmlKey].nodeID.(@id == nodeID); // If it does, retrieve a list of all nodes that match the given ID.
+                var xmlList:XMLList = xmlBook[xmlKey].*.(attribute("id") == nodeID); // If it does, retrieve a list of all nodes that match the given ID. (I hate E4X so much.)
 
                 if (xmlList.length()) 
                 {
