@@ -41,7 +41,6 @@ package servdata
 			if (level && onTimer) level.scripts.push(this);
 		}
 		
-		//set public
 		public function analiz(xml:XML):void
 		{
 			var act:String, targ:String, val:String, t:int = 0, n:String = '-1', opt1:int = 0, opt2:int = 0;
@@ -132,11 +131,9 @@ package servdata
 		}
 		
 		// Command execution
-		//set public
 		public function com(obj:Object):void
 		{
 			if (obj == null) return;
-			//trace('SCR', obj.targ, obj.act, obj.val);
 			actObj = obj;
 			if (GameSession.currentSession.gui.vis.dial.visible) GameSession.currentSession.gui.dialText();
 			GameSession.currentSession.ctr.keyPressed 	= false;
@@ -199,10 +196,7 @@ package servdata
 						GameSession.currentSession.gui.dialText(<r mod='1'>{str}</r>, 0, false, true);
 					}
 				}
-				if (obj.act == 'allact') 
-				{
-					GameSession.currentSession.room.allAct(null, obj.val, obj.n);
-				}
+				if (obj.act == 'allact') GameSession.currentSession.room.allAct(null, obj.val, obj.n);
 				if (obj.act == 'take') 
 				{
 					if (obj.n < 0) 
@@ -220,10 +214,7 @@ package servdata
 						GameSession.currentSession.invent.take(item);
 					}
 				}
-				if (obj.act == 'armor') 
-				{
-					GameSession.currentSession.gg.changeArmor(obj.val, true);
-				}
+				if (obj.act == 'armor') GameSession.currentSession.gg.changeArmor(obj.val, true);
 				if (obj.act == 'xp') GameSession.currentSession.pers.expa(obj.val,GameSession.currentSession.gg.X,GameSession.currentSession.gg.Y);
 				if (obj.act == 'perk') GameSession.currentSession.pers.addPerk(obj.val);
 				if (obj.act == 'eff') GameSession.currentSession.gg.addEffect(obj.val,obj.opt1,obj.opt2);
@@ -235,7 +226,7 @@ package servdata
 				}
 				if (obj.act == 'music_rep') 
 				{
-					if (GameSession.currentSession.pers.rep>=GameSession.currentSession.pers.repGood) Snd.playMusic(obj.val);
+					if (GameSession.currentSession.pers.rep >= GameSession.currentSession.pers.repGood) Snd.playMusic(obj.val);
 				}
 				if (obj.act == 'anim') GameSession.currentSession.gg.anim(obj.val,actObj.opt1>0);
 				if (obj.act == 'turn') 
@@ -247,50 +238,20 @@ package servdata
 				if (obj.act == 'black') 
 				{
 					GameSession.currentSession.cam.dblack=0;
-					if (obj.val>0)GameSession.currentSession.vblack.visible=true;
+					if (obj.val > 0) GameSession.currentSession.vblack.visible=true;
 					GameSession.currentSession.vblack.alpha=obj.val;
 				}
 				if (obj.act == 'dblack') GameSession.currentSession.cam.dblack=obj.val;
-				if (obj.act == 'gui off') 
-				{
-					GameSession.currentSession.gui.hpBarOnOff(false);
-				}
-				if (obj.act == 'gui on') 
-				{
-					GameSession.currentSession.gui.hpBarOnOff(true);
-				}
-				if (obj.act == 'refill') 
-				{
-					GameSession.currentSession.level.refill();
-				}
-				if (obj.act == 'upland') 
-				{
-					GameSession.currentSession.game.upLandLevel();
-				}
-				if (obj.act == 'locon') 
-				{
-					GameSession.currentSession.room.allon();
-				}
-				if (obj.act == 'locoff') 
-				{
-					GameSession.currentSession.room.alloff();
-				}
-				if (obj.act == 'quest') 
-				{
-					QuestHelper.addQuest(obj.val);
-				}
-				if (obj.act == 'showstage')
-				{
-					QuestHelper.showQuest(obj.val, obj.n);
-				}
-				if (obj.act == 'show') 
-				{
-					GameSession.currentSession.cam.showOn=false;
-				}
-				if (obj.act == 'stage') 
-				{
-					QuestHelper.closeQuest(obj.val, obj.n);
-				}
+				if (obj.act == 'gui off') GameSession.currentSession.gui.hpBarOnOff(false);
+				if (obj.act == 'gui on') GameSession.currentSession.gui.hpBarOnOff(true);
+				if (obj.act == 'refill') GameSession.currentSession.level.refill();
+				if (obj.act == 'upland') GameSession.currentSession.game.upLandLevel();
+				if (obj.act == 'locon') GameSession.currentSession.room.allon();
+				if (obj.act == 'locoff') GameSession.currentSession.room.alloff();
+				if (obj.act == 'quest') QuestHelper.addQuest(obj.val);
+				if (obj.act == 'showstage') QuestHelper.showQuest(obj.val, obj.n);
+				if (obj.act == 'show') GameSession.currentSession.cam.showOn = false;
+				if (obj.act == 'stage') QuestHelper.closeQuest(obj.val, obj.n);
 				if (obj.act == 'trigger') 
 				{
 					if (obj.n != null) GameSession.currentSession.game.setTrigger(obj.val, obj.n);
@@ -309,27 +270,12 @@ package servdata
 				}
 				if (obj.act == 'openland') //открыть местность на карте
 				{	
-					if (LevelArray.initializedLevelVariants[obj.val]) 
-					{
-						LevelArray.initializedLevelVariants[obj.val].access = true;
-					} 
-					else 
-					{
-						trace('error level ', obj.val)
-					}
+					if (LevelArray.initializedLevelVariants[obj.val]) LevelArray.initializedLevelVariants[obj.val].access = true;
+					else trace('Script.as/com() - ERROR: ????1672 ', obj.val)
 				}
-				if (obj.act == 'passed') //местность пройдена
-				{		
-					GameSession.currentSession.level.levelTemplate.passed = true;
-				}
-				if (obj.act == 'actprob') 
-				{
-					if (GameSession.currentSession.room.prob) GameSession.currentSession.room.prob.activateProb();
-				}
-				if (obj.act == 'alarm') 
-				{
-					GameSession.currentSession.room.signal();
-				}
+				if (obj.act == 'passed') GameSession.currentSession.level.levelTemplate.passed = true; //местность пройдена
+				if (obj.act == 'actprob' && GameSession.currentSession.room.prob) GameSession.currentSession.room.prob.activateProb();
+				if (obj.act == 'alarm') GameSession.currentSession.room.signal();
 				if (obj.act == 'trus') 
 				{
 					if (owner && owner.room) owner.room.trus = Number(obj.val);
@@ -342,50 +288,23 @@ package servdata
 						un.command('check');
 					}
 				}
-				if (obj.act == 'robots') 
-				{
-					GameSession.currentSession.room.robocellActivate();
-				}
-				if (obj.act == 'weapch') 
-				{
-					GameSession.currentSession.gg.changeWeapon(obj.val);
-				}
+				if (obj.act == 'robots') GameSession.currentSession.room.robocellActivate();
+				if (obj.act == 'weapch') GameSession.currentSession.gg.changeWeapon(obj.val);
 				if (obj.act == 'alicorn') 
 				{
 					if (obj.val <= 0) GameSession.currentSession.gg.alicornOff();
 					else GameSession.currentSession.gg.alicornOn();
 				}
-				if (obj.act == 'wave') 
-				{
-					if (GameSession.currentSession.room.prob) GameSession.currentSession.room.prob.beginWave();
-				}
-				if (obj.act == 'pip') 
-				{
-					GameSession.currentSession.pip.onoff(obj.val, obj.n);
-				}
-				if (obj.act == 'speceffect') 
-				{
-					GameSession.currentSession.grafon.specEffect(obj.n);
-				}
+				if (obj.act == 'wave' && GameSession.currentSession.room.prob) GameSession.currentSession.room.prob.beginWave();
+				if (obj.act == 'pip') GameSession.currentSession.pip.onoff(obj.val, obj.n);
+				if (obj.act == 'speceffect') GameSession.currentSession.grafon.specEffect(obj.n);
 				if (obj.act == 'scene') 
 				{
-					if (obj.val) 
-					{
-						GameSession.currentSession.showScene(obj.val, obj.n);
-					}
-					else 
-					{
-						GameSession.currentSession.unshowScene();
-					}
+					if (obj.val) GameSession.currentSession.showScene(obj.val, obj.n);
+					else GameSession.currentSession.unshowScene();
 				}
-				if (obj.act == 'endgame') 
-				{
-					GameSession.currentSession.endgame();
-				}
-				if (obj.act == 'gameover') 
-				{
-					GameSession.currentSession.endgame(1);
-				}
+				if (obj.act == 'endgame') GameSession.currentSession.endgame();
+				if (obj.act == 'gameover') GameSession.currentSession.endgame(1);
 				if (obj.act == 'wait') 
 				{
 					wait = true;
@@ -394,6 +313,5 @@ package servdata
 				}
 			}
 		}
-	}
-	
+	}	
 }

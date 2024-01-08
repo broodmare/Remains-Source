@@ -1,10 +1,5 @@
 package locdata 
 {
-
-	import servdata.Script;
-	import graphdata.Emitter;
-	import unitdata.Unit;
-	
 	import stubs.visualBonus;
 	import stubs.visualHealBonus;
 

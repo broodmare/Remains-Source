@@ -1,9 +1,5 @@
 package  locdata
 {
-	import flash.display.Sprite;
-	import flash.display.MovieClip;
-	
-	
 	public class Tile 
 	{
 		public static var tilePixelWidth:int  = 40;
@@ -264,18 +260,9 @@ package  locdata
 			} 
 			else 
 			{
-				if (rx < phX1) 
-				{
-					return phY1;
-				}
-				else if (rx > phX2) 
-				{
-					return phY2;
-				}
-				else 
-				{
-					return phY2 - (phY2 - phY1) * ((phX2 - rx) / (phX2 - phX1));
-				}
+				if (rx < phX1) return phY1;
+				else if (rx > phX2) return phY2;
+				else return phY2 - (phY2 - phY1) * ((phX2 - rx) / (phX2 - phX1));
 			}
 		}
 		

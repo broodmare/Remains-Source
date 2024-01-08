@@ -1,8 +1,6 @@
 package locdata 
 {
 	
-	import unitdata.Pers;
-	
 	import servdata.NPC;
 	import servdata.QuestHelper;
 	import servdata.Script;

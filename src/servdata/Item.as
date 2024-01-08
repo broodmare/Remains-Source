@@ -1,6 +1,5 @@
 package servdata 
 {
-	
 	//Элемент инвентаря
 	import unitdata.Invent;
 	
@@ -10,36 +9,35 @@ package servdata
 	public class Item 
 	{
 		//aliases
-		public static const L_ITEM:String ='item';
-		public static const L_ARMOR:String ='armor';
-		public static const L_UNIQ:String ='uniq';
-		public static const L_POT:String ='pot';
-		public static const L_FOOD:String ='food';
-		public static const L_SPEC:String ='spec';
-		public static const L_INSTR:String ='instr';
-		public static const L_STUFF:String ='stuff';
+		public static const L_ITEM:String 	= 'item';
+		public static const L_ARMOR:String 	= 'armor';
+		public static const L_UNIQ:String 	= 'uniq';
+		public static const L_POT:String 	= 'pot';
+		public static const L_FOOD:String 	= 'food';
+		public static const L_SPEC:String 	= 'spec';
+		public static const L_INSTR:String 	= 'instr';
+		public static const L_STUFF:String 	= 'stuff';
 
 		//itemTip aliases
-		public static const L_WEAPON:String ='weapon';
-		public static const L_SPELL:String ='spell';
-		public static const L_AMMO:String ='a';
-		public static const L_EXPL:String ='e';
-		public static const L_MED:String ='med';
-		public static const L_BOOK:String ='book';
-		public static const L_HIM:String ='him';
-		public static const L_SCHEME:String ='scheme';
-		public static const L_COMPA:String ='compa';
-		public static const L_COMPW:String ='compw';
-		public static const L_COMPE:String ='compe'; 
-		public static const L_COMPM:String ='compm'; 
-		public static const L_COMPP:String ='compp';
-		public static const L_PAINT:String ='paint';
-		public static const L_ART:String ='art';
-		public static const L_IMPL:String ='impl';
-		public static const L_KEY:String ='key';
+		public static const L_WEAPON:String = 'weapon';
+		public static const L_SPELL:String 	= 'spell';
+		public static const L_AMMO:String 	= 'a';
+		public static const L_EXPL:String 	= 'e';
+		public static const L_MED:String 	= 'med';
+		public static const L_BOOK:String 	= 'book';
+		public static const L_HIM:String 	= 'him';
+		public static const L_SCHEME:String = 'scheme';
+		public static const L_COMPA:String 	= 'compa';
+		public static const L_COMPW:String 	= 'compw';
+		public static const L_COMPE:String 	= 'compe'; 
+		public static const L_COMPM:String 	= 'compm'; 
+		public static const L_COMPP:String 	= 'compp';
+		public static const L_PAINT:String 	= 'paint';
+		public static const L_ART:String 	= 'art';
+		public static const L_IMPL:String 	= 'impl';
+		public static const L_KEY:String 	= 'key';
 
 		public static var itemTip:Array = ['weapon', 'spell', 'a', 'e', 'med', 'book', 'him', 'scheme', 'compa', 'compw', 'compe', 'compm', 'compp', 'paint', 'art', 'impl', 'key']
-		
 		
 		public var tip:String;
 		public var wtip:String		= '';
@@ -86,7 +84,6 @@ package servdata
 				id = nid.substr(0, nid.length - 2);
 			} 
 			else id = nid;
-			//trace(id);
 
 			tip = ntip;
 			kol = nkol;
@@ -97,18 +94,9 @@ package servdata
 			{
 				var l:XMLList;
 
-				if (tip == L_ARMOR) 
-				{
-					l = XmlBook.getXML("armors").armor.(@id == id);
-				} 
-				else if (tip == L_WEAPON) 
-				{
-					l = XmlBook.getXML("weapons").weapon.(@id == id);
-				} 
-				else 
-				{
-					l = XmlBook.getXML("items").item.(@id == id);
-				}
+				if (tip == L_ARMOR) l = XmlBook.getXML("armors").armor.(@id == id);
+				else if (tip == L_WEAPON) l = XmlBook.getXML("weapons").weapon.(@id == id);
+				else l = XmlBook.getXML("items").item.(@id == id);
 
 				if (l.length()) 
 				{
@@ -125,10 +113,7 @@ package servdata
 			if (tip == L_ARMOR || tip == L_WEAPON) 
 			{
 				kol = 1;
-				if (tip == L_ARMOR && xml && xml.@tip == '3') 
-				{
-					sost = 1;
-				} 
+				if (tip == L_ARMOR && xml && xml.@tip == '3') sost = 1;
 				else 
 				{
 					if (nkol == 0) sost = 0.05 + Math.random() * 0.15;
@@ -346,8 +331,6 @@ package servdata
 		{
 			kol -= bou;
 			bou = 0;
-		}
-		
-	}
-	
+		}	
+	}	
 }

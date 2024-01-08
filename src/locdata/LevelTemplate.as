@@ -2,8 +2,6 @@ package locdata
 {
 	// Class describing the terrain and player activity related to it
 	// Contained within the game object
-
-	import servdata.Script;
 	
 	public class LevelTemplate 
 	{

@@ -1,6 +1,5 @@
 package servdata 
 {
-	
 	import locdata.Loot;
 	import locdata.Room;
 
@@ -8,14 +7,7 @@ package servdata
 	
 	public class LootGen 
 	{
-
-		public function LootGen() 
-		{
-			// constructor code
-		}
-
 		//случайные объекты 
-		
 		private static var rndArr:Array;
 		public static var arr:Array;
 				
@@ -69,9 +61,8 @@ package servdata
 				}
 			}
 			
-			// проверка рандома
-			var a:Array = [];
-
+			
+			var a:Array = []; // проверка рандома
 		}
 		
 		public static function getRandom(tip:String, maxlvl:Number = -100, worth:int = -100):String 
@@ -81,6 +72,7 @@ package servdata
 			if (a == null) return null;
 			var gameStage:int = 0
 			if (GameSession.currentSession.level) gameStage = GameSession.currentSession.level.gameStage;
+			
 			if (tip != Item.L_BOOK && (maxlvl > 0 || worth > 0 || gameStage > 0)) 
 			{
 				res = [];
@@ -96,10 +88,8 @@ package servdata
 					}
 				}
 			} 
-			else 
-			{
-				res = a;
-			}
+			else res = a;
+
 			if (res.length == 0) return null;
 			if (res.length == 1) return res[0].id;
 			n = Math.random() * res[res.length - 1].r;
@@ -116,10 +106,7 @@ package servdata
 		{
 			if (rnd < 1 && Math.random() > rnd) return false;
 			var mn:Number = 1;
-			if (lootBroken) 
-			{
-				mn = 0.4;
-			}
+			if (lootBroken) mn = 0.4;
 			if (tip == Item.L_WEAPON) 
 			{
 				//Рандомное оружие
@@ -133,10 +120,7 @@ package servdata
 					id = getRandom(tip, Math.max(1, room.weaponLevel + (Math.random() * 2 - 1)));
 					if (id == null) mn *= 0.5;
 				}
-				if (id == null) 
-				{
-					id = getRandom(tip);
-				}
+				if (id == null) id = getRandom(tip);
 			}
 			//Рандомный лут, определить нужный id
 			if (id == null || id == '') 
@@ -149,10 +133,7 @@ package servdata
 				{
 					id = getRandom(tip, Math.max(1, room.locDifLevel / 2 + (Math.random() * 2 - 1)));
 				}
-				if (id == null) 
-				{
-					id = getRandom(tip);
-				}
+				if (id == null) id = getRandom(tip);
 			}
 			if (id == null)
 			{
@@ -510,6 +491,7 @@ package servdata
 			return is_loot > 0;
 		}
 		
+		// TODO: Move these, holy christ
 		//генерация лута, выпадающего из врагов, вернуть true если было что-то сгенерировано
 		public static function lootDrop(newRoom:Room, nnx:Number, nny:Number, cont:String, hero:int=0):Boolean 
 		{
@@ -520,164 +502,250 @@ package servdata
 			ny = nny;
 			is_loot=0;
 			//монстры
-			if (cont=='scorp') {
-				newLoot(1, Item.L_COMPA, 'chitin_comp');
-				newLoot(0.25, Item.L_COMPP, 'gland');
-				newLoot(0.1, Item.L_FOOD, 'meat');
-			} else if (cont=='slime') {
-				newLoot(0.75, Item.L_ITEM, 'acidslime');
-			} else if (cont=='pinkslime') {
-				newLoot(0.75, Item.L_ITEM, 'pinkslime');
-			} else if (cont=='raider') {
-				newLoot(0.25, 'eda');
-				newLoot(0.25, Item.L_AMMO);
-				newLoot(0.12, Item.L_EXPL);
-			} else if (cont=='alicorn1' || cont=='alicorn2' || cont=='alicorn3') {
-				newLoot(1, Item.L_COMPP, 'mdust');
-				newLoot(0.1, Item.L_POT, 'potMP');
-				if (!newLoot(0.3, Item.L_MED, 'potm1')) newLoot(0.2, Item.L_MED, 'potm2');
-			} else if (cont=='ranger1' || cont=='ranger2' || cont=='ranger3') {
-				newLoot(1, Item.L_ITEM, 'frag',Math.floor(Math.random()*3+1));
-				newLoot(0.5, Item.L_ITEM, 'scrap',Math.floor(Math.random()*3+1));
-				newLoot(1, Item.L_COMPA, 'power_comp');
-				newLoot(0.25, Item.L_AMMO);
-			} else if (cont=='encl2' || cont=='encl3' || cont=='encl4') {
-				newLoot(0.5, Item.L_ITEM, 'frag',Math.floor(Math.random()*3+1));
-				if (!newLoot(0.3, Item.L_AMMO, 'batt')) newLoot(0.5, Item.L_AMMO,'crystal');
-				newLoot(0.3, Item.L_COMPA, 'power_comp');
-			} else if (cont=='hellhound1') {
-				if (hero>0) newLoot(1, Item.L_COMPW, 'kogt');
-			} else if (cont=='zombie') {
-				newLoot(0.35, Item.L_COMPP, 'ghoulblood');
-				newLoot(0.15, Item.L_COMPP, 'radslime');
-				newLoot(0.5, Item.L_COMPA, 'skin_comp');
-			} else if (cont=='zombie4') {
-				newLoot(0.8, Item.L_COMPP, 'ghoulblood');
-				newLoot(1, Item.L_COMPP, 'radslime');
-			} else if (cont=='zombie5') {
-				newLoot(1, Item.L_COMPP, 'ghoulblood');
-				newLoot(0.3, Item.L_COMPP, 'metal_comp');
-			} else if (cont=='zombie6') {
-				newLoot(1, Item.L_COMPP, 'ghoulblood');
-				newLoot(0.3, Item.L_COMPA, 'battle_comp');
-				newLoot(0.8, Item.L_COMPP, 'acidslime');
-			} else if (cont=='zombie7') {
-				newLoot(0.6, Item.L_COMPP, 'ghoulblood');
-				newLoot(0.2, Item.L_COMPP, 'pinkslime');
-				if (hero>0) newLoot(0.6, Item.L_COMPM, 'darkfrag');
-			} else if (cont=='zombie8') {
-				newLoot(0.6, Item.L_COMPP, 'ghoulblood');
-				newLoot(1, Item.L_COMPP, 'pinkslime');
-				if (hero>0) newLoot(0.8, Item.L_COMPM, 'darkfrag');
-			} else if (cont=='zombie9') {
-				newLoot(0.6, Item.L_COMPP, 'ghoulblood');
-				newLoot(1, Item.L_COMPP, 'whorn');
-				if (hero>0) newLoot(1, Item.L_COMPM, 'darkfrag');
-			} else if (cont=='bloodwing') {
-				newLoot(0.2, Item.L_COMPP, 'wingmembrane');
-				newLoot(0.16, Item.L_COMPP, 'vampfang');
-				newLoot(0.25, Item.L_FOOD, 'meat');
-			} else if (cont=='bloodwing2') {
-				newLoot(0.3, Item.L_COMPP, 'wingmembrane');
-				newLoot(0.2, Item.L_COMPP, 'vampfang');
-				newLoot(0.4, Item.L_COMPP, 'pinkslime');
-			} else if (cont=='bloat0') {
-				newLoot(0.2, Item.L_COMPP, 'bloatwing');
-				newLoot(0.1, Item.L_COMPP, 'bloateye');
-			} else if (cont=='bloat1') {
-				newLoot(0.2, Item.L_COMPP, 'bloatwing');
-				newLoot(0.1, Item.L_COMPP, 'bloateye');
-				newLoot(0.2, Item.L_COMPP, 'acidslime');
-			} else if (cont=='bloat2') {
-				newLoot(0.2, Item.L_COMPP, 'bloatwing');
-				newLoot(0.1, Item.L_COMPP, 'bloateye');
-				newLoot(0.1, Item.L_COMPP, 'gland');
-			} else if (cont=='bloat3') {
-				newLoot(0.3, Item.L_COMPP, 'bloatwing');
-				newLoot(0.2, Item.L_COMPP, 'bloateye');
-				newLoot(0.1, Item.L_COMPP, 'molefat');
-			} else if (cont=='bloat4') {
-				newLoot(0.4, Item.L_COMPP, 'bloatwing');
-				newLoot(0.3, Item.L_COMPP, 'bloateye');
-			} else if (cont=='rat') {
-				newLoot(0.35, Item.L_COMPP, 'ratliver');
-				newLoot(0.25, Item.L_COMPP, 'rattail');
-				newLoot(0.1, Item.L_FOOD, 'meat');
-			} else if (cont=='molerat') {
-				newLoot(0.5, Item.L_COMPP, 'ratliver');
-				newLoot(1, Item.L_COMPP, 'molefat');
-				newLoot(0.25, Item.L_FOOD, 'meat');
-			} else if (cont=='fish1') {
-				newLoot(0.5, Item.L_COMPP, 'fishfat');
-			} else if (cont=='fish2') {
-				newLoot(1, Item.L_COMPP, 'fishfat');
-			} else if (cont=='ant1') {
-				newLoot(0.15, Item.L_COMPA, 'chitin_comp');
-				newLoot(0.1, Item.L_FOOD, 'meat');
-			} else if (cont=='ant2') {
-				newLoot(0.3, Item.L_COMPA, 'chitin_comp');
-				newLoot(0.1, Item.L_FOOD, 'meat');
-			} else if (cont=='ant3') {
-				newLoot(0.2, Item.L_COMPA, 'chitin_comp');
-				newLoot(1, Item.L_COMPP, 'firegland');
-				newLoot(0.1, Item.L_FOOD, 'meat');
-			} else if (cont=='necros') {
-				newLoot(0.5, Item.L_ITEM, 'dsoul');
-			} else if (cont=='ebloat') {
-				newLoot(1, Item.L_COMPP, 'essence');
+			switch (cont)
+			{
+				case 'scorp':
+					newLoot(1, Item.L_COMPA, 'chitin_comp');
+					newLoot(0.25, Item.L_COMPP, 'gland');
+					newLoot(0.1, Item.L_FOOD, 'meat');
+				break;
+
+				case 'slime':
+					newLoot(0.75, Item.L_ITEM, 'acidslime');
+				break;
+
+				case 'pinkslime':
+					newLoot(0.75, Item.L_ITEM, 'pinkslime');
+				break;
+
+				case 'raider':
+					newLoot(0.25, 'eda');
+					newLoot(0.25, Item.L_AMMO);
+					newLoot(0.12, Item.L_EXPL);
+				break;
+
+				case 'alicorn1':
+				case 'alicorn2':
+				case 'alicorn3':
+					newLoot(1, Item.L_COMPP, 'mdust');
+					newLoot(0.1, Item.L_POT, 'potMP');
+					if (!newLoot(0.3, Item.L_MED, 'potm1')) newLoot(0.2, Item.L_MED, 'potm2');
+				break;
+
+				case 'ranger1':
+				case 'ranger2':
+				case 'ranger3':
+					newLoot(1, Item.L_ITEM, 'frag',Math.floor(Math.random()*3+1));
+					newLoot(0.5, Item.L_ITEM, 'scrap',Math.floor(Math.random()*3+1));
+					newLoot(1, Item.L_COMPA, 'power_comp');
+					newLoot(0.25, Item.L_AMMO);
+				break;
+
+				case 'encl2':
+				case 'encl3':
+				case 'encl4':
+					newLoot(0.5, Item.L_ITEM, 'frag',Math.floor(Math.random()*3+1));
+					if (!newLoot(0.3, Item.L_AMMO, 'batt')) newLoot(0.5, Item.L_AMMO,'crystal');
+					newLoot(0.3, Item.L_COMPA, 'power_comp');
+				break;
+
+				case 'hellhound1':
+					if (hero > 0) newLoot(1, Item.L_COMPW, 'kogt');
+				break;
+
+				case 'zombie':
+					newLoot(0.35, Item.L_COMPP, 'ghoulblood');
+					newLoot(0.15, Item.L_COMPP, 'radslime');
+					newLoot(0.5, Item.L_COMPA, 'skin_comp');
+				break;
+
+				case 'zombie4':
+					newLoot(0.8, Item.L_COMPP, 'ghoulblood');
+					newLoot(1, Item.L_COMPP, 'radslime');
+				break;
+
+				case 'zombie5':
+					newLoot(1, Item.L_COMPP, 'ghoulblood');
+					newLoot(0.3, Item.L_COMPP, 'metal_comp');
+				break;
+
+				case 'zombie6':
+					newLoot(1, Item.L_COMPP, 'ghoulblood');
+					newLoot(0.3, Item.L_COMPA, 'battle_comp');
+					newLoot(0.8, Item.L_COMPP, 'acidslime');
+				break;
+
+				case 'zombie7':
+					newLoot(0.6, Item.L_COMPP, 'ghoulblood');
+					newLoot(0.2, Item.L_COMPP, 'pinkslime');
+					if (hero>0) newLoot(0.6, Item.L_COMPM, 'darkfrag');
+				break;
+
+				case 'zombie8':
+					newLoot(0.6, Item.L_COMPP, 'ghoulblood');
+					newLoot(1, Item.L_COMPP, 'pinkslime');
+					if (hero>0) newLoot(0.8, Item.L_COMPM, 'darkfrag');
+				break;
+
+				case 'zombie9':
+					newLoot(0.6, Item.L_COMPP, 'ghoulblood');
+					newLoot(1, Item.L_COMPP, 'whorn');
+					if (hero>0) newLoot(1, Item.L_COMPM, 'darkfrag');
+				break;
+
+				case 'bloodwing':
+					newLoot(0.2, Item.L_COMPP, 'wingmembrane');
+					newLoot(0.16, Item.L_COMPP, 'vampfang');
+					newLoot(0.25, Item.L_FOOD, 'meat');
+				break;
+
+				case 'bloodwing2':
+					newLoot(0.3, Item.L_COMPP, 'wingmembrane');
+					newLoot(0.2, Item.L_COMPP, 'vampfang');
+					newLoot(0.4, Item.L_COMPP, 'pinkslime');
+				break;
+
+				case 'bloat0':
+					newLoot(0.2, Item.L_COMPP, 'bloatwing');
+					newLoot(0.1, Item.L_COMPP, 'bloateye');
+				break;
+
+				case 'bloat1':
+					newLoot(0.2, Item.L_COMPP, 'bloatwing');
+					newLoot(0.1, Item.L_COMPP, 'bloateye');
+					newLoot(0.2, Item.L_COMPP, 'acidslime');
+				break;
+
+				case 'bloat2':
+					newLoot(0.2, Item.L_COMPP, 'bloatwing');
+					newLoot(0.1, Item.L_COMPP, 'bloateye');
+					newLoot(0.1, Item.L_COMPP, 'gland');
+				break;
+
+				case 'bloat3':
+					newLoot(0.3, Item.L_COMPP, 'bloatwing');
+					newLoot(0.2, Item.L_COMPP, 'bloateye');
+					newLoot(0.1, Item.L_COMPP, 'molefat');
+				break;
+
+				case 'bloat4':
+					newLoot(0.4, Item.L_COMPP, 'bloatwing');
+					newLoot(0.3, Item.L_COMPP, 'bloateye');
+				break;
+
+				case 'rat':
+					newLoot(0.35, Item.L_COMPP, 'ratliver');
+					newLoot(0.25, Item.L_COMPP, 'rattail');
+					newLoot(0.1, Item.L_FOOD, 'meat');
+				break;
+
+				case 'molerat':
+					newLoot(0.5, Item.L_COMPP, 'ratliver');
+					newLoot(1, Item.L_COMPP, 'molefat');
+					newLoot(0.25, Item.L_FOOD, 'meat');
+				break;
+
+				case 'fish1':
+					newLoot(0.5, Item.L_COMPP, 'fishfat');
+				break;
+
+				case 'fish2':
+					newLoot(1, Item.L_COMPP, 'fishfat');
+				break;
+
+				case 'ant1':
+					newLoot(0.15, Item.L_COMPA, 'chitin_comp');
+					newLoot(0.1, Item.L_FOOD, 'meat');
+				break;
+
+				case 'ant2':
+					newLoot(0.3, Item.L_COMPA, 'chitin_comp');
+					newLoot(0.1, Item.L_FOOD, 'meat');
+				break;
+
+				case 'ant3':
+					newLoot(0.2, Item.L_COMPA, 'chitin_comp');
+					newLoot(1, Item.L_COMPP, 'firegland');
+					newLoot(0.1, Item.L_FOOD, 'meat');
+				break;
+
+				case 'necros':
+					newLoot(0.5, Item.L_ITEM, 'dsoul');
+				break;
+
+				case 'ebloat':
+					newLoot(1, Item.L_COMPP, 'essence');
+				break;
+
+				case 'turret':
+					newLoot(0.5, Item.L_ITEM, 'scrap');
+					newLoot(0.35, Item.L_COMPW, 'frag');
+					if (!newLoot(0.2, Item.L_AMMO, 'batt')) newLoot(0.2, Item.L_AMMO,'energ');
+				break;
+
+				case 'turret1':
+					newLoot(0.5, Item.L_ITEM, 'scrap');
+					newLoot(0.5, Item.L_ITEM, 'scrap');
+					newLoot(0.85, Item.L_COMPW, 'frag');
+					newLoot(0.52, Item.L_COMPA, 'magus_comp');
+					if (!newLoot(0.4, Item.L_AMMO, 'batt')) newLoot(0.8, Item.L_AMMO,'energ');
+				break;
+
+				case 'robobrain':
+					newLoot(0.25, Item.L_ITEM, 'scrap');
+					newLoot(0.15, Item.L_COMPW, 'frag');
+					newLoot(0.5, Item.L_COMPM);
+					newLoot(0.5, Item.L_AMMO, 'batt');
+					newLoot(0.4, Item.L_COMPA, 'metal_comp');
+					if (hero>0) newLoot(1, Item.L_COMPM, 'impgen');
+				break;
+
+				case 'protect':
+					newLoot(0.3, Item.L_ITEM, 'scrap');
+					newLoot(0.25, Item.L_COMPW, 'frag');
+					newLoot(0.6, Item.L_COMPM);
+					newLoot(0.9, Item.L_AMMO, 'batt');
+					newLoot(0.4, Item.L_COMPA, 'metal_comp');
+					if (hero>0) newLoot(1, Item.L_COMPM, 'uscan');
+				break;
+
+				case 'gutsy':
+					newLoot(0.45, Item.L_ITEM, 'scrap');
+					newLoot(0.5, Item.L_COMPW, 'frag');
+					newLoot(0.7, Item.L_COMPM);
+					newLoot(0.85, Item.L_COMPA, 'battle_comp');
+					if (!newLoot(0.4, Item.L_AMMO, 'fuel')) newLoot(0.75, Item.L_AMMO, 'energ');
+					if (hero>0) newLoot(1, Item.L_COMPM, 'tlaser');
+				break;
+
+				case 'eqd':
+					newLoot(0.45, Item.L_ITEM, 'scrap');
+					newLoot(0.5, Item.L_COMPW, 'frag');
+					newLoot(0.8, Item.L_COMPM);
+					newLoot(0.85, Item.L_COMPA, 'magus_comp');
+					newLoot(1, Item.L_AMMO, 'energ');
+					newLoot(0.5, Item.L_ITEM, 'data');
+					if (hero>0) newLoot(1, Item.L_COMPM, 'pcrystal');
+				break;
+
+				case 'sentinel':
+					newLoot(0.85, Item.L_ITEM, 'scrap');
+					newLoot(0.5, Item.L_COMPW, 'frag');
+					newLoot(1, Item.L_COMPM);
+					if (!newLoot(0.4, Item.L_AMMO, 'p5')) newLoot(1, Item.L_AMMO, 'crystal');
+					newLoot(0.85, Item.L_AMMO, 'rocket');
+					newLoot(0.5, Item.L_COMPW);
+					newLoot(1, Item.L_COMPM, 'motiv');
+				break;
+
+				case 'vortex':
+				case 'spritebot':
+				case 'roller':
+					newLoot(0.2, Item.L_ITEM, 'scrap');
+				break;
+
 			}
-			//роботы
-			else if (cont=='turret') {
-				newLoot(0.5, Item.L_ITEM, 'scrap');
-				newLoot(0.35, Item.L_COMPW, 'frag');
-				if (!newLoot(0.2, Item.L_AMMO, 'batt')) newLoot(0.2, Item.L_AMMO,'energ');
-			} else if (cont=='turret1') {
-				newLoot(0.5, Item.L_ITEM, 'scrap');
-				newLoot(0.5, Item.L_ITEM, 'scrap');
-				newLoot(0.85, Item.L_COMPW, 'frag');
-				newLoot(0.52, Item.L_COMPA, 'magus_comp');
-				if (!newLoot(0.4, Item.L_AMMO, 'batt')) newLoot(0.8, Item.L_AMMO,'energ');
-			} else if (cont=='robobrain') {
-				newLoot(0.25, Item.L_ITEM, 'scrap');
-				newLoot(0.15, Item.L_COMPW, 'frag');
-				newLoot(0.5, Item.L_COMPM);
-				newLoot(0.5, Item.L_AMMO, 'batt');
-				newLoot(0.4, Item.L_COMPA, 'metal_comp');
-				if (hero>0) newLoot(1, Item.L_COMPM, 'impgen');
-			} else if (cont=='protect') {
-				newLoot(0.3, Item.L_ITEM, 'scrap');
-				newLoot(0.25, Item.L_COMPW, 'frag');
-				newLoot(0.6, Item.L_COMPM);
-				newLoot(0.9, Item.L_AMMO, 'batt');
-				newLoot(0.4, Item.L_COMPA, 'metal_comp');
-				if (hero>0) newLoot(1, Item.L_COMPM, 'uscan');
-			} else if (cont=='gutsy') {
-				newLoot(0.45, Item.L_ITEM, 'scrap');
-				newLoot(0.5, Item.L_COMPW, 'frag');
-				newLoot(0.7, Item.L_COMPM);
-				newLoot(0.85, Item.L_COMPA, 'battle_comp');
-				if (!newLoot(0.4, Item.L_AMMO, 'fuel')) newLoot(0.75, Item.L_AMMO, 'energ');
-				if (hero>0) newLoot(1, Item.L_COMPM, 'tlaser');
-			} else if (cont=='eqd') {
-				newLoot(0.45, Item.L_ITEM, 'scrap');
-				newLoot(0.5, Item.L_COMPW, 'frag');
-				newLoot(0.8, Item.L_COMPM);
-				newLoot(0.85, Item.L_COMPA, 'magus_comp');
-				newLoot(1, Item.L_AMMO, 'energ');
-				newLoot(0.5, Item.L_ITEM, 'data');
-				if (hero>0) newLoot(1, Item.L_COMPM, 'pcrystal');
-			} else if (cont=='sentinel') {
-				newLoot(0.85, Item.L_ITEM, 'scrap');
-				newLoot(0.5, Item.L_COMPW, 'frag');
-				newLoot(1, Item.L_COMPM);
-				if (!newLoot(0.4, Item.L_AMMO, 'p5')) newLoot(1, Item.L_AMMO, 'crystal');
-				newLoot(0.85, Item.L_AMMO, 'rocket');
-				newLoot(0.5, Item.L_COMPW);
-				newLoot(1, Item.L_COMPM, 'motiv');
-			} else if (cont=='vortex' || cont=='spritebot' || cont=='roller') {
-				newLoot(0.2, Item.L_ITEM, 'scrap');
-			}
-			return is_loot>0;
+			return is_loot > 0;
 		}
 		
 		public static function replic(s:String):void 
@@ -685,10 +753,9 @@ package servdata
 			if (isrnd()) GameSession.currentSession.gg.replic(s);
 		}	
 		
-		protected static function isrnd(n:Number=0.5):Boolean {
-			return Math.random()<n;
-		}
-		
-	}
-	
+		protected static function isrnd(n:Number = 0.5):Boolean 
+		{
+			return Math.random() < n;
+		}	
+	}	
 }

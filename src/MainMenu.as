@@ -2,24 +2,15 @@
 {
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.display.Stage;
-	import flash.display.StageScaleMode;
-	import flash.display.StageDisplayState;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.display.SimpleButton;
 	import flash.text.TextFormat;
 	import flash.text.StyleSheet;
 	import flash.net.FileReference;
 	import flash.net.FileFilter;
-	import flash.utils.ByteArray;
-	import flash.utils.Timer;
-	import flash.events.TimerEvent;
 
 	import locdata.LevelArray;
 	import interdata.PipPageOpt;
-	import interdata.PipBuck;
 	import graphdata.Displ;
 	
 	import systems.Languages;

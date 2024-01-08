@@ -41,15 +41,11 @@ package servdata
 				if (xml.@ndial.length()) ndial=xml.@ndial;
 			}
 
-			if (loadObj) 
-			{
-				if (loadObj.rep!=null) rep=loadObj.rep;
-			}
-
-			if (nvid!=null) vid=nvid;
+			if (loadObj && loadObj.rep != null) rep = loadObj.rep;
+			if (nvid != null) vid = nvid;
 
 			// Create a vendor object
-			if (vid!=null && vid!='') 
+			if (vid != null && vid != '') 
 			{
 				if (GameSession.currentSession.game.vendors[vid])
 				{
@@ -86,18 +82,14 @@ package servdata
 		// This function is called when the unit is created
 		public function init():void
 		{
-			if (id=='calam') 
+			if (id == 'calam') 
 			{
-				if (rep==0 || trig('rbl_visited')>0) 
-				{
-					hidden=true;
-				}
+				if (rep==0 || trig('rbl_visited')>0) hidden=true;
 				if (rep==1) (owner as UnitNPC).aiTip='agro';
 			}
-			if (id=='steel2') refresh();
+			if (id == 'steel2') refresh();
 		}
 		
-		//set public
 		public function trig(s:String):* 
 		{
 			return GameSession.currentSession.game.triggers[s];
@@ -110,34 +102,34 @@ package servdata
 			{
 				if (rep==0 && owner) owner.command('ai','');
 			}
-			if (id=='calam2') hidden=(trig('storm')>0);
-			if (id=='calam3') hidden=(trig('storm')!=1);
-			if (id=='calam4') hidden=(trig('storm')!=2 && trig('storm')!=3);
-			if (id=='calam5') hidden=(trig('storm')!=3);
-			if (id=='steel2') hidden=(trig('mbase_visited')>0);
-			if (id=='steel') hidden=(trig('storm')==5);
-			if (id=='askari') hidden=(trig('story_ranger')>0);
-			if (id=='askari2') hidden=!(trig('story_ranger')>0) || trig('storm')>0;
-			if (id=='patient') zzzGen=(rep==2);
-			if (id=='observer') hidden=(trig('observer')!=1);
-			if (id=='observer2') hidden=(trig('storm')!=2);
-			if (id=='askari3') hidden=!(trig('storm')>=2);
-			if (id=='mentor') hidden=(trig('theend')>0);
+			if (id == 'calam2') hidden=(trig('storm')>0);
+			if (id == 'calam3') hidden=(trig('storm')!=1);
+			if (id == 'calam4') hidden=(trig('storm')!=2 && trig('storm')!=3);
+			if (id == 'calam5') hidden=(trig('storm')!=3);
+			if (id == 'steel2') hidden=(trig('mbase_visited')>0);
+			if (id == 'steel') hidden=(trig('storm')==5);
+			if (id == 'askari') hidden=(trig('story_ranger')>0);
+			if (id == 'askari2') hidden=!(trig('story_ranger')>0) || trig('storm')>0;
+			if (id == 'patient') zzzGen=(rep==2);
+			if (id == 'observer') hidden=(trig('observer')!=1);
+			if (id == 'observer2') hidden=(trig('storm')!=2);
+			if (id == 'askari3') hidden=!(trig('storm')>=2);
+			if (id == 'mentor') hidden=(trig('theend')>0);
 		}
 		
 		// This function is called when a flying unit lands
 		public function landing():void 
 		{
-			if (id=='calam') 
+			if (id == 'calam') 
 			{
-				rep=1;
+				rep = 1;
 			}
 		}
 		
 		// Activate interaction with NPC
 		public function activate():void
 		{
-			if (check(true) && npcInter!='patient') return;
+			if (check(true) && npcInter != 'patient') return;
 
 			if (npcInter=='travel') 
 			{
@@ -183,8 +175,7 @@ package servdata
 			GameSession.currentSession.pip.onoff(n);
 			if (owner) owner.command('replicVse');
 		}
-		
-		
+
 		// Check for quest actions, if 'us', perform actions; if not, only set the status
 		public function check(us:Boolean=false):Boolean 
 		{
@@ -369,10 +360,7 @@ package servdata
 					}
 					GameSession.currentSession.gui.dialog('rblAutoDocR4');
 				} 
-				else 
-				{
-					GameSession.currentSession.gui.dialog('rblAutoDocR3');
-				}
+				else GameSession.currentSession.gui.dialog('rblAutoDocR3');
 			} 
 			else 
 			{
@@ -384,10 +372,7 @@ package servdata
 				rep=2;
 				inter.t_action = 0;
 				setStatus();
-				if (xml && xml.quest.length()) 
-				{
-					QuestHelper.closeQuest(xml.quest.@id,xml.quest.@cid);
-				}
+				if (xml && xml.quest.length()) QuestHelper.closeQuest(xml.quest.@id,xml.quest.@cid);
 			}
 		}
 		

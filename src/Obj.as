@@ -4,15 +4,10 @@ package
 	// Base class for objects interacting with the player or the world
 	
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
 	import flash.geom.ColorTransform;
-	
-	import graphdata.Emitter;
-	import graphdata.Part;
-	import locdata.Room;
+
 	import servdata.Interact;
 	import weapondata.Bullet;
-	import unitdata.UnitPlayer;
 	import interdata.Appear;
 	
 	import components.Settings;

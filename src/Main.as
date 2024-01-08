@@ -1,18 +1,10 @@
 package
 {
 	import flash.display.MovieClip;
-	import flash.display.Sprite;
-	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.events.Event;
     import flash.ui.ContextMenu;
     import flash.ui.ContextMenuItem;
-    import flash.ui.ContextMenuBuiltInItems;
-    import flash.events.ContextMenuEvent;
-	import flash.display.LoaderInfo;
-	import flash.display.Loader;
-	import flash.net.URLRequest;
-	import flash.system.Security;
 	
 	import stubs.LoadingWidget;
 	

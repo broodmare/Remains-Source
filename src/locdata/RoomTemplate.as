@@ -1,8 +1,5 @@
 package locdata 
 {
-	
-	// Room template class
-	
 	public class RoomTemplate
 	{
 		
@@ -47,10 +44,6 @@ package locdata
 				}
 				if (xml.options.@nornd.length()) rnd = false;
 			}
-
-
 		}
-
-	}
-	
+	}	
 }

@@ -1,8 +1,5 @@
 package locdata 
 {
-	
-	import flash.geom.ColorTransform;
-	import flash.utils.*;
 	import flash.display.MovieClip;
 
 	import graphdata.Emitter;

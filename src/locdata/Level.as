@@ -4,7 +4,6 @@ package locdata
 
 	import servdata.Script;
 	import unitdata.UnitPlayer;
-	import unitdata.Pers;
 	
 	import locdata.LevelArray;
 	

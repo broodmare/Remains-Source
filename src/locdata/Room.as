@@ -1034,7 +1034,7 @@ package locdata
 			return s;
 		}
 		
-		//Determine the cid of a random unit
+		//Determine the cid of a random unit, unit types have a number appeneded, eg. 'zombie7'.
 		public function randomCid(unitType:String):String 
 		{
 			var tr:int = -1;

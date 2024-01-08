@@ -24,7 +24,7 @@ package servdata
 		public var burnPart:String;
 		public var burnGlowColor:uint;
 		public var burnCt:ColorTransform;
-		public var burnRnd:int=Math.random() * int.MAX_VALUE;
+		public var burnRnd:int = Math.random() * int.MAX_VALUE;
 		public var burnKolPix:int;
 		public var burnTime1:int = 10;
 		public var burnTime2:int = 30;
@@ -47,54 +47,58 @@ package servdata
 			owner.vis.addChild(burnBm);
 			burnBm.x = rect.left;
 			burnBm.y = rect.top;
-			if (burnTip == 1) 
+
+			switch (burnTip)
 			{
-				burnCt=new ColorTransform(1,1,1,1,255/burnTime1,100/burnTime1,0,0);
-				burnPart='burn';
-				burnGlowColor=0xFFAA00;
-				Snd.ps('desintegr_f',owner.X,owner.Y);
-			} 
-			else if (burnTip == 2) 
-			{
-				burnCt=new ColorTransform(1,1,1,1,0,255/burnTime1,100/burnTime1,0);
-				burnPart='plakap';
-				burnGlowColor=0x00FF00;
-				Snd.ps('liquid_f',owner.X,owner.Y);
-			} 
-			else if (burnTip == 3) 
-			{
-				burnCt=new ColorTransform(1,1,1,1,155/burnTime1,155/burnTime1,255/burnTime1,0);
-				burnPart='burn';
-				burnGlowColor=0x4444FF;
-				Snd.ps('desintegr_f',owner.X,owner.Y);
-			} 
-			else if (burnTip == 4)
-			{
-				burnCt=new ColorTransform(1,1,1,1,100/burnTime1,100/burnTime1,255/burnTime1,0);
-				burnPart='krupa';
-				burnGlowColor=0x0000FF;
-				Snd.ps('freezing_f',owner.X,owner.Y);
-			} 
-			else if (burnTip == 5) 
-			{
-				burnCt=new ColorTransform(1,0.85,0.85,1,0,0,0,0);
-				burnPart='blood';
-				burnGlowColor=0xFF0000;
-			} 
-			else if (burnTip == 6) 
-			{
-				burnCt=new ColorTransform(0.9,1,0.85,1,0,0,0,0);
-				burnPart='gblood';
-				burnGlowColor=0x66CC33;
-			} 
-			else if (burnTip == 7) 
-			{
-				burnCt=new ColorTransform(1,0.85,0.88,1,0,0,0,0);
-				burnPart='pblood';
-				burnGlowColor=0xFF66FF;
+				case 1:
+					burnCt=new ColorTransform(1,1,1,1,255/burnTime1,100/burnTime1,0,0);
+					burnPart='burn';
+					burnGlowColor=0xFFAA00;
+					Snd.ps('desintegr_f',owner.X,owner.Y);
+				break;
+
+				case 2:
+					burnCt=new ColorTransform(1,1,1,1,0,255/burnTime1,100/burnTime1,0);
+					burnPart='plakap';
+					burnGlowColor=0x00FF00;
+					Snd.ps('liquid_f',owner.X,owner.Y);
+				break;
+
+				case 3:
+					burnCt=new ColorTransform(1,1,1,1,155/burnTime1,155/burnTime1,255/burnTime1,0);
+					burnPart='burn';
+					burnGlowColor=0x4444FF;
+					Snd.ps('desintegr_f',owner.X,owner.Y);
+				break;
+
+				case 4:
+					burnCt=new ColorTransform(1,1,1,1,100/burnTime1,100/burnTime1,255/burnTime1,0);
+					burnPart='krupa';
+					burnGlowColor=0x0000FF;
+					Snd.ps('freezing_f',owner.X,owner.Y);
+				break;
+
+				case 5:
+					burnCt=new ColorTransform(1,0.85,0.85,1,0,0,0,0);
+					burnPart='blood';
+					burnGlowColor=0xFF0000;
+				break;
+
+				case 6:
+					burnCt=new ColorTransform(0.9,1,0.85,1,0,0,0,0);
+					burnPart='gblood';
+					burnGlowColor=0x66CC33;
+				break;
+
+				case 7:
+					burnCt=new ColorTransform(1,0.85,0.88,1,0,0,0,0);
+					burnPart='pblood';
+					burnGlowColor=0xFF66FF;
+				break;
 			}
+
 			burnKolPix = burnBmp.height * burnBmp.width;
-			burnN=1;
+			burnN = 1;
 		}
 		
 		public function step():void
@@ -118,7 +122,5 @@ package servdata
 			}
 			burnN++;
 		}
-
-	}
-	
+	}	
 }

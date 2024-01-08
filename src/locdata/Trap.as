@@ -1,7 +1,5 @@
 package locdata 
 {
-	
-	import flash.geom.ColorTransform;
 	import flash.display.MovieClip;
 	
 	import unitdata.Unit;
@@ -24,9 +22,7 @@ package locdata
 		public var spBind:int=1;	//способ прикрепления
 		public var floor:Boolean = false;
 		
-		//Set public
 		public var anim:Boolean = false;
-
 
 		public function Trap(newRoom:Room, nid:String, nx:int=0, ny:int=0) 
 		{

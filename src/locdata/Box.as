@@ -1,10 +1,7 @@
 package locdata 
 {
-	
-	import flash.utils.*;
 	import flash.filters.DropShadowFilter;
 	import flash.display.MovieClip;
-	import flash.geom.ColorTransform;
 	
 	import servdata.Interact;
 	import unitdata.Unit;

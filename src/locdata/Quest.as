@@ -1,9 +1,7 @@
 package locdata 
 {
-	
 	import servdata.Item;
-	import servdata.Script;
-	
+
 	import components.Settings;
 	import systems.Languages;
 	

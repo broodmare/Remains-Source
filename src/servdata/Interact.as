@@ -1,7 +1,6 @@
 package servdata 
 {
 	import flash.media.SoundChannel;
-	import flash.sampler.StackFrame;
 
 	import locdata.*;
 	import unitdata.Unit;
@@ -13,9 +12,6 @@ package servdata
 	
 	public class Interact 
 	{
-		
-		//public var id:String;
-		
 		public var inited:Boolean = false;
 		public var owner:Obj;
 		public var room:Room;
@@ -393,23 +389,23 @@ package servdata
 			{
 				if (active && action>0) 
 				{
-					if (action==1) actionText=Res.txt('gui', !open?'open':'close');
-					if (action==2) actionText=Res.txt('gui', 'use'); 
-					if (action==3) actionText=Res.txt('gui', 'remine'); 
-					if (action==4) actionText=Res.txt('gui', 'press'); 
-					if (action==5) actionText=Res.txt('gui', 'shutoff'); 
-					if (action==8) actionText=Res.txt('gui', 'comein'); 
-					if (action==9) actionText=Res.txt('gui', 'exit'); 
-					if (action==10) actionText=Res.txt('gui', 'beginm'); 
-					if (action==11) actionText=Res.txt('gui', 'return'); 
-					if (action==12) actionText=Res.txt('gui', 'see'); 
+					if (action ==  1) actionText = Res.txt('gui', !open?'open':'close');
+					if (action ==  2) actionText = Res.txt('gui', 'use'); 
+					if (action ==  3) actionText = Res.txt('gui', 'remine'); 
+					if (action ==  4) actionText = Res.txt('gui', 'press'); 
+					if (action ==  5) actionText = Res.txt('gui', 'shutoff'); 
+					if (action ==  8) actionText = Res.txt('gui', 'comein'); 
+					if (action ==  9) actionText = Res.txt('gui', 'exit'); 
+					if (action == 10) actionText = Res.txt('gui', 'beginm'); 
+					if (action == 11) actionText = Res.txt('gui', 'return'); 
+					if (action == 12) actionText = Res.txt('gui', 'see'); 
 				} 
-				else actionText='';
+				else actionText = '';
 			}
 			
-			if (mine>0) 
+			if (mine > 0) 
 			{
-				if (mineTip==6) 
+				if (mineTip == 6) 
 				{
 					stateText="<span class = 'r2'>"+Res.txt('gui', 'signal')+"</span>";
 					actionText=Res.txt('gui', 'shutoff');
@@ -421,64 +417,64 @@ package servdata
 				}
 				sndAct='rem_act';
 			} 
-			else if (lock>0) 
+			else if (lock > 0) 
 			{
-				if (lockTip==0)	
+				if (lockTip == 0)	
 				{
 					stateText="<span class = 'r2'>"+Res.txt('gui', 'lock')+"</span>";
 					actionText='';
 					sndAct='lock_act';
 				}
-				if (lockTip==1)	
+				if (lockTip == 1)	
 				{
 					if (lock>=100) stateText="<span class = 'r3'>"+Res.txt('gui', 'zhopa')+"</span>";
 					else stateText="<span class = 'r2'>"+Res.txt('gui', 'lock')+"</span>";
 					actionText=Res.txt('gui', 'unlock');
 					sndAct='lock_act';
 				}
-				if (lockTip==2)	
+				if (lockTip == 2)	
 				{
 					if (lock>=100)stateText="<span class = 'r3'>"+Res.txt('gui', 'block')+"</span>";
 					else stateText="<span class = 'r2'>"+Res.txt('gui', 'termlock')+"</span>";
 					actionText=Res.txt('gui', 'termunlock'); 
 					sndAct='term_act';
 				}
-				if (lockTip==4)	
+				if (lockTip == 4)	
 				{
 					actionText=Res.txt('gui', 'shutoff');
 					sndAct='rem_act';
 				}
-				if (lockTip==5)	
+				if (lockTip == 5)	
 				{
 					actionText=Res.txt('gui', 'fixup');
 					sndAct='rem_act';
 				}
 			} 
-			else if (cont=='empty') 
+			else if (cont == 'empty') 
 			{
-				stateText="<span class = 'r0'>"+Res.txt('gui', 'empty')+"</span>";
+				stateText = "<span class = 'r0'>" + Res.txt('gui', 'empty')+"</span>";
 			} 
 			else 
 			{
-				stateText='';
+				stateText = '';
 			}
 		}
 		
 		// Set the state
 		public function setAct(a:String, n:int=0):void
 		{
-			if (a=='mine') 
+			if (a == 'mine') 
 			{
-				if (n<100) 
+				if (n < 100) 
 				{
-					mine=n;
-					saveMine=mine;
+					mine = n;
+					saveMine = mine;
 				}
-				if (n==101) 
+				if (n == 101) 
 				{
-					mine=0;
-					saveMine=101;
-					owner.warn=0;
+					mine = 0;
+					saveMine = 101;
+					owner.warn = 0;
 				}
 			}
 			if (a=='lock') 
@@ -603,25 +599,24 @@ package servdata
 			else if (lock>0 && lockKey && GameSession.currentSession.invent.items[lockKey].kol>0) 
 			{
 				setAct('lock',101);
-				if (lockTip==1) GameSession.currentSession.gui.infoText('unLockKey');
-				if (lockTip==2) GameSession.currentSession.gui.infoText('unTermLock');
-				if (lockTip==4) GameSession.currentSession.gui.infoText('unRepLock');
-				if (lockTip==5) GameSession.currentSession.gui.infoText('unFixPart');
+				if (lockTip == 1) GameSession.currentSession.gui.infoText('unLockKey');
+				if (lockTip == 2) GameSession.currentSession.gui.infoText('unTermLock');
+				if (lockTip == 4) GameSession.currentSession.gui.infoText('unRepLock');
+				if (lockTip == 5) GameSession.currentSession.gui.infoText('unFixPart');
 				update();
-				if (successUnlock!=null) successUnlock();
-				//if (lockKeyMinus) 
+				if (successUnlock != null) successUnlock();
 			} 
-			else if (lock>=100) 
+			else if (lock >= 100) 
 			{
 
 			} 
-			else if (lock>0) 
+			else if (lock > 0) 
 			{
-				if (unlock>-99) 
+				if (unlock > -99) 
 				{
 					var lockDam1:Number=0, lockDam2:Number=2;
-					verFail=0;
-					if (lockTip==1 || lockTip==5) 
+					verFail = 0;
+					if (lockTip == 1 || lockTip == 5) 
 					{
 						verFail=1-this.getChance(lock-unlock);
 						if (master<lockLevel) verFail=1;
@@ -650,8 +645,6 @@ package servdata
 						lockDam1=2;
 						lockDam2=4;
 					}
-					//trace(lock,unlock,lockDam1,lockDam2);
-					//trace(lock,unlock,verFail);
 					var lockDam:Number=lockDam1;
 					if (Math.random()<verFail)  //неудача	
 					{
@@ -669,10 +662,9 @@ package servdata
 							else lockDam1+=2;
 							lockDam=(lockDam1+Math.random()*lockDam2)*GameSession.currentSession.pers.lockAtt;
 							lockHP-=lockDam;
-							//trace(lockDam,lockHP);
 							if (lockHP<=0) 
-							{		//Замок заклинило
-								setAct('lock',102);
+							{
+								setAct('lock',102); //Замок заклинило
 								GameSession.currentSession.gui.infoText('unLockZhopa');
 								if (fiascoUnlock!=null) fiascoUnlock();
 								replic('zhopa');
@@ -718,10 +710,8 @@ package servdata
 						{		//отключение с помощью навыка ремонт
 							lockDam = (lockDam1+Math.random()*lockDam2);
 							lockHP -= lockDam;
-							//trace(lockDam,lockHP);
 							if (lockHP <= 0) 
 							{		//Удар током
-								//setAct('lock',102);
 								discharge();
 								GameSession.currentSession.gui.infoText('unRepZhopa',null,null,false);
 								replic('zhopa');
@@ -737,7 +727,6 @@ package servdata
 						{		
 							lockDam=(lockDam1 + Math.random() * lockDam2);
 							lockHP-=lockDam;
-							//trace(lockDam,lockHP);
 							if (lockHP <= 0) //Замок заклинило
 							{		
 								setAct('lock', 102);
@@ -946,9 +935,6 @@ package servdata
 		public function discharge():void
 		{
 			GameSession.currentSession.gg.electroDamage(damdis*(Math.random()*0.4+0.8),owner.X,owner.Y-owner.scY/2);
-			//damage(,Unit.D_SPARK);
-			//Emitter.emit('moln',room,owner.X,owner.Y-owner.scY/2,{celx:GameSession.currentSession.gg.X, cely:(GameSession.currentSession.gg.Y-GameSession.currentSession.gg.scY/2)});
-			//Snd.ps('electro',X,Y);
 			damdis+=50;
 			if (damdis>500) damdis=500;
 		}
@@ -1010,10 +996,7 @@ package servdata
 			{
 				if (fiascoRemine!=null) fiascoRemine();
 				setAct('mine',101);
-				if (at_once>0) 
-				{
-					actOsn();
-				}
+				if (at_once>0) actOsn();
 				update();
 				return;
 			}
@@ -1043,7 +1026,7 @@ package servdata
 		
 		public function allAct():void
 		{
-			if (prob!=null) 
+			if (prob != null) 
 			{
 				if (GameSession.currentSession.possiblyOut()==2) 
 				{
@@ -1139,10 +1122,7 @@ package servdata
 		// Start of prolonged action on the object
 		public function beginAct():void
 		{
-			if (allact=='comein') 
-			{
-				owner.setVisState('comein');
-			}
+			if (allact == 'comein') owner.setVisState('comein');
 		}
 		
 		public function shine():void
@@ -1154,8 +1134,7 @@ package servdata
 		{
 			Emitter.emit(n,room,owner.X,owner.Y-owner.scY/2,{kol:6, rx:owner.scX/2, ry:owner.scY*0.8});
 		}
-		
-		
+
 		public function command(com:String, val:String=null):void
 		{
 			if (com=='hack' && is_hack) 
@@ -1352,7 +1331,6 @@ package servdata
 			
 		}
 		
-		//set public
 		public function replic(s:String):void
 		{
 			if (Math.random() < 0.25) GameSession.currentSession.gg.replic(s);
@@ -1409,6 +1387,5 @@ package servdata
 			if (!is_loot && (owner is Box) && !GameSession.currentSession.testLoot) GameSession.currentSession.gui.infoText('itsEmpty');
 			setAct('loot',imp_loot);
 		}
-	}
-	
+	}	
 }
