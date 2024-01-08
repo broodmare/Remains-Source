@@ -9,7 +9,7 @@ package
 	
 	public class Res 
 	{
-		private static var localizationFile = Languages.currentLanguageData;
+
 		private static var rainbowcol:Array = ['red','or','yel','green','blu','purp'];
 
 		public function Res() 
@@ -21,7 +21,7 @@ package
 		//TODO: Remove. Fold into txt().
 		public static function istxt(classKey:String, id:String):Boolean
 		{
-				var string = localizationFile[classKey].(@id == id);		
+				var string = Languages.currentLanguageData[classKey].(@id == id);		
 				if(string.length() > 0)
 				{
 					return true;
@@ -47,7 +47,7 @@ package
 
 			try 
 			{
-				xmlNode = localizationFile[classKey].(@id == id)[0]; //XML Node
+				xmlNode = Languages.currentLanguageData[classKey].(@id == id)[0]; //XML Node
 				//trace('Res.as/txt() - xmlNode: "' + xmlNode + '".');
 
 				switch(nodeChildType) //XML Node child elements.
@@ -125,9 +125,9 @@ package
 				//trace('Res.as/isTextNullCheck() - ID is blank.');
 				return true;
 			}
-			if (localizationFile == null) 
+			if (Languages.currentLanguageData == null) 
 			{
-				trace('Res.as/isTextNullCheck() - localizationFile is null.');
+				trace('Res.as/isTextNullCheck() - Languages.currentLanguageData is null.');
 				return true;
 			}
 			if (classKey == null || '') 
@@ -144,7 +144,7 @@ package
 			var s:String = '';
 			try 
 			{
-				var nodeList:XMLList = localizationFile.txt.(@id == id); // Create a list of all matching nodes from the language XML.
+				var nodeList:XMLList = Languages.currentLanguageData.txt.(@id == id); // Create a list of all matching nodes from the language XML.
 
 				if (nodeList.length() == 0) // If the list is empty, return a blank string
 				{
@@ -228,7 +228,7 @@ package
 
 		public static function advText(n:int):String 
 		{
-			var xml:XML = localizationFile.advice[0];
+			var xml:XML = Languages.currentLanguageData.advice[0];
 			var s = xml.a[n];
 			return (s == null) ? '' : s;
 		}
@@ -236,7 +236,7 @@ package
 		//Replace text for different languages?
 		public static function repText(id:String, act:String, msex:Boolean=true):String 
 		{
-			var xl:XMLList = localizationFile.replic[0].rep.(@id == id && @act == act);
+			var xl:XMLList = Languages.currentLanguageData.replic[0].rep.(@id == id && @act == act);
 			if (xl.length() == 0) return '';
 			xl = xl[0].r;	//AllData.lang
 
@@ -264,7 +264,7 @@ package
 
 		public static function namesArr(id:String):Array 
 		{
-			var xl:XMLList = localizationFile.names;
+			var xl:XMLList = Languages.currentLanguageData.names;
 			if (xl.length() == 0) return null;
 			xl = xl[0].name.(@id == id);
 			if (xl.length() == 0) return null;
