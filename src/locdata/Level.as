@@ -122,9 +122,9 @@ package locdata
 			createMap();
 		}
 		
-//==============================================================================================================================		
-//				*** Creation  ***
-//==============================================================================================================================		
+		//==============================================================================================================================		
+		//				*** Creation  ***
+		//==============================================================================================================================		
 		
 		//Convert from XML to array
 		public function prepareRooms():void
@@ -158,7 +158,7 @@ package locdata
 			for (var i:int = minLocX; i < maxLocX; i++) 
 			{
 				roomArray[i] = [];
-				for (var j:int = minLocY; j<maxLocY; j++) 
+				for (var j:int = minLocY; j < maxLocY; j++) 
 				{
 					opt.mirror = (Math.random() < 0.5);
 					opt.water = null;
@@ -175,11 +175,6 @@ package locdata
 					{
 						if (j == 2) opt.water = 21;
 						if (j > 2) opt.water = 0;
-					}
-					
-					if (levelTemplate.conf == 3) //buildings
-					{
-						
 					}
 
 					roomArray[i][j] = [];
@@ -199,138 +194,132 @@ package locdata
 							opt.transparentBackground = true;
 						}
 						loc1 = newTipLoc('beg0', i, j, opt);	
-					} 
-					else if (levelTemplate.conf == 3) //Manehattan
-					{ 
-						opt.transparentBackground = true;
-						if (i == 2) 
+					}
+					else
+					{
+						switch (levelTemplate.conf)
 						{
-							if (j == 0) 
-							{
-								opt.ramka = 7;
-								loc1 = newTipLoc('passroof', i, j, opt);
-							} 
-							else 
-							{
-								opt.ramka = 5;
-								loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt, 'pass');
-							}
-							loc1.bezdna = true;
-						} 
-						else if (j == 0) 
-						{
-							opt.ramka = 6;
-							loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt, 'roof');
-						} 
-						else 
-						{
-							loc1=newRandomLoc(levelTemplate.landStage,i,j,opt);
-							if (i > 2 && loc1.backwall == 'tWindows') loc1.backwall = 'tWindows2';
-						}
-					} 
-					else if (levelTemplate.conf == 4) //military base
-					{ 
-						if (i == 0) 
-						{
-							if (j == 0) 
-							{
-								if (!(GameSession.currentSession.game.triggers['mbase_visited'] > 0)) 
+							case 3: // Manehattan
+								opt.transparentBackground = true;
+								if (i == 2) 
 								{
-									opt.mirror = false;
-									opt.ramka = 8;
-									loc1 = newTipLoc('beg0', i, j, opt);
+									if (j == 0) 
+									{
+										opt.ramka = 7;
+										loc1 = newTipLoc('passroof', i, j, opt);
+									} 
+									else 
+									{
+										opt.ramka = 5;
+										loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt, 'pass');
+									}
+									loc1.bezdna = true;
+								} 
+								else if (j == 0) 
+								{
+									opt.ramka = 6;
+									loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt, 'roof');
 								} 
 								else 
 								{
-									loc1=newRandomLoc(0, i, j, opt);
+									loc1=newRandomLoc(levelTemplate.landStage,i,j,opt);
+									if (i > 2 && loc1.backwall == 'tWindows') loc1.backwall = 'tWindows2';
 								}
-							} 
-							else loc1 = newRandomLoc(0, i, j, opt, 'vert');
-						} 
-						else if (i == maxLocX - 1) 
-						{
-							if (j == maxLocY - 1)
-							{
-								opt.mirror = false;
-								loc1=newTipLoc('end', i, j, opt);
-							} 
-							else loc1 = newRandomLoc(0, i, j, opt, 'vert');
-						} 
-						else loc1 = newRandomLoc(0, i, j, opt);
-					} 
-					else if (levelTemplate.conf == 7) //bunker
-					{ 
-						if (i == 0) 
-						{
-							if (j == 0) 
-							{
-								opt.mirror = false;
-								loc1=newTipLoc('beg1', i, j, opt);
-							} 
-							else loc1 = newRandomLoc(1, i, j, opt, 'vert');
-						} 
-						else if (i == maxLocX - 1) 
-						{
-							if (j == maxLocY - 1) 
-							{
-								opt.mirror = false;
-								loc1 = newTipLoc('end1', i, j, opt);
-							} 
-							else loc1=  newRandomLoc(1, i, j, opt, 'vert');
-						} 
-						else loc1=newRandomLoc(1,i,j,opt);
-					} 
-					else if (levelTemplate.conf == 5) //canterlot
-					{ 
-						if (j == 0) 
-						{
-							opt.ramka = 3;
-							opt.backform = 3;
-							opt.transparentBackground = true;
-							loc1=newRandomLoc(levelTemplate.landStage, i, j, opt, 'surf');
-							loc1.visMult = 2;
-						} 
-						else 
-						{
-							loc1=newRandomLoc(levelTemplate.landStage,i,j,opt);
+							break;
+
+							case 4: // Military base
+								if (i == 0) 
+								{
+									if (j == 0) 
+									{
+										if (!(GameSession.currentSession.game.triggers['mbase_visited'] > 0)) 
+										{
+											opt.mirror = false;
+											opt.ramka = 8;
+											loc1 = newTipLoc('beg0', i, j, opt);
+										} 
+										else loc1 = newRandomLoc(0, i, j, opt);
+									} 
+									else loc1 = newRandomLoc(0, i, j, opt, 'vert');
+								} 
+								else if (i == maxLocX - 1) 
+								{
+									if (j == maxLocY - 1)
+									{
+										opt.mirror = false;
+										loc1=newTipLoc('end', i, j, opt);
+									} 
+									else loc1 = newRandomLoc(0, i, j, opt, 'vert');
+								} 
+								else loc1 = newRandomLoc(0, i, j, opt);
+							break;
+							
+							case 7: // Bunker
+								if (i == 0) 
+								{
+									if (j == 0) 
+									{
+										opt.mirror = false;
+										loc1=newTipLoc('beg1', i, j, opt);
+									} 
+									else loc1 = newRandomLoc(1, i, j, opt, 'vert');
+								} 
+								else if (i == maxLocX - 1) 
+								{
+									if (j == maxLocY - 1) 
+									{
+										opt.mirror = false;
+										loc1 = newTipLoc('end1', i, j, opt);
+									} 
+									else loc1=  newRandomLoc(1, i, j, opt, 'vert');
+								} 
+								else loc1 = newRandomLoc(1, i, j, opt);
+							break;
+
+							case 5: // Canterlot
+								if (j == 0) 
+								{
+									opt.ramka = 3;
+									opt.backform = 3;
+									opt.transparentBackground = true;
+									loc1=newRandomLoc(levelTemplate.landStage, i, j, opt, 'surf');
+									loc1.visMult = 2;
+								} 
+								else loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt);
+								loc1.gas = 1;
+							break;
+
+							case 10: // Stable
+								opt.home = true;
+								if (i == levelTemplate.begLocX && j == levelTemplate.begLocY) 
+								{
+									opt.mirror = false;
+									loc1 = newTipLoc('beg0', i, j, opt);
+								} 
+								else if (i == 1 && j == 1) 
+								{
+									opt.mirror = false;
+									loc1 = newTipLoc('roof', i, j, opt);
+								} 
+								else loc1 = newRandomLoc(10, i, j, opt);
+							break;
+
+							case 11: // Attacked stable
+								opt.atk = true;
+								if (i == 5 && j == 0)
+								{
+									opt.mirror = false;
+									loc1=newTipLoc('pass', i, j, opt);
+								} 
+								else loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt);
+							break;
+
+							default:
+								loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt);
+							break;
 						}
-						loc1.gas=1;
-					} 
-					else if (levelTemplate.conf == 10) //stable
-					{ 
-						opt.home = true;
-						if (i == levelTemplate.begLocX && j == levelTemplate.begLocY) 
-						{
-							opt.mirror = false;
-							loc1 = newTipLoc('beg0', i, j, opt);
-						} 
-						else if (i == 1 && j == 1) 
-						{
-							opt.mirror = false;
-							loc1 = newTipLoc('roof', i, j, opt);
-						} 
-						else 
-						{
-							loc1=newRandomLoc(10, i, j, opt);
-						}
-					} 
-					else if (levelTemplate.conf == 11) // attacked stable
-					{ 
-						opt.atk = true;
-						if (i == 5 && j == 0)
-						{
-							opt.mirror = false;
-							loc1=newTipLoc('pass', i, j, opt);
-						} 
-						else 
-						{
-							loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt);
-						}
-					} 
-					else 
-					{
-						loc1 = newRandomLoc(levelTemplate.landStage, i, j, opt);
 					}
+
 					// add a room on the second level
 					roomArray[i][j][0] = loc1;
 					if (loc1.roomTemplate.back != null) 
@@ -614,7 +603,7 @@ package locdata
 			if (probs[nprob] != null) return false;
 			//create a single room
 
-			var arrr:XML = LevelArray.initializedProbLevels['prob'].allroom;
+			var arrr = LevelArray.initializedProbLevels['prob'].allroom;
 			for each(var xml in arrr.roomTemplate) 
 			{
 				if (xml.@name == nprob) 
@@ -746,104 +735,14 @@ package locdata
 				if (levelTemplate.conf == 1) deep = roomCoordinateY;
 				if (levelTemplate.conf == 2) deep = roomCoordinateY * 2.5;
 			}
-			setLocDif(room, deep);
+
+			var self:Level = this;
+			RoomDifficultyHelper.setRoomDifficulty(self, room, deep);
 			
 			room.addPlayer(gg);
 			return room;
 		}
-		
-		// Setting the difficulty level of the room based on the character's level and difficulty gradient
-		public function setLocDif(room:Room, deep:Number):void
-		{
-			var ml:Number = levelDifficultyLevel + deep;
-			room.locDifLevel = ml;
-			room.locksLevel = ml * 0.7;	// level of locks
-			room.mechLevel = ml / 4;		// level of mines and mechanisms
-			room.weaponLevel = 1 + ml / 4;	// level of encountered weapons
-			room.enemyLevel = ml;		// level of enemies
 
-			// influence of difficulty settings
-			if (GameSession.currentSession.game.globalDif < 2) room.earMult *= 0.5;
-			if (GameSession.currentSession.game.globalDif > 2) room.enemyLevel += (GameSession.currentSession.game.globalDif - 2) * 2;	// level of enemies based on difficulty
-			// type of enemies
-			if (levelTemplate.biom == 0 && Math.random() < 0.25) room.tipEnemy = 1;
-			if (room.tipEnemy < 0) room.tipEnemy = Math.floor(Math.random() * 3);
-			if (levelTemplate.biom == 1) room.tipEnemy = 0;
-			if (levelTemplate.biom == 2 && room.tipEnemy == 1 && Math.random() < ml / 20) room.tipEnemy = 3;	// slave traders
-			if (levelTemplate.biom == 3) 
-			{
-				room.tipEnemy = Math.floor(Math.random() * 3) + 3; // 4-mercenaries, 5-unicorns
-			}
-			if (ml > 12 && (levelTemplate.biom == 0 || levelTemplate.biom == 2 || levelTemplate.biom == 3) && Math.random() < 0.1) room.tipEnemy = 6;	// zebras
-			if (levelTemplate.biom == 4) room.tipEnemy = 7;	// steel+robots
-			if (levelTemplate.biom == 5) 
-			{
-				if (Math.random() < 0.3) room.tipEnemy = 5;
-				else room.tipEnemy = 8;	// pink
-			}
-			if (levelTemplate.biom == 6) 
-			{
-				if (Math.random() > 0.3) room.tipEnemy = 9;	// enclave
-				else room.tipEnemy = 10;// greyhounds
-			}
-			if (levelTemplate.biom == 11) room.tipEnemy = 11; // enclave and greyhounds
-			// number of enemies
-			// type, minimum, maximum, random increase
-			if (ml < 4) 
-			{
-				room.setUnitSpawnLimits(1, 3, 5, 2);
-				room.setUnitSpawnLimits(2, 2, 4, 0);
-				room.setUnitSpawnLimits(3, 3, 4, 2);
-				room.setUnitSpawnLimits(4, 1, 2, 0);
-				room.setUnitSpawnLimits(5, 1, 4, 2);
-				if (room.tipEnemy == 6) room.setUnitSpawnLimits(2, 1, 3, 0);
-				if (room.kolEnSpawn == 0) 
-				{
-					if (room.tipEnemy != 5) room.setUnitSpawnLimits(-1, 1, 2);
-				}
-				room.kolEnHid = 0;
-			} 
-			else if (ml < 10) 
-			{
-				room.setUnitSpawnLimits(1, 3, 6, 2);
-				if (Math.random() < 0.15) room.setUnitSpawnLimits(2, 1, 1, 0);
-				else if (room.tipEnemy == 6) room.setUnitSpawnLimits(2, 2, 3, 0);
-				else room.setUnitSpawnLimits(2, 2, 5, 0);
-				room.setUnitSpawnLimits(3, 3, 5, 2);
-				room.setUnitSpawnLimits(4, 2, 3, 1);
-				room.setUnitSpawnLimits(5, 2, 4, 2);
-				if (room.kolEnSpawn == 0) 
-				{
-					if (room.tipEnemy != 5) room.setUnitSpawnLimits(-1, 2, 3);
-				}
-				room.kolEnHid = Math.floor(Math.random() * 3);
-			} 
-			else 
-			{
-				room.setUnitSpawnLimits(1, 4, 6, 2);
-				if (Math.random() < 0.15) room.setUnitSpawnLimits(2, 1, 2, 0);
-				else if (room.tipEnemy == 6) room.setUnitSpawnLimits(2, 3, 4, 0);
-				else room.setUnitSpawnLimits(2, 3, 6, 0);
-				room.setUnitSpawnLimits(3, 4, 7, 2);
-				room.setUnitSpawnLimits(4, 2, 4, 1);
-				room.setUnitSpawnLimits(5, 3, 6, 2);
-				if (room.kolEnSpawn == 0) 
-				{
-					if (room.tipEnemy != 5) room.setUnitSpawnLimits(-1, 2, 4);
-					else if (Math.random() > 0.4) room.setUnitSpawnLimits(-1, 1, 3);
-				}
-				room.kolEnHid = Math.floor(Math.random() * 4);
-			}
-			if (room.tipEnemy == 5 || room.tipEnemy == 10) 
-			{
-				room.setUnitSpawnLimits(2, 1, 3, 1);
-			}
-			if (levelTemplate.biom == 11) 
-			{
-					room.setUnitSpawnLimits(2, 5, 8, 0);
-			}
-		}
-		
 		public function createMap():void
 		{
 			map = new BitmapData(Settings.roomTileWidth * (maxLocX - minLocX), Settings.roomTileHeight * (maxLocY - minLocY), true, 0);
@@ -935,17 +834,16 @@ package locdata
 			if (prob != '' && probs[prob] == null)
 			{
 				trace('Level.as/activateRoom() - ERROR: Room does not have a valid trial! Stopping room activation.');
-				return false;
 			}
 
-			if (prob != '')
+			if (prob != '') // If the room is a trial room, load the approriate trial room.
 			{
 				if (probs != null) newRoom = probs[prob][locX][locY][locZ];
 				else trace('Level.as/activateRoom() - Error: Failed to set up new room, probs is null.')
 			}
 			else
 			{
-				if (roomArray != null) newRoom = roomArray[locX][locY][locZ];
+				if (roomArray != null) newRoom = roomArray[locX][locY][locZ]; //Otherwise load a normal room
 				else trace('Level.as/activateRoom() - Error: Failed to set up new room, roomArray is null.')
 			}
 
@@ -963,6 +861,8 @@ package locdata
 			room = newRoom; //Set the current room as the room being loaded.
 
 			gg.inLoc(room);
+
+			trace('Level.as/activateRoom() - ACTIVATING ROOM - ACTIVATING ROOM - ACTIVATING ROOM');
 			room.reactivate(locN);
 			GameSession.currentSession.transitionToRoom(room);
 

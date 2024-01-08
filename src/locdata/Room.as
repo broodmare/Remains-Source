@@ -1064,7 +1064,7 @@ package locdata
 					else 								tr = Calc.intBetweenOneAnd(2);
 					break;
 				case 'merc':
-					if (locDifLevel>=19) 		tr = Calc.intBetweenOneAnd(5);
+					if (locDifLevel >= 19) 		tr = Calc.intBetweenOneAnd(5);
 					else if (locDifLevel >= 15 && randomChance > 0.5) tr = Calc.intBetweenOneAnd(4);
 					else 						tr = Calc.intBetweenOneAnd(2);
 					break;
@@ -1078,11 +1078,7 @@ package locdata
 					if (tipEnemy == 7) tr = 1;
 					break;
 				case 'dron':
-					if (tipEnemy == 9) 
-					{
-						tr = Calc.intBetweenOneAnd(4);
-						if (tr > 3) tr = 3;
-					}
+					if (tipEnemy == 9) tr = Calc.intBetweenOneAnd(3);
 					else tr = Calc.intBetweenOneAnd(2);
 					break;
 				case 'roller':
@@ -1095,9 +1091,9 @@ package locdata
 						if (locDifLevel >= 20 && randomChance < 0.1) tr = 9;
 						else tr = Calc.intBetweenOneAnd(4) + 4;
 					} 
-					else if (biom>=1 && locDifLevel>=8) tr = Calc.intBetweenZeroAnd(7);
-					else if (locDifLevel>=5) tr = Calc.intBetweenZeroAnd(5);
-					else if (locDifLevel>=2) tr = Calc.intBetweenZeroAnd(4);
+					else if (biom >= 1 && locDifLevel >= 8) tr = Calc.intBetweenZeroAnd(7);
+					else if (locDifLevel >= 5) tr = Calc.intBetweenZeroAnd(5);
+					else if (locDifLevel >= 2) tr = Calc.intBetweenZeroAnd(4);
 					else tr = 0;
 					break;
 				case 'alicorn':
@@ -1114,8 +1110,8 @@ package locdata
 					else tr = 0;
 					break;
 				case 'ant':
-					if (biom >= 1 && locDifLevel >= 6) tr = Calc.intBetweenOneAnd(3);
-					else if (locDifLevel >= 3) tr = Calc.intBetweenOneAnd(2);
+					if (biom >= 1 && locDifLevel >= 6) 	tr = Calc.intBetweenOneAnd(3);
+					else if (locDifLevel >= 3) 			tr = Calc.intBetweenOneAnd(2);
 					else tr = 1;
 					break;
 				case 'fish':
@@ -1150,6 +1146,7 @@ package locdata
 			{
 				return tr.toString();
 			}
+			trace('Room.as/randomCid() - ERROR: unitType: "' + unitType + '" did not return any valid units!');
 			return null;
 		}
 
