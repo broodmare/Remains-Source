@@ -2,7 +2,6 @@ package locdata
 {
     public class RoomDifficultyHelper
     {
-
         // Setting the difficulty level of the room based on the character's level and difficulty gradient
 		public static function setRoomDifficulty(l:Level, room:Room, deep:Number):void
 		{
@@ -99,7 +98,5 @@ package locdata
                 room.setUnitSpawnLimits(2, 5, 8, 0);
 			}
 		}
-
-
     }
 }
