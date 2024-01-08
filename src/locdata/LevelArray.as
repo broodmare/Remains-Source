@@ -30,7 +30,6 @@ package locdata
     // Step 1: Create dictionary entries for all level varirants, all base level designs, and create a list of all base level designs that need to be loaded.
     private static function setupLevelTemplateArray():void 
     {
-      trace('LevelArray.as/setupLevelTemplateArray() - Initializing the level array.');
       levelVariantArray   = new Dictionary();
       levelRoomDataArray  = new Dictionary();
       templateFileNameList = [];
@@ -95,8 +94,6 @@ package locdata
     // Step 3: Copy base level designs to every unique level variant.
     private static function initializeLevels():void
 		{
-			trace('LevelArray.as/initializeLevels() - Initializing level variants.');
-
       initializedProbLevels     = [];
       initializedLevelVariants  = [];
 
@@ -106,7 +103,6 @@ package locdata
 				var templateName:String = levelVariant.@fileName;
         
         // Create a new Template for each level and add the XML data for it's rooms.
-				trace('LevelArray.as/initializeLevels() - Initializing template for level variant: "' + variantName + '".');
 				var template:LevelTemplate = new LevelTemplate(levelVariant);
 				template.levelXMLData = levelRoomDataArray[templateName];
 
