@@ -38,7 +38,7 @@ package components
 
         public static function getColorFromTable(colorName:String):ColorRGB
         {
-            var newColor = new ColorRGB();
+            var newColor:ColorRGB = new ColorRGB();
 
             if (ColorTable.hasOwnProperty(colorName)) 
             {
