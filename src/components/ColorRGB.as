@@ -2,9 +2,9 @@ package components
 {
     public class ColorRGB
     {
-        public var red:Number   = 0.00;
-        public var green:Number = 0.00;
-        public var blue:Number  = 0.00;
+        public var red:Number   = 1.00;
+        public var green:Number = 1.00;
+        public var blue:Number  = 1.00;
 
         private static var ColorTable:Object = 
         {
