@@ -1103,7 +1103,7 @@ package locdata
 					tr = 1;
 					break;
 				case 'bloat':
-					if (biom == 5) 				tr = Calc.intBetweenOneAnd(3) + 3;
+					if (biom == 5) 				tr = Calc.intBetween(4, 6);
 					else if (locDifLevel >= 10) tr = Calc.intBetweenZeroAnd(5);
 					else if (locDifLevel >= 4) 	tr = Calc.intBetweenZeroAnd(4);
 					else if (locDifLevel >= 2) 	tr = Calc.intBetweenZeroAnd(3);
